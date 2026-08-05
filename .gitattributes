@@ -1,2 +1,3 @@
 # Giữ nguyên từng byte của gói migration để checksum không thay đổi giữa Windows/Linux.
 backups/** -text
+/.env -text
