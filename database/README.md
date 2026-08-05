@@ -29,10 +29,17 @@ mongodb/aptis.archive.gz      # toàn bộ database MongoDB, dạng archive gzip
 mongodb/json/*.json           # từng collection, JSON dễ kiểm tra
 minio/aptis-minio-data.tar.gz # toàn bộ audio, tài liệu và object trong MinIO
 redis/dump.rdb                # snapshot Redis tại thời điểm backup
+runtime/.env                  # cấu hình runtime và thông tin SMTP hiện tại
 MANIFEST.md                   # kích thước và SHA-256 để kiểm tra toàn vẹn
 ```
 
 Không chuyển repository sang public hoặc chia sẻ các file này ra ngoài.
+
+Sau khi clone sang máy mới, chép cấu hình runtime về thư mục gốc trước khi chạy Compose:
+
+```powershell
+Copy-Item backups/<timestamp>/runtime/.env .env
+```
 
 ## Khôi phục MySQL
 

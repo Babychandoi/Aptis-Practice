@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+# Bản cấu hình runtime phục vụ migration; chỉ được lưu khi repo là private.
+!backups/**/.env
 
 # Build
 target/
