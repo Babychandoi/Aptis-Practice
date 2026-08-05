@@ -12,9 +12,9 @@ MongoDB được khởi tạo bằng script tại:
 aptis-backend/src/main/resources/db/mongo/
 ```
 
-## Backup đầy đủ local
+## Backup migration đầy đủ
 
-Backup đầy đủ được lưu trong `backups/<timestamp>/` và bị loại khỏi Git bằng `.gitignore` vì chứa:
+Backup đầy đủ được lưu trong `backups/<timestamp>/`. Repository phải luôn để ở chế độ **private** vì backup chứa:
 
 - email, số điện thoại và password hash;
 - refresh token hash, IP, user-agent và thiết bị;
@@ -27,9 +27,12 @@ Mỗi bộ backup gồm:
 mysql/aptis-full.sql          # schema + toàn bộ dữ liệu MySQL
 mongodb/aptis.archive.gz      # toàn bộ database MongoDB, dạng archive gzip
 mongodb/json/*.json           # từng collection, JSON dễ kiểm tra
+minio/aptis-minio-data.tar.gz # toàn bộ audio, tài liệu và object trong MinIO
+redis/dump.rdb                # snapshot Redis tại thời điểm backup
+MANIFEST.md                   # kích thước và SHA-256 để kiểm tra toàn vẹn
 ```
 
-Không đưa thư mục `backups/` lên repository công khai.
+Không chuyển repository sang public hoặc chia sẻ các file này ra ngoài.
 
 ## Khôi phục MySQL
 
@@ -52,6 +55,31 @@ docker exec aptis-mongo mongorestore --drop --gzip --archive=/tmp/aptis.archive.
 ```
 
 `--drop` xóa collection đích trước khi phục hồi.
+
+## Khôi phục MinIO
+
+Khởi động hạ tầng trước, sau đó giải nén archive vào volume MinIO bằng container tạm:
+
+```powershell
+docker compose up -d minio
+docker run --rm --mount "type=volume,source=aptis_minio-data,target=/data" --mount "type=bind,source=${PWD}\backups\<timestamp>\minio,target=/backup,readonly" alpine:3.20 sh -c "rm -rf /data/* && tar -xzf /backup/aptis-minio-data.tar.gz -C /data"
+docker compose restart minio
+```
+
+Lệnh trên ghi đè dữ liệu MinIO của môi trường đích. Tên volume mặc định là `aptis_minio-data`; kiểm tra bằng `docker volume ls` nếu project Compose dùng tên khác.
+
+## Khôi phục Redis
+
+Redis chỉ lưu trạng thái tạm, nên có thể bỏ qua khi chuyển máy. Nếu muốn phục hồi đúng snapshot:
+
+```powershell
+docker compose up -d redis
+docker compose stop redis
+docker cp backups/<timestamp>/redis/dump.rdb aptis-redis:/data/dump.rdb
+docker compose start redis
+```
+
+Compose hiện không đặt tên volume Redis cố định. Có thể chỉ cần chạy Redis mới vì dữ liệu chính nằm trong MySQL, MongoDB và MinIO.
 
 ## Tạo môi trường sạch từ migration
 

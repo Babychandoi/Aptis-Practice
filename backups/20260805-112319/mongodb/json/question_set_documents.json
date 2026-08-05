@@ -1,0 +1,3651 @@
+[{
+	"_id": "aa000000-0000-4000-8000-000000000001",
+	"questionSetId": "aa000000-0000-4000-8000-000000000001",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000001",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Grammar - Present Simple (free)",
+	"instructions": "Chon dap an dung nhat.",
+	"accessLevel": "FREE",
+	"stimulus": null,
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "She ___ to work every day."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "go"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "goes"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "going"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"rubricCode": null,
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "B",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "Chu ngu so 3 so it dung \"goes\"."
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "They ___ football on Sundays."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "plays"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "play"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "playing"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"rubricCode": null,
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "B",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "Chu ngu so nhieu dung dong tu nguyen mau."
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"maxAudioPlays": null,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 2
+	},
+	"createdAt": {
+		"$date": "2026-07-31T21:17:51.943Z"
+	},
+	"updatedAt": {
+		"$date": "2026-07-31T21:17:51.943Z"
+	}
+},
+{
+	"_id": "aa000000-0000-4000-8000-000000000002",
+	"questionSetId": "aa000000-0000-4000-8000-000000000002",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000001",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Grammar - Conditionals (premium)",
+	"instructions": "Chon dap an dung nhat.",
+	"accessLevel": "PREMIUM",
+	"stimulus": null,
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "If I ___ more time, I would travel."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "have"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "had"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "will have"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"rubricCode": null,
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "B",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "Cau dieu kien loai 2 dung qua khu don."
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "She would have passed if she ___ harder."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "studied"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "had studied"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "studies"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"rubricCode": null,
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "B",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "Cau dieu kien loai 3 dung qua khu hoan thanh."
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"maxAudioPlays": null,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 2
+	},
+	"createdAt": {
+		"$date": "2026-07-31T21:17:52.072Z"
+	},
+	"updatedAt": {
+		"$date": "2026-07-31T21:17:52.072Z"
+	}
+},
+{
+	"_id": "a6720a05-580f-4bd1-a1fc-fcdde0b345de",
+	"questionSetId": "a6720a05-580f-4bd1-a1fc-fcdde0b345de",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Vocabulary - Collocations",
+	"instructions": "Chon tu phu hop nhat de hoan thanh cau.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "She ___ a strong interest in music."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "makes"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "takes"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "does"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "B",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "take an interest in la collocation dung."
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "They ___ a decision after the meeting."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "made"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "took"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "gave"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "A",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "make a decision la collocation dung."
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 2.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "6de906a0-b0c1-4005-a6e7-0c75a602c7b3",
+	"questionSetId": "6de906a0-b0c1-4005-a6e7-0c75a602c7b3",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo cau hoi co loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung id"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "b931f726-6f51-43e0-a6ff-d9fa64cf726a",
+	"questionSetId": "b931f726-6f51-43e0-a6ff-d9fa64cf726a",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000044",
+	"taskTypeCode": "LONG_TEXT",
+	"title": "Writing Part 4 - Formal email",
+	"instructions": "Viet email trang trong cho quan ly cau lac bo, 120-150 tu.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "HTML",
+				"value": "<p>You are a member of a sports club. Write an email to the club manager to complain about the changing rooms and suggest improvements.</p>"
+			},
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 25.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {
+				"minWords": 120,
+				"maxWords": 150,
+				"register": "FORMAL",
+				"recipientRole": "CLUB_MANAGER",
+				"writingPurpose": "COMPLAINT_AND_SUGGESTION"
+			},
+			"rubricCode": "APTIS_WRITING_PART_4_V1"
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "RUBRIC",
+		"partialCredit": true,
+		"maxScore": 25.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "29bee15b-90da-4a90-801a-f7d090fe2c49",
+	"questionSetId": "29bee15b-90da-4a90-801a-f7d090fe2c49",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "f021077d-2b1f-42dc-b784-9e74f5ba00c8",
+	"questionSetId": "f021077d-2b1f-42dc-b784-9e74f5ba00c8",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "5df21b83-1180-4adb-8793-802e82171239",
+	"questionSetId": "5df21b83-1180-4adb-8793-802e82171239",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "b6b43ae7-cfc1-42be-a67a-548bfd3cb03a",
+	"questionSetId": "b6b43ae7-cfc1-42be-a67a-548bfd3cb03a",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "24ff18aa-62fc-47fb-b6d4-bd5299042cf1",
+	"questionSetId": "24ff18aa-62fc-47fb-b6d4-bd5299042cf1",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "416dd786-5ac7-4f12-874d-754a58f966e0",
+	"questionSetId": "416dd786-5ac7-4f12-874d-754a58f966e0",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "1d3fc261-0e6c-4da7-9be6-d37557e6fbd2",
+	"questionSetId": "1d3fc261-0e6c-4da7-9be6-d37557e6fbd2",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "ba70d7b5-933b-4d00-84e3-0c885b638089",
+	"questionSetId": "ba70d7b5-933b-4d00-84e3-0c885b638089",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "edd62964-0961-439c-969e-9d632072ddef",
+	"questionSetId": "edd62964-0961-439c-969e-9d632072ddef",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "9db00404-596e-40e6-bdab-bdce5c7dbcff",
+	"questionSetId": "9db00404-596e-40e6-bdab-bdce5c7dbcff",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "cc401d2e-756e-40fb-9f98-952b9710c7f5",
+	"questionSetId": "cc401d2e-756e-40fb-9f98-952b9710c7f5",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "0c95ffc5-0b84-459b-a48c-ea7337e09845",
+	"questionSetId": "0c95ffc5-0b84-459b-a48c-ea7337e09845",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "3ee717d0-8c18-44a1-9b83-588fb9614e41",
+	"questionSetId": "3ee717d0-8c18-44a1-9b83-588fb9614e41",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "a98b5d15-5591-4640-a277-f1dbea934fb0",
+	"questionSetId": "a98b5d15-5591-4640-a277-f1dbea934fb0",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "60e5427d-dfe6-42ef-b2f6-a77a44b2bf12",
+	"questionSetId": "60e5427d-dfe6-42ef-b2f6-a77a44b2bf12",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "554d4570-468e-460b-97a5-9a5636fd7a91",
+	"questionSetId": "554d4570-468e-460b-97a5-9a5636fd7a91",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "85a43fd5-8cfb-49a0-a769-984e3df99c1e",
+	"questionSetId": "85a43fd5-8cfb-49a0-a769-984e3df99c1e",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "1ba7c43b-06c6-48f4-8ede-96b75ffae74f",
+	"questionSetId": "1ba7c43b-06c6-48f4-8ede-96b75ffae74f",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "1e155bee-df18-425c-96fa-2da4c02542a0",
+	"questionSetId": "1e155bee-df18-425c-96fa-2da4c02542a0",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Import test 1",
+	"instructions": "Chon dap an dung.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "He ___ interested in music."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "is"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "are"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "be"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "A",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "Chu ngu so it dung is."
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "They ___ at home yesterday."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "was"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "were"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "are"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "B",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "Chu ngu so nhieu dung were."
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 2.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "f1f8e802-3867-4756-abf7-8639b7fd9325",
+	"questionSetId": "f1f8e802-3867-4756-abf7-8639b7fd9325",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Import test 2",
+	"instructions": "Chon dap an dung.",
+	"accessLevel": "PREMIUM",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "She has lived here ___ 2010."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "since"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "for"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "from"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "A",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "since + moc thoi gian."
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 1.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "de47a0b6-3582-4f86-af0f-74012385e7b3",
+	"questionSetId": "de47a0b6-3582-4f86-af0f-74012385e7b3",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "d6b80f1e-ebdd-4487-89ea-84f3e2f93cc1",
+	"questionSetId": "d6b80f1e-ebdd-4487-89ea-84f3e2f93cc1",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "1be84daf-8862-4291-8a3f-91e9d6c1a901",
+	"questionSetId": "1be84daf-8862-4291-8a3f-91e9d6c1a901",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "71448519-9ee3-4a9c-91a9-d1d5bf789d8d",
+	"questionSetId": "71448519-9ee3-4a9c-91a9-d1d5bf789d8d",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "5520ead7-59f1-4e48-9070-4ccc4a597431",
+	"questionSetId": "5520ead7-59f1-4e48-9070-4ccc4a597431",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "57d0de5e-9f59-49f6-9e17-60c99ba90ad0",
+	"questionSetId": "57d0de5e-9f59-49f6-9e17-60c99ba90ad0",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "8dc2be88-584e-4f31-a7a3-b07704d39e56",
+	"questionSetId": "8dc2be88-584e-4f31-a7a3-b07704d39e56",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "20717f7d-ff78-414a-b86d-8dd5001e6a14",
+	"questionSetId": "20717f7d-ff78-414a-b86d-8dd5001e6a14",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "18284f33-2d24-4f6b-98ea-70dfe971779d",
+	"questionSetId": "18284f33-2d24-4f6b-98ea-70dfe971779d",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "2e9675ed-facb-4057-ad32-3eb00de19837",
+	"questionSetId": "2e9675ed-facb-4057-ad32-3eb00de19837",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "ce534370-aeea-4518-a32f-d482f3ae5e49",
+	"questionSetId": "ce534370-aeea-4518-a32f-d482f3ae5e49",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "d311ae39-77aa-4f68-bc5f-43aeda6cd9b4",
+	"questionSetId": "d311ae39-77aa-4f68-bc5f-43aeda6cd9b4",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "0f55173a-f667-417c-bbe6-65f7888e14b0",
+	"questionSetId": "0f55173a-f667-417c-bbe6-65f7888e14b0",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "a5d5588d-4d97-4a3b-a061-c41c08daa474",
+	"questionSetId": "a5d5588d-4d97-4a3b-a061-c41c08daa474",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "7a0acbd0-32dd-4cc9-ad45-f8fa1f7ace51",
+	"questionSetId": "7a0acbd0-32dd-4cc9-ad45-f8fa1f7ace51",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "E2E Vocabulary",
+	"instructions": "Chon dap an dung.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "She ___ an interest in music."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "makes"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "takes"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "B",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "take an interest in."
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 1.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "6ee6bbd0-13a0-40ec-8f27-846cb96a019d",
+	"questionSetId": "6ee6bbd0-13a0-40ec-8f27-846cb96a019d",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "Bo loi",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "one"
+				},
+				{
+					"id": "A",
+					"code": "B",
+					"content": "trung"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "Z",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 5.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 6.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "ab145bd6-efdd-4850-8713-c2a6da8782b1",
+	"questionSetId": "ab145bd6-efdd-4850-8713-c2a6da8782b1",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000044",
+	"taskTypeCode": "LONG_TEXT",
+	"title": "E2E Writing Part 4",
+	"instructions": "Viet email trang trong 120-150 tu.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "Write an email to the club manager."
+			},
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 25.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {
+				"minWords": 120,
+				"maxWords": 150,
+				"register": "FORMAL"
+			},
+			"rubricCode": "APTIS_WRITING_PART_4_V1"
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "RUBRIC",
+		"partialCredit": true,
+		"maxScore": 25.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "af3a4257-e3dc-48a2-944c-520356dc6f0f",
+	"questionSetId": "af3a4257-e3dc-48a2-944c-520356dc6f0f",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "PLAT import 1",
+	"instructions": "Chon dap an dung.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "He ___ interested."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "is"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "are"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "A",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "Chu ngu so it."
+			}
+		},
+		{
+			"id": "item_2",
+			"sequenceNo": 2,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "They ___ at home."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "was"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "were"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "B",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "Chu ngu so nhieu."
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 2.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "77d084d3-3807-4eb3-87f3-a0a02d7adc62",
+	"questionSetId": "77d084d3-3807-4eb3-87f3-a0a02d7adc62",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "PLAT import 2",
+	"instructions": "Chon dap an dung.",
+	"accessLevel": "PREMIUM",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "She has lived here ___ 2010."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "since"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "for"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "A",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			},
+			"explanation": {
+				"format": "PLAIN_TEXT",
+				"value": "since + moc."
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 1.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "9427ee3a-6a84-49e4-923b-bc4f5df54101",
+	"questionSetId": "9427ee3a-6a84-49e4-923b-bc4f5df54101",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000044",
+	"taskTypeCode": "LONG_TEXT",
+	"title": "PLAT Writing",
+	"instructions": "Viet 120-150 tu.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "Write an email."
+			},
+			"responseType": "LONG_TEXT",
+			"required": true,
+			"maxScore": 25.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {
+				"minWords": 120,
+				"maxWords": 150,
+				"register": "FORMAL"
+			},
+			"rubricCode": "APTIS_WRITING_PART_4_V1"
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "RUBRIC",
+		"partialCredit": true,
+		"maxScore": 25.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "a09a6a22-f9a8-4514-bee4-9cc132decd46",
+	"questionSetId": "a09a6a22-f9a8-4514-bee4-9cc132decd46",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000002",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "CT single 1785571841",
+	"instructions": "Chọn đáp án đúng.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "He ___ interested."
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "is"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "are"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "A",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 1.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "3ccdadf0-531d-4140-b87f-652b8dede83e",
+	"questionSetId": "3ccdadf0-531d-4140-b87f-652b8dede83e",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000011",
+	"taskTypeCode": "MULTIPLE_CHOICE",
+	"title": "CT multi 1785571841",
+	"instructions": "Chọn tất cả đáp án đúng.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "Chon cac cau dung."
+			},
+			"responseType": "MULTIPLE_CHOICE",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "Trai dat quay quanh Mat troi"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "Mat troi quay quanh Trai dat"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "Trai dat co mot mat trang"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "MULTIPLE_CHOICE",
+				"selectedOptionIds": [
+					"A",
+					"C"
+				],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": true,
+		"maxScore": 1.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "9d9e20e3-8c9e-46c5-be6a-dc5d48ba3866",
+	"questionSetId": "9d9e20e3-8c9e-46c5-be6a-dc5d48ba3866",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000013",
+	"taskTypeCode": "MATCHING",
+	"title": "CT match 1785571841",
+	"instructions": "Nối mỗi mục bên trái với mục tương ứng bên phải.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "Noi nguoi noi voi y kien."
+			},
+			"responseType": "MATCHING",
+			"required": true,
+			"maxScore": 2.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "Thich the thao"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "Thich am nhac"
+				}
+			],
+			"leftItems": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "An"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "Binh"
+				}
+			],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "MATCHING",
+				"selectedOptionIds": [],
+				"matches": {
+					"A": "B",
+					"B": "A"
+				},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": true,
+		"maxScore": 2.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "395a5841-b42a-4517-ab9c-e199d015080e",
+	"questionSetId": "395a5841-b42a-4517-ab9c-e199d015080e",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000012",
+	"taskTypeCode": "SENTENCE_ORDERING",
+	"title": "CT order 1785571841",
+	"instructions": "Sắp xếp các câu theo đúng thứ tự.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "Sap xep cac cau."
+			},
+			"responseType": "SENTENCE_ORDERING",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "Sau do toi an sang."
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "Dau tien toi thuc day."
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "Cuoi cung toi di lam."
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SENTENCE_ORDERING",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [
+					"B",
+					"A",
+					"C"
+				],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 1.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "2c5ba03c-4fa5-49eb-837f-a6ed856beb60",
+	"questionSetId": "2c5ba03c-4fa5-49eb-837f-a6ed856beb60",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000021",
+	"taskTypeCode": "SHORT_TEXT",
+	"title": "CT text 1785571841",
+	"instructions": "Viết câu trả lời ngắn.",
+	"accessLevel": "FREE",
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "Nghe va viet so ban nghe duoc."
+			},
+			"responseType": "SHORT_TEXT",
+			"required": true,
+			"maxScore": 1.0,
+			"options": [],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {},
+			"answerKey": {
+				"type": "SHORT_TEXT",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [
+					"1,000",
+					"one thousand"
+				],
+				"caseSensitive": false
+			}
+		}
+	],
+	"assets": [],
+	"settings": {
+		"shuffleOptions": false,
+		"shuffleItems": false,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 1.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+},
+{
+	"_id": "685dbf64-0bc3-489f-8e4f-84fdc4457f84",
+	"questionSetId": "685dbf64-0bc3-489f-8e4f-84fdc4457f84",
+	"revision": 1,
+	"schemaVersion": 1,
+	"partId": "16000000-0000-4000-8000-000000000021",
+	"taskTypeCode": "SINGLE_CHOICE",
+	"title": "sdadsa",
+	"instructions": "sada",
+	"accessLevel": "FREE",
+	"stimulus": {
+		"type": "TEXT",
+		"format": "PLAIN_TEXT",
+		"value": "đasa"
+	},
+	"sections": [],
+	"items": [
+		{
+			"id": "item_1",
+			"sequenceNo": 1,
+			"prompt": {
+				"format": "PLAIN_TEXT",
+				"value": "đas"
+			},
+			"responseType": "SINGLE_CHOICE",
+			"required": true,
+			"maxScore": 2.0,
+			"options": [
+				{
+					"id": "A",
+					"code": "A",
+					"content": "sadds"
+				},
+				{
+					"id": "B",
+					"code": "B",
+					"content": "adsdas"
+				},
+				{
+					"id": "C",
+					"code": "C",
+					"content": "dsadsa"
+				}
+			],
+			"leftItems": [],
+			"rightItems": [],
+			"constraints": {
+				"audioAssetId": "e149e3d8-beb0-45e3-8c38-6f4d86a40d86"
+			},
+			"answerKey": {
+				"type": "SINGLE_CHOICE",
+				"selectedOptionId": "B",
+				"selectedOptionIds": [],
+				"matches": {},
+				"orderedOptionIds": [],
+				"acceptedValues": [],
+				"caseSensitive": false
+			}
+		}
+	],
+	"assets": [
+		{
+			"assetId": "e149e3d8-beb0-45e3-8c38-6f4d86a40d86",
+			"role": "ITEM_AUDIO:item_1",
+			"displayOrder": 1
+		}
+	],
+	"settings": {
+		"shuffleOptions": true,
+		"shuffleItems": true,
+		"maxAudioPlays": 2,
+		"showAnswerAfterEachItem": false,
+		"allowReview": true
+	},
+	"scoring": {
+		"strategy": "EXACT_MATCH",
+		"partialCredit": false,
+		"maxScore": 2.0
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetDocument"
+}]

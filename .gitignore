@@ -29,8 +29,8 @@ aptis-backend/eff
 *.log
 scripts/.e2e-tmp/
 
-# Backup database đầy đủ chứa PII, token, password hash và bài làm
-/backups/
+# Backup migration hiện được theo dõi vì repository riêng tư.
+# Không chuyển repository sang public khi còn thư mục backups/.
 
 # OS
 .DS_Store

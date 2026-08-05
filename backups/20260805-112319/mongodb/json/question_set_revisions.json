@@ -1,0 +1,660 @@
+[{
+	"_id": "7a0acbd0-32dd-4cc9-ad45-f8fa1f7ace51:1",
+	"questionSetId": "7a0acbd0-32dd-4cc9-ad45-f8fa1f7ace51",
+	"revision": 1,
+	"document": {
+		"_id": "7a0acbd0-32dd-4cc9-ad45-f8fa1f7ace51",
+		"questionSetId": "7a0acbd0-32dd-4cc9-ad45-f8fa1f7ace51",
+		"revision": 1,
+		"schemaVersion": 1,
+		"partId": "16000000-0000-4000-8000-000000000002",
+		"taskTypeCode": "SINGLE_CHOICE",
+		"title": "E2E Vocabulary",
+		"instructions": "Chon dap an dung.",
+		"accessLevel": "FREE",
+		"sections": [],
+		"items": [
+			{
+				"id": "item_1",
+				"sequenceNo": 1,
+				"prompt": {
+					"format": "PLAIN_TEXT",
+					"value": "She ___ an interest in music."
+				},
+				"responseType": "SINGLE_CHOICE",
+				"required": true,
+				"maxScore": 1.0,
+				"options": [
+					{
+						"id": "A",
+						"code": "A",
+						"content": "makes"
+					},
+					{
+						"id": "B",
+						"code": "B",
+						"content": "takes"
+					}
+				],
+				"leftItems": [],
+				"rightItems": [],
+				"constraints": {},
+				"answerKey": {
+					"type": "SINGLE_CHOICE",
+					"selectedOptionId": "B",
+					"selectedOptionIds": [],
+					"matches": {},
+					"orderedOptionIds": [],
+					"acceptedValues": [],
+					"caseSensitive": false
+				},
+				"explanation": {
+					"format": "PLAIN_TEXT",
+					"value": "take an interest in."
+				}
+			}
+		],
+		"assets": [],
+		"settings": {
+			"shuffleOptions": false,
+			"shuffleItems": false,
+			"showAnswerAfterEachItem": false,
+			"allowReview": true
+		},
+		"scoring": {
+			"strategy": "EXACT_MATCH",
+			"partialCredit": false,
+			"maxScore": 1.0
+		}
+	},
+	"changeSummary": "duyet",
+	"createdBy": "62893fcc-67b3-4e82-8ae1-118b924a62ce",
+	"createdAt": {
+		"$date": "2026-08-01T08:07:49.737Z"
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetRevision"
+},
+{
+	"_id": "ab145bd6-efdd-4850-8713-c2a6da8782b1:1",
+	"questionSetId": "ab145bd6-efdd-4850-8713-c2a6da8782b1",
+	"revision": 1,
+	"document": {
+		"_id": "ab145bd6-efdd-4850-8713-c2a6da8782b1",
+		"questionSetId": "ab145bd6-efdd-4850-8713-c2a6da8782b1",
+		"revision": 1,
+		"schemaVersion": 1,
+		"partId": "16000000-0000-4000-8000-000000000044",
+		"taskTypeCode": "LONG_TEXT",
+		"title": "E2E Writing Part 4",
+		"instructions": "Viet email trang trong 120-150 tu.",
+		"accessLevel": "FREE",
+		"sections": [],
+		"items": [
+			{
+				"id": "item_1",
+				"sequenceNo": 1,
+				"prompt": {
+					"format": "PLAIN_TEXT",
+					"value": "Write an email to the club manager."
+				},
+				"responseType": "LONG_TEXT",
+				"required": true,
+				"maxScore": 25.0,
+				"options": [],
+				"leftItems": [],
+				"rightItems": [],
+				"constraints": {
+					"minWords": 120,
+					"maxWords": 150,
+					"register": "FORMAL"
+				},
+				"rubricCode": "APTIS_WRITING_PART_4_V1"
+			}
+		],
+		"assets": [],
+		"settings": {
+			"shuffleOptions": false,
+			"shuffleItems": false,
+			"showAnswerAfterEachItem": false,
+			"allowReview": true
+		},
+		"scoring": {
+			"strategy": "RUBRIC",
+			"partialCredit": true,
+			"maxScore": 25.0
+		}
+	},
+	"changeSummary": "Published",
+	"createdBy": "62893fcc-67b3-4e82-8ae1-118b924a62ce",
+	"createdAt": {
+		"$date": "2026-08-01T08:08:12.89Z"
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetRevision"
+},
+{
+	"_id": "9427ee3a-6a84-49e4-923b-bc4f5df54101:1",
+	"questionSetId": "9427ee3a-6a84-49e4-923b-bc4f5df54101",
+	"revision": 1,
+	"document": {
+		"_id": "9427ee3a-6a84-49e4-923b-bc4f5df54101",
+		"questionSetId": "9427ee3a-6a84-49e4-923b-bc4f5df54101",
+		"revision": 1,
+		"schemaVersion": 1,
+		"partId": "16000000-0000-4000-8000-000000000044",
+		"taskTypeCode": "LONG_TEXT",
+		"title": "PLAT Writing",
+		"instructions": "Viet 120-150 tu.",
+		"accessLevel": "FREE",
+		"sections": [],
+		"items": [
+			{
+				"id": "item_1",
+				"sequenceNo": 1,
+				"prompt": {
+					"format": "PLAIN_TEXT",
+					"value": "Write an email."
+				},
+				"responseType": "LONG_TEXT",
+				"required": true,
+				"maxScore": 25.0,
+				"options": [],
+				"leftItems": [],
+				"rightItems": [],
+				"constraints": {
+					"minWords": 120,
+					"maxWords": 150,
+					"register": "FORMAL"
+				},
+				"rubricCode": "APTIS_WRITING_PART_4_V1"
+			}
+		],
+		"assets": [],
+		"settings": {
+			"shuffleOptions": false,
+			"shuffleItems": false,
+			"showAnswerAfterEachItem": false,
+			"allowReview": true
+		},
+		"scoring": {
+			"strategy": "RUBRIC",
+			"partialCredit": true,
+			"maxScore": 25.0
+		}
+	},
+	"changeSummary": "Published",
+	"createdBy": "aa0b7eed-c8ed-4e79-a775-e70e4a1d5cd6",
+	"createdAt": {
+		"$date": "2026-08-01T08:10:23.25Z"
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetRevision"
+},
+{
+	"_id": "a09a6a22-f9a8-4514-bee4-9cc132decd46:1",
+	"questionSetId": "a09a6a22-f9a8-4514-bee4-9cc132decd46",
+	"revision": 1,
+	"document": {
+		"_id": "a09a6a22-f9a8-4514-bee4-9cc132decd46",
+		"questionSetId": "a09a6a22-f9a8-4514-bee4-9cc132decd46",
+		"revision": 1,
+		"schemaVersion": 1,
+		"partId": "16000000-0000-4000-8000-000000000002",
+		"taskTypeCode": "SINGLE_CHOICE",
+		"title": "CT single 1785571841",
+		"instructions": "Chọn đáp án đúng.",
+		"accessLevel": "FREE",
+		"sections": [],
+		"items": [
+			{
+				"id": "item_1",
+				"sequenceNo": 1,
+				"prompt": {
+					"format": "PLAIN_TEXT",
+					"value": "He ___ interested."
+				},
+				"responseType": "SINGLE_CHOICE",
+				"required": true,
+				"maxScore": 1.0,
+				"options": [
+					{
+						"id": "A",
+						"code": "A",
+						"content": "is"
+					},
+					{
+						"id": "B",
+						"code": "B",
+						"content": "are"
+					}
+				],
+				"leftItems": [],
+				"rightItems": [],
+				"constraints": {},
+				"answerKey": {
+					"type": "SINGLE_CHOICE",
+					"selectedOptionId": "A",
+					"selectedOptionIds": [],
+					"matches": {},
+					"orderedOptionIds": [],
+					"acceptedValues": [],
+					"caseSensitive": false
+				}
+			}
+		],
+		"assets": [],
+		"settings": {
+			"shuffleOptions": false,
+			"shuffleItems": false,
+			"showAnswerAfterEachItem": false,
+			"allowReview": true
+		},
+		"scoring": {
+			"strategy": "EXACT_MATCH",
+			"partialCredit": false,
+			"maxScore": 1.0
+		}
+	},
+	"changeSummary": "Published",
+	"createdBy": "2e3bfa70-d8cc-4c10-95cd-37c58fecbbb3",
+	"createdAt": {
+		"$date": "2026-08-01T08:11:04.996Z"
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetRevision"
+},
+{
+	"_id": "3ccdadf0-531d-4140-b87f-652b8dede83e:1",
+	"questionSetId": "3ccdadf0-531d-4140-b87f-652b8dede83e",
+	"revision": 1,
+	"document": {
+		"_id": "3ccdadf0-531d-4140-b87f-652b8dede83e",
+		"questionSetId": "3ccdadf0-531d-4140-b87f-652b8dede83e",
+		"revision": 1,
+		"schemaVersion": 1,
+		"partId": "16000000-0000-4000-8000-000000000011",
+		"taskTypeCode": "MULTIPLE_CHOICE",
+		"title": "CT multi 1785571841",
+		"instructions": "Chọn tất cả đáp án đúng.",
+		"accessLevel": "FREE",
+		"sections": [],
+		"items": [
+			{
+				"id": "item_1",
+				"sequenceNo": 1,
+				"prompt": {
+					"format": "PLAIN_TEXT",
+					"value": "Chon cac cau dung."
+				},
+				"responseType": "MULTIPLE_CHOICE",
+				"required": true,
+				"maxScore": 1.0,
+				"options": [
+					{
+						"id": "A",
+						"code": "A",
+						"content": "Trai dat quay quanh Mat troi"
+					},
+					{
+						"id": "B",
+						"code": "B",
+						"content": "Mat troi quay quanh Trai dat"
+					},
+					{
+						"id": "C",
+						"code": "C",
+						"content": "Trai dat co mot mat trang"
+					}
+				],
+				"leftItems": [],
+				"rightItems": [],
+				"constraints": {},
+				"answerKey": {
+					"type": "MULTIPLE_CHOICE",
+					"selectedOptionIds": [
+						"A",
+						"C"
+					],
+					"matches": {},
+					"orderedOptionIds": [],
+					"acceptedValues": [],
+					"caseSensitive": false
+				}
+			}
+		],
+		"assets": [],
+		"settings": {
+			"shuffleOptions": false,
+			"shuffleItems": false,
+			"showAnswerAfterEachItem": false,
+			"allowReview": true
+		},
+		"scoring": {
+			"strategy": "EXACT_MATCH",
+			"partialCredit": true,
+			"maxScore": 1.0
+		}
+	},
+	"changeSummary": "Published",
+	"createdBy": "2e3bfa70-d8cc-4c10-95cd-37c58fecbbb3",
+	"createdAt": {
+		"$date": "2026-08-01T08:11:05.738Z"
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetRevision"
+},
+{
+	"_id": "9d9e20e3-8c9e-46c5-be6a-dc5d48ba3866:1",
+	"questionSetId": "9d9e20e3-8c9e-46c5-be6a-dc5d48ba3866",
+	"revision": 1,
+	"document": {
+		"_id": "9d9e20e3-8c9e-46c5-be6a-dc5d48ba3866",
+		"questionSetId": "9d9e20e3-8c9e-46c5-be6a-dc5d48ba3866",
+		"revision": 1,
+		"schemaVersion": 1,
+		"partId": "16000000-0000-4000-8000-000000000013",
+		"taskTypeCode": "MATCHING",
+		"title": "CT match 1785571841",
+		"instructions": "Nối mỗi mục bên trái với mục tương ứng bên phải.",
+		"accessLevel": "FREE",
+		"sections": [],
+		"items": [
+			{
+				"id": "item_1",
+				"sequenceNo": 1,
+				"prompt": {
+					"format": "PLAIN_TEXT",
+					"value": "Noi nguoi noi voi y kien."
+				},
+				"responseType": "MATCHING",
+				"required": true,
+				"maxScore": 2.0,
+				"options": [
+					{
+						"id": "A",
+						"code": "A",
+						"content": "Thich the thao"
+					},
+					{
+						"id": "B",
+						"code": "B",
+						"content": "Thich am nhac"
+					}
+				],
+				"leftItems": [
+					{
+						"id": "A",
+						"code": "A",
+						"content": "An"
+					},
+					{
+						"id": "B",
+						"code": "B",
+						"content": "Binh"
+					}
+				],
+				"rightItems": [],
+				"constraints": {},
+				"answerKey": {
+					"type": "MATCHING",
+					"selectedOptionIds": [],
+					"matches": {
+						"A": "B",
+						"B": "A"
+					},
+					"orderedOptionIds": [],
+					"acceptedValues": [],
+					"caseSensitive": false
+				}
+			}
+		],
+		"assets": [],
+		"settings": {
+			"shuffleOptions": false,
+			"shuffleItems": false,
+			"showAnswerAfterEachItem": false,
+			"allowReview": true
+		},
+		"scoring": {
+			"strategy": "EXACT_MATCH",
+			"partialCredit": true,
+			"maxScore": 2.0
+		}
+	},
+	"changeSummary": "Published",
+	"createdBy": "2e3bfa70-d8cc-4c10-95cd-37c58fecbbb3",
+	"createdAt": {
+		"$date": "2026-08-01T08:11:06.602Z"
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetRevision"
+},
+{
+	"_id": "395a5841-b42a-4517-ab9c-e199d015080e:1",
+	"questionSetId": "395a5841-b42a-4517-ab9c-e199d015080e",
+	"revision": 1,
+	"document": {
+		"_id": "395a5841-b42a-4517-ab9c-e199d015080e",
+		"questionSetId": "395a5841-b42a-4517-ab9c-e199d015080e",
+		"revision": 1,
+		"schemaVersion": 1,
+		"partId": "16000000-0000-4000-8000-000000000012",
+		"taskTypeCode": "SENTENCE_ORDERING",
+		"title": "CT order 1785571841",
+		"instructions": "Sắp xếp các câu theo đúng thứ tự.",
+		"accessLevel": "FREE",
+		"sections": [],
+		"items": [
+			{
+				"id": "item_1",
+				"sequenceNo": 1,
+				"prompt": {
+					"format": "PLAIN_TEXT",
+					"value": "Sap xep cac cau."
+				},
+				"responseType": "SENTENCE_ORDERING",
+				"required": true,
+				"maxScore": 1.0,
+				"options": [
+					{
+						"id": "A",
+						"code": "A",
+						"content": "Sau do toi an sang."
+					},
+					{
+						"id": "B",
+						"code": "B",
+						"content": "Dau tien toi thuc day."
+					},
+					{
+						"id": "C",
+						"code": "C",
+						"content": "Cuoi cung toi di lam."
+					}
+				],
+				"leftItems": [],
+				"rightItems": [],
+				"constraints": {},
+				"answerKey": {
+					"type": "SENTENCE_ORDERING",
+					"selectedOptionIds": [],
+					"matches": {},
+					"orderedOptionIds": [
+						"B",
+						"A",
+						"C"
+					],
+					"acceptedValues": [],
+					"caseSensitive": false
+				}
+			}
+		],
+		"assets": [],
+		"settings": {
+			"shuffleOptions": false,
+			"shuffleItems": false,
+			"showAnswerAfterEachItem": false,
+			"allowReview": true
+		},
+		"scoring": {
+			"strategy": "EXACT_MATCH",
+			"partialCredit": false,
+			"maxScore": 1.0
+		}
+	},
+	"changeSummary": "Published",
+	"createdBy": "2e3bfa70-d8cc-4c10-95cd-37c58fecbbb3",
+	"createdAt": {
+		"$date": "2026-08-01T08:11:07.379Z"
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetRevision"
+},
+{
+	"_id": "2c5ba03c-4fa5-49eb-837f-a6ed856beb60:1",
+	"questionSetId": "2c5ba03c-4fa5-49eb-837f-a6ed856beb60",
+	"revision": 1,
+	"document": {
+		"_id": "2c5ba03c-4fa5-49eb-837f-a6ed856beb60",
+		"questionSetId": "2c5ba03c-4fa5-49eb-837f-a6ed856beb60",
+		"revision": 1,
+		"schemaVersion": 1,
+		"partId": "16000000-0000-4000-8000-000000000021",
+		"taskTypeCode": "SHORT_TEXT",
+		"title": "CT text 1785571841",
+		"instructions": "Viết câu trả lời ngắn.",
+		"accessLevel": "FREE",
+		"sections": [],
+		"items": [
+			{
+				"id": "item_1",
+				"sequenceNo": 1,
+				"prompt": {
+					"format": "PLAIN_TEXT",
+					"value": "Nghe va viet so ban nghe duoc."
+				},
+				"responseType": "SHORT_TEXT",
+				"required": true,
+				"maxScore": 1.0,
+				"options": [],
+				"leftItems": [],
+				"rightItems": [],
+				"constraints": {},
+				"answerKey": {
+					"type": "SHORT_TEXT",
+					"selectedOptionIds": [],
+					"matches": {},
+					"orderedOptionIds": [],
+					"acceptedValues": [
+						"1,000",
+						"one thousand"
+					],
+					"caseSensitive": false
+				}
+			}
+		],
+		"assets": [],
+		"settings": {
+			"shuffleOptions": false,
+			"shuffleItems": false,
+			"showAnswerAfterEachItem": false,
+			"allowReview": true
+		},
+		"scoring": {
+			"strategy": "EXACT_MATCH",
+			"partialCredit": false,
+			"maxScore": 1.0
+		}
+	},
+	"changeSummary": "Published",
+	"createdBy": "2e3bfa70-d8cc-4c10-95cd-37c58fecbbb3",
+	"createdAt": {
+		"$date": "2026-08-01T08:11:08.78Z"
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetRevision"
+},
+{
+	"_id": "685dbf64-0bc3-489f-8e4f-84fdc4457f84:1",
+	"questionSetId": "685dbf64-0bc3-489f-8e4f-84fdc4457f84",
+	"revision": 1,
+	"document": {
+		"_id": "685dbf64-0bc3-489f-8e4f-84fdc4457f84",
+		"questionSetId": "685dbf64-0bc3-489f-8e4f-84fdc4457f84",
+		"revision": 1,
+		"schemaVersion": 1,
+		"partId": "16000000-0000-4000-8000-000000000021",
+		"taskTypeCode": "SINGLE_CHOICE",
+		"title": "sdadsa",
+		"instructions": "sada",
+		"accessLevel": "FREE",
+		"stimulus": {
+			"type": "TEXT",
+			"format": "PLAIN_TEXT",
+			"value": "đasa"
+		},
+		"sections": [],
+		"items": [
+			{
+				"id": "item_1",
+				"sequenceNo": 1,
+				"prompt": {
+					"format": "PLAIN_TEXT",
+					"value": "đas"
+				},
+				"responseType": "SINGLE_CHOICE",
+				"required": true,
+				"maxScore": 2.0,
+				"options": [
+					{
+						"id": "A",
+						"code": "A",
+						"content": "sadds"
+					},
+					{
+						"id": "B",
+						"code": "B",
+						"content": "adsdas"
+					},
+					{
+						"id": "C",
+						"code": "C",
+						"content": "dsadsa"
+					}
+				],
+				"leftItems": [],
+				"rightItems": [],
+				"constraints": {
+					"audioAssetId": "e149e3d8-beb0-45e3-8c38-6f4d86a40d86"
+				},
+				"answerKey": {
+					"type": "SINGLE_CHOICE",
+					"selectedOptionId": "B",
+					"selectedOptionIds": [],
+					"matches": {},
+					"orderedOptionIds": [],
+					"acceptedValues": [],
+					"caseSensitive": false
+				}
+			}
+		],
+		"assets": [
+			{
+				"assetId": "e149e3d8-beb0-45e3-8c38-6f4d86a40d86",
+				"role": "ITEM_AUDIO:item_1",
+				"displayOrder": 1
+			}
+		],
+		"settings": {
+			"shuffleOptions": true,
+			"shuffleItems": true,
+			"maxAudioPlays": 2,
+			"showAnswerAfterEachItem": false,
+			"allowReview": true
+		},
+		"scoring": {
+			"strategy": "EXACT_MATCH",
+			"partialCredit": false,
+			"maxScore": 2.0
+		}
+	},
+	"changeSummary": "Published",
+	"createdBy": "99e4374d-8ede-42ca-a60d-219155f5e7b9",
+	"createdAt": {
+		"$date": "2026-08-05T03:00:46.807Z"
+	},
+	"_class": "vn.weconex.aptis.content.mongo.QuestionSetRevision"
+}]

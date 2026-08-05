@@ -492,7 +492,7 @@ Chi tiết màu sắc và guardrail nằm trong [DESIGN.md](DESIGN.md).
 Trước khi đưa lên môi trường thật:
 
 - Thay toàn bộ mật khẩu mặc định MySQL, MinIO và JWT secret.
-- Không commit `.env`, backup database hoặc file người dùng.
+- Không commit `.env`. Backup migration có dữ liệu người dùng chỉ được lưu khi repository vẫn ở chế độ private và quyền truy cập được kiểm soát.
 - Bật HTTPS và cookie/security header phù hợp.
 - Cấu hình CORS đúng domain.
 - Dùng managed database hoặc thiết lập backup/restore định kỳ.
