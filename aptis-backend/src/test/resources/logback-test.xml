@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Cần thấy lý do từng strategy kết nối Docker thất bại -->
+    <logger name="org.testcontainers" level="DEBUG"/>
+    <logger name="com.github.dockerjava" level="INFO"/>
+
+    <logger name="vn.weconex.aptis" level="DEBUG"/>
+
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

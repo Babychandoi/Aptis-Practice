@@ -1,0 +1,19 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+*.log
+eff.xml
+
+# Không commit cấu hình môi trường thật
+application-prod.yml
+application-local-override.yml
+.env

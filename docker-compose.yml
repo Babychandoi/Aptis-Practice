@@ -1,0 +1,195 @@
+name: aptis
+
+# Toàn bộ hệ thống: hạ tầng + backend + frontend.
+#
+#   docker compose up -d --build     # chạy tất cả
+#   docker compose up -d mysql mongo minio redis mailpit   # chỉ hạ tầng
+#
+# Chỉ dùng cho phát triển. Production phải thay mọi mật khẩu và JWT_SECRET.
+
+services:
+  # -------------------------------------------------------------------
+  # Hạ tầng
+  # -------------------------------------------------------------------
+  mysql:
+    image: mysql:8.4
+    container_name: aptis-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: aptis
+      MYSQL_USER: aptis
+      MYSQL_PASSWORD: aptis
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      # Ứng dụng lưu thời gian UTC; container cũng dùng UTC để tránh lệch
+      - --default-time-zone=+00:00
+    ports:
+      # 3307 ở host để không đụng MySQL cài native trên máy (thường giữ 3306).
+      # Backend trong compose vẫn nối mysql:3306 qua network nội bộ.
+      # Nối từ ngoài: mysql -h 127.0.0.1 -P 3307 -u aptis -paptis aptis
+      - "${MYSQL_HOST_PORT:-3307}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+
+  mongo:
+    image: mongo:7
+    container_name: aptis-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      # Script chạy MỘT LẦN khi volume còn trống.
+      # Xóa volume nếu cần chạy lại: docker compose down -v
+      - ./aptis-backend/src/main/resources/db/mongo:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+
+  minio:
+    image: minio/minio:latest
+    container_name: aptis-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "mc ready local || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    container_name: aptis-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  # SMTP giả lập, CHỈ dùng khi chạy bộ e2e.
+  #
+  # Không chạy mặc định: ngày thường thư đi qua SMTP thật trong .env. Bộ e2e
+  # cần nó vì token xác thực chỉ lưu dạng hash trong DB, phải đọc lại từ thư —
+  # gửi thật thì mỗi lần chạy test dội vài chục thư vào hộp thư của bạn và
+  # nhanh chạm giới hạn 500 thư/ngày của Gmail.
+  #
+  #   docker compose --profile test up -d mailpit
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: aptis-mailpit
+    restart: unless-stopped
+    profiles: ["test"]
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  # -------------------------------------------------------------------
+  # Ứng dụng
+  # -------------------------------------------------------------------
+  backend:
+    build:
+      context: ./aptis-backend
+    container_name: aptis-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DB: aptis
+      MYSQL_USER: aptis
+      MYSQL_PASSWORD: aptis
+
+      MONGO_URI: mongodb://mongo:27017/aptis
+      REDIS_HOST: redis
+
+      # Khóa phân tán cho scheduled job. Bắt buộc bật khi chạy nhiều instance
+      # backend, nếu không job chạy trùng: email gửi hai lần, subscription bị
+      # xử lý hết hạn đồng thời.
+      APTIS_SCHEDULER_LOCK_ENABLED: "${SCHEDULER_LOCK:-false}"
+
+      # Chu kỳ dọn file báo cáo quá hạn khỏi MinIO. Rút ngắn khi chạy e2e.
+      EXPORT_PURGE_INTERVAL: "${EXPORT_PURGE_INTERVAL:-PT1H}"
+      EXPORT_PURGE_INITIAL_DELAY: "${EXPORT_PURGE_INITIAL_DELAY:-PT2M}"
+
+      # Giả lập cổng hoàn tiền bất đồng bộ (chờ webhook xác nhận).
+      SANDBOX_ASYNC_REFUND: "${SANDBOX_ASYNC_REFUND:-false}"
+
+      # Backend gọi MinIO qua network nội bộ...
+      MINIO_ENDPOINT: http://minio:9000
+      # ...nhưng presigned URL phải ký với host mà trình duyệt truy cập được
+      MINIO_PUBLIC_ENDPOINT: http://localhost:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+
+      # Mặc định dùng Mailpit (hộp thư giả, không gửi ra ngoài). Đặt MAIL_HOST
+      # trong .env để chuyển sang SMTP thật — xem .env.example.
+      MAIL_HOST: "${MAIL_HOST:-mailpit}"
+      MAIL_PORT: "${MAIL_PORT:-1025}"
+      MAIL_USERNAME: "${MAIL_USERNAME:-}"
+      MAIL_PASSWORD: "${MAIL_PASSWORD:-}"
+      MAIL_FROM: "${MAIL_FROM:-no-reply@aptis.local}"
+      # Bật auth/STARTTLS khi có tài khoản SMTP; Mailpit không cần nên mặc
+      # định tắt để cùng một cấu hình chạy được cả hai.
+      MAIL_SMTP_AUTH: "${MAIL_SMTP_AUTH:-false}"
+      MAIL_SMTP_STARTTLS: "${MAIL_SMTP_STARTTLS:-false}"
+      # Hop thu nhan bao khi hoc vien khai da chuyen khoan
+      TRANSFER_NOTIFY_EMAIL: "${TRANSFER_NOTIFY_EMAIL:-}"
+
+      # Frontend cùng origin qua nginx proxy; localhost:5173 cho vite dev
+      CORS_ORIGINS: http://localhost,http://localhost:5173
+
+      # Dev only — production phải đặt JWT_SECRET riêng trong .env, tối thiểu
+      # 256 bit. Sinh mới: openssl rand -base64 48
+      JWT_SECRET: "${JWT_SECRET:-ZGV2LW9ubHktc2VjcmV0LWRvLW5vdC11c2UtaW4tcHJvZHVjdGlvbi0xMjM0NTY3ODkw}"
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./aptis-frontend
+    container_name: aptis-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      # Đổi bằng FRONTEND_HOST_PORT nếu port 80 đã bị IIS/thứ khác chiếm
+      - "${FRONTEND_HOST_PORT:-80}:80"
+
+volumes:
+  mysql-data:
+  mongo-data:
+  minio-data:

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Maven settings riêng cho project này.
+
+  Lý do tồn tại: settings.xml toàn cục trên một số máy nội bộ khai báo
+  <mirrorOf>*</mirrorOf> trỏ về Nexus riêng của tổ chức. Mirror đó chuyển hướng
+  MỌI repository, nên project không liên quan cũng phải đi qua Nexus và build
+  vỡ khi Nexus không truy cập được.
+
+  Project này không dùng artifact nội bộ nào — chỉ Maven Central. Khai báo ở đây
+  để ai clone về cũng build được ngay, không phụ thuộc cấu hình từng máy và
+  không cần sửa settings.xml toàn cục.
+
+  Được nạp tự động qua .mvn/maven.config (cùng thư mục).
+
+  KHÔNG đặt username/password vào file này — nó được commit.
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <!--
+      Cache dùng chung ~/.m2/repository: artifact đã tải bởi project khác vẫn
+      dùng lại được, không tải trùng.
+    -->
+
+    <profiles>
+        <profile>
+            <id>maven-central-direct</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <name>Maven Central</name>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <name>Maven Central</name>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+</settings>

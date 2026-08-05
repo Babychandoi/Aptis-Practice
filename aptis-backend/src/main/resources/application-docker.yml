@@ -1,0 +1,26 @@
+spring:
+  jpa:
+    show-sql: false
+
+  flyway:
+    connect-retries: 10
+    connect-retries-interval: 5s
+
+logging:
+  level:
+    vn.weconex.aptis: INFO
+
+aptis:
+  mail:
+    from: ${MAIL_FROM:no-reply@aptis.local}
+
+  payment:
+    sandbox:
+      enabled: true
+      secret: sandbox-secret
+      checkout-url: http://localhost/sandbox-checkout
+      async-refund: ${SANDBOX_ASYNC_REFUND:false}
+
+  evaluation:
+    heuristic:
+      enabled: true

@@ -1,0 +1,117 @@
+/*
+ * Seed rubric_definitions.
+ *
+ * Chạy sau 01-init-collections.js:
+ *   mongosh "mongodb://localhost:27017/aptis" 02-seed-rubrics.js
+ *
+ * Tiền tố số bảo đảm thứ tự: entrypoint của image mongo chạy script theo
+ * alphabet, nên 01- luôn chạy trước 02-.
+ */
+
+// Chỉ định database tường minh — xem chú thích trong init-collections.js
+const target = db.getSiblingDB('aptis');
+
+const now = new Date();
+
+const rubrics = [
+  {
+    _id: 'APTIS_WRITING_PART_4_V1',
+    code: 'APTIS_WRITING_PART_4_V1',
+    componentCode: 'WRITING',
+    partCode: 'PART_4',
+    version: 1,
+    maxScore: 25,
+    criteria: [
+      {
+        code: 'TASK_ACHIEVEMENT',
+        name: 'Task achievement',
+        weight: 0.25,
+        maxScore: 5,
+        descriptors: {
+          1: 'Không đáp ứng yêu cầu đề bài, thiếu nội dung chính.',
+          3: 'Đáp ứng phần lớn yêu cầu, còn thiếu một vài điểm.',
+          5: 'Đáp ứng đầy đủ mọi yêu cầu của đề bài.',
+        },
+      },
+      {
+        code: 'GRAMMAR',
+        name: 'Grammar',
+        weight: 0.2,
+        maxScore: 5,
+        descriptors: {
+          1: 'Nhiều lỗi ngữ pháp cơ bản gây khó hiểu.',
+          3: 'Cấu trúc đúng ở mức cơ bản, còn lỗi khi dùng câu phức.',
+          5: 'Ngữ pháp chính xác, đa dạng cấu trúc.',
+        },
+      },
+      {
+        code: 'VOCABULARY',
+        name: 'Vocabulary',
+        weight: 0.2,
+        maxScore: 5,
+        descriptors: {
+          1: 'Từ vựng rất hạn chế, dùng sai nghĩa.',
+          3: 'Từ vựng đủ dùng, ít linh hoạt.',
+          5: 'Từ vựng phong phú, dùng chính xác và tự nhiên.',
+        },
+      },
+      {
+        code: 'COHESION',
+        name: 'Cohesion & coherence',
+        weight: 0.2,
+        maxScore: 5,
+        descriptors: {
+          1: 'Ý rời rạc, không có liên kết.',
+          3: 'Có liên kết nhưng còn máy móc.',
+          5: 'Bố cục rõ ràng, liên kết mạch lạc.',
+        },
+      },
+      {
+        code: 'REGISTER',
+        name: 'Register & tone',
+        weight: 0.15,
+        maxScore: 5,
+        descriptors: {
+          1: 'Sai hoàn toàn văn phong yêu cầu.',
+          3: 'Văn phong phù hợp phần lớn nhưng không nhất quán.',
+          5: 'Văn phong đúng và nhất quán với đối tượng nhận.',
+        },
+      },
+    ],
+    status: 'ACTIVE',
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    _id: 'APTIS_SPEAKING_PART_2_V1',
+    code: 'APTIS_SPEAKING_PART_2_V1',
+    componentCode: 'SPEAKING',
+    partCode: 'PART_2',
+    version: 1,
+    maxScore: 30,
+    criteria: [
+      { code: 'TASK_FULFILMENT', name: 'Task fulfilment', weight: 0.2,  maxScore: 5,
+        descriptors: { 1: 'Không trả lời đúng yêu cầu.', 3: 'Trả lời được phần lớn.', 5: 'Trả lời đầy đủ, chi tiết.' } },
+      { code: 'PRONUNCIATION',   name: 'Pronunciation',   weight: 0.2,  maxScore: 5,
+        descriptors: { 1: 'Rất khó nghe.', 3: 'Nghe được, còn lỗi trọng âm.', 5: 'Rõ ràng, trọng âm và ngữ điệu tự nhiên.' } },
+      { code: 'FLUENCY',         name: 'Fluency',         weight: 0.2,  maxScore: 5,
+        descriptors: { 1: 'Ngắt nghỉ nhiều, không nói trôi.', 3: 'Nói được liên tục nhưng còn do dự.', 5: 'Nói trôi chảy, tự nhiên.' } },
+      { code: 'GRAMMAR',         name: 'Grammar',         weight: 0.15, maxScore: 5,
+        descriptors: { 1: 'Nhiều lỗi cơ bản.', 3: 'Đúng ở cấu trúc đơn giản.', 5: 'Chính xác và đa dạng.' } },
+      { code: 'VOCABULARY',      name: 'Vocabulary',      weight: 0.15, maxScore: 5,
+        descriptors: { 1: 'Từ vựng rất hạn chế.', 3: 'Đủ để diễn đạt ý cơ bản.', 5: 'Phong phú, chính xác.' } },
+      { code: 'COHERENCE',       name: 'Coherence',       weight: 0.1,  maxScore: 5,
+        descriptors: { 1: 'Ý rời rạc.', 3: 'Có mạch nhưng chưa rõ.', 5: 'Ý tưởng liên kết rõ ràng.' } },
+    ],
+    status: 'ACTIVE',
+    createdAt: now,
+    updatedAt: now,
+  },
+];
+
+rubrics.forEach((r) => {
+  target.rubric_definitions.replaceOne({ _id: r._id }, r, { upsert: true });
+  print(`upserted rubric: ${r._id}`);
+});
+
+print('rubric seed done');
