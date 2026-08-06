@@ -12,6 +12,10 @@ public interface TestBlueprintRepository extends JpaRepository<TestBlueprint, St
 
     Optional<TestBlueprint> findByCode(String code);
 
+    boolean existsByComponentIdAndCode(String componentId, String code);
+
+    List<TestBlueprint> findByComponentIdOrderByCreatedAtDesc(String componentId);
+
     List<TestBlueprint> findByStatusAndModeOrderByAccessLevelAscNameAsc(
             PublishStatus status, PracticeMode mode);
 

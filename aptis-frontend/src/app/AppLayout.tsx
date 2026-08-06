@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { useAuthStore } from '@/features/auth/authStore';
 import { usePermission } from '@/features/admin/usePermission';
@@ -20,6 +20,7 @@ const SKILL_NAV = [
 
 export function AppLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout } = useAuthStore();
   const { isAdmin } = usePermission();
   const displayName = user?.profile.displayName || user?.profile.fullName || user?.email || 'Học viên';
@@ -28,6 +29,18 @@ export function AppLayout() {
     await logout();
     navigate('/login', { replace: true });
   };
+
+  const isActiveAttempt = /^\/attempts\/[^/]+\/?$/.test(location.pathname);
+
+  if (isActiveAttempt) {
+    return (
+      <div className="min-h-screen bg-[#f7f4eb] text-[#17211d]">
+        <main>
+          <Outlet />
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#fafaf7] text-[#1a1a18]">

@@ -324,6 +324,8 @@ export interface CreateCustomAttemptRequest {
   difficultyMin?: number;
   difficultyMax?: number;
   questionSetCount?: number;
+  /** Số bộ câu hỏi cần lấy chính xác theo từng Part cho bài test full kỹ năng. */
+  partQuestionSetCounts?: Record<string, number>;
   onlyNew?: boolean;
   onlyIncorrect?: boolean;
   shuffle?: boolean;
@@ -445,6 +447,7 @@ export interface MockTestPart {
 
 export interface MockTest {
   id: string;
+  componentId: string | null;
   code: string;
   name: string;
   description: string | null;

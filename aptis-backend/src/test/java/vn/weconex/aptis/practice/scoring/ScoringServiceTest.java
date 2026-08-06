@@ -142,6 +142,36 @@ class ScoringServiceTest {
     }
 
     @Test
+    void readingPart3AwardsTwoPointsPerMatchAndPerfectBonus() {
+        var item = new QuestionSetDocument.Item();
+        item.setId("item_1");
+        item.setResponseType("MATCHING");
+        item.setMaxScore(16);
+        item.setConstraints(Map.of("pointsPerCorrect", 2, "perfectBonus", 2));
+        var key = new QuestionSetDocument.AnswerKey();
+        key.setMatches(Map.of(
+                "q1", "A", "q2", "B", "q3", "C", "q4", "D",
+                "q5", "A", "q6", "B", "q7", "C"));
+        item.setAnswerKey(key);
+
+        var sixCorrect = new AttemptDocument.ItemResponse();
+        sixCorrect.setItemId("item_1");
+        sixCorrect.setResponseType("MATCHING");
+        sixCorrect.setMatches(Map.of(
+                "q1", "A", "q2", "B", "q3", "C", "q4", "D",
+                "q5", "A", "q6", "B", "q7", "D"));
+        assertThat(scoringService.scoreEntry(entryWith(item, sixCorrect, true))
+                .orElseThrow().getRawScore()).isEqualTo(12.0);
+
+        var perfect = new AttemptDocument.ItemResponse();
+        perfect.setItemId("item_1");
+        perfect.setResponseType("MATCHING");
+        perfect.setMatches(key.getMatches());
+        assertThat(scoringService.scoreEntry(entryWith(item, perfect, true))
+                .orElseThrow().getRawScore()).isEqualTo(16.0);
+    }
+
+    @Test
     void orderingRequiresFullSequence() {
         var item = new QuestionSetDocument.Item();
         item.setId("item_1");
@@ -158,6 +188,32 @@ class ScoringServiceTest {
 
         var score = scoringService.scoreEntry(entryWith(item, response, false));
         assertThat(score.orElseThrow().getRawScore()).isEqualTo(3.0);
+    }
+
+    @Test
+    void readingPart2KeepsExampleFixedAndScoresOnlyFiveMovableSentences() {
+        var item = new QuestionSetDocument.Item();
+        item.setId("item_1");
+        item.setResponseType("SENTENCE_ORDERING");
+        item.setMaxScore(5);
+        item.setConstraints(Map.of("fixedFirstOptionId", "A", "pointsPerCorrect", 1));
+        var key = new QuestionSetDocument.AnswerKey();
+        key.setOrderedOptionIds(List.of("A", "B", "C", "D", "E", "F"));
+        item.setAnswerKey(key);
+
+        var partial = new AttemptDocument.ItemResponse();
+        partial.setItemId("item_1");
+        partial.setResponseType("SENTENCE_ORDERING");
+        partial.setOrderedOptionIds(List.of("B", "C", "D", "F", "E"));
+        assertThat(scoringService.scoreEntry(entryWith(item, partial, true))
+                .orElseThrow().getRawScore()).isEqualTo(3.0);
+
+        var perfect = new AttemptDocument.ItemResponse();
+        perfect.setItemId("item_1");
+        perfect.setResponseType("SENTENCE_ORDERING");
+        perfect.setOrderedOptionIds(List.of("B", "C", "D", "E", "F"));
+        assertThat(scoringService.scoreEntry(entryWith(item, perfect, true))
+                .orElseThrow().getRawScore()).isEqualTo(5.0);
     }
 
     @Test

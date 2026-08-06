@@ -2,6 +2,7 @@ import { api } from './client';
 import type { PageResponse } from '@/types/api';
 import type {
   AdminEntitlement,
+  AdminSubscription,
   AdminBankTransfer,
   BankAccount,
   BankTransferStatus,
@@ -26,6 +27,14 @@ import type {
   UpdatePlanRequest,
   UpdateQuestionSetRequest,
   SaveBankAccountRequest,
+  AdminRole,
+  AdminUser,
+  UserStatus,
+  PartScoringRule,
+  UpdatePartScoringRule,
+  AdminSkillTest,
+  CreateSkillTestRequest,
+  BatchCreateSkillTestRequest,
 } from '@/types/admin';
 
 // ---------------------------------------------------------------------
@@ -88,6 +97,23 @@ export const adminContentApi = {
 
   archive: (id: string) =>
     api.post<AdminQuestionSet>(`/admin/question-sets/${id}/archive`).then((r) => r.data),
+};
+
+export const adminScoringApi = {
+  list: () => api.get<PartScoringRule[]>('/admin/scoring-rules').then((r) => r.data),
+  update: (rules: UpdatePartScoringRule[]) =>
+    api.put<PartScoringRule[]>('/admin/scoring-rules', { rules }).then((r) => r.data),
+};
+
+export const adminSkillTestApi = {
+  list: (componentId?: string) =>
+    api.get<AdminSkillTest[]>('/admin/skill-tests', { params: { componentId } }).then((r) => r.data),
+  create: (body: CreateSkillTestRequest) =>
+    api.post<AdminSkillTest>('/admin/skill-tests', body).then((r) => r.data),
+  createBatch: (body: BatchCreateSkillTestRequest) =>
+    api.post<AdminSkillTest[]>('/admin/skill-tests/batch', body).then((r) => r.data),
+  archive: (id: string) =>
+    api.post<AdminSkillTest>(`/admin/skill-tests/${id}/archive`).then((r) => r.data),
 };
 
 // ---------------------------------------------------------------------
@@ -181,6 +207,33 @@ export const adminEntitlementApi = {
     api
       .delete<void>(`/admin/entitlements/${entitlementId}`, { params: { reason } })
       .then((r) => r.data),
+
+  subscriptionsOfUser: (userId: string) =>
+    api
+      .get<AdminSubscription[]>(`/admin/users/${userId}/subscriptions`)
+      .then((r) => r.data),
+
+  revokeSubscription: (subscriptionId: string, reason: string) =>
+    api
+      .post<AdminSubscription>(`/admin/subscriptions/${subscriptionId}/revoke`, { reason })
+      .then((r) => r.data),
+};
+
+export const adminUserApi = {
+  list: (params: { q?: string; status?: UserStatus; page?: number; size?: number } = {}) =>
+    api
+      .get<PageResponse<AdminUser>>('/admin/users', {
+        params: { page: 0, size: 20, ...params },
+      })
+      .then((r) => r.data),
+
+  roles: () => api.get<AdminRole[]>('/admin/users/roles').then((r) => r.data),
+
+  updateStatus: (userId: string, status: 'ACTIVE' | 'SUSPENDED') =>
+    api.patch<AdminUser>(`/admin/users/${userId}/status`, { status }).then((r) => r.data),
+
+  updateRoles: (userId: string, roles: string[]) =>
+    api.put<AdminUser>(`/admin/users/${userId}/roles`, { roles }).then((r) => r.data),
 };
 
 export const adminTrialApi = {

@@ -13,11 +13,11 @@ const DEBOUNCE_MS = 1500;
 export function useAutosave(attemptId: string, enabled: boolean) {
   const [state, setState] = useState<SaveState>('idle');
   const timerRef = useRef<number | null>(null);
-  const pendingRef = useRef<{
+  const pendingRef = useRef<Map<string, {
     questionSetId: string;
     payloads: ItemResponsePayload[];
     timeSpentSeconds: number;
-  } | null>(null);
+  }>>(new Map());
 
   const flush = useCallback(async () => {
     if (timerRef.current) {
@@ -25,18 +25,27 @@ export function useAutosave(attemptId: string, enabled: boolean) {
       timerRef.current = null;
     }
 
-    const pending = pendingRef.current;
-    if (!pending || pending.payloads.length === 0) return;
+    const pending = Array.from(pendingRef.current.values());
+    if (pending.length === 0) return;
 
-    pendingRef.current = null;
+    pendingRef.current.clear();
     setState('saving');
     try {
-      await practiceApi.saveResponses(attemptId, pending.questionSetId, {
-        itemResponses: pending.payloads,
-        timeSpentSeconds: pending.timeSpentSeconds,
-      });
+      await Promise.all(
+        pending.map((entry) =>
+          practiceApi.saveResponses(attemptId, entry.questionSetId, {
+            itemResponses: entry.payloads,
+            timeSpentSeconds: entry.timeSpentSeconds,
+          }),
+        ),
+      );
       setState('saved');
     } catch {
+      for (const entry of pending) {
+        if (!pendingRef.current.has(entry.questionSetId)) {
+          pendingRef.current.set(entry.questionSetId, entry);
+        }
+      }
       // Giữ trạng thái lỗi để UI cảnh báo; người dùng vẫn có thể bấm nộp lại
       setState('error');
     }
@@ -46,17 +55,26 @@ export function useAutosave(attemptId: string, enabled: boolean) {
     (questionSetId: string, payloads: ItemResponsePayload[], timeSpentSeconds: number) => {
       if (!enabled) return;
 
-      pendingRef.current = { questionSetId, payloads, timeSpentSeconds };
+      pendingRef.current.set(questionSetId, { questionSetId, payloads, timeSpentSeconds });
       if (timerRef.current) window.clearTimeout(timerRef.current);
       timerRef.current = window.setTimeout(() => void flush(), DEBOUNCE_MS);
     },
     [enabled, flush],
   );
 
+  const discard = useCallback(() => {
+    if (timerRef.current) {
+      window.clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    pendingRef.current.clear();
+    setState('idle');
+  }, []);
+
   // Cố gắng lưu khi người dùng đóng tab
   useEffect(() => {
     const handler = () => {
-      if (pendingRef.current) void flush();
+      if (pendingRef.current.size > 0) void flush();
     };
     window.addEventListener('beforeunload', handler);
     return () => {
@@ -65,5 +83,5 @@ export function useAutosave(attemptId: string, enabled: boolean) {
     };
   }, [flush]);
 
-  return { state, schedule, flush };
+  return { state, schedule, flush, discard };
 }

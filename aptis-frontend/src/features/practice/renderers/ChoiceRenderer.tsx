@@ -15,7 +15,12 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
   const correctId = item.answerKey?.selectedOptionId;
 
   return (
-    <div className="space-y-2">
+    <div className={clsx(
+      'grid gap-2',
+      item.options.length === 3 && 'sm:grid-cols-3',
+      item.options.length === 2 && 'sm:grid-cols-2',
+      item.options.length === 4 && 'sm:grid-cols-2 lg:grid-cols-4',
+    )}>
       {item.options.map((option) => {
         const selected = draft.selectedOptionId === option.id;
         const isCorrect = showAnswer && correctId === option.id;
@@ -25,7 +30,7 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
           <label
             key={option.id}
             className={clsx(
-              'flex cursor-pointer items-start gap-3 rounded-lg border px-3 py-2.5 transition-colors',
+              'flex min-h-10 cursor-pointer items-center gap-2 rounded-lg border px-2.5 py-2 text-left transition-colors',
               isCorrect && 'border-emerald-400 bg-emerald-50',
               isWrongPick && 'border-red-400 bg-red-50',
               !showAnswer && selected && 'border-brand-500 bg-brand-50',
@@ -40,10 +45,10 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
               checked={selected}
               disabled={disabled}
               onChange={() => onChange({ selectedOptionId: option.id })}
-              className="mt-0.5"
+              className="sr-only"
             />
-            <span className="text-sm">
-              {option.code && <span className="mr-1.5 font-semibold">{option.code}.</span>}
+            {option.code && <span className={clsx('grid h-6 min-w-6 shrink-0 place-items-center rounded-md px-1 text-[11px] font-semibold', selected ? 'bg-brand-800 text-white' : 'bg-[#fde7b8] text-[#a76b12]')}>{option.code}</span>}
+            <span className="text-xs leading-5 sm:text-[13px]">
               {option.content}
             </span>
           </label>
@@ -71,7 +76,7 @@ export function MultipleChoiceRenderer({
   };
 
   return (
-    <div className="space-y-2">
+    <div className="grid gap-2 sm:grid-cols-2">
       {item.options.map((option) => {
         const selected = selectedIds.includes(option.id);
         const isCorrect = showAnswer && correctIds.includes(option.id);
@@ -81,7 +86,7 @@ export function MultipleChoiceRenderer({
           <label
             key={option.id}
             className={clsx(
-              'flex cursor-pointer items-start gap-3 rounded-lg border px-3 py-2.5 transition-colors',
+              'flex min-h-10 cursor-pointer items-center gap-2 rounded-lg border px-2.5 py-2 transition-colors',
               isCorrect && 'border-emerald-400 bg-emerald-50',
               isWrongPick && 'border-red-400 bg-red-50',
               !showAnswer && selected && 'border-brand-500 bg-brand-50',
@@ -94,10 +99,10 @@ export function MultipleChoiceRenderer({
               checked={selected}
               disabled={disabled}
               onChange={() => toggle(option.id)}
-              className="mt-0.5"
+              className="sr-only"
             />
-            <span className="text-sm">
-              {option.code && <span className="mr-1.5 font-semibold">{option.code}.</span>}
+            {option.code && <span className={clsx('grid h-6 min-w-6 shrink-0 place-items-center rounded-md px-1 text-[11px] font-semibold', selected ? 'bg-brand-800 text-white' : 'bg-[#fde7b8] text-[#a76b12]')}>{option.code}</span>}
+            <span className="text-xs leading-5 sm:text-[13px]">
               {option.content}
             </span>
           </label>

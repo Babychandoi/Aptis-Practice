@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/api/client';
 import { adminContentApi } from '@/api/adminEndpoints';
@@ -29,11 +29,12 @@ interface ActionResult {
 
 export function QuestionSetDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const { has } = usePermission();
 
   const [result, setResult] = useState<ActionResult | null>(null);
-  const [revealAnswers, setRevealAnswers] = useState(false);
+  const [revealAnswers, setRevealAnswers] = useState(true);
   const [reason, setReason] = useState('');
 
   const canWrite = has('question_set:write');
@@ -117,6 +118,12 @@ export function QuestionSetDetailPage() {
   }
 
   const questionSet = detailQuery.data;
+  const componentId = searchParams.get('componentId');
+  const partId = searchParams.get('partId') ?? questionSet.partId;
+  const hierarchyQuery = searchParams.toString();
+  const listUrl = componentId
+    ? `/admin/question-sets/skills/${componentId}/parts/${partId}`
+    : '/admin/question-sets';
   const { status } = questionSet;
 
   const showSubmit =
@@ -140,12 +147,12 @@ export function QuestionSetDetailPage() {
         actions={
           <div className="flex gap-2">
             {canWrite && (status === 'DRAFT' || status === 'CHANGES_REQUESTED') && (
-              <Link to={`/admin/question-sets/${id}/edit`} className="btn-primary">
+              <Link to={`/admin/question-sets/${id}/edit${hierarchyQuery ? `?${hierarchyQuery}` : ''}`} className="btn-primary">
                 Chỉnh sửa
               </Link>
             )}
-            <Link to="/admin/question-sets" className="btn-secondary">
-              Về danh sách
+            <Link to={listUrl} className="btn-secondary">
+              Về Part đang chọn
             </Link>
           </div>
         }
@@ -299,7 +306,7 @@ export function QuestionSetDetailPage() {
 
       <section className="card mb-4">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-sm font-semibold text-slate-900">Xem trước</h2>
+          <div><h2 className="text-sm font-semibold text-slate-900">Câu hỏi, lựa chọn và đáp án</h2><p className="mt-0.5 text-xs text-slate-500">Nội dung đầy đủ của đề theo thứ tự học viên sẽ làm</p></div>
 
           {canWrite && (
             <label className="flex items-center gap-2 text-sm text-slate-600">

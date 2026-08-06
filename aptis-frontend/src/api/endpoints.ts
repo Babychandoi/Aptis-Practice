@@ -131,7 +131,7 @@ export const practiceApi = {
 // ---------------------------------------------------------------------
 
 export const mockTestApi = {
-  list: () => api.get<MockTest[]>('/mock-tests').then((r) => r.data),
+  list: (componentId?: string) => api.get<MockTest[]>('/mock-tests', { params: { componentId } }).then((r) => r.data),
 
   detail: (blueprintId: string) =>
     api.get<MockTest>(`/mock-tests/${blueprintId}`).then((r) => r.data),

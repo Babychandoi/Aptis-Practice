@@ -5,6 +5,8 @@
  * không phải tải kèm.
  */
 
+import type { ResponseType } from './api';
+
 export type ContentStatus =
   | 'DRAFT'
   | 'IN_REVIEW'
@@ -76,7 +78,7 @@ export interface QuestionItemPayload {
   id: string;
   sequenceNo: number;
   prompt: RichContentPayload;
-  responseType: string;
+  responseType: ResponseType;
   required: boolean;
   maxScore: number;
   options: QuestionOptionPayload[];
@@ -152,6 +154,72 @@ export interface QuestionSetSearchParams {
   q?: string;
   page?: number;
   size?: number;
+}
+
+export interface PartScoringRule {
+  id: string;
+  componentCode: string;
+  componentName: string;
+  partId: string;
+  partCode: string;
+  partName: string;
+  maxScore: number;
+  pointsPerCorrect: number | null;
+  perfectBonus: number;
+  includedInOverall: boolean;
+  componentOrder: number;
+  partOrder: number;
+}
+
+export interface UpdatePartScoringRule {
+  id: string;
+  maxScore: number;
+  pointsPerCorrect: number | null;
+  perfectBonus: number;
+}
+
+export type SkillTestAssemblyMode = 'FIXED' | 'GENERATED_RANDOM' | 'DYNAMIC_RANDOM' | 'BATCH_RANDOM';
+
+export interface AdminSkillTestRule {
+  partId: string;
+  partName: string;
+  displayOrder: number;
+  selectionStrategy: 'FIXED' | 'RANDOM';
+  questionSetId: string | null;
+  questionSetTitle: string | null;
+}
+
+export interface AdminSkillTest {
+  id: string;
+  componentId: string;
+  componentCode: string;
+  componentName: string;
+  code: string;
+  name: string;
+  description: string | null;
+  accessLevel: AccessLevel;
+  durationSeconds: number | null;
+  status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+  assemblyMode: SkillTestAssemblyMode;
+  parts: AdminSkillTestRule[];
+}
+
+export interface CreateSkillTestRequest {
+  componentId: string;
+  code: string;
+  name: string;
+  description?: string;
+  accessLevel: AccessLevel;
+  durationSeconds?: number;
+  assemblyMode: SkillTestAssemblyMode;
+  parts: Array<{ partId: string; questionSetId?: string | null }>;
+}
+
+export interface BatchCreateSkillTestRequest {
+  componentId: string;
+  accessLevel: AccessLevel;
+  durationSeconds?: number;
+  quantity?: number;
 }
 
 // ---------------------------------------------------------------------
@@ -318,6 +386,50 @@ export interface GrantEntitlementRequest {
   /** Bỏ trống = vĩnh viễn */
   durationDays?: number | null;
   reason?: string;
+}
+
+export interface AdminSubscription {
+  id: string;
+  userId: string;
+  planId: string;
+  status: string;
+  startsAt: string;
+  endsAt: string | null;
+  sourceOrderId: string | null;
+  revokedAt: string | null;
+  revokeReason: string | null;
+}
+
+// ---------------------------------------------------------------------
+// Quản lý người dùng
+// ---------------------------------------------------------------------
+
+export type UserStatus =
+  | 'PENDING_VERIFICATION'
+  | 'ACTIVE'
+  | 'LOCKED'
+  | 'SUSPENDED'
+  | 'DELETED';
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  phone: string | null;
+  status: UserStatus;
+  emailVerified: boolean;
+  fullName: string | null;
+  displayName: string | null;
+  roles: string[];
+  premiumActive: boolean;
+  premiumEndsAt: string | null;
+  createdAt: string;
+  lastLoginAt: string | null;
+}
+
+export interface AdminRole {
+  code: string;
+  name: string;
+  description: string | null;
 }
 
 export type CampaignStatus = 'DRAFT' | 'ACTIVE' | 'PAUSED' | 'CLOSED';

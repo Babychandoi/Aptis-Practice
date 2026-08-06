@@ -10,4 +10,6 @@ public interface BlueprintFixedQuestionSetRepository
 
     List<BlueprintFixedQuestionSet> findByKeyBlueprintRuleIdOrderByDisplayOrder(
             String blueprintRuleId);
+
+    void deleteByKeyBlueprintRuleId(String blueprintRuleId);
 }

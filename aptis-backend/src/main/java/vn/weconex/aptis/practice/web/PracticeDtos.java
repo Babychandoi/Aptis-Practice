@@ -41,6 +41,8 @@ public final class PracticeDtos {
             @Min(1) @Max(5) Integer difficultyMin,
             @Min(1) @Max(5) Integer difficultyMax,
             @Min(1) @Max(50) Integer questionSetCount,
+            /** Số bộ cần lấy chính xác theo từng Part; dùng khi ghép bài test full kỹ năng. */
+            Map<String, @Min(1) @Max(50) Integer> partQuestionSetCounts,
             boolean onlyNew,
             boolean onlyIncorrect,
             boolean shuffle,
@@ -174,6 +176,7 @@ public final class PracticeDtos {
 
     public record MockTestResponse(
             String id,
+            String componentId,
             String code,
             String name,
             String description,

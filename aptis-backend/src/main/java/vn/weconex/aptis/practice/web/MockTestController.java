@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 import vn.weconex.aptis.catalog.domain.ExamStructure.Part;
 import vn.weconex.aptis.catalog.repository.PartRepository;
 import vn.weconex.aptis.common.security.CurrentUser;
@@ -44,10 +45,13 @@ public class MockTestController {
      */
     @GetMapping
     @Transactional(readOnly = true)
-    public List<PracticeDtos.MockTestResponse> list() {
+    public List<PracticeDtos.MockTestResponse> list(@RequestParam(required = false) String componentId) {
         boolean hasPremium = entitlementService.hasPremiumAccess(currentUser.requireUserId());
 
         return mockTestService.listAvailable().stream()
+                .filter(blueprint -> componentId == null
+                        ? blueprint.getComponentId() == null
+                        : componentId.equals(blueprint.getComponentId()))
                 .map(blueprint -> toResponse(blueprint, hasPremium))
                 .toList();
     }
@@ -96,6 +100,7 @@ public class MockTestController {
 
         return new PracticeDtos.MockTestResponse(
                 blueprint.getId(),
+                blueprint.getComponentId(),
                 blueprint.getCode(),
                 blueprint.getName(),
                 blueprint.getDescription(),

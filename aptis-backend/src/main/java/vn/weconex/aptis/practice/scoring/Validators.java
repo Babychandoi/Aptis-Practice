@@ -130,6 +130,11 @@ public final class Validators {
             if (!scoring.isPartialCredit()) {
                 return ItemResult.zero(max);
             }
+            Object configuredPoints = item.getConstraints().get("pointsPerCorrect");
+            if (configuredPoints instanceof Number number && number.doubleValue() > 0) {
+                double earned = Math.min(correct * number.doubleValue(), max);
+                return ItemResult.partial(round(earned), max);
+            }
             return ItemResult.partial(round((double) correct / expected.size() * max), max);
         }
     }
@@ -163,7 +168,16 @@ public final class Validators {
             if (expected.isEmpty()) {
                 return ItemResult.zero(max);
             }
-            if (expected.equals(actual)) {
+            Object fixedValue = item.getConstraints().get("fixedFirstOptionId");
+            String fixedFirstOptionId = fixedValue instanceof String value ? value : null;
+            List<String> scoredExpected = fixedFirstOptionId == null
+                    ? expected
+                    : expected.stream().filter(id -> !id.equals(fixedFirstOptionId)).toList();
+            List<String> scoredActual = fixedFirstOptionId == null
+                    ? actual
+                    : actual.stream().filter(id -> !id.equals(fixedFirstOptionId)).toList();
+
+            if (scoredExpected.equals(scoredActual)) {
                 return ItemResult.full(max);
             }
             if (!scoring.isPartialCredit()) {
@@ -172,12 +186,16 @@ public final class Validators {
 
             // Điểm từng phần: số vị trí đặt đúng
             int correctPositions = 0;
-            for (int i = 0; i < expected.size() && i < actual.size(); i++) {
-                if (expected.get(i).equals(actual.get(i))) {
+            for (int i = 0; i < scoredExpected.size() && i < scoredActual.size(); i++) {
+                if (scoredExpected.get(i).equals(scoredActual.get(i))) {
                     correctPositions++;
                 }
             }
-            return ItemResult.partial(round((double) correctPositions / expected.size() * max), max);
+            Object configuredPoints = item.getConstraints().get("pointsPerCorrect");
+            if (configuredPoints instanceof Number number && number.doubleValue() > 0) {
+                return ItemResult.partial(round(Math.min(correctPositions * number.doubleValue(), max)), max);
+            }
+            return ItemResult.partial(round((double) correctPositions / scoredExpected.size() * max), max);
         }
     }
 

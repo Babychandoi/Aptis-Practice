@@ -4,13 +4,15 @@ import { usePermission } from './usePermission';
 import { useAuthStore } from '@/features/auth/authStore';
 
 const NAV_ITEMS = [
+  { to: '/admin/skill-tests', label: 'Bài test kỹ năng', permission: 'blueprint:write', icon: 'tests' },
   { to: '/admin/question-sets', label: 'Ngân hàng câu hỏi', permission: 'question_set:read', icon: 'questions' },
   { to: '/admin/imports', label: 'Import câu hỏi', permission: 'question_set:write', icon: 'import' },
+  { to: '/admin/scoring', label: 'Cấu hình điểm', permission: 'question_set:write', icon: 'scoring' },
   { to: '/admin/plans', label: 'Gói Premium', permission: 'plan:write', icon: 'plans' },
   { to: '/admin/orders', label: 'Đơn hàng', permission: 'order:read', icon: 'orders' },
   { to: '/admin/bank-transfers', label: 'Đối soát chuyển khoản', permission: 'order:read', icon: 'transfers' },
   { to: '/admin/refunds', label: 'Hoàn tiền', permission: 'refund:write', icon: 'refunds' },
-  { to: '/admin/entitlements', label: 'Quyền người dùng', permission: 'entitlement:grant', icon: 'users' },
+  { to: '/admin/users', label: 'Quản lý người dùng', permission: 'user:read', icon: 'users' },
   { to: '/admin/reports', label: 'Báo cáo', permission: 'report:read', icon: 'reports' },
 ] as const;
 
@@ -79,8 +81,10 @@ export function AdminLayout() {
 function AdminMark() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>; }
 function AdminIcon({ name }: { name: (typeof NAV_ITEMS)[number]['icon'] }) {
   const paths = {
+    tests: <><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6M7 17h4"/><path d="m15 16 2 2 4-5"/></>,
     questions: <><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h6M8 16h4"/></>,
     import: <><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 19h14"/></>,
+    scoring: <><circle cx="12" cy="12" r="9"/><path d="M8 12.5 10.5 15 16 9"/></>,
     plans: <><path d="m12 3 2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8L12 3Z"/></>,
     orders: <><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></>,
     transfers: <><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3M15 14l2 2 4-5"/></>,

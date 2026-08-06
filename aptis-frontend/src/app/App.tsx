@@ -31,9 +31,11 @@ import { ImportAdminPage } from '@/features/admin/ImportAdminPage';
 import { PlanAdminPage } from '@/features/admin/PlanAdminPage';
 import { OrderAdminPage } from '@/features/admin/OrderAdminPage';
 import { RefundAdminPage } from '@/features/admin/RefundAdminPage';
-import { EntitlementAdminPage } from '@/features/admin/EntitlementAdminPage';
 import { ReportAdminPage } from '@/features/admin/ReportAdminPage';
 import { BankTransferAdminPage } from '@/features/admin/BankTransferAdminPage';
+import { UserAdminPage } from '@/features/admin/UserAdminPage';
+import { ScoringConfigPage } from '@/features/admin/ScoringConfigPage';
+import { SkillTestAdminPage } from '@/features/admin/SkillTestAdminPage';
 
 export function App() {
   const navigate = useNavigate();
@@ -78,7 +80,7 @@ export function App() {
         <Route path="/luyen-tap/:componentSlug" element={<ComponentPage />} />
         <Route path="/luyen-tap/:componentSlug/theo-part" element={<ComponentPartsPage />} />
         <Route path="/luyen-tap/:componentSlug/bai-test" element={<ComponentTestsPage />} />
-        <Route path="/luyen-tap/:componentSlug/bai-test/gioi-thieu" element={<ComponentTestIntroPage />} />
+        <Route path="/luyen-tap/:componentSlug/bai-test/:blueprintId/gioi-thieu" element={<ComponentTestIntroPage />} />
         <Route path="/luyen-tap/:componentSlug/:partSlug" element={<PartPage />} />
         <Route path="/components/:componentId" element={<ComponentPage />} />
         <Route path="/parts/:partId" element={<PartPage />} />
@@ -106,15 +108,19 @@ export function App() {
       >
         <Route index element={<Navigate to="/admin/question-sets" replace />} />
         <Route path="question-sets" element={<QuestionSetListPage />} />
+        <Route path="question-sets/skills/:componentId" element={<QuestionSetListPage />} />
+        <Route path="question-sets/skills/:componentId/parts/:partId" element={<QuestionSetListPage />} />
         <Route path="question-sets/new" element={<QuestionSetEditorPage />} />
         <Route path="question-sets/:id/edit" element={<QuestionSetEditorPage />} />
         <Route path="question-sets/:id" element={<QuestionSetDetailPage />} />
+        <Route path="scoring" element={<ScoringConfigPage />} />
+        <Route path="skill-tests" element={<SkillTestAdminPage />} />
         <Route path="imports" element={<ImportAdminPage />} />
         <Route path="plans" element={<PlanAdminPage />} />
         <Route path="orders" element={<OrderAdminPage />} />
         <Route path="bank-transfers" element={<BankTransferAdminPage />} />
         <Route path="refunds" element={<RefundAdminPage />} />
-        <Route path="entitlements" element={<EntitlementAdminPage />} />
+        <Route path="users" element={<UserAdminPage />} />
         <Route path="reports" element={<ReportAdminPage />} />
       </Route>
 

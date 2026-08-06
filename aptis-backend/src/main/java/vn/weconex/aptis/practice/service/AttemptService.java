@@ -3,6 +3,7 @@ package vn.weconex.aptis.practice.service;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -102,7 +103,6 @@ public class AttemptService {
         if (allowed.isEmpty()) {
             throw ApiException.premiumRequired();
         }
-
         TestAttempt attempt = new TestAttempt();
         attempt.setUserId(userId);
         attempt.setPartId(request.partId());
@@ -122,10 +122,44 @@ public class AttemptService {
         boolean hasPremium = entitlementService.hasPremiumAccess(userId);
 
         int max = properties.practice().maxCustomPracticeSize();
-        int size = Math.min(Optional.ofNullable(request.questionSetCount()).orElse(10), max);
+        Map<String, Integer> partCounts = Optional.ofNullable(request.partQuestionSetCounts())
+                .orElse(Map.of());
 
-        List<QuestionSet> selected =
-                questionSetSelector.selectForCustom(userId, request, size, hasPremium);
+        List<QuestionSet> selected;
+        if (!partCounts.isEmpty()) {
+            int requestedTotal = partCounts.values().stream().mapToInt(Integer::intValue).sum();
+            if (requestedTotal > max) {
+                throw new ApiException(
+                        ErrorCode.VALIDATION_FAILED,
+                        "Số bộ câu hỏi của bài test vượt quá giới hạn " + max);
+            }
+
+            selected = new ArrayList<>();
+            for (Map.Entry<String, Integer> entry : partCounts.entrySet()) {
+                List<QuestionSet> partSelection = questionSetSelector.selectForPart(
+                        userId,
+                        entry.getKey(),
+                        entry.getValue(),
+                        hasPremium,
+                        request.onlyNew(),
+                        request.onlyIncorrect());
+                if (partSelection.size() < entry.getValue()) {
+                    throw new ApiException(
+                            ErrorCode.NOT_ENOUGH_QUESTION_SETS,
+                            "Part chưa đủ bộ câu hỏi để tạo bài test hoàn chỉnh",
+                            Map.of(
+                                    "partId", entry.getKey(),
+                                    "required", entry.getValue(),
+                                    "available", partSelection.size()));
+                }
+                selected.addAll(partSelection);
+            }
+            // Snapshot phải luôn theo đúng thứ tự Part của cấu trúc bài thi.
+            selected.sort(Comparator.comparingInt(qs -> qs.getPart().getDisplayOrder()));
+        } else {
+            int size = Math.min(Optional.ofNullable(request.questionSetCount()).orElse(10), max);
+            selected = questionSetSelector.selectForCustom(userId, request, size, hasPremium);
+        }
 
         if (selected.isEmpty()) {
             throw new ApiException(
@@ -142,11 +176,20 @@ public class AttemptService {
         if (allowed.isEmpty()) {
             throw ApiException.premiumRequired();
         }
+        if (!partCounts.isEmpty() && allowed.size() != selected.size()) {
+            throw new ApiException(
+                    ErrorCode.NOT_ENOUGH_QUESTION_SETS,
+                    "Không đủ nội dung có quyền truy cập để tạo bài test hoàn chỉnh");
+        }
 
         TestAttempt attempt = new TestAttempt();
         attempt.setUserId(userId);
         attempt.setMode(PracticeMode.CUSTOM_PRACTICE);
         attempt.setAccessLevelUsed(hasPremium ? AccessLevel.PREMIUM : AccessLevel.FREE);
+        String selectedComponentId = selected.get(0).getPart().getComponent().getId();
+        if (selected.stream().allMatch(qs -> selectedComponentId.equals(qs.getPart().getComponent().getId()))) {
+            attempt.setComponentId(selectedComponentId);
+        }
 
         Integer duration = request.timed() ? estimateDuration(allowed) : null;
         return persistAttempt(attempt, allowed, duration);

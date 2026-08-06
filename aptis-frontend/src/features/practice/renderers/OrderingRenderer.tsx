@@ -15,12 +15,22 @@ interface Props {
  * mobile và bàn phím.
  */
 export function OrderingRenderer({ item, draft, disabled, showAnswer, onChange }: Props) {
+  const fixedFirstOptionId = typeof item.constraints?.fixedFirstOptionId === 'string'
+    ? item.constraints.fixedFirstOptionId
+    : undefined;
+  const fixedOption = fixedFirstOptionId
+    ? item.options.find((option) => option.id === fixedFirstOptionId)
+    : undefined;
+  const movableOptions = fixedFirstOptionId
+    ? item.options.filter((option) => option.id !== fixedFirstOptionId)
+    : item.options;
   // Chưa trả lời thì hiển thị theo thứ tự options gốc (đã được backend trộn)
   const order = draft.orderedOptionIds?.length
-    ? draft.orderedOptionIds
-    : item.options.map((option) => option.id);
+    ? draft.orderedOptionIds.filter((id) => id !== fixedFirstOptionId)
+    : movableOptions.map((option) => option.id);
 
   const correctOrder = item.answerKey?.orderedOptionIds ?? [];
+  const scoredCorrectOrder = correctOrder.filter((id) => id !== fixedFirstOptionId);
 
   const move = (index: number, direction: -1 | 1) => {
     const target = index + direction;
@@ -38,12 +48,17 @@ export function OrderingRenderer({ item, draft, disabled, showAnswer, onChange }
 
   return (
     <div className="space-y-2">
+      {fixedOption && <div className="flex items-start gap-3 rounded-lg border border-brand-200 bg-brand-50 px-3 py-2.5">
+        <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-semibold text-white">1</span>
+        <p className="flex-1 text-sm">{fixedOption.content}</p>
+        <span className="rounded-full bg-white px-2 py-1 text-[11px] font-semibold text-brand-700">Câu mẫu cố định</span>
+      </div>}
       {order.map((optionId, index) => {
         const option = item.options.find((o) => o.id === optionId);
         if (!option) return null;
 
-        const inRightPlace = showAnswer && correctOrder[index] === optionId;
-        const inWrongPlace = showAnswer && correctOrder[index] !== optionId;
+        const inRightPlace = showAnswer && scoredCorrectOrder[index] === optionId;
+        const inWrongPlace = showAnswer && scoredCorrectOrder[index] !== optionId;
 
         return (
           <div
@@ -56,7 +71,7 @@ export function OrderingRenderer({ item, draft, disabled, showAnswer, onChange }
             )}
           >
             <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold">
-              {index + 1}
+              {index + (fixedOption ? 2 : 1)}
             </span>
 
             <p className="flex-1 text-sm">{option.content}</p>
