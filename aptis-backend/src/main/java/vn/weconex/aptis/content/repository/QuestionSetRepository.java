@@ -98,6 +98,56 @@ public interface QuestionSetRepository
             @Param("limit") int limit);
 
     /**
+     * Như {@link #selectForBlueprintRule} nhưng loại thêm các chủ đề đã dùng.
+     *
+     * <p>Dùng khi một rule cần nhiều bộ trong cùng một Part: ngân hàng đề có
+     * nhiều bộ là các phiên bản khác nhau của cùng chủ đề, nếu không loại theo
+     * topic thì một đề có thể chứa hai đoạn gần như giống nhau.
+     *
+     * <p>{@code excludedTopicIds} cũng cần sentinel khi rỗng như excludedIds.
+     * Bộ chưa gán topic ({@code topic_id IS NULL}) không bị loại vì không xác
+     * định được nó thuộc chủ đề nào.
+     */
+    @Query(value = """
+            SELECT qs.id
+            FROM question_sets qs
+            LEFT JOIN user_question_stats uqs
+                   ON uqs.question_set_id = qs.id
+                  AND uqs.user_id = :userId
+            WHERE qs.part_id = :partId
+              AND qs.status = 'PUBLISHED'
+              AND (:allowFree = TRUE OR qs.access_level <> 'FREE')
+              AND (:allowPremium = TRUE OR qs.access_level <> 'PREMIUM')
+              AND (qs.access_level = 'FREE' OR :hasPremium = TRUE)
+              AND (:difficultyMin IS NULL OR qs.difficulty >= :difficultyMin)
+              AND (:difficultyMax IS NULL OR qs.difficulty <= :difficultyMax)
+              AND qs.id NOT IN (:excludedIds)
+              AND (qs.topic_id IS NULL OR qs.topic_id NOT IN (:excludedTopicIds))
+            ORDER BY
+                CASE WHEN :strategy = 'NEW_FIRST'
+                     THEN CASE WHEN uqs.attempt_count IS NULL THEN 0 ELSE 1 END
+                     ELSE 0 END,
+                CASE WHEN :strategy = 'WEAK_FIRST'
+                     THEN COALESCE(uqs.mastery_score, 0)
+                     ELSE 0 END,
+                RAND(:seed)
+            LIMIT :limit
+            """, nativeQuery = true)
+    List<String> selectForBlueprintRuleExcludingTopics(
+            @Param("userId") String userId,
+            @Param("partId") String partId,
+            @Param("hasPremium") boolean hasPremium,
+            @Param("allowFree") boolean allowFree,
+            @Param("allowPremium") boolean allowPremium,
+            @Param("difficultyMin") Integer difficultyMin,
+            @Param("difficultyMax") Integer difficultyMax,
+            @Param("strategy") String strategy,
+            @Param("excludedIds") List<String> excludedIds,
+            @Param("excludedTopicIds") List<String> excludedTopicIds,
+            @Param("seed") long seed,
+            @Param("limit") int limit);
+
+    /**
      * Các bộ câu hỏi user đã làm gần đây, dùng để hạn chế lặp (PHẦN IX §57).
      */
     @Query(value = """
@@ -112,4 +162,12 @@ public interface QuestionSetRepository
             @Param("since") java.time.Instant since);
 
     long countByPartIdAndStatus(String partId, ContentStatus status);
+
+    /**
+     * Chỉ lấy topic_id, không nạp cả entity: dùng khi chọn nội dung theo vòng và
+     * chỉ cần biết bộ vừa chọn thuộc chủ đề nào.
+     */
+    @Query(value = "SELECT qs.topic_id FROM question_sets qs WHERE qs.id = :id",
+            nativeQuery = true)
+    Optional<String> findTopicIdById(@Param("id") String id);
 }

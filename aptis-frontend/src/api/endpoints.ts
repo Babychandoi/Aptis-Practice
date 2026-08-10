@@ -19,6 +19,7 @@ import type {
   Payment,
   Plan,
   ProfileResponse,
+  QuestionSetScore,
   QuestionSetSummary,
   Subscription,
   TokenResponse,
@@ -111,6 +112,12 @@ export const practiceApi = {
   ) =>
     api
       .put<void>(`/attempts/${attemptId}/responses/${questionSetId}`, body)
+      .then((r) => r.data),
+
+  /** Nộp riêng một bộ để xem điểm và đáp án của đúng đề đó, lượt vẫn tiếp tục. */
+  scoreQuestionSet: (attemptId: string, questionSetId: string) =>
+    api
+      .post<QuestionSetScore>(`/attempts/${attemptId}/responses/${questionSetId}/score`)
       .then((r) => r.data),
 
   submit: (attemptId: string) =>

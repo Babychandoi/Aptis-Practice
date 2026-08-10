@@ -25,6 +25,22 @@ public class QuestionSetSanitizer {
      */
     public QuestionSetDocument sanitize(
             QuestionSetDocument document, boolean revealAnswers, Long shuffleSeed) {
+        return sanitize(document, revealAnswers, revealAnswers, shuffleSeed);
+    }
+
+    /**
+     * Biến thể tách riêng việc lộ đáp án và lộ phần giải thích.
+     *
+     * @param revealExplanation true để trả {@code explanation} ngay cả khi chưa
+     *        nộp. Dùng cho luyện tập Speaking/Writing: {@code explanation} ở đó
+     *        là CÂU TRẢ LỜI MẪU, học viên cần xem để biết cách nói — khác với
+     *        đáp án đúng của trắc nghiệm.
+     */
+    public QuestionSetDocument sanitize(
+            QuestionSetDocument document,
+            boolean revealAnswers,
+            boolean revealExplanation,
+            Long shuffleSeed) {
 
         QuestionSetDocument copy = shallowCopy(document);
 
@@ -33,7 +49,7 @@ public class QuestionSetSanitizer {
 
         List<QuestionSetDocument.Item> items = new ArrayList<>();
         for (QuestionSetDocument.Item source : document.getItems()) {
-            items.add(sanitizeItem(source, revealAnswers, optionSeed));
+            items.add(sanitizeItem(source, revealAnswers, revealExplanation, optionSeed));
         }
 
         if (document.getSettings().isShuffleItems() && shuffleSeed != null) {
@@ -49,7 +65,10 @@ public class QuestionSetSanitizer {
     }
 
     private QuestionSetDocument.Item sanitizeItem(
-            QuestionSetDocument.Item source, boolean revealAnswers, Long shuffleSeed) {
+            QuestionSetDocument.Item source,
+            boolean revealAnswers,
+            boolean revealExplanation,
+            Long shuffleSeed) {
 
         QuestionSetDocument.Item item = new QuestionSetDocument.Item();
         item.setId(source.getId());
@@ -67,6 +86,8 @@ public class QuestionSetSanitizer {
 
         if (revealAnswers) {
             item.setAnswerKey(source.getAnswerKey());
+        }
+        if (revealExplanation) {
             item.setExplanation(source.getExplanation());
         }
         // else: answerKey và explanation để null

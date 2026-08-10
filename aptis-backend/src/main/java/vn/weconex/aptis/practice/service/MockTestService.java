@@ -45,6 +45,7 @@ public class MockTestService {
     private final QuestionSetRepository questionSetRepository;
     private final ContentAccessService contentAccessService;
     private final EntitlementService entitlementService;
+    private final vn.weconex.aptis.common.config.AptisProperties properties;
 
     /**
      * Danh sách bộ câu hỏi đã chọn, giữ đúng thứ tự Part của blueprint.
@@ -94,9 +95,16 @@ public class MockTestService {
                     Map.of("blueprintId", blueprintId));
         }
 
-        // Seed cố định theo (user, blueprint) để RAND() trong query ổn định trong
-        // cùng một lượt, nhưng khác nhau giữa các học viên
-        long seed = (long) userId.hashCode() * 31 + blueprintId.hashCode();
+        // Seed đổi theo từng lượt: mỗi lần thi thử phải là một đề mới
+        // (xem AttemptService#createMockTestAttempt). Chỉ cần ổn định trong một
+        // lần gọi selectContent — sau đó nội dung đã chốt vào snapshot nên
+        // RAND() không được gọi lại cho lượt đó nữa.
+        //
+        // Vẫn trộn userId và blueprintId vào để hai học viên bấm thi cùng lúc
+        // không nhận cùng một đề.
+        long seed = (long) userId.hashCode() * 31
+                + blueprintId.hashCode()
+                + System.nanoTime();
 
         Set<String> chosen = new LinkedHashSet<>();
         List<String> shortages = new ArrayList<>();
@@ -179,11 +187,67 @@ public class MockTestService {
             Set<String> alreadyChosen,
             long seed) {
 
-        List<String> excluded = alreadyChosen.isEmpty()
-                ? NO_EXCLUSION
-                : new ArrayList<>(alreadyChosen);
+        int needed = properties.practice().mergeSizeOf(rule.getPartId())
+                .orElseGet(rule::getQuestionSetCount);
 
-        return questionSetRepository.selectForBlueprintRule(
+        if (needed <= 1) {
+            return selectOne(userId, rule, hasPremium, alreadyChosen, NO_EXCLUSION, seed, needed);
+        }
+
+        // Part gộp câu lấy nhiều câu cho CÙNG một đề, không phải nhiều đề khác
+        // nhau — loại theo chủ đề ở đây sẽ làm thiếu câu vô cớ.
+        boolean avoidSameTopic = properties.practice().mergeSizeOf(rule.getPartId()).isEmpty();
+
+        Set<String> excludedIds = new LinkedHashSet<>(alreadyChosen);
+        Set<String> excludedTopics = new LinkedHashSet<>();
+        List<String> picked = new ArrayList<>(needed);
+
+        for (int i = 0; i < needed; i++) {
+            // Seed lệch theo vòng để hai lần chọn không cùng một thứ tự ngẫu nhiên
+            long roundSeed = seed + i;
+
+            List<String> found = selectOne(
+                    userId, rule, hasPremium, excludedIds,
+                    excludedTopics.isEmpty() ? NO_EXCLUSION : new ArrayList<>(excludedTopics),
+                    roundSeed, 1);
+
+            if (found.isEmpty() && !excludedTopics.isEmpty()) {
+                // Hết chủ đề chưa dùng: bỏ ràng buộc topic cho vòng này
+                found = selectOne(
+                        userId, rule, hasPremium, excludedIds, NO_EXCLUSION, roundSeed, 1);
+                if (!found.isEmpty()) {
+                    log.warn("Part {} không còn chủ đề mới, phải lấy trùng chủ đề", rule.getPartId());
+                }
+            }
+            if (found.isEmpty()) {
+                break; // hết bộ khả dụng, caller ghi nhận thiếu
+            }
+
+            String id = found.get(0);
+            picked.add(id);
+            excludedIds.add(id);
+            if (avoidSameTopic) {
+                questionSetRepository.findTopicIdById(id).ifPresent(excludedTopics::add);
+            }
+        }
+
+        return picked;
+    }
+
+    private List<String> selectOne(
+            String userId,
+            BlueprintPartRule rule,
+            boolean hasPremium,
+            Set<String> excludedIds,
+            List<String> excludedTopicIds,
+            long seed,
+            int limit) {
+
+        List<String> excluded = excludedIds.isEmpty()
+                ? NO_EXCLUSION
+                : new ArrayList<>(excludedIds);
+
+        return questionSetRepository.selectForBlueprintRuleExcludingTopics(
                 userId,
                 rule.getPartId(),
                 hasPremium,
@@ -193,8 +257,9 @@ public class MockTestService {
                 rule.difficultyMaxAsInt(),
                 rule.getSelectionStrategy().name(),
                 excluded,
+                excludedTopicIds,
                 seed,
-                rule.getQuestionSetCount());
+                limit);
     }
 
     /**

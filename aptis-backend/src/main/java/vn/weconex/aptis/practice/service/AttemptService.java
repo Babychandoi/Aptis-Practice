@@ -20,6 +20,7 @@ import vn.weconex.aptis.common.exception.ErrorCode;
 import vn.weconex.aptis.common.util.Enums.AccessLevel;
 import vn.weconex.aptis.common.util.Enums.AttemptItemStatus;
 import vn.weconex.aptis.common.util.Enums.AttemptStatus;
+import vn.weconex.aptis.common.util.Enums.ContentStatus;
 import vn.weconex.aptis.common.util.Enums.PracticeMode;
 import vn.weconex.aptis.content.domain.QuestionSet;
 import vn.weconex.aptis.content.mongo.QuestionSetDocument;
@@ -78,8 +79,16 @@ public class AttemptService {
     public TestAttempt createPartAttempt(String userId, PracticeDtos.CreatePartAttemptRequest request) {
         boolean hasPremium = entitlementService.hasPremiumAccess(userId);
 
-        int size = Optional.ofNullable(request.questionSetCount())
-                .orElse(properties.practice().defaultPartPracticeSize());
+        // Part gộp câu: mỗi bộ là một câu, một ĐỀ gồm mergeSize câu. Luyện theo
+        // Part thì lấy toàn bộ ngân hàng rồi chia thành từng đề, để học viên đi
+        // hết lượt đề bằng nút "Bài tiếp" thay vì chỉ được một đề mỗi lượt.
+        Optional<Integer> mergeSize = properties.practice().mergeSizeOf(request.partId());
+
+        int size = mergeSize.isPresent()
+                ? (int) questionSetRepository.countByPartIdAndStatus(
+                        request.partId(), ContentStatus.PUBLISHED)
+                : Optional.ofNullable(request.questionSetCount())
+                        .orElse(properties.practice().defaultPartPracticeSize());
 
         List<QuestionSet> selected = questionSetSelector.selectForPart(
                 userId, request.partId(), size, hasPremium,
@@ -103,6 +112,17 @@ public class AttemptService {
         if (allowed.isEmpty()) {
             throw ApiException.premiumRequired();
         }
+        // Đề gộp phải đủ số câu, thiếu thì báo rõ thay vì tạo đề ngắn
+        if (mergeSize.isPresent() && allowed.size() < mergeSize.get()) {
+            throw new ApiException(
+                    ErrorCode.NOT_ENOUGH_QUESTION_SETS,
+                    "Ngân hàng chưa đủ câu hỏi cho Part này: cần ít nhất %d, hiện có %d"
+                            .formatted(mergeSize.get(), allowed.size()),
+                    Map.of("partId", request.partId(),
+                            "required", mergeSize.get(),
+                            "available", allowed.size()));
+        }
+
         TestAttempt attempt = new TestAttempt();
         attempt.setUserId(userId);
         attempt.setPartId(request.partId());
@@ -204,6 +224,7 @@ public class AttemptService {
         // Gán id trước để dùng chung cho cả Mongo document và MySQL row
         attempt.setId(java.util.UUID.randomUUID().toString());
 
+        // Factory tự gộp câu cho các Part được cấu hình (Speaking/Writing Part 1)
         AttemptSnapshotFactory.Snapshot snapshot =
                 snapshotFactory.build(attempt, questionSets, durationSeconds);
 
@@ -286,8 +307,13 @@ public class AttemptService {
         TestAttempt attempt = requireOwned(userId, attemptId);
         AttemptDocument document = requireDocument(attemptId);
 
-        boolean revealAnswers = isSubmitted(attempt.getStatus());
+        boolean attemptSubmitted = isSubmitted(attempt.getStatus());
         Long shuffleSeed = document.getConfigSnapshot().getShuffleSeed();
+
+        // Luyện tập được xem câu trả lời mẫu ngay trong lúc làm (explanation của
+        // Speaking/Writing là bài mẫu để học theo). Thi thử thì không, để giống
+        // điều kiện thi thật.
+        boolean revealSampleAnswer = attempt.getMode() != PracticeMode.MOCK_TEST;
 
         Map<String, AttemptQuestionSet> rows =
                 attemptQuestionSetRepository.findByAttemptIdOrderByDisplayOrder(attemptId).stream()
@@ -297,8 +323,18 @@ public class AttemptService {
                 .sorted(java.util.Comparator.comparingInt(AttemptDocument.QuestionSetEntry::getDisplayOrder))
                 .map(entry -> {
                     AttemptQuestionSet row = rows.get(entry.getAttemptQuestionSetId());
-                    QuestionSetDocument content =
-                            sanitizer.sanitize(entry.getSnapshot(), revealAnswers, shuffleSeed);
+
+                    // Tiết lộ đáp án theo TỪNG bộ, không theo cả lượt: bộ đã nộp
+                    // riêng (SCORED) phải thấy đáp án ngay, các bộ chưa nộp vẫn
+                    // bị lược (PHẦN VII §51).
+                    boolean revealAnswers = attemptSubmitted
+                            || (row != null && row.getStatus() == AttemptItemStatus.SCORED);
+
+                    QuestionSetDocument content = sanitizer.sanitize(
+                            entry.getSnapshot(),
+                            revealAnswers,
+                            revealAnswers || revealSampleAnswer,
+                            shuffleSeed);
 
                     return new PracticeDtos.AttemptQuestionSetResponse(
                             entry.getAttemptQuestionSetId(),
@@ -398,6 +434,95 @@ public class AttemptService {
     // -----------------------------------------------------------------
     // Nộp bài và chấm
     // -----------------------------------------------------------------
+
+    /**
+     * Chấm riêng MỘT bộ câu hỏi giữa lượt, để học viên xem kết quả từng đề mà
+     * không phải nộp cả lượt.
+     *
+     * <p>Không đổi trạng thái attempt: lượt vẫn IN_PROGRESS và các bộ còn lại
+     * vẫn làm tiếp được. Khi nộp cả lượt, {@code submit} chấm lại toàn bộ —
+     * {@code scoreEntry} gán lại điểm chứ không cộng dồn nên tổng vẫn đúng.
+     *
+     * <p>Chỉ trả answer key của đúng bộ này; các bộ khác vẫn bị sanitizer lược
+     * (PHẦN VII §51).
+     */
+    @Transactional
+    public PracticeDtos.QuestionSetScoreResponse scoreQuestionSet(
+            String userId, String attemptId, String questionSetId) {
+
+        TestAttempt attempt = attemptRepository.findByIdForUpdate(attemptId)
+                .orElseThrow(() -> ApiException.notFound("TestAttempt", attemptId));
+
+        if (!attempt.isOwnedBy(userId)) {
+            throw new ApiException(ErrorCode.ATTEMPT_NOT_OWNED, "Lượt làm bài không thuộc người dùng");
+        }
+        if (isSubmitted(attempt.getStatus())) {
+            throw new ApiException(
+                    ErrorCode.ATTEMPT_ALREADY_SUBMITTED,
+                    "Lượt làm bài đã nộp, xem kết quả ở trang kết quả");
+        }
+        if (attempt.getStatus() == AttemptStatus.CREATED) {
+            throw new ApiException(ErrorCode.ATTEMPT_NOT_STARTED, "Lượt làm bài chưa bắt đầu");
+        }
+
+        AttemptQuestionSet row = attemptQuestionSetRepository
+                .findByAttemptIdAndQuestionSetId(attemptId, questionSetId)
+                .orElseThrow(() -> ApiException.notFound("AttemptQuestionSet", questionSetId));
+
+        AttemptDocument document = requireDocument(attemptId);
+        AttemptDocument.QuestionSetEntry entry = document.findEntry(row.getId());
+        if (entry == null) {
+            throw new ApiException(
+                    ErrorCode.QUESTION_SET_CONTENT_MISSING,
+                    "Snapshot thiếu entry " + row.getId());
+        }
+
+        // Speaking/Writing cần AI hoặc giáo viên, không có điểm ngay được
+        if (scoringService.requiresManualEvaluation(entry.getSnapshot())) {
+            throw new ApiException(
+                    ErrorCode.VALIDATION_FAILED,
+                    "Bộ câu hỏi này được chấm sau khi nộp bài, không xem điểm ngay được",
+                    Map.of("questionSetId", questionSetId));
+        }
+
+        AttemptDocument.Score score = scoringService.scoreEntry(entry)
+                .orElseThrow(() -> new ApiException(
+                        ErrorCode.VALIDATION_FAILED,
+                        "Không chấm được bộ câu hỏi này",
+                        Map.of("questionSetId", questionSetId)));
+
+        row.applyScore(BigDecimal.valueOf(score.getRawScore()));
+
+        document.setUpdatedAt(Instant.now());
+        attemptDocumentRepository.save(document);
+        attemptQuestionSetRepository.save(row);
+
+        int correctItems = (int) score.getItemScores().stream()
+                .filter(AttemptDocument.ItemScore::isCorrect)
+                .count();
+
+        // revealAnswers = true nhưng CHỈ cho bộ này
+        QuestionSetDocument revealed = sanitizer.sanitize(
+                entry.getSnapshot(), true, document.getConfigSnapshot().getShuffleSeed());
+
+        log.debug("Đã chấm riêng bộ {} của attempt {}: {}/{}",
+                questionSetId, attemptId, score.getRawScore(), score.getMaxScore());
+
+        return new PracticeDtos.QuestionSetScoreResponse(
+                questionSetId,
+                score.getRawScore(),
+                score.getMaxScore(),
+                correctItems,
+                entry.getSnapshot().getItems().size(),
+                score.getItemScores().stream()
+                        .map(itemScore -> new PracticeDtos.ItemScoreResponse(
+                                itemScore.getItemId(),
+                                itemScore.getRawScore(),
+                                itemScore.getMaxScore(),
+                                itemScore.isCorrect()))
+                        .toList(),
+                revealed);
+    }
 
     /**
      * Chấm phần tự động ngay; Speaking/Writing để lại cho evaluation job nên

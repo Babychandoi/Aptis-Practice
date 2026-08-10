@@ -167,6 +167,22 @@ public final class PracticeDtos {
             boolean correct) {
     }
 
+    /**
+     * Kết quả chấm riêng một bộ câu hỏi giữa lượt làm bài.
+     *
+     * <p>{@code content} là bản đã tiết lộ answer key của ĐÚNG bộ vừa chấm —
+     * các bộ khác trong lượt vẫn bị lược cho tới khi nộp.
+     */
+    public record QuestionSetScoreResponse(
+            String questionSetId,
+            double awardedScore,
+            double maxScore,
+            int correctItems,
+            int totalItems,
+            List<ItemScoreResponse> itemScores,
+            vn.weconex.aptis.content.mongo.QuestionSetDocument content) {
+    }
+
     // ---------- Audio ----------
 
     public record AudioPlayResponse(int audioPlayCount, Integer maxAudioPlays, String signedUrl) {

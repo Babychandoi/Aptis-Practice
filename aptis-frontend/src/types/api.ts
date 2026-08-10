@@ -193,7 +193,8 @@ export interface AnswerKey {
 export interface QuestionItem {
   id: string;
   sequenceNo: number;
-  prompt: RichContent | null;
+  /** Backend lược field khi null, nên có thể vắng hẳn trong JSON. */
+  prompt?: RichContent | null;
   responseType: ResponseType;
   required: boolean;
   maxScore: number;
@@ -274,6 +275,22 @@ export interface AttemptQuestionSet {
   maxAudioPlays: number | null;
   content: QuestionSetContent;
   savedResponse: SavedResponse | null;
+}
+
+/** Kết quả chấm riêng một bộ giữa lượt; `content` đã tiết lộ đáp án của bộ đó. */
+export interface QuestionSetScore {
+  questionSetId: string;
+  awardedScore: number;
+  maxScore: number;
+  correctItems: number;
+  totalItems: number;
+  itemScores: {
+    itemId: string;
+    rawScore: number;
+    maxScore: number;
+    correct: boolean;
+  }[];
+  content: QuestionSetContent;
 }
 
 export interface Attempt {

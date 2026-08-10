@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/api/client';
@@ -57,6 +58,24 @@ interface PartTemplate {
   optionCount?: number;
   matchingCounts?: { left: number; right: number };
   matchingScoring?: { pointsPerCorrect: number; perfectBonus: number };
+  /**
+   * Tự sinh nhãn cho vế trái ("Speaker" -> Speaker A, Speaker B...) và ẩn ô
+   * nhập nội dung: với Listening Part 2 thì vế trái luôn là người nói theo thứ
+   * tự cố định, gõ tay chỉ tốn thời gian.
+   */
+  autoLeftLabel?: string;
+  /**
+   * Part mà mỗi câu là một bộ độc lập: biên tập viên nhập liên tiếp nhiều câu
+   * trong một màn, khi lưu hệ thống tách thành nhiều bộ một-câu. Backend tự gom
+   * lại đủ số câu khi tạo đề (aptis.practice.merge-item-parts).
+   */
+  bulkSingleItem?: boolean;
+  /**
+   * Số câu của MỘT đề ở Part nhập hàng loạt — phải khớp
+   * aptis.practice.merge-item-parts ở backend. Dùng làm mẫu số khi chia điểm:
+   * mỗi bộ chỉ có một câu nên không thể suy ra từ form.items.
+   */
+  bulkItemsPerTest?: number;
   itemMaxScore?: number;
   fixedFirstOption?: boolean;
 }
@@ -90,7 +109,7 @@ const PART_TEMPLATES: Record<string, PartTemplate> = {
   'READING:PART_2': {
     taskTypeCode: 'SENTENCE_ORDERING', name: 'Sắp xếp câu thành đoạn văn',
     instructions: 'Sắp xếp các câu theo đúng thứ tự để tạo thành một đoạn văn hoàn chỉnh.',
-    note: 'Reading Part 2 gồm các câu bị xáo trộn và yêu cầu sắp xếp lại.',
+    note: 'Reading Part 2 gồm các câu bị xáo trộn và yêu cầu sắp xếp lại. Đề thi thử lấy hai bộ từ Part này, mỗi bộ 5 điểm.',
     initialItemTypes: repeatType('SENTENCE_ORDERING', 1),
     itemPromptLabel: 'Tiêu đề / bối cảnh của đoạn',
     optionCount: 6,
@@ -98,29 +117,19 @@ const PART_TEMPLATES: Record<string, PartTemplate> = {
     fixedFirstOption: true,
   },
   'READING:PART_3': {
-    taskTypeCode: 'SENTENCE_ORDERING', name: 'Sắp xếp câu thành đoạn văn',
-    instructions: 'Sắp xếp các câu theo đúng thứ tự để tạo thành một đoạn văn hoàn chỉnh.',
-    note: 'Reading Part 3 là bài sắp xếp đoạn văn độc lập thứ hai.',
-    initialItemTypes: repeatType('SENTENCE_ORDERING', 1),
-    itemPromptLabel: 'Tiêu đề / bối cảnh của đoạn',
-    optionCount: 6,
-    itemMaxScore: 5,
-    fixedFirstOption: true,
-  },
-  'READING:PART_4': {
     taskTypeCode: 'SPEAKER_MATCHING', name: 'Ghép ý kiến với người nói',
     instructions: 'Đọc ý kiến của bốn người và ghép mỗi nhận định với người phù hợp.',
-    note: 'Reading Part 4 ghép các nhận định với bốn người đưa ra ý kiến.',
+    note: 'Reading Part 3 ghép các nhận định với bốn người đưa ra ý kiến.',
     initialItemTypes: ['MATCHING'],
     stimulus: { label: 'Bài đọc chung — 4 đoạn ý kiến', placeholder: 'Nhập đoạn A, B, C, D; mỗi đoạn là ý kiến của một người…', required: true, rows: 12 },
     itemPromptLabel: 'Yêu cầu ghép 7 nhận định',
     matchingCounts: { left: 7, right: 4 },
     matchingScoring: { pointsPerCorrect: 2, perfectBonus: 2 },
   },
-  'READING:PART_5': {
+  'READING:PART_4': {
     taskTypeCode: 'HEADING_MATCHING', name: 'Ghép tiêu đề với đoạn văn',
     instructions: 'Đọc bài văn và ghép tiêu đề phù hợp với từng đoạn.',
-    note: 'Reading Part 5 ghép tiêu đề với các đoạn trong một bài đọc dài.',
+    note: 'Reading Part 4 ghép tiêu đề với các đoạn trong một bài đọc dài.',
     initialItemTypes: ['MATCHING'],
     stimulus: { label: 'Bài đọc dài — 8 đoạn', placeholder: 'Nhập bài đọc khoảng 750 từ và đánh dấu rõ các đoạn A–H…', required: true, rows: 16 },
     itemPromptLabel: 'Yêu cầu ghép 7 đoạn với tiêu đề',
@@ -137,11 +146,15 @@ const PART_TEMPLATES: Record<string, PartTemplate> = {
   'LISTENING:PART_2': {
     taskTypeCode: 'SPEAKER_MATCHING', name: 'Ghép người nói với thông tin',
     instructions: 'Nghe bốn người nói về cùng một chủ đề và ghép mỗi người với thông tin phù hợp.',
-    note: 'Listening Part 2 là dạng ghép người nói với các mẩu thông tin.',
-    initialItemTypes: repeatType('SINGLE_CHOICE', 4),
-    audioGroups: [1, 1, 1, 1],
-    itemPromptLabel: 'Người nói / câu cần ghép',
-    optionCount: 6,
+    note: 'Nhập 6 mẩu thông tin MỘT LẦN, dùng chung cho cả 4 người nói. Nhãn Speaker A–D tự sinh, không phải nhập.',
+    // MATCHING thay vì 4 câu SINGLE_CHOICE: 4 người và 6 thông tin dùng chung
+    // một danh sách, nhập một lần thay vì lặp 6 lựa chọn cho từng người.
+    initialItemTypes: ['MATCHING'],
+    sharedMedia: { type: 'AUDIO', label: 'Audio bốn người nói', help: 'Một audio chung cho cả bốn người nói.', required: true, maxFiles: 1 },
+    itemPromptLabel: 'Yêu cầu ghép 4 người nói',
+    matchingCounts: { left: 4, right: 6 },
+    matchingScoring: { pointsPerCorrect: 2, perfectBonus: 0 },
+    autoLeftLabel: 'Speaker',
   },
   'LISTENING:PART_3': {
     taskTypeCode: 'SPEAKER_MATCHING', name: 'Ghép ý kiến với người nói',
@@ -161,9 +174,11 @@ const PART_TEMPLATES: Record<string, PartTemplate> = {
   },
   'SPEAKING:PART_1': {
     taskTypeCode: 'AUDIO_RECORDING', name: 'Trả lời thông tin cá nhân · Ghi âm',
-    instructions: 'Trả lời ba câu hỏi về bản thân và sở thích. Ghi âm tối đa 30 giây cho mỗi câu.',
-    note: 'Speaking Part 1 gồm ba câu trả lời ghi âm, mỗi câu 30 giây.',
-    initialItemTypes: repeatType('AUDIO_RECORDING', 3),
+    instructions: 'Trả lời câu hỏi về bản thân. Ghi âm tối đa 30 giây.',
+    note: 'Nhập LIÊN TIẾP nhiều câu rồi lưu một lần — mỗi câu được tách thành một câu độc lập trong ngân hàng. Khi học viên vào thi, hệ thống tự lấy ngẫu nhiên 3 câu ghép thành một đề.',
+    initialItemTypes: repeatType('AUDIO_RECORDING', 1),
+    bulkSingleItem: true,
+    bulkItemsPerTest: 3,
   },
   'SPEAKING:PART_2': {
     taskTypeCode: 'IMAGE_DESCRIPTION', name: 'Miêu tả ảnh và nêu ý kiến · Ghi âm',
@@ -187,10 +202,13 @@ const PART_TEMPLATES: Record<string, PartTemplate> = {
   },
   'WRITING:PART_1': {
     taskTypeCode: 'SHORT_TEXT', name: 'Trả lời bằng từ hoặc cụm từ ngắn',
-    instructions: 'Trả lời năm tin nhắn bằng một đến năm từ cho mỗi câu.',
-    note: 'Writing Part 1 là phản hồi ở cấp độ từ hoặc cụm từ.',
-    initialItemTypes: repeatType('SHORT_TEXT', 5),
-    stimulus: { label: 'Bối cảnh club / course / group', placeholder: 'Nhập tình huống chung liên kết 5 tin nhắn…', required: true, rows: 5 },
+    instructions: 'Trả lời bằng một đến năm từ.',
+    note: 'Nhập LIÊN TIẾP nhiều câu hỏi về bản thân rồi lưu một lần — mỗi câu được tách thành một câu độc lập trong ngân hàng. Khi học viên vào thi, hệ thống tự lấy ngẫu nhiên 5 câu ghép thành một đề.',
+    initialItemTypes: repeatType('SHORT_TEXT', 1),
+    bulkSingleItem: true,
+    bulkItemsPerTest: 5,
+    // Không có stimulus: 5 câu Part 1 hỏi thông tin cá nhân, độc lập nhau.
+    // Bối cảnh club/course/group là của Writing Part 2.
   },
   'WRITING:PART_2': {
     taskTypeCode: 'LONG_TEXT', name: 'Viết đoạn ngắn · 20–30 từ',
@@ -276,7 +294,13 @@ const blankTemplateItem = (sequenceNo: number, responseType: ResponseType, templ
     item.options = Array.from({ length: template.optionCount }, (_, index) => blankOption(index));
   }
   if (responseType === 'MATCHING' && template.matchingCounts) {
-    item.leftItems = Array.from({ length: template.matchingCounts.left }, (_, index) => blankOption(index));
+    item.leftItems = Array.from({ length: template.matchingCounts.left }, (_, index) => {
+      const left = blankOption(index);
+      // Vế trái cố định (Speaker A, B, C...) thì điền sẵn để khỏi phải gõ
+      return template.autoLeftLabel
+        ? { ...left, content: `${template.autoLeftLabel} ${String.fromCharCode(65 + index)}` }
+        : left;
+    });
     item.rightItems = Array.from({ length: template.matchingCounts.right }, (_, index) => ({
       ...blankOption(index), id: `R${index + 1}`, code: String.fromCharCode(65 + index),
     }));
@@ -447,9 +471,30 @@ export function QuestionSetEditorPage() {
         };
         return adminContentApi.update(id, body);
       }
+      const baseCode = form.code.trim().toUpperCase().replace(/\s+/g, '_');
+
+      // Part nhập hàng loạt: mỗi câu thành một bộ riêng để backend gom lại theo
+      // số câu của đề. Lưu tuần tự vì code phải duy nhất, chạy song song dễ
+      // đụng nhau ở ràng buộc unique.
+      if (partTemplate?.bulkSingleItem && form.items.length > 1) {
+        let created: Awaited<ReturnType<typeof adminContentApi.create>> | undefined;
+        for (const [index, singleItem] of form.items.entries()) {
+          const singleContent = toContent(
+            { ...form, items: [singleItem] }, partTemplate, partScoringRule);
+          const suffix = String(index + 1).padStart(2, '0');
+          created = await adminContentApi.create({
+            partId: form.partId, taskTypeId: form.taskTypeId, topicName: form.topicName.trim(),
+            code: `${baseCode}_${suffix}`,
+            title: singleItem.prompt?.value?.trim() || `${form.title.trim()} ${suffix}`,
+            hotness: form.hotness, accessLevel: form.accessLevel, content: singleContent,
+          });
+        }
+        return created!;
+      }
+
       const body: CreateQuestionSetRequest = {
         partId: form.partId, taskTypeId: form.taskTypeId, topicName: form.topicName.trim(),
-        code: form.code.trim().toUpperCase().replace(/\s+/g, '_'), title: form.title.trim(),
+        code: baseCode, title: form.title.trim(),
         hotness: form.hotness,
         accessLevel: form.accessLevel, content,
       };
@@ -562,7 +607,7 @@ export function QuestionSetEditorPage() {
       {step === 3 && <section className="mb-5">
         <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
           <SectionTitle number="3" title="Danh sách câu hỏi" subtitle={`${form.items.length} câu · ${selectedTask?.name ?? 'Dạng bài'}`} />
-          {!partTemplate?.initialItemTypes?.length && <button type="button" className="btn-secondary" onClick={() => setForm((current) => ({
+          {(!partTemplate?.initialItemTypes?.length || partTemplate?.bulkSingleItem) && <button type="button" className="btn-secondary" onClick={() => setForm((current) => ({
             ...current,
             items: [...current.items, partTemplate
               ? blankTemplateItem(current.items.length + 1, responseType, partTemplate)
@@ -582,8 +627,9 @@ export function QuestionSetEditorPage() {
             return <QuestionCard key={item.id} item={item} index={index} responseType={item.responseType}
               promptLabel={partTemplate?.itemPromptLabel}
               fixedFirstOption={partTemplate?.fixedFirstOption}
+              autoLeftLabel={partTemplate?.autoLeftLabel}
               requiresAudio={Boolean(requiresItemAudio && isGroupStart)} audioTitle={audioTitle} audioHelp={audioHelp}
-              allowRemove={!partTemplate?.initialItemTypes?.length}
+              allowRemove={!partTemplate?.initialItemTypes?.length || Boolean(partTemplate?.bulkSingleItem)}
               onChange={(next) => setForm((current) => ({ ...current, items: current.items.map((entry, i) => i === index ? next : entry) }))}
               onAudioChange={(audioAssetId, audioLabel) => setForm((current) => ({
                 ...current,
@@ -633,12 +679,13 @@ export function QuestionSetEditorPage() {
   );
 }
 
-function QuestionCard({ item, index, responseType, promptLabel, fixedFirstOption, requiresAudio, audioTitle, audioHelp, allowRemove, onChange, onAudioChange, onRemove }: {
+function QuestionCard({ item, index, responseType, promptLabel, fixedFirstOption, autoLeftLabel, requiresAudio, audioTitle, audioHelp, allowRemove, onChange, onAudioChange, onRemove }: {
   item: EditorItem;
   index: number;
   responseType: ResponseType;
   promptLabel?: string;
   fixedFirstOption?: boolean;
+  autoLeftLabel?: string;
   requiresAudio: boolean;
   audioTitle: string;
   audioHelp: string;
@@ -672,7 +719,7 @@ function QuestionCard({ item, index, responseType, promptLabel, fixedFirstOption
       {(CHOICE_TYPES.has(responseType) || ORDERING_TYPES.has(responseType)) && (
         <OptionEditor groupName={`correct-${item.id}`} options={item.options} multiple={responseType === 'MULTIPLE_CHOICE'} ordering={ORDERING_TYPES.has(responseType)} fixedFirstOption={fixedFirstOption} answerKey={item.answerKey} onOptions={updateOptions} onAnswer={(answerKey) => onChange({ ...item, answerKey })} />
       )}
-      {responseType === 'MATCHING' && <MatchingEditor item={item} onChange={onChange} />}
+      {responseType === 'MATCHING' && <MatchingEditor item={item} autoLeftLabel={autoLeftLabel} onChange={onChange} />}
       {(responseType === 'SHORT_TEXT' || responseType === 'TEXT_EXACT') && (
         <div className="mt-4">
           <Input label="Đáp án được chấp nhận" required value={item.acceptedText} placeholder="answer | another answer" onChange={(acceptedText) => onChange({ ...item, acceptedText })} />
@@ -706,15 +753,19 @@ function OptionEditor({ groupName, options, multiple, ordering, fixedFirstOption
   </div>;
 }
 
-function MatchingEditor({ item, onChange }: { item: EditorItem; onChange: (item: EditorItem) => void }) {
+function MatchingEditor({ item, autoLeftLabel, onChange }: { item: EditorItem; autoLeftLabel?: string; onChange: (item: EditorItem) => void }) {
   const updateSide = (side: 'leftItems' | 'rightItems', values: QuestionOptionPayload[]) => onChange({ ...item, [side]: values });
   return <div className="mt-4 rounded-xl bg-stone-50 p-4">
-    <h3 className="mb-3 text-sm font-semibold text-stone-900">Các cặp nối</h3>
-    <div className="grid gap-4 lg:grid-cols-2">
-      <OptionColumn title="Vế trái" options={item.leftItems} onChange={(values) => updateSide('leftItems', values)} />
-      <OptionColumn title="Vế phải" options={item.rightItems} onChange={(values) => updateSide('rightItems', values)} />
+    <h3 className="mb-3 text-sm font-semibold text-stone-900">{autoLeftLabel ? 'Các mẩu thông tin' : 'Các cặp nối'}</h3>
+    <div className={clsx('grid gap-4', !autoLeftLabel && 'lg:grid-cols-2')}>
+      {/* autoLeftLabel: vế trái đã điền sẵn (Speaker A, B…) nên không cần ô nhập */}
+      {!autoLeftLabel && <OptionColumn title="Vế trái" options={item.leftItems} onChange={(values) => updateSide('leftItems', values)} />}
+      <OptionColumn title={autoLeftLabel ? 'Nhập các mẩu thông tin (dùng chung cho tất cả)' : 'Vế phải'} options={item.rightItems} onChange={(values) => updateSide('rightItems', values)} />
     </div>
-    <div className="mt-4 grid gap-2 sm:grid-cols-2">{item.leftItems.map((left) => <label key={left.id} className="flex items-center gap-2 text-sm"><span className="min-w-20 font-medium">{left.code}</span><select className="input" value={item.answerKey?.matches?.[left.id] ?? ''} onChange={(event) => onChange({ ...item, answerKey: { ...(item.answerKey ?? { type: 'MATCHING' }), matches: { ...(item.answerKey?.matches ?? {}), [left.id]: event.target.value } } })}><option value="">Chọn vế phải</option>{item.rightItems.map((right) => <option key={right.id} value={right.id}>{right.code} — {right.content || 'Chưa nhập'}</option>)}</select></label>)}</div>
+    <div className="mt-4">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500">Đáp án</p>
+      <div className="grid gap-2 sm:grid-cols-2">{item.leftItems.map((left) => <label key={left.id} className="flex items-center gap-2 text-sm"><span className="min-w-24 font-medium">{autoLeftLabel ? left.content : left.code}</span><select className="input" value={item.answerKey?.matches?.[left.id] ?? ''} onChange={(event) => onChange({ ...item, answerKey: { ...(item.answerKey ?? { type: 'MATCHING' }), matches: { ...(item.answerKey?.matches ?? {}), [left.id]: event.target.value } } })}><option value="">Chọn đáp án</option>{item.rightItems.map((right) => <option key={right.id} value={right.id}>{right.code} — {right.content || 'Chưa nhập'}</option>)}</select></label>)}</div>
+    </div>
   </div>;
 }
 
@@ -842,7 +893,12 @@ function toContent(form: EditorForm, template?: PartTemplate, scoringRule?: Part
       const itemMaxScore = isStructuredMatching && configuredPoints
         ? item.leftItems.filter((entry) => entry.content.trim()).length * configuredPoints + configuredBonus
         : scoringRule
-          ? splitPartScore(scoringRule.maxScore, form.items.length, index)
+          // Part nhập hàng loạt: mỗi bộ chỉ một câu nên phải chia theo số câu
+          // của ĐỀ (bulkItemsPerTest), không theo số câu đang có trong form.
+          ? splitPartScore(
+              scoringRule.maxScore,
+              template?.bulkItemsPerTest ?? form.items.length,
+              template?.bulkItemsPerTest ? 0 : index)
           : template?.itemMaxScore ?? 1;
       return {
         ...item, id: `item_${index + 1}`, sequenceNo: index + 1, responseType: item.responseType, maxScore: itemMaxScore,
@@ -892,7 +948,9 @@ function validateStep(form: EditorForm, responseType: ResponseType, step: number
     }
   }
   if (step === 3) {
-    const expectedItems = template?.initialItemTypes?.length;
+    // Part nhập hàng loạt: initialItemTypes chỉ là số câu khởi tạo, biên tập
+    // viên thêm bao nhiêu câu tuỳ ý rồi lưu một lần.
+    const expectedItems = template?.bulkSingleItem ? undefined : template?.initialItemTypes?.length;
     if (expectedItems && form.items.length !== expectedItems) return `Part này phải có đúng ${expectedItems} câu / nhóm câu.`;
     return validateQuestions(form, responseType, Boolean(template?.audioGroups?.length));
   }

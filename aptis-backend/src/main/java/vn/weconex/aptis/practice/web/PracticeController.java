@@ -81,6 +81,19 @@ public class PracticeController {
                 currentUser.requireUserId(), attemptId, questionSetId, request);
     }
 
+    /**
+     * Nộp riêng một bộ câu hỏi để xem điểm và đáp án của đúng đề đó, không phải
+     * nộp cả lượt. Lượt vẫn tiếp tục làm được các bộ còn lại.
+     */
+    @PostMapping("/attempts/{attemptId}/responses/{questionSetId}/score")
+    public PracticeDtos.QuestionSetScoreResponse scoreQuestionSet(
+            @PathVariable String attemptId,
+            @PathVariable String questionSetId) {
+
+        return attemptService.scoreQuestionSet(
+                currentUser.requireUserId(), attemptId, questionSetId);
+    }
+
     @PostMapping("/attempts/{attemptId}/submit")
     public PracticeDtos.AttemptResponse submit(@PathVariable String attemptId) {
         String userId = currentUser.requireUserId();

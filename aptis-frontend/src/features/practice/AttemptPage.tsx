@@ -23,7 +23,13 @@ import { useAutosave } from '@/features/practice/useAutosave';
 import { formatDuration } from '@/lib/format';
 import type { AttemptQuestionSet, PartSummary, QuestionItem } from '@/types/api';
 
-type ViewMode = 'part' | 'all';
+/**
+ * 'single' — từng bài một màn, mặc định: một Part có thể có hàng chục bộ câu
+ * hỏi, trải hết ra một màn thì học viên phải cuộn rất dài.
+ * 'part'   — cả một Part.
+ * 'all'    — toàn bộ lượt, để rà soát trước khi nộp.
+ */
+type ViewMode = 'single' | 'part' | 'all';
 
 interface PartGroup {
   id: string;
@@ -46,7 +52,8 @@ export function AttemptPage() {
   const { attemptId } = useParams<{ attemptId: string }>();
   const navigate = useNavigate();
   const [currentPartIndex, setCurrentPartIndex] = useState(0);
-  const [viewMode, setViewMode] = useState<ViewMode>('part');
+  const [currentSetIndex, setCurrentSetIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<ViewMode>('single');
   const [flaggedItems, setFlaggedItems] = useState<Set<string>>(new Set());
   const [responsesBySet, setResponsesBySet] = useState<Record<string, ResponseMap>>({});
   const [startedAtMs] = useState(() => Date.now());
@@ -109,6 +116,19 @@ export function AttemptPage() {
     onSuccess: () => navigate(`/attempts/${attemptId}/result`),
   });
 
+  /**
+   * Nộp riêng bài đang làm. Phải flush autosave trước, nếu không server chấm
+   * theo câu trả lời cũ.
+   */
+  const scoreSetMutation = useMutation({
+    mutationFn: async (questionSetId: string) => {
+      await autosave.flush();
+      return practiceApi.scoreQuestionSet(attemptId!, questionSetId);
+    },
+    // Nạp lại lượt để bộ vừa chấm hiện điểm và đáp án
+    onSuccess: () => void attemptQuery.refetch(),
+  });
+
   const handleExpire = useCallback(() => {
     if (!submitMutation.isPending && !readOnly) submitMutation.mutate();
   }, [submitMutation, readOnly]);
@@ -138,7 +158,41 @@ export function AttemptPage() {
   const goToPart = async (index: number) => {
     await autosave.flush();
     setCurrentPartIndex(index);
-    setViewMode('part');
+    setCurrentSetIndex(0);
+    setViewMode((mode) => (mode === 'all' ? 'part' : mode));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  /** Nhảy thẳng tới một bài trong Part hiện tại (dùng cho dropdown chọn đề). */
+  const goToSetIndex = async (index: number) => {
+    await autosave.flush();
+    setCurrentSetIndex(index);
+    setViewMode('single');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  /**
+   * Đi tới bài kế/trước trong chế độ từng bài; hết bài của Part hiện tại thì
+   * nhảy sang Part liền kề để học viên không phải tự bấm đổi Part.
+   */
+  const goToSet = async (direction: -1 | 1) => {
+    await autosave.flush();
+
+    const setCount = currentPart?.sets.length ?? 0;
+    const next = currentSetIndex + direction;
+
+    if (next >= 0 && next < setCount) {
+      setCurrentSetIndex(next);
+    } else if (direction === 1 && currentPartIndex < partGroups.length - 1) {
+      setCurrentPartIndex(currentPartIndex + 1);
+      setCurrentSetIndex(0);
+    } else if (direction === -1 && currentPartIndex > 0) {
+      const previousPart = partGroups[currentPartIndex - 1];
+      setCurrentPartIndex(currentPartIndex - 1);
+      setCurrentSetIndex(Math.max(0, (previousPart?.sets.length ?? 1) - 1));
+    } else {
+      return; // đã ở đầu/cuối toàn lượt
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -184,13 +238,26 @@ export function AttemptPage() {
 
   const visibleParts = viewMode === 'all' ? partGroups : [currentPart];
 
+  /** Luyện theo Part: lượt chỉ có một Part nên không cần lưới chọn Part. */
+  const isSinglePartAttempt = partGroups.length === 1;
+
+  // Ở chế độ từng bài, chỉ hiện đúng một bộ của Part hiện tại.
+  const setCount = currentPart.sets.length;
+  const safeSetIndex = Math.min(currentSetIndex, Math.max(0, setCount - 1));
+  const visibleSetOnly = viewMode === 'single' ? currentPart.sets[safeSetIndex] : undefined;
+  const isFirstSetOverall = currentPartIndex === 0 && safeSetIndex === 0;
+  const isLastSetOverall =
+    currentPartIndex === partGroups.length - 1 && safeSetIndex === setCount - 1;
+
   return (
     <div className="min-h-screen bg-[#f7f4eb] pb-24">
       <header className="sticky top-0 z-30 border-b border-[#e5decd] bg-[#fffdf8]/95 backdrop-blur">
         <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-3 px-4 py-3 sm:px-6">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-800 text-white shadow-sm"><HeadphoneIcon /></span>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-sm font-semibold sm:text-base">{componentName} · Bài test full</h1>
+            <h1 className="truncate text-sm font-semibold sm:text-base">
+              {componentName} · {isSinglePartAttempt ? currentPart.name : 'Bài test full'}
+            </h1>
             <p className="text-[10px] text-stone-500">{totalItems} câu hỏi · đã trả lời {totalAnswered}/{totalItems}</p>
             <p className="text-[10px] text-stone-500">● Nội dung có bản quyền</p>
           </div>
@@ -209,6 +276,7 @@ export function AttemptPage() {
           <div className="flex items-center gap-1.5">
             {!readOnly && <button type="button" onClick={restoreSavedResponses} className="exam-action hidden lg:inline-flex"><RestoreIcon /> Khôi phục</button>}
             <div className="flex rounded-xl border border-[#ded5c2] bg-white p-1 shadow-sm" aria-label="Chế độ hiển thị">
+              <button type="button" onClick={() => setViewMode('single')} className={clsx('rounded-lg px-3 py-2 text-xs font-semibold', viewMode === 'single' ? 'bg-[#15231e] text-white' : 'text-stone-600')}>Từng bài</button>
               <button type="button" onClick={() => setViewMode('part')} className={clsx('rounded-lg px-3 py-2 text-xs font-semibold', viewMode === 'part' ? 'bg-[#15231e] text-white' : 'text-stone-600')}>Theo phần</button>
               <button type="button" onClick={() => setViewMode('all')} className={clsx('rounded-lg px-3 py-2 text-xs font-semibold', viewMode === 'all' ? 'bg-[#15231e] text-white' : 'text-stone-600')}>Tất cả</button>
             </div>
@@ -219,26 +287,44 @@ export function AttemptPage() {
       </header>
 
       <main className="mx-auto max-w-[1600px] px-3 py-4 sm:px-6">
-        <nav className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4" aria-label="Các Part trong bài thi">
-          {partGroups.map((part, index) => {
-            const answered = answeredByPart.get(part.id) ?? 0;
-            const active = viewMode === 'part' && index === currentPartIndex;
-            return (
-              <button key={part.id} type="button" onClick={() => void goToPart(index)} className={clsx('rounded-xl border bg-[#fffdf8] px-3 py-2.5 text-left transition', active ? 'border-brand-800 bg-[#eaf4ef] shadow-sm' : 'border-[#e3dac7] hover:border-brand-300')} aria-current={active ? 'step' : undefined}>
-                <span className="block text-sm font-semibold">Phần {part.number}</span>
-                <span className="block text-[9px] font-semibold uppercase text-stone-500">{part.label}</span>
-                <span className="mt-2 block text-[10px] font-medium text-stone-600">{answered}/{part.totalItems}</span>
-                <span className="mt-1.5 block h-0.5 overflow-hidden rounded-full bg-[#d9d0bc]"><span className="block h-full bg-brand-700 transition-all" style={{ width: `${part.totalItems ? (answered / part.totalItems) * 100 : 0}%` }} /></span>
-              </button>
-            );
-          })}
-        </nav>
+        {/*
+          Luyện một Part: thẻ "Phần 1" không cho thêm thông tin gì (chỉ có đúng
+          một Part), nên thay bằng danh sách đề để học viên chọn bài muốn làm.
+          Bài test nhiều Part vẫn dùng lưới Part như cũ.
+        */}
+        {isSinglePartAttempt ? (
+          <SetPicker
+            sets={currentPart.sets}
+            currentIndex={safeSetIndex}
+            partName={currentPart.name}
+            setNumberById={setNumberById}
+            responsesBySet={responsesBySet}
+            onPick={(index) => void goToSetIndex(index)}
+          />
+        ) : (
+          <nav className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4" aria-label="Các Part trong bài thi">
+            {partGroups.map((part, index) => {
+              const answered = answeredByPart.get(part.id) ?? 0;
+              const active = viewMode === 'part' && index === currentPartIndex;
+              return (
+                <button key={part.id} type="button" onClick={() => void goToPart(index)} className={clsx('rounded-xl border bg-[#fffdf8] px-3 py-2.5 text-left transition', active ? 'border-brand-800 bg-[#eaf4ef] shadow-sm' : 'border-[#e3dac7] hover:border-brand-300')} aria-current={active ? 'step' : undefined}>
+                  <span className="block text-sm font-semibold">Phần {part.number}</span>
+                  <span className="block text-[9px] font-semibold uppercase text-stone-500">{part.label}</span>
+                  <span className="mt-2 block text-[10px] font-medium text-stone-600">{answered}/{part.totalItems}</span>
+                  <span className="mt-1.5 block h-0.5 overflow-hidden rounded-full bg-[#d9d0bc]"><span className="block h-full bg-brand-700 transition-all" style={{ width: `${part.totalItems ? (answered / part.totalItems) * 100 : 0}%` }} /></span>
+                </button>
+              );
+            })}
+          </nav>
+        )}
 
         <div className="mt-4 space-y-5">
           {visibleParts.map((part) => (
             <PartSection
               key={part.id}
               part={part}
+              hideHeader={isSinglePartAttempt}
+              onlySetId={visibleSetOnly?.attemptQuestionSetId}
               attemptId={attempt.id}
               responsesBySet={responsesBySet}
               readOnly={readOnly}
@@ -253,8 +339,36 @@ export function AttemptPage() {
 
         <div className="sticky bottom-3 mt-5 flex justify-end border-t border-[#e4dccb] pt-4">
           <div className="flex items-center gap-2 rounded-xl border border-[#e2dac9] bg-white/95 p-2 shadow-[0_8px_24px_rgba(43,39,30,.10)] backdrop-blur">
-            <button type="button" onClick={() => void goToPart(currentPartIndex - 1)} disabled={viewMode === 'all' || currentPartIndex === 0} className="exam-footer-button">Phần trước</button>
-            <button type="button" onClick={() => void goToPart(currentPartIndex + 1)} disabled={viewMode === 'all' || currentPartIndex === partGroups.length - 1} className="exam-footer-button border-emerald-300 bg-[#e7f5ef] text-brand-900">Phần tiếp</button>
+            {viewMode === 'single' ? (
+              <>
+                <span className="px-2 text-[11px] font-medium tabular-nums text-stone-500">
+                  Bài {safeSetIndex + 1}/{setCount} · Phần {currentPart.number}
+                </span>
+                <button type="button" onClick={() => void goToSet(-1)} disabled={isFirstSetOverall} className="exam-footer-button">Bài trước</button>
+                <button type="button" onClick={() => void goToSet(1)} disabled={isLastSetOverall} className="exam-footer-button border-emerald-300 bg-[#e7f5ef] text-brand-900">Bài tiếp</button>
+                {!readOnly && visibleSetOnly && (
+                  visibleSetOnly.status === 'SCORED' ? (
+                    <span className="rounded-lg bg-[#eef6f2] px-3 py-2.5 text-xs font-semibold text-brand-900">
+                      ✓ {visibleSetOnly.awardedScore ?? 0}/{visibleSetOnly.maxScore} điểm
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => scoreSetMutation.mutate(visibleSetOnly.questionSetId)}
+                      disabled={scoreSetMutation.isPending}
+                      className="rounded-lg bg-brand-700 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-brand-800 disabled:opacity-50"
+                    >
+                      {scoreSetMutation.isPending ? 'Đang chấm…' : 'Nộp bài này'}
+                    </button>
+                  )
+                )}
+              </>
+            ) : (
+              <>
+                <button type="button" onClick={() => void goToPart(currentPartIndex - 1)} disabled={viewMode === 'all' || currentPartIndex === 0} className="exam-footer-button">Phần trước</button>
+                <button type="button" onClick={() => void goToPart(currentPartIndex + 1)} disabled={viewMode === 'all' || currentPartIndex === partGroups.length - 1} className="exam-footer-button border-emerald-300 bg-[#e7f5ef] text-brand-900">Phần tiếp</button>
+              </>
+            )}
             {readOnly ? (
               <button type="button" onClick={() => navigate(`/attempts/${attempt.id}/result`)} className="rounded-lg bg-brand-800 px-4 py-2.5 text-xs font-semibold text-white">Xem kết quả</button>
             ) : (
@@ -263,14 +377,172 @@ export function AttemptPage() {
           </div>
         </div>
 
+        {scoreSetMutation.error && <div className="mt-4"><ErrorBlock message={scoreSetMutation.error instanceof ApiError ? scoreSetMutation.error.message : 'Không chấm được bài này'} /></div>}
         {submitMutation.error && <div className="mt-4"><ErrorBlock message={submitMutation.error instanceof ApiError ? submitMutation.error.message : 'Không nộp được bài'} /></div>}
       </main>
     </div>
   );
 }
 
-function PartSection({ part, attemptId, responsesBySet, readOnly, isSubmitted, flaggedItems, setNumberById, onToggleFlag, onItemChange }: {
+/**
+ * Danh sách đề của một Part, dạng menu bung xuống để chọn bài muốn làm.
+ *
+ * <p>Dùng khi lượt chỉ có một Part (luyện theo Part): lúc đó điều hướng theo
+ * Part vô nghĩa, học viên cần chọn theo ĐỀ.
+ */
+/**
+ * Câu trả lời mẫu, mặc định ẩn để học viên tự nói trước rồi mới đối chiếu.
+ * Chỉ render khi backend trả explanation (luyện tập, chưa nộp).
+ */
+function SampleAnswer({ html }: { html: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="mt-3">
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          aria-expanded={open}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 px-3 py-1.5 text-[11px] font-semibold text-amber-800 transition hover:bg-amber-50"
+        >
+          {open ? '🙈 Ẩn câu mẫu' : '👁 Xem câu mẫu'}
+        </button>
+      </div>
+
+      {open && (
+        <div className="mt-2 rounded-xl border border-amber-300 bg-amber-50/70 p-3">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-amber-800">
+            Câu trả lời tham khảo
+          </p>
+          <div className="mt-2 flex gap-2 rounded-lg border-l-4 border-amber-400 bg-white/70 p-2.5">
+            <span className="h-fit shrink-0 rounded bg-amber-200 px-1.5 py-0.5 text-[10px] font-bold text-amber-900">
+              SAMPLE
+            </span>
+            <div className="question-content flex-1 text-xs leading-relaxed" dangerouslySetInnerHTML={{ __html: html }} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet, onPick }: {
+  sets: AttemptQuestionSet[];
+  currentIndex: number;
+  partName: string;
+  setNumberById: Map<string, number>;
+  responsesBySet: Record<string, ResponseMap>;
+  onPick: (index: number) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const current = sets[currentIndex];
+
+  /**
+   * Nhãn của một bộ trong danh sách chọn đề.
+   *
+   * <p>Bộ gộp nhiều câu (Speaking/Writing Part 1) có title là câu hỏi ĐẦU TIÊN,
+   * không đại diện cho cả đề — hiện nó lên sẽ khiến học viên tưởng đó là chủ đề
+   * chung. Những bộ như vậy chỉ đánh số.
+   */
+  const labelOf = (set: AttemptQuestionSet, index: number) =>
+    set.content.items.length > 1
+      ? `Đề ${index + 1}`
+      : set.content.title ?? `Đề ${index + 1}`;
+
+  // Đóng menu khi bấm ra ngoài hoặc nhấn Esc
+  useEffect(() => {
+    if (!open) return;
+    const close = () => setOpen(false);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('click', close);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('click', close);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  const doneCount = sets.filter((set) => set.status === 'SCORED').length;
+
+  return (
+    <div className="relative" onClick={(event) => event.stopPropagation()}>
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        className="flex w-full items-center gap-3 rounded-xl border border-[#e3dac7] bg-[#fffdf8] px-4 py-3 text-left transition hover:border-brand-300"
+      >
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-800 text-xs font-semibold text-white">
+          {currentIndex + 1}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm font-semibold">
+            {current ? labelOf(current, currentIndex) : `Đề ${currentIndex + 1}`}
+          </span>
+          <span className="block text-[10px] text-stone-500">
+            {partName} · Đề {currentIndex + 1}/{sets.length}
+            {doneCount > 0 && ` · đã nộp ${doneCount}`}
+          </span>
+        </span>
+        <span className="shrink-0 text-[11px] font-semibold text-brand-800">
+          Chọn đề <span aria-hidden="true">{open ? '▲' : '▼'}</span>
+        </span>
+      </button>
+
+      {open && (
+        <ul
+          role="listbox"
+          className="absolute z-40 mt-1 max-h-80 w-full overflow-y-auto rounded-xl border border-[#ded5c2] bg-white p-1 shadow-[0_12px_32px_rgba(43,39,30,.16)]"
+        >
+          {sets.map((set, index) => {
+            const answered = countAnswered(set.content.items, responsesBySet[set.attemptQuestionSetId] ?? {});
+            const scored = set.status === 'SCORED';
+            return (
+              <li key={set.attemptQuestionSetId}>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={index === currentIndex}
+                  onClick={() => {
+                    onPick(index);
+                    setOpen(false);
+                  }}
+                  className={clsx(
+                    'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm transition',
+                    index === currentIndex ? 'bg-[#eaf4ef] font-semibold' : 'hover:bg-stone-50',
+                  )}
+                >
+                  <span className="w-6 shrink-0 text-[11px] tabular-nums text-stone-500">
+                    {setNumberById.get(set.attemptQuestionSetId) ?? index + 1}.
+                  </span>
+                  <span className="min-w-0 flex-1 truncate">{labelOf(set, index)}</span>
+                  {scored ? (
+                    <span className="shrink-0 rounded-full bg-[#eef6f2] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
+                      ✓ {set.awardedScore ?? 0}/{set.maxScore}
+                    </span>
+                  ) : answered > 0 ? (
+                    <span className="shrink-0 text-[10px] text-amber-700">đang làm</span>
+                  ) : null}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function PartSection({ part, hideHeader, onlySetId, attemptId, responsesBySet, readOnly, isSubmitted, flaggedItems, setNumberById, onToggleFlag, onItemChange }: {
   part: PartGroup;
+  /** Ẩn tiêu đề Part: khi luyện một Part, dropdown chọn đề đã nói đủ. */
+  hideHeader?: boolean;
+  /** Chỉ render bộ này (chế độ từng bài); bỏ trống thì render cả Part. */
+  onlySetId?: string;
   attemptId: string;
   responsesBySet: Record<string, ResponseMap>;
   readOnly: boolean;
@@ -281,20 +553,30 @@ function PartSection({ part, attemptId, responsesBySet, readOnly, isSubmitted, f
   onItemChange: (set: AttemptQuestionSet, itemId: string, draft: ResponseDraft) => void;
 }) {
   const answered = countPartAnswered(part, responsesBySet);
+  const visibleSets = onlySetId
+    ? part.sets.filter((set) => set.attemptQuestionSetId === onlySetId)
+    : part.sets;
 
   return (
-    <section aria-labelledby={`part-title-${part.id}`}>
-      <div className="flex items-center gap-3 rounded-xl border border-[#cee1d9] bg-[linear-gradient(90deg,#deeee8_0%,#fffdf9_72%)] px-4 py-3">
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-brand-800 font-semibold text-white shadow-sm">{toRoman(part.number)}</span>
-        <div className="min-w-0 flex-1">
-          <h2 id={`part-title-${part.id}`} className="text-base font-semibold sm:text-lg">Phần {part.number} – {part.name}</h2>
-          <p className="text-[11px] font-medium text-brand-900 sm:text-xs">{part.instruction}</p>
+    <section aria-labelledby={hideHeader ? undefined : `part-title-${part.id}`} aria-label={hideHeader ? part.name : undefined}>
+      {hideHeader ? (
+        // Vẫn giữ hướng dẫn làm bài; chỉ bỏ dòng "Phần N – ..." vì đã có ở dropdown
+        <p className="rounded-xl border border-[#cee1d9] bg-[#f2f9f6] px-4 py-2.5 text-[11px] font-medium text-brand-900 sm:text-xs">
+          {part.instruction}
+        </p>
+      ) : (
+        <div className="flex items-center gap-3 rounded-xl border border-[#cee1d9] bg-[linear-gradient(90deg,#deeee8_0%,#fffdf9_72%)] px-4 py-3">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-brand-800 font-semibold text-white shadow-sm">{toRoman(part.number)}</span>
+          <div className="min-w-0 flex-1">
+            <h2 id={`part-title-${part.id}`} className="text-base font-semibold sm:text-lg">Phần {part.number} – {part.name}</h2>
+            <p className="text-[11px] font-medium text-brand-900 sm:text-xs">{part.instruction}</p>
+          </div>
+          <strong className="shrink-0 text-[11px]">{answered}/{part.totalItems} câu</strong>
         </div>
-        <strong className="shrink-0 text-[11px]">{answered}/{part.totalItems} câu</strong>
-      </div>
+      )}
 
       <div className="mt-3 space-y-3 rounded-xl border-l-2 border-brand-800 bg-[#fbfaf5] p-2.5 sm:p-3">
-        {part.sets.map((set) => (
+        {visibleSets.map((set) => (
           <QuestionSetBlock
             key={set.attemptQuestionSetId}
             set={set}
@@ -325,7 +607,13 @@ function QuestionSetBlock({ set, setNumber, attemptId, responses, readOnly, isSu
   onItemChange: (itemId: string, draft: ResponseDraft) => void;
 }) {
   const commonAssets = set.content.assets.filter((asset) => !asset.role.startsWith('ITEM_AUDIO:'));
-  const showTopic = Boolean(set.content.title) && (set.content.items.length > 1 || commonAssets.length > 0);
+
+  // Chỉ hiện tiêu đề chung khi các câu thực sự dùng chung một ngữ liệu (audio
+  // hoặc đoạn đọc). Speaking Part 1 gộp nhiều câu độc lập, title của bộ chỉ là
+  // câu hỏi đầu tiên nên hiện lên sẽ gây hiểu nhầm đó là chủ đề chung.
+  const hasSharedStimulus = commonAssets.length > 0 || Boolean(set.content.stimulus?.value);
+  const showTopic = Boolean(set.content.title) && hasSharedStimulus;
+  const topicLabel = commonAssets.length > 0 ? 'Chủ đề · Bài nghe' : 'Chủ đề';
 
   return (
     <div className="space-y-3">
@@ -333,9 +621,9 @@ function QuestionSetBlock({ set, setNumber, attemptId, responses, readOnly, isSu
         <div className="rounded-xl border border-[#d9dfd7] bg-[#f7fcfa] p-3 sm:p-4">
           {showTopic && (
             <div className="mb-3 flex items-center gap-3 border-l-2 border-brand-800 pl-3">
-              <span className="text-brand-800"><HeadphoneIcon /></span>
+              {commonAssets.length > 0 && <span className="text-brand-800"><HeadphoneIcon /></span>}
               <div>
-                <p className="text-[9px] font-semibold uppercase tracking-[.12em] text-brand-800">Chủ đề · Listening phần</p>
+                <p className="text-[9px] font-semibold uppercase tracking-[.12em] text-brand-800">{topicLabel}</p>
                 <h3 className="text-sm font-semibold sm:text-base">{set.content.title}</h3>
               </div>
             </div>
@@ -384,6 +672,9 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
   onToggleFlag: () => void;
   onChange: (draft: ResponseDraft) => void;
 }) {
+  // Bộ đã nộp riêng giữa lượt cũng phải hiện đáp án, không chỉ khi nộp cả lượt.
+  const revealed = isSubmitted || set.status === 'SCORED';
+
   return (
     <article className={clsx('rounded-xl border bg-[#fffdf9] p-3 shadow-[0_3px_12px_rgba(58,48,27,.05)] sm:p-4', flagged ? 'border-amber-400' : 'border-[#e5dcc8]')}>
       <div className="flex items-start gap-2.5">
@@ -395,10 +686,18 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
       {itemAudio.length > 0 && <div className="mt-3"><AudioPlayer assets={itemAudio} maxAudioPlays={set.maxAudioPlays} initialPlayCount={0} disabled={readOnly} /></div>}
 
       <div className="mt-3">
-        <ItemRenderer item={item} sections={set.content.sections} attemptId={attemptId} questionSetId={set.questionSetId} draft={draft} disabled={readOnly} showAnswer={isSubmitted} onChange={onChange} />
+        <ItemRenderer item={item} sections={set.content.sections} attemptId={attemptId} questionSetId={set.questionSetId} draft={draft} disabled={readOnly || revealed} showAnswer={revealed} onChange={onChange} />
       </div>
 
-      {isSubmitted && item.explanation?.value && <div className="question-content mt-3 rounded-lg bg-stone-100 p-3 text-xs" dangerouslySetInnerHTML={{ __html: item.explanation.value }} />}
+      {/*
+        Đã nộp: hiện luôn phần giải thích.
+        Đang làm: backend chỉ trả explanation khi LUYỆN TẬP — đó là câu trả lời
+        mẫu, để học viên tự bấm xem khi cần chứ không hiện sẵn làm mất tác dụng
+        luyện tập.
+      */}
+      {item.explanation?.value && (revealed
+        ? <div className="question-content mt-3 rounded-lg bg-stone-100 p-3 text-xs" dangerouslySetInnerHTML={{ __html: item.explanation.value }} />
+        : <SampleAnswer html={item.explanation.value} />)}
     </article>
   );
 }
