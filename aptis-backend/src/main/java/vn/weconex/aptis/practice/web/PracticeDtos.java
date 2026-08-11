@@ -72,6 +72,12 @@ public final class PracticeDtos {
     /**
      * Nội dung đã lược answer key khi lượt chưa nộp.
      */
+    /**
+     * @param hotness độ hot 1-5 do biên tập viên đặt; client dùng để hiện số
+     *                ngọn lửa và lọc "đề nhiều lửa". Null nếu chưa đặt.
+     * @param examYear năm ghi nhận đề ra thi, ví dụ 2026; client dùng để lọc
+     *                 theo năm. Null nếu chưa rõ.
+     */
     public record AttemptQuestionSetResponse(
             String attemptQuestionSetId,
             String questionSetId,
@@ -81,6 +87,8 @@ public final class PracticeDtos {
             Double awardedScore,
             int audioPlayCount,
             Integer maxAudioPlays,
+            Integer hotness,
+            Integer examYear,
             QuestionSetDocument content,
             SavedResponse savedResponse) {
     }

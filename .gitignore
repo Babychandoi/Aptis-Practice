@@ -36,6 +36,9 @@ scripts/.e2e-tmp/
 # Backup migration hiện được theo dõi vì repository riêng tư.
 # Không chuyển repository sang public khi còn thư mục backups/.
 
+# MinIO raw archives can exceed GitHub's 100 MB file limit; commit .partNNN files.
+backups/**/minio/minio-data.tar.gz
+
 # OS
 .DS_Store
 Thumbs.db

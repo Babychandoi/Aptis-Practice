@@ -247,6 +247,8 @@ interface EditorForm {
   taskTypeId: string;
   topicName: string;
   hotness: number;
+  /** Năm ra thi, '' nếu chưa rõ. Giữ dạng chuỗi cho khớp <Select>. */
+  examYear: string;
   accessLevel: AccessLevel;
   instructions: string;
   stimulus: string;
@@ -323,7 +325,7 @@ function makeAnswerKey(responseType: ResponseType): AnswerKeyPayload | undefined
 
 const initialForm: EditorForm = {
   code: '', title: '', componentId: '', partId: '', taskTypeId: '', topicName: '',
-  hotness: 3, accessLevel: 'FREE',
+  hotness: 3, examYear: '', accessLevel: 'FREE',
   instructions: '', stimulus: '', assets: [], items: [blankItem(1)], shuffleOptions: false,
   shuffleItems: false, maxAudioPlays: 3, allowReview: true, partialCredit: false,
 };
@@ -426,6 +428,7 @@ export function QuestionSetEditorPage() {
       taskTypeId: task.id,
       topicName: question.topicName ?? '',
       hotness: question.hotness ?? 3,
+      examYear: question.examYear == null ? '' : String(question.examYear),
       accessLevel: question.accessLevel,
       instructions: content.instructions ?? '',
       stimulus: content.stimulus?.value ?? '',
@@ -467,6 +470,7 @@ export function QuestionSetEditorPage() {
       if (editing && id) {
         const body: UpdateQuestionSetRequest = {
           topicName: form.topicName.trim(), title: form.title.trim(), hotness: form.hotness,
+          examYear: form.examYear === '' ? null : Number(form.examYear),
           accessLevel: form.accessLevel, content,
         };
         return adminContentApi.update(id, body);
@@ -486,7 +490,9 @@ export function QuestionSetEditorPage() {
             partId: form.partId, taskTypeId: form.taskTypeId, topicName: form.topicName.trim(),
             code: `${baseCode}_${suffix}`,
             title: singleItem.prompt?.value?.trim() || `${form.title.trim()} ${suffix}`,
-            hotness: form.hotness, accessLevel: form.accessLevel, content: singleContent,
+            hotness: form.hotness,
+            examYear: form.examYear === '' ? null : Number(form.examYear),
+            accessLevel: form.accessLevel, content: singleContent,
           });
         }
         return created!;
@@ -496,6 +502,7 @@ export function QuestionSetEditorPage() {
         partId: form.partId, taskTypeId: form.taskTypeId, topicName: form.topicName.trim(),
         code: baseCode, title: form.title.trim(),
         hotness: form.hotness,
+        examYear: form.examYear === '' ? null : Number(form.examYear),
         accessLevel: form.accessLevel, content,
       };
       return adminContentApi.create(body);
@@ -567,6 +574,12 @@ export function QuestionSetEditorPage() {
             { value: '4', label: '4/5 · Thi nhiều gần đây' },
             { value: '5', label: '5/5 · Rất hot' },
           ]} onChange={(hotness) => setForm((current) => ({ ...current, hotness: Number(hotness) }))} />
+          <Select label="Năm ra thi" value={form.examYear} options={[
+            { value: '', label: 'Chưa rõ' },
+            { value: '2026', label: '2026' },
+            { value: '2025', label: '2025' },
+            { value: '2024', label: '2024' },
+          ]} onChange={(examYear) => setForm((current) => ({ ...current, examYear }))} />
         </div>
         <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           Thời gian làm bài được cấu hình khi ghép bài test hoàn chỉnh, không nhập lại tại đây.

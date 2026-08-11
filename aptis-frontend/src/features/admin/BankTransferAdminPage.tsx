@@ -4,6 +4,7 @@ import { adminBankTransferApi } from '@/api/adminEndpoints';
 import { ApiError } from '@/api/client';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
+import { confirmDialog } from '@/lib/dialog';
 import { formatCurrency, formatDateTime } from '@/lib/format';
 import type { BankAccount, BankTransferStatus, SaveBankAccountRequest } from '@/types/admin';
 import { DataTable, PageHeader, Pager, ResultBanner } from './components/AdminUi';
@@ -108,18 +109,27 @@ export function BankTransferAdminPage() {
                           type="button"
                           className="rounded-lg bg-brand-800 px-3 py-2 text-xs font-semibold text-white hover:bg-brand-900 disabled:opacity-50"
                           disabled={confirmMutation.isPending || rejectMutation.isPending}
-                          onClick={() => {
-                            if (window.confirm(`Xác nhận đã nhận ${formatCurrency(transfer.amount, transfer.currency)} với nội dung ${transfer.transferCode}?`)) {
-                              confirmMutation.mutate({ id: transfer.id, amount: transfer.amount });
-                            }
+                          onClick={async () => {
+                            const ok = await confirmDialog({
+                              title: 'Xác nhận đã nhận tiền?',
+                              text: `${formatCurrency(transfer.amount, transfer.currency)} với nội dung ${transfer.transferCode}. Người dùng sẽ được kích hoạt quyền Premium.`,
+                              confirmText: 'Đã đối soát, xác nhận',
+                            });
+                            if (ok) confirmMutation.mutate({ id: transfer.id, amount: transfer.amount });
                           }}
                         >Xác nhận</button>
                         <button
                           type="button"
                           className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-50"
                           disabled={confirmMutation.isPending || rejectMutation.isPending}
-                          onClick={() => {
-                            if (window.confirm(`Từ chối yêu cầu chuyển khoản ${transfer.transferCode}?`)) rejectMutation.mutate(transfer.id);
+                          onClick={async () => {
+                            const ok = await confirmDialog({
+                              title: 'Từ chối yêu cầu chuyển khoản?',
+                              text: `Yêu cầu ${transfer.transferCode} sẽ bị đánh dấu từ chối và không thể hoàn tác.`,
+                              confirmText: 'Từ chối',
+                              danger: true,
+                            });
+                            if (ok) rejectMutation.mutate(transfer.id);
                           }}
                         >Từ chối</button>
                       </div>

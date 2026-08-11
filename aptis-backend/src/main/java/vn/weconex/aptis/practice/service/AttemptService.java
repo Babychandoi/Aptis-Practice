@@ -79,16 +79,16 @@ public class AttemptService {
     public TestAttempt createPartAttempt(String userId, PracticeDtos.CreatePartAttemptRequest request) {
         boolean hasPremium = entitlementService.hasPremiumAccess(userId);
 
-        // Part gộp câu: mỗi bộ là một câu, một ĐỀ gồm mergeSize câu. Luyện theo
-        // Part thì lấy toàn bộ ngân hàng rồi chia thành từng đề, để học viên đi
-        // hết lượt đề bằng nút "Bài tiếp" thay vì chỉ được một đề mỗi lượt.
         Optional<Integer> mergeSize = properties.practice().mergeSizeOf(request.partId());
 
-        int size = mergeSize.isPresent()
-                ? (int) questionSetRepository.countByPartIdAndStatus(
-                        request.partId(), ContentStatus.PUBLISHED)
-                : Optional.ofNullable(request.questionSetCount())
-                        .orElse(properties.practice().defaultPartPracticeSize());
+        // Luyện theo Part là học hết ngân hàng đề, không phải một lượt ngắn: lấy
+        // tất cả bộ PUBLISHED rồi để giao diện phân trang từng đề. Chỉ giới hạn
+        // khi client chủ động xin số lượng cụ thể (ví dụ ôn nhanh 5 đề).
+        int size = Optional.ofNullable(request.questionSetCount())
+                // Part gộp câu: client xin N đề nghĩa là cần N * mergeSize câu
+                .map(count -> count * mergeSize.orElse(1))
+                .orElseGet(() -> (int) questionSetRepository.countByPartIdAndStatus(
+                        request.partId(), ContentStatus.PUBLISHED));
 
         List<QuestionSet> selected = questionSetSelector.selectForPart(
                 userId, request.partId(), size, hasPremium,
@@ -223,6 +223,8 @@ public class AttemptService {
 
         // Gán id trước để dùng chung cho cả Mongo document và MySQL row
         attempt.setId(java.util.UUID.randomUUID().toString());
+        // Mã ngắn dùng ở URL; cột NOT NULL nên phải có trước khi lưu
+        attempt.setPublicCode(TestAttempt.newPublicCode());
 
         // Factory tự gộp câu cho các Part được cấu hình (Speaking/Writing Part 1)
         AttemptSnapshotFactory.Snapshot snapshot =
@@ -319,6 +321,20 @@ public class AttemptService {
                 attemptQuestionSetRepository.findByAttemptIdOrderByDisplayOrder(attemptId).stream()
                         .collect(Collectors.toMap(AttemptQuestionSet::getId, Function.identity()));
 
+        // Nạp hotness và năm ra thi một lượt cho mọi bộ trong đề, tránh truy vấn
+        // từng bộ. Client dùng để hiện số ngọn lửa và lọc "đề nhiều lửa" / theo năm.
+        List<QuestionSet> questionSets = questionSetRepository
+                .findAllById(document.getQuestionSets().stream()
+                        .map(AttemptDocument.QuestionSetEntry::getQuestionSetId)
+                        .distinct()
+                        .toList());
+        Map<String, Integer> hotnessById = questionSets.stream()
+                .filter(qs -> qs.getHotness() != null)
+                .collect(Collectors.toMap(QuestionSet::getId, qs -> qs.getHotness().intValue()));
+        Map<String, Integer> examYearById = questionSets.stream()
+                .filter(qs -> qs.getExamYear() != null)
+                .collect(Collectors.toMap(QuestionSet::getId, qs -> (int) qs.getExamYear()));
+
         List<PracticeDtos.AttemptQuestionSetResponse> entries = document.getQuestionSets().stream()
                 .sorted(java.util.Comparator.comparingInt(AttemptDocument.QuestionSetEntry::getDisplayOrder))
                 .map(entry -> {
@@ -346,6 +362,8 @@ public class AttemptService {
                                     ? null : row.getAwardedScore().doubleValue(),
                             row == null ? 0 : row.getAudioPlayCount(),
                             entry.getSnapshot().getSettings().getMaxAudioPlays(),
+                            hotnessById.get(entry.getQuestionSetId()),
+                            examYearById.get(entry.getQuestionSetId()),
                             content,
                             toSavedResponse(entry.getResponse()));
                 })

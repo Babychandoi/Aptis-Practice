@@ -157,6 +157,8 @@ public class CatalogController {
     private static CatalogDtos.PartResponse toPartResponse(Part part, long publishedCount) {
         return new CatalogDtos.PartResponse(
                 part.getId(),
+                part.getComponent().getId(),
+                part.getComponent().getCode(),
                 part.getCode(),
                 part.getName(),
                 part.getDescription(),

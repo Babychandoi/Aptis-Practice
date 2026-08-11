@@ -4,6 +4,7 @@ import { ApiError } from '@/api/client';
 import { adminEntitlementApi, adminUserApi } from '@/api/adminEndpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
+import { confirmDialog } from '@/lib/dialog';
 import { formatDateTime } from '@/lib/format';
 import type { AdminEntitlement, AdminSubscription, AdminUser, UserStatus } from '@/types/admin';
 import { DataTable, PageHeader, Pager, ResultBanner } from './components/AdminUi';
@@ -258,8 +259,14 @@ function PremiumSection({ user, canManage, onSaved }: {
               type="button"
               className="btn-secondary mt-3 w-full !border-red-200 !text-red-700"
               disabled={pending}
-              onClick={() => {
-                if (window.confirm('Huỷ toàn bộ quyền Premium đang có của người dùng này?')) cancelMutation.mutate();
+              onClick={async () => {
+                const ok = await confirmDialog({
+                  title: 'Huỷ quyền Premium?',
+                  text: 'Toàn bộ quyền Premium đang có của người dùng này sẽ bị thu hồi ngay.',
+                  confirmText: 'Huỷ quyền',
+                  danger: true,
+                });
+                if (ok) cancelMutation.mutate();
               }}
             >
               Huỷ gói Premium

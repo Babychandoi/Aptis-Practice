@@ -32,6 +32,14 @@ import vn.weconex.aptis.common.util.Enums.PracticeMode;
 @NoArgsConstructor
 public class TestAttempt extends BaseEntity {
 
+    /**
+     * Mã ngắn công khai dùng ở tầng URL, do application sinh (xem
+     * {@link #newPublicCode()}). Khác {@code id}: id vẫn là khóa chính và là
+     * thứ dùng để tham chiếu giữa MySQL / MongoDB / MinIO.
+     */
+    @Column(name = "public_code", length = 16, nullable = false, updatable = false)
+    private String publicCode;
+
     @Column(name = "user_id", columnDefinition = "CHAR(36)", nullable = false)
     private String userId;
 
@@ -102,6 +110,24 @@ public class TestAttempt extends BaseEntity {
 
     @Column(name = "incorrect_items", nullable = false)
     private int incorrectItems;
+
+    /**
+     * Sinh mã công khai 10 ký tự hex bằng nguồn ngẫu nhiên an toàn.
+     *
+     * <p>Không dẫn xuất từ {@code id}: nếu băm id thì biết id là suy ra được mã
+     * và ngược lại, làm mất ý nghĩa của việc tách hai định danh.
+     *
+     * <p>16^10 ≈ 1,1e12 tổ hợp. Cột có UNIQUE nên trùng cũng không hỏng dữ liệu.
+     */
+    public static String newPublicCode() {
+        byte[] bytes = new byte[5];
+        new java.security.SecureRandom().nextBytes(bytes);
+        StringBuilder code = new StringBuilder(10);
+        for (byte value : bytes) {
+            code.append(String.format("%02x", value));
+        }
+        return code.toString();
+    }
 
     public boolean isOwnedBy(String candidateUserId) {
         return userId.equals(candidateUserId);

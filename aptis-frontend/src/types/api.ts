@@ -124,6 +124,9 @@ export interface ComponentSummary {
 
 export interface PartSummary {
   id: string;
+  componentId: string;
+  /** Mã kỹ năng (SPEAKING, READING…). Cần vì `code` chỉ là PART_1..PART_4. */
+  componentCode: string;
   code: string;
   name: string;
   description: string | null;
@@ -273,6 +276,10 @@ export interface AttemptQuestionSet {
   awardedScore: number | null;
   audioPlayCount: number;
   maxAudioPlays: number | null;
+  /** Độ hot 1-5 do biên tập viên đặt; dùng để hiện ngọn lửa và lọc đề. */
+  hotness: number | null;
+  /** Năm ghi nhận đề ra thi, ví dụ 2026. null nếu chưa rõ. */
+  examYear: number | null;
   content: QuestionSetContent;
   savedResponse: SavedResponse | null;
 }

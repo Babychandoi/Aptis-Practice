@@ -87,6 +87,7 @@ public class AdminContentService {
         questionSet.setTitle(request.title());
         questionSet.setDifficulty(toByte(request.difficulty()));
         questionSet.setHotness(toByte(request.hotness()));
+        questionSet.setExamYear(toShort(request.examYear()));
         questionSet.setCefrMin(request.cefrMin());
         questionSet.setCefrMax(request.cefrMax());
         questionSet.setAccessLevel(request.accessLevel());
@@ -133,6 +134,9 @@ public class AdminContentService {
         }
         if (request.hotness() != null) {
             questionSet.setHotness(toByte(request.hotness()));
+        }
+        if (request.examYear() != null) {
+            questionSet.setExamYear(toShort(request.examYear()));
         }
         if (request.cefrMin() != null) {
             questionSet.setCefrMin(request.cefrMin());
@@ -417,5 +421,9 @@ public class AdminContentService {
 
     private static Byte toByte(Integer value) {
         return value == null ? null : value.byteValue();
+    }
+
+    private static Short toShort(Integer value) {
+        return value == null ? null : value.shortValue();
     }
 }

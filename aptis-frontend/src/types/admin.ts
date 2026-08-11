@@ -35,6 +35,7 @@ export interface AdminQuestionSet {
   topicName: string | null;
   difficulty: number | null;
   hotness: number | null;
+  examYear: number | null;
   cefrMin: CefrLevel | null;
   cefrMax: CefrLevel | null;
   accessLevel: AccessLevel;
@@ -115,6 +116,7 @@ export interface CreateQuestionSetRequest {
   title?: string;
   difficulty?: number | null;
   hotness?: number | null;
+  examYear?: number | null;
   cefrMin?: CefrLevel | null;
   cefrMax?: CefrLevel | null;
   accessLevel: AccessLevel;

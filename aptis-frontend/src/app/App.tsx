@@ -4,6 +4,7 @@ import { setAuthFailureHandler } from '@/api/client';
 import { useAuthStore } from '@/features/auth/authStore';
 import { AppLayout } from '@/app/AppLayout';
 import { ProtectedRoute } from '@/app/ProtectedRoute';
+import { NotFoundPage } from '@/app/NotFoundPage';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { RegisterPage } from '@/features/auth/RegisterPage';
 import { VerifyEmailPage } from '@/features/auth/VerifyEmailPage';
@@ -124,7 +125,8 @@ export function App() {
         <Route path="reports" element={<ReportAdminPage />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      {/* Fallback cuối: nói rõ không tìm thấy thay vì âm thầm đá về trang chủ */}
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

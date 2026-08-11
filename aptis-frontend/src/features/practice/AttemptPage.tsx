@@ -5,11 +5,13 @@ import clsx from 'clsx';
 import { ApiError } from '@/api/client';
 import { practiceApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
+import { ErrorState } from '@/components/ui/ErrorState';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { PremiumGate } from '@/components/ui/PremiumGate';
 import { useComponents, useExamVersions, useParts } from '@/features/catalog/catalogQueries';
 import { componentDisplayName, componentPath } from '@/features/catalog/catalogRoutes';
 import { AudioPlayer } from '@/features/practice/AudioPlayer';
+import { ImageViewer } from '@/features/practice/ImageViewer';
 import { ItemRenderer } from '@/features/practice/renderers/ItemRenderer';
 import {
   countAnswered,
@@ -20,6 +22,7 @@ import {
 } from '@/features/practice/responseState';
 import { useAttemptTimer } from '@/features/practice/useAttemptTimer';
 import { useAutosave } from '@/features/practice/useAutosave';
+import { confirmDialog } from '@/lib/dialog';
 import { formatDuration } from '@/lib/format';
 import type { AttemptQuestionSet, PartSummary, QuestionItem } from '@/types/api';
 
@@ -201,24 +204,64 @@ export function AttemptPage() {
     navigate(component ? `${componentPath(component.code)}/bai-test` : '/');
   };
 
-  const restoreSavedResponses = () => {
-    if (!attempt || !window.confirm('Khôi phục câu trả lời đã lưu gần nhất? Các thay đổi chưa lưu sẽ bị bỏ.')) return;
+  const restoreSavedResponses = async () => {
+    if (!attempt) return;
+    const ok = await confirmDialog({
+      title: 'Khôi phục câu trả lời đã lưu?',
+      text: 'Bản lưu gần nhất sẽ được nạp lại. Các thay đổi chưa lưu sẽ bị bỏ.',
+      confirmText: 'Khôi phục',
+    });
+    if (!ok) return;
     autosave.discard();
     setResponsesBySet(hydrateAttempt(attempt.questionSets));
   };
 
-  const submitAttempt = () => {
+  const submitAttempt = async () => {
     const unanswered = Math.max(0, totalItems - totalAnswered);
-    if (unanswered > 0 && !window.confirm(`Bạn còn ${unanswered} câu chưa trả lời. Vẫn nộp bài?`)) return;
+    if (unanswered > 0) {
+      const ok = await confirmDialog({
+        title: `Còn ${unanswered} câu chưa trả lời`,
+        text: 'Nộp bài rồi sẽ không sửa được nữa. Bạn vẫn muốn nộp?',
+        confirmText: 'Vẫn nộp bài',
+        cancelText: 'Làm tiếp',
+        danger: true,
+      });
+      if (!ok) return;
+    }
     submitMutation.mutate();
   };
 
   if (attemptQuery.isLoading) return <LoadingBlock label="Đang tải bài thi…" />;
   if (attemptQuery.error) {
-    if (attemptQuery.error instanceof ApiError && attemptQuery.error.isPremiumRequired) return <PremiumGate />;
-    return <ErrorBlock message="Không tải được bài thi" onRetry={() => void attemptQuery.refetch()} />;
+    // Nội dung Premium: mời mua gói thay vì báo lỗi, vì đây không phải sự cố.
+    if (attemptQuery.error instanceof ApiError && attemptQuery.error.isPremiumRequired) {
+      return <PremiumGate />;
+    }
+    // Trang làm bài chiếm trọn màn hình (không có sidebar), nên lỗi ở đây phải
+    // tự mang theo lối đi tiếp — nếu không người dùng mắc kẹt.
+    return (
+      <ErrorState
+        fullPage
+        error={attemptQuery.error}
+        fallbackTitle="Không tải được bài thi"
+        onRetry={() => void attemptQuery.refetch()}
+      />
+    );
   }
-  if (!attempt || partGroups.length === 0 || !currentPart) return <ErrorBlock message="Bài thi không có nội dung" />;
+  if (!attempt || partGroups.length === 0 || !currentPart) {
+    return (
+      <ErrorState
+        fullPage
+        presentation={{
+          title: 'Bài thi không có nội dung',
+          description: 'Đề này bị thiếu dữ liệu nên không hiển thị được. Bạn chọn đề khác giúp nhé.',
+          tone: 'error',
+          canRetry: false,
+          action: { label: 'Về trang chủ', to: '/' },
+        }}
+      />
+    );
+  }
 
   if (attempt.status === 'CREATED') {
     return (
@@ -258,7 +301,10 @@ export function AttemptPage() {
             <h1 className="truncate text-sm font-semibold sm:text-base">
               {componentName} · {isSinglePartAttempt ? currentPart.name : 'Bài test full'}
             </h1>
-            <p className="text-[10px] text-stone-500">{totalItems} câu hỏi · đã trả lời {totalAnswered}/{totalItems}</p>
+            <p className="text-[10px] text-stone-500">
+              {totalItems} câu hỏi · đã trả lời {totalAnswered}/{totalItems}
+              {isSinglePartAttempt && ` · sẵn sàng chấm ${currentPart.sets.filter((set) => set.status === 'SCORED').length}/${currentPart.sets.length}`}
+            </p>
             <p className="text-[10px] text-stone-500">● Nội dung có bản quyền</p>
           </div>
 
@@ -299,6 +345,7 @@ export function AttemptPage() {
             partName={currentPart.name}
             setNumberById={setNumberById}
             responsesBySet={responsesBySet}
+            flaggedItems={flaggedItems}
             onPick={(index) => void goToSetIndex(index)}
           />
         ) : (
@@ -344,8 +391,8 @@ export function AttemptPage() {
                 <span className="px-2 text-[11px] font-medium tabular-nums text-stone-500">
                   Bài {safeSetIndex + 1}/{setCount} · Phần {currentPart.number}
                 </span>
-                <button type="button" onClick={() => void goToSet(-1)} disabled={isFirstSetOverall} className="exam-footer-button">Bài trước</button>
-                <button type="button" onClick={() => void goToSet(1)} disabled={isLastSetOverall} className="exam-footer-button border-emerald-300 bg-[#e7f5ef] text-brand-900">Bài tiếp</button>
+                <button type="button" onClick={() => void goToSet(-1)} disabled={isFirstSetOverall} className="exam-footer-button">Chủ đề trước</button>
+                <button type="button" onClick={() => void goToSet(1)} disabled={isLastSetOverall} className="exam-footer-button border-emerald-300 bg-[#e7f5ef] text-brand-900">Chủ đề tiếp theo</button>
                 {!readOnly && visibleSetOnly && (
                   visibleSetOnly.status === 'SCORED' ? (
                     <span className="rounded-lg bg-[#eef6f2] px-3 py-2.5 text-xs font-semibold text-brand-900">
@@ -358,7 +405,7 @@ export function AttemptPage() {
                       disabled={scoreSetMutation.isPending}
                       className="rounded-lg bg-brand-700 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-brand-800 disabled:opacity-50"
                     >
-                      {scoreSetMutation.isPending ? 'Đang chấm…' : 'Nộp bài này'}
+                      {scoreSetMutation.isPending ? 'Đang chấm…' : 'Nộp bài chủ đề này'}
                     </button>
                   )
                 )}
@@ -372,7 +419,7 @@ export function AttemptPage() {
             {readOnly ? (
               <button type="button" onClick={() => navigate(`/attempts/${attempt.id}/result`)} className="rounded-lg bg-brand-800 px-4 py-2.5 text-xs font-semibold text-white">Xem kết quả</button>
             ) : (
-              <button type="button" onClick={submitAttempt} disabled={submitMutation.isPending} className="rounded-lg bg-amber-500 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-amber-600 disabled:opacity-50">{submitMutation.isPending ? 'Đang nộp…' : 'Nộp bài'}</button>
+              <button type="button" onClick={submitAttempt} disabled={submitMutation.isPending} className="rounded-lg bg-amber-500 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-amber-600 disabled:opacity-50">{submitMutation.isPending ? 'Đang nộp…' : 'Nộp toàn bộ · AI chấm'}</button>
             )}
           </div>
         </div>
@@ -427,15 +474,22 @@ function SampleAnswer({ html }: { html: string }) {
   );
 }
 
-function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet, onPick }: {
+/** Đề được coi là "nhiều lửa" khi biên tập viên đặt độ hot từ mức này trở lên. */
+const HOT_THRESHOLD = 4;
+
+function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet, flaggedItems, onPick }: {
   sets: AttemptQuestionSet[];
   currentIndex: number;
   partName: string;
   setNumberById: Map<string, number>;
   responsesBySet: Record<string, ResponseMap>;
+  flaggedItems: Set<string>;
   onPick: (index: number) => void;
 }) {
   const [open, setOpen] = useState(false);
+  /** 'all' | 'hot' | năm (ví dụ '2026') */
+  const [filter, setFilter] = useState<string>('all');
+  const [jumpTo, setJumpTo] = useState('');
   const current = sets[currentIndex];
 
   /**
@@ -466,9 +520,124 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
   }, [open]);
 
   const doneCount = sets.filter((set) => set.status === 'SCORED').length;
+  const flaggedCount = sets.filter((set) =>
+    set.content.items.some((item) => flaggedItems.has(`${set.attemptQuestionSetId}:${item.id}`)),
+  ).length;
+
+  // Năm ra thi lấy từ cột exam_year của bộ đề. Trước đây dò chuỗi "(2026)" trong
+  // tiêu đề, nên chỉ chạy nếu biên tập viên nhớ gõ năm vào tên đề.
+  const yearOf = (set: AttemptQuestionSet) =>
+    set.examYear == null ? undefined : String(set.examYear);
+  const years = Array.from(new Set(sets.map(yearOf).filter(Boolean) as string[])).sort();
+  const hotCount = sets.filter((set) => (set.hotness ?? 0) >= HOT_THRESHOLD).length;
+
+  const matchesFilter = (set: AttemptQuestionSet) => {
+    if (filter === 'all') return true;
+    if (filter === 'hot') return (set.hotness ?? 0) >= HOT_THRESHOLD;
+    return yearOf(set) === filter;
+  };
+
+  // Giữ index gốc khi lọc, nếu không "Đề N/M" sẽ lệch so với danh sách thật.
+  const visibleSets = sets
+    .map((set, index) => ({ set, index }))
+    .filter(({ set }) => matchesFilter(set));
+
+  const currentProgress = current
+    ? countAnswered(current.content.items, responsesBySet[current.attemptQuestionSetId] ?? {})
+    : 0;
+  const currentTotal = current?.content.items.length ?? 0;
+
+  const jump = () => {
+    const target = Number(jumpTo);
+    if (!Number.isInteger(target) || target < 1 || target > sets.length) return;
+    onPick(target - 1);
+    setJumpTo('');
+  };
 
   return (
-    <div className="relative" onClick={(event) => event.stopPropagation()}>
+    <div className="space-y-2" onClick={(event) => event.stopPropagation()}>
+      {/* Thẻ chủ đề đang mở: tên, vị trí, tiến độ, số lửa */}
+      {current && (
+        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#cee1d9] bg-[linear-gradient(90deg,#e8f4ef_0%,#fffdf9_70%)] px-4 py-3">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white text-brand-800 shadow-sm">
+            <MicIcon />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-[9px] font-semibold uppercase tracking-[.12em] text-brand-800">
+              Chủ đề · {partName}
+            </p>
+            <h3 className="truncate text-sm font-semibold sm:text-base">
+              {labelOf(current, currentIndex)}
+              {(current.hotness ?? 0) >= HOT_THRESHOLD && (
+                <span className="ml-1.5">{'🔥'.repeat(current.hotness ?? 0)}</span>
+              )}
+            </h3>
+            <p className="text-[10px] text-stone-500">
+              Chủ đề {currentIndex + 1} / {sets.length} · {currentTotal} câu nói
+            </p>
+          </div>
+
+          <div className="min-w-40 flex-1">
+            <div className="flex items-center justify-between text-[10px] text-stone-500">
+              <span>Tiến độ chủ đề</span>
+              <span className="font-semibold tabular-nums">{currentProgress} / {currentTotal} câu</span>
+            </div>
+            <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-[#d9d0bc]">
+              <span
+                className="block h-full bg-brand-700 transition-all"
+                style={{ width: `${currentTotal ? (currentProgress / currentTotal) * 100 : 0}%` }}
+              />
+            </span>
+          </div>
+
+          <span className="shrink-0 rounded-lg border border-[#cee1d9] bg-white px-3 py-1.5 text-[10px] font-semibold uppercase text-brand-800">
+            {doneCount} sẵn sàng
+          </span>
+          <span className="shrink-0 rounded-lg border border-amber-300 bg-white px-3 py-1.5 text-[10px] font-semibold uppercase text-amber-700">
+            {flaggedCount} đánh dấu
+          </span>
+        </div>
+      )}
+
+      {/* Hàng lọc + chuyển nhanh */}
+      <div className="flex flex-wrap items-end gap-2 rounded-xl border border-[#e3dac7] bg-[#fffdf8] px-3 py-2.5">
+        <span className="text-[10px] font-medium text-stone-500">Lọc chủ đề</span>
+        <FilterChip label="Tất cả" count={sets.length} active={filter === 'all'} onClick={() => setFilter('all')} />
+        {years.map((year) => (
+          <FilterChip
+            key={year}
+            label={year}
+            count={sets.filter((set) => yearOf(set) === year).length}
+            active={filter === year}
+            onClick={() => setFilter(year)}
+          />
+        ))}
+        {hotCount > 0 && (
+          <FilterChip label="Nhiều lửa" count={hotCount} active={filter === 'hot'} onClick={() => setFilter('hot')} />
+        )}
+
+        <div className="ml-auto flex items-end gap-2">
+          <label className="text-[10px] font-medium text-stone-500">
+            <span className="mb-1 block">Chuyển nhanh</span>
+            <input
+              type="number"
+              min={1}
+              max={sets.length}
+              value={jumpTo}
+              onChange={(event) => setJumpTo(event.target.value)}
+              onKeyDown={(event) => { if (event.key === 'Enter') jump(); }}
+              placeholder={String(currentIndex + 1)}
+              className="input w-24 py-1.5 text-xs"
+              aria-label={`Nhảy tới chủ đề, từ 1 đến ${sets.length}`}
+            />
+          </label>
+          <button type="button" onClick={jump} disabled={!jumpTo} className="rounded-lg bg-brand-800 px-3 py-2 text-xs font-semibold text-white disabled:opacity-40">
+            Đi
+          </button>
+        </div>
+      </div>
+
+      <div className="relative">
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
@@ -482,14 +651,19 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
         <span className="min-w-0 flex-1">
           <span className="block truncate text-sm font-semibold">
             {current ? labelOf(current, currentIndex) : `Đề ${currentIndex + 1}`}
+            {(current?.hotness ?? 0) > 0 && (
+              <span className="ml-1.5 text-[10px] leading-none" title={`Độ hot ${current?.hotness}/5`}>
+                {'🔥'.repeat(current?.hotness ?? 0)}
+              </span>
+            )}
           </span>
           <span className="block text-[10px] text-stone-500">
-            {partName} · Đề {currentIndex + 1}/{sets.length}
-            {doneCount > 0 && ` · đã nộp ${doneCount}`}
+            Chủ đề đang mở · {currentIndex + 1}/{sets.length}
+            {filter !== 'all' && ` · đang lọc: ${visibleSets.length} đề`}
           </span>
         </span>
         <span className="shrink-0 text-[11px] font-semibold text-brand-800">
-          Chọn đề <span aria-hidden="true">{open ? '▲' : '▼'}</span>
+          Chọn chủ đề <span aria-hidden="true">{open ? '▲' : '▼'}</span>
         </span>
       </button>
 
@@ -498,7 +672,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
           role="listbox"
           className="absolute z-40 mt-1 max-h-80 w-full overflow-y-auto rounded-xl border border-[#ded5c2] bg-white p-1 shadow-[0_12px_32px_rgba(43,39,30,.16)]"
         >
-          {sets.map((set, index) => {
+          {visibleSets.map(({ set, index }) => {
             const answered = countAnswered(set.content.items, responsesBySet[set.attemptQuestionSetId] ?? {});
             const scored = set.status === 'SCORED';
             return (
@@ -520,6 +694,14 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
                     {setNumberById.get(set.attemptQuestionSetId) ?? index + 1}.
                   </span>
                   <span className="min-w-0 flex-1 truncate">{labelOf(set, index)}</span>
+                  {(set.hotness ?? 0) > 0 && (
+                    <span
+                      className="shrink-0 text-[10px] leading-none"
+                      title={`Độ hot ${set.hotness}/5`}
+                    >
+                      {'🔥'.repeat(set.hotness ?? 0)}
+                    </span>
+                  )}
                   {scored ? (
                     <span className="shrink-0 rounded-full bg-[#eef6f2] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
                       ✓ {set.awardedScore ?? 0}/{set.maxScore}
@@ -533,7 +715,62 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
           })}
         </ul>
       )}
+      </div>
     </div>
+  );
+}
+
+/**
+ * Badge thời lượng và số từ yêu cầu, đọc từ constraints của câu hỏi.
+ * Chỉ hiện với dạng có giới hạn thời gian nói/viết (Speaking, Writing).
+ */
+function ItemMetaBadge({ item }: { item: QuestionItem }) {
+  const seconds = item.constraints?.responseSeconds;
+  const minWords = item.constraints?.minWords;
+  const maxWords = item.constraints?.maxWords;
+
+  if (typeof seconds !== 'number') return null;
+
+  return (
+    <span className="shrink-0 rounded-full bg-[#eef6f2] px-2 py-1 font-mono text-[10px] text-brand-800">
+      ● {formatDuration(seconds)}
+      {typeof minWords === 'number' && typeof maxWords === 'number' && ` · ${minWords}–${maxWords} từ`}
+    </span>
+  );
+}
+
+/** Chip lọc chủ đề, hiện kèm số lượng đề khớp. */
+function FilterChip({ label, count, active, onClick }: {
+  label: string;
+  count: number;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={clsx(
+        'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition',
+        active
+          ? 'border-brand-800 bg-brand-800 text-white'
+          : 'border-[#ded5c2] bg-white text-stone-600 hover:border-brand-300',
+      )}
+    >
+      {active && <span aria-hidden="true">✓</span>}
+      {label}
+      <span className={clsx('tabular-nums', active ? 'text-white/70' : 'text-stone-400')}>{count}</span>
+    </button>
+  );
+}
+
+function MicIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z" />
+      <path d="M19 11a7 7 0 0 1-14 0M12 18v3" />
+    </svg>
   );
 }
 
@@ -606,18 +843,26 @@ function QuestionSetBlock({ set, setNumber, attemptId, responses, readOnly, isSu
   onToggleFlag: (key: string) => void;
   onItemChange: (itemId: string, draft: ResponseDraft) => void;
 }) {
-  const commonAssets = set.content.assets.filter((asset) => !asset.role.startsWith('ITEM_AUDIO:'));
+  // Ảnh và audio dùng chung phải tách riêng: Speaking Part 2 đưa một ẢNH rồi hỏi
+  // 3 câu, còn Listening đưa audio. Trước đây mọi asset không phải ITEM_AUDIO
+  // đều bị đẩy vào AudioPlayer, nên ảnh không hiện ra.
+  const sharedAssets = set.content.assets.filter((asset) => !asset.role.startsWith('ITEM_AUDIO:'));
+  const sharedImages = sharedAssets.filter((asset) => asset.role.endsWith('IMAGE'));
+  const commonAssets = sharedAssets.filter((asset) => !asset.role.endsWith('IMAGE'));
 
-  // Chỉ hiện tiêu đề chung khi các câu thực sự dùng chung một ngữ liệu (audio
-  // hoặc đoạn đọc). Speaking Part 1 gộp nhiều câu độc lập, title của bộ chỉ là
-  // câu hỏi đầu tiên nên hiện lên sẽ gây hiểu nhầm đó là chủ đề chung.
-  const hasSharedStimulus = commonAssets.length > 0 || Boolean(set.content.stimulus?.value);
+  // Chỉ hiện tiêu đề chung khi các câu thực sự dùng chung một ngữ liệu (audio,
+  // ảnh hoặc đoạn đọc). Speaking Part 1 gộp nhiều câu độc lập, title của bộ chỉ
+  // là câu hỏi đầu tiên nên hiện lên sẽ gây hiểu nhầm đó là chủ đề chung.
+  const hasSharedStimulus =
+    sharedAssets.length > 0 || Boolean(set.content.stimulus?.value);
   const showTopic = Boolean(set.content.title) && hasSharedStimulus;
-  const topicLabel = commonAssets.length > 0 ? 'Chủ đề · Bài nghe' : 'Chủ đề';
+  const topicLabel = commonAssets.length > 0
+    ? 'Chủ đề · Bài nghe'
+    : sharedImages.length > 0 ? 'Chủ đề · Ảnh' : 'Chủ đề';
 
   return (
     <div className="space-y-3">
-      {(showTopic || set.content.instructions || set.content.stimulus?.value || commonAssets.length > 0) && (
+      {(showTopic || set.content.instructions || set.content.stimulus?.value || sharedAssets.length > 0) && (
         <div className="rounded-xl border border-[#d9dfd7] bg-[#f7fcfa] p-3 sm:p-4">
           {showTopic && (
             <div className="mb-3 flex items-center gap-3 border-l-2 border-brand-800 pl-3">
@@ -630,6 +875,7 @@ function QuestionSetBlock({ set, setNumber, attemptId, responses, readOnly, isSu
           )}
           {set.content.instructions && <p className="mb-3 rounded-lg bg-[#eaf4ef] px-3 py-2 text-xs text-brand-900">{set.content.instructions}</p>}
           {set.content.stimulus?.value && <div className="question-content mb-3 text-sm" dangerouslySetInnerHTML={{ __html: set.content.stimulus.value }} />}
+          {sharedImages.length > 0 && <div className="mb-3"><ImageViewer assets={sharedImages} /></div>}
           {commonAssets.length > 0 && <AudioPlayer assets={commonAssets} maxAudioPlays={set.maxAudioPlays} initialPlayCount={set.audioPlayCount} disabled={readOnly} />}
         </div>
       )}
@@ -679,6 +925,7 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
     <article className={clsx('rounded-xl border bg-[#fffdf9] p-3 shadow-[0_3px_12px_rgba(58,48,27,.05)] sm:p-4', flagged ? 'border-amber-400' : 'border-[#e5dcc8]')}>
       <div className="flex items-start gap-2.5">
         <span className="grid min-h-7 min-w-7 shrink-0 place-items-center rounded-full border border-sky-200 bg-sky-50 px-1 text-[11px] font-semibold text-sky-700 shadow-sm">{numberLabel}</span>
+        <ItemMetaBadge item={item} />
         {item.prompt?.value ? <div className="question-content min-w-0 flex-1 pt-1 text-xs font-medium sm:text-[13px]" dangerouslySetInnerHTML={{ __html: item.prompt.value }} /> : <span className="flex-1" />}
         <button type="button" onClick={onToggleFlag} className={clsx('inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-[10px] font-semibold transition sm:text-xs', flagged ? 'border-amber-400 bg-amber-50 text-amber-800' : 'border-[#d9cdb4] bg-white text-stone-600 hover:border-amber-400')} aria-pressed={flagged}><FlagIcon /> {flagged ? 'Đã đánh dấu' : 'Đánh dấu'}</button>
       </div>
