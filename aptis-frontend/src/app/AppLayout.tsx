@@ -7,6 +7,7 @@ import { formatDate } from '@/lib/format';
 const PRIMARY_NAV = [
   { to: '/', label: 'Bảng điều khiển', icon: 'home' },
   { to: '/mock-tests', label: 'Mô phỏng thi', icon: 'exam' },
+  { to: '/meo-hoc', label: 'Mẹo học', icon: 'tips' },
   { to: '/history', label: 'Kết quả của tôi', icon: 'history' },
 ] as const;
 
@@ -169,12 +170,13 @@ function BrandIcon() {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden="true"><path d="M5 4.5h10.5A3.5 3.5 0 0 1 19 8v11.5H8.5A3.5 3.5 0 0 0 5 23V4.5Z" /><path d="M8.5 8H15M8.5 12H15M8.5 16H13" /></svg>;
 }
 
-type IconName = 'home' | 'exam' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout';
+type IconName = 'home' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout';
 
 function NavIcon({ name }: { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
     home: <><path d="m3 11 9-8 9 8" /><path d="M5 10v10h14V10M9 20v-6h6v6" /></>,
     exam: <><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></>,
+    tips: <><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6M10 22h4" /></>,
     history: <><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5M12 7v5l3 2" /></>,
     premium: <path d="m12 3 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8L12 3Z" />,
     grammar: <><path d="M5 4h14v16H5z" /><path d="M8 8h8M8 12h5M8 16h7" /></>,

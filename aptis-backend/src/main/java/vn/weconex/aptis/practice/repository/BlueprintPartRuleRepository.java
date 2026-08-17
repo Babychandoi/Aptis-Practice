@@ -9,5 +9,8 @@ public interface BlueprintPartRuleRepository extends JpaRepository<BlueprintPart
 
     List<BlueprintPartRule> findByBlueprintIdOrderByDisplayOrder(String blueprintId);
 
+    /** Rule của nhiều đề trong một truy vấn, dùng khi dựng danh sách đề thi. */
+    List<BlueprintPartRule> findByBlueprintIdInOrderByDisplayOrder(List<String> blueprintIds);
+
     void deleteByBlueprintId(String blueprintId);
 }

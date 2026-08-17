@@ -5,7 +5,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -156,6 +159,35 @@ public class MockTestService {
         return blueprintRepository.findByStatusAndModeOrderByAccessLevelAscNameAsc(
                 vn.weconex.aptis.common.util.Enums.PublishStatus.PUBLISHED,
                 vn.weconex.aptis.common.util.Enums.PracticeMode.MOCK_TEST);
+    }
+
+    /**
+     * Đề thi thử của một kỹ năng, có phân trang.
+     *
+     * @param componentId null = đề thi cả 5 kỹ năng
+     */
+    @Transactional(readOnly = true)
+    public Page<TestBlueprint> listAvailable(String componentId, Pageable pageable) {
+        return blueprintRepository.findAvailable(
+                vn.weconex.aptis.common.util.Enums.PublishStatus.PUBLISHED,
+                vn.weconex.aptis.common.util.Enums.PracticeMode.MOCK_TEST,
+                componentId,
+                pageable);
+    }
+
+    /**
+     * Rule của nhiều blueprint trong MỘT truy vấn.
+     *
+     * <p>Dựng danh sách bằng cách gọi {@link #rulesOf} cho từng đề thì một trang
+     * 20 đề tốn 20 truy vấn; gom lại còn một.
+     */
+    @Transactional(readOnly = true)
+    public Map<String, List<BlueprintPartRule>> rulesOfAll(List<String> blueprintIds) {
+        if (blueprintIds.isEmpty()) {
+            return Map.of();
+        }
+        return ruleRepository.findByBlueprintIdInOrderByDisplayOrder(blueprintIds).stream()
+                .collect(Collectors.groupingBy(BlueprintPartRule::getBlueprintId));
     }
 
     @Transactional(readOnly = true)

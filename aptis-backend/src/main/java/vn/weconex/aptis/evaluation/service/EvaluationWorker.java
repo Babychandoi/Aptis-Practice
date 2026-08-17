@@ -2,7 +2,9 @@ package vn.weconex.aptis.evaluation.service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,6 +43,12 @@ import vn.weconex.aptis.practice.service.AttemptScoreAggregator;
 @Service
 @RequiredArgsConstructor
 public class EvaluationWorker {
+
+    /**
+     * Bản ghi dài hơn mốc này mà không ra chữ nào thì coi là lỗi STT, không phải
+     * học viên im lặng. 3 giây: đủ để loại các bản ghi bấm nhầm rồi dừng ngay.
+     */
+    private static final long MIN_AUDIBLE_MS = 3_000;
 
     private static final int MAX_RETRY = 3;
 
@@ -116,6 +124,39 @@ public class EvaluationWorker {
         QuestionSetDocument.Item item = firstEvaluableItem(entry, job.getEvaluationType());
         AttemptDocument.ItemResponse response = entry.getResponse().findItemResponse(item.getId());
 
+        // Writing Part 1/2/3 có nhiều ô trả lời trong cùng một bộ. Một job phải
+        // chấm toàn bộ các ô theo đúng thứ tự, không chỉ item đầu tiên.
+        if (job.getEvaluationType() == EvaluationType.WRITING_AI) {
+            List<QuestionSetDocument.Item> writingItems = evaluableItems(entry, "LONG_TEXT");
+            StringBuilder prompts = new StringBuilder();
+            StringBuilder answers = new StringBuilder();
+            int minWords = 0;
+            int maxWords = 0;
+            for (int index = 0; index < writingItems.size(); index++) {
+                QuestionSetDocument.Item writingItem = writingItems.get(index);
+                AttemptDocument.ItemResponse writingResponse =
+                        entry.getResponse().findItemResponse(writingItem.getId());
+                prompts.append("Question ").append(index + 1).append(": ")
+                        .append(writingItem.getPrompt() == null
+                                ? "" : writingItem.getPrompt().getValue())
+                        .append('\n');
+                answers.append("Answer ").append(index + 1).append(": ");
+                if (writingResponse != null && writingResponse.getTextValue() != null) {
+                    answers.append(writingResponse.getTextValue());
+                }
+                answers.append('\n');
+                minWords += numberConstraint(writingItem, "minWords");
+                maxWords += numberConstraint(writingItem, "maxWords");
+            }
+            Map<String, Object> constraints = new LinkedHashMap<>(item.getConstraints());
+            constraints.put("minWords", minWords);
+            constraints.put("maxWords", maxWords);
+            constraints.put("itemCount", writingItems.size());
+            return engine.evaluate(new EvaluationEngine.EvaluationRequest(
+                    job.getEvaluationType(), answers.toString(), null, null, null,
+                    loadRubric(item), prompts.toString(), constraints));
+        }
+
         String transcript = null;
         Long durationMs = null;
         if (job.getEvaluationType() == EvaluationType.SPEAKING_AI && response != null) {
@@ -124,6 +165,19 @@ public class EvaluationWorker {
                     transcriptionService.transcribe(response.getRecordingAssetId());
             transcript = t.text();
             durationMs = t.durationMs();
+
+            // Có bản ghi mà không nghe được chữ nào: phân biệt hai trường hợp.
+            //
+            // Học viên KHÔNG NÓI GÌ thì 0 điểm là đúng. Nhưng STT lỗi (endpoint
+            // sập, hết hạn mức, file hỏng) cũng cho transcript rỗng — chấm 0 lúc
+            // đó là oan. Ném lỗi để job vào retry; chỉ khi hết lượt thử mới
+            // FAILED và giáo viên chấm tay, thay vì âm thầm cho 0.
+            if (!t.available() && response.getRecordingAssetId() != null
+                    && durationMs != null && durationMs > MIN_AUDIBLE_MS) {
+                throw new IllegalStateException(
+                        "Không lấy được transcript cho bản ghi dài " + durationMs
+                                + " ms — kiểm tra dịch vụ STT trước khi chấm");
+            }
 
             // Lưu transcript vào snapshot để giáo viên xem lại được
             response.setTranscript(transcript);
@@ -155,6 +209,18 @@ public class EvaluationWorker {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException(
                         "Không tìm thấy câu dạng " + responseType + " để chấm"));
+    }
+
+    private static List<QuestionSetDocument.Item> evaluableItems(
+            AttemptDocument.QuestionSetEntry entry, String responseType) {
+        return entry.getSnapshot().getItems().stream()
+                .filter(item -> responseType.equals(item.getResponseType()))
+                .toList();
+    }
+
+    private static int numberConstraint(QuestionSetDocument.Item item, String key) {
+        Object value = item.getConstraints().get(key);
+        return value instanceof Number number ? number.intValue() : 0;
     }
 
     /**

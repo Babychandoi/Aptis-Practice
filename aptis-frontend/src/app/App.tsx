@@ -19,6 +19,11 @@ import { PartPage } from '@/features/catalog/PartPage';
 import { MockTestPage } from '@/features/practice/MockTestPage';
 import { AttemptPage } from '@/features/practice/AttemptPage';
 import { AttemptResultPage } from '@/features/practice/AttemptResultPage';
+import { StudyTipsListeningPart3Page } from '@/features/learning/StudyTipsListeningPart3Page';
+import { StudyTipsReadingPage } from '@/features/learning/StudyTipsReadingPage';
+import { StudyTipsWritingPage } from '@/features/learning/StudyTipsWritingPage';
+import { StudyTipsSpeakingPage } from '@/features/learning/StudyTipsSpeakingPage';
+import { StudyTipsHomePage } from '@/features/learning/StudyTipsHomePage';
 import { HistoryPage } from '@/features/practice/HistoryPage';
 import { PlansPage } from '@/features/billing/PlansPage';
 import { CheckoutPage } from '@/features/billing/CheckoutPage';
@@ -89,6 +94,11 @@ export function App() {
         <Route path="/mock-tests" element={<MockTestPage />} />
         <Route path="/attempts/:attemptId" element={<AttemptPage />} />
         <Route path="/attempts/:attemptId/result" element={<AttemptResultPage />} />
+        <Route path="/meo-hoc" element={<StudyTipsHomePage />} />
+        <Route path="/meo-hoc/nghe-phan-3" element={<StudyTipsListeningPart3Page />} />
+        <Route path="/meo-hoc/doc" element={<StudyTipsReadingPage />} />
+        <Route path="/meo-hoc/viet" element={<StudyTipsWritingPage />} />
+        <Route path="/meo-hoc/noi" element={<StudyTipsSpeakingPage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/checkout/:orderId" element={<CheckoutPage />} />

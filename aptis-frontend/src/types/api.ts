@@ -315,7 +315,31 @@ export interface Attempt {
   timeSpentSeconds: number;
   totalItems: number;
   answeredItems: number;
+  /**
+   * Part là ngân hàng câu rời: mỗi bộ một câu, đề thi thật gộp nhiều câu
+   * (Writing Part 1, Speaking Part 1). Ở đây không có "chủ đề" để chọn.
+   */
+  itemBankPart: boolean;
+  /**
+   * Tiến độ từng kỹ năng của bài thi đủ 5 kỹ năng. Rỗng khi luyện từng part.
+   */
+  componentProgress: ComponentProgress[];
   questionSets: AttemptQuestionSet[];
+}
+
+/**
+ * Một kỹ năng trong bài thi đủ 5 kỹ năng: có đồng hồ riêng và khóa lại khi nộp.
+ */
+export interface ComponentProgress {
+  componentId: string;
+  componentCode: string;
+  displayOrder: number;
+  durationSeconds: number;
+  /** null = chưa tới lượt kỹ năng này. */
+  startedAt: string | null;
+  expiresAt: string | null;
+  /** Đã nộp: không sửa, không xem lại được nữa. */
+  submittedAt: string | null;
 }
 
 export interface AttemptSummary {
@@ -547,4 +571,34 @@ export interface AssetResponse {
   width: number | null;
   height: number | null;
   signedUrl: string | null;
+}
+
+// ---------------------------------------------------------------------
+// Mẹo học
+// ---------------------------------------------------------------------
+
+/** Chuỗi tiêu đề đáp án của một đề Reading Part 4, theo thứ tự đoạn văn. */
+export interface HeadingChain {
+  questionSetId: string;
+  questionSetCode: string;
+  title: string;
+  /** Tiêu đề đúng của đoạn 1..7. */
+  headings: string[];
+  /** Đoạn văn tương ứng, dùng để đối chiếu dấu hiệu paraphrase. */
+  passages: string[];
+  examYear: number | null;
+  hotness: number | null;
+}
+
+/** Mã người nói của một chủ đề Listening Part 3. */
+export interface SpeakerCode {
+  questionSetId: string;
+  questionSetCode: string;
+  title: string;
+  /** Bốn chữ số theo thứ tự bốn câu: Man=1, Woman=2, Both=0. */
+  code: string;
+  /** Tên người nói từng câu, dùng để tô màu và đọc thành lời. */
+  speakers: string[];
+  examYear: number | null;
+  hotness: number | null;
 }

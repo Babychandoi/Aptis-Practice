@@ -1,0 +1,35 @@
+SET NAMES utf8mb4;
+-- Speaking Part 3: độ hot theo số ngọn lửa biên tập đánh trên từng chủ đề.
+-- Số chủ đề khớp phần số của mã đề (chủ đề 1 -> SPEAKING_PART_3_001).
+-- Chỉ 38 đề thuộc lứa 2026 có lửa; 22 đề còn lại không được đánh giá nên để NULL.
+
+-- 5 lửa
+UPDATE question_sets SET hotness = 5, updated_at = NOW()
+WHERE part_id = '16000000-0000-4000-8000-000000000033' AND code IN (
+ 'SPEAKING_PART_3_001','SPEAKING_PART_3_007','SPEAKING_PART_3_009','SPEAKING_PART_3_011',
+ 'SPEAKING_PART_3_012','SPEAKING_PART_3_016','SPEAKING_PART_3_021','SPEAKING_PART_3_025',
+ 'SPEAKING_PART_3_029','SPEAKING_PART_3_036','SPEAKING_PART_3_041','SPEAKING_PART_3_050',
+ 'SPEAKING_PART_3_054');
+
+-- 4 lửa
+UPDATE question_sets SET hotness = 4, updated_at = NOW()
+WHERE part_id = '16000000-0000-4000-8000-000000000033' AND code IN (
+ 'SPEAKING_PART_3_002','SPEAKING_PART_3_005','SPEAKING_PART_3_008','SPEAKING_PART_3_010',
+ 'SPEAKING_PART_3_019','SPEAKING_PART_3_023','SPEAKING_PART_3_024','SPEAKING_PART_3_030',
+ 'SPEAKING_PART_3_032','SPEAKING_PART_3_034','SPEAKING_PART_3_035','SPEAKING_PART_3_037',
+ 'SPEAKING_PART_3_038','SPEAKING_PART_3_040','SPEAKING_PART_3_046','SPEAKING_PART_3_048');
+
+-- 3 lửa
+UPDATE question_sets SET hotness = 3, updated_at = NOW()
+WHERE part_id = '16000000-0000-4000-8000-000000000033' AND code IN (
+ 'SPEAKING_PART_3_003','SPEAKING_PART_3_004','SPEAKING_PART_3_014','SPEAKING_PART_3_018',
+ 'SPEAKING_PART_3_022','SPEAKING_PART_3_028','SPEAKING_PART_3_042','SPEAKING_PART_3_043',
+ 'SPEAKING_PART_3_047');
+
+-- 22 đề còn lại không nằm trong danh sách 2026 nên không có đánh giá độ hot.
+UPDATE question_sets SET hotness = NULL, updated_at = NOW()
+WHERE part_id = '16000000-0000-4000-8000-000000000033' AND exam_year IS NULL;
+
+SELECT hotness, COUNT(*) AS so_de FROM question_sets
+WHERE part_id='16000000-0000-4000-8000-000000000033'
+GROUP BY hotness ORDER BY hotness DESC;

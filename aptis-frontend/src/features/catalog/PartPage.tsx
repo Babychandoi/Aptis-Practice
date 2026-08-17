@@ -10,8 +10,6 @@ import { MicCheck } from '@/features/practice/MicCheck';
 import { useComponents, useExamVersions, usePart, useParts } from '@/features/catalog/catalogQueries';
 import { componentDisplayName, findComponentBySlug, findPartBySlug } from '@/features/catalog/catalogRoutes';
 
-const MAX_PART_QUESTION_SETS = 50;
-
 /**
  * Màn chuẩn bị trước khi vào luyện một Part.
  *
@@ -45,11 +43,10 @@ export function PartPage() {
   const createAttempt = useMutation({
     mutationFn: async () => {
       const attempt = await practiceApi.createPartAttempt({
+        // Bỏ trống questionSetCount = lấy toàn bộ Part. Trước đây gửi số đề rồi
+        // cắt còn 50, nên Part nhiều hơn 50 bộ (Listening Part 1 có 260) có
+        // những đề không bao giờ xuất hiện. Giao diện đã phân trang từng đề.
         partId: resolvedPartId!,
-        questionSetCount: Math.min(
-          Math.max(partQuery.data?.publishedQuestionSetCount ?? 1, 1),
-          MAX_PART_QUESTION_SETS,
-        ),
         onlyNew: false,
         onlyIncorrect: false,
         timed: false,

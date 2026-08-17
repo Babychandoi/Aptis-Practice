@@ -1,0 +1,3397 @@
+{
+  "part": 1,
+  "skill": "reading",
+  "exam": "Aptis ESOL General",
+  "title": "Aptis Reading Part 1",
+  "question_count": 143,
+  "note": "Giữ nguyên tuyệt đối thứ tự 1-143 theo HTML nguồn. 138 câu có 3 lựa chọn A/B/C. Riêng câu 84-88 là một dãy liên tiếp dùng chung cùng bộ 5 lựa chọn A-E, nên options của nhóm này được đưa lên cấp shared_option_set.",
+  "items": [
+    {
+      "type": "question",
+      "stt": 1,
+      "display_no": 1,
+      "question_id": "8",
+      "item_id": "reading-q-8",
+      "question": "Take the bus to the main ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "station"
+        },
+        {
+          "letter": "B",
+          "text": "run"
+        },
+        {
+          "letter": "C",
+          "text": "walk"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "station"
+    },
+    {
+      "type": "question",
+      "stt": 2,
+      "display_no": 2,
+      "question_id": "64",
+      "item_id": "reading-q-64",
+      "question": "I saw some shoes in the ______ of one store.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "market"
+        },
+        {
+          "letter": "B",
+          "text": "window"
+        },
+        {
+          "letter": "C",
+          "text": "shoe"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "window"
+    },
+    {
+      "type": "question",
+      "stt": 3,
+      "display_no": 3,
+      "question_id": "23",
+      "item_id": "reading-q-23",
+      "question": "I get up early in the ____ and I go running.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "morning"
+        },
+        {
+          "letter": "B",
+          "text": "friends"
+        },
+        {
+          "letter": "C",
+          "text": "leave"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "morning"
+    },
+    {
+      "type": "question",
+      "stt": 4,
+      "display_no": 4,
+      "question_id": "96",
+      "item_id": "reading-q-96",
+      "question": "Everyone is ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "friendly"
+        },
+        {
+          "letter": "B",
+          "text": "melty"
+        },
+        {
+          "letter": "C",
+          "text": "noisy"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "friendly"
+    },
+    {
+      "type": "question",
+      "stt": 5,
+      "display_no": 5,
+      "question_id": "84",
+      "item_id": "reading-q-84",
+      "question": "I start ______ in the morning.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "sleep"
+        },
+        {
+          "letter": "B",
+          "text": "early"
+        },
+        {
+          "letter": "C",
+          "text": "angry"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "early"
+    },
+    {
+      "type": "question",
+      "stt": 6,
+      "display_no": 6,
+      "question_id": "79",
+      "item_id": "reading-q-79",
+      "question": "The ______ is out.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "wind"
+        },
+        {
+          "letter": "B",
+          "text": "dust"
+        },
+        {
+          "letter": "C",
+          "text": "sun"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "sun"
+    },
+    {
+      "type": "question",
+      "stt": 7,
+      "display_no": 7,
+      "question_id": "2",
+      "item_id": "reading-q-2",
+      "question": "I just reviewed the latest report, but the budget doesn't ____.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "work"
+        },
+        {
+          "letter": "B",
+          "text": "count"
+        },
+        {
+          "letter": "C",
+          "text": "balance"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "balance"
+    },
+    {
+      "type": "question",
+      "stt": 8,
+      "display_no": 8,
+      "question_id": "123",
+      "item_id": "reading-q-123",
+      "question": "In the mornings, I attend ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "meetings"
+        },
+        {
+          "letter": "B",
+          "text": "dinner"
+        },
+        {
+          "letter": "C",
+          "text": "breakfast"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "meetings"
+    },
+    {
+      "type": "question",
+      "stt": 9,
+      "display_no": 9,
+      "question_id": "100",
+      "item_id": "reading-q-100",
+      "question": "The weather is ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "cheap"
+        },
+        {
+          "letter": "B",
+          "text": "expensive"
+        },
+        {
+          "letter": "C",
+          "text": "great"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "great"
+    },
+    {
+      "type": "question",
+      "stt": 10,
+      "display_no": 10,
+      "question_id": "56",
+      "item_id": "reading-q-56",
+      "question": "I need the ______ of the report.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "work"
+        },
+        {
+          "letter": "B",
+          "text": "job"
+        },
+        {
+          "letter": "C",
+          "text": "details"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "details"
+    },
+    {
+      "type": "question",
+      "stt": 11,
+      "display_no": 11,
+      "question_id": "40",
+      "item_id": "reading-q-40",
+      "question": "I ______ in a flat.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "go"
+        },
+        {
+          "letter": "B",
+          "text": "live"
+        },
+        {
+          "letter": "C",
+          "text": "walk"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "live"
+    },
+    {
+      "type": "question",
+      "stt": 12,
+      "display_no": 12,
+      "question_id": "125",
+      "item_id": "reading-q-125",
+      "question": "I am living with a family ______ the city.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "next"
+        },
+        {
+          "letter": "B",
+          "text": "near"
+        },
+        {
+          "letter": "C",
+          "text": "under"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "near"
+    },
+    {
+      "type": "question",
+      "stt": 13,
+      "display_no": 13,
+      "question_id": "10",
+      "item_id": "reading-q-10",
+      "question": "The water is ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "sour"
+        },
+        {
+          "letter": "B",
+          "text": "clear"
+        },
+        {
+          "letter": "C",
+          "text": "see"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "clear"
+    },
+    {
+      "type": "question",
+      "stt": 14,
+      "display_no": 14,
+      "question_id": "129",
+      "item_id": "reading-q-129",
+      "question": "It is ______ what I like.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "yet"
+        },
+        {
+          "letter": "B",
+          "text": "not"
+        },
+        {
+          "letter": "C",
+          "text": "just"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "just"
+    },
+    {
+      "type": "question",
+      "stt": 15,
+      "display_no": 15,
+      "question_id": "18",
+      "item_id": "reading-q-18",
+      "question": "I am never ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "late"
+        },
+        {
+          "letter": "B",
+          "text": "soon"
+        },
+        {
+          "letter": "C",
+          "text": "early"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "late"
+    },
+    {
+      "type": "question",
+      "stt": 16,
+      "display_no": 16,
+      "question_id": "38",
+      "item_id": "reading-q-38",
+      "question": "I am writing to tell you about my ______",
+      "options": [
+        {
+          "letter": "A",
+          "text": "stay"
+        },
+        {
+          "letter": "B",
+          "text": "dinner"
+        },
+        {
+          "letter": "C",
+          "text": "garden"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "stay"
+    },
+    {
+      "type": "question",
+      "stt": 17,
+      "display_no": 17,
+      "question_id": "109",
+      "item_id": "reading-q-109",
+      "question": "The library is ______ today, so we can study there after class.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "open"
+        },
+        {
+          "letter": "B",
+          "text": "heavy"
+        },
+        {
+          "letter": "C",
+          "text": "green"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "open"
+    },
+    {
+      "type": "question",
+      "stt": 18,
+      "display_no": 18,
+      "question_id": "48354",
+      "item_id": "reading-q-48354",
+      "question": "I imagine you don't want to ______ this.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "love"
+        },
+        {
+          "letter": "B",
+          "text": "remember"
+        },
+        {
+          "letter": "C",
+          "text": "miss"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "miss"
+    },
+    {
+      "type": "question",
+      "stt": 19,
+      "display_no": 19,
+      "question_id": "48487",
+      "item_id": "reading-q-48487",
+      "question": "In the ____ market, I cycle to work.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "sun"
+        },
+        {
+          "letter": "B",
+          "text": "morning"
+        },
+        {
+          "letter": "C",
+          "text": "market"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "morning"
+    },
+    {
+      "type": "question",
+      "stt": 20,
+      "display_no": 20,
+      "question_id": "9",
+      "item_id": "reading-q-9",
+      "question": "The bus ______ are near my house.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "color"
+        },
+        {
+          "letter": "B",
+          "text": "stops"
+        },
+        {
+          "letter": "C",
+          "text": "driver"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "stops"
+    },
+    {
+      "type": "question",
+      "stt": 21,
+      "display_no": 21,
+      "question_id": "95",
+      "item_id": "reading-q-95",
+      "question": "I didn't ______ it.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "eat"
+        },
+        {
+          "letter": "B",
+          "text": "drink"
+        },
+        {
+          "letter": "C",
+          "text": "buy"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "buy"
+    },
+    {
+      "type": "question",
+      "stt": 22,
+      "display_no": 22,
+      "question_id": "113",
+      "item_id": "reading-q-113",
+      "question": "My ____ come and exercise with me.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "friends"
+        },
+        {
+          "letter": "B",
+          "text": "leave"
+        },
+        {
+          "letter": "C",
+          "text": "food"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "friends"
+    },
+    {
+      "type": "question",
+      "stt": 23,
+      "display_no": 23,
+      "question_id": "105",
+      "item_id": "reading-q-105",
+      "question": "My flat is near university, so I can ______ to my class.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "train"
+        },
+        {
+          "letter": "B",
+          "text": "sleep"
+        },
+        {
+          "letter": "C",
+          "text": "walk"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "walk"
+    },
+    {
+      "type": "question",
+      "stt": 24,
+      "display_no": 24,
+      "question_id": "6",
+      "item_id": "reading-q-6",
+      "question": "I have ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "lunch"
+        },
+        {
+          "letter": "B",
+          "text": "bed"
+        },
+        {
+          "letter": "C",
+          "text": "tutor"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "lunch"
+    },
+    {
+      "type": "question",
+      "stt": 25,
+      "display_no": 25,
+      "question_id": "24",
+      "item_id": "reading-q-24",
+      "question": "I have an ______ holiday.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "tired"
+        },
+        {
+          "letter": "B",
+          "text": "enjoyable"
+        },
+        {
+          "letter": "C",
+          "text": "good"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "enjoyable"
+    },
+    {
+      "type": "question",
+      "stt": 26,
+      "display_no": 26,
+      "question_id": "126",
+      "item_id": "reading-q-126",
+      "question": "I ______ you earlier but you were not home.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "called"
+        },
+        {
+          "letter": "B",
+          "text": "told"
+        },
+        {
+          "letter": "C",
+          "text": "said"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "called"
+    },
+    {
+      "type": "question",
+      "stt": 27,
+      "display_no": 27,
+      "question_id": "115",
+      "item_id": "reading-q-115",
+      "question": "Could you get the financial ______ and check for any errors?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "department"
+        },
+        {
+          "letter": "B",
+          "text": "statement"
+        },
+        {
+          "letter": "C",
+          "text": "accountant"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "statement"
+    },
+    {
+      "type": "question",
+      "stt": 28,
+      "display_no": 28,
+      "question_id": "122",
+      "item_id": "reading-q-122",
+      "question": "I eat lunch in the ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "park"
+        },
+        {
+          "letter": "B",
+          "text": "city"
+        },
+        {
+          "letter": "C",
+          "text": "village"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "park"
+    },
+    {
+      "type": "question",
+      "stt": 29,
+      "display_no": 29,
+      "question_id": "87",
+      "item_id": "reading-q-87",
+      "question": "We are on the ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "city"
+        },
+        {
+          "letter": "B",
+          "text": "countryside"
+        },
+        {
+          "letter": "C",
+          "text": "boat"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "boat"
+    },
+    {
+      "type": "question",
+      "stt": 30,
+      "display_no": 30,
+      "question_id": "5",
+      "item_id": "reading-q-5",
+      "question": "Can you print a ______ for me?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "information"
+        },
+        {
+          "letter": "B",
+          "text": "copy"
+        },
+        {
+          "letter": "C",
+          "text": "paper"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "copy"
+    },
+    {
+      "type": "question",
+      "stt": 31,
+      "display_no": 31,
+      "question_id": "54",
+      "item_id": "reading-q-54",
+      "question": "I ______ it with my friend.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "share"
+        },
+        {
+          "letter": "B",
+          "text": "drink"
+        },
+        {
+          "letter": "C",
+          "text": "hold"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "share"
+    },
+    {
+      "type": "question",
+      "stt": 32,
+      "display_no": 32,
+      "question_id": "42",
+      "item_id": "reading-q-42",
+      "question": "My flat is near the university, so I can ______ to my class.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "train"
+        },
+        {
+          "letter": "B",
+          "text": "sleep"
+        },
+        {
+          "letter": "C",
+          "text": "walk"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "walk"
+    },
+    {
+      "type": "question",
+      "stt": 33,
+      "display_no": 33,
+      "question_id": "102",
+      "item_id": "reading-q-102",
+      "question": "I live ______ the city.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "near"
+        },
+        {
+          "letter": "B",
+          "text": "next"
+        },
+        {
+          "letter": "C",
+          "text": "far"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "near"
+    },
+    {
+      "type": "question",
+      "stt": 34,
+      "display_no": 34,
+      "question_id": "127",
+      "item_id": "reading-q-127",
+      "question": "My teacher asked me to ______ the email before lunch.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "send"
+        },
+        {
+          "letter": "B",
+          "text": "grow"
+        },
+        {
+          "letter": "C",
+          "text": "paint"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "send"
+    },
+    {
+      "type": "question",
+      "stt": 35,
+      "display_no": 35,
+      "question_id": "48488",
+      "item_id": "reading-q-48488",
+      "question": "My ____ cycle to work.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "friends"
+        },
+        {
+          "letter": "B",
+          "text": "house"
+        },
+        {
+          "letter": "C",
+          "text": "car"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "friends"
+    },
+    {
+      "type": "question",
+      "stt": 36,
+      "display_no": 36,
+      "question_id": "69",
+      "item_id": "reading-q-69",
+      "question": "My house is ______ and you can easily recognize it by the color.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "tall"
+        },
+        {
+          "letter": "B",
+          "text": "fat"
+        },
+        {
+          "letter": "C",
+          "text": "green"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "green"
+    },
+    {
+      "type": "question",
+      "stt": 37,
+      "display_no": 37,
+      "question_id": "128",
+      "item_id": "reading-q-128",
+      "question": "I ______ a program on TV.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "ate"
+        },
+        {
+          "letter": "B",
+          "text": "saw"
+        },
+        {
+          "letter": "C",
+          "text": "watched"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "watched"
+    },
+    {
+      "type": "question",
+      "stt": 38,
+      "display_no": 38,
+      "question_id": "45",
+      "item_id": "reading-q-45",
+      "question": "I ____ my car at home and go for a walk.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "leave"
+        },
+        {
+          "letter": "B",
+          "text": "bad"
+        },
+        {
+          "letter": "C",
+          "text": "food"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "leave"
+    },
+    {
+      "type": "question",
+      "stt": 39,
+      "display_no": 39,
+      "question_id": "104",
+      "item_id": "reading-q-104",
+      "question": "There is a girl living with me, I met her for the ______ time.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "very"
+        },
+        {
+          "letter": "B",
+          "text": "first"
+        },
+        {
+          "letter": "C",
+          "text": "one"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "first"
+    },
+    {
+      "type": "question",
+      "stt": 40,
+      "display_no": 40,
+      "question_id": "39",
+      "item_id": "reading-q-39",
+      "question": "I ______ the office.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "go"
+        },
+        {
+          "letter": "B",
+          "text": "leave"
+        },
+        {
+          "letter": "C",
+          "text": "return"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "leave"
+    },
+    {
+      "type": "question",
+      "stt": 41,
+      "display_no": 41,
+      "question_id": "21",
+      "item_id": "reading-q-21",
+      "question": "After ______ so hard, I need a rest.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "working"
+        },
+        {
+          "letter": "B",
+          "text": "sleeping"
+        },
+        {
+          "letter": "C",
+          "text": "eating"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "working"
+    },
+    {
+      "type": "question",
+      "stt": 42,
+      "display_no": 42,
+      "question_id": "106",
+      "item_id": "reading-q-106",
+      "question": "Can you be ______ before 7pm?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "early"
+        },
+        {
+          "letter": "B",
+          "text": "sleepy"
+        },
+        {
+          "letter": "C",
+          "text": "ready"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "ready"
+    },
+    {
+      "type": "question",
+      "stt": 43,
+      "display_no": 43,
+      "question_id": "89",
+      "item_id": "reading-q-89",
+      "question": "I am going to wear it ______ my birthday party.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "to"
+        },
+        {
+          "letter": "B",
+          "text": "on"
+        },
+        {
+          "letter": "C",
+          "text": "at"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "to"
+    },
+    {
+      "type": "question",
+      "stt": 44,
+      "display_no": 44,
+      "question_id": "130",
+      "item_id": "reading-q-130",
+      "question": "We eat dinner ______ we go to church.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "after"
+        },
+        {
+          "letter": "B",
+          "text": "then"
+        },
+        {
+          "letter": "C",
+          "text": "before"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "before"
+    },
+    {
+      "type": "question",
+      "stt": 45,
+      "display_no": 45,
+      "question_id": "62",
+      "item_id": "reading-q-62",
+      "question": "I am ______ with my work.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "busy"
+        },
+        {
+          "letter": "B",
+          "text": "table"
+        },
+        {
+          "letter": "C",
+          "text": "round"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "busy"
+    },
+    {
+      "type": "question",
+      "stt": 46,
+      "display_no": 46,
+      "question_id": "68",
+      "item_id": "reading-q-68",
+      "question": "We are in the same ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "door"
+        },
+        {
+          "letter": "B",
+          "text": "class"
+        },
+        {
+          "letter": "C",
+          "text": "chair"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "class"
+    },
+    {
+      "type": "question",
+      "stt": 47,
+      "display_no": 47,
+      "question_id": "53",
+      "item_id": "reading-q-53",
+      "question": "I ______ it will help clarify the issue.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "sure"
+        },
+        {
+          "letter": "B",
+          "text": "assure"
+        },
+        {
+          "letter": "C",
+          "text": "think"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "think"
+    },
+    {
+      "type": "question",
+      "stt": 48,
+      "display_no": 48,
+      "question_id": "44",
+      "item_id": "reading-q-44",
+      "question": "The children are ______ to me.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "noisy"
+        },
+        {
+          "letter": "B",
+          "text": "shy"
+        },
+        {
+          "letter": "C",
+          "text": "friendly"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "friendly"
+    },
+    {
+      "type": "question",
+      "stt": 49,
+      "display_no": 49,
+      "question_id": "118",
+      "item_id": "reading-q-118",
+      "question": "This exercise is not difficult. It is quite ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "easy"
+        },
+        {
+          "letter": "B",
+          "text": "angry"
+        },
+        {
+          "letter": "C",
+          "text": "empty"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "easy"
+    },
+    {
+      "type": "question",
+      "stt": 50,
+      "display_no": 50,
+      "question_id": "48489",
+      "item_id": "reading-q-48489",
+      "question": "I feel ____ after cycling to work.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "big"
+        },
+        {
+          "letter": "B",
+          "text": "good"
+        },
+        {
+          "letter": "C",
+          "text": "beautiful"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "good"
+    },
+    {
+      "type": "question",
+      "stt": 51,
+      "display_no": 51,
+      "question_id": "131",
+      "item_id": "reading-q-131",
+      "question": "I cook eggs for a quick ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "dinner"
+        },
+        {
+          "letter": "B",
+          "text": "homework"
+        },
+        {
+          "letter": "C",
+          "text": "sore"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "dinner"
+    },
+    {
+      "type": "question",
+      "stt": 52,
+      "display_no": 52,
+      "question_id": "47",
+      "item_id": "reading-q-47",
+      "question": "I buy some food at the ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "classroom"
+        },
+        {
+          "letter": "B",
+          "text": "park"
+        },
+        {
+          "letter": "C",
+          "text": "market"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "market"
+    },
+    {
+      "type": "question",
+      "stt": 53,
+      "display_no": 53,
+      "question_id": "35",
+      "item_id": "reading-q-35",
+      "question": "Exercise is ____ for my body.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "leave"
+        },
+        {
+          "letter": "B",
+          "text": "good"
+        },
+        {
+          "letter": "C",
+          "text": "early"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "good"
+    },
+    {
+      "type": "question",
+      "stt": 54,
+      "display_no": 54,
+      "question_id": "57",
+      "item_id": "reading-q-57",
+      "question": "She is from France and she can ______ 5 languages.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "talk"
+        },
+        {
+          "letter": "B",
+          "text": "say"
+        },
+        {
+          "letter": "C",
+          "text": "speak"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "speak"
+    },
+    {
+      "type": "question",
+      "stt": 55,
+      "display_no": 55,
+      "question_id": "99",
+      "item_id": "reading-q-99",
+      "question": "I go home in my new ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "bag"
+        },
+        {
+          "letter": "B",
+          "text": "jeans"
+        },
+        {
+          "letter": "C",
+          "text": "car"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "car"
+    },
+    {
+      "type": "question",
+      "stt": 56,
+      "display_no": 56,
+      "question_id": "27",
+      "item_id": "reading-q-27",
+      "question": "I hope to ______ your letter",
+      "options": [
+        {
+          "letter": "A",
+          "text": "tell"
+        },
+        {
+          "letter": "B",
+          "text": "read"
+        },
+        {
+          "letter": "C",
+          "text": "forward"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "read"
+    },
+    {
+      "type": "question",
+      "stt": 57,
+      "display_no": 57,
+      "question_id": "93",
+      "item_id": "reading-q-93",
+      "question": "I can ______ you at your place then.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "hold"
+        },
+        {
+          "letter": "B",
+          "text": "meet"
+        },
+        {
+          "letter": "C",
+          "text": "miss"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "meet"
+    },
+    {
+      "type": "question",
+      "stt": 58,
+      "display_no": 58,
+      "question_id": "71",
+      "item_id": "reading-q-71",
+      "question": "Please read the information ______ so we don't miss any details.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "beautifully"
+        },
+        {
+          "letter": "B",
+          "text": "fluently"
+        },
+        {
+          "letter": "C",
+          "text": "slowly"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "slowly"
+    },
+    {
+      "type": "question",
+      "stt": 59,
+      "display_no": 59,
+      "question_id": "29",
+      "item_id": "reading-q-29",
+      "question": "I will save you ______ cake.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "many"
+        },
+        {
+          "letter": "B",
+          "text": "none"
+        },
+        {
+          "letter": "C",
+          "text": "some"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "some"
+    },
+    {
+      "type": "question",
+      "stt": 60,
+      "display_no": 60,
+      "question_id": "16",
+      "item_id": "reading-q-16",
+      "question": "I always ______ dinner for myself.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "cook"
+        },
+        {
+          "letter": "B",
+          "text": "drink"
+        },
+        {
+          "letter": "C",
+          "text": "breathe"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "cook"
+    },
+    {
+      "type": "question",
+      "stt": 61,
+      "display_no": 61,
+      "question_id": "110",
+      "item_id": "reading-q-110",
+      "question": "We are going to ______ around.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "drive"
+        },
+        {
+          "letter": "B",
+          "text": "see"
+        },
+        {
+          "letter": "C",
+          "text": "talk"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "drive"
+    },
+    {
+      "type": "question",
+      "stt": 62,
+      "display_no": 62,
+      "question_id": "52",
+      "item_id": "reading-q-52",
+      "question": "I will have meetings with my ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "neighbor"
+        },
+        {
+          "letter": "B",
+          "text": "wife"
+        },
+        {
+          "letter": "C",
+          "text": "client"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "client"
+    },
+    {
+      "type": "question",
+      "stt": 63,
+      "display_no": 63,
+      "question_id": "11",
+      "item_id": "reading-q-11",
+      "question": "We ______ to work.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "drive"
+        },
+        {
+          "letter": "B",
+          "text": "smile"
+        },
+        {
+          "letter": "C",
+          "text": "say"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "drive"
+    },
+    {
+      "type": "question",
+      "stt": 64,
+      "display_no": 64,
+      "question_id": "48365",
+      "item_id": "reading-q-48365",
+      "question": "After ______ so hard.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "working"
+        },
+        {
+          "letter": "B",
+          "text": "sleeping"
+        },
+        {
+          "letter": "C",
+          "text": "eating"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "working"
+    },
+    {
+      "type": "question",
+      "stt": 65,
+      "display_no": 65,
+      "question_id": "30",
+      "item_id": "reading-q-30",
+      "question": "Seamus and Agnes ______ speaking English with me.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "practise"
+        },
+        {
+          "letter": "B",
+          "text": "forget"
+        },
+        {
+          "letter": "C",
+          "text": "avoid"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "practise"
+    },
+    {
+      "type": "question",
+      "stt": 66,
+      "display_no": 66,
+      "question_id": "12",
+      "item_id": "reading-q-12",
+      "question": "We arrived early, ______ we had time for a coffee.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "so"
+        },
+        {
+          "letter": "B",
+          "text": "but"
+        },
+        {
+          "letter": "C",
+          "text": "if"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "so"
+    },
+    {
+      "type": "question",
+      "stt": 67,
+      "display_no": 67,
+      "question_id": "48490",
+      "item_id": "reading-q-48490",
+      "question": "When you are at the train ____, go to the main gate.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "school"
+        },
+        {
+          "letter": "B",
+          "text": "station"
+        },
+        {
+          "letter": "C",
+          "text": "river"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "station"
+    },
+    {
+      "type": "question",
+      "stt": 68,
+      "display_no": 68,
+      "question_id": "73",
+      "item_id": "reading-q-73",
+      "question": "After dinner, we will watch ______ on TV.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "sing"
+        },
+        {
+          "letter": "B",
+          "text": "movies"
+        },
+        {
+          "letter": "C",
+          "text": "news"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "movies"
+    },
+    {
+      "type": "question",
+      "stt": 69,
+      "display_no": 69,
+      "question_id": "58",
+      "item_id": "reading-q-58",
+      "question": "I ate ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "watch"
+        },
+        {
+          "letter": "B",
+          "text": "door"
+        },
+        {
+          "letter": "C",
+          "text": "cake"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "cake"
+    },
+    {
+      "type": "question",
+      "stt": 70,
+      "display_no": 70,
+      "question_id": "72",
+      "item_id": "reading-q-72",
+      "question": "I hate the food, ______ yesterday I ate out.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "then"
+        },
+        {
+          "letter": "B",
+          "text": "so"
+        },
+        {
+          "letter": "C",
+          "text": "also"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "so"
+    },
+    {
+      "type": "question",
+      "stt": 71,
+      "display_no": 71,
+      "question_id": "98",
+      "item_id": "reading-q-98",
+      "question": "I usually drink a lot of water and eat healthy ____.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "watch"
+        },
+        {
+          "letter": "B",
+          "text": "meal"
+        },
+        {
+          "letter": "C",
+          "text": "food"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "food"
+    },
+    {
+      "type": "question",
+      "stt": 72,
+      "display_no": 72,
+      "question_id": "124",
+      "item_id": "reading-q-124",
+      "question": "We eat dinner ______. Love,",
+      "options": [
+        {
+          "letter": "A",
+          "text": "toward"
+        },
+        {
+          "letter": "B",
+          "text": "together"
+        },
+        {
+          "letter": "C",
+          "text": "another"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "together"
+    },
+    {
+      "type": "question",
+      "stt": 73,
+      "display_no": 73,
+      "question_id": "15",
+      "item_id": "reading-q-15",
+      "question": "I go to bed when I feel ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "sleepy"
+        },
+        {
+          "letter": "B",
+          "text": "angry"
+        },
+        {
+          "letter": "C",
+          "text": "alert"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "sleepy"
+    },
+    {
+      "type": "question",
+      "stt": 74,
+      "display_no": 74,
+      "question_id": "19",
+      "item_id": "reading-q-19",
+      "question": "Don't have too much ______ because we're going to eat cake.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "talk"
+        },
+        {
+          "letter": "B",
+          "text": "pencil"
+        },
+        {
+          "letter": "C",
+          "text": "dinner"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "dinner"
+    },
+    {
+      "type": "question",
+      "stt": 75,
+      "display_no": 75,
+      "question_id": "135",
+      "item_id": "reading-q-135",
+      "question": "______ My love to everyone.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Give"
+        },
+        {
+          "letter": "B",
+          "text": "Hold"
+        },
+        {
+          "letter": "C",
+          "text": "Receive"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "Give"
+    },
+    {
+      "type": "question",
+      "stt": 76,
+      "display_no": 76,
+      "question_id": "14",
+      "item_id": "reading-q-14",
+      "question": "It is a ______ day.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "long"
+        },
+        {
+          "letter": "B",
+          "text": "details"
+        },
+        {
+          "letter": "C",
+          "text": "copy"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "long"
+    },
+    {
+      "type": "question",
+      "stt": 77,
+      "display_no": 77,
+      "question_id": "82",
+      "item_id": "reading-q-82",
+      "question": "We like to ______ dinner.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "hold"
+        },
+        {
+          "letter": "B",
+          "text": "cook"
+        },
+        {
+          "letter": "C",
+          "text": "melt"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "cook"
+    },
+    {
+      "type": "question",
+      "stt": 78,
+      "display_no": 78,
+      "question_id": "78",
+      "item_id": "reading-q-78",
+      "question": "We eat dinner ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "toward"
+        },
+        {
+          "letter": "B",
+          "text": "together"
+        },
+        {
+          "letter": "C",
+          "text": "another"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "together"
+    },
+    {
+      "type": "question",
+      "stt": 79,
+      "display_no": 79,
+      "question_id": "13",
+      "item_id": "reading-q-13",
+      "question": "Also, send me the results ______ you go home, not after.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "when"
+        },
+        {
+          "letter": "B",
+          "text": "before"
+        },
+        {
+          "letter": "C",
+          "text": "between"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "before"
+    },
+    {
+      "type": "question",
+      "stt": 80,
+      "display_no": 80,
+      "question_id": "103",
+      "item_id": "reading-q-103",
+      "question": "I do not like the food here, ______ yesterday I ate out.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "so"
+        },
+        {
+          "letter": "B",
+          "text": "but"
+        },
+        {
+          "letter": "C",
+          "text": "unless"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "so"
+    },
+    {
+      "type": "question",
+      "stt": 81,
+      "display_no": 81,
+      "question_id": "81",
+      "item_id": "reading-q-81",
+      "question": "Please write your name at the top of the ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "page"
+        },
+        {
+          "letter": "B",
+          "text": "window"
+        },
+        {
+          "letter": "C",
+          "text": "garden"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "page"
+    },
+    {
+      "type": "question",
+      "stt": 82,
+      "display_no": 82,
+      "question_id": "48491",
+      "item_id": "reading-q-48491",
+      "question": "After you come, we will have ____.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "dinner"
+        },
+        {
+          "letter": "B",
+          "text": "food"
+        },
+        {
+          "letter": "C",
+          "text": "eat"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "dinner"
+    },
+    {
+      "type": "question",
+      "stt": 83,
+      "display_no": 83,
+      "question_id": "48492",
+      "item_id": "reading-q-48492",
+      "question": "In the evening, we can watch some ____ together.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "animals"
+        },
+        {
+          "letter": "B",
+          "text": "films"
+        },
+        {
+          "letter": "C",
+          "text": "bread"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "films"
+    },
+    {
+      "type": "shared_option_set",
+      "start_stt": 84,
+      "end_stt": 88,
+      "question_count": 5,
+      "options": [
+        {
+          "letter": "A",
+          "text": "staying"
+        },
+        {
+          "letter": "B",
+          "text": "garden"
+        },
+        {
+          "letter": "C",
+          "text": "children"
+        },
+        {
+          "letter": "D",
+          "text": "visit"
+        },
+        {
+          "letter": "E",
+          "text": "old"
+        }
+      ],
+      "questions": [
+        {
+          "stt": 84,
+          "display_no": 84,
+          "question_id": "48493",
+          "item_id": "reading-q-48493",
+          "question": "We are ____ in a small house in the village.",
+          "correct_letter": "A",
+          "correct_answer": "staying"
+        },
+        {
+          "stt": 85,
+          "display_no": 85,
+          "question_id": "48494",
+          "item_id": "reading-q-48494",
+          "question": "There are a lot of trees in the ____.",
+          "correct_letter": "B",
+          "correct_answer": "garden"
+        },
+        {
+          "stt": 86,
+          "display_no": 86,
+          "question_id": "48495",
+          "item_id": "reading-q-48495",
+          "question": "We go out with our ____.",
+          "correct_letter": "C",
+          "correct_answer": "children"
+        },
+        {
+          "stt": 87,
+          "display_no": 87,
+          "question_id": "48496",
+          "item_id": "reading-q-48496",
+          "question": "Today, we are going to ____ the town by bus.",
+          "correct_letter": "D",
+          "correct_answer": "visit"
+        },
+        {
+          "stt": 88,
+          "display_no": 88,
+          "question_id": "48497",
+          "item_id": "reading-q-48497",
+          "question": "There are some ____ buildings there.",
+          "correct_letter": "E",
+          "correct_answer": "old"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "stt": 89,
+      "display_no": 89,
+      "question_id": "48498",
+      "item_id": "reading-q-48498",
+      "question": "I ____ the area where I live now.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "love"
+        },
+        {
+          "letter": "B",
+          "text": "run"
+        },
+        {
+          "letter": "C",
+          "text": "should"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "love"
+    },
+    {
+      "type": "question",
+      "stt": 90,
+      "display_no": 90,
+      "question_id": "48499",
+      "item_id": "reading-q-48499",
+      "question": "My house has a kitchen but it is very ____.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "small"
+        },
+        {
+          "letter": "B",
+          "text": "tall"
+        },
+        {
+          "letter": "C",
+          "text": "short"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "small"
+    },
+    {
+      "type": "question",
+      "stt": 91,
+      "display_no": 91,
+      "question_id": "48500",
+      "item_id": "reading-q-48500",
+      "question": "I wear a ____ shirt.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "car"
+        },
+        {
+          "letter": "B",
+          "text": "shop"
+        },
+        {
+          "letter": "C",
+          "text": "window"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "shop"
+    },
+    {
+      "type": "question",
+      "stt": 92,
+      "display_no": 92,
+      "question_id": "48501",
+      "item_id": "reading-q-48501",
+      "question": "Every day I talk to many ____.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "animals"
+        },
+        {
+          "letter": "B",
+          "text": "trees"
+        },
+        {
+          "letter": "C",
+          "text": "people"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "people"
+    },
+    {
+      "type": "question",
+      "stt": 93,
+      "display_no": 93,
+      "question_id": "48502",
+      "item_id": "reading-q-48502",
+      "question": "I am on my holiday and I am excited that I can ____ you soon.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "show"
+        },
+        {
+          "letter": "B",
+          "text": "visit"
+        },
+        {
+          "letter": "C",
+          "text": "play"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "visit"
+    },
+    {
+      "type": "question",
+      "stt": 94,
+      "display_no": 94,
+      "question_id": "48436",
+      "item_id": "reading-q-48436",
+      "question": "Please close the ______ before you leave the room.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "window"
+        },
+        {
+          "letter": "B",
+          "text": "weather"
+        },
+        {
+          "letter": "C",
+          "text": "street"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "window"
+    },
+    {
+      "type": "question",
+      "stt": 95,
+      "display_no": 95,
+      "question_id": "48437",
+      "item_id": "reading-q-48437",
+      "question": "I usually ______ breakfast at seven o'clock.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "make"
+        },
+        {
+          "letter": "B",
+          "text": "have"
+        },
+        {
+          "letter": "C",
+          "text": "take"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "have"
+    },
+    {
+      "type": "question",
+      "stt": 96,
+      "display_no": 96,
+      "question_id": "48438",
+      "item_id": "reading-q-48438",
+      "question": "My brother works in a large ______ near the airport.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "lesson"
+        },
+        {
+          "letter": "B",
+          "text": "garden"
+        },
+        {
+          "letter": "C",
+          "text": "company"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "company"
+    },
+    {
+      "type": "question",
+      "stt": 97,
+      "display_no": 97,
+      "question_id": "48439",
+      "item_id": "reading-q-48439",
+      "question": "She is waiting ______ the bus.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "for"
+        },
+        {
+          "letter": "B",
+          "text": "from"
+        },
+        {
+          "letter": "C",
+          "text": "with"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "for"
+    },
+    {
+      "type": "question",
+      "stt": 98,
+      "display_no": 98,
+      "question_id": "48440",
+      "item_id": "reading-q-48440",
+      "question": "We need to buy some ______ for dinner.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "sleep"
+        },
+        {
+          "letter": "B",
+          "text": "food"
+        },
+        {
+          "letter": "C",
+          "text": "homework"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "food"
+    },
+    {
+      "type": "question",
+      "stt": 99,
+      "display_no": 99,
+      "question_id": "48441",
+      "item_id": "reading-q-48441",
+      "question": "The train leaves at half ______ eight.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "after"
+        },
+        {
+          "letter": "B",
+          "text": "behind"
+        },
+        {
+          "letter": "C",
+          "text": "past"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "past"
+    },
+    {
+      "type": "question",
+      "stt": 100,
+      "display_no": 100,
+      "question_id": "48442",
+      "item_id": "reading-q-48442",
+      "question": "Could you ______ me your phone number?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "tell"
+        },
+        {
+          "letter": "B",
+          "text": "speak"
+        },
+        {
+          "letter": "C",
+          "text": "talk"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "tell"
+    },
+    {
+      "type": "question",
+      "stt": 101,
+      "display_no": 101,
+      "question_id": "48443",
+      "item_id": "reading-q-48443",
+      "question": "My parents live in a small ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "meeting"
+        },
+        {
+          "letter": "B",
+          "text": "village"
+        },
+        {
+          "letter": "C",
+          "text": "office"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "village"
+    },
+    {
+      "type": "question",
+      "stt": 102,
+      "display_no": 102,
+      "question_id": "48444",
+      "item_id": "reading-q-48444",
+      "question": "I always ______ my teeth before going to bed.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "wash"
+        },
+        {
+          "letter": "B",
+          "text": "cleaning"
+        },
+        {
+          "letter": "C",
+          "text": "brush"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "brush"
+    },
+    {
+      "type": "question",
+      "stt": 103,
+      "display_no": 103,
+      "question_id": "48445",
+      "item_id": "reading-q-48445",
+      "question": "The shop is ______ on Sundays.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "closed"
+        },
+        {
+          "letter": "B",
+          "text": "heavy"
+        },
+        {
+          "letter": "C",
+          "text": "slow"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "closed"
+    },
+    {
+      "type": "question",
+      "stt": 104,
+      "display_no": 104,
+      "question_id": "48446",
+      "item_id": "reading-q-48446",
+      "question": "We walked home because we ______ the last bus.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "lost"
+        },
+        {
+          "letter": "B",
+          "text": "missed"
+        },
+        {
+          "letter": "C",
+          "text": "forgot"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "missed"
+    },
+    {
+      "type": "question",
+      "stt": 105,
+      "display_no": 105,
+      "question_id": "48447",
+      "item_id": "reading-q-48447",
+      "question": "The manager will ______ the results tomorrow.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "grow"
+        },
+        {
+          "letter": "B",
+          "text": "wear"
+        },
+        {
+          "letter": "C",
+          "text": "check"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "check"
+    },
+    {
+      "type": "question",
+      "stt": 106,
+      "display_no": 106,
+      "question_id": "48448",
+      "item_id": "reading-q-48448",
+      "question": "Please put your books on the ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "table"
+        },
+        {
+          "letter": "B",
+          "text": "flooring"
+        },
+        {
+          "letter": "C",
+          "text": "light"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "table"
+    },
+    {
+      "type": "question",
+      "stt": 107,
+      "display_no": 107,
+      "question_id": "48449",
+      "item_id": "reading-q-48449",
+      "question": "I need to ______ an appointment with the doctor.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "do"
+        },
+        {
+          "letter": "B",
+          "text": "make"
+        },
+        {
+          "letter": "C",
+          "text": "build"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "make"
+    },
+    {
+      "type": "question",
+      "stt": 108,
+      "display_no": 108,
+      "question_id": "48450",
+      "item_id": "reading-q-48450",
+      "question": "She wore a warm coat because it was ______ outside.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "hungry"
+        },
+        {
+          "letter": "B",
+          "text": "quiet"
+        },
+        {
+          "letter": "C",
+          "text": "cold"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "cold"
+    },
+    {
+      "type": "question",
+      "stt": 109,
+      "display_no": 109,
+      "question_id": "48451",
+      "item_id": "reading-q-48451",
+      "question": "My sister is very good ______ maths.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "at"
+        },
+        {
+          "letter": "B",
+          "text": "on"
+        },
+        {
+          "letter": "C",
+          "text": "for"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "at"
+    },
+    {
+      "type": "question",
+      "stt": 110,
+      "display_no": 110,
+      "question_id": "48452",
+      "item_id": "reading-q-48452",
+      "question": "We are planning to ______ a new computer.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "pay"
+        },
+        {
+          "letter": "B",
+          "text": "buy"
+        },
+        {
+          "letter": "C",
+          "text": "spend"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "buy"
+    },
+    {
+      "type": "question",
+      "stt": 111,
+      "display_no": 111,
+      "question_id": "48453",
+      "item_id": "reading-q-48453",
+      "question": "The teacher asked us to work in ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "pages"
+        },
+        {
+          "letter": "B",
+          "text": "letters"
+        },
+        {
+          "letter": "C",
+          "text": "pairs"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "pairs"
+    },
+    {
+      "type": "question",
+      "stt": 112,
+      "display_no": 112,
+      "question_id": "48454",
+      "item_id": "reading-q-48454",
+      "question": "I cannot hear you. Please speak more ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "clearly"
+        },
+        {
+          "letter": "B",
+          "text": "carefully"
+        },
+        {
+          "letter": "C",
+          "text": "quietly"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "clearly"
+    },
+    {
+      "type": "question",
+      "stt": 113,
+      "display_no": 113,
+      "question_id": "48455",
+      "item_id": "reading-q-48455",
+      "question": "He arrived late because the traffic was very ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "strong"
+        },
+        {
+          "letter": "B",
+          "text": "heavy"
+        },
+        {
+          "letter": "C",
+          "text": "full"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "heavy"
+    },
+    {
+      "type": "question",
+      "stt": 114,
+      "display_no": 114,
+      "question_id": "48456",
+      "item_id": "reading-q-48456",
+      "question": "Would you like a cup ______ coffee?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "from"
+        },
+        {
+          "letter": "B",
+          "text": "with"
+        },
+        {
+          "letter": "C",
+          "text": "of"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "of"
+    },
+    {
+      "type": "question",
+      "stt": 115,
+      "display_no": 115,
+      "question_id": "48457",
+      "item_id": "reading-q-48457",
+      "question": "My phone battery is almost ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "empty"
+        },
+        {
+          "letter": "B",
+          "text": "free"
+        },
+        {
+          "letter": "C",
+          "text": "quiet"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "empty"
+    },
+    {
+      "type": "question",
+      "stt": 116,
+      "display_no": 116,
+      "question_id": "48458",
+      "item_id": "reading-q-48458",
+      "question": "I usually ______ the news before work.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "look"
+        },
+        {
+          "letter": "B",
+          "text": "read"
+        },
+        {
+          "letter": "C",
+          "text": "watching"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "read"
+    },
+    {
+      "type": "question",
+      "stt": 117,
+      "display_no": 117,
+      "question_id": "48459",
+      "item_id": "reading-q-48459",
+      "question": "Please ______ your shoes before entering the house.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "turn off"
+        },
+        {
+          "letter": "B",
+          "text": "get off"
+        },
+        {
+          "letter": "C",
+          "text": "take off"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "take off"
+    },
+    {
+      "type": "question",
+      "stt": 118,
+      "display_no": 118,
+      "question_id": "48460",
+      "item_id": "reading-q-48460",
+      "question": "The restaurant was busy, but we found a ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "table"
+        },
+        {
+          "letter": "B",
+          "text": "kitchen"
+        },
+        {
+          "letter": "C",
+          "text": "meal"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "table"
+    },
+    {
+      "type": "question",
+      "stt": 119,
+      "display_no": 119,
+      "question_id": "48461",
+      "item_id": "reading-q-48461",
+      "question": "I forgot to bring my umbrella, ______ I got wet.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "but"
+        },
+        {
+          "letter": "B",
+          "text": "so"
+        },
+        {
+          "letter": "C",
+          "text": "because"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "so"
+    },
+    {
+      "type": "question",
+      "stt": 120,
+      "display_no": 120,
+      "question_id": "48462",
+      "item_id": "reading-q-48462",
+      "question": "My neighbour has a very friendly ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "road"
+        },
+        {
+          "letter": "B",
+          "text": "weather"
+        },
+        {
+          "letter": "C",
+          "text": "dog"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "dog"
+    },
+    {
+      "type": "question",
+      "stt": 121,
+      "display_no": 121,
+      "question_id": "48463",
+      "item_id": "reading-q-48463",
+      "question": "We need more information before making a ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "decision"
+        },
+        {
+          "letter": "B",
+          "text": "question"
+        },
+        {
+          "letter": "C",
+          "text": "conversation"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "decision"
+    },
+    {
+      "type": "question",
+      "stt": 122,
+      "display_no": 122,
+      "question_id": "48464",
+      "item_id": "reading-q-48464",
+      "question": "I will call you when I ______ home.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "go to"
+        },
+        {
+          "letter": "B",
+          "text": "get"
+        },
+        {
+          "letter": "C",
+          "text": "arrive to"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "get"
+    },
+    {
+      "type": "question",
+      "stt": 123,
+      "display_no": 123,
+      "question_id": "48465",
+      "item_id": "reading-q-48465",
+      "question": "Can you help me ______ this box upstairs?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "wear"
+        },
+        {
+          "letter": "B",
+          "text": "follow"
+        },
+        {
+          "letter": "C",
+          "text": "carry"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "carry"
+    },
+    {
+      "type": "question",
+      "stt": 124,
+      "display_no": 124,
+      "question_id": "48466",
+      "item_id": "reading-q-48466",
+      "question": "The supermarket is ______ the bank and the post office.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "between"
+        },
+        {
+          "letter": "B",
+          "text": "through"
+        },
+        {
+          "letter": "C",
+          "text": "during"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "between"
+    },
+    {
+      "type": "question",
+      "stt": 125,
+      "display_no": 125,
+      "question_id": "48467",
+      "item_id": "reading-q-48467",
+      "question": "She always ______ notes during the lesson.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "makes"
+        },
+        {
+          "letter": "B",
+          "text": "takes"
+        },
+        {
+          "letter": "C",
+          "text": "writes down to"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "takes"
+    },
+    {
+      "type": "question",
+      "stt": 126,
+      "display_no": 126,
+      "question_id": "48468",
+      "item_id": "reading-q-48468",
+      "question": "I am looking ______ my keys.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "at"
+        },
+        {
+          "letter": "B",
+          "text": "from"
+        },
+        {
+          "letter": "C",
+          "text": "for"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "for"
+    },
+    {
+      "type": "question",
+      "stt": 127,
+      "display_no": 127,
+      "question_id": "48469",
+      "item_id": "reading-q-48469",
+      "question": "Please turn ______ the lights before you leave.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "off"
+        },
+        {
+          "letter": "B",
+          "text": "over"
+        },
+        {
+          "letter": "C",
+          "text": "away"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "off"
+    },
+    {
+      "type": "question",
+      "stt": 128,
+      "display_no": 128,
+      "question_id": "48470",
+      "item_id": "reading-q-48470",
+      "question": "We had a great ______ at the beach.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "clock"
+        },
+        {
+          "letter": "B",
+          "text": "time"
+        },
+        {
+          "letter": "C",
+          "text": "hour"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "time"
+    },
+    {
+      "type": "question",
+      "stt": 129,
+      "display_no": 129,
+      "question_id": "48471",
+      "item_id": "reading-q-48471",
+      "question": "My father usually ______ to work by car.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "rides"
+        },
+        {
+          "letter": "B",
+          "text": "walks on"
+        },
+        {
+          "letter": "C",
+          "text": "drives"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "drives"
+    },
+    {
+      "type": "question",
+      "stt": 130,
+      "display_no": 130,
+      "question_id": "48472",
+      "item_id": "reading-q-48472",
+      "question": "The soup is too ______ to eat now.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "hot"
+        },
+        {
+          "letter": "B",
+          "text": "fast"
+        },
+        {
+          "letter": "C",
+          "text": "deep"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "hot"
+    },
+    {
+      "type": "question",
+      "stt": 131,
+      "display_no": 131,
+      "question_id": "48473",
+      "item_id": "reading-q-48473",
+      "question": "I need to ______ some money from the bank.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "remove"
+        },
+        {
+          "letter": "B",
+          "text": "withdraw"
+        },
+        {
+          "letter": "C",
+          "text": "carry"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "withdraw"
+    },
+    {
+      "type": "question",
+      "stt": 132,
+      "display_no": 132,
+      "question_id": "48474",
+      "item_id": "reading-q-48474",
+      "question": "The film starts ______ eight o'clock.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "in"
+        },
+        {
+          "letter": "B",
+          "text": "on"
+        },
+        {
+          "letter": "C",
+          "text": "at"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "at"
+    },
+    {
+      "type": "question",
+      "stt": 133,
+      "display_no": 133,
+      "question_id": "48475",
+      "item_id": "reading-q-48475",
+      "question": "She was tired, ______ she went to bed early.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "so"
+        },
+        {
+          "letter": "B",
+          "text": "but"
+        },
+        {
+          "letter": "C",
+          "text": "or"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "so"
+    },
+    {
+      "type": "question",
+      "stt": 134,
+      "display_no": 134,
+      "question_id": "48476",
+      "item_id": "reading-q-48476",
+      "question": "Could you ______ the door, please?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "start"
+        },
+        {
+          "letter": "B",
+          "text": "open"
+        },
+        {
+          "letter": "C",
+          "text": "begin"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "open"
+    },
+    {
+      "type": "question",
+      "stt": 135,
+      "display_no": 135,
+      "question_id": "48477",
+      "item_id": "reading-q-48477",
+      "question": "I have lived here ______ three years.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "since"
+        },
+        {
+          "letter": "B",
+          "text": "from"
+        },
+        {
+          "letter": "C",
+          "text": "for"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "for"
+    },
+    {
+      "type": "question",
+      "stt": 136,
+      "display_no": 136,
+      "question_id": "48478",
+      "item_id": "reading-q-48478",
+      "question": "We usually have lunch in the office ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "canteen"
+        },
+        {
+          "letter": "B",
+          "text": "bedroom"
+        },
+        {
+          "letter": "C",
+          "text": "garage"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "canteen"
+    },
+    {
+      "type": "question",
+      "stt": 137,
+      "display_no": 137,
+      "question_id": "48479",
+      "item_id": "reading-q-48479",
+      "question": "My train was late, so I missed the ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "weather"
+        },
+        {
+          "letter": "B",
+          "text": "meeting"
+        },
+        {
+          "letter": "C",
+          "text": "street"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "meeting"
+    },
+    {
+      "type": "question",
+      "stt": 138,
+      "display_no": 138,
+      "question_id": "48480",
+      "item_id": "reading-q-48480",
+      "question": "Please ______ your answer on the form.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "draw"
+        },
+        {
+          "letter": "B",
+          "text": "speak"
+        },
+        {
+          "letter": "C",
+          "text": "write"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "write"
+    },
+    {
+      "type": "question",
+      "stt": 139,
+      "display_no": 139,
+      "question_id": "48481",
+      "item_id": "reading-q-48481",
+      "question": "The hotel room was clean and ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "comfortable"
+        },
+        {
+          "letter": "B",
+          "text": "hungry"
+        },
+        {
+          "letter": "C",
+          "text": "angry"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "comfortable"
+    },
+    {
+      "type": "question",
+      "stt": 140,
+      "display_no": 140,
+      "question_id": "48482",
+      "item_id": "reading-q-48482",
+      "question": "I need a new ______ because mine is broken.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "rain"
+        },
+        {
+          "letter": "B",
+          "text": "phone"
+        },
+        {
+          "letter": "C",
+          "text": "music"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "phone"
+    },
+    {
+      "type": "question",
+      "stt": 141,
+      "display_no": 141,
+      "question_id": "48483",
+      "item_id": "reading-q-48483",
+      "question": "She ______ her homework before dinner.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "closed"
+        },
+        {
+          "letter": "B",
+          "text": "stopped at"
+        },
+        {
+          "letter": "C",
+          "text": "finished"
+        }
+      ],
+      "correct_letter": "C",
+      "correct_answer": "finished"
+    },
+    {
+      "type": "question",
+      "stt": 142,
+      "display_no": 142,
+      "question_id": "48484",
+      "item_id": "reading-q-48484",
+      "question": "We are going to ______ our grandparents this weekend.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "visit"
+        },
+        {
+          "letter": "B",
+          "text": "watch"
+        },
+        {
+          "letter": "C",
+          "text": "look"
+        }
+      ],
+      "correct_letter": "A",
+      "correct_answer": "visit"
+    },
+    {
+      "type": "question",
+      "stt": 143,
+      "display_no": 143,
+      "question_id": "48485",
+      "item_id": "reading-q-48485",
+      "question": "Please be quiet. The baby is ______.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "running"
+        },
+        {
+          "letter": "B",
+          "text": "sleeping"
+        },
+        {
+          "letter": "C",
+          "text": "driving"
+        }
+      ],
+      "correct_letter": "B",
+      "correct_answer": "sleeping"
+    }
+  ]
+}

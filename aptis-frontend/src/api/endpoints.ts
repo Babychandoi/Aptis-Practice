@@ -25,6 +25,8 @@ import type {
   TokenResponse,
   Topic,
   UploadUrlResponse,
+  HeadingChain,
+  SpeakerCode,
 } from '@/types/api';
 
 // ---------------------------------------------------------------------
@@ -120,6 +122,24 @@ export const practiceApi = {
       .post<QuestionSetScore>(`/attempts/${attemptId}/responses/${questionSetId}/score`)
       .then((r) => r.data),
 
+  /**
+   * Bắt đầu một kỹ năng — đồng hồ của kỹ năng chỉ chạy từ lúc này, nên thời gian
+   * đọc hướng dẫn ở màn chuyển tiếp không bị tính vào.
+   */
+  beginComponent: (attemptId: string, componentId: string) =>
+    api
+      .post<Attempt>(`/attempts/${attemptId}/components/${componentId}/begin`)
+      .then((r) => r.data),
+
+  /**
+   * Nộp một kỹ năng trong bài thi đủ 5 kỹ năng: khóa kỹ năng đó. Kỹ năng kế tiếp
+   * chờ học viên bấm bắt đầu. Nộp kỹ năng cuối thì backend nộp luôn cả lượt.
+   */
+  submitComponent: (attemptId: string, componentId: string) =>
+    api
+      .post<Attempt>(`/attempts/${attemptId}/components/${componentId}/submit`)
+      .then((r) => r.data),
+
   submit: (attemptId: string) =>
     api.post<Attempt>(`/attempts/${attemptId}/submit`).then((r) => r.data),
 
@@ -138,7 +158,10 @@ export const practiceApi = {
 // ---------------------------------------------------------------------
 
 export const mockTestApi = {
-  list: (componentId?: string) => api.get<MockTest[]>('/mock-tests', { params: { componentId } }).then((r) => r.data),
+  /** Danh sách đề thi thử, phân trang phía server. */
+  list: (componentId?: string, page = 0, size = 20) =>
+    api.get<PageResponse<MockTest>>('/mock-tests', { params: { componentId, page, size } })
+      .then((r) => r.data),
 
   detail: (blueprintId: string) =>
     api.get<MockTest>(`/mock-tests/${blueprintId}`).then((r) => r.data),
@@ -239,3 +262,19 @@ export async function uploadToPresignedUrl(
     throw new Error(`Upload thất bại: ${response.status}`);
   }
 }
+
+// ---------------------------------------------------------------------
+
+export const studyTipsApi = {
+  /** Bảng mã người nói Listening Part 3, sinh từ đáp án trong ngân hàng đề. */
+  listeningPart3: () =>
+    api.get<SpeakerCode[]>('/study-tips/listening-part-3').then((r) => r.data),
+
+  /** Chuỗi người nói đáp án Reading Part 3. */
+  readingPart3: () =>
+    api.get<HeadingChain[]>('/study-tips/reading-part-3').then((r) => r.data),
+
+  /** Chuỗi tiêu đề đáp án Reading Part 4, theo thứ tự đoạn văn. */
+  readingPart4: () =>
+    api.get<HeadingChain[]>('/study-tips/reading-part-4').then((r) => r.data),
+};

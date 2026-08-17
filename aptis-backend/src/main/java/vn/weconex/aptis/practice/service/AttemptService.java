@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vn.weconex.aptis.catalog.repository.ComponentRepository;
 import vn.weconex.aptis.common.config.AptisProperties;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.exception.ErrorCode;
@@ -36,6 +37,7 @@ import vn.weconex.aptis.practice.mongo.AttemptDocument;
 import vn.weconex.aptis.practice.mongo.AttemptDocumentRepository;
 import vn.weconex.aptis.practice.repository.AttemptQuestionSetRepository;
 import vn.weconex.aptis.practice.repository.TestAttemptRepository;
+import vn.weconex.aptis.practice.repository.TestBlueprintRepository;
 import vn.weconex.aptis.practice.scoring.ScoringService;
 import vn.weconex.aptis.practice.web.PracticeDtos;
 
@@ -67,6 +69,9 @@ public class AttemptService {
     private final ScoringService scoringService;
     private final MockTestService mockTestService;
     private final AttemptScoreAggregator scoreAggregator;
+    private final ComponentProgressService componentProgressService;
+    private final ComponentRepository componentRepository;
+    private final TestBlueprintRepository blueprintRepository;
     private final EvaluationQueue evaluationQueue;
     private final EvaluationDocumentRepository evaluationDocumentRepository;
     private final AptisProperties properties;
@@ -79,14 +84,14 @@ public class AttemptService {
     public TestAttempt createPartAttempt(String userId, PracticeDtos.CreatePartAttemptRequest request) {
         boolean hasPremium = entitlementService.hasPremiumAccess(userId);
 
-        Optional<Integer> mergeSize = properties.practice().mergeSizeOf(request.partId());
-
+        // Luyện riêng một Part KHÔNG gộp câu (chỉ thi thử cả kỹ năng mới gộp, xem
+        // AttemptSnapshotFactory), nên client xin N bộ là đúng N bộ — không nhân
+        // với số câu mỗi đề như trước.
+        //
         // Luyện theo Part là học hết ngân hàng đề, không phải một lượt ngắn: lấy
         // tất cả bộ PUBLISHED rồi để giao diện phân trang từng đề. Chỉ giới hạn
         // khi client chủ động xin số lượng cụ thể (ví dụ ôn nhanh 5 đề).
         int size = Optional.ofNullable(request.questionSetCount())
-                // Part gộp câu: client xin N đề nghĩa là cần N * mergeSize câu
-                .map(count -> count * mergeSize.orElse(1))
                 .orElseGet(() -> (int) questionSetRepository.countByPartIdAndStatus(
                         request.partId(), ContentStatus.PUBLISHED));
 
@@ -111,16 +116,6 @@ public class AttemptService {
 
         if (allowed.isEmpty()) {
             throw ApiException.premiumRequired();
-        }
-        // Đề gộp phải đủ số câu, thiếu thì báo rõ thay vì tạo đề ngắn
-        if (mergeSize.isPresent() && allowed.size() < mergeSize.get()) {
-            throw new ApiException(
-                    ErrorCode.NOT_ENOUGH_QUESTION_SETS,
-                    "Ngân hàng chưa đủ câu hỏi cho Part này: cần ít nhất %d, hiện có %d"
-                            .formatted(mergeSize.get(), allowed.size()),
-                    Map.of("partId", request.partId(),
-                            "required", mergeSize.get(),
-                            "available", allowed.size()));
         }
 
         TestAttempt attempt = new TestAttempt();
@@ -293,12 +288,99 @@ public class AttemptService {
         }
         attempt.start(attempt.getDurationSeconds(), expiresAt);
 
+        // Thi đủ 5 kỹ năng: mỗi kỹ năng có đồng hồ riêng, nộp xong là khóa. Mốc
+        // hết giờ của cả lượt vẫn giữ làm chặn trên, nhưng đồng hồ hiển thị và
+        // việc chặn ghi đi theo từng kỹ năng.
+        if (componentProgressService.appliesTo(attempt)) {
+            componentProgressService.initialise(attempt, examVersionIdOf(attempt));
+        }
+
         AttemptDocument document = requireDocument(attemptId);
         document.setStatus(AttemptStatus.IN_PROGRESS.name());
         document.setUpdatedAt(Instant.now());
         attemptDocumentRepository.save(document);
 
         return attemptRepository.save(attempt);
+    }
+
+    /**
+     * Tiến độ từng kỹ năng để client chạy đồng hồ riêng và khóa kỹ năng đã nộp.
+     *
+     * <p>Rỗng với luyện từng part. Lượt full tạo trước khi có tính năng này thì
+     * sinh bù ngay để mở lại không bị vỡ.
+     */
+    private List<PracticeDtos.ComponentProgressResponse> componentProgressOf(TestAttempt attempt) {
+        if (!componentProgressService.appliesTo(attempt)) {
+            return List.of();
+        }
+
+        componentProgressService.closeOverdue(attempt.getId());
+        var rows = componentProgressService.list(attempt.getId());
+        if (rows.isEmpty() && attempt.getStatus() == AttemptStatus.IN_PROGRESS) {
+            rows = componentProgressService.initialise(attempt, examVersionIdOf(attempt));
+        }
+        if (rows.isEmpty()) {
+            return List.of();
+        }
+
+        Map<String, String> codeById = componentRepository
+                .findAllById(rows.stream().map(row -> row.getComponentId()).toList())
+                .stream()
+                .collect(Collectors.toMap(component -> component.getId(),
+                        component -> component.getCode()));
+
+        return rows.stream()
+                .map(row -> new PracticeDtos.ComponentProgressResponse(
+                        row.getComponentId(),
+                        codeById.getOrDefault(row.getComponentId(), ""),
+                        row.getDisplayOrder(),
+                        row.getDurationSeconds(),
+                        row.getStartedAt(),
+                        row.getExpiresAt(),
+                        row.getSubmittedAt()))
+                .toList();
+    }
+
+    /**
+     * Bài thi đủ 5 kỹ năng: chỉ cho ghi vào kỹ năng đang mở.
+     *
+     * <p>Kỹ năng đã nộp hoặc đã hết giờ thì khóa hẳn — đúng như đề thật, không
+     * quay lại sửa được. Trước khi kiểm tra, đóng giúp những kỹ năng quá giờ mà
+     * client chưa kịp báo (người dùng đóng tab giữa chừng).
+     */
+    private void requireComponentOpen(TestAttempt attempt, String questionSetId) {
+        if (!componentProgressService.appliesTo(attempt)) {
+            return;
+        }
+        componentProgressService.closeOverdue(attempt.getId());
+
+        String componentId = questionSetRepository.findById(questionSetId)
+                .map(set -> set.getPart().getComponent().getId())
+                .orElseThrow(() -> ApiException.notFound("QuestionSet", questionSetId));
+
+        boolean submitted = Boolean.TRUE.equals(
+                componentProgressService.submittedByComponent(attempt.getId()).get(componentId));
+        if (submitted) {
+            throw new ApiException(
+                    ErrorCode.ATTEMPT_INVALID_STATE,
+                    "Kỹ năng này đã nộp, không sửa được nữa");
+        }
+
+        boolean isCurrent = componentProgressService.currentOpen(attempt.getId())
+                .map(row -> row.getComponentId().equals(componentId))
+                .orElse(false);
+        if (!isCurrent) {
+            throw new ApiException(
+                    ErrorCode.ATTEMPT_INVALID_STATE, "Chưa tới lượt làm kỹ năng này");
+        }
+    }
+
+    /** Phiên bản đề của lượt, lấy qua blueprint. */
+    private String examVersionIdOf(TestAttempt attempt) {
+        return blueprintRepository.findById(attempt.getBlueprintId())
+                .map(TestBlueprint::getExamVersionId)
+                .orElseThrow(() -> new ApiException(
+                        ErrorCode.ATTEMPT_INVALID_STATE, "Lượt thi không gắn đề mẫu"));
     }
 
     /**
@@ -384,6 +466,11 @@ public class AttemptService {
                 attempt.getTimeSpentSeconds(),
                 attempt.getTotalItems(),
                 attempt.getAnsweredItems(),
+                // Chỉ có ý nghĩa khi luyện một Part; thi thử nhiều Part thì
+                // partId null nên cờ luôn false.
+                attempt.getPartId() != null
+                        && properties.practice().mergeSizeOf(attempt.getPartId()).isPresent(),
+                componentProgressOf(attempt),
                 entries);
     }
 
@@ -400,6 +487,7 @@ public class AttemptService {
 
         TestAttempt attempt = requireOwned(userId, attemptId);
         requireAcceptingResponses(attempt);
+        requireComponentOpen(attempt, questionSetId);
 
         AttemptQuestionSet row = attemptQuestionSetRepository
                 .findByAttemptIdAndQuestionSetId(attemptId, questionSetId)
@@ -474,6 +562,13 @@ public class AttemptService {
         if (!attempt.isOwnedBy(userId)) {
             throw new ApiException(ErrorCode.ATTEMPT_NOT_OWNED, "Lượt làm bài không thuộc người dùng");
         }
+        // Thi đủ 5 kỹ năng: không chấm lẻ giữa chừng. Điểm và đáp án chỉ hiện
+        // sau khi nộp hết cả 5 kỹ năng.
+        if (componentProgressService.appliesTo(attempt)) {
+            throw new ApiException(
+                    ErrorCode.ATTEMPT_INVALID_STATE,
+                    "Bài thi đủ 5 kỹ năng chỉ chấm sau khi nộp toàn bộ");
+        }
         if (isSubmitted(attempt.getStatus())) {
             throw new ApiException(
                     ErrorCode.ATTEMPT_ALREADY_SUBMITTED,
@@ -540,6 +635,51 @@ public class AttemptService {
                                 itemScore.isCorrect()))
                         .toList(),
                 revealed);
+    }
+
+    /**
+     * Bắt đầu một kỹ năng: học viên đã xem màn giới thiệu và bấm vào làm.
+     *
+     * <p>Đồng hồ của kỹ năng chỉ chạy từ đây, nên thời gian đọc hướng dẫn hoặc
+     * nghỉ giữa hai kỹ năng không bị tính vào.
+     */
+    @Transactional
+    public TestAttempt beginComponent(String userId, String attemptId, String componentId) {
+        TestAttempt attempt = requireOwned(userId, attemptId);
+        if (!componentProgressService.appliesTo(attempt)) {
+            throw new ApiException(
+                    ErrorCode.ATTEMPT_INVALID_STATE,
+                    "Lượt này không chia thời gian theo kỹ năng");
+        }
+        requireAcceptingResponses(attempt);
+        componentProgressService.closeOverdue(attemptId);
+        componentProgressService.beginComponent(attemptId, componentId);
+        return attempt;
+    }
+
+    /**
+     * Nộp một kỹ năng trong bài thi đủ 5 kỹ năng.
+     *
+     * <p>Kỹ năng vừa nộp bị khóa (không sửa, không xem lại) và kỹ năng kế tiếp
+     * bắt đầu chạy đồng hồ. Nộp kỹ năng cuối thì nộp luôn cả lượt để chấm — đó
+     * cũng là lúc học viên mới thấy điểm và đáp án.
+     */
+    @Transactional
+    public TestAttempt submitComponent(String userId, String attemptId, String componentId) {
+        TestAttempt attempt = requireOwned(userId, attemptId);
+        if (!componentProgressService.appliesTo(attempt)) {
+            throw new ApiException(
+                    ErrorCode.ATTEMPT_INVALID_STATE,
+                    "Lượt này không chia thời gian theo kỹ năng");
+        }
+        requireAcceptingResponses(attempt);
+        componentProgressService.closeOverdue(attemptId);
+
+        boolean allDone = componentProgressService.submitComponent(attemptId, componentId);
+        if (allDone) {
+            return submit(userId, attemptId);
+        }
+        return attempt;
     }
 
     /**

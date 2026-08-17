@@ -5,9 +5,14 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import vn.weconex.aptis.catalog.domain.ExamStructure.Part;
 import vn.weconex.aptis.catalog.repository.PartRepository;
 import vn.weconex.aptis.common.security.CurrentUser;
+import vn.weconex.aptis.common.util.PageResponse;
 import vn.weconex.aptis.entitlement.service.EntitlementService;
 import vn.weconex.aptis.practice.domain.BlueprintPartRule;
 import vn.weconex.aptis.practice.domain.TestAttempt;
@@ -28,6 +34,7 @@ import vn.weconex.aptis.practice.service.MockTestService;
 /**
  * API thi thử (PHẦN IV §38).
  */
+@Validated
 @RestController
 @RequestMapping("/api/v1/mock-tests")
 @RequiredArgsConstructor
@@ -45,15 +52,36 @@ public class MockTestController {
      */
     @GetMapping
     @Transactional(readOnly = true)
-    public List<PracticeDtos.MockTestResponse> list(@RequestParam(required = false) String componentId) {
-        boolean hasPremium = entitlementService.hasPremiumAccess(currentUser.requireUserId());
+    public PageResponse<PracticeDtos.MockTestResponse> list(
+            @RequestParam(required = false) String componentId,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size) {
 
-        return mockTestService.listAvailable().stream()
-                .filter(blueprint -> componentId == null
-                        ? blueprint.getComponentId() == null
-                        : componentId.equals(blueprint.getComponentId()))
-                .map(blueprint -> toResponse(blueprint, hasPremium))
-                .toList();
+        boolean hasPremium = entitlementService.hasPremiumAccess(currentUser.requireUserId());
+        Page<TestBlueprint> blueprints = mockTestService.listAvailable(
+                componentId, PageRequest.of(page, size));
+
+        // Nạp rule và Part cho cả trang một lượt: dựng từng đề riêng sẽ tốn
+        // 2 truy vấn mỗi đề (20 đề = 40 truy vấn).
+        Map<String, List<BlueprintPartRule>> rulesByBlueprint =
+                mockTestService.rulesOfAll(blueprints.getContent().stream()
+                        .map(TestBlueprint::getId)
+                        .toList());
+
+        Map<String, Part> parts = partRepository
+                .findAllById(rulesByBlueprint.values().stream()
+                        .flatMap(List::stream)
+                        .map(BlueprintPartRule::getPartId)
+                        .distinct()
+                        .toList())
+                .stream()
+                .collect(Collectors.toMap(Part::getId, Function.identity()));
+
+        return PageResponse.of(blueprints, blueprint -> toResponse(
+                blueprint,
+                rulesByBlueprint.getOrDefault(blueprint.getId(), List.of()),
+                parts,
+                hasPremium));
     }
 
     @GetMapping("/{blueprintId}")
@@ -78,6 +106,7 @@ public class MockTestController {
 
     // -----------------------------------------------------------------
 
+    /** Dùng cho một đề lẻ: tự nạp rule và Part. */
     private PracticeDtos.MockTestResponse toResponse(TestBlueprint blueprint, boolean hasPremium) {
         List<BlueprintPartRule> rules = mockTestService.rulesOf(blueprint.getId());
 
@@ -85,6 +114,16 @@ public class MockTestController {
                 .findAllById(rules.stream().map(BlueprintPartRule::getPartId).distinct().toList())
                 .stream()
                 .collect(Collectors.toMap(Part::getId, Function.identity()));
+
+        return toResponse(blueprint, rules, parts, hasPremium);
+    }
+
+    /** Dùng cho danh sách: rule và Part đã nạp sẵn cho cả trang. */
+    private PracticeDtos.MockTestResponse toResponse(
+            TestBlueprint blueprint,
+            List<BlueprintPartRule> rules,
+            Map<String, Part> parts,
+            boolean hasPremium) {
 
         List<PracticeDtos.MockTestPartResponse> partResponses = rules.stream()
                 .map(rule -> {

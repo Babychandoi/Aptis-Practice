@@ -1,21 +1,31 @@
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { mockTestApi, practiceApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { useComponents, useExamVersions } from '@/features/catalog/catalogQueries';
 import { componentDisplayName, componentPath, findComponentBySlug } from '@/features/catalog/catalogRoutes';
 
+/** Một kỹ năng có thể có hàng chục đề (Speaking 49), tải hết một lần là thừa. */
+const PAGE_SIZE = 20;
+
 export function ComponentTestsPage() {
   const { componentSlug } = useParams<{ componentSlug: string }>();
+  const [page, setPage] = useState(0);
   const versions = useExamVersions();
   const components = useComponents(versions.data?.[0]?.id);
   const component = findComponentBySlug(components.data ?? [], componentSlug);
   const tests = useQuery({
-    queryKey: ['skill-tests', component?.id],
-    queryFn: () => mockTestApi.list(component!.id),
+    queryKey: ['skill-tests', component?.id, page],
+    queryFn: () => mockTestApi.list(component!.id, page, PAGE_SIZE),
     enabled: Boolean(component),
+    // Giữ trang cũ trong lúc tải trang mới để danh sách không nháy trắng.
+    placeholderData: keepPreviousData,
   });
+
+  // Đổi kỹ năng thì về trang đầu, nếu không sẽ xin trang 3 của kỹ năng chỉ có 1 trang.
+  useEffect(() => setPage(0), [component?.id]);
   const attempts = useQuery({
     queryKey: ['component-test-attempts'],
     queryFn: () => practiceApi.listAttempts(0, 100),
@@ -30,7 +40,9 @@ export function ComponentTestsPage() {
   if (!component) return <ErrorBlock message="Không tìm thấy kỹ năng này." />;
 
   const displayName = componentDisplayName(component);
-  const skillTests = tests.data ?? [];
+  const skillTests = tests.data?.content ?? [];
+  const totalTests = tests.data?.totalElements ?? 0;
+  const totalPages = tests.data?.totalPages ?? 0;
   const relatedAttempts = (attempts.data?.content ?? []).filter(
     (attempt) => attempt.componentId === component.id && attempt.mode === 'MOCK_TEST',
   );
@@ -50,7 +62,7 @@ export function ComponentTestsPage() {
       <span className="grid h-12 w-12 place-items-center rounded-lg bg-white/10 text-[#f0c466]"><HeadphonesIcon /></span>
       <div className="flex-1"><h1 className="text-2xl font-semibold tracking-[-0.03em]">Bài test {displayName}</h1><p className="mt-1 text-xs text-[#c4e1d8]">Các đề hoàn chỉnh được ghép và phát hành riêng bởi quản trị viên</p></div>
       <div className="grid grid-cols-3 divide-x divide-white/10 rounded-lg bg-white/5 text-center">
-        <Stat value={String(skillTests.length)} label="Bài test" />
+        <Stat value={String(totalTests)} label="Bài test" />
         <Stat value={String(completed.length)} label="Hoàn thành" />
         <Stat value={`${average}%`} label="Điểm TB" />
       </div>
@@ -64,7 +76,7 @@ export function ComponentTestsPage() {
       {skillTests.map((test, index) => <article key={test.id} className="flex min-h-[235px] flex-col rounded-xl border border-[#dfc989] bg-white p-5 shadow-[0_3px_12px_rgba(83,65,25,.07)]">
         <div className="flex items-start justify-between gap-3">
           <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase ${test.canAccess ? 'bg-[#e6f4ee] text-brand-800' : 'bg-[#fbf3dc] text-[#8b6415]'}`}>{test.canAccess ? 'Sẵn sàng' : 'Premium'}</span>
-          <span className="text-xs font-semibold text-stone-400">TEST {index + 1}</span>
+          <span className="text-xs font-semibold text-stone-400">TEST {page * PAGE_SIZE + index + 1}</span>
         </div>
         <h2 className="mt-4 text-lg font-semibold">{test.name}</h2>
         <p className="mt-1 text-xs text-stone-500">{test.parts.length} Part · {test.totalQuestionSets} bộ câu hỏi{test.durationSeconds ? ` · ${Math.round(test.durationSeconds / 60)} phút` : ''}</p>
@@ -72,6 +84,30 @@ export function ComponentTestsPage() {
         <Link to={`${componentPath(component.code)}/bai-test/${test.id}/gioi-thieu`} className="mt-auto inline-flex min-h-10 items-center justify-center rounded-lg bg-brand-800 px-4 text-xs font-semibold text-white hover:bg-brand-900">{test.canAccess ? 'Xem bài test' : 'Xem điều kiện mở khóa'}</Link>
       </article>)}
     </section>}
+
+    {totalPages > 1 && (
+      <nav className="flex items-center justify-center gap-2" aria-label="Phân trang bài test">
+        <button
+          type="button"
+          className="btn-secondary !px-3 !py-1.5 text-xs"
+          disabled={page === 0 || tests.isFetching}
+          onClick={() => setPage((current) => Math.max(0, current - 1))}
+        >
+          ← Trước
+        </button>
+        <span className="text-xs tabular-nums text-stone-600">
+          Trang {page + 1}/{totalPages} · {totalTests} bài
+        </span>
+        <button
+          type="button"
+          className="btn-secondary !px-3 !py-1.5 text-xs"
+          disabled={!tests.data?.hasNext || tests.isFetching}
+          onClick={() => setPage((current) => current + 1)}
+        >
+          Sau →
+        </button>
+      </nav>
+    )}
   </div>;
 }
 

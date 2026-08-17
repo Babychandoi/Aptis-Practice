@@ -1,0 +1,1392 @@
+{
+  "part": 3,
+  "title": "Aptis Listening Part 3",
+  "type": "speaker_identification",
+  "topic_count": 38,
+  "question_count": 152,
+  "options": [
+    {
+      "value": "0",
+      "text": "Man"
+    },
+    {
+      "value": "1",
+      "text": "Woman"
+    },
+    {
+      "value": "2",
+      "text": "Both"
+    }
+  ],
+  "note": "Mỗi topic dùng chung một audio và 4 statements. Bộ lựa chọn Man/Woman/Both giống nhau cho toàn bộ Part 3.",
+  "topics": [
+    {
+      "topic_stt": 1,
+      "topic": "The Internet (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/user-provided/20260630/the-internet.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2084",
+          "statement": "There is too much information on the Internet",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2083",
+          "statement": "Finding information on the Internet requires skills",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2081",
+          "statement": "The use of the Internet affects the way we think.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2082",
+          "statement": "The Internet makes young people less patient.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 2,
+      "topic": "Politics (2026) 🔥🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/448-politics-2026.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2093",
+          "statement": "Young people are more into politics",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2094",
+          "statement": "Social media changes politics.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2095",
+          "statement": "People are now better informed about politics.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2096",
+          "statement": "More women pursue politics.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 3,
+      "topic": "University education (2026)",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/user-provided/20260630/university-education.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2108",
+          "statement": "The internet makes education more accessible",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2105",
+          "statement": "Social interactions are essential to university life",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2107",
+          "statement": "A diverse curriculum is not always a good thing",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2106",
+          "statement": "Competitions between universities should be encouraged",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        }
+      ]
+    },
+    {
+      "topic_stt": 4,
+      "topic": "Urban farming (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/user-provided/20260630/urban-farming-original.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2117",
+          "statement": "Housing space is more important than farming space.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2119",
+          "statement": "Urban farming is appealing.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2120",
+          "statement": "Urban farming will benefit the urban economy.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2118",
+          "statement": "Cities need more food.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 5,
+      "topic": "Auditions",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/user-provided/20260630/actors.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2167",
+          "statement": "Auditions are most important for an actor's career.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2168",
+          "statement": "Actors tend to respond best to strong and engaging scripts.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2165",
+          "statement": "Theater acting and screen acting are quite different from each other.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2166",
+          "statement": "Actors should be praised and recognized as much as possible.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 6,
+      "topic": "Community Design (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/522-community-design-2026.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2179",
+          "statement": "Community design can influence people's behavior.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2178",
+          "statement": "Creating community can take time.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2180",
+          "statement": "Work communities and social communities are the same.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2177",
+          "statement": "Technology has changed how community forms.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 7,
+      "topic": "Changes in the workplace (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/233-changes-in-the-workplace-2026.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2191",
+          "statement": "Continuity is very important in the workplace.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2192",
+          "statement": "Job security cannot always be guaranteed.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2189",
+          "statement": "Job satisfaction is an important motivator.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2190",
+          "statement": "Technology is good for the entire economy.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        }
+      ]
+    },
+    {
+      "topic_stt": 8,
+      "topic": "Information technology",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/user-provided/20260630/information-and-technology.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2200",
+          "statement": "Future generations may struggle to keep up with information technology development.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2199",
+          "statement": "The technological revolution is good for the economy.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2197",
+          "statement": "No computer is superior to the human brain.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2198",
+          "statement": "More should be done to protect individual privacy.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 9,
+      "topic": "Singers and music (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/539-singers-and-music-2026.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2209",
+          "statement": "Singers can be good role models for young people.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2212",
+          "statement": "Taste in music is a highly personal thing.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2211",
+          "statement": "Music is a universal language",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2210",
+          "statement": "Music can be used to manipulate people's feelings",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 10,
+      "topic": "Beauty (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/68-beauty-2026.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2225",
+          "statement": "People share similar ideas about beauty",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2226",
+          "statement": "Ideas about beauty change over time",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2228",
+          "statement": "Beauty can be found in unlikely places",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2227",
+          "statement": "Traditional ideas about beauty are going to change",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        }
+      ]
+    },
+    {
+      "topic_stt": 11,
+      "topic": "The arts (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/493-the-arts-2026.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "6681",
+          "statement": "Art is only suitable for the privileged few",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "6682",
+          "statement": "The government should invest more in arts",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "6683",
+          "statement": "Children should be exposed to art early",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "6684",
+          "statement": "In the future, art will become more accessible",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        }
+      ]
+    },
+    {
+      "topic_stt": 12,
+      "topic": "Children and young people with technology (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/user-provided/20260630/children-and-young-people-with-technology.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "7004",
+          "statement": "Children are interested in tech-based learning",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "7005",
+          "statement": "Children find it difficult to communicate offline",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "7006",
+          "statement": "Families require help with management of technology",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "7007",
+          "statement": "Children can learn to regulate their online interactions",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        }
+      ]
+    },
+    {
+      "topic_stt": 13,
+      "topic": "A new environmental volunteer program (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/user-provided/20260630/environmental-volunteer-program.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "7015",
+          "statement": "Media exaggerates the benefits of the programme",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "7016",
+          "statement": "Littering will always be a problem",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "7017",
+          "statement": "The volunteers' motivations do not affect the programme outcome",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "7018",
+          "statement": "Punishment is the most effective way to prevent littering",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        }
+      ]
+    },
+    {
+      "topic_stt": 14,
+      "topic": "The Internet (Version 2)​ (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/user-provided/20260630/the-internet-version-2.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27133",
+          "statement": "There is too much information on the Internet",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27134",
+          "statement": "Using the Internet requires skills",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27135",
+          "statement": "The Internet is changing the way we think",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27136",
+          "statement": "The Internet has made people less patient",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 15,
+      "topic": "Local Cultural Differences (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/user-provided/20260630/local-cultural-differences.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27138",
+          "statement": "Language is the biggest difficulty when people try to understand a local culture",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27139",
+          "statement": "Globalisation is changing local traditions and ways of life",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27140",
+          "statement": "The younger generation does not care as much about their traditional culture",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27141",
+          "statement": "Visiting places in person is the most effective way to learn about different cultures",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        }
+      ]
+    },
+    {
+      "topic_stt": 16,
+      "topic": "Urban farming (Version 2) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/user-provided/20260630/urban-farming-version-2.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27227",
+          "statement": "Housing space is more important than farming space.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27228",
+          "statement": "Urban farming is appealing.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27229",
+          "statement": "Urban farming will benefit the urban economy.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27230",
+          "statement": "Cities need more food.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 17,
+      "topic": "Actors (Version 3) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27243-actors-version-3.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27244",
+          "statement": "Auditions are most important for an actor's career.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27245",
+          "statement": "Actors tend to respond best to strong and engaging scripts.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27246",
+          "statement": "Theater acting and screen acting are quite different from each other.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27247",
+          "statement": "Actors should be praised and recognized as much as possible.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 18,
+      "topic": "Actors (Version 1) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27248-actors-version-1.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27249",
+          "statement": "Auditions are most important for an actor's career.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27250",
+          "statement": "Actors tend to respond best to strong and engaging scripts.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27251",
+          "statement": "Theater acting and screen acting are quite different from each other.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27252",
+          "statement": "Actors should be praised and recognized as much as possible.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 19,
+      "topic": "Politics (Version 3) (2026) 🔥🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27253-politics-version-3.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27254",
+          "statement": "Young people are more into politics.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27255",
+          "statement": "Social media changes politics.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27256",
+          "statement": "People are now better informed about politics.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27257",
+          "statement": "More women pursue politics.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 20,
+      "topic": "Politics (Version 2) (2026) 🔥🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27258-politics-version-2.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27259",
+          "statement": "Young people are more into politics.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27260",
+          "statement": "Social media changes politics.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27261",
+          "statement": "People are now better informed about politics.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27262",
+          "statement": "More women pursue politics.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 21,
+      "topic": "Politics (Version 1) (2026) 🔥🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27263-politics-version-1.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27264",
+          "statement": "Young people are more into politics.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27265",
+          "statement": "Social media changes politics.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27266",
+          "statement": "People are now better informed about politics.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27267",
+          "statement": "More women pursue politics.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 22,
+      "topic": "Urban Farming (Version 4) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27268-urban-farming-version-4.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27269",
+          "statement": "Housing space is more important than farming space.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27270",
+          "statement": "Urban farming can make cities more attractive.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27271",
+          "statement": "Urban farming could help the local economy.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27272",
+          "statement": "Urban farming cannot solve food shortages by itself.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 23,
+      "topic": "Urban Farming (Version 3) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27273-urban-farming-version-3.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27274",
+          "statement": "Housing space is more important than farming space.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27275",
+          "statement": "Urban farming can make cities more attractive.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27276",
+          "statement": "Urban farming could help the local economy.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27277",
+          "statement": "Urban farming cannot solve food shortages by itself.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 24,
+      "topic": "Urban Farming (Version 1) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27278-urban-farming-version-1.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27279",
+          "statement": "Housing space is more important than farming space.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27280",
+          "statement": "Urban farming can make cities more attractive.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27281",
+          "statement": "Urban farming could help the local economy.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27282",
+          "statement": "Urban farming cannot solve food shortages by itself.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 25,
+      "topic": "Environmental Volunteer Program (Version 1) (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27283-environmental-volunteer-program-version-1.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27284",
+          "statement": "Media exaggerates the benefits of the programme.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27285",
+          "statement": "Littering will always be a problem.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27286",
+          "statement": "The volunteers' motivations do not affect the programme outcome.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27287",
+          "statement": "Punishment is the most effective way to prevent littering.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        }
+      ]
+    },
+    {
+      "topic_stt": 26,
+      "topic": "Beauty (Version 2) (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27288-beauty-version-2.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27289",
+          "statement": "People share similar ideas about beauty.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27290",
+          "statement": "Ideas about beauty change over time.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27291",
+          "statement": "Beauty can be found in unlikely places.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27292",
+          "statement": "Traditional ideas about beauty are going to change.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        }
+      ]
+    },
+    {
+      "topic_stt": 27,
+      "topic": "Beauty (Version 1) (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27293-beauty-version-1.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27294",
+          "statement": "People share similar ideas about beauty.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27295",
+          "statement": "Ideas about beauty change over time.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27296",
+          "statement": "Beauty can be found in unlikely places.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27297",
+          "statement": "Traditional ideas about beauty are going to change.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        }
+      ]
+    },
+    {
+      "topic_stt": 28,
+      "topic": "University And Technology (Version 3) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27298-university-and-technology-version-3.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27299",
+          "statement": "The internet makes education more accessible.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27300",
+          "statement": "Social interactions are essential to university life.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27301",
+          "statement": "A diverse curriculum is not always a good thing.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27302",
+          "statement": "Competition between universities should be encouraged.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        }
+      ]
+    },
+    {
+      "topic_stt": 29,
+      "topic": "University And Technology (Version 1) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27303-university-and-technology-version-1.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27304",
+          "statement": "The internet makes education more accessible.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27305",
+          "statement": "Social interactions are essential to university life.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27306",
+          "statement": "A diverse curriculum is not always a good thing.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27307",
+          "statement": "Competition between universities should be encouraged.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        }
+      ]
+    },
+    {
+      "topic_stt": 30,
+      "topic": "The Arts (Version 2) (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27308-the-arts-version-2.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27309",
+          "statement": "Art is only suitable for the privileged few.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27310",
+          "statement": "The government should invest more in arts.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27311",
+          "statement": "Children should be exposed to art early.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27312",
+          "statement": "In the future, art will become more accessible.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        }
+      ]
+    },
+    {
+      "topic_stt": 31,
+      "topic": "The Arts (Version 1) (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27313-the-arts-version-1.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27314",
+          "statement": "Art is only suitable for the privileged few.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27315",
+          "statement": "The government should invest more in arts.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27316",
+          "statement": "Children should be exposed to art early.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27317",
+          "statement": "In the future, art will become more accessible.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        }
+      ]
+    },
+    {
+      "topic_stt": 32,
+      "topic": "Music And Singer (Version 3) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27318-music-and-singer-version-3.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27319",
+          "statement": "Singers can be good role models for young people.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27320",
+          "statement": "Taste in music is a highly personal thing.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27321",
+          "statement": "Music is a universal language.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27322",
+          "statement": "Music can be used to manipulate people's feelings.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 33,
+      "topic": "Music And Singer (Version 2) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27323-music-and-singer-version-2.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27324",
+          "statement": "Singers can be good role models for young people.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27325",
+          "statement": "Taste in music is a highly personal thing.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27326",
+          "statement": "Music is a universal language.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27327",
+          "statement": "Music can be used to manipulate people's feelings.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 34,
+      "topic": "Music And Singer (Version 1) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27328-music-and-singer-version-1.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27329",
+          "statement": "Singers can be good role models for young people.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27330",
+          "statement": "Taste in music is a highly personal thing.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27331",
+          "statement": "Music is a universal language.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27332",
+          "statement": "Music can be used to manipulate people's feelings.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 35,
+      "topic": "The Local Central ( version 1 )",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/27333-the-local-central-version-1.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27334",
+          "statement": "Exhibitions should be different and diverse.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27335",
+          "statement": "Traditional customs are gradually losing their significance.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27336",
+          "statement": "Local festivals will disappear in the near future.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27337",
+          "statement": "Schools are important in shaping future generations.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 36,
+      "topic": "The Local Central ( version 2 ) ( 2026 )",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260714-fixed/489-the-local-central-version-2-2026.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "2130",
+          "statement": "Exhibitions should be different and diverse",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "2129",
+          "statement": "Traditional customs are gradually losing their significance",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "2131",
+          "statement": "Local festivals will disappear in the near future",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "2132",
+          "statement": "Schools are important in shaping future generations",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        }
+      ]
+    },
+    {
+      "topic_stt": 37,
+      "topic": "Homeschooling (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260722/homeschooling.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27383",
+          "statement": "Adjusting the pace of lessons may help children learn more efficiently.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27384",
+          "statement": "Occasional group activities may not completely replace regular contact with classmates.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27385",
+          "statement": "Home education can benefit children whose circumstances make a fixed school timetable difficult.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27386",
+          "statement": "The success of homeschooling depends on whether a family can provide suitable teaching and support.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        }
+      ]
+    },
+    {
+      "topic_stt": 38,
+      "topic": "Work Business / Business and Cultural",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part3/elevenlabs/20260722/work-business-business-and-cultural.mp3",
+      "question_count": 4,
+      "questions": [
+        {
+          "display_no": "15.1",
+          "question_id": "27388",
+          "statement": "A business should build up financial reserves before expanding.",
+          "correct_answer": "Man",
+          "correct_value": "0"
+        },
+        {
+          "display_no": "15.2",
+          "question_id": "27389",
+          "statement": "Companies working in another country need to understand local customs and communication styles.",
+          "correct_answer": "Both",
+          "correct_value": "2"
+        },
+        {
+          "display_no": "15.3",
+          "question_id": "27390",
+          "statement": "Having very little starting capital does not necessarily prevent a small company from growing.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        },
+        {
+          "display_no": "15.4",
+          "question_id": "27391",
+          "statement": "A less formal workplace may encourage employees to mention problems earlier.",
+          "correct_answer": "Woman",
+          "correct_value": "1"
+        }
+      ]
+    }
+  ]
+}

@@ -21,6 +21,9 @@ public interface QuestionSetRepository
 
     Page<QuestionSet> findByPartIdAndStatus(String partId, ContentStatus status, Pageable pageable);
 
+    /** Toàn bộ đề của một Part, thứ tự ổn định theo mã — dùng cho bảng mẹo học. */
+    List<QuestionSet> findByPartIdAndStatusOrderByCodeAsc(String partId, ContentStatus status);
+
     /**
      * Chọn bộ câu hỏi cho luyện theo Part, ưu tiên theo PHẦN IX §56:
      * chưa làm -> đến lịch ôn -> mastery thấp -> lâu chưa gặp.
@@ -47,7 +50,11 @@ public interface QuestionSetRepository
                        AND uqs.next_review_at <= UTC_TIMESTAMP()
                      THEN 0 ELSE 1 END,
                 COALESCE(uqs.mastery_score, 0) ASC,
-                COALESCE(uqs.last_attempted_at, '1970-01-01') ASC
+                COALESCE(uqs.last_attempted_at, '1970-01-01') ASC,
+                -- Học viên mới chưa có user_question_stats nên mọi tiêu chí trên
+                -- đều bằng nhau; không có mã đề làm mốc thì MySQL trả về thứ tự
+                -- tuỳ ý và "Đề 1" trên màn hình không phải đề số 001.
+                qs.code ASC
             LIMIT :limit
             """, nativeQuery = true)
     List<String> selectForPartPractice(

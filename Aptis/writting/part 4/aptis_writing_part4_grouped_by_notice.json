@@ -1,0 +1,1588 @@
+{
+  "part": 4,
+  "skill": "writing",
+  "exam": "Aptis ESOL General",
+  "title": "Aptis Writing Part 4",
+  "instruction": "Viết email cho bạn 40-75 từ và email formal 120-225 từ",
+  "set_count": 46,
+  "question_count": 92,
+  "questions_per_set": 2,
+  "word_limits": {
+    "informal_email": {
+      "min": 40,
+      "max": 75
+    },
+    "formal_email": {
+      "min": 120,
+      "max": 225
+    }
+  },
+  "sample_answer_text_in_source": false,
+  "note": "Giữ nguyên tuyệt đối thứ tự set và thứ tự câu hỏi theo HTML nguồn. Mỗi set giữ nguyên Club notice (title + body) ở cấp ngoài, sau đó là 2 email prompts. Một số prompt ghi riêng 'about 40-50 words', 'about 50 words' hoặc 'about 120-150 words'; thông tin này được giữ trong embedded_word_instruction, còn word_limit lấy nguyên từ textarea nguồn.",
+  "sets": [
+    {
+      "set_stt": 1,
+      "set_id": "126",
+      "notice": {
+        "title": "Fashion Club – Part 4",
+        "body": "Dear members,\nThe Fashion Club is planning an event with famous designers who will discuss their work and answer members’ questions. Some members prefer an online meeting because it would be convenient and inexpensive, while others want a live fashion-show-style event. Please tell us which format you prefer, explain your reasons, and suggest how the event should be organised."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 1,
+          "item_id": "writing-q-126-0",
+          "email_type": "informal",
+          "prompt": "Write to a friend to say which way of organizing the event you prefer. (about 40-50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "40-50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 2,
+          "item_id": "writing-q-126-1",
+          "email_type": "formal",
+          "prompt": "Write to the club manager to explain which option you prefer and why. (about 120-150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 2,
+      "set_id": "127",
+      "notice": {
+        "title": "Social Club – Part 4",
+        "body": "Dear members,\nThe Social Club is planning an event to help people meet others and make new friends. We are considering two formats: an online event that is easy to join from home, or an in-person event with face-to-face activities. Please tell us which option you prefer, how you feel about the plan, and what activities should be included."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 3,
+          "item_id": "writing-q-127-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend about your feelings and opinions. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 4,
+          "item_id": "writing-q-127-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager about your feelings and opinions. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 3,
+      "set_id": "128",
+      "notice": {
+        "title": "Television Club – Part 4",
+        "body": "Dear members,\nThe Television Club is planning its first face-to-face international conference. Many members come from different countries and have only communicated online, so this will be an opportunity for everyone to meet in person. Please suggest a suitable venue and activities that could help members get to know one another, exchange ideas, and enjoy the event."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 5,
+          "item_id": "writing-q-128-0",
+          "email_type": "informal",
+          "prompt": "Write to your friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 6,
+          "item_id": "writing-q-128-1",
+          "email_type": "formal",
+          "prompt": "Write to the manager of the club. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 4,
+      "set_id": "129",
+      "notice": {
+        "title": "Book Club - Part 4",
+        "body": "Dear members,\nFrom next month, the Book Club will no longer be able to provide members with one free book each month. In addition, problems with our delivery service mean that orders may take four to six weeks to arrive. We apologise for these changes and would like to hear your reactions, suggestions for improving the service, and ideas for alternative member benefits."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 7,
+          "item_id": "writing-q-129-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 8,
+          "item_id": "writing-q-129-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 5,
+      "set_id": "130",
+      "notice": {
+        "title": "Art Club – Part 4",
+        "body": "Dear members,\nThe Art Club is planning a public talk to attract more interest in our activities and encourage both younger and older people to join. We would like to invite a well-known artist, but we have not yet chosen the speaker or the topic. Please recommend a suitable artist, suggest an engaging subject, and explain how the event could appeal to different age groups."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 9,
+          "item_id": "writing-q-130-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 10,
+          "item_id": "writing-q-130-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the organizer/manager (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 6,
+      "set_id": "131",
+      "notice": {
+        "title": "Language Club (V1) – Part 4",
+        "body": "Dear members,\nYou have been studying English at the American Dream Center for two months and have found the course effective, practical, and enjoyable. You would like to recommend it to a friend. However, you have also registered for the next course but can no longer attend because your personal schedule has changed. Please explain the situation and suggest a suitable solution."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 11,
+          "item_id": "writing-q-131-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. Recommend the course. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 12,
+          "item_id": "writing-q-131-1",
+          "email_type": "formal",
+          "prompt": "Write to the club manager: you registered but can’t attend; describe feelings, reasons, and what you would like to do. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 7,
+      "set_id": "132",
+      "notice": {
+        "title": "Technology Club – Part 4 (Version 1)",
+        "body": "Dear members,\nOur website is an important place for members to share ideas, but recently some comments have been rude or negative. The club is considering changing the website so that every comment shows the writer’s real identity. Please give your opinion on this proposal and suggest other ways to encourage respectful discussion while protecting members’ privacy."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 13,
+          "item_id": "writing-q-132-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 14,
+          "item_id": "writing-q-132-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 8,
+      "set_id": "133",
+      "notice": {
+        "title": "Debate Club - Part 4",
+        "body": "Dear members,\nThe Debate Club is preparing a campaign to attract new members. We want to explain how learning to debate and speak in public can be useful in education, work, and everyday life. Please identify two important benefits, give examples of how these skills help people, and suggest an activity that could introduce beginners to the club."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 15,
+          "item_id": "writing-q-133-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 16,
+          "item_id": "writing-q-133-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 9,
+      "set_id": "134",
+      "notice": {
+        "title": "English Club (V3) - Part 4",
+        "body": "Dear members,\nWe are sorry to announce that this week’s English Club talk show has been cancelled because the invited guests are unexpectedly unavailable. As we do not currently have a backup plan, there will be no regular meeting this week. Please tell us how you feel and suggest an alternative activity, replacement speaker, or online event that could be arranged instead."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 17,
+          "item_id": "writing-q-134-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words). Write about your feelings and what you would like to do.",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 18,
+          "item_id": "writing-q-134-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words). Write about your feelings suggest possible.",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 10,
+      "set_id": "135",
+      "notice": {
+        "title": "Fitness Club – Part 4 (Version 1)",
+        "body": "Dear members,\nSome of the Fitness Club’s equipment is old and needs to be replaced. One proposal is to hold a sponsorship event to raise money for new equipment. Another suggestion is to increase the membership fee by 50 percent. Please tell us which option you prefer, explain your reasons, and suggest any other practical ways to fund the improvements."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 19,
+          "item_id": "writing-q-135-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 20,
+          "item_id": "writing-q-135-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 11,
+      "set_id": "137",
+      "notice": {
+        "title": "Photography Club – Part 4",
+        "body": "Dear members,\nThe Photography Club is preparing an exhibition featuring the best photographs taken by club members. We want the exhibition to be interesting and accessible to visitors of all ages, from children to older adults. Please suggest suitable themes, ways to display the photographs, and activities that could help different age groups enjoy and understand the exhibition."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 21,
+          "item_id": "writing-q-137-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 22,
+          "item_id": "writing-q-137-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 12,
+      "set_id": "138",
+      "notice": {
+        "title": "Reading Club – Part 4",
+        "body": "Dear members,\nThe Reading Club has been invited to contribute ideas for a new community library. The organisers want the building to appeal to both younger and older readers and to provide more than just shelves of books. Please suggest useful facilities, comfortable reading areas, technology, events, or services that would make the library welcoming and practical for everyone."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 23,
+          "item_id": "writing-q-138-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 40-50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "40-50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 24,
+          "item_id": "writing-q-138-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. (about 120-150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 13,
+      "set_id": "139",
+      "notice": {
+        "title": "Sports Club - Part 4",
+        "body": "Dear members,\nThe Sports Club plans to organise a competition for younger members. We want the event to be exciting, inclusive, and safe for participants with different abilities and levels of experience. Please suggest suitable sports, age categories, team arrangements, prizes, and safety measures. We would also like ideas for encouraging more young people to take part."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 25,
+          "item_id": "writing-q-139-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 26,
+          "item_id": "writing-q-139-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 14,
+      "set_id": "141",
+      "notice": {
+        "title": "Food Club – Part 4",
+        "body": "Dear members,\nThe Food Club is planning a special meeting with a well-known chef, and we hope to attract a large audience. The chef will give a talk and demonstrate how to prepare a meal. Please suggest an interesting topic for the talk, a suitable dish for the demonstration, and any additional activities that could make the event more enjoyable."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 27,
+          "item_id": "writing-q-141-0",
+          "email_type": "informal",
+          "prompt": "Write an email to a friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 28,
+          "item_id": "writing-q-141-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 15,
+      "set_id": "142",
+      "notice": {
+        "title": "English Club (V1) – Part 4",
+        "body": "Dear members,\nNew words and expressions are constantly entering the English language, especially through social media, technology, and popular culture. Some people welcome these changes because they make language more creative and modern, while others believe that language should follow clear rules. We would like to hear your views and the reasons why this issue causes such strong reactions."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 29,
+          "item_id": "writing-q-142-0",
+          "email_type": "informal",
+          "prompt": "Write a letter to your friend to express your views. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 30,
+          "item_id": "writing-q-142-1",
+          "email_type": "formal",
+          "prompt": "Write a letter to the club manager to express your views and explain. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 16,
+      "set_id": "143",
+      "notice": {
+        "title": "Outdoor Club - Part 4",
+        "body": "Dear members,\nThe Outdoor Club is planning a summer trip and must choose between the mountains and the coast. We want the trip to be enjoyable, safe, and suitable for both younger and older members. Please tell us which destination you prefer and suggest activities, transport, accommodation, or facilities that would meet the needs of different age groups."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 31,
+          "item_id": "writing-q-143-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 32,
+          "item_id": "writing-q-143-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 17,
+      "set_id": "144",
+      "notice": {
+        "title": "English Club (V2) - Part 4",
+        "body": "Dear members,\nThe English Club is planning a public talk to attract new members from different age groups. We want the event to be useful and enjoyable for both younger and older learners. Please suggest a suitable speaker, an interesting topic, and activities that would encourage audience participation. We would also like ideas for promoting the event effectively."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 33,
+          "item_id": "writing-q-144-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 34,
+          "item_id": "writing-q-144-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 18,
+      "set_id": "145",
+      "notice": {
+        "title": "Museum Club - Part 4",
+        "body": "Dear members,\nThe Museum Club is considering introducing an entrance fee for members when they visit the museum. The money would help cover rising costs and support new exhibitions, but some members believe visits should remain free. Please give your opinion, suggest a reasonable pricing policy, and explain whether discounts or free-entry days should be offered."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 35,
+          "item_id": "writing-q-145-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words). Please give your opinions.",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 36,
+          "item_id": "writing-q-145-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words). Please give your opinions.",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 19,
+      "set_id": "146",
+      "notice": {
+        "title": "Home Living Club - Part 4",
+        "body": "Dear members,\nMany young families would like to buy a house or apartment, but they often find the process expensive, confusing, and stressful. The Home Living Club wants to offer useful support. Please suggest how families can search for suitable homes, compare prices, understand legal and financial matters, and avoid common mistakes when making such an important decision."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 37,
+          "item_id": "writing-q-146-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 38,
+          "item_id": "writing-q-146-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 20,
+      "set_id": "147",
+      "notice": {
+        "title": "Business Club - Part 4",
+        "body": "Dear members,\nThe Business Club wants to support local people who are planning to start small businesses. We are considering two proposals: creating a call centre where people can ask questions and receive advice, or offering free business courses in partnership with nearby universities. Please tell us which option would be more useful, explain why, and suggest how it could operate successfully."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 39,
+          "item_id": "writing-q-147-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words). Write a letter to a friend about your choice and the idea.",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 40,
+          "item_id": "writing-q-147-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words). Write a letter to the club manager about your choice and why.",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 21,
+      "set_id": "148",
+      "notice": {
+        "title": "Film Club - Part 4",
+        "body": "Dear members,\nUnfortunately, actor James McAvoy cannot give the planned talk at our next meeting for personal reasons. He has offered to return next year, either in January or March. The meeting will still take place, with a discussion about the advantages and disadvantages of learning online. Please tell us your preferred month and suggest any other suitable activities or replacement speakers."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 41,
+          "item_id": "writing-q-148-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. Write about your feelings and what you would like to do (50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": null
+        },
+        {
+          "question_order": 2,
+          "global_number": 42,
+          "item_id": "writing-q-148-1",
+          "email_type": "formal",
+          "prompt": "Write an email the the manager of the club. Write about your feelings and possible alternatives (120 - 150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": null
+        }
+      ]
+    },
+    {
+      "set_stt": 22,
+      "set_id": "149",
+      "notice": {
+        "title": "Travel Club (V2) - Part 4",
+        "body": "Dear members,\nThe Travel Club wants to help people who are travelling abroad for the first time. New travellers may worry about planning, transport, money, safety, and communicating in another language. Please suggest practical advice or services the club could provide, and recommend the easiest ways for travellers to communicate with local people while they are overseas."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 43,
+          "item_id": "writing-q-149-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 44,
+          "item_id": "writing-q-149-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 23,
+      "set_id": "150",
+      "notice": {
+        "title": "Cinema Club - Part 4",
+        "body": "Dear members,\nOur weekly film screenings are very popular, but we have received several complaints about people using mobile phones during the films. Reminding audiences to switch off their phones has not solved the problem, so the club is considering a complete ban inside the cinema. Please give your opinion on the ban and suggest other fair and practical solutions."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 45,
+          "item_id": "writing-q-150-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words). Tell your friend what suggestions you will make and why?",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 46,
+          "item_id": "writing-q-150-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words). Write about your ideas and what you think about the situation.",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 24,
+      "set_id": "151",
+      "notice": {
+        "title": "Science Club - Part 4",
+        "body": "Dear members,\nThe Science Club is organising an exhibition next month for both young people and older visitors. We need ideas for interactive displays, demonstrations, talks, and activities that everyone can enjoy. We are also considering whether visitors should buy tickets. Please suggest suitable attractions and tell us whether admission should be free, paid, or discounted for certain groups."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 47,
+          "item_id": "writing-q-151-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 48,
+          "item_id": "writing-q-151-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 25,
+      "set_id": "152",
+      "notice": {
+        "title": "Computer Club - Part 4",
+        "body": "Dear members,\nThe Computer Club plans to redesign its website because the current version looks outdated and is not attracting enough new members. We would like the new site to be clear, modern, and easy to use on both computers and mobile phones. Please share your feelings about the plan and suggest useful content, features, or design improvements."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 49,
+          "item_id": "writing-q-152-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 50,
+          "item_id": "writing-q-152-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 26,
+      "set_id": "153",
+      "notice": {
+        "title": "Garden Club - Part 4",
+        "body": "Dear members,\nThe talk and slide show on “The Gardens of Japan” has been cancelled because Mr Seiko is unwell. Mr Jones has kindly offered to repeat his talk on “The Gardens of England”, although many members have already heard it. Please tell us how you feel about this change and suggest alternative speakers, topics, or activities for the meeting."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 51,
+          "item_id": "writing-q-153-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 52,
+          "item_id": "writing-q-153-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 27,
+      "set_id": "154",
+      "notice": {
+        "title": "Healthy Club - Part 4",
+        "body": "Dear members,\nFor personal reasons, our instructor will be away for the next two weeks. During this period, members may use the club’s facilities, but there will be no professional supervision or organised classes. We apologise for the inconvenience and are concerned about safety. Please share your views and suggest suitable temporary arrangements or alternative activities."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 53,
+          "item_id": "writing-q-154-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 54,
+          "item_id": "writing-q-154-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 28,
+      "set_id": "155",
+      "notice": {
+        "title": "English Club (V2) – Part 4",
+        "body": "Dear Members,\nWe are sorry to inform you that the Talk show has been canceled as the guests are unexpectedly busy. We do not have any back-up plan, so there will be no meeting this week. We will inform you of the reopening of the Talk show as soon as we can. We are sorry for the inconvenience."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 55,
+          "item_id": "writing-q-155-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. Write about your feelings and what you would like to do. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 56,
+          "item_id": "writing-q-155-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club. Write about your feelings and suggest possible solutions. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 29,
+      "set_id": "156",
+      "notice": {
+        "title": "Writing Club - Part 4",
+        "body": "Dear members,\nMany members have complained that the Writing Club website looks unprofessional and is difficult to navigate. Important information is hard to find, and some pages do not work well on mobile phones. We plan to improve the site and would like your suggestions about its layout, content, writing resources, interactive features, and overall ease of use."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 57,
+          "item_id": "writing-q-156-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 58,
+          "item_id": "writing-q-156-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 30,
+      "set_id": "157",
+      "notice": {
+        "title": "Nature Club – Part 4",
+        "body": "Dear members,\nMany young people spend most of their free time at home playing computer games or using their phones. The Nature Club would like to create a programme that encourages them to spend more time outdoors and learn about the natural world. Please suggest enjoyable activities, suitable locations, and effective ways to attract young participants."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 59,
+          "item_id": "writing-q-157-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 40-50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "40-50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 60,
+          "item_id": "writing-q-157-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. (about 120-150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 31,
+      "set_id": "158",
+      "notice": {
+        "title": "Language Club (V2) – Part 4",
+        "body": "Dear members,\nThe Language Club will hold a lecture about language learning next month. We are looking for a club member to be the guest speaker and would like the talk to be practical, interesting, and useful for learners at different levels. Members who wish to speak should explain why they are suitable and propose a clear topic for the lecture."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 61,
+          "item_id": "writing-q-158-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 62,
+          "item_id": "writing-q-158-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the club: express desire to be a speaker and propose the talk topic. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 32,
+      "set_id": "159",
+      "notice": {
+        "title": "Community Club – Part 4",
+        "body": "Dear members,\nOur Community Club needs more support this year. We are looking for members who can take an active role in current projects, as well as creative ideas for new activities that benefit local people. Please suggest ways to recruit and motivate volunteers, and recommend one or two practical projects that the club could organise in the coming months."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 63,
+          "item_id": "writing-q-159-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 64,
+          "item_id": "writing-q-159-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 33,
+      "set_id": "160",
+      "notice": {
+        "title": "Home Living – Part 4",
+        "body": "Dear members,\nMany young families would like to buy a house or apartment, but they often find the process expensive, confusing, and stressful. The Home Living Club wants to offer useful support. Please suggest how families can search for suitable homes, compare prices, understand legal and financial matters, and avoid common mistakes when making such an important decision."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 65,
+          "item_id": "writing-q-160-0",
+          "email_type": "informal",
+          "prompt": "Write to a friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 66,
+          "item_id": "writing-q-160-1",
+          "email_type": "formal",
+          "prompt": "Write to the manager of the club. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 34,
+      "set_id": "161",
+      "notice": {
+        "title": "Walking Club (V1) – Part 4",
+        "body": "Dear members,\nThe Walking Club is considering a two-week walking tour through several European countries. Some members are excited about the opportunity, while others are worried about the cost, distance, fitness level, and amount of time required. Please share your opinion and suggest ways to make the tour safer, more affordable, and suitable for a wider range of members."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 67,
+          "item_id": "writing-q-161-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 40-50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "40-50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 68,
+          "item_id": "writing-q-161-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. (about 120-150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 35,
+      "set_id": "163",
+      "notice": {
+        "title": "Beautiful Homes Club - Part 4",
+        "body": "Dear members,\nMaintaining old buildings is expensive, and some of them occupy land that could be used for modern housing. The government is therefore considering demolishing certain old buildings and replacing them with new apartment blocks. Please tell us whether you support this proposal, explain your reasons, and suggest how historically or culturally important buildings should be protected."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 69,
+          "item_id": "writing-q-163-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 70,
+          "item_id": "writing-q-163-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 36,
+      "set_id": "164",
+      "notice": {
+        "title": "Car Club - Part 4",
+        "body": "Dear members,\nA motoring programme will take place across Europe, and the Car Club has been invited to send two representatives: one main driver and one passenger who can also drive well when necessary. We need reliable members with strong driving skills, good teamwork, and travel experience. Please suggest suitable candidates or explain what qualities the club should consider when selecting them."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 71,
+          "item_id": "writing-q-164-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words). Do you have any suggestions for the above positions.",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 72,
+          "item_id": "writing-q-164-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words). Do you have any suggestions for the above positions.",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 37,
+      "set_id": "165",
+      "notice": {
+        "title": "Travel Club – Part 4",
+        "body": "Dear members,\nThe Travel Club is planning a campaign to encourage more tourists to visit our local area. At the same time, we want visitors to respect local people, traditions, and the environment. Please suggest ways to promote the area, explain what polite tourist behaviour should include, and recommend how we can communicate these messages clearly to visitors."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 73,
+          "item_id": "writing-q-165-0",
+          "email_type": "informal",
+          "prompt": "Write to your friend and share your suggestions. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 74,
+          "item_id": "writing-q-165-1",
+          "email_type": "formal",
+          "prompt": "Write to the president of the club and give your suggestions. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 38,
+      "set_id": "166",
+      "notice": {
+        "title": "Movie Club - Part 4",
+        "body": "Dear members,\nThe Movie Club’s usual meeting room will be closed for repairs for the next several weeks. As a result, we need to find another place to meet or organise a different activity until the work is completed. Please suggest a suitable venue, an online option, or an alternative film-related activity that members could enjoy together."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 75,
+          "item_id": "writing-q-166-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words).",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 76,
+          "item_id": "writing-q-166-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words).",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 39,
+      "set_id": "167",
+      "notice": {
+        "title": "Music Club – Part 4",
+        "body": "Dear members,\nThe Music Club is planning a special event for people who enjoy listening to and performing music. We would like the event to welcome members of all ages, including both young people and older adults. Please share your ideas about suitable music, activities, facilities, and ways to make everyone feel comfortable and included."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 77,
+          "item_id": "writing-q-167-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 78,
+          "item_id": "writing-q-167-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 40,
+      "set_id": "168",
+      "notice": {
+        "title": "College Club - Part 4",
+        "body": "Dear members,\nWe regret to inform you that the end-of-course examinations will take place two weeks earlier than originally planned. The examination scheduled for the 21st of next month will now be held on the 7th. We understand that this change may cause difficulties. Please share your concerns and suggest what support or alternative arrangements the college should provide."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 79,
+          "item_id": "writing-q-168-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words). Tell them what you think the college should do about the situation.",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 80,
+          "item_id": "writing-q-168-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words). Tell them what you think the college should do about the situation.",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 41,
+      "set_id": "169",
+      "notice": {
+        "title": "Nature Club (V2) - Part 4",
+        "body": "Dear members,\nThis year, the Nature Club is planning a campaign to help children become more interested in nature and the natural world. Many children currently prefer staying indoors and playing computer games. Please suggest enjoyable ways to encourage them to explore outdoors, and recommend the best channels, messages, or activities for communicating the campaign to young people and their families."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 81,
+          "item_id": "writing-q-169-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend, who is also a member of the club. Write about your ideas and how to communicate them. Write about 50 words.",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": null
+        },
+        {
+          "question_order": 2,
+          "global_number": 82,
+          "item_id": "writing-q-169-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. Tell the manager your suggestions for promoting nature to young people and how best to communicate them. Write 120-150 words.",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": null
+        }
+      ]
+    },
+    {
+      "set_stt": 42,
+      "set_id": "170",
+      "notice": {
+        "title": "Cooking Club - Part 4",
+        "body": "Dear members,\nAll Cooking Club classes next week have been cancelled because the instructor will be on holiday. Replacement dates have not yet been confirmed, and the club has said that participants will not receive a refund. We understand that members may be disappointed. Please tell us how you feel and suggest a fair solution or alternative activity."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 83,
+          "item_id": "writing-q-170-0",
+          "email_type": "informal",
+          "prompt": "Write a short email to your friend (about 50 words). Tell your friend your feelings about this and what you plan to do.",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 84,
+          "item_id": "writing-q-170-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the president of the club (about 120-150 words). Tell them your thoughts about this and what you would like to do.",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 43,
+      "set_id": "915",
+      "notice": {
+        "title": "Fitness Club – Part 4 (Version 2)",
+        "body": "Dear members,\nTo reduce operating costs, the Fitness Club is considering limiting the amount of equipment available to members. Some members have also suggested closing the fitness shop and café. These changes could save money but may reduce the quality of the club experience. Please share your opinion and suggest other ways to cut costs without seriously affecting members."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 85,
+          "item_id": "writing-q-915-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 86,
+          "item_id": "writing-q-915-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 44,
+      "set_id": "919",
+      "notice": {
+        "title": "Technology Club – Part 4 (Version 2)",
+        "body": "Dear members,\nThe Technology Club will hold a public technology fair next month and is looking for volunteers to help organise the event. Volunteers may welcome visitors, explain displays, support speakers, and assist with technical problems. Please explain why technology is important, describe the skills and experience a good volunteer should have, and tell us why you would be suitable for the role."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 87,
+          "item_id": "writing-q-919-0",
+          "email_type": "informal",
+          "prompt": "Write to a friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 88,
+          "item_id": "writing-q-919-1",
+          "email_type": "formal",
+          "prompt": "Write to the club manager about the importance of technology and why you should be selected. (about 120–150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 45,
+      "set_id": "923",
+      "notice": {
+        "title": "Walking Club (V2) – Part 4",
+        "body": "Dear members,\nSeveral Walking Club members have been using their phones while walking and are not paying enough attention to roads, traffic, or other people. This behaviour can cause accidents and makes group walks less enjoyable. Please share your opinion and suggest practical rules, reminders, or activities that could encourage members to walk safely and interact more with the group."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 89,
+          "item_id": "writing-q-923-0",
+          "email_type": "informal",
+          "prompt": "Write an email to your friend. (about 40-50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "40-50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 90,
+          "item_id": "writing-q-923-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager of the club. (about 120-150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    },
+    {
+      "set_stt": 46,
+      "set_id": "928",
+      "notice": {
+        "title": "Food Club (V2) - Part 4",
+        "body": "Dear members,\nThe Food Club is planning a special meeting with a well-known chef, and we hope to attract a large audience. The chef will give a talk and demonstrate how to prepare a meal. Please suggest an interesting topic for the talk, a suitable dish for the demonstration, and any additional activities that could make the event more enjoyable."
+      },
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 91,
+          "item_id": "writing-q-928-0",
+          "email_type": "informal",
+          "prompt": "Write an email to a friend. (about 50 words)",
+          "word_limit": {
+            "min": 40,
+            "max": 75
+          },
+          "embedded_word_instruction": "50 words"
+        },
+        {
+          "question_order": 2,
+          "global_number": 92,
+          "item_id": "writing-q-928-1",
+          "email_type": "formal",
+          "prompt": "Write an email to the manager. (about 120-150 words)",
+          "word_limit": {
+            "min": 120,
+            "max": 225
+          },
+          "embedded_word_instruction": "120-150 words"
+        }
+      ]
+    }
+  ]
+}

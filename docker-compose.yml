@@ -147,6 +147,20 @@ services:
       # Giả lập cổng hoàn tiền bất đồng bộ (chờ webhook xác nhận).
       SANDBOX_ASYNC_REFUND: "${SANDBOX_ASYNC_REFUND:-false}"
 
+      # Chấm Speaking/Writing bằng LLM. Đặt AI_EVAL_API_KEY trong .env, không
+      # commit khoá vào repo. Tắt cờ này thì rơi về heuristic (không phải AI).
+      AI_EVAL_ENABLED: "${AI_EVAL_ENABLED:-false}"
+      AI_EVAL_BASE_URL: "${AI_EVAL_BASE_URL:-}"
+      AI_EVAL_API_KEY: "${AI_EVAL_API_KEY:-}"
+      AI_EVAL_MODEL: "${AI_EVAL_MODEL:-AI-PRO}"
+      AI_EVAL_TIMEOUT: "${AI_EVAL_TIMEOUT:-60}"
+
+      # Chuyển giọng nói thành văn bản cho Speaking. Mặc định dùng lại endpoint
+      # và khoá của AI_EVAL_* nên chỉ cần bật cờ.
+      AI_STT_ENABLED: "${AI_STT_ENABLED:-false}"
+      AI_STT_MODEL: "${AI_STT_MODEL:-ag/gemini-3-flash}"
+      AI_STT_TIMEOUT: "${AI_STT_TIMEOUT:-120}"
+
       # Backend gọi MinIO qua network nội bộ...
       MINIO_ENDPOINT: http://minio:9000
       # ...nhưng presigned URL phải ký với host mà trình duyệt truy cập được

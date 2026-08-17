@@ -9,6 +9,7 @@ import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import vn.weconex.aptis.common.util.Enums.EvaluationType;
 
@@ -25,6 +26,7 @@ import vn.weconex.aptis.common.util.Enums.EvaluationType;
  */
 @Slf4j
 @Component
+@Order(100) // Xếp sau LlmEvaluationEngine: chỉ dùng khi không có engine thật
 @ConditionalOnProperty(name = "aptis.evaluation.heuristic.enabled", havingValue = "true")
 public class HeuristicEvaluationEngine implements EvaluationEngine {
 

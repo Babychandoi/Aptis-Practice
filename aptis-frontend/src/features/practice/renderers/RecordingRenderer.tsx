@@ -11,6 +11,14 @@ interface Props {
   questionSetId: string;
   draft: ResponseDraft;
   disabled: boolean;
+  /**
+   * Chế độ thi thật (Speaking trong bài đủ 5 kỹ năng): tự chạy từ đầu đến cuối —
+   * vào câu là tự đếm giờ chuẩn bị rồi tự ghi âm, hết giờ tự dừng, chỉ ghi một
+   * lần, không nghe lại. Học viên không phải bấm gì.
+   */
+  examMode?: boolean;
+  /** Ghi âm xong ở chế độ thi: cha dùng để tự chuyển sang câu tiếp. */
+  onExamFinished?: () => void;
   onChange: (draft: ResponseDraft) => void;
 }
 
@@ -37,11 +45,13 @@ export function RecordingRenderer({
   questionSetId,
   draft,
   disabled,
+  examMode = false,
+  onExamFinished,
   onChange,
 }: Props) {
   const prepSeconds = numberConstraint(item, 'prepSeconds') ?? 0;
   const responseSeconds = numberConstraint(item, 'responseSeconds') ?? 60;
-  const maxRecordings = numberConstraint(item, 'maxRecordings') ?? 1;
+  const maxRecordings = examMode ? 1 : numberConstraint(item, 'maxRecordings') ?? 1;
 
   const [phase, setPhase] = useState<Phase>(draft.recordingAssetId ? 'done' : 'idle');
   const [secondsLeft, setSecondsLeft] = useState(0);
@@ -122,6 +132,23 @@ export function RecordingRenderer({
     streamRef.current?.getTracks().forEach((track) => track.stop());
   };
 
+  /**
+   * Chế độ thi: câu vừa hiện ra là chạy luôn, không chờ bấm nút.
+   *
+   * Chỉ chạy một lần cho mỗi câu (khoá bằng startedRef) và bỏ qua câu đã có bản
+   * ghi — quay lại câu cũ không được ghi đè.
+   */
+  const startedRef = useRef(false);
+  useEffect(() => {
+    if (!examMode || disabled || startedRef.current) return;
+    if (draft.recordingAssetId) return;
+    startedRef.current = true;
+    beginPrep();
+    // beginPrep đọc prepSeconds/responseSeconds của chính câu này; item không đổi
+    // trong vòng đời component nên không cần thêm dependency.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [examMode, disabled, draft.recordingAssetId]);
+
   const handleRecordingStopped = async () => {
     const blob = new Blob(chunksRef.current, { type: MIME_TYPE });
     setPhase('uploading');
@@ -144,13 +171,16 @@ export function RecordingRenderer({
       setPhase('done');
       onChange({ recordingAssetId: assetId });
 
+      // Chế độ thi: nghỉ một nhịp cho học viên thấy "đã lưu" rồi tự sang câu sau.
+      if (examMode) window.setTimeout(() => onExamFinished?.(), 1200);
+
     } catch {
       setPhase('error');
       setError('Không tải được file ghi âm lên. Thử ghi lại.');
     }
   };
 
-  const canRecordAgain = attemptCount < maxRecordings;
+  const canRecordAgain = !examMode && attemptCount < maxRecordings;
 
   /** Giây đã ghi, để hiện dạng "đã ghi / tổng" giống máy ghi âm. */
   const elapsed = phase === 'recording' ? responseSeconds - secondsLeft : 0;
@@ -160,7 +190,24 @@ export function RecordingRenderer({
       {(phase === 'idle' || phase === 'recording' || phase === 'prep') && (
         <>
           <div className="flex items-center gap-3">
-            {phase === 'recording' ? (
+            {/* Chế độ thi không có nút bấm: máy tự chạy, chỉ báo đang ở nhịp nào. */}
+            {examMode ? (
+              <span className={clsx(
+                'inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-semibold',
+                phase === 'recording' ? 'bg-red-600 text-white' : 'bg-[#eaf4ef] text-brand-900',
+              )}>
+                {phase === 'recording' ? (
+                  <>
+                    <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-sm bg-white" />
+                    Đang ghi · còn {secondsLeft}s
+                  </>
+                ) : phase === 'prep' ? (
+                  <>⏳ Chuẩn bị · {secondsLeft}s</>
+                ) : (
+                  <>🎤 Sắp bắt đầu…</>
+                )}
+              </span>
+            ) : phase === 'recording' ? (
               <button type="button" onClick={stopRecording} className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-red-700">
                 <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-sm bg-white" />
                 Dừng và lưu
@@ -209,7 +256,8 @@ export function RecordingRenderer({
       {phase === 'done' && (
         <div className="space-y-3">
           <p className="text-sm font-medium text-emerald-700">✓ Đã lưu bản ghi âm</p>
-          {playbackUrl && (
+          {/* Đề thật không cho nghe lại — nghe lại chỉ có ở chế độ luyện tập. */}
+          {playbackUrl && !examMode && (
             // eslint-disable-next-line jsx-a11y/media-has-caption
             <audio controls src={playbackUrl} className="w-full" />
           )}

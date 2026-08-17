@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.exception.ErrorCode;
+import vn.weconex.aptis.common.util.Enums.PracticeMode;
 import vn.weconex.aptis.content.domain.QuestionSet;
 import vn.weconex.aptis.content.mongo.QuestionSetDocument;
 import vn.weconex.aptis.content.mongo.QuestionSetDocumentRepository;
@@ -46,12 +47,21 @@ public class AttemptSnapshotFactory {
                         // Giữ document có revision cao nhất nếu Mongo còn bản cũ
                         (a, b) -> a.getRevision() >= b.getRevision() ? a : b));
 
-        // Gom các bộ một-câu của cùng một Part thành một đề. Làm ở đây thay vì
-        // ở caller vì thi thử truyền vào nhiều Part một lúc, mỗi Part có số câu
-        // khác nhau. Sau bước này phần còn lại không cần biết chuyện gộp.
-        MergeResult mergeResult = mergeByPart(questionSets, documents);
-        questionSets = mergeResult.questionSets();
-        documents = mergeResult.documents();
+        // Gom các bộ một-câu của cùng một Part thành một đề đúng format đề thi.
+        //
+        // CHỈ gộp khi thi thử cả kỹ năng: lúc đó phải tái hiện đúng đề thật (ví
+        // dụ Writing Part 1 là một form 5 câu). Khi luyện riêng một Part thì để
+        // rải từng câu, học viên tự chọn câu muốn làm và giao diện phân trang —
+        // gộp lại sẽ khoá họ vào đúng 5 câu ngẫu nhiên mỗi lượt.
+        //
+        // Làm ở đây thay vì ở caller vì thi thử truyền vào nhiều Part một lúc,
+        // mỗi Part có số câu khác nhau. Sau bước này phần còn lại không cần biết
+        // chuyện gộp.
+        if (attempt.getMode() == PracticeMode.MOCK_TEST) {
+            MergeResult mergeResult = mergeByPart(questionSets, documents);
+            questionSets = mergeResult.questionSets();
+            documents = mergeResult.documents();
+        }
 
         AttemptDocument attemptDocument = new AttemptDocument();
         attemptDocument.setId(attempt.getId());

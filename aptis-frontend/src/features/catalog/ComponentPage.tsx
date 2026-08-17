@@ -29,6 +29,16 @@ export function ComponentPage() {
 
   if (componentId) return <Navigate to={componentPath(component.code)} replace />;
 
+  // Bốn kỹ năng chính đã có trang mẹo riêng; Ngữ pháp & Từ vựng vẫn dùng khối lưu
+  // ý ngay trong trang cho tới khi có nội dung riêng.
+  const tipsPath = {
+    LISTENING: '/meo-hoc/nghe-phan-3',
+    READING: '/meo-hoc/doc',
+    WRITING: '/meo-hoc/viet',
+    SPEAKING: '/meo-hoc/noi',
+  }[component.code.toUpperCase()];
+  const hasTipsPage = Boolean(tipsPath);
+
   const parts = partsQuery.data ?? [];
   const displayName = componentDisplayName(component);
   const totalQuestionSets = parts.reduce((sum, part) => sum + part.publishedQuestionSetCount, 0);
@@ -94,9 +104,14 @@ export function ComponentPage() {
             tone="amber"
             icon={<TipIcon />}
             badge="Mẹo"
-            title="Mẹo trước khi làm"
-            description="Nắm cách phân bổ thời gian và những điểm cần chú ý trước khi bắt đầu."
-            action={<a href="#meo-lam-bai" className="mode-button mode-button-secondary">Xem mẹo <ArrowIcon /></a>}
+            title={hasTipsPage ? 'Mẹo trước khi làm' : 'Lưu ý trước khi làm'}
+            description={hasTipsPage
+              ? 'Bảng chống paraphrase và chuỗi đáp án cần nhớ trước khi vào phòng thi.'
+              : 'Nắm cách phân bổ thời gian và những điểm cần chú ý trước khi bắt đầu.'}
+            action={hasTipsPage
+              ? <Link to={tipsPath!} className="mode-button mode-button-secondary">Xem mẹo <ArrowIcon /></Link>
+              // Kỹ năng chưa có trang mẹo riêng: cuộn xuống khối lưu ý ngay dưới.
+              : <a href="#meo-lam-bai" className="mode-button mode-button-secondary">Xem lưu ý <ArrowIcon /></a>}
           />
 
           <ModeCard

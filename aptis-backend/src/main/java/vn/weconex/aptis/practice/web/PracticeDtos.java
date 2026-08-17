@@ -18,9 +18,15 @@ public final class PracticeDtos {
 
     // ---------- Tạo lượt làm bài ----------
 
+    /**
+     * @param questionSetCount số bộ muốn luyện; bỏ trống = lấy toàn bộ Part.
+     *                         Trần 300 để chặn giá trị vô lý, không phải để giới
+     *                         hạn nội dung — Part lớn nhất hiện có 260 bộ và
+     *                         giao diện đã phân trang từng đề.
+     */
     public record CreatePartAttemptRequest(
             @NotBlank String partId,
-            @Min(1) @Max(50) Integer questionSetCount,
+            @Min(1) @Max(300) Integer questionSetCount,
             /** true = chỉ lấy bộ câu hỏi đã làm sai */
             boolean onlyIncorrect,
             /** true = chỉ lấy bộ chưa làm */
@@ -40,9 +46,9 @@ public final class PracticeDtos {
             CefrLevel cefrMax,
             @Min(1) @Max(5) Integer difficultyMin,
             @Min(1) @Max(5) Integer difficultyMax,
-            @Min(1) @Max(50) Integer questionSetCount,
+            @Min(1) @Max(300) Integer questionSetCount,
             /** Số bộ cần lấy chính xác theo từng Part; dùng khi ghép bài test full kỹ năng. */
-            Map<String, @Min(1) @Max(50) Integer> partQuestionSetCounts,
+            Map<String, @Min(1) @Max(300) Integer> partQuestionSetCounts,
             boolean onlyNew,
             boolean onlyIncorrect,
             boolean shuffle,
@@ -51,6 +57,13 @@ public final class PracticeDtos {
 
     // ---------- Đọc lượt làm bài ----------
 
+    /**
+     * @param itemBankPart Part này là NGÂN HÀNG CÂU RỜI: mỗi bộ chỉ chứa một câu
+     *                     và đề thi thật gộp nhiều câu lại (Writing Part 1,
+     *                     Speaking Part 1). Client dùng để bỏ danh sách "chọn chủ
+     *                     đề" — ở đây không có chủ đề, chỉ có câu — và hiện dải
+     *                     câu đang làm thay cho tên chủ đề.
+     */
     public record AttemptResponse(
             String id,
             String mode,
@@ -66,7 +79,26 @@ public final class PracticeDtos {
             int timeSpentSeconds,
             int totalItems,
             int answeredItems,
+            boolean itemBankPart,
+            List<ComponentProgressResponse> componentProgress,
             List<AttemptQuestionSetResponse> questionSets) {
+    }
+
+    /**
+     * Tiến độ một kỹ năng trong bài thi đủ 5 kỹ năng. Rỗng với luyện từng part.
+     *
+     * @param expiresAt   mốc hết giờ của riêng kỹ năng này; null = chưa tới lượt
+     * @param submittedAt đã nộp thì client khóa hẳn kỹ năng, không cho sửa hay
+     *                    xem lại
+     */
+    public record ComponentProgressResponse(
+            String componentId,
+            String componentCode,
+            int displayOrder,
+            int durationSeconds,
+            Instant startedAt,
+            Instant expiresAt,
+            Instant submittedAt) {
     }
 
     /**
