@@ -751,7 +751,9 @@ function OptionEditor({ groupName, options, multiple, ordering, fixedFirstOption
     <div className="space-y-2">{options.map((option, optionIndex) => <div key={option.id} className="flex items-center gap-2">
       {!ordering && <input aria-label={`Đáp án ${option.code}`} type={multiple ? 'checkbox' : 'radio'} name={multiple ? undefined : groupName} checked={multiple ? selected.has(option.id) : answerKey?.selectedOptionId === option.id} onChange={(event) => {
         if (multiple) {
-          const next = new Set(selected); event.target.checked ? next.add(option.id) : next.delete(option.id);
+          const next = new Set(selected);
+          if (event.target.checked) next.add(option.id);
+          else next.delete(option.id);
           onAnswer({ ...(answerKey ?? { type: 'MULTIPLE_CHOICE' }), selectedOptionIds: [...next] });
         } else onAnswer({ ...(answerKey ?? { type: 'SINGLE_CHOICE' }), selectedOptionId: option.id });
       }} />}
@@ -882,7 +884,8 @@ function readAudioDuration(file: File): Promise<number> {
     audio.onloadedmetadata = () => {
       const duration = Math.round(audio.duration * 1000);
       URL.revokeObjectURL(url);
-      Number.isFinite(duration) && duration > 0 ? resolve(duration) : reject(new Error('Không đọc được thời lượng audio.'));
+      if (Number.isFinite(duration) && duration > 0) resolve(duration);
+      else reject(new Error('Không đọc được thời lượng audio.'));
     };
     audio.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Tệp audio không hợp lệ.')); };
     audio.src = url;

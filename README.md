@@ -299,11 +299,19 @@ Sao chép `.env.example` thành `.env`. `.env` đã bị loại trong `.gitignor
 | `MAIL_FROM` | địa chỉ gửi |
 | `TRANSFER_NOTIFY_EMAIL` | hộp thư nhận thông báo học viên đã báo chuyển khoản |
 | `JWT_SECRET` | khóa JWT Base64 tối thiểu 256 bit |
+| `REFRESH_COOKIE_SECURE` | đặt `true` trên production HTTPS; local HTTP dùng `false` |
+| `REFRESH_COOKIE_SAME_SITE` | chính sách SameSite của refresh cookie, mặc định `Lax` |
+| `REFRESH_COOKIE_DOMAIN` | domain cookie tùy chọn; thường để trống để giới hạn host hiện tại |
 | `MYSQL_HOST_PORT` | cổng MySQL trên host, mặc định `3307` |
 | `FRONTEND_HOST_PORT` | cổng frontend, mặc định `80` |
 | `SCHEDULER_LOCK` | bật khóa job khi chạy nhiều backend instance |
 | `EXPORT_PURGE_INTERVAL` | chu kỳ dọn báo cáo hết hạn |
 | `SANDBOX_ASYNC_REFUND` | chỉ phục vụ mô phỏng hoàn tiền khi phát triển |
+| `AI_EVAL_*` | cấu hình model văn bản chấm Writing/Speaking qua 9Router |
+| `LOCAL_SPEAKING_ENABLED` | bật nhận dạng và phân tích audio Speaking tại máy chủ |
+| `LOCAL_WHISPER_MODEL` | model faster-whisper, mặc định `small.en` |
+| `LOCAL_WHISPER_DEVICE`, `LOCAL_WHISPER_COMPUTE_TYPE` | thiết bị và kiểu lượng tử hóa; mặc định `cpu`/`int8` |
+| `LOCAL_SPEAKING_FALLBACK_REMOTE` | cho phép STT audio trả phí khi local lỗi; mặc định `false` |
 
 Sinh JWT secret mới:
 
@@ -372,7 +380,34 @@ Nộp bài → evaluation job → engine chấm → lưu tiêu chí và feedback
 → giáo viên có thể review lại → kết quả hiệu lực được cập nhật
 ```
 
-Engine local hiện tại là heuristic để kiểm thử kiến trúc, chưa phải AI production.
+Writing được chấm bằng model văn bản qua API tương thích OpenAI/9Router. Speaking dùng
+kiến trúc lai để không phải gửi audio tới model trả phí:
+
+```text
+Audio trên MinIO
+→ speaking-analyzer local (faster-whisper + chỉ số âm học)
+→ transcript + tốc độ nói/khoảng ngắt/độ rõ ước lượng
+→ model văn bản trên 9Router chấm nội dung, ngữ pháp và từ vựng
+→ backend khóa điểm Fluency/Pronunciation theo chỉ số local
+```
+
+Mặc định `LOCAL_SPEAKING_FALLBACK_REMOTE=false`, vì vậy analyzer local bị lỗi cũng
+không thể âm thầm gọi model audio trả phí. `AI_STT_ENABLED` chỉ dành cho fallback
+được quản trị viên chủ động bật. Model Whisper được giữ trong Docker volume
+`whisper-cache`, tránh tải lại sau mỗi lần khởi động.
+
+Điểm Pronunciation hiện là ước lượng độ rõ dựa trên độ tin cậy ASR và tín hiệu âm
+thanh, chưa phải chấm phoneme theo từng âm. Giao diện/feedback phải ghi rõ giới hạn
+này; model văn bản không được phép nói rằng nó đã nghe audio.
+
+Contract JSON chuẩn của model nằm tại
+[`docs/schemas/ai-evaluation-response.schema.json`](docs/schemas/ai-evaluation-response.schema.json).
+Backend không tin trực tiếp output của model: kiểm tra envelope `choices/message`,
+JSON object hoàn chỉnh, đủ và không trùng mã tiêu chí, score hợp lệ, giới hạn điểm,
+CEFR và tự tính lại tổng. Markdown fence, lời dẫn và JSON bị encode hai lần được xử
+lý an toàn; JSON bị cắt không được tự vá đoán mà sẽ retry. Nếu provider vẫn lỗi ở
+lần cuối, hệ thống dùng `heuristic-v1` và lưu đúng tên evaluator để phân biệt điểm
+tạm với điểm AI.
 
 ## Dữ liệu và migration
 
@@ -510,8 +545,8 @@ Trước khi đưa lên môi trường thật:
 
 - VietQR là mức 1 và admin đối soát thủ công; hệ thống không đọc biến động số dư.
 - Hạn QR 10 phút được hệ thống áp dụng cho mã đối soát, không thể ngăn ứng dụng ngân hàng đọc ảnh QR cũ.
-- Chấm Writing/Speaking local là heuristic, chưa phải AI production.
-- Transcription Speaking chưa kết nối dịch vụ STT production.
+- Chấm Speaking dùng STT và phép đo local kết hợp model văn bản; Pronunciation mới
+  là độ rõ ước lượng, chưa chấm phoneme theo từng âm.
 - Sandbox payment provider vẫn tồn tại cho phát triển/kiểm thử nhưng giao diện mua gói hiện dùng chuyển khoản VietQR.
 - Một số schema cũ còn cấu trúc promotion để tương thích dữ liệu, nhưng giao diện hiện không có mã giảm giá.
 - Chưa có bằng chứng hoặc chứng nhận về quan hệ chính thức với đơn vị sở hữu kỳ thi.

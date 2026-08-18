@@ -26,7 +26,7 @@
           Ghi đè version trong BOM của Spring Boot 3.3 (1.19.8): bản đó không dò
           được named pipe của Docker Desktop mới (dockerDesktopLinuxEngine).
         -->
-        <testcontainers.version>1.20.4</testcontainers.version>
+        <testcontainers.version>1.21.4</testcontainers.version>
         <jjwt.version>0.12.6</jjwt.version>
         <springdoc.version>2.6.0</springdoc.version>
     </properties>

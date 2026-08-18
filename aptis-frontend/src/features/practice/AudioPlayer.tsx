@@ -74,7 +74,6 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
         <p className="py-1 text-xs text-stone-500">Đang tải audio…</p>
       ) : (
         <div className="flex items-center gap-2.5">
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
           <audio
             ref={audioRef}
             src={signedUrl}

@@ -121,6 +121,13 @@ aptis:
     access-token-ttl: PT15M
     refresh-token-ttl: P30D
 
+  refresh-cookie:
+    name: ${REFRESH_COOKIE_NAME:aptis_refresh}
+    # Production phải đặt true. Local HTTP cần false để trình duyệt nhận cookie.
+    secure: ${REFRESH_COOKIE_SECURE:true}
+    same-site: ${REFRESH_COOKIE_SAME_SITE:Lax}
+    domain: ${REFRESH_COOKIE_DOMAIN:}
+
   security:
     max-failed-login-attempts: 5
     lock-duration: PT15M

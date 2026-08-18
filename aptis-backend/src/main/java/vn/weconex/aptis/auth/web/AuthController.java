@@ -1,6 +1,7 @@
 package vn.weconex.aptis.auth.web;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final CurrentUser currentUser;
+    private final RefreshTokenCookieService refreshTokenCookies;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -34,24 +36,41 @@ public class AuthController {
     @PostMapping("/login")
     public AuthDtos.TokenResponse login(
             @Valid @RequestBody AuthDtos.LoginRequest request,
-            HttpServletRequest httpRequest) {
+            HttpServletRequest httpRequest,
+            HttpServletResponse httpResponse) {
 
-        return authService.login(request, httpRequest.getHeader("User-Agent"), clientIp(httpRequest));
+        AuthDtos.TokenResponse tokens = authService.login(
+                request, httpRequest.getHeader("User-Agent"), clientIp(httpRequest));
+        refreshTokenCookies.write(httpResponse, tokens.refreshToken());
+        return tokens.withoutRefreshToken();
     }
 
     @PostMapping("/refresh")
     public AuthDtos.TokenResponse refresh(
-            @Valid @RequestBody AuthDtos.RefreshRequest request,
-            HttpServletRequest httpRequest) {
+            @RequestBody(required = false) AuthDtos.RefreshRequest request,
+            HttpServletRequest httpRequest,
+            HttpServletResponse httpResponse) {
 
-        return authService.refresh(
-                request.refreshToken(), httpRequest.getHeader("User-Agent"), clientIp(httpRequest));
+        String legacyToken = request == null ? null : request.refreshToken();
+        String refreshToken = refreshTokenCookies.resolve(httpRequest, legacyToken);
+        AuthDtos.TokenResponse tokens = authService.refresh(
+                refreshToken, httpRequest.getHeader("User-Agent"), clientIp(httpRequest));
+        refreshTokenCookies.write(httpResponse, tokens.refreshToken());
+        return tokens.withoutRefreshToken();
     }
 
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logout(@RequestBody AuthDtos.LogoutRequest request) {
-        authService.logout(currentUser.requireUserId(), request);
+    public void logout(
+            @RequestBody(required = false) AuthDtos.LogoutRequest request,
+            HttpServletRequest httpRequest,
+            HttpServletResponse httpResponse) {
+        AuthDtos.LogoutRequest body = request == null
+                ? new AuthDtos.LogoutRequest(null, false) : request;
+        String refreshToken = refreshTokenCookies.resolve(httpRequest, body.refreshToken());
+        authService.logout(currentUser.requireUserId(),
+                new AuthDtos.LogoutRequest(refreshToken, body.allDevices()));
+        refreshTokenCookies.clear(httpResponse);
     }
 
     @PostMapping("/forgot-password")

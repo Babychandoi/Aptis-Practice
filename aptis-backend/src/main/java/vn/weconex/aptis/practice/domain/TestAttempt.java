@@ -171,6 +171,10 @@ public class TestAttempt extends BaseEntity {
     public void complete(BigDecimal rawScore, BigDecimal maxScore) {
         this.status = AttemptStatus.COMPLETED;
         this.completedAt = Instant.now();
+        updateScore(rawScore, maxScore);
+    }
+
+    public void updateScore(BigDecimal rawScore, BigDecimal maxScore) {
         this.rawScore = rawScore;
         this.maxScore = maxScore;
         this.percentageScore = computePercentage(rawScore, maxScore);

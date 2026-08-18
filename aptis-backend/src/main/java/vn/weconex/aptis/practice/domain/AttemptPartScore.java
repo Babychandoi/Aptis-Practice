@@ -75,6 +75,12 @@ public class AttemptPartScore {
         recomputePercentage();
     }
 
+    public void replaceScore(BigDecimal raw, BigDecimal max) {
+        this.rawScore = raw;
+        this.maxScore = max;
+        recomputePercentage();
+    }
+
     private void recomputePercentage() {
         if (maxScore.signum() == 0) {
             this.percentageScore = null;

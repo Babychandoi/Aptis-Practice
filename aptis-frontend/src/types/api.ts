@@ -70,7 +70,8 @@ export interface PageResponse<T> {
 
 export interface TokenResponse {
   accessToken: string;
-  refreshToken: string;
+  /** Backend mới giữ refresh token trong cookie HttpOnly. */
+  refreshToken: string | null;
   tokenType: string;
   expiresInSeconds: number;
   accessTokenExpiresAt: string;
@@ -273,7 +274,7 @@ export interface AttemptQuestionSet {
   displayOrder: number;
   status: AttemptItemStatus;
   maxScore: number;
-  awardedScore: number | null;
+  awardedScore?: number | null;
   audioPlayCount: number;
   maxAudioPlays: number | null;
   /** Độ hot 1-5 do biên tập viên đặt; dùng để hiện ngọn lửa và lọc đề. */
@@ -315,6 +316,10 @@ export interface Attempt {
   timeSpentSeconds: number;
   totalItems: number;
   answeredItems: number;
+  /** Điểm luyện tập do backend tính theo cấu hình đã lưu. */
+  rawScore: number | null;
+  maxScore: number | null;
+  percentageScore: number | null;
   /**
    * Part là ngân hàng câu rời: mỗi bộ một câu, đề thi thật gộp nhiều câu
    * (Writing Part 1, Speaking Part 1). Ở đây không có "chủ đề" để chọn.

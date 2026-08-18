@@ -71,7 +71,7 @@ public class HeuristicEvaluationEngine implements EvaluationEngine {
         double max = 0;
 
         for (CriterionSpec criterion : request.rubric().criteria()) {
-            double ratio = ratioFor(criterion.code(), metrics);
+            double ratio = ratioFor(criterion.code(), metrics, request);
             double score = round(ratio * criterion.maxScore());
 
             scores.add(new CriterionScore(
@@ -79,7 +79,7 @@ public class HeuristicEvaluationEngine implements EvaluationEngine {
                     criterion.name(),
                     score,
                     criterion.maxScore(),
-                    feedbackFor(criterion.code(), ratio, metrics)));
+                    feedbackFor(criterion.code(), ratio, metrics, request)));
 
             total += score;
             max += criterion.maxScore();
@@ -170,7 +170,8 @@ public class HeuristicEvaluationEngine implements EvaluationEngine {
      * Điểm mỗi tiêu chí quy về tỉ lệ 0..1. Mỗi tiêu chí lấy dấu hiệu gần nhất
      * với nó — thô, nhưng minh bạch và lặp lại được.
      */
-    private static double ratioFor(String criterionCode, Metrics m) {
+    private static double ratioFor(
+            String criterionCode, Metrics m, EvaluationRequest request) {
         if (m.empty()) {
             return 0;
         }
@@ -188,9 +189,10 @@ public class HeuristicEvaluationEngine implements EvaluationEngine {
 
             case "REGISTER" -> registerRatio(m);
 
-            // Phát âm và độ trôi chảy không đo được từ văn bản; dùng độ dài làm
-            // đại diện và ghi rõ trong feedback là chưa đánh giá thật
-            case "PRONUNCIATION", "FLUENCY" -> clamp(m.wordRatio() * 0.85);
+            case "PRONUNCIATION" -> acousticRatio(
+                    request, "pronunciationClarityEstimate", m.wordRatio() * 0.85);
+            case "FLUENCY" -> acousticRatio(
+                    request, "fluencyEstimate", m.wordRatio() * 0.85);
 
             default -> clamp(m.wordRatio() * 0.8);
         };
@@ -208,7 +210,8 @@ public class HeuristicEvaluationEngine implements EvaluationEngine {
         return clamp((m.informalMarkers() + 1) / 2.0);
     }
 
-    private static String feedbackFor(String code, double ratio, Metrics m) {
+    private static String feedbackFor(
+            String code, double ratio, Metrics m, EvaluationRequest request) {
         if (m.empty()) {
             return "Không có nội dung để đánh giá.";
         }
@@ -236,11 +239,36 @@ public class HeuristicEvaluationEngine implements EvaluationEngine {
                     ? "Có từ ngữ thân mật chưa phù hợp với văn phong yêu cầu."
                     : "Văn phong phù hợp yêu cầu.";
 
-            case "PRONUNCIATION", "FLUENCY" ->
-                    "Chưa đánh giá được từ bản ghi âm — điểm này chỉ dựa trên độ dài nội dung nói.";
+            case "PRONUNCIATION" -> request.acousticMetrics().containsKey("pronunciationClarityEstimate")
+                    ? "Độ rõ phát âm được ước lượng %.0f%% từ bộ phân tích audio local; chưa phải chấm phoneme."
+                            .formatted(ratio * 100)
+                    : "Chưa có chỉ số audio; điểm tạm chỉ dựa trên độ dài nội dung nói.";
+
+            case "FLUENCY" -> request.acousticMetrics().containsKey("fluencyEstimate")
+                    ? "Độ trôi chảy local %.0f%%, tốc độ %.0f từ/phút và %d khoảng dừng dài."
+                            .formatted(
+                                    ratio * 100,
+                                    acousticValue(request, "wordsPerMinute", 0),
+                                    Math.round(acousticValue(request, "longPauseCount", 0)))
+                    : "Chưa có chỉ số audio; điểm tạm chỉ dựa trên độ dài nội dung nói.";
 
             default -> "Đã đánh giá theo độ dài và cấu trúc nội dung.";
         };
+    }
+
+    private static double acousticRatio(
+            EvaluationRequest request, String key, double fallback) {
+        return clamp(acousticValue(request, key, fallback));
+    }
+
+    private static double acousticValue(
+            EvaluationRequest request, String key, double fallback) {
+        if (request.acousticMetrics() == null) return fallback;
+        Object value = request.acousticMetrics().get(key);
+        if (!(value instanceof Number number) || !Double.isFinite(number.doubleValue())) {
+            return fallback;
+        }
+        return number.doubleValue();
     }
 
     private Feedback buildFeedback(Metrics m, double percentage) {

@@ -258,7 +258,6 @@ export function RecordingRenderer({
           <p className="text-sm font-medium text-emerald-700">✓ Đã lưu bản ghi âm</p>
           {/* Đề thật không cho nghe lại — nghe lại chỉ có ở chế độ luyện tập. */}
           {playbackUrl && !examMode && (
-            // eslint-disable-next-line jsx-a11y/media-has-caption
             <audio controls src={playbackUrl} className="w-full" />
           )}
           {canRecordAgain && !disabled && (

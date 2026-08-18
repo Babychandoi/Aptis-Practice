@@ -79,6 +79,9 @@ public final class PracticeDtos {
             int timeSpentSeconds,
             int totalItems,
             int answeredItems,
+            Double rawScore,
+            Double maxScore,
+            Double percentageScore,
             boolean itemBankPart,
             List<ComponentProgressResponse> componentProgress,
             List<AttemptQuestionSetResponse> questionSets) {

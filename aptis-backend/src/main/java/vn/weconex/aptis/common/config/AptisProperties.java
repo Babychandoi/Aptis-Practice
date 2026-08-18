@@ -11,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "aptis")
 public record AptisProperties(
         Jwt jwt,
+        RefreshCookie refreshCookie,
         Security security,
         Cors cors,
         Minio minio,
@@ -23,6 +24,13 @@ public record AptisProperties(
             String issuer,
             Duration accessTokenTtl,
             Duration refreshTokenTtl) {
+    }
+
+    public record RefreshCookie(
+            String name,
+            boolean secure,
+            String sameSite,
+            String domain) {
     }
 
     public record Security(

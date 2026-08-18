@@ -35,10 +35,14 @@ aptis:
       timeout-seconds: ${AI_EVAL_TIMEOUT:60}
     # Bản dự phòng: chỉ đếm từ và dò từ nối, không phải AI. Giữ để luồng chấm
     # vẫn chạy khi chưa cấu hình LLM.
-    # Chuyển giọng nói thành văn bản cho Speaking. Dùng model đa phương thức
-    # nghe trực tiếp file (không qua /v1/audio/transcriptions — router chưa có
-    # credential STT). Model phải là loại nghe được audio: ag/gemini-3-flash
-    # nghe chính xác, AI-PRO thì cắt giữa câu.
+    # Analyzer local xử lý audio trước. Khối stt bên dưới chỉ là fallback từ xa
+    # có thể phát sinh phí và mặc định không được gọi.
+    local-audio:
+      enabled: ${LOCAL_SPEAKING_ENABLED:false}
+      base-url: ${LOCAL_SPEAKING_URL:http://localhost:8000}
+      timeout-seconds: ${LOCAL_SPEAKING_TIMEOUT:300}
+      # false prevents an unexpected paid audio request when the local service is down.
+      fallback-to-remote: ${LOCAL_SPEAKING_FALLBACK_REMOTE:false}
     stt:
       enabled: ${AI_STT_ENABLED:false}
       base-url: ${AI_STT_BASE_URL:${AI_EVAL_BASE_URL:}}

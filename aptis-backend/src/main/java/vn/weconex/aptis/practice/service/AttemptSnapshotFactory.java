@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import vn.weconex.aptis.catalog.domain.PartScoringRule;
+import vn.weconex.aptis.catalog.repository.PartScoringRuleRepository;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.exception.ErrorCode;
 import vn.weconex.aptis.common.util.Enums.PracticeMode;
@@ -32,6 +34,7 @@ import vn.weconex.aptis.practice.mongo.AttemptDocument;
 public class AttemptSnapshotFactory {
 
     private final QuestionSetDocumentRepository documentRepository;
+    private final PartScoringRuleRepository scoringRuleRepository;
     private final vn.weconex.aptis.common.config.AptisProperties properties;
 
     /**
@@ -79,6 +82,8 @@ public class AttemptSnapshotFactory {
         config.setAllowReview(true);
         // Seed cố định theo attemptId để thứ tự trộn không đổi giữa các request
         config.setShuffleSeed((long) attempt.getId().hashCode());
+        snapshotScoringRules(config, questionSets);
+        config.setScoringRuleSnapshotVersion(1);
         attemptDocument.setConfigSnapshot(config);
 
         List<AttemptQuestionSet> rows = new ArrayList<>(questionSets.size());
@@ -124,6 +129,37 @@ public class AttemptSnapshotFactory {
                 .sum();
 
         return new Snapshot(attemptDocument, rows, totalItems);
+    }
+
+    private void snapshotScoringRules(
+            AttemptDocument.ConfigSnapshot config, List<QuestionSet> questionSets) {
+        List<String> partIds = questionSets.stream()
+                .map(questionSet -> questionSet.getPart().getId())
+                .distinct()
+                .toList();
+        if (partIds.isEmpty()) {
+            return;
+        }
+        Map<String, AttemptDocument.PartScoringRuleSnapshot> snapshots =
+                new java.util.LinkedHashMap<>();
+        for (PartScoringRule rule : scoringRuleRepository.findByPartIdIn(partIds)) {
+            AttemptDocument.PartScoringRuleSnapshot snapshot =
+                    new AttemptDocument.PartScoringRuleSnapshot();
+            String partId = rule.getPart().getId();
+            snapshot.setRuleId(rule.getId());
+            snapshot.setPartId(partId);
+            snapshot.setMaxScore(decimal(rule.getMaxScore()));
+            snapshot.setPointsPerCorrect(decimal(rule.getPointsPerCorrect()));
+            snapshot.setPerfectBonus(decimal(rule.getPerfectBonus()));
+            snapshot.setIncludedInOverall(rule.isIncludedInOverall());
+            snapshot.setUpdatedAt(rule.getUpdatedAt());
+            snapshots.put(partId, snapshot);
+        }
+        config.setPartScoringRules(snapshots);
+    }
+
+    private static String decimal(BigDecimal value) {
+        return value == null ? null : value.toPlainString();
     }
 
     private record MergeResult(

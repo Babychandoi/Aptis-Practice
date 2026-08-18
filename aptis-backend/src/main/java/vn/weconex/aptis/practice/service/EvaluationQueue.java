@@ -100,7 +100,7 @@ public class EvaluationQueue {
         return null;
     }
 
-    private static boolean hasSubmittedContent(AttemptDocument.QuestionSetEntry entry) {
+    static boolean hasSubmittedContent(AttemptDocument.QuestionSetEntry entry) {
         return entry.getResponse().getItemResponses().stream().anyMatch(response ->
                 (response.getTextValue() != null && !response.getTextValue().isBlank())
                         || response.getRecordingAssetId() != null);

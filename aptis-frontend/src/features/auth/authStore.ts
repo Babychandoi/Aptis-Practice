@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { authApi } from '@/api/endpoints';
+import { restoreAccessToken } from '@/api/client';
 import { tokenStorage } from '@/lib/tokenStorage';
 import type { MeResponse } from '@/types/api';
 
@@ -11,7 +12,7 @@ interface AuthState {
 
   login: (email: string, password: string) => Promise<void>;
   logout: (allDevices?: boolean) => Promise<void>;
-  /** Gọi khi mở app: có refresh token thì lấy lại thông tin user */
+  /** Gọi khi mở app: thử khôi phục phiên từ refresh cookie. */
   restore: () => Promise<void>;
   /** Gọi lại sau khi mua Premium để cập nhật premiumActive */
   refreshUser: () => Promise<void>;
@@ -28,7 +29,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const tokens = await authApi.login({ email, password });
       tokenStorage.setAccessToken(tokens.accessToken, tokens.expiresInSeconds);
-      tokenStorage.setRefreshToken(tokens.refreshToken);
+      tokenStorage.clearLegacyRefreshToken();
 
       const user = await authApi.me();
       set({ user, loading: false });
@@ -41,7 +42,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   logout: async (allDevices = false) => {
     try {
       await authApi.logout({
-        refreshToken: tokenStorage.getRefreshToken(),
+        refreshToken: tokenStorage.getLegacyRefreshToken(),
         allDevices,
       });
     } catch {
@@ -53,12 +54,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   restore: async () => {
-    if (!tokenStorage.getRefreshToken()) {
-      set({ initializing: false });
-      return;
-    }
     try {
-      // Interceptor tự refresh access token trước khi gọi /me
+      await restoreAccessToken();
       const user = await authApi.me();
       set({ user, initializing: false });
     } catch {

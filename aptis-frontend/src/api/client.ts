@@ -45,6 +45,7 @@ export class ApiError extends Error {
 export const api: AxiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
   timeout: 30_000,
 });
 
@@ -64,22 +65,30 @@ function isPublicPath(url?: string): boolean {
 }
 
 async function refreshAccessToken(): Promise<string> {
-  const refreshToken = tokenStorage.getRefreshToken();
-  if (!refreshToken) {
-    throw new Error('Không có refresh token');
-  }
+  const legacyRefreshToken = tokenStorage.getLegacyRefreshToken();
 
   // Dùng axios gốc để interceptor không bắt lại request refresh
   const response = await axios.post<TokenResponse>(
     `${BASE_URL}/auth/refresh`,
-    { refreshToken },
-    { headers: { 'Content-Type': 'application/json' } },
+    legacyRefreshToken ? { refreshToken: legacyRefreshToken } : {},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      withCredentials: true,
+    },
   );
 
   const data = response.data;
   tokenStorage.setAccessToken(data.accessToken, data.expiresInSeconds);
-  tokenStorage.setRefreshToken(data.refreshToken);
+  tokenStorage.clearLegacyRefreshToken();
   return data.accessToken;
+}
+
+/** Khôi phục phiên từ refresh cookie khi tải lại ứng dụng. */
+export async function restoreAccessToken(): Promise<void> {
+  await refreshAccessToken();
 }
 
 api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
@@ -88,7 +97,7 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   }
 
   // Refresh chủ động trước khi token hết hạn, tránh vòng 401 -> retry
-  if (!tokenStorage.isAccessTokenFresh() && tokenStorage.getRefreshToken()) {
+  if (tokenStorage.getAccessToken() && !tokenStorage.isAccessTokenFresh()) {
     refreshPromise ??= refreshAccessToken().finally(() => {
       refreshPromise = null;
     });
@@ -117,8 +126,7 @@ api.interceptors.response.use(
       error.response?.status === 401 &&
       config &&
       !config._retried &&
-      !isPublicPath(config.url) &&
-      tokenStorage.getRefreshToken()
+      !isPublicPath(config.url)
     ) {
       config._retried = true;
       try {

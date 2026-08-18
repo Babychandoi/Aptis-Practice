@@ -2,7 +2,9 @@ package vn.weconex.aptis.evaluation.mongo;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,6 +64,8 @@ public class EvaluationDocument {
         private String transcript;
         private Integer wordCount;
         private Long durationMs;
+        private Map<String, Object> acousticMetrics = new LinkedHashMap<>();
+        private String audioAnalysisSource;
     }
 
     @Getter

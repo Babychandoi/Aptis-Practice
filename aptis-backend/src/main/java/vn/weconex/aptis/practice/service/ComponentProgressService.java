@@ -161,8 +161,11 @@ public class ComponentProgressService {
                         ErrorCode.ATTEMPT_INVALID_STATE, "Kỹ năng không thuộc lượt thi này"));
 
         if (target.isSubmitted()) {
-            throw new ApiException(
-                    ErrorCode.ATTEMPT_INVALID_STATE, "Kỹ năng này đã nộp, không nộp lại được");
+            // Timer and the explicit submit request can arrive at the same time.
+            // Returning the current terminal state makes this operation idempotent
+            // and lets the caller finalise the whole attempt when this was the last
+            // component.
+            return rows.stream().allMatch(AttemptComponentProgress::isSubmitted);
         }
         if (target.getStartedAt() == null) {
             throw new ApiException(

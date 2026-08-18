@@ -1,94 +1,111 @@
 package vn.weconex.aptis.evaluation.service;
 
+import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import vn.weconex.aptis.asset.service.MinioStorageClient;
 import vn.weconex.aptis.asset.domain.Asset;
 import vn.weconex.aptis.asset.repository.AssetRepository;
+import vn.weconex.aptis.asset.service.MinioStorageClient;
 
-/**
- * Chuyển giọng nói thành văn bản cho luồng chấm Speaking (PHẦN IV §40 bước 6).
- *
- * <p>Dùng {@link LlmTranscriptionClient} khi bật {@code aptis.evaluation.stt}:
- * tải file từ MinIO rồi gửi cho model đa phương thức nghe. Không bật thì trả
- * transcript rỗng — luồng chấm vẫn chạy nhưng điểm Speaking không phản ánh nội
- * dung học viên nói.
- */
+/** Transcribes Speaking audio and collects local acoustic measurements. */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TranscriptionService {
 
-    private final AssetRepository assetRepository;
-    private final MinioStorageClient storageClient;
-
-    /**
-     * Rỗng khi chưa cấu hình STT. Dùng ObjectProvider thay vì @Autowired
-     * required=false để bean chỉ được tạo khi cờ bật.
-     */
-    private final ObjectProvider<LlmTranscriptionClient> transcriptionClient;
-
-    /**
-     * Giới hạn kích thước file đưa vào bộ nhớ. Bài Speaking dài nhất là 2 phút
-     * (~1 MB webm/opus), nên 10 MB đã rất rộng; đặt trần để một file lỗi không
-     * làm hết heap của worker.
-     */
     private static final int MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 
-    /**
-     * @param text       nội dung nói; rỗng khi chưa có STT
-     * @param durationMs thời lượng bản ghi, lấy từ metadata asset
-     * @param available  false nghĩa là transcript chưa dùng được để chấm nội dung
-     */
-    public record Transcript(String text, Long durationMs, boolean available) {
+    private final AssetRepository assetRepository;
+    private final MinioStorageClient storageClient;
+    private final ObjectProvider<LlmTranscriptionClient> transcriptionClient;
+    private final ObjectProvider<LocalSpeakingAnalysisClient> localAnalysisClient;
+
+    /** Must be explicitly enabled because the remote audio fallback costs money. */
+    @Value("${aptis.evaluation.local-audio.fallback-to-remote:false}")
+    private boolean fallbackToRemote;
+
+    public record Transcript(
+            String text,
+            Long durationMs,
+            boolean available,
+            Map<String, Object> acousticMetrics,
+            String source) {
+
+        public Transcript {
+            text = text == null ? "" : text;
+            acousticMetrics = acousticMetrics == null ? Map.of() : Map.copyOf(acousticMetrics);
+            source = source == null ? "none" : source;
+        }
+
+        public Transcript(String text, Long durationMs, boolean available) {
+            this(text, durationMs, available, Map.of(), "none");
+        }
     }
 
     public Transcript transcribe(String recordingAssetId) {
         if (recordingAssetId == null) {
             return new Transcript("", null, false);
         }
-
         Asset asset = assetRepository.findById(recordingAssetId).orElse(null);
         if (asset == null) {
-            log.warn("Không tìm thấy asset ghi âm {}", recordingAssetId);
+            log.warn("Recording asset {} was not found", recordingAssetId);
             return new Transcript("", null, false);
         }
         if (!asset.isReady()) {
-            log.warn("Asset ghi âm {} chưa READY (đang {})",
-                    recordingAssetId, asset.getStatus());
+            log.warn("Recording asset {} is not READY ({})", recordingAssetId, asset.getStatus());
             return new Transcript("", asset.getDurationMs(), false);
         }
-
-        LlmTranscriptionClient client = transcriptionClient.getIfAvailable();
-        if (client == null) {
-            log.debug("STT chưa bật; bỏ qua transcript cho asset {} ({} ms)",
-                    recordingAssetId, asset.getDurationMs());
-            return new Transcript("", asset.getDurationMs(), false);
-        }
-
         if (asset.getFileSize() != null && asset.getFileSize() > MAX_AUDIO_BYTES) {
-            log.warn("Bản ghi {} quá lớn ({} bytes), bỏ qua STT",
-                    recordingAssetId, asset.getFileSize());
+            log.warn("Recording {} is too large ({} bytes)", recordingAssetId, asset.getFileSize());
+            return new Transcript("", asset.getDurationMs(), false);
+        }
+
+        LocalSpeakingAnalysisClient localClient = localAnalysisClient.getIfAvailable();
+        LlmTranscriptionClient remoteClient = transcriptionClient.getIfAvailable();
+        if (localClient == null && remoteClient == null) {
+            log.debug("No transcription provider is enabled for asset {}", recordingAssetId);
             return new Transcript("", asset.getDurationMs(), false);
         }
 
         try {
             byte[] audio = storageClient.download(asset.getBucketName(), asset.getObjectKey());
-            String text = client.transcribe(audio, asset.getMimeType());
+            if (localClient != null) {
+                try {
+                    LocalSpeakingAnalysisClient.Analysis analysis =
+                            localClient.analyze(audio, asset.getMimeType());
+                    log.debug("Local Speaking asset {}: {} bytes -> {} chars, {} metrics",
+                            recordingAssetId, audio.length, analysis.transcript().length(),
+                            analysis.metrics().size());
+                    // A successful empty transcript means silence, not a provider failure.
+                    return new Transcript(
+                            analysis.transcript(), asset.getDurationMs(), true,
+                            analysis.metrics(), "local");
+                } catch (Exception ex) {
+                    log.error("Local Speaking analyzer failed for asset {}: {}",
+                            recordingAssetId, ex.getMessage());
+                    if (!fallbackToRemote) {
+                        return new Transcript("", asset.getDurationMs(), false,
+                                Map.of(), "local-error");
+                    }
+                    log.warn("Falling back to paid remote audio STT for asset {}", recordingAssetId);
+                }
+            }
 
-            // DEBUG, không INFO: mỗi bài Speaking sinh một dòng, bật INFO thì log
-            // production bị ngập. Cần chẩn đoán thì đổi log level của package.
-            log.debug("STT asset {}: {} bytes {} -> {} ký tự",
-                    recordingAssetId, audio.length, asset.getMimeType(), text.length());
-            // available = false khi không nghe ra tiếng nói: engine chấm phải biết
-            // để không trừ điểm nội dung dựa trên transcript rỗng.
-            return new Transcript(text, asset.getDurationMs(), !text.isBlank());
+            if (remoteClient == null) {
+                return new Transcript("", asset.getDurationMs(), false);
+            }
+            String text = remoteClient.transcribe(audio, asset.getMimeType());
+            log.debug("Remote STT asset {}: {} bytes -> {} chars",
+                    recordingAssetId, audio.length, text.length());
+            return new Transcript(text, asset.getDurationMs(), !text.isBlank(),
+                    Map.of(), "remote-llm");
 
         } catch (Exception ex) {
-            log.error("Không lấy được transcript cho asset {}: {}",
-                    recordingAssetId, ex.getMessage());
+            log.error("Cannot transcribe recording asset {}: {}", recordingAssetId, ex.getMessage());
             return new Transcript("", asset.getDurationMs(), false);
         }
     }

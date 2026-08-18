@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import type { QuestionItem, QuestionSection } from '@/types/api';
 import type { ResponseDraft } from '@/features/practice/responseState';
+import { SafeContent } from '@/components/ui/SafeContent';
 
 interface Props {
   item: QuestionItem;
@@ -30,11 +31,15 @@ export function MatchingRenderer({
   // Bên trái lấy từ leftItems; nếu trống thì dùng sections (heading matching)
   const leftEntries =
     item.leftItems.length > 0
-      ? item.leftItems.map((left) => ({ id: left.id, label: left.code, content: left.content }))
+      ? item.leftItems.map((left) => ({
+          id: left.id,
+          label: left.code,
+          content: { format: 'HTML' as const, value: left.content },
+        }))
       : sections.map((section) => ({
           id: section.id,
           label: section.label,
-          content: section.content.value,
+          content: section.content,
         }));
 
   // Bên phải lấy từ rightItems; nếu trống thì dùng options
@@ -73,11 +78,7 @@ export function MatchingRenderer({
                 {left.label}
               </p>
             )}
-            <div
-              className="question-content text-sm"
-              // Nội dung là HTML do biên tập viên soạn, đã qua kiểm duyệt trước khi publish
-              dangerouslySetInnerHTML={{ __html: left.content }}
-            />
+            <SafeContent content={left.content} className="question-content text-sm" />
 
             <select
               value={picked}

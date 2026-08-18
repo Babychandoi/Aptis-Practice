@@ -2,9 +2,8 @@
  * Lưu token phía client.
  *
  * Access token giữ trong memory để không bị đọc qua XSS từ localStorage.
- * Refresh token buộc phải bền qua reload nên vẫn nằm ở localStorage — đây là
- * đánh đổi đã biết. Khi backend chuyển sang cookie HttpOnly cho refresh token
- * (khuyến nghị ở §30) thì bỏ phần refresh ở đây đi.
+ * Refresh token nằm trong cookie HttpOnly. Khoá localStorage dưới đây chỉ được
+ * giữ tạm để chuyển tiếp phiên cũ rồi xoá ngay sau lần refresh thành công.
  */
 
 const REFRESH_TOKEN_KEY = 'aptis.refreshToken';
@@ -28,12 +27,12 @@ export const tokenStorage = {
     accessTokenExpiresAt = Date.now() + expiresInSeconds * 1000;
   },
 
-  getRefreshToken(): string | null {
+  getLegacyRefreshToken(): string | null {
     return localStorage.getItem(REFRESH_TOKEN_KEY);
   },
 
-  setRefreshToken(token: string): void {
-    localStorage.setItem(REFRESH_TOKEN_KEY, token);
+  clearLegacyRefreshToken(): void {
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
   },
 
   clear(): void {

@@ -8,6 +8,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { PremiumGate } from '@/components/ui/PremiumGate';
+import { SafeContent } from '@/components/ui/SafeContent';
 import { useComponents, useExamVersions, useParts, usePartsOfComponents } from '@/features/catalog/catalogQueries';
 import { componentDisplayName, componentPath } from '@/features/catalog/catalogRoutes';
 import type { ComponentProgress } from '@/types/api';
@@ -858,7 +859,7 @@ export function AttemptPage() {
  * Câu trả lời mẫu, mặc định ẩn để học viên tự nói trước rồi mới đối chiếu.
  * Chỉ render khi backend trả explanation (luyện tập, chưa nộp).
  */
-function SampleAnswer({ html }: { html: string }) {
+function SampleAnswer({ content }: { content: NonNullable<QuestionItem['explanation']> }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -883,7 +884,7 @@ function SampleAnswer({ html }: { html: string }) {
             <span className="h-fit shrink-0 rounded bg-amber-200 px-1.5 py-0.5 text-[10px] font-bold text-amber-900">
               SAMPLE
             </span>
-            <div className="question-content flex-1 text-xs leading-relaxed" dangerouslySetInnerHTML={{ __html: html }} />
+            <SafeContent content={content} className="question-content flex-1 text-xs leading-relaxed" />
           </div>
         </div>
       )}
@@ -1319,7 +1320,7 @@ function QuestionSetBlock({ set, setNumber, attemptId, responses, readOnly, isSu
             </div>
           )}
           {set.content.instructions && <p className="mb-3 rounded-lg bg-[#eaf4ef] px-3 py-2 text-xs text-brand-900">{set.content.instructions}</p>}
-          {set.content.stimulus?.value && <div className="question-content mb-3 text-sm" dangerouslySetInnerHTML={{ __html: set.content.stimulus.value }} />}
+          {set.content.stimulus?.value && <SafeContent content={set.content.stimulus} className="question-content mb-3 text-sm" />}
           {sharedImages.length > 0 && <div className="mb-3"><ImageViewer assets={sharedImages} /></div>}
           {commonAssets.length > 0 && <AudioPlayer assets={commonAssets} maxAudioPlays={set.maxAudioPlays} initialPlayCount={set.audioPlayCount} disabled={readOnly} />}
         </div>
@@ -1376,7 +1377,7 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
       <div className="flex items-start gap-2.5">
         <span className="grid min-h-7 min-w-7 shrink-0 place-items-center rounded-full border border-sky-200 bg-sky-50 px-1 text-[11px] font-semibold text-sky-700 shadow-sm">{numberLabel}</span>
         <ItemMetaBadge item={item} />
-        {item.prompt?.value ? <div className="question-content min-w-0 flex-1 pt-1 text-xs font-medium sm:text-[13px]" dangerouslySetInnerHTML={{ __html: item.prompt.value }} /> : <span className="flex-1" />}
+        {item.prompt?.value ? <SafeContent content={item.prompt} className="question-content min-w-0 flex-1 pt-1 text-xs font-medium sm:text-[13px]" /> : <span className="flex-1" />}
         <button type="button" onClick={onToggleFlag} className={clsx('inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-[10px] font-semibold transition sm:text-xs', flagged ? 'border-amber-400 bg-amber-50 text-amber-800' : 'border-[#d9cdb4] bg-white text-stone-600 hover:border-amber-400')} aria-pressed={flagged}><FlagIcon /> {flagged ? 'Đã đánh dấu' : 'Đánh dấu'}</button>
       </div>
 
@@ -1405,8 +1406,8 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
         luyện tập.
       */}
       {item.explanation?.value && (revealed
-        ? <div className="question-content mt-3 rounded-lg bg-stone-100 p-3 text-xs" dangerouslySetInnerHTML={{ __html: item.explanation.value }} />
-        : <SampleAnswer html={item.explanation.value} />)}
+        ? <SafeContent content={item.explanation} className="question-content mt-3 rounded-lg bg-stone-100 p-3 text-xs" />
+        : <SampleAnswer content={item.explanation} />)}
     </article>
   );
 }

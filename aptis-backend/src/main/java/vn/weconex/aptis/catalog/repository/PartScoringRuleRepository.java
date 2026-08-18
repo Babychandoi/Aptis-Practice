@@ -10,4 +10,7 @@ public interface PartScoringRuleRepository extends JpaRepository<PartScoringRule
 
     @EntityGraph(attributePaths = {"part", "part.component"})
     List<PartScoringRule> findAllByOrderByPartComponentDisplayOrderAscPartDisplayOrderAsc();
+
+    @EntityGraph(attributePaths = {"part", "part.component"})
+    List<PartScoringRule> findByPartIdIn(List<String> partIds);
 }

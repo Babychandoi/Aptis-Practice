@@ -1,5 +1,23 @@
 # Scripts
 
+## Benchmark luồng luyện tập
+
+`benchmark-practice.mjs` dùng Node 20 để đo luồng tạo/start attempt, gửi hai
+autosave song song và tải lại xác nhận không mất dữ liệu. Chỉ chạy trên staging
+hoặc database test vì script tạo attempt thật.
+
+```powershell
+$env:APTIS_BENCH_EMAIL='student@test.local'
+$env:APTIS_BENCH_PASSWORD='password'
+$env:APTIS_BENCH_PART_ID='16000000-0000-4000-8000-000000000021'
+$env:APTIS_BENCH_CONCURRENCY='10'
+$env:APTIS_BENCH_ITERATIONS='20'
+node scripts/benchmark-practice.mjs
+```
+
+Script thoát mã `1` nếu có lỗi/mất autosave hoặc p95 vượt
+`APTIS_BENCH_P95_LIMIT_MS` (mặc định 2000 ms).
+
 Công cụ hỗ trợ phát triển. Chạy khi hệ thống đã lên (`docker compose up -d`).
 
 ## Seed dữ liệu thử

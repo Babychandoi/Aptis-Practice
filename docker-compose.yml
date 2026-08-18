@@ -109,6 +109,27 @@ services:
   # -------------------------------------------------------------------
   # Ứng dụng
   # -------------------------------------------------------------------
+  speaking-analyzer:
+    build:
+      context: ./speaking-analyzer
+    container_name: aptis-speaking-analyzer
+    restart: unless-stopped
+    environment:
+      WHISPER_MODEL: "${LOCAL_WHISPER_MODEL:-small.en}"
+      WHISPER_DEVICE: "${LOCAL_WHISPER_DEVICE:-cpu}"
+      WHISPER_COMPUTE_TYPE: "${LOCAL_WHISPER_COMPUTE_TYPE:-int8}"
+      WHISPER_CPU_THREADS: "${LOCAL_WHISPER_CPU_THREADS:-4}"
+    volumes:
+      - whisper-cache:/root/.cache/huggingface
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    ports:
+      - "${SPEAKING_ANALYZER_HOST_PORT:-8000}:8000"
+
   backend:
     build:
       context: ./aptis-backend
@@ -123,6 +144,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+      speaking-analyzer:
+        condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: docker
 
@@ -155,11 +178,17 @@ services:
       AI_EVAL_MODEL: "${AI_EVAL_MODEL:-AI-PRO}"
       AI_EVAL_TIMEOUT: "${AI_EVAL_TIMEOUT:-60}"
 
-      # Chuyển giọng nói thành văn bản cho Speaking. Mặc định dùng lại endpoint
-      # và khoá của AI_EVAL_* nên chỉ cần bật cờ.
+      # Fallback STT audio từ xa có thể phát sinh phí. Analyzer local được ưu tiên;
+      # giữ false để audio không rời khỏi hệ thống.
       AI_STT_ENABLED: "${AI_STT_ENABLED:-false}"
       AI_STT_MODEL: "${AI_STT_MODEL:-ag/gemini-3-flash}"
       AI_STT_TIMEOUT: "${AI_STT_TIMEOUT:-120}"
+
+      # Local by default. Paid remote audio fallback must be enabled explicitly.
+      LOCAL_SPEAKING_ENABLED: "${LOCAL_SPEAKING_ENABLED:-true}"
+      LOCAL_SPEAKING_URL: "http://speaking-analyzer:8000"
+      LOCAL_SPEAKING_TIMEOUT: "${LOCAL_SPEAKING_TIMEOUT:-300}"
+      LOCAL_SPEAKING_FALLBACK_REMOTE: "${LOCAL_SPEAKING_FALLBACK_REMOTE:-false}"
 
       # Backend gọi MinIO qua network nội bộ...
       MINIO_ENDPOINT: http://minio:9000
@@ -188,6 +217,9 @@ services:
       # Dev only — production phải đặt JWT_SECRET riêng trong .env, tối thiểu
       # 256 bit. Sinh mới: openssl rand -base64 48
       JWT_SECRET: "${JWT_SECRET:-ZGV2LW9ubHktc2VjcmV0LWRvLW5vdC11c2UtaW4tcHJvZHVjdGlvbi0xMjM0NTY3ODkw}"
+      REFRESH_COOKIE_SECURE: "${REFRESH_COOKIE_SECURE:-false}"
+      REFRESH_COOKIE_SAME_SITE: "${REFRESH_COOKIE_SAME_SITE:-Lax}"
+      REFRESH_COOKIE_DOMAIN: "${REFRESH_COOKIE_DOMAIN:-}"
     ports:
       - "8080:8080"
 
@@ -207,3 +239,4 @@ volumes:
   mysql-data:
   mongo-data:
   minio-data:
+  whisper-cache:

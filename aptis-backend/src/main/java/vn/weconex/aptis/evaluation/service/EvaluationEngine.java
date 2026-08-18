@@ -31,9 +31,14 @@ public interface EvaluationEngine {
             String transcript,
             String recordingAssetId,
             Long durationMs,
+            java.util.Map<String, Object> acousticMetrics,
             RubricSpec rubric,
             String promptText,
             java.util.Map<String, Object> constraints) {
+
+        public EvaluationRequest {
+            acousticMetrics = acousticMetrics == null ? java.util.Map.of() : java.util.Map.copyOf(acousticMetrics);
+        }
     }
 
     record RubricSpec(String code, int version, double maxScore, List<CriterionSpec> criteria) {

@@ -314,11 +314,7 @@ public class AttemptService {
             return List.of();
         }
 
-        componentProgressService.closeOverdue(attempt.getId());
         var rows = componentProgressService.list(attempt.getId());
-        if (rows.isEmpty() && attempt.getStatus() == AttemptStatus.IN_PROGRESS) {
-            rows = componentProgressService.initialise(attempt, examVersionIdOf(attempt));
-        }
         if (rows.isEmpty()) {
             return List.of();
         }
@@ -466,6 +462,10 @@ public class AttemptService {
                 attempt.getTimeSpentSeconds(),
                 attempt.getTotalItems(),
                 attempt.getAnsweredItems(),
+                attempt.getRawScore() == null ? null : attempt.getRawScore().doubleValue(),
+                attempt.getMaxScore() == null ? null : attempt.getMaxScore().doubleValue(),
+                attempt.getPercentageScore() == null
+                        ? null : attempt.getPercentageScore().doubleValue(),
                 // Chỉ có ý nghĩa khi luyện một Part; thi thử nhiều Part thì
                 // partId null nên cờ luôn false.
                 attempt.getPartId() != null
@@ -485,7 +485,10 @@ public class AttemptService {
             String questionSetId,
             PracticeDtos.SaveResponsesRequest request) {
 
-        TestAttempt attempt = requireOwned(userId, attemptId);
+        // Mongo stores the whole attempt document. Serialise every autosave through
+        // the MySQL attempt row so two requests cannot read the same snapshot and
+        // overwrite each other's answers when they save it back.
+        TestAttempt attempt = requireOwnedForUpdate(userId, attemptId);
         requireAcceptingResponses(attempt);
         requireComponentOpen(attempt, questionSetId);
 
@@ -666,7 +669,7 @@ public class AttemptService {
      */
     @Transactional
     public TestAttempt submitComponent(String userId, String attemptId, String componentId) {
-        TestAttempt attempt = requireOwned(userId, attemptId);
+        TestAttempt attempt = requireOwnedForUpdate(userId, attemptId);
         if (!componentProgressService.appliesTo(attempt)) {
             throw new ApiException(
                     ErrorCode.ATTEMPT_INVALID_STATE,
@@ -742,7 +745,8 @@ public class AttemptService {
                 }
             }
 
-            if (scoringService.requiresManualEvaluation(entry.getSnapshot())) {
+            if (scoringService.requiresManualEvaluation(entry.getSnapshot())
+                    && EvaluationQueue.hasSubmittedContent(entry)) {
                 needsManualEvaluation = true;
             }
         }
@@ -838,6 +842,17 @@ public class AttemptService {
             // Trả NOT_OWNED thay vì NOT_FOUND để log phân biệt được,
             // client vẫn nhận 403 chung
             throw new ApiException(ErrorCode.ATTEMPT_NOT_OWNED, "Lượt làm bài không thuộc người dùng");
+        }
+        return attempt;
+    }
+
+    private TestAttempt requireOwnedForUpdate(String userId, String attemptId) {
+        TestAttempt attempt = attemptRepository.findByIdForUpdate(attemptId)
+                .orElseThrow(() -> ApiException.notFound("TestAttempt", attemptId));
+        if (!attempt.isOwnedBy(userId)) {
+            throw new ApiException(
+                    ErrorCode.ATTEMPT_NOT_OWNED,
+                    "Lượt làm bài không thuộc người dùng");
         }
         return attempt;
     }
