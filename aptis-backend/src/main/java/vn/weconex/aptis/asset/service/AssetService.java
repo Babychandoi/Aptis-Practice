@@ -1,5 +1,6 @@
 package vn.weconex.aptis.asset.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -18,6 +19,9 @@ import vn.weconex.aptis.common.security.AuthPrincipal;
 import vn.weconex.aptis.common.util.Enums.AccessScope;
 import vn.weconex.aptis.common.util.Enums.AssetStatus;
 import vn.weconex.aptis.common.util.Enums.AssetType;
+import vn.weconex.aptis.content.mongo.QuestionSetDocument;
+import vn.weconex.aptis.content.mongo.QuestionSetDocumentRepository;
+import vn.weconex.aptis.content.service.ContentAccessService;
 
 /**
  * Luồng upload an toàn theo PHẦN III §28:
@@ -50,6 +54,8 @@ public class AssetService {
 
     private final AssetRepository assetRepository;
     private final MinioStorageClient storageClient;
+    private final QuestionSetDocumentRepository documentRepository;
+    private final ContentAccessService contentAccessService;
     private final AptisProperties properties;
 
     @Transactional
@@ -146,11 +152,15 @@ public class AssetService {
 
     /**
      * Signed URL ngắn hạn. Asset của người dùng chỉ chính chủ hoặc staff có
-     * quyền mới xin được.
+     * quyền mới xin được; asset nội dung phải qua kiểm tra entitlement.
      */
     @Transactional(readOnly = true)
     public AssetDtos.AssetResponse signedUrl(AuthPrincipal principal, String assetId) {
         Asset asset = requireOwnedOrStaff(principal, assetId);
+
+        if (asset.getOwnerUserId() == null) {
+            requireContentAssetAccess(principal, asset);
+        }
 
         if (!asset.isReady()) {
             throw new ApiException(ErrorCode.ASSET_NOT_READY, "File chưa sẵn sàng");
@@ -172,13 +182,55 @@ public class AssetService {
 
     // -----------------------------------------------------------------
 
+    /**
+     * Chặn rò rỉ nội dung Premium qua đường file.
+     *
+     * <p>Asset nội dung không có {@code ownerUserId} nên {@link
+     * #requireOwnedOrStaff} cho qua. Trước đây luồng dừng ở đó: bất kỳ tài khoản
+     * đã đăng nhập nào biết assetId cũng xin được signed URL, kể cả audio của
+     * bài Premium — chỉ cần một học viên Premium gửi assetId cho người khác.
+     *
+     * <p>Ở đây suy ngược ra bộ câu hỏi đang dùng asset rồi kiểm entitlement qua
+     * {@link ContentAccessService}, đúng cửa mà mọi đường truy cập nội dung khác
+     * đều đi qua.
+     *
+     * <p>Không tìm thấy bộ nào (asset mồ côi, hoặc vừa upload chưa gắn vào đề)
+     * thì từ chối: chỉ staff mới đọc được. Fail closed.
+     */
+    private void requireContentAssetAccess(AuthPrincipal principal, Asset asset) {
+        if (isContentStaff(principal)) {
+            return;
+        }
+
+        List<String> questionSetIds = documentRepository.findByAssetId(asset.getId()).stream()
+                .map(QuestionSetDocument::getQuestionSetId)
+                .filter(java.util.Objects::nonNull)
+                .distinct()
+                .toList();
+
+        if (!contentAccessService.canAccessAny(principal.userId(), questionSetIds)) {
+            throw ApiException.forbidden("Không có quyền truy cập file này");
+        }
+    }
+
+    /**
+     * Người làm nội dung phải nghe/xem được file mình vừa tải lên, kể cả khi
+     * asset chưa gắn vào bộ câu hỏi nào — nên {@code asset:write} cũng được qua.
+     */
+    private static boolean isContentStaff(AuthPrincipal principal) {
+        return principal.hasPermission("asset:write")
+                || principal.hasPermission("evaluation:review")
+                || principal.hasRole("ADMIN")
+                || principal.hasRole("SUPER_ADMIN");
+    }
+
     private Asset requireOwnedOrStaff(AuthPrincipal principal, String assetId) {
         Asset asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> ApiException.notFound("Asset", assetId));
 
         if (asset.getOwnerUserId() == null) {
-            // Asset nội dung: mọi người dùng đã đăng nhập đọc được, nhưng quyền
-            // truy cập bài Premium đã được kiểm tra ở tầng nội dung
+            // Asset nội dung: không có chủ nên không xét được ở đây. Quyền do
+            // requireContentAssetAccess kiểm, gọi riêng ở signedUrl.
             return asset;
         }
         boolean owner = asset.getOwnerUserId().equals(principal.userId());

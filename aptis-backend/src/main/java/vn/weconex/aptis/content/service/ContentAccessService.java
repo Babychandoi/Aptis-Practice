@@ -120,6 +120,25 @@ public class ContentAccessService {
     }
 
     /**
+     * Có quyền với ÍT NHẤT MỘT bộ trong danh sách hay không.
+     *
+     * <p>Dùng cho asset dùng chung: một file audio có thể được nhiều bộ câu hỏi
+     * tham chiếu, chỉ cần học viên đọc được một bộ là có quyền nghe file đó.
+     *
+     * <p>Danh sách rỗng trả {@code false} — không suy ra được bộ nào chứa asset
+     * thì mặc định từ chối, không mặc định cho qua.
+     */
+    @Transactional(readOnly = true)
+    public boolean canAccessAny(String userId, List<String> questionSetIds) {
+        if (questionSetIds.isEmpty()) {
+            return false;
+        }
+        List<QuestionSet> questionSets = questionSetRepository.findAllById(questionSetIds);
+        return evaluateAll(userId, questionSets).values().stream()
+                .anyMatch(AccessDecision::allowed);
+    }
+
+    /**
      * Ném lỗi nếu không được truy cập. Dùng trước khi tạo lượt làm bài,
      * trả nội dung, hay cấp signed URL.
      */

@@ -44,7 +44,9 @@ export function MockTestPage() {
     );
   }
 
-  const mockTests = mockTestsQuery.data;
+  // Đề thi cả 5 kỹ năng chỉ có vài bản nên lấy trang đầu là đủ; API vẫn trả
+  // dạng phân trang chung với danh sách theo kỹ năng.
+  const mockTests = mockTestsQuery.data.content;
 
   if (mockTests.length === 0) {
     return (

@@ -26,7 +26,8 @@ public final class AuthDtos {
             @Size(max = 255) String deviceId) {
     }
 
-    public record RefreshRequest(@NotBlank String refreshToken) {
+    /** refreshToken chỉ còn dùng để chuyển tiếp phiên cũ đang lưu token trong localStorage. */
+    public record RefreshRequest(String refreshToken) {
     }
 
     public record LogoutRequest(
@@ -56,6 +57,11 @@ public final class AuthDtos {
         public static TokenResponse of(
                 String accessToken, String refreshToken, long expiresIn, Instant expiresAt) {
             return new TokenResponse(accessToken, refreshToken, "Bearer", expiresIn, expiresAt);
+        }
+
+        /** Refresh token chỉ được gửi qua cookie HttpOnly, không xuất hiện trong JSON. */
+        public TokenResponse withoutRefreshToken() {
+            return new TokenResponse(accessToken, null, tokenType, expiresInSeconds, accessTokenExpiresAt);
         }
     }
 

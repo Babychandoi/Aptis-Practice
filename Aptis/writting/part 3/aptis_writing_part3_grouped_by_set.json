@@ -1,0 +1,1259 @@
+{
+  "part": 3,
+  "skill": "writing",
+  "title": "Aptis Writing Part 3",
+  "instruction": "Trả lời tự nhiên trong group chat",
+  "set_count": 46,
+  "question_count": 138,
+  "questions_per_set": 3,
+  "word_limit": {
+    "min": 30,
+    "max": 60
+  },
+  "sample_answer_text_in_source": false,
+  "note": "Giữ nguyên tuyệt đối thứ tự set và thứ tự câu hỏi theo HTML nguồn. Một số prompt có tiền tố A:/B:/C:, một số không có; dữ liệu được giữ nguyên, không tự thêm hoặc chuẩn hóa speaker. File nguồn có nút 'Xem câu mẫu' nhưng không chứa nội dung câu mẫu trong DOM đã cung cấp.",
+  "sets": [
+    {
+      "set_stt": 1,
+      "set_id": "84",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 1,
+          "item_id": "writing-q-84-0",
+          "speaker": "A",
+          "prompt": "A: Hi! Welcome to the club. Where do you like to visit?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 2,
+          "item_id": "writing-q-84-1",
+          "speaker": "B",
+          "prompt": "B: Hi! Why did you decide to join the club?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 3,
+          "item_id": "writing-q-84-2",
+          "speaker": "C",
+          "prompt": "C: The bigger the club, the more environmentally conscious people are, right?"
+        }
+      ]
+    },
+    {
+      "set_stt": 2,
+      "set_id": "85",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 4,
+          "item_id": "writing-q-85-0",
+          "speaker": null,
+          "prompt": "Hi! Welcome to the club. What activities would you recommend when the weather is bad?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 5,
+          "item_id": "writing-q-85-1",
+          "speaker": null,
+          "prompt": "Hi! Please give your ideas and advice for hiking?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 6,
+          "item_id": "writing-q-85-2",
+          "speaker": null,
+          "prompt": "What are the most popular outdoor activities in your country?"
+        }
+      ]
+    },
+    {
+      "set_stt": 3,
+      "set_id": "86",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 7,
+          "item_id": "writing-q-86-0",
+          "speaker": null,
+          "prompt": "There are many ways to follow the news nowadays. How do you learn about world issues?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 8,
+          "item_id": "writing-q-86-1",
+          "speaker": null,
+          "prompt": "I will take part in a debate in front of 50 people next week. How can I make a good impression?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 9,
+          "item_id": "writing-q-86-2",
+          "speaker": null,
+          "prompt": "Before making a decision about an issue, you should consider both sides of it. What do you think about this?"
+        }
+      ]
+    },
+    {
+      "set_stt": 4,
+      "set_id": "87",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 10,
+          "item_id": "writing-q-87-0",
+          "speaker": null,
+          "prompt": "Hi! Welcome to the club. When and where do you like reading books?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 11,
+          "item_id": "writing-q-87-1",
+          "speaker": null,
+          "prompt": "Hi! I would like to give my friend a book. What would you suggest for me to buy?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 12,
+          "item_id": "writing-q-87-2",
+          "speaker": null,
+          "prompt": "Online books replace traditional books? What do you think about that?"
+        }
+      ]
+    },
+    {
+      "set_stt": 5,
+      "set_id": "88",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 13,
+          "item_id": "writing-q-88-0",
+          "speaker": null,
+          "prompt": "You have to stay in the bedroom but have to share with your brother. How do you feel?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 14,
+          "item_id": "writing-q-88-1",
+          "speaker": null,
+          "prompt": "It is better to live in the city than in the countryside. Do you agree? Why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 15,
+          "item_id": "writing-q-88-2",
+          "speaker": null,
+          "prompt": "Nowadays, old buildings are demolished and replaced with modern buildings. I feel we should protect historic buildings. What do you think?"
+        }
+      ]
+    },
+    {
+      "set_stt": 6,
+      "set_id": "89",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 16,
+          "item_id": "writing-q-89-0",
+          "speaker": "A",
+          "prompt": "A: Tell me a thing that you have had for a long time."
+        },
+        {
+          "question_order": 2,
+          "global_number": 17,
+          "item_id": "writing-q-89-1",
+          "speaker": "B",
+          "prompt": "B: Should I take a course at my local college? Please, give me some advice."
+        },
+        {
+          "question_order": 3,
+          "global_number": 18,
+          "item_id": "writing-q-89-2",
+          "speaker": "C",
+          "prompt": "C: Street art is becoming popular. However, some people criticize that it is bad. What is your opinion?"
+        }
+      ]
+    },
+    {
+      "set_stt": 7,
+      "set_id": "90",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 19,
+          "item_id": "writing-q-90-0",
+          "speaker": null,
+          "prompt": "Hi. Welcome to the club. How often do you watch films?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 20,
+          "item_id": "writing-q-90-1",
+          "speaker": null,
+          "prompt": "Hi. Can you remember the first film you what? What was it like?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 21,
+          "item_id": "writing-q-90-2",
+          "speaker": null,
+          "prompt": "What would you like to learn from the film club?"
+        }
+      ]
+    },
+    {
+      "set_stt": 8,
+      "set_id": "91",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 22,
+          "item_id": "writing-q-91-0",
+          "speaker": "A",
+          "prompt": "A: Why did you choose this course?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 23,
+          "item_id": "writing-q-91-1",
+          "speaker": "B",
+          "prompt": "B: How have you found the course so far? What’s been difficult?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 24,
+          "item_id": "writing-q-91-2",
+          "speaker": "C",
+          "prompt": "C: What are you hoping to do when you finish the course?"
+        }
+      ]
+    },
+    {
+      "set_stt": 9,
+      "set_id": "92",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 25,
+          "item_id": "writing-q-92-0",
+          "speaker": null,
+          "prompt": "I usually write at the coffee shop. What about you?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 26,
+          "item_id": "writing-q-92-1",
+          "speaker": null,
+          "prompt": "Do you prefer handwriting or typing?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 27,
+          "item_id": "writing-q-92-2",
+          "speaker": null,
+          "prompt": "There are many people who like to write, but only a few become writers. What makes a successful writer?"
+        }
+      ]
+    },
+    {
+      "set_stt": 10,
+      "set_id": "93",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 28,
+          "item_id": "writing-q-93-0",
+          "speaker": "A",
+          "prompt": "A: I usually spend 6 hours a day studying English. How do you learn English?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 29,
+          "item_id": "writing-q-93-1",
+          "speaker": "B",
+          "prompt": "B: English is a popular language in the world. What are your thoughts on this idea?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 30,
+          "item_id": "writing-q-93-2",
+          "speaker": "C",
+          "prompt": "C: When do you usually use English?"
+        }
+      ]
+    },
+    {
+      "set_stt": 11,
+      "set_id": "94",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 31,
+          "item_id": "writing-q-94-0",
+          "speaker": "A",
+          "prompt": "A: I usually like to eat and sit on a chair while watching TV, what about you?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 32,
+          "item_id": "writing-q-94-1",
+          "speaker": "B",
+          "prompt": "B: I often feel uncomfortable watching TV with people who talk a lot, what about you?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 33,
+          "item_id": "writing-q-94-2",
+          "speaker": "C",
+          "prompt": "C: People say that it is not good for children to watch too much TV, do you agree?"
+        }
+      ]
+    },
+    {
+      "set_stt": 12,
+      "set_id": "95",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 34,
+          "item_id": "writing-q-95-0",
+          "speaker": null,
+          "prompt": "I have a bad relationship with my neighbors because they often make noise. Tell me how is your relationship with your neighbors?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 35,
+          "item_id": "writing-q-95-1",
+          "speaker": null,
+          "prompt": "Do you prefer living in old buildings or modern buildings? Why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 36,
+          "item_id": "writing-q-95-2",
+          "speaker": null,
+          "prompt": "The house should be designed in a way that is good for the environment. Do you agree?"
+        }
+      ]
+    },
+    {
+      "set_stt": 13,
+      "set_id": "96",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 37,
+          "item_id": "writing-q-96-0",
+          "speaker": null,
+          "prompt": "Describe your garden?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 38,
+          "item_id": "writing-q-96-1",
+          "speaker": null,
+          "prompt": "Do people in your country like gardening?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 39,
+          "item_id": "writing-q-96-2",
+          "speaker": null,
+          "prompt": "What is your favorite season? Why?"
+        }
+      ]
+    },
+    {
+      "set_stt": 14,
+      "set_id": "97",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 40,
+          "item_id": "writing-q-97-0",
+          "speaker": null,
+          "prompt": "Tell me about the most memorable meal of your life."
+        },
+        {
+          "question_order": 2,
+          "global_number": 41,
+          "item_id": "writing-q-97-1",
+          "speaker": null,
+          "prompt": "Some people like to eat out with friends, do you like eating out or eating at home?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 42,
+          "item_id": "writing-q-97-2",
+          "speaker": null,
+          "prompt": "Nowadays, people in other countries have too many unhealthy food choices, should there be a tax on fast food to improve this situation, why?"
+        }
+      ]
+    },
+    {
+      "set_stt": 15,
+      "set_id": "98",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 43,
+          "item_id": "writing-q-98-0",
+          "speaker": "A",
+          "prompt": "A: I used to learn French and found it very interesting. Tell me about a memory you have with a foreign language?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 44,
+          "item_id": "writing-q-98-1",
+          "speaker": "B",
+          "prompt": "B: I am very forgetful. Can you give me some tips on how to remember new words?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 45,
+          "item_id": "writing-q-98-2",
+          "speaker": "C",
+          "prompt": "C: Some people learn English through videos and reading books. However, there are also many private classes and teachers. What do you think is the most effective way to learn?"
+        }
+      ]
+    },
+    {
+      "set_stt": 16,
+      "set_id": "99",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 46,
+          "item_id": "writing-q-99-0",
+          "speaker": "A",
+          "prompt": "A: Hi! I heard that you attended a club meeting this afternoon. How do you feel about the meeting?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 47,
+          "item_id": "writing-q-99-1",
+          "speaker": "B",
+          "prompt": "B: We have weekly meetings on Saturday afternoons. What topic are you expecting us to talk about?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 48,
+          "item_id": "writing-q-99-2",
+          "speaker": "C",
+          "prompt": "C: We are thinking of holding some English games next week. Can you suggest some?"
+        }
+      ]
+    },
+    {
+      "set_stt": 17,
+      "set_id": "100",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 49,
+          "item_id": "writing-q-100-0",
+          "speaker": null,
+          "prompt": "I like to sit near the screen when I go to the cinema? I never drink or eat anything during the film. What about you?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 50,
+          "item_id": "writing-q-100-1",
+          "speaker": null,
+          "prompt": "I don't like watching old back-and-white. They are boring. I prefer modern films, which do you prefer, and why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 51,
+          "item_id": "writing-q-100-2",
+          "speaker": null,
+          "prompt": "Some people say we don't need cinemas anymore. We can watch everything on TV or online at home? What do you think about this?"
+        }
+      ]
+    },
+    {
+      "set_stt": 18,
+      "set_id": "101",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 52,
+          "item_id": "writing-q-101-0",
+          "speaker": null,
+          "prompt": "I went for a walk in the forest last month and I got lost. Can you tell me about a time when you got lost?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 53,
+          "item_id": "writing-q-101-1",
+          "speaker": null,
+          "prompt": "I like visiting the mountains because they are so peaceful. What kinds of places do you like to visit and why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 54,
+          "item_id": "writing-q-101-2",
+          "speaker": null,
+          "prompt": "Large group holidays in areas of natural beauty are becoming more and more popular. I'm not sure that's a good thing. Do you agree? Why or why not?"
+        }
+      ]
+    },
+    {
+      "set_stt": 19,
+      "set_id": "102",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 55,
+          "item_id": "writing-q-102-0",
+          "speaker": null,
+          "prompt": "When was the last time you played sports?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 56,
+          "item_id": "writing-q-102-1",
+          "speaker": null,
+          "prompt": "I usually play sports with my friends and watch sports programs. What about you?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 57,
+          "item_id": "writing-q-102-2",
+          "speaker": null,
+          "prompt": "I like playing sports with my friend but my brother likes playing sports alone. What do you think about this issue?"
+        }
+      ]
+    },
+    {
+      "set_stt": 20,
+      "set_id": "103",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 58,
+          "item_id": "writing-q-103-0",
+          "speaker": null,
+          "prompt": "Person A: I like reading sports magazines. What genre of books do you like to read? Why?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 59,
+          "item_id": "writing-q-103-1",
+          "speaker": null,
+          "prompt": "Person B: I have a lot of books for my studies, but I can't remember everything I read. Do you have any suggestions for me?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 60,
+          "item_id": "writing-q-103-2",
+          "speaker": null,
+          "prompt": "Person C: Children nowadays prefer playing games to reading books. Do you think this is worrying, why?"
+        }
+      ]
+    },
+    {
+      "set_stt": 21,
+      "set_id": "104",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 61,
+          "item_id": "writing-q-104-0",
+          "speaker": "A",
+          "prompt": "A: I feel nervous when speaking English in front of a group. What helps you feel confident?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 62,
+          "item_id": "writing-q-104-1",
+          "speaker": "B",
+          "prompt": "B: Our club wants to invite a guest speaker. Who should we invite and why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 63,
+          "item_id": "writing-q-104-2",
+          "speaker": "C",
+          "prompt": "C: Some members want the club to use English only. Is that a good rule?"
+        }
+      ]
+    },
+    {
+      "set_stt": 22,
+      "set_id": "105",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 64,
+          "item_id": "writing-q-105-0",
+          "speaker": "A",
+          "prompt": "A: Some people like to buy clothes to try on themselves. Some prefer to buy online. Which way do you like and why?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 65,
+          "item_id": "writing-q-105-1",
+          "speaker": "B",
+          "prompt": "B: Why did you decide to join the club?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 66,
+          "item_id": "writing-q-105-2",
+          "speaker": "C",
+          "prompt": "C: Why do people like fashion?"
+        }
+      ]
+    },
+    {
+      "set_stt": 23,
+      "set_id": "106",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 67,
+          "item_id": "writing-q-106-0",
+          "speaker": "A",
+          "prompt": "A: Hi! Welcome to the club. How to have a beautiful picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 68,
+          "item_id": "writing-q-106-1",
+          "speaker": "B",
+          "prompt": "B: I often save my photos as files on my computer or print them out. How do you save your photos?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 69,
+          "item_id": "writing-q-106-2",
+          "speaker": "C",
+          "prompt": "C: What skills do you need to take good photos?"
+        }
+      ]
+    },
+    {
+      "set_stt": 24,
+      "set_id": "107",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 70,
+          "item_id": "writing-q-107-0",
+          "speaker": "A",
+          "prompt": "A: Do you often watch movies on your laptop or go to the theater?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 71,
+          "item_id": "writing-q-107-1",
+          "speaker": "B",
+          "prompt": "B: I used to work on a laptop and it stopped and I lost all my notes. Tell me about a bad time with your computer?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 72,
+          "item_id": "writing-q-107-2",
+          "speaker": "C",
+          "prompt": "C: Technological improvements have made our lives easier. What do you think?"
+        }
+      ]
+    },
+    {
+      "set_stt": 25,
+      "set_id": "108",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 73,
+          "item_id": "writing-q-108-0",
+          "speaker": null,
+          "prompt": "I know there are a lot of successful small businesses these days. Tell me about a successful small business in your area."
+        },
+        {
+          "question_order": 2,
+          "global_number": 74,
+          "item_id": "writing-q-108-1",
+          "speaker": null,
+          "prompt": "I have a friend who wants to open a second coffee shop. She opened her first one a year ago and it was quite successful. What advice do you have to help her be more successful in her second shop?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 75,
+          "item_id": "writing-q-108-2",
+          "speaker": null,
+          "prompt": "Can you tell me what qualities and skills are needed to create a successful small business?"
+        }
+      ]
+    },
+    {
+      "set_stt": 26,
+      "set_id": "109",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 76,
+          "item_id": "writing-q-109-0",
+          "speaker": null,
+          "prompt": "Please talk about the first museum you visited when you were a child?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 77,
+          "item_id": "writing-q-109-1",
+          "speaker": null,
+          "prompt": "What kind of museum do you like?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 78,
+          "item_id": "writing-q-109-2",
+          "speaker": null,
+          "prompt": "Nowadays, many museums use technology to create online exhibitions. Do you think that will be successful?"
+        }
+      ]
+    },
+    {
+      "set_stt": 27,
+      "set_id": "110",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 79,
+          "item_id": "writing-q-110-0",
+          "speaker": null,
+          "prompt": "Hi! When and where do you usually watch movies?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 80,
+          "item_id": "writing-q-110-1",
+          "speaker": null,
+          "prompt": "I want to make movies for young children. Give me some suggestions?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 81,
+          "item_id": "writing-q-110-2",
+          "speaker": null,
+          "prompt": "How do you think technology affects the way we watch movies in the future?"
+        }
+      ]
+    },
+    {
+      "set_stt": 28,
+      "set_id": "111",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 82,
+          "item_id": "writing-q-111-0",
+          "speaker": null,
+          "prompt": "Your grandmother would like to learn how to use a computer. What advice would you give her?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 83,
+          "item_id": "writing-q-111-1",
+          "speaker": null,
+          "prompt": "When did you last use a computer, and what did you use it for?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 84,
+          "item_id": "writing-q-111-2",
+          "speaker": null,
+          "prompt": "Do you think people use computers too much nowadays? Why or why not?"
+        }
+      ]
+    },
+    {
+      "set_stt": 29,
+      "set_id": "112",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 85,
+          "item_id": "writing-q-112-0",
+          "speaker": null,
+          "prompt": "Hi! Welcome to the college. What course are you doing and why did you choose it?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 86,
+          "item_id": "writing-q-112-1",
+          "speaker": null,
+          "prompt": "Welcome! How do you feel about the college so far?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 87,
+          "item_id": "writing-q-112-2",
+          "speaker": null,
+          "prompt": "Did you hear that the college sports club has closed? What do you think about this?"
+        }
+      ]
+    },
+    {
+      "set_stt": 30,
+      "set_id": "113",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 88,
+          "item_id": "writing-q-113-0",
+          "speaker": null,
+          "prompt": "Tell me about your English learning experience?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 89,
+          "item_id": "writing-q-113-1",
+          "speaker": null,
+          "prompt": "I can read and write, but I can't speak English. Do you have any advice for me?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 90,
+          "item_id": "writing-q-113-2",
+          "speaker": null,
+          "prompt": "English is a popular language in the world. What are your thoughts on this opinion?"
+        }
+      ]
+    },
+    {
+      "set_stt": 31,
+      "set_id": "114",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 91,
+          "item_id": "writing-q-114-0",
+          "speaker": "A",
+          "prompt": "A: I often go walking. Do you enjoy walking?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 92,
+          "item_id": "writing-q-114-1",
+          "speaker": "B",
+          "prompt": "B: I like walking, but once I got wet in the rain. Tell me about a bad experience you had while walking."
+        },
+        {
+          "question_order": 3,
+          "global_number": 93,
+          "item_id": "writing-q-114-2",
+          "speaker": "C",
+          "prompt": "C: Walking is one of the best forms of exercise. What do you think when you see many people walking because they know it is good for their health?"
+        }
+      ]
+    },
+    {
+      "set_stt": 32,
+      "set_id": "115",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 94,
+          "item_id": "writing-q-115-0",
+          "speaker": null,
+          "prompt": "1. My friend wants to go to the hair salon, but her car isn't working. Can you suggest some ways for her to get there?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 95,
+          "item_id": "writing-q-115-1",
+          "speaker": null,
+          "prompt": "2. Volunteering provides great learning opportunities and helps others a lot. Do you agree with this?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 96,
+          "item_id": "writing-q-115-2",
+          "speaker": null,
+          "prompt": "3. Do you agree with the view that volunteering is a form of learning, especially for young people? Why?"
+        }
+      ]
+    },
+    {
+      "set_stt": 33,
+      "set_id": "116",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 97,
+          "item_id": "writing-q-116-0",
+          "speaker": null,
+          "prompt": "What is the most exciting journey you've been on?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 98,
+          "item_id": "writing-q-116-1",
+          "speaker": null,
+          "prompt": "Can you remember the first time you went on a journey by yourself? What was it like?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 99,
+          "item_id": "writing-q-116-2",
+          "speaker": null,
+          "prompt": "Some people like taking photos when they have vacation. Your opinion?"
+        }
+      ]
+    },
+    {
+      "set_stt": 34,
+      "set_id": "117",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 100,
+          "item_id": "writing-q-117-0",
+          "speaker": null,
+          "prompt": "Hi! Welcome to the club. Why did you decide to join the club?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 101,
+          "item_id": "writing-q-117-1",
+          "speaker": null,
+          "prompt": "Hi! What do you think about the club's price/ membership fee?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 102,
+          "item_id": "writing-q-117-2",
+          "speaker": null,
+          "prompt": "How often do you go to the club?"
+        }
+      ]
+    },
+    {
+      "set_stt": 35,
+      "set_id": "118",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 103,
+          "item_id": "writing-q-118-0",
+          "speaker": null,
+          "prompt": "Tell me about a time you traveled by car."
+        },
+        {
+          "question_order": 2,
+          "global_number": 104,
+          "item_id": "writing-q-118-1",
+          "speaker": null,
+          "prompt": "Tell me about memories when traveling by car."
+        },
+        {
+          "question_order": 3,
+          "global_number": 105,
+          "item_id": "writing-q-118-2",
+          "speaker": null,
+          "prompt": "Should we take public transportation or buy a car?"
+        }
+      ]
+    },
+    {
+      "set_stt": 36,
+      "set_id": "119",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 106,
+          "item_id": "writing-q-119-0",
+          "speaker": null,
+          "prompt": "Tell me a time you had a trip in bad weather."
+        },
+        {
+          "question_order": 2,
+          "global_number": 107,
+          "item_id": "writing-q-119-1",
+          "speaker": null,
+          "prompt": "Traveling a long distance by some means of transportation is not good for the environment. Do you agree?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 108,
+          "item_id": "writing-q-119-2",
+          "speaker": null,
+          "prompt": "What are the most interesting places to visit in your country?"
+        }
+      ]
+    },
+    {
+      "set_stt": 37,
+      "set_id": "120",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 109,
+          "item_id": "writing-q-120-0",
+          "speaker": "A",
+          "prompt": "A: Where did you meet your friends for the first time and how did you become friends?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 110,
+          "item_id": "writing-q-120-1",
+          "speaker": "B",
+          "prompt": "B: I have just moved to the city and want to make some friends. Can you give me some advice?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 111,
+          "item_id": "writing-q-120-2",
+          "speaker": "C",
+          "prompt": "C: Some people say we should share our hobbies with our friends, do you agree with this and why?"
+        }
+      ]
+    },
+    {
+      "set_stt": 38,
+      "set_id": "121",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 112,
+          "item_id": "writing-q-121-0",
+          "speaker": "A",
+          "prompt": "A: My family is redesigning our small living room. What change would make a shared room more comfortable?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 113,
+          "item_id": "writing-q-121-1",
+          "speaker": "B",
+          "prompt": "B: Some neighbours rarely speak to each other. How can people build a friendlier neighbourhood?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 114,
+          "item_id": "writing-q-121-2",
+          "speaker": "C",
+          "prompt": "C: An old theatre may be replaced by apartments. Should the town protect it?"
+        }
+      ]
+    },
+    {
+      "set_stt": 39,
+      "set_id": "122",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 115,
+          "item_id": "writing-q-122-0",
+          "speaker": "A",
+          "prompt": "A: Hi! My neighbor plays rock music. I like listening to rock music too. But I don't want to listen to it every day. Please give me some advice."
+        },
+        {
+          "question_order": 2,
+          "global_number": 116,
+          "item_id": "writing-q-122-1",
+          "speaker": "B",
+          "prompt": "B: My father doesn't like listening to music, I liked listening to music when I was young. Why does music change from generation to generation?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 117,
+          "item_id": "writing-q-122-2",
+          "speaker": "C",
+          "prompt": "C: Do you agree that music is important in culture?"
+        }
+      ]
+    },
+    {
+      "set_stt": 40,
+      "set_id": "123",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 118,
+          "item_id": "writing-q-123-0",
+          "speaker": null,
+          "prompt": "Why did you decide to join our Science Club? How often can you go to the club?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 119,
+          "item_id": "writing-q-123-1",
+          "speaker": null,
+          "prompt": "In the past, you learnt about Science in school. Do you remember something about Science?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 120,
+          "item_id": "writing-q-123-2",
+          "speaker": null,
+          "prompt": "Who is your favorite inventor or scientist? Why?"
+        }
+      ]
+    },
+    {
+      "set_stt": 41,
+      "set_id": "124",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 121,
+          "item_id": "writing-q-124-0",
+          "speaker": "A",
+          "prompt": "A: I live in a tall building, I usually walk downstairs to exercise, how do you usually exercise?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 122,
+          "item_id": "writing-q-124-1",
+          "speaker": "B",
+          "prompt": "B: I usually get up early to run in the morning because I usually get tired in the evening. What about you?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 123,
+          "item_id": "writing-q-124-2",
+          "speaker": "C",
+          "prompt": "C: Nowadays, technology makes people's lives easier, but it also makes them lazy and dislike exercise. Do you agree with this opinion?"
+        }
+      ]
+    },
+    {
+      "set_stt": 42,
+      "set_id": "125",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 124,
+          "item_id": "writing-q-125-0",
+          "speaker": null,
+          "prompt": "Hi! Welcome to the club. How did you hear about the club?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 125,
+          "item_id": "writing-q-125-1",
+          "speaker": null,
+          "prompt": "Hi! What do you hope to achieve by joining the club?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 126,
+          "item_id": "writing-q-125-2",
+          "speaker": null,
+          "prompt": "What announcement would you make to Fitness Club members about new activities?"
+        }
+      ]
+    },
+    {
+      "set_stt": 43,
+      "set_id": "914",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 127,
+          "item_id": "writing-q-914-0",
+          "speaker": "A",
+          "prompt": "A: I want to exercise regularly, but my schedule changes every week. What would you suggest?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 128,
+          "item_id": "writing-q-914-1",
+          "speaker": "B",
+          "prompt": "B: I felt dizzy during a workout once. Tell me about a difficult exercise experience."
+        },
+        {
+          "question_order": 3,
+          "global_number": 129,
+          "item_id": "writing-q-914-2",
+          "speaker": "C",
+          "prompt": "C: Some companies give employees time to exercise during work. Is this a good idea?"
+        }
+      ]
+    },
+    {
+      "set_stt": 44,
+      "set_id": "918",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 130,
+          "item_id": "writing-q-918-0",
+          "speaker": "A",
+          "prompt": "A: I use a tablet for studying, but notifications distract me. How do you stay focused?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 131,
+          "item_id": "writing-q-918-1",
+          "speaker": "B",
+          "prompt": "B: My online files disappeared after a computer problem. How do you protect important work?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 132,
+          "item_id": "writing-q-918-2",
+          "speaker": "C",
+          "prompt": "C: Schools are using more artificial intelligence tools. What rules should students follow?"
+        }
+      ]
+    },
+    {
+      "set_stt": 45,
+      "set_id": "922",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 133,
+          "item_id": "writing-q-922-0",
+          "speaker": "A",
+          "prompt": "A: I want to start walking to work twice a week. What should I prepare?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 134,
+          "item_id": "writing-q-922-1",
+          "speaker": "B",
+          "prompt": "B: I got lost during a countryside walk. Tell me about a problem you had on a walk."
+        },
+        {
+          "question_order": 3,
+          "global_number": 135,
+          "item_id": "writing-q-922-2",
+          "speaker": "C",
+          "prompt": "C: Our town plans to create more pedestrian streets. What benefits could this bring?"
+        }
+      ]
+    },
+    {
+      "set_stt": 46,
+      "set_id": "927",
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 136,
+          "item_id": "writing-q-927-0",
+          "speaker": null,
+          "prompt": "Tell me about the most memorable meal of your life."
+        },
+        {
+          "question_order": 2,
+          "global_number": 137,
+          "item_id": "writing-q-927-1",
+          "speaker": null,
+          "prompt": "Tell me about a meal you had with a friend that you will never forget."
+        },
+        {
+          "question_order": 3,
+          "global_number": 138,
+          "item_id": "writing-q-927-2",
+          "speaker": null,
+          "prompt": "Do you think increasing taxes on fast food can help improve public health? Why or why not?"
+        }
+      ]
+    }
+  ]
+}

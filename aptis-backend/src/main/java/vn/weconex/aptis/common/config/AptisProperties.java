@@ -11,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "aptis")
 public record AptisProperties(
         Jwt jwt,
+        RefreshCookie refreshCookie,
         Security security,
         Cors cors,
         Minio minio,
@@ -23,6 +24,13 @@ public record AptisProperties(
             String issuer,
             Duration accessTokenTtl,
             Duration refreshTokenTtl) {
+    }
+
+    public record RefreshCookie(
+            String name,
+            boolean secure,
+            String sameSite,
+            String domain) {
     }
 
     public record Security(
@@ -57,11 +65,25 @@ public record AptisProperties(
         }
     }
 
+    /**
+     * @param mergeItemParts partId -> số câu của một đề, cho các Part mà mỗi bộ
+     *                       câu hỏi chỉ chứa một câu và hệ thống tự gom lại
+     */
     public record Practice(
             int defaultPartPracticeSize,
             int maxCustomPracticeSize,
             Duration avoidRepeatWindow,
-            Duration attemptExpiryGrace) {
+            Duration attemptExpiryGrace,
+            java.util.Map<String, Integer> mergeItemParts) {
+
+        /** Số câu mỗi đề của Part, hoặc rỗng nếu Part không gộp câu. */
+        public java.util.Optional<Integer> mergeSizeOf(String partId) {
+            if (mergeItemParts == null || partId == null) {
+                return java.util.Optional.empty();
+            }
+            return java.util.Optional.ofNullable(mergeItemParts.get(partId))
+                    .filter(size -> size > 1);
+        }
     }
 
     /**

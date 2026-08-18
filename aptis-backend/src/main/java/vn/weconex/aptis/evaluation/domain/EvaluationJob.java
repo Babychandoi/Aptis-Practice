@@ -107,6 +107,10 @@ public class EvaluationJob {
         this.status = JobStatus.COMPLETED;
         this.mongoEvaluationDocumentId = documentId;
         this.completedAt = Instant.now();
+        // Lỗi từ các lần retry trước chỉ là tạm thời. Khi lần sau chấm thành
+        // công, giữ lại retryCount để quan sát độ ổn định provider nhưng không
+        // được để thông báo lỗi cũ khiến admin hiểu nhầm job đã thất bại.
+        this.errorMessage = null;
     }
 
     public void markFailed(String error, int maxRetry) {

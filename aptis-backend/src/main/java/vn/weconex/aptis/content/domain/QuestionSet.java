@@ -62,6 +62,10 @@ public class QuestionSet extends BaseEntity {
     @Column(name = "hotness")
     private Byte hotness;
 
+    /** Năm ghi nhận đề ra thi, ví dụ 2026. null nếu chưa rõ. */
+    @Column(name = "exam_year")
+    private Short examYear;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "cefr_min", length = 4)
     private CefrLevel cefrMin;

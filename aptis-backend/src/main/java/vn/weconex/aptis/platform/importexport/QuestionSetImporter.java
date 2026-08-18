@@ -119,6 +119,7 @@ public class QuestionSetImporter {
                 first.title() == null ? code : first.title(),
                 first.difficulty(),
                 null,
+                null,   // examYear — file import chưa có cột năm ra thi
                 null,
                 null,
                 first.accessLevel() == null

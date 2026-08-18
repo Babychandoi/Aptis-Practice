@@ -1,0 +1,3010 @@
+{
+  "part": 4,
+  "title": "Aptis Listening Part 4",
+  "type": "lecture_inference",
+  "topic_count": 60,
+  "question_count": 120,
+  "note": "Giữ nguyên thứ tự topic và thứ tự câu hỏi đúng như HTML nguồn. Mỗi topic có 1 audio dùng chung và 2 câu hỏi; mỗi câu có bộ A/B/C riêng.",
+  "topics": [
+    {
+      "topic_stt": 1,
+      "topic": "A newly released novel",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/01-a-newly-released-novel.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2086",
+          "question": "What does the announcer say about the new novel?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is different from his earlier works"
+            },
+            {
+              "letter": "B",
+              "text": "It is romantic and soft"
+            },
+            {
+              "letter": "C",
+              "text": "It is less famous than his earlier works"
+            }
+          ],
+          "correct_answer": "It is different from his earlier works",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2085",
+          "question": "What does the announcer say the writer should do in the future?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The writer should continue to write this genre"
+            },
+            {
+              "letter": "B",
+              "text": "The writer should go back to his original genre"
+            },
+            {
+              "letter": "C",
+              "text": "He should listen to critics before writing his next work"
+            }
+          ],
+          "correct_answer": "He should listen to critics before writing his next work",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 2,
+      "topic": "Professionalism at work (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/02-professionalism-at-work-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "2087",
+          "question": "What does the expert say being professional is all about?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "To maintain a positive attitude."
+            },
+            {
+              "letter": "B",
+              "text": "To create a good working environment."
+            },
+            {
+              "letter": "C",
+              "text": "To make a good impression."
+            }
+          ],
+          "correct_answer": "To maintain a positive attitude.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "2088",
+          "question": "What does the expert say about the definition of professionalism?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is the same as 40 years ago."
+            },
+            {
+              "letter": "B",
+              "text": "Our definition of it is changing."
+            },
+            {
+              "letter": "C",
+              "text": "It will not change anymore."
+            }
+          ],
+          "correct_answer": "Our definition of it is changing.",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 3,
+      "topic": "Writer's block (2026)",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/03-writer-s-block-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2097",
+          "question": "What does the writer believe helps her the most in her writing process?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Writing every day for 15-20 minutes"
+            },
+            {
+              "letter": "B",
+              "text": "Create dedicated periods for writing"
+            },
+            {
+              "letter": "C",
+              "text": "Finding a quiet space to work"
+            }
+          ],
+          "correct_answer": "Create dedicated periods for writing",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2098",
+          "question": "What does the writer regret doing during her experience with writer's block?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Refuse to seek advice of others"
+            },
+            {
+              "letter": "B",
+              "text": "Ignoring feedback from editors"
+            },
+            {
+              "letter": "C",
+              "text": "Writing without a plan"
+            }
+          ],
+          "correct_answer": "Refuse to seek advice of others",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 4,
+      "topic": "Work from home (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/04-work-from-home.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2109",
+          "question": "What does she say about working at home?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "There are no distractions"
+            },
+            {
+              "letter": "B",
+              "text": "Not good as expected"
+            },
+            {
+              "letter": "C",
+              "text": "Video calls are superior to face-to-face conversation"
+            }
+          ],
+          "correct_answer": "Not good as expected",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2110",
+          "question": "According to the author, working from home:",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Needs a big home office"
+            },
+            {
+              "letter": "B",
+              "text": "Do not require self-motivation."
+            },
+            {
+              "letter": "C",
+              "text": "It depends on your situation and personality"
+            }
+          ],
+          "correct_answer": "It depends on your situation and personality",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 5,
+      "topic": "The importance of sleep (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/05-the-importance-of-sleep.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "2111",
+          "question": "What is the most important thing to help you sleep well?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Blocking noise and light is the key"
+            },
+            {
+              "letter": "B",
+              "text": "Beds are best for sleeping"
+            },
+            {
+              "letter": "C",
+              "text": "Resting sufficiently is necessary"
+            }
+          ],
+          "correct_answer": "Blocking noise and light is the key",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "2112",
+          "question": "According to the expert, what is the public attitude towards sleeping?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The media overemphasize the subject"
+            },
+            {
+              "letter": "B",
+              "text": "The young generation tends to have unhealthy sleeping habits."
+            },
+            {
+              "letter": "C",
+              "text": "C Sleeping quality has deteriorated over time."
+            }
+          ],
+          "correct_answer": "The media overemphasize the subject",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 6,
+      "topic": "Television series (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/06-television-series-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2121",
+          "question": "What happened to the TV series?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It didn't receive enough investment in the early stage."
+            },
+            {
+              "letter": "B",
+              "text": "It was overlooked by critics."
+            },
+            {
+              "letter": "C",
+              "text": "It caught the audience's attention from the start."
+            }
+          ],
+          "correct_answer": "It caught the audience's attention from the start.",
+          "correct_letter": "C"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2122",
+          "question": "According to the expert, what is the series' potential?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "New seasons will be produced due to great demand."
+            },
+            {
+              "letter": "B",
+              "text": "It inspires young filmmakers to follow a new movie-making style."
+            },
+            {
+              "letter": "C",
+              "text": "It can help reach new customers."
+            }
+          ],
+          "correct_answer": "It can help reach new customers.",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 7,
+      "topic": "Advertising and sponsoring (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/07-advertising-and-sponsoring.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "2124",
+          "question": "What does the expert say about the negative side of advertising?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Series are damaged by overexposure."
+            },
+            {
+              "letter": "B",
+              "text": "Advertisements might sometimes be repetitive, which is annoying."
+            },
+            {
+              "letter": "C",
+              "text": "Advertising costs the same amount of money to produce a movie."
+            }
+          ],
+          "correct_answer": "Series are damaged by overexposure.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "2123",
+          "question": "In what way can advertising affect sports?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They help to attract more fans."
+            },
+            {
+              "letter": "B",
+              "text": "They can boost ticket sales and sales of sports-related items."
+            },
+            {
+              "letter": "C",
+              "text": "They can generate negative publicity for the sport."
+            }
+          ],
+          "correct_answer": "They can generate negative publicity for the sport.",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 8,
+      "topic": "A newly released movie (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/08-a-newly-released-movie.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2134",
+          "question": "What part of the movie is disappointing?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The dialogue seems unrealistic."
+            },
+            {
+              "letter": "B",
+              "text": "The settings do not make sense."
+            },
+            {
+              "letter": "C",
+              "text": "The original cast was replaced."
+            }
+          ],
+          "correct_answer": "The dialogue seems unrealistic.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2133",
+          "question": "What is the expert comment on the movie industry?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Technology will soon replace human actors."
+            },
+            {
+              "letter": "B",
+              "text": "The new industry demand is negatively influencing script production"
+            },
+            {
+              "letter": "C",
+              "text": "New story plots should be invented to capture the audience's interest"
+            }
+          ],
+          "correct_answer": "The new industry demand is negatively influencing script production",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 9,
+      "topic": "A new restaurant (2026)",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/09-a-new-restaurant-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "2135",
+          "question": "What are the critic's opinions about the restaurant?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The food is not fresh"
+            },
+            {
+              "letter": "B",
+              "text": "The service is not good"
+            },
+            {
+              "letter": "C",
+              "text": "The chief lack of experience"
+            }
+          ],
+          "correct_answer": "The service is not good",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "2136",
+          "question": "What can compete with online food delivery?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Organic ingredients"
+            },
+            {
+              "letter": "B",
+              "text": "Providing a ready-made pack for customers"
+            },
+            {
+              "letter": "C",
+              "text": "Customers feel valued and welcome"
+            }
+          ],
+          "correct_answer": "Customers feel valued and welcome",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 10,
+      "topic": "Famous writers (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/10-famous-writers.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2145",
+          "question": "What was the lecturer's opinion about both authors' past work?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They have both been overlooked by ACADEMICS."
+            },
+            {
+              "letter": "B",
+              "text": "They make reference to each other's work."
+            },
+            {
+              "letter": "C",
+              "text": "One was less successful than the other."
+            }
+          ],
+          "correct_answer": "They make reference to each other's work.",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2146",
+          "question": "What did the lecturer say about both authors?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Their reputation goes beyond their target audience."
+            },
+            {
+              "letter": "B",
+              "text": "They should have been more popular."
+            },
+            {
+              "letter": "C",
+              "text": "It is not always easy for the meanings to be IDENTIFIED."
+            }
+          ],
+          "correct_answer": "It is not always easy for the meanings to be IDENTIFIED.",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 11,
+      "topic": "Sports in education",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/11-sports-in-education.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "2147",
+          "question": "What is the expert's opinion about sport competitions?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Provide school with external investments"
+            },
+            {
+              "letter": "B",
+              "text": "Nature potential sportsmen for the country."
+            },
+            {
+              "letter": "C",
+              "text": "They can cause harmful effects"
+            }
+          ],
+          "correct_answer": "They can cause harmful effects",
+          "correct_letter": "C"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "2148",
+          "question": "What is the expert's advice for schools?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Should consider sports as a mandatory subject."
+            },
+            {
+              "letter": "B",
+              "text": "Provides them with a balance in their lives."
+            },
+            {
+              "letter": "C",
+              "text": "Keep students focus on academic subjects"
+            }
+          ],
+          "correct_answer": "Provides them with a balance in their lives.",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 12,
+      "topic": "A regional development plan (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/12-a-regional-development-plan.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2170",
+          "question": "What is one of the main criticisms of the Regional Development Plan?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It increases the number of public parks in the area"
+            },
+            {
+              "letter": "B",
+              "text": "It provides free public transportation for all residents"
+            },
+            {
+              "letter": "C",
+              "text": "It doesn't do enough to promote alternatives to driving"
+            }
+          ],
+          "correct_answer": "It doesn't do enough to promote alternatives to driving",
+          "correct_letter": "C"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2169",
+          "question": "What challenge is the Regional Development Plan likely to face?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "There is too much public support, making it hard to manage expectations"
+            },
+            {
+              "letter": "B",
+              "text": "The plan has already exceeded its budget by a large margin"
+            },
+            {
+              "letter": "C",
+              "text": "The plan is not making efficient use of existing land"
+            }
+          ],
+          "correct_answer": "The plan is not making efficient use of existing land",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 13,
+      "topic": "Life after university (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/13-life-after-university-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2181",
+          "question": "How does life change for graduates after university?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They feel more stressed about job seeking"
+            },
+            {
+              "letter": "B",
+              "text": "They are likely to stick to their academic routines"
+            },
+            {
+              "letter": "C",
+              "text": "They gradually become more independent in making decisions."
+            }
+          ],
+          "correct_answer": "They gradually become more independent in making decisions.",
+          "correct_letter": "C"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2182",
+          "question": "What is a common characteristic of the job market after university?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "More opportunities for networking"
+            },
+            {
+              "letter": "B",
+              "text": "More competitive"
+            },
+            {
+              "letter": "C",
+              "text": "Many jobs offer great benefits"
+            }
+          ],
+          "correct_answer": "More competitive",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 14,
+      "topic": "A promotion campaign for a product (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/14-a-promotion-campaign-for-a-product-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "2183",
+          "question": "What is the main issue with the product's promotion campaign?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is using outdated advertising methods"
+            },
+            {
+              "letter": "B",
+              "text": "They use exaggerated claims"
+            },
+            {
+              "letter": "C",
+              "text": "It is not targeting the correct market"
+            }
+          ],
+          "correct_answer": "They use exaggerated claims",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "2184",
+          "question": "Why is the product struggling to stand out in the market?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is priced too high compared to its competitors"
+            },
+            {
+              "letter": "B",
+              "text": "It is too similar to many existing products"
+            },
+            {
+              "letter": "C",
+              "text": "It is not available in enough stores"
+            }
+          ],
+          "correct_answer": "It is too similar to many existing products",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 15,
+      "topic": "Managing financial spending (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/15-managing-financial-spending-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2193",
+          "question": "How does the speaker recommend saving money effectively?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Saving a large amount only on a daily basis."
+            },
+            {
+              "letter": "B",
+              "text": "Save a fixed amount regularly."
+            },
+            {
+              "letter": "C",
+              "text": "Use credit cards to manage expenses."
+            }
+          ],
+          "correct_answer": "Save a fixed amount regularly.",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2194",
+          "question": "Who does the speaker believe can save money most successfully?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Get advice from people that have experience"
+            },
+            {
+              "letter": "B",
+              "text": "Keep all your savings in a single account"
+            },
+            {
+              "letter": "C",
+              "text": "Avoid making any long-term financial plans"
+            }
+          ],
+          "correct_answer": "Get advice from people that have experience",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 16,
+      "topic": "Security cameras (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/16-security-cameras-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "2196",
+          "question": "What is the speaker's opinion about security cameras at work?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "People are unnecessarily worried about them"
+            },
+            {
+              "letter": "B",
+              "text": "Most people don't even realize cameras are present."
+            },
+            {
+              "letter": "C",
+              "text": "Cameras should be placed to ensure complete coverage."
+            }
+          ],
+          "correct_answer": "People are unnecessarily worried about them",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "2195",
+          "question": "How does the speaker suggest people should feel about security cameras at work?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "People often find them intimidating and invasive."
+            },
+            {
+              "letter": "B",
+              "text": "Many believe they are only useful after incidents have occurred."
+            },
+            {
+              "letter": "C",
+              "text": "People should feel reassured about their presence"
+            }
+          ],
+          "correct_answer": "People should feel reassured about their presence",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 17,
+      "topic": "A book about a life of a scientist (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/17-a-book-about-a-life-of-a-scientist-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "2203",
+          "question": "· What does the speaker say about the way of writing?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is focused on technical details"
+            },
+            {
+              "letter": "B",
+              "text": "It is exciting to read"
+            },
+            {
+              "letter": "C",
+              "text": "It is more of a textbook than a biography"
+            }
+          ],
+          "correct_answer": "It is exciting to read",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "2204",
+          "question": "· What does the speaker say about the overall content of the book?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It has been written for a general audience"
+            },
+            {
+              "letter": "B",
+              "text": "It is only suitable for experts in the field"
+            },
+            {
+              "letter": "C",
+              "text": "It lacks engaging storytelling"
+            }
+          ],
+          "correct_answer": "It has been written for a general audience",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 18,
+      "topic": "A research into happiness (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/18-a-research-into-happiness-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2222",
+          "question": "What does the radio MC say about how the research on happiness has been covered by the media?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It has been accurately reported by the media"
+            },
+            {
+              "letter": "B",
+              "text": "It has not been accurately reported by the media"
+            },
+            {
+              "letter": "C",
+              "text": "It has been ignored completely by the media"
+            }
+          ],
+          "correct_answer": "It has not been accurately reported by the media",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2221",
+          "question": "According to the radio MC, what is unlikely regarding the research on happiness??",
+          "options": [
+            {
+              "letter": "A",
+              "text": "To find personal happiness"
+            },
+            {
+              "letter": "B",
+              "text": "To find a conclusive answer"
+            },
+            {
+              "letter": "C",
+              "text": "To discuss happiness in the media"
+            }
+          ],
+          "correct_answer": "To find a conclusive answer",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 19,
+      "topic": "Setting goals (2026)",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/19-making-plans-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2230",
+          "question": "What does the speaker say about short-term goals?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It helps people adjust their priorities when circumstances change."
+            },
+            {
+              "letter": "B",
+              "text": "It creates pressure and limits creativity"
+            },
+            {
+              "letter": "C",
+              "text": "It only apply to specific situations or certain types of people"
+            }
+          ],
+          "correct_answer": "It helps people adjust their priorities when circumstances change.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2229",
+          "question": "What is the speaker's opinion about goal setting?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It can lead to confusion and distraction"
+            },
+            {
+              "letter": "B",
+              "text": "It can prevent you from making mistakes"
+            },
+            {
+              "letter": "C",
+              "text": "It can bring about opportunities for individuals"
+            }
+          ],
+          "correct_answer": "It can prevent you from making mistakes",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 20,
+      "topic": "A new guide (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/20-a-new-guide-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "2237",
+          "question": "· What does this guidebook offer to its audience?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It focuses solely on historical landmarks."
+            },
+            {
+              "letter": "B",
+              "text": "It creates an adventure."
+            },
+            {
+              "letter": "C",
+              "text": "It is difficult to navigate."
+            }
+          ],
+          "correct_answer": "It creates an adventure.",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "2238",
+          "question": "· What is the speaker's opinion about this guidebook?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It caters only to seasoned travelers."
+            },
+            {
+              "letter": "B",
+              "text": "It is outdated and irrelevant."
+            },
+            {
+              "letter": "C",
+              "text": "It is suitable for particular generations."
+            }
+          ],
+          "correct_answer": "It is suitable for particular generations.",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 21,
+      "topic": "A break from studying (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/51-a-break-from-studying-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6625",
+          "question": "Why hasn't he gone to college?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "He wasn't ready to start higher education"
+            },
+            {
+              "letter": "B",
+              "text": "He couldn't afford the tuition fees."
+            },
+            {
+              "letter": "C",
+              "text": "He didn't get good enough grades"
+            }
+          ],
+          "correct_answer": "He wasn't ready to start higher education",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6626",
+          "question": "Why did he decide to travel for 2 years?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "To be more independent"
+            },
+            {
+              "letter": "B",
+              "text": "To avoid studying."
+            },
+            {
+              "letter": "C",
+              "text": "To travelling."
+            }
+          ],
+          "correct_answer": "To be more independent",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 22,
+      "topic": "Learning and development",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/21-learning-and-development.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6908",
+          "question": "According to the speaker, how should we learn to work?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Effectively"
+            },
+            {
+              "letter": "B",
+              "text": "Independently without any guidance"
+            },
+            {
+              "letter": "C",
+              "text": "By following strictly fixed instructions"
+            }
+          ],
+          "correct_answer": "Effectively",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6909",
+          "question": "What should people be willing to do in order to make progress?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Experiment"
+            },
+            {
+              "letter": "B",
+              "text": "Maintain a predictable daily routine"
+            },
+            {
+              "letter": "C",
+              "text": "Avoid any risks in the workplace"
+            }
+          ],
+          "correct_answer": "Experiment",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 23,
+      "topic": "The history of railways",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/22-the-history-of-railways.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6914",
+          "question": "What was one major problem the railways faced?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Not making enough money"
+            },
+            {
+              "letter": "B",
+              "text": "The lack of qualified engineers and staff"
+            },
+            {
+              "letter": "C",
+              "text": "Extreme weather damaging the tracks"
+            }
+          ],
+          "correct_answer": "Not making enough money",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6915",
+          "question": "What did the leader in charge decide to do during this period?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Continuing policies that had already been implemented"
+            },
+            {
+              "letter": "B",
+              "text": "Suspending all operations for a total restructure"
+            },
+            {
+              "letter": "C",
+              "text": "Selling the assets to international investors"
+            }
+          ],
+          "correct_answer": "Continuing policies that had already been implemented",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 24,
+      "topic": "The environment",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/23-the-environment.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6917",
+          "question": "What should people do to maintain a healthy environment?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Make a daily effort to recycle, reduce waste, and use energy carefully."
+            },
+            {
+              "letter": "B",
+              "text": "Limit industrial production to strictly rural areas"
+            },
+            {
+              "letter": "C",
+              "text": "Replace all personal vehicles with electric bicycles"
+            }
+          ],
+          "correct_answer": "Make a daily effort to recycle, reduce waste, and use energy carefully.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6918",
+          "question": "According to the text, how do human activities like deforestation affect us?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They harm nature and cause problems like climate change and health issues."
+            },
+            {
+              "letter": "B",
+              "text": "They create more resilient ecosystems for the future"
+            },
+            {
+              "letter": "C",
+              "text": "They primarily benefit the local economy in the short term"
+            }
+          ],
+          "correct_answer": "They harm nature and cause problems like climate change and health issues.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 25,
+      "topic": "Building design",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/24-building-design.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6920",
+          "question": "Why do modern buildings stand out?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They associate with modern cityscapes"
+            },
+            {
+              "letter": "B",
+              "text": "They prioritize traditional materials over steel"
+            },
+            {
+              "letter": "C",
+              "text": "They are primarily built in rural environments"
+            }
+          ],
+          "correct_answer": "They associate with modern cityscapes",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6921",
+          "question": "What does the speaker say about many new buildings?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They often display a lack of ambition."
+            },
+            {
+              "letter": "B",
+              "text": "They represent the peak of architectural innovation"
+            },
+            {
+              "letter": "C",
+              "text": "They focus on maximizing public green spaces"
+            }
+          ],
+          "correct_answer": "They often display a lack of ambition.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 26,
+      "topic": "Concentration",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/25-concentration.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6938",
+          "question": "What does the speaker say mostly affects concentration?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Concentration depends mostly on environment."
+            },
+            {
+              "letter": "B",
+              "text": "Concentration depends mainly on external distractions."
+            },
+            {
+              "letter": "C",
+              "text": "Concentration is primarily influenced by individual effort."
+            }
+          ],
+          "correct_answer": "Concentration depends mostly on environment.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6939",
+          "question": "What is it that people often don't realize about focus?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "People often fail to consider the limits of concentration."
+            },
+            {
+              "letter": "B",
+              "text": "People often recognize the limits of concentration."
+            },
+            {
+              "letter": "C",
+              "text": "People frequently excel at managing the limits of concentration."
+            }
+          ],
+          "correct_answer": "People often fail to consider the limits of concentration.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 27,
+      "topic": "Customers in business",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/26-customers-in-business.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6944",
+          "question": "Why is an 'important customer' valuable to a company?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Because they provide steady money, influence others, and help improve services."
+            },
+            {
+              "letter": "B",
+              "text": "Because they are responsible for hiring and training new employees."
+            },
+            {
+              "letter": "C",
+              "text": "Because they guarantee the company's stock prices will never fall."
+            }
+          ],
+          "correct_answer": "Because they provide steady money, influence others, and help improve services.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6945",
+          "question": "What should a business do because customer behavior is unpredictable?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Businesses should monitor customer habits and update their services when needed."
+            },
+            {
+              "letter": "B",
+              "text": "Reduce the marketing budget to avoid financial risks."
+            },
+            {
+              "letter": "C",
+              "text": "Standardize all products to ignore individual customer preferences."
+            }
+          ],
+          "correct_answer": "Businesses should monitor customer habits and update their services when needed.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 28,
+      "topic": "Team motivation",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/27-team-motivation.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6947",
+          "question": "What occurs when things don't go according to plan in a team?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The team members lose confidence."
+            },
+            {
+              "letter": "B",
+              "text": "The team members become more assured."
+            },
+            {
+              "letter": "C",
+              "text": "The team members start again from the beginning."
+            }
+          ],
+          "correct_answer": "The team members lose confidence.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6948",
+          "question": "In the speaker's view, what helps a leader maintain team motivation?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Set a realistic goal"
+            },
+            {
+              "letter": "B",
+              "text": "Focus on individual performance only"
+            },
+            {
+              "letter": "C",
+              "text": "Increase the project budget significantly"
+            }
+          ],
+          "correct_answer": "Set a realistic goal",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 29,
+      "topic": "Travelling and Reading",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/28-travelling-and-reading.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6950",
+          "question": "Why does the brother find traveling meaningful?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Because it allows him to escape his professional responsibilities."
+            },
+            {
+              "letter": "B",
+              "text": "Because he wants to document his trips for social media influence."
+            },
+            {
+              "letter": "C",
+              "text": "Because it brings him joy and chances to learn about different cultures."
+            }
+          ],
+          "correct_answer": "Because it brings him joy and chances to learn about different cultures.",
+          "correct_letter": "C"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6951",
+          "question": "How is traveling similar to reading a book?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Both are considered mandatory activities for academic success."
+            },
+            {
+              "letter": "B",
+              "text": "Both help people discover new worlds and grow as a person."
+            },
+            {
+              "letter": "C",
+              "text": "Both require a high level of physical endurance and preparation."
+            }
+          ],
+          "correct_answer": "Both help people discover new worlds and grow as a person.",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 30,
+      "topic": "A nutritionist's career",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/29-a-nutritionist-s-career.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6962",
+          "question": "When did she become a Nutritionist?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "When she did a biology degree."
+            },
+            {
+              "letter": "B",
+              "text": "After working in a hospital."
+            },
+            {
+              "letter": "C",
+              "text": "When she worked at a healthcare center."
+            }
+          ],
+          "correct_answer": "When she did a biology degree.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6963",
+          "question": "When did she become famous?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "After solving people's problems in a helpline."
+            },
+            {
+              "letter": "B",
+              "text": "After appearing on a famous TV show."
+            },
+            {
+              "letter": "C",
+              "text": "After inventing a new type of food."
+            }
+          ],
+          "correct_answer": "After solving people's problems in a helpline.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 31,
+      "topic": "Viral video",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/30-viral-video.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6968",
+          "question": "What makes the video stand out from others?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Its production techniques."
+            },
+            {
+              "letter": "B",
+              "text": "The high marketing budget involved."
+            },
+            {
+              "letter": "C",
+              "text": "The participation of famous celebrities."
+            }
+          ],
+          "correct_answer": "Its production techniques.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6969",
+          "question": "According to the reviewer, when can videos become more successful?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They should be released at the right time."
+            },
+            {
+              "letter": "B",
+              "text": "When they strictly follow long-term trends."
+            },
+            {
+              "letter": "C",
+              "text": "If they are translated into multiple languages."
+            }
+          ],
+          "correct_answer": "They should be released at the right time.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 32,
+      "topic": "Business strategy",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/31-business-strategy.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6971",
+          "question": "Why is identifying the correct market so important for a company?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It helps the company focus its resources and avoid wasting time on low-demand areas."
+            },
+            {
+              "letter": "B",
+              "text": "It guarantees that the business will operate without any rival firms."
+            },
+            {
+              "letter": "C",
+              "text": "It provides a justification for lowering product standards to maximize profit."
+            }
+          ],
+          "correct_answer": "It helps the company focus its resources and avoid wasting time on low-demand areas.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6972",
+          "question": "According to the passage, what is the significance of 'profitability'?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It proves the company can cover costs and strengthen the company's position in the market."
+            },
+            {
+              "letter": "B",
+              "text": "It signals that the company has no further need for market research."
+            },
+            {
+              "letter": "C",
+              "text": "It suggests that the company can disregard the activities of its competitors."
+            }
+          ],
+          "correct_answer": "It proves the company can cover costs and strengthen the company's position in the market.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 33,
+      "topic": "Industry of Making Music (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/32-industry-of-making-music-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6974",
+          "question": "What is the key to a long career in music?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Having a large number of fans."
+            },
+            {
+              "letter": "B",
+              "text": "Believing in her musical instincts."
+            },
+            {
+              "letter": "C",
+              "text": "Winning many awards early."
+            }
+          ],
+          "correct_answer": "Believing in her musical instincts.",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6975",
+          "question": "What is the speaker's opinion about the current music industry?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Performers find it hard to get started."
+            },
+            {
+              "letter": "B",
+              "text": "It is easier than ever to become famous."
+            },
+            {
+              "letter": "C",
+              "text": "Most musicians prefer traditional styles."
+            }
+          ],
+          "correct_answer": "Performers find it hard to get started.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 34,
+      "topic": "Productivity (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/33-productivity-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6977",
+          "question": "How to maximise productivity?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Effective time management"
+            },
+            {
+              "letter": "B",
+              "text": "Working longer hours each day"
+            },
+            {
+              "letter": "C",
+              "text": "Avoiding all planning"
+            }
+          ],
+          "correct_answer": "Effective time management",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6978",
+          "question": "What is the problem of the productivity strategies?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Using them effectively requires effort"
+            },
+            {
+              "letter": "B",
+              "text": "They only work for students"
+            },
+            {
+              "letter": "C",
+              "text": "They are too expensive to implement"
+            }
+          ],
+          "correct_answer": "Using them effectively requires effort",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 35,
+      "topic": "Podcast Discussion (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/34-podcast-discussion.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "6983",
+          "question": "Why did the new podcast fail?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The content was too long."
+            },
+            {
+              "letter": "B",
+              "text": "The creators did not promote their show effectively."
+            },
+            {
+              "letter": "C",
+              "text": "It had too many listeners."
+            }
+          ],
+          "correct_answer": "The creators did not promote their show effectively.",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "6984",
+          "question": "What is the speaker's opinion about podcasting?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is a waste of time."
+            },
+            {
+              "letter": "B",
+              "text": "It is a great way to build a community."
+            },
+            {
+              "letter": "C",
+              "text": "It is only useful for entertainment."
+            }
+          ],
+          "correct_answer": "It is a great way to build a community.",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 36,
+      "topic": "A musician's career (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/52-a-musician-s-career-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "7140",
+          "question": "What will this musician do in the near future?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "He will probably retire from singing"
+            },
+            {
+              "letter": "B",
+              "text": "He plans to release a new album"
+            },
+            {
+              "letter": "C",
+              "text": "He wants to collaborate with younger artists"
+            }
+          ],
+          "correct_answer": "He will probably retire from singing",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "7141",
+          "question": "What does the speaker think about his career in general?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "He regrets choosing his profession"
+            },
+            {
+              "letter": "B",
+              "text": "He could have been more successful"
+            },
+            {
+              "letter": "C",
+              "text": "He believes he reached the peak too early"
+            }
+          ],
+          "correct_answer": "He could have been more successful",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 37,
+      "topic": "Making Plans (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/53-making-plans.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "7161",
+          "question": "What does the speaker say is a key benefit of making plans?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They make life more predictable."
+            },
+            {
+              "letter": "B",
+              "text": "They help you make decisions."
+            },
+            {
+              "letter": "C",
+              "text": "They reduce the need for communication."
+            }
+          ],
+          "correct_answer": "They help you make decisions.",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "7162",
+          "question": "What does the speaker mention as a difficulty when planning?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It discourages people from taking risks."
+            },
+            {
+              "letter": "B",
+              "text": "It requires you to set yourself certain limits."
+            },
+            {
+              "letter": "C",
+              "text": "It only works in professional situations."
+            }
+          ],
+          "correct_answer": "It requires you to set yourself certain limits.",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 38,
+      "topic": "The Sport (Version 2) (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/35-the-sport-version-2.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27164",
+          "question": "What is the expert's opinion about sports competitions?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Prepare students for a competitive work environment"
+            },
+            {
+              "letter": "B",
+              "text": "Attract significant funding from international sponsors."
+            },
+            {
+              "letter": "C",
+              "text": "Identify and recruit professional athletes for national teams."
+            }
+          ],
+          "correct_answer": "Prepare students for a competitive work environment",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27165",
+          "question": "What is the expert's advice for schools?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Provides them with a balance in their lives"
+            },
+            {
+              "letter": "B",
+              "text": "Enforce athletic participation as a strict graduation requirement."
+            },
+            {
+              "letter": "C",
+              "text": "Restrict physical activities to ensure academic excellence."
+            }
+          ],
+          "correct_answer": "Provides them with a balance in their lives",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 39,
+      "topic": "The Sport (Version 3) (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/36-the-sport-version-3-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27167",
+          "question": "According to the reviewer, what is one benefit of school sports?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They help promote students’ overall health."
+            },
+            {
+              "letter": "B",
+              "text": "They primarily focus on academic competition."
+            },
+            {
+              "letter": "C",
+              "text": "They are designed to limit physical exertion."
+            }
+          ],
+          "correct_answer": "They help promote students’ overall health.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27168",
+          "question": "What else do school sports provide for students?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It provides balance."
+            },
+            {
+              "letter": "B",
+              "text": "It encourages extreme specialization."
+            },
+            {
+              "letter": "C",
+              "text": "It prioritizes individual over team success."
+            }
+          ],
+          "correct_answer": "It provides balance.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 40,
+      "topic": "Television Series (Version 3) (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/37-television-series-version-3.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27170",
+          "question": "What happened when the TV series first aired?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It failed to engage the audience from the start"
+            },
+            {
+              "letter": "B",
+              "text": "It utilized a massive celebrity marketing budget"
+            },
+            {
+              "letter": "C",
+              "text": "The plot was based on a globally famous novel"
+            }
+          ],
+          "correct_answer": "It failed to engage the audience from the start",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27171",
+          "question": "What problem does the reviewer mention about the series?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Series are damaged by overexposure"
+            },
+            {
+              "letter": "B",
+              "text": "The production quality is inconsistent between episodes"
+            },
+            {
+              "letter": "C",
+              "text": "There is a lack of diversity in the casting"
+            }
+          ],
+          "correct_answer": "Series are damaged by overexposure",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 41,
+      "topic": "Advertising And Sponsoring (Version 3) (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/38-advertising-and-sponsoring-version-3.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27173",
+          "question": "What does the expert say about advertising?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It helps to reach new customers"
+            },
+            {
+              "letter": "B",
+              "text": "It primarily focuses on reducing production costs"
+            },
+            {
+              "letter": "C",
+              "text": "It has become less effective due to digital media"
+            }
+          ],
+          "correct_answer": "It helps to reach new customers",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27174",
+          "question": "In what way can advertising affect sports?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They are not always good for sports fans"
+            },
+            {
+              "letter": "B",
+              "text": "They guarantee a win for the sponsored teams"
+            },
+            {
+              "letter": "C",
+              "text": "They focus exclusively on amateur local events"
+            }
+          ],
+          "correct_answer": "They are not always good for sports fans",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 42,
+      "topic": "Regional Development Plan (Version 2) (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/39-regional-development-plan-version-2.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27176",
+          "question": "What is one of the main criticisms of the Regional Development Plan?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It doesn't provide enough alternatives to driving."
+            },
+            {
+              "letter": "B",
+              "text": "The proposed budget relies too heavily on international loans."
+            },
+            {
+              "letter": "C",
+              "text": "It focuses exclusively on urban areas while ignoring rural zones."
+            }
+          ],
+          "correct_answer": "It doesn't provide enough alternatives to driving.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27177",
+          "question": "What challenge is the Regional Development Plan likely to face?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is likely to meet resistance from local communities."
+            },
+            {
+              "letter": "B",
+              "text": "The legal framework for the plan has not been finalized yet."
+            },
+            {
+              "letter": "C",
+              "text": "A shortage of skilled engineers might stall the infrastructure phase."
+            }
+          ],
+          "correct_answer": "It is likely to meet resistance from local communities.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 43,
+      "topic": "Criticism Of The New Novel (Version 2) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/40-criticism-of-the-new-novel-version-2.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27179",
+          "question": "How did the writer finish his book?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The plot was very strong"
+            },
+            {
+              "letter": "B",
+              "text": "By incorporating feedback from a famous editor"
+            },
+            {
+              "letter": "C",
+              "text": "It was completed much faster than his previous work"
+            }
+          ],
+          "correct_answer": "The plot was very strong",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27180",
+          "question": "What do some readers criticize about the book?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is very similar to the author's other books"
+            },
+            {
+              "letter": "B",
+              "text": "The vocabulary used is far too academic"
+            },
+            {
+              "letter": "C",
+              "text": "The physical quality of the hardback edition"
+            }
+          ],
+          "correct_answer": "It is very similar to the author's other books",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 44,
+      "topic": "Criticism Of The New Novel (Version 3) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/41-criticism-of-the-new-novel-version-3.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27182",
+          "question": "Why do some readers struggle to connect with the characters in the novel?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They are difficult to relate to."
+            },
+            {
+              "letter": "B",
+              "text": "Their motivations are explained too clearly."
+            },
+            {
+              "letter": "C",
+              "text": "There are too many main characters to follow."
+            }
+          ],
+          "correct_answer": "They are difficult to relate to.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27183",
+          "question": "What criticism do readers have about the storyline?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It lacks originality."
+            },
+            {
+              "letter": "B",
+              "text": "It is too complex for a general audience."
+            },
+            {
+              "letter": "C",
+              "text": "The plot twists are too predictable for experts."
+            }
+          ],
+          "correct_answer": "It lacks originality.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 45,
+      "topic": "Advertising and sponsoring (Version 2) (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/42-advertising-and-sponsoring-version-2.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27209",
+          "question": "What is the importance of advertising?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It can help reach new customers"
+            },
+            {
+              "letter": "B",
+              "text": "It increases the product price"
+            },
+            {
+              "letter": "C",
+              "text": "It can build brand recognition"
+            }
+          ],
+          "correct_answer": "It can help reach new customers",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27210",
+          "question": "Why shouldn't we sponsor sports tournaments?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They can generate negative publicity for the sport"
+            },
+            {
+              "letter": "B",
+              "text": "They are too expensive"
+            },
+            {
+              "letter": "C",
+              "text": "They can create unfair competition"
+            }
+          ],
+          "correct_answer": "They can generate negative publicity for the sport",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 46,
+      "topic": "Work And Books",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/43-work-and-books.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27218",
+          "question": "According to the passage, how does work benefit an individual beyond just earning money?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It helps develop skills, contribute to society, and provide a sense of purpose."
+            },
+            {
+              "letter": "B",
+              "text": "It primarily serves as a way to avoid social interactions"
+            },
+            {
+              "letter": "C",
+              "text": "It focuses on maximizing leisure time during the weekends"
+            }
+          ],
+          "correct_answer": "It helps develop skills, contribute to society, and provide a sense of purpose.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27219",
+          "question": "What is the main result of balancing both work and books?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Growth in every area of a person's life"
+            },
+            {
+              "letter": "B",
+              "text": "The complete separation of professional and private interests"
+            },
+            {
+              "letter": "C",
+              "text": "A decrease in the need for formal education over time"
+            }
+          ],
+          "correct_answer": "Growth in every area of a person's life",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 47,
+      "topic": "Modern Society",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/44-modern-society.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27221",
+          "question": "What is one of the strong qualities of these modern works?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Have something to say about modern society"
+            },
+            {
+              "letter": "B",
+              "text": "Strictly adhere to classical artistic conventions"
+            },
+            {
+              "letter": "C",
+              "text": "Focus exclusively on historical events and figures"
+            }
+          ],
+          "correct_answer": "Have something to say about modern society",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27222",
+          "question": "What does the speaker say about the meanings of these works?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The meanings are not easily identified"
+            },
+            {
+              "letter": "B",
+              "text": "They provide direct and simplified moral lessons"
+            },
+            {
+              "letter": "C",
+              "text": "The core message is usually stated in the opening"
+            }
+          ],
+          "correct_answer": "The meanings are not easily identified",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 48,
+      "topic": "The importance of sleep (Version 2) (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/45-the-importance-of-sleep-version-2.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27224",
+          "question": "What is the way to have a good sleep according to the speaker?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Blocking out noise and light is key"
+            },
+            {
+              "letter": "B",
+              "text": "Drinking coffee before bed helps relax the mind"
+            },
+            {
+              "letter": "C",
+              "text": "Sleeping fewer hours increases deep sleep quality"
+            }
+          ],
+          "correct_answer": "Blocking out noise and light is key",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27225",
+          "question": "What is the speaker's view on insomnia in general?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "People can't always recognize the symptoms of tiredness"
+            },
+            {
+              "letter": "B",
+              "text": "Most people with insomnia actually sleep too much"
+            },
+            {
+              "letter": "C",
+              "text": "Insomnia is caused only by physical health problems"
+            }
+          ],
+          "correct_answer": "People can't always recognize the symptoms of tiredness",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 49,
+      "topic": "The Sport (Version 3) (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/versions/20260630/the-sport-version-3.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "16.1",
+          "question_id": "27375",
+          "question": "According to the reviewer, what is one benefit of school sports?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They help promote students’ overall health."
+            },
+            {
+              "letter": "B",
+              "text": "They primarily focus on academic competition."
+            },
+            {
+              "letter": "C",
+              "text": "They are designed to limit physical exertion."
+            }
+          ],
+          "correct_answer": "They help promote students’ overall health.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "16.2",
+          "question_id": "27376",
+          "question": "What else do school sports provide for students?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It provides balance."
+            },
+            {
+              "letter": "B",
+              "text": "It encourages extreme specialization."
+            },
+            {
+              "letter": "C",
+              "text": "It prioritizes individual over team success."
+            }
+          ],
+          "correct_answer": "It provides balance.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 50,
+      "topic": "Cycling expedition",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/46-cycling-expedition.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "6965",
+          "question": "What is the speaker's advice?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Be well informed of the places you are going to visit."
+            },
+            {
+              "letter": "B",
+              "text": "Always carry extra water and food supplies."
+            },
+            {
+              "letter": "C",
+              "text": "Avoid cycling on rough terrain."
+            }
+          ],
+          "correct_answer": "Be well informed of the places you are going to visit.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "6966",
+          "question": "What is the speaker's advice in general?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Knowing the people and cultures in the different countries."
+            },
+            {
+              "letter": "B",
+              "text": "Only visit places with good weather conditions."
+            },
+            {
+              "letter": "C",
+              "text": "Cycle at your own pace without worrying about the destination."
+            }
+          ],
+          "correct_answer": "Knowing the people and cultures in the different countries.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 51,
+      "topic": "Biography (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/47-biography.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "6980",
+          "question": "What is the strength of the book?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is a very short story."
+            },
+            {
+              "letter": "B",
+              "text": "It has a good description of a specific period of time."
+            },
+            {
+              "letter": "C",
+              "text": "It focuses only on famous people."
+            }
+          ],
+          "correct_answer": "It has a good description of a specific period of time.",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "6981",
+          "question": "What do the critics say about the book?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is an unconventional biography."
+            },
+            {
+              "letter": "B",
+              "text": "It is too difficult to understand."
+            },
+            {
+              "letter": "C",
+              "text": "It contains too many fictional details."
+            }
+          ],
+          "correct_answer": "It is an unconventional biography.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 52,
+      "topic": "Managing financial spending (Version 2) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/54-managing-financial-spending-version-2.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "7125",
+          "question": "What should you do to better control your short-term spending?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Monitor your spending for a weekly plan"
+            },
+            {
+              "letter": "B",
+              "text": "Rely on credit cards to control spending"
+            },
+            {
+              "letter": "C",
+              "text": "Put aside a large sum every single day only"
+            }
+          ],
+          "correct_answer": "Monitor your spending for a weekly plan",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "7126",
+          "question": "What should you do to better control your long-term spending?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Seek advice from someone who have experience"
+            },
+            {
+              "letter": "B",
+              "text": "Keep all your savings in a single account"
+            },
+            {
+              "letter": "C",
+              "text": "Avoid making any long-term financial plans"
+            }
+          ],
+          "correct_answer": "Seek advice from someone who have experience",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 53,
+      "topic": "Television Series (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/55-television-series.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "7128",
+          "question": "What does the speaker say is one major strength of successful television series?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They focus mainly on famous actors."
+            },
+            {
+              "letter": "B",
+              "text": "They maintain consistent quality throughout."
+            },
+            {
+              "letter": "C",
+              "text": "They are usually shorter than films."
+            }
+          ],
+          "correct_answer": "They maintain consistent quality throughout.",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "7129",
+          "question": "What does the speaker suggest about changes in television production?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Streaming platforms have reduced production costs."
+            },
+            {
+              "letter": "B",
+              "text": "Television series are becoming less creative."
+            },
+            {
+              "letter": "C",
+              "text": "Viewer habits influence the way that series are made."
+            }
+          ],
+          "correct_answer": "Viewer habits influence the way that series are made.",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 54,
+      "topic": "Script production (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/56-script-production-2026.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "7143",
+          "question": "What is the speaker's opinion on this script?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The characters' background are not adequately explored"
+            },
+            {
+              "letter": "B",
+              "text": "The setting feels too unrealistic"
+            },
+            {
+              "letter": "C",
+              "text": "The dialogue is too complex for viewers"
+            }
+          ],
+          "correct_answer": "The characters' background are not adequately explored",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "7144",
+          "question": "How do industries impact script production?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They increase audience engagement significantly"
+            },
+            {
+              "letter": "B",
+              "text": "They provide more creative freedom to writers"
+            },
+            {
+              "letter": "C",
+              "text": "The new industry demands have a negative influence."
+            }
+          ],
+          "correct_answer": "The new industry demands have a negative influence.",
+          "correct_letter": "C"
+        }
+      ]
+    },
+    {
+      "topic_stt": 55,
+      "topic": "Criticism of the New Novel (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/57-criticism-of-the-new-novel.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "7146",
+          "question": "What does the reviewer say about the characters in the novel?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They are too difficult for readers to understand."
+            },
+            {
+              "letter": "B",
+              "text": "They feel realistic and emotionally engaging."
+            },
+            {
+              "letter": "C",
+              "text": "They are less important than the storyline."
+            }
+          ],
+          "correct_answer": "They feel realistic and emotionally engaging.",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "7147",
+          "question": "What does the reviewer suggest about the impact of the novel?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It may divide readers' opinions."
+            },
+            {
+              "letter": "B",
+              "text": "It will establish the author's popularity."
+            },
+            {
+              "letter": "C",
+              "text": "It will mainly appeal to academic audiences."
+            }
+          ],
+          "correct_answer": "It will establish the author's popularity.",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 56,
+      "topic": "A Promotion Campaign for a Product (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/58-a-promotion-campaign-for-a-product.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "7155",
+          "question": "What is the speaker's main criticism of the promotion campaign?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It makes exaggerated claims about the product."
+            },
+            {
+              "letter": "B",
+              "text": "It provides too little information about the product."
+            },
+            {
+              "letter": "C",
+              "text": "It focuses too much on the product's low price."
+            }
+          ],
+          "correct_answer": "It makes exaggerated claims about the product.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "7156",
+          "question": "Why does the speaker think the campaign may not be profitable?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It targets the wrong group of customers."
+            },
+            {
+              "letter": "B",
+              "text": "It costs too much to make compared with the possible return."
+            },
+            {
+              "letter": "C",
+              "text": "It has not attracted enough public attention."
+            }
+          ],
+          "correct_answer": "It costs too much to make compared with the possible return.",
+          "correct_letter": "B"
+        }
+      ]
+    },
+    {
+      "topic_stt": 57,
+      "topic": "A book about a life of a scientist (Version 2) (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/48-a-book-about-a-life-of-a-scientist-version-2.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "27206",
+          "question": "Why do many readers find the book interesting?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It uses simple language to describe complex ideas."
+            },
+            {
+              "letter": "B",
+              "text": "It relies heavily on technical vocabulary."
+            },
+            {
+              "letter": "C",
+              "text": "It avoids explaining abstract concepts."
+            }
+          ],
+          "correct_answer": "It uses simple language to describe complex ideas.",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "27207",
+          "question": "Why is the book so popular?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It is similar to the previous book about the scientist."
+            },
+            {
+              "letter": "B",
+              "text": "It is too long."
+            },
+            {
+              "letter": "C",
+              "text": "It is too difficult to understand."
+            }
+          ],
+          "correct_answer": "It is similar to the previous book about the scientist.",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 58,
+      "topic": "Famous writers (Version 2) (2026) 🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/49-famous-writers-version-2.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "27212",
+          "question": "What do these two famous writers have in common?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They both make references to each other in their work"
+            },
+            {
+              "letter": "B",
+              "text": "They both wrote in the same genre"
+            },
+            {
+              "letter": "C",
+              "text": "They both were born in the same country"
+            }
+          ],
+          "correct_answer": "They both make references to each other in their work",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "27213",
+          "question": "What is special about their works?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The meaning of their work is not always easily identified"
+            },
+            {
+              "letter": "B",
+              "text": "Their works are all based on real events"
+            },
+            {
+              "letter": "C",
+              "text": "They use simple language and structure"
+            }
+          ],
+          "correct_answer": "The meaning of their work is not always easily identified",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 59,
+      "topic": "Life after university (Version 2) (2026) 🔥🔥🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/elevenlabs/20260715/50-life-after-university-version-2.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "27215",
+          "question": "What should students do when choosing a career?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Be flexible and open minded"
+            },
+            {
+              "letter": "B",
+              "text": "Choose the same career as their friends"
+            },
+            {
+              "letter": "C",
+              "text": "Focus only on the salary offered"
+            }
+          ],
+          "correct_answer": "Be flexible and open minded",
+          "correct_letter": "A"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "27216",
+          "question": "What should students pay attention to when applying for jobs these days?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They are becoming more competitive"
+            },
+            {
+              "letter": "B",
+              "text": "Most jobs no longer require any qualifications"
+            },
+            {
+              "letter": "C",
+              "text": "Companies prefer handwritten applications"
+            }
+          ],
+          "correct_answer": "They are becoming more competitive",
+          "correct_letter": "A"
+        }
+      ]
+    },
+    {
+      "topic_stt": 60,
+      "topic": "Exhibition by Greek artist Jame Panos (2026) 🔥🔥",
+      "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part4/user-provided/20260708/exhibition-by-greek-artist-jame-panos.mp3",
+      "question_count": 2,
+      "questions": [
+        {
+          "display_no": "17.1",
+          "question_id": "27339",
+          "question": "How did many art critics describe Jame Panos' paintings?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "They were full of bright colours and happiness."
+            },
+            {
+              "letter": "B",
+              "text": "They would be characterized by sadness."
+            },
+            {
+              "letter": "C",
+              "text": "They mainly focused on modern city life."
+            }
+          ],
+          "correct_answer": "They would be characterized by sadness.",
+          "correct_letter": "B"
+        },
+        {
+          "display_no": "17.2",
+          "question_id": "27340",
+          "question": "What did the exhibition seem like to visitors?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "A celebration of future ideas."
+            },
+            {
+              "letter": "B",
+              "text": "A window into the past."
+            },
+            {
+              "letter": "C",
+              "text": "A lesson about modern architecture."
+            }
+          ],
+          "correct_answer": "A window into the past.",
+          "correct_letter": "B"
+        }
+      ]
+    }
+  ]
+}

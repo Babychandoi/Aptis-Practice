@@ -196,6 +196,7 @@ public class AdminContentController {
                 questionSet.getTopic() == null ? null : questionSet.getTopic().getName(),
                 questionSet.getDifficulty(),
                 questionSet.getHotness(),
+                questionSet.getExamYear() == null ? null : questionSet.getExamYear().intValue(),
                 questionSet.getCefrMin(),
                 questionSet.getCefrMax(),
                 questionSet.getAccessLevel(),

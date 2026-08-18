@@ -36,6 +36,9 @@ scripts/.e2e-tmp/
 # Backup migration hiện được theo dõi vì repository riêng tư.
 # Không chuyển repository sang public khi còn thư mục backups/.
 
+# MinIO raw archives can exceed GitHub's 100 MB file limit; commit .partNNN files.
+backups/**/minio/minio-data.tar.gz
+
 # OS
 .DS_Store
 Thumbs.db
@@ -72,3 +75,8 @@ plugins/impeccable-live.client.ts
 app/plugins/impeccable-live.client.ts
 src/plugins/impeccable-live.client.ts
 # impeccable-live-ignore-end
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/

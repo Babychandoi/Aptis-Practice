@@ -14,6 +14,9 @@ logging:
     org.hibernate.SQL: DEBUG
 
 aptis:
+  refresh-cookie:
+    secure: false
+
   mail:
     from: ${MAIL_FROM:no-reply@aptis.local}
 
@@ -25,6 +28,30 @@ aptis:
       checkout-url: http://localhost:5173/sandbox-checkout
 
   evaluation:
+    # Chấm bằng LLM qua API tương thích OpenAI (9Router). Bật lên thì
+    # LlmEvaluationEngine (@Order 0) được chọn trước heuristic.
+    llm:
+      enabled: ${AI_EVAL_ENABLED:false}
+      base-url: ${AI_EVAL_BASE_URL:}
+      api-key: ${AI_EVAL_API_KEY:}
+      model: ${AI_EVAL_MODEL:AI-PRO}
+      # Thấp hơn chatbot: chấm điểm phải nhất quán giữa các lần, không sáng tạo.
+      temperature: ${AI_EVAL_TEMPERATURE:0.2}
+      max-tokens: ${AI_EVAL_MAX_TOKENS:2048}
+      timeout-seconds: ${AI_EVAL_TIMEOUT:60}
+    # Analyzer local xử lý audio trước. Khối stt bên dưới chỉ là fallback từ xa
+    # có thể phát sinh phí và mặc định không được gọi.
+    local-audio:
+      enabled: ${LOCAL_SPEAKING_ENABLED:false}
+      base-url: ${LOCAL_SPEAKING_URL:http://localhost:8000}
+      timeout-seconds: ${LOCAL_SPEAKING_TIMEOUT:300}
+      fallback-to-remote: ${LOCAL_SPEAKING_FALLBACK_REMOTE:false}
+    stt:
+      enabled: ${AI_STT_ENABLED:false}
+      base-url: ${AI_STT_BASE_URL:${AI_EVAL_BASE_URL:}}
+      api-key: ${AI_STT_API_KEY:${AI_EVAL_API_KEY:}}
+      model: ${AI_STT_MODEL:ag/gemini-3-flash}
+      timeout-seconds: ${AI_STT_TIMEOUT:120}
     heuristic:
       # Chấm theo dấu hiệu bề mặt, không phải AI — xem HeuristicEvaluationEngine
-      enabled: true
+      enabled: ${AI_EVAL_HEURISTIC_ENABLED:true}

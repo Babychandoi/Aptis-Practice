@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aptis-practice.local/schemas/ai-evaluation-response.schema.json",
+  "title": "Aptis AI evaluation response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "criteria",
+    "cefrLevel",
+    "summary",
+    "strengths",
+    "weaknesses",
+    "suggestions",
+    "correctedVersion"
+  ],
+  "properties": {
+    "criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "score", "feedback"],
+        "properties": {
+          "code": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "score": { "type": "integer", "minimum": 0 },
+          "feedback": { "type": "string", "minLength": 1, "maxLength": 2000 }
+        }
+      }
+    },
+    "cefrLevel": {
+      "type": "string",
+      "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+    },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 3000 },
+    "strengths": {
+      "type": "array",
+      "maxItems": 10,
+      "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+    },
+    "weaknesses": {
+      "type": "array",
+      "maxItems": 10,
+      "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+    },
+    "suggestions": {
+      "type": "array",
+      "maxItems": 10,
+      "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+    },
+    "correctedVersion": {
+      "type": ["string", "null"],
+      "maxLength": 20000
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { adminContentApi } from '@/api/adminEndpoints';
 import { assetApi } from '@/api/endpoints';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
+import { SafeContent } from '@/components/ui/SafeContent';
 import { AudioPlayer } from '@/features/practice/AudioPlayer';
 import { ItemRenderer } from '@/features/practice/renderers/ItemRenderer';
 import { formatDateTime } from '@/lib/format';
@@ -491,10 +492,7 @@ function QuestionSetPreview({ content, revision, showAnswers }: {
 }
 
 function RichContentBlock({ content, className }: { content: RichContent; className: string }) {
-  if (content.format === 'HTML') {
-    return <div className={`question-content ${className}`} dangerouslySetInnerHTML={{ __html: content.value }} />;
-  }
-  return <div className={`whitespace-pre-wrap ${className}`}>{content.value}</div>;
+  return <SafeContent content={content} className={`question-content ${className}`} />;
 }
 
 function AnswerSummary({ item }: { item: QuestionItem }) {

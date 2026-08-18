@@ -70,7 +70,8 @@ export interface PageResponse<T> {
 
 export interface TokenResponse {
   accessToken: string;
-  refreshToken: string;
+  /** Backend mới giữ refresh token trong cookie HttpOnly. */
+  refreshToken: string | null;
   tokenType: string;
   expiresInSeconds: number;
   accessTokenExpiresAt: string;
@@ -124,6 +125,9 @@ export interface ComponentSummary {
 
 export interface PartSummary {
   id: string;
+  componentId: string;
+  /** Mã kỹ năng (SPEAKING, READING…). Cần vì `code` chỉ là PART_1..PART_4. */
+  componentCode: string;
   code: string;
   name: string;
   description: string | null;
@@ -193,7 +197,8 @@ export interface AnswerKey {
 export interface QuestionItem {
   id: string;
   sequenceNo: number;
-  prompt: RichContent | null;
+  /** Backend lược field khi null, nên có thể vắng hẳn trong JSON. */
+  prompt?: RichContent | null;
   responseType: ResponseType;
   required: boolean;
   maxScore: number;
@@ -269,11 +274,31 @@ export interface AttemptQuestionSet {
   displayOrder: number;
   status: AttemptItemStatus;
   maxScore: number;
-  awardedScore: number | null;
+  awardedScore?: number | null;
   audioPlayCount: number;
   maxAudioPlays: number | null;
+  /** Độ hot 1-5 do biên tập viên đặt; dùng để hiện ngọn lửa và lọc đề. */
+  hotness: number | null;
+  /** Năm ghi nhận đề ra thi, ví dụ 2026. null nếu chưa rõ. */
+  examYear: number | null;
   content: QuestionSetContent;
   savedResponse: SavedResponse | null;
+}
+
+/** Kết quả chấm riêng một bộ giữa lượt; `content` đã tiết lộ đáp án của bộ đó. */
+export interface QuestionSetScore {
+  questionSetId: string;
+  awardedScore: number;
+  maxScore: number;
+  correctItems: number;
+  totalItems: number;
+  itemScores: {
+    itemId: string;
+    rawScore: number;
+    maxScore: number;
+    correct: boolean;
+  }[];
+  content: QuestionSetContent;
 }
 
 export interface Attempt {
@@ -291,7 +316,35 @@ export interface Attempt {
   timeSpentSeconds: number;
   totalItems: number;
   answeredItems: number;
+  /** Điểm luyện tập do backend tính theo cấu hình đã lưu. */
+  rawScore: number | null;
+  maxScore: number | null;
+  percentageScore: number | null;
+  /**
+   * Part là ngân hàng câu rời: mỗi bộ một câu, đề thi thật gộp nhiều câu
+   * (Writing Part 1, Speaking Part 1). Ở đây không có "chủ đề" để chọn.
+   */
+  itemBankPart: boolean;
+  /**
+   * Tiến độ từng kỹ năng của bài thi đủ 5 kỹ năng. Rỗng khi luyện từng part.
+   */
+  componentProgress: ComponentProgress[];
   questionSets: AttemptQuestionSet[];
+}
+
+/**
+ * Một kỹ năng trong bài thi đủ 5 kỹ năng: có đồng hồ riêng và khóa lại khi nộp.
+ */
+export interface ComponentProgress {
+  componentId: string;
+  componentCode: string;
+  displayOrder: number;
+  durationSeconds: number;
+  /** null = chưa tới lượt kỹ năng này. */
+  startedAt: string | null;
+  expiresAt: string | null;
+  /** Đã nộp: không sửa, không xem lại được nữa. */
+  submittedAt: string | null;
 }
 
 export interface AttemptSummary {
@@ -523,4 +576,34 @@ export interface AssetResponse {
   width: number | null;
   height: number | null;
   signedUrl: string | null;
+}
+
+// ---------------------------------------------------------------------
+// Mẹo học
+// ---------------------------------------------------------------------
+
+/** Chuỗi tiêu đề đáp án của một đề Reading Part 4, theo thứ tự đoạn văn. */
+export interface HeadingChain {
+  questionSetId: string;
+  questionSetCode: string;
+  title: string;
+  /** Tiêu đề đúng của đoạn 1..7. */
+  headings: string[];
+  /** Đoạn văn tương ứng, dùng để đối chiếu dấu hiệu paraphrase. */
+  passages: string[];
+  examYear: number | null;
+  hotness: number | null;
+}
+
+/** Mã người nói của một chủ đề Listening Part 3. */
+export interface SpeakerCode {
+  questionSetId: string;
+  questionSetCode: string;
+  title: string;
+  /** Bốn chữ số theo thứ tự bốn câu: Man=1, Woman=2, Both=0. */
+  code: string;
+  /** Tên người nói từng câu, dùng để tô màu và đọc thành lời. */
+  speakers: string[];
+  examYear: number | null;
+  hotness: number | null;
 }

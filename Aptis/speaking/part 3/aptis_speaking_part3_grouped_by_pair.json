@@ -1,0 +1,1759 @@
+{
+  "part": 3,
+  "skill": "speaking",
+  "title": "Aptis Speaking Part 3",
+  "instruction": "In this part, compare the two pictures and answer three questions.",
+  "pair_count": 60,
+  "question_count": 180,
+  "images_per_pair": 2,
+  "questions_per_pair": 3,
+  "response_time_seconds": 45,
+  "recommended_words": {
+    "min": 68,
+    "max": 90
+  },
+  "sample_answer_text_in_source": false,
+  "note": "Giữ nguyên tuyệt đối thứ tự pair và thứ tự câu hỏi theo HTML nguồn. File nguồn chỉ có nút 'Xem câu mẫu', không chứa nội dung câu mẫu trong DOM đã cung cấp.",
+  "pairs": [
+    {
+      "pair_stt": 1,
+      "pair_id": "48",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de09_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de09_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 1,
+          "item_id": "speaking-q-48-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 2,
+          "item_id": "speaking-q-48-1",
+          "question": "What are the difficulties of these two sports?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 3,
+          "item_id": "speaking-q-48-2",
+          "question": "Why do many people prefer team sports rather than individual sports?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 2,
+      "pair_id": "49",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de10_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de10_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 4,
+          "item_id": "speaking-q-49-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 5,
+          "item_id": "speaking-q-49-1",
+          "question": "What types of people live in these places?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 6,
+          "item_id": "speaking-q-49-2",
+          "question": "Which place would you rather visit, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 3,
+      "pair_id": "50",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de20_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de20_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 7,
+          "item_id": "speaking-q-50-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 8,
+          "item_id": "speaking-q-50-1",
+          "question": "Why is it appealing to eat at different places?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 9,
+          "item_id": "speaking-q-50-2",
+          "question": "Where do people like to eat on special occasions?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 4,
+      "pair_id": "51",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de02_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de02_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 10,
+          "item_id": "speaking-q-51-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 11,
+          "item_id": "speaking-q-51-1",
+          "question": "Do you prefer playing chess or video games, why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 12,
+          "item_id": "speaking-q-51-2",
+          "question": "Are outdoor activities important and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 5,
+      "pair_id": "52",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de08_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de08_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 13,
+          "item_id": "speaking-q-52-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 14,
+          "item_id": "speaking-q-52-1",
+          "question": "Do you like interacting with animals?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 15,
+          "item_id": "speaking-q-52-2",
+          "question": "Should children learn about animals?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 6,
+      "pair_id": "53",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de06_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de06_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 16,
+          "item_id": "speaking-q-53-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 17,
+          "item_id": "speaking-q-53-1",
+          "question": "Do you prefer living with family or living alone?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 18,
+          "item_id": "speaking-q-53-2",
+          "question": "Nowadays, why do many people like to live alone?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 7,
+      "pair_id": "54",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de16_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de16_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 19,
+          "item_id": "speaking-q-54-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 20,
+          "item_id": "speaking-q-54-1",
+          "question": "Why do people prefer to go by plane than by train?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 21,
+          "item_id": "speaking-q-54-2",
+          "question": "Why does flying make many people uncomfortable?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 8,
+      "pair_id": "55",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de22_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de22_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 22,
+          "item_id": "speaking-q-55-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 23,
+          "item_id": "speaking-q-55-1",
+          "question": "Do you like interacting with animals?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 24,
+          "item_id": "speaking-q-55-2",
+          "question": "Should children be exposed to animals?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 9,
+      "pair_id": "56",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de04_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de04_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 25,
+          "item_id": "speaking-q-56-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 26,
+          "item_id": "speaking-q-56-1",
+          "question": "What is the difference between these 2 sports?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 27,
+          "item_id": "speaking-q-56-2",
+          "question": "Why are some sports more important than others?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 10,
+      "pair_id": "57",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de12_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de12_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 28,
+          "item_id": "speaking-q-57-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 29,
+          "item_id": "speaking-q-57-1",
+          "question": "What are the benefits of markets and supermarkets?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 30,
+          "item_id": "speaking-q-57-2",
+          "question": "Why do many people don't like to go shopping?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 11,
+      "pair_id": "58",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de17_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de17_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 31,
+          "item_id": "speaking-q-58-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 32,
+          "item_id": "speaking-q-58-1",
+          "question": "Growing a garden has many wonderful benefits?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 33,
+          "item_id": "speaking-q-58-2",
+          "question": "Growing vegetables and flowers is appealing for many reasons?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 12,
+      "pair_id": "59",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de01_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de01_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 34,
+          "item_id": "speaking-q-59-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 35,
+          "item_id": "speaking-q-59-1",
+          "question": "What are the benefits of traveling by car or by train?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 36,
+          "item_id": "speaking-q-59-2",
+          "question": "Why do some people like to travel by train?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 13,
+      "pair_id": "60",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de11_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de11_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 37,
+          "item_id": "speaking-q-60-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 38,
+          "item_id": "speaking-q-60-1",
+          "question": "What are the benefits of indoor and outdoor sports?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 39,
+          "item_id": "speaking-q-60-2",
+          "question": "Do you think that the main purpose of playing a game is to win?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 14,
+      "pair_id": "61",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de19_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de19_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 40,
+          "item_id": "speaking-q-61-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 41,
+          "item_id": "speaking-q-61-1",
+          "question": "Do you prefer playing chess or playing video games?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 42,
+          "item_id": "speaking-q-61-2",
+          "question": "Are indoor activities important? Why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 15,
+      "pair_id": "62",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de25_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de25_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 43,
+          "item_id": "speaking-q-62-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 44,
+          "item_id": "speaking-q-62-1",
+          "question": "What is the experience of traveling on these two vehicles?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 45,
+          "item_id": "speaking-q-62-2",
+          "question": "Why do you think people still choose to have their own cars?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 16,
+      "pair_id": "63",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de13_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de13_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 46,
+          "item_id": "speaking-q-63-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 47,
+          "item_id": "speaking-q-63-1",
+          "question": "Which of the 2 places do you like to go? Why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 48,
+          "item_id": "speaking-q-63-2",
+          "question": "Who is suitable for each activity? Why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 17,
+      "pair_id": "64",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de21_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de21_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 49,
+          "item_id": "speaking-q-64-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 50,
+          "item_id": "speaking-q-64-1",
+          "question": "Do you prefer living with family or living alone?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 51,
+          "item_id": "speaking-q-64-2",
+          "question": "Nowadays, why do many people like to live alone?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 18,
+      "pair_id": "65",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de07_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de07_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 52,
+          "item_id": "speaking-q-65-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 53,
+          "item_id": "speaking-q-65-1",
+          "question": "What are the interesting points of these 2 ways of traveling above?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 54,
+          "item_id": "speaking-q-65-2",
+          "question": "Should animals be treated like a means of transportation?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 19,
+      "pair_id": "66",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de18_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de18_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 55,
+          "item_id": "speaking-q-66-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 56,
+          "item_id": "speaking-q-66-1",
+          "question": "The ways to enjoy music in these 2 pictures?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 57,
+          "item_id": "speaking-q-66-2",
+          "question": "Benefits of listening to music?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 20,
+      "pair_id": "67",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de14_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de14_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 58,
+          "item_id": "speaking-q-67-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 59,
+          "item_id": "speaking-q-67-1",
+          "question": "Where do you like to play music and why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 60,
+          "item_id": "speaking-q-67-2",
+          "question": "How will playing music in different places bring different emotions?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 21,
+      "pair_id": "68",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de23_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de23_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 61,
+          "item_id": "speaking-q-68-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 62,
+          "item_id": "speaking-q-68-1",
+          "question": "What are the difficulties of these 2 sports?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 63,
+          "item_id": "speaking-q-68-2",
+          "question": "Why do some people prefer team sports to individual sports?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 22,
+      "pair_id": "69",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de05_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de05_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 64,
+          "item_id": "speaking-q-69-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 65,
+          "item_id": "speaking-q-69-1",
+          "question": "Do you prefer studying in the library or coffee shop? Why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 66,
+          "item_id": "speaking-q-69-2",
+          "question": "What are the difficulties of studying at the library and at coffee shops?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 23,
+      "pair_id": "70",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de03_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de03_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 67,
+          "item_id": "speaking-q-70-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 68,
+          "item_id": "speaking-q-70-1",
+          "question": "Which place do you like better? Pine forest or beach?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 69,
+          "item_id": "speaking-q-70-2",
+          "question": "Does weather affect human emotions? Why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 24,
+      "pair_id": "71",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de15_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de15_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 70,
+          "item_id": "speaking-q-71-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 71,
+          "item_id": "speaking-q-71-1",
+          "question": "Do you like going to crowded beaches?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 72,
+          "item_id": "speaking-q-71-2",
+          "question": "Why do many people like quiet places?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 25,
+      "pair_id": "72",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de24_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de24_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 73,
+          "item_id": "speaking-q-72-0",
+          "question": "Describe the picture?"
+        },
+        {
+          "question_order": 2,
+          "global_number": 74,
+          "item_id": "speaking-q-72-1",
+          "question": "What do you think of these two ways of travelling?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 75,
+          "item_id": "speaking-q-72-2",
+          "question": "Advantages and disadvantages of these 2 ways of travelling?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 26,
+      "pair_id": "748",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260705/meeting-room.png",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260705/outdoor-park.png"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 76,
+          "item_id": "speaking-q-748-0",
+          "question": "Describe the pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 77,
+          "item_id": "speaking-q-748-1",
+          "question": "Why do some people prefer working in an office rather than working outdoors?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 78,
+          "item_id": "speaking-q-748-2",
+          "question": "Why are outdoor activities important for people after work or school?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 27,
+      "pair_id": "749",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260705/farm-work.png",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260705/office-work.png"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 79,
+          "item_id": "speaking-q-749-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 80,
+          "item_id": "speaking-q-749-1",
+          "question": "What are the differences between working on a farm and working in an office?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 81,
+          "item_id": "speaking-q-749-2",
+          "question": "Why do some people enjoy living or working on a farm?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 28,
+      "pair_id": "750",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260705/photos-diary.png",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260705/dairy-farm.png"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 82,
+          "item_id": "speaking-q-750-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 83,
+          "item_id": "speaking-q-750-1",
+          "question": "Tell me about a time you visited a farm or saw farm animals."
+        },
+        {
+          "question_order": 3,
+          "global_number": 84,
+          "item_id": "speaking-q-750-2",
+          "question": "Why are dairy farms important in our daily life?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 29,
+      "pair_id": "761",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/family-at-airport.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/family-at-train-station.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 85,
+          "item_id": "speaking-q-761-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 86,
+          "item_id": "speaking-q-761-1",
+          "question": "What are some differences between travelling by plane and travelling by train with your family?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 87,
+          "item_id": "speaking-q-761-2",
+          "question": "Which type of travel do you think is better for families, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 30,
+      "pair_id": "762",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/city-summer.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/city-winter.avif"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 88,
+          "item_id": "speaking-q-762-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 89,
+          "item_id": "speaking-q-762-1",
+          "question": "What are some differences between a city in summer and a city in winter?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 90,
+          "item_id": "speaking-q-762-2",
+          "question": "Which season do you think is better for visiting a city, summer or winter, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 31,
+      "pair_id": "763",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/snowy-mountain.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/desert.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 91,
+          "item_id": "speaking-q-763-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 92,
+          "item_id": "speaking-q-763-1",
+          "question": "What are some differences between a snowy mountain and a desert?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 93,
+          "item_id": "speaking-q-763-2",
+          "question": "Which place would you prefer to visit, a snowy mountain or a desert, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 32,
+      "pair_id": "773",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/volunteering-elderly-smartphone.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/volunteering-planting-tree.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 94,
+          "item_id": "speaking-q-773-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 95,
+          "item_id": "speaking-q-773-1",
+          "question": "Compare the two types of volunteering."
+        },
+        {
+          "question_order": 3,
+          "global_number": 96,
+          "item_id": "speaking-q-773-2",
+          "question": "Which volunteering activity would you prefer to do, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 33,
+      "pair_id": "794",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/children-outdoor-football.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/children-using-phone.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 97,
+          "item_id": "speaking-q-794-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 98,
+          "item_id": "speaking-q-794-1",
+          "question": "Compare outdoor play and using a phone."
+        },
+        {
+          "question_order": 3,
+          "global_number": 99,
+          "item_id": "speaking-q-794-2",
+          "question": "Which activity do you think is better for children, outdoor play or using a phone, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 34,
+      "pair_id": "796",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/traditional-market-fruit.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/supermarket-family-aisle.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 100,
+          "item_id": "speaking-q-796-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 101,
+          "item_id": "speaking-q-796-1",
+          "question": "Compare shopping at a market and shopping at a supermarket."
+        },
+        {
+          "question_order": 3,
+          "global_number": 102,
+          "item_id": "speaking-q-796-2",
+          "question": "Where do you prefer to go shopping, a market or a supermarket, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 35,
+      "pair_id": "808",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/eating-at-home-family.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/eating-at-restaurant-group.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 103,
+          "item_id": "speaking-q-808-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 104,
+          "item_id": "speaking-q-808-1",
+          "question": "Compare eating at home and eating at a restaurant."
+        },
+        {
+          "question_order": 3,
+          "global_number": 105,
+          "item_id": "speaking-q-808-2",
+          "question": "Which do you prefer, eating at home or eating at a restaurant, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 36,
+      "pair_id": "809",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/beach-children-playing.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260711/mountain-climbing-rope.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 106,
+          "item_id": "speaking-q-809-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 107,
+          "item_id": "speaking-q-809-1",
+          "question": "Compare going to the beach and climbing a mountain."
+        },
+        {
+          "question_order": 3,
+          "global_number": 108,
+          "item_id": "speaking-q-809-2",
+          "question": "Which activity would you prefer to do, going to the beach or climbing a mountain, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 37,
+      "pair_id": "816",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260715/reading-books-vs-laptop-laptop.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260715/reading-books-vs-laptop-book.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 109,
+          "item_id": "speaking-q-816-0",
+          "question": "Describe two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 110,
+          "item_id": "speaking-q-816-1",
+          "question": "Why do some people prefer reading printed books, while others prefer using a laptop?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 111,
+          "item_id": "speaking-q-816-2",
+          "question": "Which method do you think is more effective for learning: reading books or using a laptop? Why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 38,
+      "pair_id": "817",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260715/crowded-city-vs-farm-city.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260715/crowded-city-vs-farm-farm.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 112,
+          "item_id": "speaking-q-817-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 113,
+          "item_id": "speaking-q-817-1",
+          "question": "What are the advantages and disadvantages of living in a crowded city?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 114,
+          "item_id": "speaking-q-817-2",
+          "question": "Would you prefer to live in a city or on a farm? Why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 39,
+      "pair_id": "818",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260715/selfie-vs-landscape-photos-selfie.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260715/selfie-vs-landscape-photos-landscape.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 115,
+          "item_id": "speaking-q-818-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 116,
+          "item_id": "speaking-q-818-1",
+          "question": "Why do some people prefer taking selfies, while others prefer taking landscape photos?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 117,
+          "item_id": "speaking-q-818-2",
+          "question": "Which type of photo do you think is more meaningful: selfies or landscape photos? Why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 40,
+      "pair_id": "819",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/part3/20260716/jewelry-store-mother-daughter-watches.png",
+        "https://aptistest.edu.vn/storage/speaking/aptis/part3/20260716/local-market-woman-clothing.png"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 118,
+          "item_id": "speaking-q-819-0",
+          "question": "Describe the pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 119,
+          "item_id": "speaking-q-819-1",
+          "question": "Do you prefer shopping at shopping malls or local markets?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 120,
+          "item_id": "speaking-q-819-2",
+          "question": "Many people like to buy expensive things. What is your opinion?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 41,
+      "pair_id": "821",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/part3/20260716/children-playing-football-park.png",
+        "https://aptistest.edu.vn/storage/speaking/aptis/part3/20260716/professional-athlete-high-jump.png"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 121,
+          "item_id": "speaking-q-821-0",
+          "question": "Describe the pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 122,
+          "item_id": "speaking-q-821-1",
+          "question": "What attracts people who prefer playing sports to joining other activities?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 123,
+          "item_id": "speaking-q-821-2",
+          "question": "What is the most popular sport in your country? Why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 42,
+      "pair_id": "828",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260723/picnic-outdoors-vs-cafe-picnic.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260723/picnic-outdoors-vs-cafe-cafe.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 124,
+          "item_id": "speaking-q-828-0",
+          "question": "Describe the pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 125,
+          "item_id": "speaking-q-828-1",
+          "question": "Which place would you prefer to spend your free time in? Why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 126,
+          "item_id": "speaking-q-828-2",
+          "question": "Why do some people prefer going to cafés instead of having outdoor picnics?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 43,
+      "pair_id": "829",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260723/museum-vs-playground-museum.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260723/museum-vs-playground-playground.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 127,
+          "item_id": "speaking-q-829-0",
+          "question": "Describe the pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 128,
+          "item_id": "speaking-q-829-1",
+          "question": "Which place would you prefer to spend time in, the museum or the playground? Why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 129,
+          "item_id": "speaking-q-829-2",
+          "question": "Why are museums and playgrounds both important for society?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 44,
+      "pair_id": "830",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260723/cooking-alone-vs-together-family.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260723/cooking-alone-vs-together-alone.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 130,
+          "item_id": "speaking-q-830-0",
+          "question": "Describe the pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 131,
+          "item_id": "speaking-q-830-1",
+          "question": "Which situation do you prefer: cooking with family or cooking alone? Why?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 132,
+          "item_id": "speaking-q-830-2",
+          "question": "Why is cooking at home important for many people?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 45,
+      "pair_id": "831",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260726/outdoor-family-bbq.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260726/indoor-family-cooking.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 133,
+          "item_id": "speaking-q-831-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 134,
+          "item_id": "speaking-q-831-1",
+          "question": "Compare cooking at an outdoor barbecue and cooking indoors."
+        },
+        {
+          "question_order": 3,
+          "global_number": 135,
+          "item_id": "speaking-q-831-2",
+          "question": "Which way of cooking would you prefer, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 46,
+      "pair_id": "832",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260726/hot-coastal-city.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260726/snowy-city.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 136,
+          "item_id": "speaking-q-832-0",
+          "question": "Describe the two pictures: a sunny coastal city and a cold snowy city."
+        },
+        {
+          "question_order": 2,
+          "global_number": 137,
+          "item_id": "speaking-q-832-1",
+          "question": "Compare living in a hot coastal city and living in a snowy city."
+        },
+        {
+          "question_order": 3,
+          "global_number": 138,
+          "item_id": "speaking-q-832-2",
+          "question": "Which place would you prefer to live in, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 47,
+      "pair_id": "834",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260726/outdoor-study-notebook.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260726/cafe-tablet-study.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 139,
+          "item_id": "speaking-q-834-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 140,
+          "item_id": "speaking-q-834-1",
+          "question": "Compare studying outdoors with notebooks and studying with a tablet in a cafe."
+        },
+        {
+          "question_order": 3,
+          "global_number": 141,
+          "item_id": "speaking-q-834-2",
+          "question": "Which study environment would you prefer, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 48,
+      "pair_id": "839",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de18_1.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de18_2.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 142,
+          "item_id": "speaking-q-839-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 143,
+          "item_id": "speaking-q-839-1",
+          "question": "Compare listening to music at home with attending a live stage performance."
+        },
+        {
+          "question_order": 3,
+          "global_number": 144,
+          "item_id": "speaking-q-839-2",
+          "question": "Which way of enjoying music would you prefer, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 49,
+      "pair_id": "840",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260731/office-work.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260731/working-from-home.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 145,
+          "item_id": "speaking-q-840-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 146,
+          "item_id": "speaking-q-840-1",
+          "question": "Compare working in an office with working from home."
+        },
+        {
+          "question_order": 3,
+          "global_number": 147,
+          "item_id": "speaking-q-840-2",
+          "question": "Which working arrangement would you prefer, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 50,
+      "pair_id": "841",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260731/outdoor-classroom.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260731/indoor-classroom.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 148,
+          "item_id": "speaking-q-841-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 149,
+          "item_id": "speaking-q-841-1",
+          "question": "Compare learning outdoors with learning in a traditional classroom."
+        },
+        {
+          "question_order": 3,
+          "global_number": 150,
+          "item_id": "speaking-q-841-2",
+          "question": "Which learning environment would you prefer, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 51,
+      "pair_id": "842",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260801/picking-up-litter.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260801/planting-trees.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 151,
+          "item_id": "speaking-q-842-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 152,
+          "item_id": "speaking-q-842-1",
+          "question": "Compare picking up litter with planting trees as environmental activities."
+        },
+        {
+          "question_order": 3,
+          "global_number": 153,
+          "item_id": "speaking-q-842-2",
+          "question": "Which activity would you prefer to join, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 52,
+      "pair_id": "843",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260801/factory-work.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260731/office-work.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 154,
+          "item_id": "speaking-q-843-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 155,
+          "item_id": "speaking-q-843-1",
+          "question": "Compare working in a factory or workshop with working in an office."
+        },
+        {
+          "question_order": 3,
+          "global_number": 156,
+          "item_id": "speaking-q-843-2",
+          "question": "Which working environment would you prefer, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 53,
+      "pair_id": "845",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260802/public-bus.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260802/bicycle.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 157,
+          "item_id": "speaking-q-845-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 158,
+          "item_id": "speaking-q-845-1",
+          "question": "Compare travelling by public transport with travelling by bicycle."
+        },
+        {
+          "question_order": 3,
+          "global_number": 159,
+          "item_id": "speaking-q-845-2",
+          "question": "Which form of transport would you prefer for your daily journey, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 54,
+      "pair_id": "849",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/aptiskey/part3/de17_2.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260802/plant-researcher.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 160,
+          "item_id": "speaking-q-849-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 161,
+          "item_id": "speaking-q-849-1",
+          "question": "Compare gardening as a family activity with scientific plant research."
+        },
+        {
+          "question_order": 3,
+          "global_number": 162,
+          "item_id": "speaking-q-849-2",
+          "question": "Which activity would you prefer, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 55,
+      "pair_id": "851",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260805/working-alone-office.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260805/teamwork-office.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 163,
+          "item_id": "speaking-q-851-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 164,
+          "item_id": "speaking-q-851-1",
+          "question": "Compare working alone with working as part of a team."
+        },
+        {
+          "question_order": 3,
+          "global_number": 165,
+          "item_id": "speaking-q-851-2",
+          "question": "Which way of working would you prefer for an important project, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 56,
+      "pair_id": "853",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260805/dog-on-sofa.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260805/cat-with-toy.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 166,
+          "item_id": "speaking-q-853-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 167,
+          "item_id": "speaking-q-853-1",
+          "question": "Compare keeping a dog with keeping a cat at home."
+        },
+        {
+          "question_order": 3,
+          "global_number": 168,
+          "item_id": "speaking-q-853-2",
+          "question": "Do you think children should help care for pets? Why or why not?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 57,
+      "pair_id": "856",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260805/car-forest-road.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260805/airplane-cloudy-sky.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 169,
+          "item_id": "speaking-q-856-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 170,
+          "item_id": "speaking-q-856-1",
+          "question": "Compare travelling by car with travelling by plane."
+        },
+        {
+          "question_order": 3,
+          "global_number": 171,
+          "item_id": "speaking-q-856-2",
+          "question": "Which type of travel would you choose for a long journey, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 58,
+      "pair_id": "859",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260805/vacuuming-home.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260805/sweeping-kitchen.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 172,
+          "item_id": "speaking-q-859-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 173,
+          "item_id": "speaking-q-859-1",
+          "question": "Compare the chores shown in the pictures."
+        },
+        {
+          "question_order": 3,
+          "global_number": 174,
+          "item_id": "speaking-q-859-2",
+          "question": "What can help people motivate themselves to do tasks they dislike?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 59,
+      "pair_id": "863",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260805/soccer-player.jpg",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260805/volleyball-game.jpg"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 175,
+          "item_id": "speaking-q-863-0",
+          "question": "Describe the two pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 176,
+          "item_id": "speaking-q-863-1",
+          "question": "Compare football and volleyball as team sports."
+        },
+        {
+          "question_order": 3,
+          "global_number": 177,
+          "item_id": "speaking-q-863-2",
+          "question": "Which sport would you rather play, and why?"
+        }
+      ],
+      "question_count": 3
+    },
+    {
+      "pair_stt": 60,
+      "pair_id": "760",
+      "images": [
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260705/healthy-food.png",
+        "https://aptistest.edu.vn/storage/speaking/aptis/focus/20260705/fast-food.png"
+      ],
+      "questions": [
+        {
+          "question_order": 1,
+          "global_number": 178,
+          "item_id": "speaking-q-760-0",
+          "question": "Describe the pictures."
+        },
+        {
+          "question_order": 2,
+          "global_number": 179,
+          "item_id": "speaking-q-760-1",
+          "question": "Why is eating healthy food good for us?"
+        },
+        {
+          "question_order": 3,
+          "global_number": 180,
+          "item_id": "speaking-q-760-2",
+          "question": "Why do many people choose fast food even though it may not be very healthy?"
+        }
+      ],
+      "question_count": 3
+    }
+  ]
+}

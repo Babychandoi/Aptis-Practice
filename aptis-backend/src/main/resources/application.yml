@@ -121,6 +121,13 @@ aptis:
     access-token-ttl: PT15M
     refresh-token-ttl: P30D
 
+  refresh-cookie:
+    name: ${REFRESH_COOKIE_NAME:aptis_refresh}
+    # Production phải đặt true. Local HTTP cần false để trình duyệt nhận cookie.
+    secure: ${REFRESH_COOKIE_SECURE:true}
+    same-site: ${REFRESH_COOKIE_SAME_SITE:Lax}
+    domain: ${REFRESH_COOKIE_DOMAIN:}
+
   security:
     max-failed-login-attempts: 5
     lock-duration: PT15M
@@ -153,6 +160,25 @@ aptis:
     # Thời gian tránh lặp lại câu vừa làm (PHẦN IX §57)
     avoid-repeat-window: P3D
     attempt-expiry-grace: PT30M
+    # Part mà mỗi bộ câu hỏi chỉ là MỘT câu, hệ thống tự gom nhiều bộ thành một
+    # đề khi tạo lượt. Dùng cho các Part mà đề thật gồm nhiều câu độc lập nhau:
+    # biên tập viên nhập từng câu rời cho nhanh thay vì gom sẵn theo đề.
+    # Khoá là partId, giá trị là số câu của một đề.
+    merge-item-parts:
+      # Reading Part 1 — đoạn văn 5 chỗ trống, ngân hàng lưu từng câu rời
+      "[16000000-0000-4000-8000-000000000011]": 5
+      # Speaking Part 1 — 3 câu hỏi cá nhân, mỗi câu ghi âm 30 giây
+      "[16000000-0000-4000-8000-000000000031]": 3
+      # Writing Part 1 — 5 câu trả lời ngắn về bản thân
+      "[16000000-0000-4000-8000-000000000041]": 5
+      # Grammar — đề thật là 25 câu điền từ liên tiếp trong một lượt
+      "[16000000-0000-4000-8000-000000000001]": 25
+      # Listening Part 1 — 13 câu trắc nghiệm, mỗi câu một đoạn audio riêng
+      "[16000000-0000-4000-8000-000000000021]": 13
+      # Listening Part 4 — 2 bài giảng x 2 câu suy luận
+      "[16000000-0000-4000-8000-000000000024]": 2
+      # Speaking Part 4 — 3 câu về cùng một chủ đề trừu tượng
+      "[16000000-0000-4000-8000-000000000034]": 3
 
   entitlement:
     premium-code: PREMIUM_CONTENT_ACCESS

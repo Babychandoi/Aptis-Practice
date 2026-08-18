@@ -3,6 +3,7 @@ package vn.weconex.aptis.common.exception;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,29 @@ public class GlobalExceptionHandler {
                 .map(fe -> new ApiErrorResponse.FieldError(fe.getField(), fe.getDefaultMessage()))
                 .toList();
 
+        return ResponseEntity.badRequest()
+                .body(ApiErrorResponse.validation(fields, request.getRequestURI()));
+    }
+
+    /**
+     * Ràng buộc trên tham số của controller (@RequestParam kèm @Min/@Max) ném
+     * ConstraintViolationException chứ không phải MethodArgumentNotValidException
+     * — không bắt riêng thì client nhận 500 cho một lỗi nhập liệu.
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiErrorResponse> handleConstraintViolation(
+            ConstraintViolationException ex, HttpServletRequest request) {
+
+        List<ApiErrorResponse.FieldError> fields = ex.getConstraintViolations().stream()
+                .map(violation -> {
+                    String path = violation.getPropertyPath().toString();
+                    // Path dạng "list.size" — chỉ giữ tên tham số cho dễ đọc.
+                    String field = path.contains(".") ? path.substring(path.lastIndexOf('.') + 1) : path;
+                    return new ApiErrorResponse.FieldError(field, violation.getMessage());
+                })
+                .toList();
+
+        log.debug("Tham số không hợp lệ tại {}: {}", request.getRequestURI(), fields);
         return ResponseEntity.badRequest()
                 .body(ApiErrorResponse.validation(fields, request.getRequestURI()));
     }

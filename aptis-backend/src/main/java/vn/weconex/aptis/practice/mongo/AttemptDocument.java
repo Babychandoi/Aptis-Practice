@@ -65,6 +65,24 @@ public class AttemptDocument {
         private String accessLevel;
         /** Seed trộn đáp án, giữ cố định để client tải lại vẫn thấy thứ tự cũ. */
         private Long shuffleSeed;
+        /** partId -> quy tắc chấm tại thời điểm tạo attempt. */
+        private Map<String, PartScoringRuleSnapshot> partScoringRules = new LinkedHashMap<>();
+        /** null = attempt cũ chưa có snapshot; 1 = kể cả map rỗng cũng đã được đóng băng. */
+        private Integer scoringRuleSnapshotVersion;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class PartScoringRuleSnapshot {
+        private String ruleId;
+        private String partId;
+        private String maxScore;
+        private String pointsPerCorrect;
+        private String perfectBonus;
+        private boolean includedInOverall;
+        /** Phiên bản audit của rule trong MySQL. */
+        private Instant updatedAt;
     }
 
     @Getter
@@ -125,6 +143,8 @@ public class AttemptDocument {
         /** asset_id của file ghi âm trên MinIO. */
         private String recordingAssetId;
         private String transcript;
+        private Map<String, Object> acousticMetrics = new LinkedHashMap<>();
+        private String audioAnalysisSource;
 
         private Instant answeredAt;
     }

@@ -81,6 +81,49 @@ public class PracticeController {
                 currentUser.requireUserId(), attemptId, questionSetId, request);
     }
 
+    /**
+     * Nộp riêng một bộ câu hỏi để xem điểm và đáp án của đúng đề đó, không phải
+     * nộp cả lượt. Lượt vẫn tiếp tục làm được các bộ còn lại.
+     */
+    @PostMapping("/attempts/{attemptId}/responses/{questionSetId}/score")
+    public PracticeDtos.QuestionSetScoreResponse scoreQuestionSet(
+            @PathVariable String attemptId,
+            @PathVariable String questionSetId) {
+
+        return attemptService.scoreQuestionSet(
+                currentUser.requireUserId(), attemptId, questionSetId);
+    }
+
+    /**
+     * Bắt đầu một kỹ năng — đồng hồ của kỹ năng chạy từ lúc này.
+     */
+    @PostMapping("/attempts/{attemptId}/components/{componentId}/begin")
+    public PracticeDtos.AttemptResponse beginComponent(
+            @PathVariable String attemptId,
+            @PathVariable String componentId) {
+
+        String userId = currentUser.requireUserId();
+        attemptService.beginComponent(userId, attemptId, componentId);
+        return attemptService.getAttempt(userId, attemptId);
+    }
+
+    /**
+     * Nộp một kỹ năng trong bài thi đủ 5 kỹ năng.
+     *
+     * <p>Kỹ năng vừa nộp khóa lại (không sửa, không xem lại) và kỹ năng kế tiếp
+     * bắt đầu chạy đồng hồ riêng. Nộp kỹ năng cuối thì nộp luôn cả lượt — đó mới
+     * là lúc có điểm và đáp án.
+     */
+    @PostMapping("/attempts/{attemptId}/components/{componentId}/submit")
+    public PracticeDtos.AttemptResponse submitComponent(
+            @PathVariable String attemptId,
+            @PathVariable String componentId) {
+
+        String userId = currentUser.requireUserId();
+        attemptService.submitComponent(userId, attemptId, componentId);
+        return attemptService.getAttempt(userId, attemptId);
+    }
+
     @PostMapping("/attempts/{attemptId}/submit")
     public PracticeDtos.AttemptResponse submit(@PathVariable String attemptId) {
         String userId = currentUser.requireUserId();

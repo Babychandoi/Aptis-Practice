@@ -21,8 +21,15 @@ public final class CatalogDtos {
             Double maxScore) {
     }
 
+    /**
+     * @param componentCode mã kỹ năng chứa Part này (SPEAKING, READING…). Mã Part
+     *                      chỉ là PART_1..PART_4 và lặp lại ở mọi kỹ năng, nên
+     *                      client cần trường này để biết đang luyện kỹ năng nào.
+     */
     public record PartResponse(
             String id,
+            String componentId,
+            String componentCode,
             String code,
             String name,
             String description,

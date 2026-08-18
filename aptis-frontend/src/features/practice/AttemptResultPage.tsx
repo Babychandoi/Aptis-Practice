@@ -5,6 +5,7 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { EvaluationFeedbackCard } from '@/features/practice/EvaluationFeedbackCard';
 import { formatDuration, formatPercent } from '@/lib/format';
+import { formatScoreLine } from './scoreDisplay';
 
 export function AttemptResultPage() {
   const { attemptId } = useParams<{ attemptId: string }>();
@@ -18,12 +19,12 @@ export function AttemptResultPage() {
     refetchInterval: (query) => (query.state.data?.status === 'SCORING' ? 5000 : false),
   });
 
-  // Chỉ gọi khi đã chấm xong; poll cùng nhịp trong lúc còn SCORING
+  // Trong lúc SCORING chỉ poll trạng thái attempt. Khi hoàn tất mới lấy feedback,
+  // tránh hai vòng polling cùng lúc cho mỗi học viên.
   const evaluationsQuery = useQuery({
     queryKey: ['attempt-evaluations', attemptId],
     queryFn: () => practiceApi.evaluations(attemptId!),
-    enabled: Boolean(attemptId) && attemptQuery.data?.status !== 'CREATED',
-    refetchInterval: attemptQuery.data?.status === 'SCORING' ? 5000 : false,
+    enabled: Boolean(attemptId) && attemptQuery.data?.status === 'COMPLETED',
   });
 
   if (attemptQuery.isLoading) {
@@ -46,8 +47,11 @@ export function AttemptResultPage() {
     (sum, set) => sum + (set.awardedScore ?? 0),
     0,
   );
-  const totalMax = attempt.questionSets.reduce((sum, set) => sum + set.maxScore, 0);
-  const percentage = totalMax > 0 ? (totalAwarded / totalMax) * 100 : null;
+  const totalMax = attempt.questionSets.reduce((sum, set) => sum + (set.maxScore ?? 0), 0);
+  const displayedAwarded = attempt.rawScore ?? totalAwarded;
+  const displayedMax = attempt.maxScore ?? totalMax;
+  const percentage = attempt.percentageScore
+    ?? (displayedMax > 0 ? (displayedAwarded / displayedMax) * 100 : null);
 
   return (
     <div className="space-y-5">
@@ -75,7 +79,7 @@ export function AttemptResultPage() {
               {formatPercent(percentage)}
             </p>
             <p className="mt-1 text-sm text-slate-600">
-              {totalAwarded.toFixed(1)}/{totalMax.toFixed(1)} điểm
+              {displayedAwarded.toFixed(1)}/{displayedMax.toFixed(1)} điểm luyện tập
             </p>
           </>
         )}
@@ -110,6 +114,7 @@ export function AttemptResultPage() {
         <div className="space-y-2">
           {attempt.questionSets.map((set) => {
             const ratio = set.maxScore > 0 ? (set.awardedScore ?? 0) / set.maxScore : 0;
+            const scoreLine = formatScoreLine(set.awardedScore, set.maxScore);
 
             return (
               <div
@@ -126,12 +131,12 @@ export function AttemptResultPage() {
                 </div>
 
                 <div className="shrink-0 text-right">
-                  {set.awardedScore === null ? (
+                  {scoreLine === null ? (
                     <span className="text-xs text-slate-500">Đang chấm</span>
                   ) : (
                     <>
                       <p className="text-sm font-semibold">
-                        {set.awardedScore.toFixed(1)}/{set.maxScore.toFixed(1)}
+                        {scoreLine}
                       </p>
                       <p className="text-xs text-slate-500">{formatPercent(ratio * 100)}</p>
                     </>

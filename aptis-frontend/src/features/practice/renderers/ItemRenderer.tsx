@@ -3,6 +3,7 @@ import type { ResponseDraft } from '@/features/practice/responseState';
 import {
   MultipleChoiceRenderer,
   SingleChoiceRenderer,
+  SingleChoiceSelectRenderer,
 } from '@/features/practice/renderers/ChoiceRenderer';
 import { MatchingRenderer } from '@/features/practice/renderers/MatchingRenderer';
 import { OrderingRenderer } from '@/features/practice/renderers/OrderingRenderer';
@@ -20,6 +21,11 @@ interface Props {
   draft: ResponseDraft;
   disabled: boolean;
   showAnswer: boolean;
+  choiceMode?: 'cards' | 'select';
+  /** Speaking trong bài thi đủ 5 kỹ năng: tự chạy, ghi một lần, không nghe lại. */
+  examMode?: boolean;
+  /** Ghi âm xong ở chế độ thi — dùng để tự chuyển câu. */
+  onExamFinished?: () => void;
   onChange: (draft: ResponseDraft) => void;
 }
 
@@ -28,7 +34,7 @@ interface Props {
  * nhánh ở đây và một validator tương ứng ở backend.
  */
 export function ItemRenderer(props: Props) {
-  const { item, sections, attemptId, questionSetId, draft, disabled, showAnswer, onChange } =
+  const { item, sections, attemptId, questionSetId, draft, disabled, showAnswer, choiceMode, examMode, onExamFinished, onChange } =
     props;
 
   const shared = { item, draft, disabled, showAnswer, onChange };
@@ -36,7 +42,9 @@ export function ItemRenderer(props: Props) {
   switch (item.responseType) {
     case 'SINGLE_CHOICE':
     case 'GAP_FILL_CHOICE':
-      return <SingleChoiceRenderer {...shared} />;
+      return choiceMode === 'select'
+        ? <SingleChoiceSelectRenderer {...shared} />
+        : <SingleChoiceRenderer {...shared} />;
 
     case 'MULTIPLE_CHOICE':
       return <MultipleChoiceRenderer {...shared} />;
@@ -63,6 +71,8 @@ export function ItemRenderer(props: Props) {
           questionSetId={questionSetId}
           draft={draft}
           disabled={disabled}
+          examMode={examMode}
+          onExamFinished={onExamFinished}
           onChange={onChange}
         />
       );

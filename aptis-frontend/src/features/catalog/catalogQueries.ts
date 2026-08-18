@@ -30,6 +30,25 @@ export function useParts(componentId: string | undefined) {
   });
 }
 
+/**
+ * Part của nhiều component gộp lại một mảng.
+ *
+ * Bài mock full trải trên cả 5 kỹ năng và không gắn componentId, nên không thể
+ * dùng useParts (chỉ nhận một component) để tra tên/kỹ năng của từng Part.
+ */
+export function usePartsOfComponents(componentIds: string[]) {
+  const ids = [...componentIds].sort();
+  return useQuery({
+    queryKey: ['parts-multi', ids],
+    queryFn: async () => {
+      const groups = await Promise.all(ids.map((id) => catalogApi.parts(id)));
+      return groups.flat();
+    },
+    enabled: ids.length > 0,
+    staleTime: CATALOG_STALE_TIME,
+  });
+}
+
 export function usePart(partId: string | undefined) {
   return useQuery({
     queryKey: ['part', partId],

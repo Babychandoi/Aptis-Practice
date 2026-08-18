@@ -5,12 +5,25 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.weconex.aptis.common.util.Enums.JobStatus;
 import vn.weconex.aptis.evaluation.domain.EvaluationJob;
 
 public interface EvaluationJobRepository extends JpaRepository<EvaluationJob, String> {
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("""
+            UPDATE EvaluationJob j
+               SET j.status = :processing, j.startedAt = :startedAt
+             WHERE j.id = :id AND j.status = :queued
+            """)
+    int claim(
+            @Param("id") String id,
+            @Param("queued") JobStatus queued,
+            @Param("processing") JobStatus processing,
+            @Param("startedAt") java.time.Instant startedAt);
 
     Optional<EvaluationJob> findByIdempotencyKey(String idempotencyKey);
 

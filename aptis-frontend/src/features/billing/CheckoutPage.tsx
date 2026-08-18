@@ -300,19 +300,22 @@ function TransferStatus({ status, expired }: { status: BankTransferInstruction['
 }
 
 function useCountdown(expiresAt: string | null) {
-  const calculate = () => expiresAt
-    ? Math.max(0, Math.ceil((new Date(expiresAt).getTime() - Date.now()) / 1000))
-    : 0;
-  const [seconds, setSeconds] = useState(calculate);
+  const [seconds, setSeconds] = useState(() => calculateRemaining(expiresAt));
 
   useEffect(() => {
-    setSeconds(calculate());
+    setSeconds(calculateRemaining(expiresAt));
     if (!expiresAt) return;
-    const timer = window.setInterval(() => setSeconds(calculate()), 1000);
+    const timer = window.setInterval(() => setSeconds(calculateRemaining(expiresAt)), 1000);
     return () => window.clearInterval(timer);
   }, [expiresAt]);
 
   return seconds;
+}
+
+function calculateRemaining(expiresAt: string | null) {
+  return expiresAt
+    ? Math.max(0, Math.ceil((new Date(expiresAt).getTime() - Date.now()) / 1000))
+    : 0;
 }
 
 function formatCountdown(seconds: number) {

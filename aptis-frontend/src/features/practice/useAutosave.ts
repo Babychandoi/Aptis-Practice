@@ -31,14 +31,14 @@ export function useAutosave(attemptId: string, enabled: boolean) {
     pendingRef.current.clear();
     setState('saving');
     try {
-      await Promise.all(
-        pending.map((entry) =>
-          practiceApi.saveResponses(attemptId, entry.questionSetId, {
+      // The backend document is an aggregate. Keep writes ordered as an extra
+      // defence against a slow older request finishing after a newer one.
+      for (const entry of pending) {
+        await practiceApi.saveResponses(attemptId, entry.questionSetId, {
             itemResponses: entry.payloads,
             timeSpentSeconds: entry.timeSpentSeconds,
-          }),
-        ),
-      );
+        });
+      }
       setState('saved');
     } catch {
       for (const entry of pending) {

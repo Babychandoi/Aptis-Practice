@@ -1,0 +1,384 @@
+{
+  "part": 2,
+  "skill": "writing",
+  "title": "Aptis Writing Part 2",
+  "instruction": "Mô tả ngắn về một chủ đề quen thuộc",
+  "question_count": 46,
+  "questions_per_block": 1,
+  "word_limit": {
+    "min": 20,
+    "max": 40
+  },
+  "sample_answer_text_in_source": false,
+  "note": "Giữ nguyên tuyệt đối thứ tự câu hỏi theo HTML nguồn. Giới hạn của textarea trong nguồn là 20-40 từ cho tất cả câu. Một số câu có câu chữ riêng như 'Use 20–30 words'; trường embedded_word_instruction giữ nguyên thông tin đó, không tự sửa.",
+  "questions": [
+    {
+      "stt": 1,
+      "question_id": "43",
+      "global_number": 1,
+      "item_id": "writing-q-43-0",
+      "question": "Why are you interested in travel?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 2,
+      "question_id": "44",
+      "global_number": 2,
+      "item_id": "writing-q-44-0",
+      "question": "You are a new member of a fashion club. Fill in the form. Write in sentences. Use 20–30 words. When was the last time you went shopping for clothes?",
+      "embedded_word_instruction": "20-30 words"
+    },
+    {
+      "stt": 3,
+      "question_id": "45",
+      "global_number": 3,
+      "item_id": "writing-q-45-0",
+      "question": "You are a new member of a language club. Fill in the form. Write in sentences. Tell me your free time and interests?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 4,
+      "question_id": "46",
+      "global_number": 4,
+      "item_id": "writing-q-46-0",
+      "question": "When and where do you use a computer?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 5,
+      "question_id": "47",
+      "global_number": 5,
+      "item_id": "writing-q-47-0",
+      "question": "You are a new member of a language club. Fill in the form. Write in sentences. In which cases do you often use foreign languages?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 6,
+      "question_id": "48",
+      "global_number": 6,
+      "item_id": "writing-q-48-0",
+      "question": "Please tell us about the days and times you can attend courses and what you would like to study?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 7,
+      "question_id": "49",
+      "global_number": 7,
+      "item_id": "writing-q-49-0",
+      "question": "You are a new member of a social club. Fill in the form. Write in sentences. Use 20–30 words. What do you like to do with friends and where do you go?",
+      "embedded_word_instruction": "20-30 words"
+    },
+    {
+      "stt": 8,
+      "question_id": "50",
+      "global_number": 8,
+      "item_id": "writing-q-50-0",
+      "question": "What do you like doing when you spend time outdoors?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 9,
+      "question_id": "51",
+      "global_number": 9,
+      "item_id": "writing-q-51-0",
+      "question": "What do you usually talk about with your friend?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 10,
+      "question_id": "52",
+      "global_number": 10,
+      "item_id": "writing-q-52-0",
+      "question": "Why do you like science?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 11,
+      "question_id": "53",
+      "global_number": 11,
+      "item_id": "writing-q-53-0",
+      "question": "Tell me about the day and time you can join the club and which food/dish you want to cook.",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 12,
+      "question_id": "54",
+      "global_number": 12,
+      "item_id": "writing-q-54-0",
+      "question": "When do you usually have to come into contact with English?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 13,
+      "question_id": "55",
+      "global_number": 13,
+      "item_id": "writing-q-55-0",
+      "question": "Describe one method that helps you improve your English speaking.",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 14,
+      "question_id": "56",
+      "global_number": 14,
+      "item_id": "writing-q-56-0",
+      "question": "You are a new member of a nature club. Fill in the form. Write in sentences. Use 20–30 words. Please tell me about your free time and hobbies?",
+      "embedded_word_instruction": "20-30 words"
+    },
+    {
+      "stt": 15,
+      "question_id": "57",
+      "global_number": 15,
+      "item_id": "writing-q-57-0",
+      "question": "Tell me the classes you want to take and what times and days are suitable for you?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 16,
+      "question_id": "58",
+      "global_number": 16,
+      "item_id": "writing-q-58-0",
+      "question": "Tell us about a film you would recommend to other club members.",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 17,
+      "question_id": "59",
+      "global_number": 17,
+      "item_id": "writing-q-59-0",
+      "question": "When and where do you like to go walking?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 18,
+      "question_id": "60",
+      "global_number": 18,
+      "item_id": "writing-q-60-0",
+      "question": "When was the last time you read a book and how was the book?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 19,
+      "question_id": "61",
+      "global_number": 19,
+      "item_id": "writing-q-61-0",
+      "question": "Where do you usually go shopping?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 20,
+      "question_id": "62",
+      "global_number": 20,
+      "item_id": "writing-q-62-0",
+      "question": "When and how often do you watch films?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 21,
+      "question_id": "63",
+      "global_number": 21,
+      "item_id": "writing-q-63-0",
+      "question": "What was the last time you ate out and where did you eat it?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 22,
+      "question_id": "64",
+      "global_number": 22,
+      "item_id": "writing-q-64-0",
+      "question": "You are a new member of a photography club. Fill in the form. Write in sentences. Please tell me the last time you took a picture?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 23,
+      "question_id": "65",
+      "global_number": 23,
+      "item_id": "writing-q-65-0",
+      "question": "Tell me about the last time you wrote something.",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 24,
+      "question_id": "66",
+      "global_number": 24,
+      "item_id": "writing-q-66-0",
+      "question": "What do you usually use the internet for?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 25,
+      "question_id": "67",
+      "global_number": 25,
+      "item_id": "writing-q-67-0",
+      "question": "Tell me a place you often visit?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 26,
+      "question_id": "68",
+      "global_number": 26,
+      "item_id": "writing-q-68-0",
+      "question": "Which room in your home do you use most, and why?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 27,
+      "question_id": "69",
+      "global_number": 27,
+      "item_id": "writing-q-69-0",
+      "question": "You are a new member of a technology club. Fill in the form. Write in sentences. What do you usually use your laptop for?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 28,
+      "question_id": "70",
+      "global_number": 28,
+      "item_id": "writing-q-70-0",
+      "question": "Why do you want to join beautiful homes club?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 29,
+      "question_id": "71",
+      "global_number": 29,
+      "item_id": "writing-q-71-0",
+      "question": "You are a new member of a fitness club. Fill in the form. Write in sentences. Use 20–30 words. Please talk about the last time you went for a run?",
+      "embedded_word_instruction": "20-30 words"
+    },
+    {
+      "stt": 30,
+      "question_id": "72",
+      "global_number": 30,
+      "item_id": "writing-q-72-0",
+      "question": "When do you usually use English?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 31,
+      "question_id": "73",
+      "global_number": 31,
+      "item_id": "writing-q-73-0",
+      "question": "When do you usually watch TV? What do you usually watch?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 32,
+      "question_id": "74",
+      "global_number": 32,
+      "item_id": "writing-q-74-0",
+      "question": "Tell me a painting or a photo that you like.",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 33,
+      "question_id": "75",
+      "global_number": 33,
+      "item_id": "writing-q-75-0",
+      "question": "Why did you join the club?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 34,
+      "question_id": "76",
+      "global_number": 34,
+      "item_id": "writing-q-76-0",
+      "question": "Which outdoor activities do you like? Why?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 35,
+      "question_id": "77",
+      "global_number": 35,
+      "item_id": "writing-q-77-0",
+      "question": "Please write some of your favorite films and why do you like watching them?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 36,
+      "question_id": "78",
+      "global_number": 36,
+      "item_id": "writing-q-78-0",
+      "question": "Tell me the last time you went to a museum?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 37,
+      "question_id": "79",
+      "global_number": 37,
+      "item_id": "writing-q-79-0",
+      "question": "Why did you decide to join the club?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 38,
+      "question_id": "80",
+      "global_number": 38,
+      "item_id": "writing-q-80-0",
+      "question": "You are a new member of a music club. Fill in the form. Write in sentences. Use 20–30 words. When and where do you listen to music?",
+      "embedded_word_instruction": "20-30 words"
+    },
+    {
+      "stt": 39,
+      "question_id": "81",
+      "global_number": 39,
+      "item_id": "writing-q-81-0",
+      "question": "Where do you usually look for books, journals, and other reliable materials for your final-year research?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 40,
+      "question_id": "82",
+      "global_number": 40,
+      "item_id": "writing-q-82-0",
+      "question": "Do you usually travel by car?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 41,
+      "question_id": "83",
+      "global_number": 41,
+      "item_id": "writing-q-83-0",
+      "question": "Describe where you live?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 42,
+      "question_id": "913",
+      "global_number": 42,
+      "item_id": "writing-q-913-0",
+      "question": "Describe a healthy habit you started recently.",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 43,
+      "question_id": "917",
+      "global_number": 43,
+      "item_id": "writing-q-917-0",
+      "question": "Describe a digital tool that helps you organise your studies.",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 44,
+      "question_id": "921",
+      "global_number": 44,
+      "item_id": "writing-q-921-0",
+      "question": "Describe a walking route in your area that you would recommend.",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 45,
+      "question_id": "924",
+      "global_number": 45,
+      "item_id": "writing-q-924-0",
+      "question": "What kind of community activities would you like to join?",
+      "embedded_word_instruction": null
+    },
+    {
+      "stt": 46,
+      "question_id": "926",
+      "global_number": 46,
+      "item_id": "writing-q-926-0",
+      "question": "What was the last time you ate out and where did you eat it?",
+      "embedded_word_instruction": null
+    }
+  ]
+}

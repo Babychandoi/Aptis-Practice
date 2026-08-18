@@ -144,6 +144,9 @@ public class AuthService {
      */
     @Transactional
     public AuthDtos.TokenResponse refresh(String rawRefreshToken, String userAgent, String ipAddress) {
+        if (rawRefreshToken == null || rawRefreshToken.isBlank()) {
+            throw new ApiException(ErrorCode.TOKEN_INVALID, "Thiếu refresh token");
+        }
         RefreshToken existing = refreshTokenRepository
                 .findByTokenHash(tokenHasher.hash(rawRefreshToken))
                 .orElseThrow(() -> new ApiException(

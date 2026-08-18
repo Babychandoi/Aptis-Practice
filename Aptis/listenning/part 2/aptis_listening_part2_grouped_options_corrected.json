@@ -1,0 +1,1428 @@
+{
+  "part": 2,
+  "title": "Aptis Listening Part 2",
+  "topic_count": 29,
+  "question_count": 116,
+  "shared_options_topic_count": 28,
+  "non_shared_options_topics": [
+    17
+  ],
+  "note": "Nếu 4 speaker trong cùng topic có cùng một bộ lựa chọn (không xét thứ tự), options được đưa lên cấp topic. Nếu dữ liệu nguồn khác nhau, options được giữ ở từng question.",
+  "topics": [
+    {
+      "topic_stt": 1,
+      "topic": "Visiting a new museum (2026) 🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "Bought souvenirs at the museum",
+        "Finished the visit quickly",
+        "Enjoyed the use of technology",
+        "Found the exhibits boring",
+        "Got lost during the visit",
+        "Wants to visit again"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2078",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1586/speaker-A-2078.mp3",
+          "correct_answer": "Finished the visit quickly",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2079",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1586/speaker-B-2079.mp3",
+          "correct_answer": "Got lost during the visit",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2077",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1586/speaker-C-2077.mp3",
+          "correct_answer": "Enjoyed the use of technology",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2080",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1586/speaker-D-2080.mp3",
+          "correct_answer": "Wants to visit again",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 2,
+      "topic": "Doing exercises (2026) 🔥🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "Exercise outdoors every day",
+        "Exercise to lose weight",
+        "Have fun exercising with others",
+        "Improve work performance",
+        "Hate exercising",
+        "Find exercise tiring"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2091",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1587/speaker-A-2091.mp3",
+          "correct_answer": "Improve work performance",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2092",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1587/speaker-B-2092.mp3",
+          "correct_answer": "Find exercise tiring",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2089",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1587/speaker-C-2089.mp3",
+          "correct_answer": "Have fun exercising with others",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2090",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1587/speaker-D-2090.mp3",
+          "correct_answer": "Hate exercising",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 3,
+      "topic": "Their protecting the environment (2026) 🔥🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "protects the environment by using reusable bags.",
+        "protects the environment by recycling at home.",
+        "protects the environment by using less electricity.",
+        "protects the environment by not driving to work",
+        "protects the environment by using less water.",
+        "protects the environment by shopping online."
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2102",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-5/speaker-A-2102.mp3",
+          "correct_answer": "protects the environment by using less electricity.",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2103",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-5/speaker-B-2103.mp3",
+          "correct_answer": "protects the environment by not driving to work",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2104",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-5/speaker-C-2104.mp3",
+          "correct_answer": "protects the environment by shopping online.",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2101",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-5/speaker-D-2101.mp3",
+          "correct_answer": "protects the environment by using less water.",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 4,
+      "topic": "Doing arts (2026) 🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "Doing arts with children",
+        "Doing arts as part of the job",
+        "Doing arts to relax",
+        "Doing arts alone",
+        "Doing arts outdoors",
+        "Doing as a social activity"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2115",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-4/speaker-A-2115.mp3",
+          "correct_answer": "Doing as a social activity",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2113",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-4/speaker-B-2113.mp3",
+          "correct_answer": "Doing arts with children",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2116",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-4/speaker-C-2116.mp3",
+          "correct_answer": "Doing arts as part of the job",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2114",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-4/speaker-D-2114.mp3",
+          "correct_answer": "Doing arts alone",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 5,
+      "topic": "Online shopping (Version 2) (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "Products are delivered",
+        "It saves time",
+        "Can compare customer reviews",
+        "Avoids crowded shops",
+        "It is cheaper",
+        "There are more choices"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2127",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1588/speaker-A-2127.mp3",
+          "correct_answer": "It saves time",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2125",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1588/speaker-B-2125.mp3",
+          "correct_answer": "It is cheaper",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2126",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1588/speaker-C-2126.mp3",
+          "correct_answer": "Products are delivered",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2128",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1588/speaker-D-2128.mp3",
+          "correct_answer": "There are more choices",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 6,
+      "topic": "Studying habit (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "Prefer to study in a quiet place",
+        "Prefer to study early in the morning",
+        "Prefer to study with music",
+        "Prefer to study at various places",
+        "Prefer to study late at night",
+        "Prefer to study with a friend"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2140",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1589/speaker-A-2140.mp3",
+          "correct_answer": "Prefer to study late at night",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2137",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1589/speaker-B-2137.mp3",
+          "correct_answer": "Prefer to study at various places",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2138",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1589/speaker-C-2138.mp3",
+          "correct_answer": "Prefer to study with music",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2139",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1589/speaker-D-2139.mp3",
+          "correct_answer": "Prefer to study in a quiet place",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 7,
+      "topic": "Their journey to work (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "Go by bus",
+        "Take a taxi",
+        "Ride a bicycle",
+        "Walk with friends",
+        "Walk alone",
+        "Drive car"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2149",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-9/speaker-A-2149.mp3",
+          "correct_answer": "Walk with friends",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2150",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-9/speaker-B-2150.mp3",
+          "correct_answer": "Go by bus",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2151",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-9/speaker-C-2151.mp3",
+          "correct_answer": "Walk alone",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2152",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-9/speaker-D-2152.mp3",
+          "correct_answer": "Drive car",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 8,
+      "topic": "Shopping online (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "products are delivered",
+        "it saves time",
+        "it is cheaper",
+        "it has more choices",
+        "avoids crowded shops",
+        "can compare customer reviews"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2164",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1590/speaker-A-2164.mp3",
+          "correct_answer": "products are delivered",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2161",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1590/speaker-B-2161.mp3",
+          "correct_answer": "it is cheaper",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2163",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1590/speaker-C-2163.mp3",
+          "correct_answer": "it saves time",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2162",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1590/speaker-D-2162.mp3",
+          "correct_answer": "it has more choices",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 9,
+      "topic": "Protecting the environment (2026) 🔥🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "Using less electricity",
+        "Wasting more energy",
+        "Using less water",
+        "Not driving to work",
+        "Buying imported goods",
+        "Shopping online"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2174",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-7/speaker-A-2174.mp3",
+          "correct_answer": "Shopping online",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2175",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-7/speaker-B-2175.mp3",
+          "correct_answer": "Not driving to work",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2176",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-7/speaker-C-2176.mp3",
+          "correct_answer": "Using less electricity",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2173",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-7/speaker-D-2173.mp3",
+          "correct_answer": "Using less water",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 10,
+      "topic": "Running",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "prefer running in the street",
+        "at the seaside",
+        "in the fitness center",
+        "in the countryside",
+        "on the running track",
+        "in a park"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2186",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1591/speaker-A-2186.mp3",
+          "correct_answer": "prefer running in the street",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2185",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1591/speaker-B-2185.mp3",
+          "correct_answer": "at the seaside",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2187",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1591/speaker-C-2187.mp3",
+          "correct_answer": "on the running track",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2188",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1591/speaker-D-2188.mp3",
+          "correct_answer": "in the fitness center",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 11,
+      "topic": "Their purposes of using the Internet (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "listen to music",
+        "shop online",
+        "watch film",
+        "communicate with friends",
+        "complete school assignments",
+        "find transport information"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2205",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-8/speaker-A-2205.mp3",
+          "correct_answer": "watch film",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2206",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-8/speaker-B-2206.mp3",
+          "correct_answer": "communicate with friends",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2207",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-8/speaker-C-2207.mp3",
+          "correct_answer": "complete school assignments",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2208",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-8/speaker-D-2208.mp3",
+          "correct_answer": "find transport information",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 12,
+      "topic": "When they like listening to music (2026) 🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "While studying",
+        "To relax",
+        "While singing",
+        "While travelling",
+        "Before going to sleep",
+        "After waking up"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "2247",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1593/speaker-A-2247.mp3",
+          "correct_answer": "To relax",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "2246",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1593/speaker-B-2246.mp3",
+          "correct_answer": "While studying",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "2248",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1593/speaker-C-2248.mp3",
+          "correct_answer": "While singing",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "2245",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-1593/speaker-D-2245.mp3",
+          "correct_answer": "After waking up",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 13,
+      "topic": "Protecting the environment (Version 2) (2026) 🔥🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "Give away used items",
+        "Plant trees in the backyard",
+        "Buy environmentally friendly products",
+        "Reuse containers for storing food",
+        "Does not use commercial cleaning products",
+        "Use solar panels for electricity"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6617",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-283/speaker-A-6617.mp3",
+          "correct_answer": "Does not use commercial cleaning products",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6618",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-283/speaker-B-6618.mp3",
+          "correct_answer": "Give away used items",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6619",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-283/speaker-C-6619.mp3",
+          "correct_answer": "Buy environmentally friendly products",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6620",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-283/speaker-D-6620.mp3",
+          "correct_answer": "Reuse containers for storing food",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 14,
+      "topic": "Protecting the environment (Version 3) (2026) 🔥🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "Reuse containers for storing food",
+        "Use solar panels for electricity",
+        "Does not use commercial cleaning products",
+        "Give away used items",
+        "Buy environmentally friendly products",
+        "Plant trees in the backyard"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6629",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-309/speaker-A-6629.mp3",
+          "correct_answer": "Give away used items",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6630",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-309/speaker-B-6630.mp3",
+          "correct_answer": "Buy environmentally friendly products",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6631",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-309/speaker-C-6631.mp3",
+          "correct_answer": "Reuse containers for storing food",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6632",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-309/speaker-D-6632.mp3",
+          "correct_answer": "Does not use commercial cleaning products",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 15,
+      "topic": "Online shopping (Version 2) (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "There are more choices",
+        "It is cheaper",
+        "It increases efficiency",
+        "The products are delivered",
+        "It saves time",
+        "It provides better customer service"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6641",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260723-vbee-upgrade/parent-359/speaker-A-6641.mp3",
+          "correct_answer": "The products are delivered",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6642",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/359/speaker-B-6642.mp3",
+          "correct_answer": "It is cheaper",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6643",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/359/speaker-C-6643.mp3",
+          "correct_answer": "It saves time",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6644",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/359/speaker-D-6644.mp3",
+          "correct_answer": "There are more choices",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 16,
+      "topic": "Listening to music (2026) 🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "After waking up",
+        "To relax",
+        "While singing",
+        "While studying",
+        "to complain",
+        "to discuss ideas"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6655",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/828/speaker-A-6655.mp3",
+          "correct_answer": "To relax",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6656",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/828/speaker-B-6656.mp3",
+          "correct_answer": "After waking up",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6653",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/828/speaker-C-6653.mp3",
+          "correct_answer": "While singing",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6654",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/828/speaker-D-6654.mp3",
+          "correct_answer": "While studying",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 17,
+      "topic": "Outdoor activities (2026) 🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options_note": "Các speaker trong topic này không có cùng một bộ options trong HTML nguồn; giữ options riêng theo từng câu để không làm sai dữ liệu.",
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6668",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/447/speaker-A-6668.mp3",
+          "options": [
+            "going for a run",
+            "climbing",
+            "to complain",
+            "mountain biking",
+            "to discuss ideas",
+            "horse riding"
+          ],
+          "correct_answer": "horse riding",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6665",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/447/speaker-B-6665.mp3",
+          "options": [
+            "climbing",
+            "to discuss ideas",
+            "going for a run",
+            "mountain biking",
+            "to complain",
+            "horse riding"
+          ],
+          "correct_answer": "going for a run",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6666",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/447/speaker-C-6666.mp3",
+          "options": [
+            "horse riding",
+            "going for a run",
+            "mountain biking",
+            "to discuss ideas",
+            "to complain",
+            "hiking"
+          ],
+          "correct_answer": "hiking",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6667",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/447/speaker-D-6667.mp3",
+          "options": [
+            "to complain",
+            "horse riding",
+            "mountain biking",
+            "to discuss ideas",
+            "climbing",
+            "going for a run"
+          ],
+          "correct_answer": "mountain biking",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 18,
+      "topic": "Places to run (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "on the running track",
+        "at the seaside",
+        "in the library",
+        "at the supermarket",
+        "in the street",
+        "in the fitness centre"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6679",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/487/speaker-A-6679.mp3",
+          "correct_answer": "in the fitness centre",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6680",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/487/speaker-B-6680.mp3",
+          "correct_answer": "at the seaside",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6677",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/487/speaker-C-6677.mp3",
+          "correct_answer": "in the street",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6678",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/487/speaker-D-6678.mp3",
+          "correct_answer": "on the running track",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 19,
+      "topic": "Doing exercise (2026) 🔥🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "help improve work performance",
+        "find exercise tiring",
+        "hate exercising",
+        "has fun when exercising with friends",
+        "in the library",
+        "at the supermarket"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6689",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/829/speaker-A-6689.mp3",
+          "correct_answer": "hate exercising",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6690",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/829/speaker-B-6690.mp3",
+          "correct_answer": "help improve work performance",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6692",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/829/speaker-C-6692.mp3",
+          "correct_answer": "find exercise tiring",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6691",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/829/speaker-D-6691.mp3",
+          "correct_answer": "has fun when exercising with friends",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 20,
+      "topic": "The Internet (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "listen to the radio",
+        "complete assignments",
+        "buy groceries online",
+        "find transport information",
+        "watch films",
+        "communicate with friends"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6702",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/566/speaker-A-6702.mp3",
+          "correct_answer": "watch films",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6704",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/566/speaker-B-6704.mp3",
+          "correct_answer": "communicate with friends",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6703",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/566/speaker-C-6703.mp3",
+          "correct_answer": "complete assignments",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6701",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/566/speaker-D-6701.mp3",
+          "correct_answer": "find transport information",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 21,
+      "topic": "Art (2026) 🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "as part of their job",
+        "alone",
+        "with children",
+        "stay at home",
+        "social activity",
+        "together"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6713",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/837/speaker-A-6713.mp3",
+          "correct_answer": "social activity",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6714",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/837/speaker-B-6714.mp3",
+          "correct_answer": "with children",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6715",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/837/speaker-C-6715.mp3",
+          "correct_answer": "as part of their job",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6716",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/837/speaker-D-6716.mp3",
+          "correct_answer": "alone",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 22,
+      "topic": "Transportation to work (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "travel by car",
+        "walk alone",
+        "ride a bicycle",
+        "travel by bus",
+        "take a taxi",
+        "walk with a friend"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6725",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/609/speaker-A-6725.mp3",
+          "correct_answer": "travel by bus",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6726",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/609/speaker-B-6726.mp3",
+          "correct_answer": "travel by car",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6727",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/609/speaker-C-6727.mp3",
+          "correct_answer": "walk alone",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6728",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/609/speaker-D-6728.mp3",
+          "correct_answer": "walk with a friend",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 23,
+      "topic": "Studying (Version 2) (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "Late at night",
+        "With background noise",
+        "Early in the morning",
+        "With music",
+        "In a quiet place",
+        "In various places"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6739",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/840/speaker-A-6739.mp3",
+          "correct_answer": "In various places",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6740",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/840/speaker-B-6740.mp3",
+          "correct_answer": "In a quiet place",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6737",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/840/speaker-C-6737.mp3",
+          "correct_answer": "With music",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6738",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/840/speaker-D-6738.mp3",
+          "correct_answer": "Late at night",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 24,
+      "topic": "Studying (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "At home",
+        "In the coffee shop",
+        "In the park",
+        "In a shared workspace",
+        "On public transport",
+        "While traveling abroad"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "6751",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/653/speaker-A-6751.mp3",
+          "correct_answer": "In the coffee shop",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "6750",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/653/speaker-B-6750.mp3",
+          "correct_answer": "In the park",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "6749",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/653/speaker-C-6749.mp3",
+          "correct_answer": "On public transport",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "6752",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/653/speaker-D-6752.mp3",
+          "correct_answer": "At home",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 25,
+      "topic": "Sport",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "plays in a team sport",
+        "does sports on a bicycle",
+        "plays in the street",
+        "plays sport indoors",
+        "spends time in the water",
+        "does sports with animals"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "7120",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/7119/speaker-A-7120.mp3",
+          "correct_answer": "plays in a team sport",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "7121",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/7119/speaker-B-7121.mp3",
+          "correct_answer": "spends time in the water",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "7122",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/7119/speaker-C-7122.mp3",
+          "correct_answer": "plays in the street",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "7123",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/7119/speaker-D-7123.mp3",
+          "correct_answer": "does sports with animals",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 26,
+      "topic": "Reading books (2026) 🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "read books in the library",
+        "read when travelling to school",
+        "prefer reading comics",
+        "prefer another activity to reading books",
+        "don't have time to read",
+        "read on their beds"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "27234",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/27233/speaker-A-27234.mp3",
+          "correct_answer": "read when travelling to school",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "27235",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/27233/speaker-B-27235.mp3",
+          "correct_answer": "don't have time to read",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "27236",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/27233/speaker-C-27236.mp3",
+          "correct_answer": "read on their beds",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "27237",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/27233/speaker-D-27237.mp3",
+          "correct_answer": "prefer another activity to reading books",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 27,
+      "topic": "",
+      "topic_note": "Không có tên chủ đề trong HTML nguồn",
+      "question_count": 4,
+      "options": [
+        "read when travelling to school",
+        "read on their beds",
+        "don't have time to read",
+        "prefer another activity to reading books"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "14.1",
+          "question_id": "27378",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/user-provided/20260703/read-when-travelling-to-school.mp3",
+          "correct_answer": "read when travelling to school",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "14.2",
+          "question_id": "27379",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/user-provided/20260703/dont-have-time-to-read.mp3",
+          "correct_answer": "don't have time to read",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "14.3",
+          "question_id": "27380",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/user-provided/20260703/read-on-their-beds.mp3",
+          "correct_answer": "read on their beds",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "14.4",
+          "question_id": "27381",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/user-provided/20260703/prefer-another-activity-to-reading-books.mp3",
+          "correct_answer": "prefer another activity to reading books",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 28,
+      "topic": "Discussing their restaurant experiences",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "liked the restaurant decor",
+        "was still hungry after dinner",
+        "paid a high price",
+        "met the helpful staff",
+        "watched a perfect performance",
+        "complained about slow service"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "15.1",
+          "question_id": "27239",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/27238/speaker-A-27239.mp3",
+          "correct_answer": "was still hungry after dinner",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "B",
+          "display_no": "15.2",
+          "question_id": "27240",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/27238/speaker-B-27240.mp3",
+          "correct_answer": "paid a high price",
+          "correct_value": "1"
+        },
+        {
+          "speaker": "C",
+          "display_no": "15.3",
+          "question_id": "27241",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/27238/speaker-C-27241.mp3",
+          "correct_answer": "met the helpful staff",
+          "correct_value": "2"
+        },
+        {
+          "speaker": "D",
+          "display_no": "15.4",
+          "question_id": "27242",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/part-bank/27238/speaker-D-27242.mp3",
+          "correct_answer": "watched a perfect performance",
+          "correct_value": "3"
+        }
+      ]
+    },
+    {
+      "topic_stt": 29,
+      "topic": "Shopping Habits (2026) 🔥🔥🔥🔥",
+      "topic_note": "",
+      "question_count": 4,
+      "options": [
+        "shops only on the internet",
+        "enjoys spending time in shopping centres",
+        "tries to save money",
+        "considers the environmental impact",
+        "buys products as soon as they see them",
+        "has limited time for shopping"
+      ],
+      "questions": [
+        {
+          "speaker": "A",
+          "display_no": "16.1",
+          "question_id": "27342",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260719/shopping-habits-person-a.mp3",
+          "correct_answer": "has limited time for shopping",
+          "correct_value": "3"
+        },
+        {
+          "speaker": "B",
+          "display_no": "16.2",
+          "question_id": "27343",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260719/shopping-habits-person-b.mp3",
+          "correct_answer": "tries to save money",
+          "correct_value": "0"
+        },
+        {
+          "speaker": "C",
+          "display_no": "16.3",
+          "question_id": "27344",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260719/shopping-habits-person-c.mp3",
+          "correct_answer": "considers the environmental impact",
+          "correct_value": "4"
+        },
+        {
+          "speaker": "D",
+          "display_no": "16.4",
+          "question_id": "27345",
+          "audio_url": "https://aptistest.edu.vn/storage/audios/aptis/listening/part2/elevenlabs/20260719/shopping-habits-person-d.mp3",
+          "correct_answer": "shops only on the internet",
+          "correct_value": "1"
+        }
+      ]
+    }
+  ]
+}

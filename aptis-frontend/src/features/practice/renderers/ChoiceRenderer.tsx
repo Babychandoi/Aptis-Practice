@@ -58,6 +58,44 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
   );
 }
 
+export function SingleChoiceSelectRenderer({ item, draft, disabled, showAnswer, onChange }: Props) {
+  const correctId = item.answerKey?.selectedOptionId;
+  const selectedId = draft.selectedOptionId ?? '';
+  const selectedIsWrong = showAnswer && Boolean(selectedId) && selectedId !== correctId;
+  const correctOption = item.options.find((option) => option.id === correctId);
+
+  return (
+    <div>
+      <select
+        value={selectedId}
+        disabled={disabled}
+        aria-label="Chọn đáp án"
+        onChange={(event) => onChange({ selectedOptionId: event.target.value })}
+        className={clsx(
+          'min-h-11 w-full rounded-lg border bg-white px-3 py-2 text-xs outline-none transition sm:text-[13px]',
+          !showAnswer && 'border-[#d9cdb4] focus:border-brand-700 focus:ring-2 focus:ring-brand-100',
+          showAnswer && selectedId === correctId && 'border-emerald-400 bg-emerald-50 text-emerald-900',
+          selectedIsWrong && 'border-red-400 bg-red-50 text-red-900',
+          disabled && 'cursor-default opacity-100',
+        )}
+      >
+        <option value="">Chọn đáp án...</option>
+        {item.options.map((option) => (
+          <option key={option.id} value={option.id}>
+            {option.content}
+          </option>
+        ))}
+      </select>
+
+      {selectedIsWrong && correctOption && (
+        <p className="mt-1.5 text-xs font-medium text-emerald-700">
+          Đáp án đúng: {correctOption.content}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export function MultipleChoiceRenderer({
   item,
   draft,

@@ -1,41 +1,48 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { setAuthFailureHandler } from '@/api/client';
 import { useAuthStore } from '@/features/auth/authStore';
 import { AppLayout } from '@/app/AppLayout';
 import { ProtectedRoute } from '@/app/ProtectedRoute';
-import { LoginPage } from '@/features/auth/LoginPage';
-import { RegisterPage } from '@/features/auth/RegisterPage';
-import { VerifyEmailPage } from '@/features/auth/VerifyEmailPage';
-import { ForgotPasswordPage } from '@/features/auth/ForgotPasswordPage';
-import { ResetPasswordPage } from '@/features/auth/ResetPasswordPage';
-import { DashboardPage } from '@/features/catalog/DashboardPage';
-import { ComponentPage } from '@/features/catalog/ComponentPage';
-import { ComponentPartsPage } from '@/features/catalog/ComponentPartsPage';
-import { ComponentTestsPage } from '@/features/catalog/ComponentTestsPage';
-import { ComponentTestIntroPage } from '@/features/catalog/ComponentTestIntroPage';
-import { PartPage } from '@/features/catalog/PartPage';
-import { MockTestPage } from '@/features/practice/MockTestPage';
-import { AttemptPage } from '@/features/practice/AttemptPage';
-import { AttemptResultPage } from '@/features/practice/AttemptResultPage';
-import { HistoryPage } from '@/features/practice/HistoryPage';
-import { PlansPage } from '@/features/billing/PlansPage';
-import { CheckoutPage } from '@/features/billing/CheckoutPage';
-import { ProfilePage } from '@/features/auth/ProfilePage';
-import { AdminLayout } from '@/features/admin/AdminLayout';
 import { AdminRoute } from '@/features/admin/AdminRoute';
-import { QuestionSetListPage } from '@/features/admin/QuestionSetListPage';
-import { QuestionSetDetailPage } from '@/features/admin/QuestionSetDetailPage';
-import { QuestionSetEditorPage } from '@/features/admin/QuestionSetEditorPage';
-import { ImportAdminPage } from '@/features/admin/ImportAdminPage';
-import { PlanAdminPage } from '@/features/admin/PlanAdminPage';
-import { OrderAdminPage } from '@/features/admin/OrderAdminPage';
-import { RefundAdminPage } from '@/features/admin/RefundAdminPage';
-import { ReportAdminPage } from '@/features/admin/ReportAdminPage';
-import { BankTransferAdminPage } from '@/features/admin/BankTransferAdminPage';
-import { UserAdminPage } from '@/features/admin/UserAdminPage';
-import { ScoringConfigPage } from '@/features/admin/ScoringConfigPage';
-import { SkillTestAdminPage } from '@/features/admin/SkillTestAdminPage';
+
+const LoginPage = lazy(() => import('@/features/auth/LoginPage').then((m) => ({ default: m.LoginPage })));
+const RegisterPage = lazy(() => import('@/features/auth/RegisterPage').then((m) => ({ default: m.RegisterPage })));
+const VerifyEmailPage = lazy(() => import('@/features/auth/VerifyEmailPage').then((m) => ({ default: m.VerifyEmailPage })));
+const ForgotPasswordPage = lazy(() => import('@/features/auth/ForgotPasswordPage').then((m) => ({ default: m.ForgotPasswordPage })));
+const ResetPasswordPage = lazy(() => import('@/features/auth/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage })));
+const ProfilePage = lazy(() => import('@/features/auth/ProfilePage').then((m) => ({ default: m.ProfilePage })));
+const DashboardPage = lazy(() => import('@/features/catalog/DashboardPage').then((m) => ({ default: m.DashboardPage })));
+const ComponentPage = lazy(() => import('@/features/catalog/ComponentPage').then((m) => ({ default: m.ComponentPage })));
+const ComponentPartsPage = lazy(() => import('@/features/catalog/ComponentPartsPage').then((m) => ({ default: m.ComponentPartsPage })));
+const ComponentTestsPage = lazy(() => import('@/features/catalog/ComponentTestsPage').then((m) => ({ default: m.ComponentTestsPage })));
+const ComponentTestIntroPage = lazy(() => import('@/features/catalog/ComponentTestIntroPage').then((m) => ({ default: m.ComponentTestIntroPage })));
+const PartPage = lazy(() => import('@/features/catalog/PartPage').then((m) => ({ default: m.PartPage })));
+const MockTestPage = lazy(() => import('@/features/practice/MockTestPage').then((m) => ({ default: m.MockTestPage })));
+const AttemptPage = lazy(() => import('@/features/practice/AttemptPage').then((m) => ({ default: m.AttemptPage })));
+const AttemptResultPage = lazy(() => import('@/features/practice/AttemptResultPage').then((m) => ({ default: m.AttemptResultPage })));
+const HistoryPage = lazy(() => import('@/features/practice/HistoryPage').then((m) => ({ default: m.HistoryPage })));
+const PlansPage = lazy(() => import('@/features/billing/PlansPage').then((m) => ({ default: m.PlansPage })));
+const CheckoutPage = lazy(() => import('@/features/billing/CheckoutPage').then((m) => ({ default: m.CheckoutPage })));
+const StudyTipsHomePage = lazy(() => import('@/features/learning/StudyTipsHomePage').then((m) => ({ default: m.StudyTipsHomePage })));
+const StudyTipsListeningPart3Page = lazy(() => import('@/features/learning/StudyTipsListeningPart3Page').then((m) => ({ default: m.StudyTipsListeningPart3Page })));
+const StudyTipsReadingPage = lazy(() => import('@/features/learning/StudyTipsReadingPage').then((m) => ({ default: m.StudyTipsReadingPage })));
+const StudyTipsWritingPage = lazy(() => import('@/features/learning/StudyTipsWritingPage').then((m) => ({ default: m.StudyTipsWritingPage })));
+const StudyTipsSpeakingPage = lazy(() => import('@/features/learning/StudyTipsSpeakingPage').then((m) => ({ default: m.StudyTipsSpeakingPage })));
+const NotFoundPage = lazy(() => import('@/app/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
+const AdminLayout = lazy(() => import('@/features/admin/AdminLayout').then((m) => ({ default: m.AdminLayout })));
+const QuestionSetListPage = lazy(() => import('@/features/admin/QuestionSetListPage').then((m) => ({ default: m.QuestionSetListPage })));
+const QuestionSetDetailPage = lazy(() => import('@/features/admin/QuestionSetDetailPage').then((m) => ({ default: m.QuestionSetDetailPage })));
+const QuestionSetEditorPage = lazy(() => import('@/features/admin/QuestionSetEditorPage').then((m) => ({ default: m.QuestionSetEditorPage })));
+const ImportAdminPage = lazy(() => import('@/features/admin/ImportAdminPage').then((m) => ({ default: m.ImportAdminPage })));
+const PlanAdminPage = lazy(() => import('@/features/admin/PlanAdminPage').then((m) => ({ default: m.PlanAdminPage })));
+const OrderAdminPage = lazy(() => import('@/features/admin/OrderAdminPage').then((m) => ({ default: m.OrderAdminPage })));
+const RefundAdminPage = lazy(() => import('@/features/admin/RefundAdminPage').then((m) => ({ default: m.RefundAdminPage })));
+const ReportAdminPage = lazy(() => import('@/features/admin/ReportAdminPage').then((m) => ({ default: m.ReportAdminPage })));
+const BankTransferAdminPage = lazy(() => import('@/features/admin/BankTransferAdminPage').then((m) => ({ default: m.BankTransferAdminPage })));
+const UserAdminPage = lazy(() => import('@/features/admin/UserAdminPage').then((m) => ({ default: m.UserAdminPage })));
+const ScoringConfigPage = lazy(() => import('@/features/admin/ScoringConfigPage').then((m) => ({ default: m.ScoringConfigPage })));
+const SkillTestAdminPage = lazy(() => import('@/features/admin/SkillTestAdminPage').then((m) => ({ default: m.SkillTestAdminPage })));
 
 export function App() {
   const navigate = useNavigate();
@@ -62,6 +69,7 @@ export function App() {
   }
 
   return (
+    <Suspense fallback={<div className="p-6 text-sm text-slate-500">Đang tải…</div>}>
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
@@ -88,6 +96,11 @@ export function App() {
         <Route path="/mock-tests" element={<MockTestPage />} />
         <Route path="/attempts/:attemptId" element={<AttemptPage />} />
         <Route path="/attempts/:attemptId/result" element={<AttemptResultPage />} />
+        <Route path="/meo-hoc" element={<StudyTipsHomePage />} />
+        <Route path="/meo-hoc/nghe-phan-3" element={<StudyTipsListeningPart3Page />} />
+        <Route path="/meo-hoc/doc" element={<StudyTipsReadingPage />} />
+        <Route path="/meo-hoc/viet" element={<StudyTipsWritingPage />} />
+        <Route path="/meo-hoc/noi" element={<StudyTipsSpeakingPage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/checkout/:orderId" element={<CheckoutPage />} />
@@ -124,7 +137,9 @@ export function App() {
         <Route path="reports" element={<ReportAdminPage />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      {/* Fallback cuối: nói rõ không tìm thấy thay vì âm thầm đá về trang chủ */}
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
+    </Suspense>
   );
 }

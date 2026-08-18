@@ -27,7 +27,7 @@ import vn.weconex.aptis.evaluation.repository.EvaluationJobRepository;
 @RequiredArgsConstructor
 public class EvaluationDispatcher {
 
-    private static final int MAX_RETRY = 3;
+    static final int MAX_RETRY = 3;
 
     private final EvaluationJobRepository jobRepository;
     private final EvaluationWorker worker;

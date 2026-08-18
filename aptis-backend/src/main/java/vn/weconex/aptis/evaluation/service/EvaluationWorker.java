@@ -2,7 +2,9 @@ package vn.weconex.aptis.evaluation.service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import vn.weconex.aptis.common.util.Enums.AttemptStatus;
 import vn.weconex.aptis.common.util.Enums.EvaluationType;
 import vn.weconex.aptis.common.util.Enums.JobStatus;
@@ -42,6 +45,12 @@ import vn.weconex.aptis.practice.service.AttemptScoreAggregator;
 @RequiredArgsConstructor
 public class EvaluationWorker {
 
+    /**
+     * Bản ghi dài hơn mốc này mà không ra chữ nào thì coi là lỗi STT, không phải
+     * học viên im lặng. 3 giây: đủ để loại các bản ghi bấm nhầm rồi dừng ngay.
+     */
+    private static final long MIN_AUDIBLE_MS = 3_000;
+
     private static final int MAX_RETRY = 3;
 
     private final EvaluationJobRepository jobRepository;
@@ -54,6 +63,7 @@ public class EvaluationWorker {
     private final AttemptScoreAggregator scoreAggregator;
     private final TranscriptionService transcriptionService;
     private final List<EvaluationEngine> engines;
+    private final TransactionTemplate transactionTemplate;
 
     /**
      * Xử lý một job.
@@ -62,15 +72,16 @@ public class EvaluationWorker {
      * nên mọi thay đổi bên trong đều mất. Caller ({@link EvaluationDispatcher})
      * ghi nhận thất bại qua transaction độc lập.
      */
-    @Transactional
     public boolean processOne(String jobId) {
-
-        EvaluationJob job = jobRepository.findById(jobId).orElse(null);
-        if (job == null || job.getStatus() != JobStatus.QUEUED) {
+        boolean claimed = Boolean.TRUE.equals(transactionTemplate.execute(status ->
+                jobRepository.claim(
+                        jobId, JobStatus.QUEUED, JobStatus.PROCESSING, Instant.now()) == 1));
+        if (!claimed) {
             return false;
         }
 
-        job.markProcessing();
+        EvaluationJob job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new IllegalStateException("Job vừa claim đã biến mất: " + jobId));
 
         AttemptDocument attemptDocument = attemptDocumentRepository
                 .findByAttemptId(job.getAttemptId())
@@ -84,28 +95,107 @@ public class EvaluationWorker {
                     "Snapshot thiếu entry " + job.getAttemptQuestionSetId());
         }
 
-        EvaluationEngine engine = resolveEngine(job.getEvaluationType());
-        EvaluationEngine.EvaluationResult result = evaluate(job, entry, engine);
+        EvaluationOutcome outcome = evaluateWithFallback(job, entry);
+        EvaluationEngine engine = outcome.engine();
+        EvaluationEngine.EvaluationResult result = outcome.result();
 
-        EvaluationDocument document = persistEvaluationDocument(job, entry, engine, result);
-        applyScoreToAttempt(job, entry, attemptDocument, result, document);
+        Boolean completed = transactionTemplate.execute(status -> {
+            EvaluationJob currentJob = jobRepository.findById(jobId).orElse(null);
+            if (currentJob == null || currentJob.getStatus() != JobStatus.PROCESSING) {
+                return false;
+            }
 
-        job.markCompleted(document.getId());
+            // Different jobs of the same attempt may be handled by different
+            // worker replicas. Lock the attempt and reload Mongo before merging
+            // this score so one completion cannot overwrite another.
+            attemptRepository.findByIdForUpdate(currentJob.getAttemptId())
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Không tìm thấy attempt " + currentJob.getAttemptId()));
+            AttemptDocument latestDocument = attemptDocumentRepository
+                    .findByAttemptId(currentJob.getAttemptId())
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Thiếu snapshot cho attempt " + currentJob.getAttemptId()));
+            AttemptDocument.QuestionSetEntry latestEntry =
+                    latestDocument.findEntry(currentJob.getAttemptQuestionSetId());
+            if (latestEntry == null) {
+                throw new IllegalStateException(
+                        "Snapshot thiếu entry " + currentJob.getAttemptQuestionSetId());
+            }
+            copyAudioAnalysis(entry, latestEntry);
+
+            EvaluationDocument document =
+                    persistEvaluationDocument(currentJob, latestEntry, engine, result);
+            applyScoreToAttempt(currentJob, latestEntry, latestDocument, result, document);
+            currentJob.markCompleted(document.getId());
+            return true;
+        });
+        if (!Boolean.TRUE.equals(completed)) {
+            return false;
+        }
         log.info("Đã chấm job {} ({}): {}/{}",
                 jobId, job.getEvaluationType(), result.totalScore(), result.maxScore());
         return true;
     }
 
+    private static void copyAudioAnalysis(
+            AttemptDocument.QuestionSetEntry source,
+            AttemptDocument.QuestionSetEntry target) {
+        for (AttemptDocument.ItemResponse sourceResponse
+                : source.getResponse().getItemResponses()) {
+            if (sourceResponse.getTranscript() == null) {
+                continue;
+            }
+            AttemptDocument.ItemResponse targetResponse =
+                    target.getResponse().findItemResponse(sourceResponse.getItemId());
+            if (targetResponse != null) {
+                targetResponse.setTranscript(sourceResponse.getTranscript());
+                targetResponse.setAcousticMetrics(sourceResponse.getAcousticMetrics());
+                targetResponse.setAudioAnalysisSource(sourceResponse.getAudioAnalysisSource());
+            }
+        }
+    }
+
     // -----------------------------------------------------------------
 
-    private EvaluationEngine resolveEngine(EvaluationType type) {
-        return engines.stream()
+    private List<EvaluationEngine> resolveEngines(EvaluationType type) {
+        List<EvaluationEngine> matching = engines.stream()
                 .filter(engine -> engine.supports(type))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException(
+                .toList();
+        if (matching.isEmpty()) {
+            throw new IllegalStateException(
                         "Không có engine chấm cho " + type
                                 + ". Bật aptis.evaluation.heuristic.enabled hoặc "
-                                + "cấu hình engine thật."));
+                                + "cấu hình engine thật.");
+        }
+        return matching;
+    }
+
+    private record EvaluationOutcome(
+            EvaluationEngine engine,
+            EvaluationEngine.EvaluationResult result) {
+    }
+
+    /**
+     * Provider gets normal retries. On the final attempt only, malformed JSON or
+     * an unavailable provider falls back to the next configured engine so the
+     * learner still receives an explicitly labelled provisional score.
+     */
+    private EvaluationOutcome evaluateWithFallback(
+            EvaluationJob job, AttemptDocument.QuestionSetEntry entry) {
+        List<EvaluationEngine> matching = resolveEngines(job.getEvaluationType());
+        EvaluationEngine primary = matching.get(0);
+        try {
+            return new EvaluationOutcome(primary, evaluate(job, entry, primary));
+        } catch (EvaluationProviderException ex) {
+            boolean finalAttempt = job.getRetryCount() >= EvaluationDispatcher.MAX_RETRY - 1;
+            if (!finalAttempt || matching.size() < 2) {
+                throw ex;
+            }
+            EvaluationEngine fallback = matching.get(1);
+            log.error("Provider {} lỗi ở lần cuối; dùng fallback {} cho job {}: {}",
+                    primary.engineName(), fallback.engineName(), job.getId(), ex.getMessage());
+            return new EvaluationOutcome(fallback, evaluate(job, entry, fallback));
+        }
     }
 
     private EvaluationEngine.EvaluationResult evaluate(
@@ -116,17 +206,76 @@ public class EvaluationWorker {
         QuestionSetDocument.Item item = firstEvaluableItem(entry, job.getEvaluationType());
         AttemptDocument.ItemResponse response = entry.getResponse().findItemResponse(item.getId());
 
+        // Writing Part 1/2/3 có nhiều ô trả lời trong cùng một bộ. Một job phải
+        // chấm toàn bộ các ô theo đúng thứ tự, không chỉ item đầu tiên.
+        if (job.getEvaluationType() == EvaluationType.WRITING_AI) {
+            List<QuestionSetDocument.Item> writingItems = evaluableItems(entry, "LONG_TEXT");
+            StringBuilder prompts = new StringBuilder();
+            StringBuilder answers = new StringBuilder();
+            int minWords = 0;
+            int maxWords = 0;
+            for (int index = 0; index < writingItems.size(); index++) {
+                QuestionSetDocument.Item writingItem = writingItems.get(index);
+                AttemptDocument.ItemResponse writingResponse =
+                        entry.getResponse().findItemResponse(writingItem.getId());
+                prompts.append("Question ").append(index + 1).append(": ")
+                        .append(writingItem.getPrompt() == null
+                                ? "" : writingItem.getPrompt().getValue())
+                        .append('\n');
+                answers.append("Answer ").append(index + 1).append(": ");
+                if (writingResponse != null && writingResponse.getTextValue() != null) {
+                    answers.append(writingResponse.getTextValue());
+                }
+                answers.append('\n');
+                minWords += numberConstraint(writingItem, "minWords");
+                maxWords += numberConstraint(writingItem, "maxWords");
+            }
+            Map<String, Object> constraints = new LinkedHashMap<>(item.getConstraints());
+            constraints.put("minWords", minWords);
+            constraints.put("maxWords", maxWords);
+            constraints.put("itemCount", writingItems.size());
+            return engine.evaluate(new EvaluationEngine.EvaluationRequest(
+                    job.getEvaluationType(), answers.toString(), null, null, null,
+                    Map.of(),
+                    loadRubric(item), prompts.toString(), constraints));
+        }
+
         String transcript = null;
         Long durationMs = null;
+        Map<String, Object> acousticMetrics = Map.of();
+        String audioAnalysisSource = null;
         if (job.getEvaluationType() == EvaluationType.SPEAKING_AI && response != null) {
             // Chuyển giọng nói thành văn bản trước khi chấm (§40 bước 6)
-            TranscriptionService.Transcript t =
-                    transcriptionService.transcribe(response.getRecordingAssetId());
+            TranscriptionService.Transcript t;
+            if (response.getAudioAnalysisSource() != null && response.getTranscript() != null) {
+                t = new TranscriptionService.Transcript(
+                        response.getTranscript(), null, true,
+                        response.getAcousticMetrics(), response.getAudioAnalysisSource());
+            } else {
+                t = transcriptionService.transcribe(response.getRecordingAssetId());
+            }
             transcript = t.text();
             durationMs = t.durationMs();
+            acousticMetrics = t.acousticMetrics();
+            audioAnalysisSource = t.source();
+
+            // Có bản ghi mà không nghe được chữ nào: phân biệt hai trường hợp.
+            //
+            // Học viên KHÔNG NÓI GÌ thì 0 điểm là đúng. Nhưng STT lỗi (endpoint
+            // sập, hết hạn mức, file hỏng) cũng cho transcript rỗng — chấm 0 lúc
+            // đó là oan. Ném lỗi để job vào retry; chỉ khi hết lượt thử mới
+            // FAILED và giáo viên chấm tay, thay vì âm thầm cho 0.
+            if (!t.available() && response.getRecordingAssetId() != null
+                    && durationMs != null && durationMs > MIN_AUDIBLE_MS) {
+                throw new IllegalStateException(
+                        "Không lấy được transcript cho bản ghi dài " + durationMs
+                                + " ms — kiểm tra dịch vụ STT trước khi chấm");
+            }
 
             // Lưu transcript vào snapshot để giáo viên xem lại được
             response.setTranscript(transcript);
+            response.setAcousticMetrics(acousticMetrics);
+            response.setAudioAnalysisSource(audioAnalysisSource);
         }
 
         EvaluationEngine.RubricSpec rubric = loadRubric(item);
@@ -137,6 +286,7 @@ public class EvaluationWorker {
                 transcript,
                 response == null ? null : response.getRecordingAssetId(),
                 durationMs,
+                acousticMetrics,
                 rubric,
                 item.getPrompt() == null ? null : item.getPrompt().getValue(),
                 item.getConstraints()));
@@ -155,6 +305,18 @@ public class EvaluationWorker {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException(
                         "Không tìm thấy câu dạng " + responseType + " để chấm"));
+    }
+
+    private static List<QuestionSetDocument.Item> evaluableItems(
+            AttemptDocument.QuestionSetEntry entry, String responseType) {
+        return entry.getSnapshot().getItems().stream()
+                .filter(item -> responseType.equals(item.getResponseType()))
+                .toList();
+    }
+
+    private static int numberConstraint(QuestionSetDocument.Item item, String key) {
+        Object value = item.getConstraints().get(key);
+        return value instanceof Number number ? number.intValue() : 0;
     }
 
     /**
@@ -225,6 +387,13 @@ public class EvaluationWorker {
             input.setTextResponse(response.getTextValue());
             input.setRecordingAssetId(response.getRecordingAssetId());
             input.setTranscript(response.getTranscript());
+            input.setAcousticMetrics(response.getAcousticMetrics());
+            input.setAudioAnalysisSource(response.getAudioAnalysisSource());
+            Object measuredDuration = response.getAcousticMetrics() == null
+                    ? null : response.getAcousticMetrics().get("durationSeconds");
+            if (measuredDuration instanceof Number number) {
+                input.setDurationMs(Math.round(number.doubleValue() * 1000));
+            }
             String forCount = response.getTextValue() != null
                     ? response.getTextValue()
                     : response.getTranscript();

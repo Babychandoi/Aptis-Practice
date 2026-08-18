@@ -22,5 +22,32 @@ aptis:
       async-refund: ${SANDBOX_ASYNC_REFUND:false}
 
   evaluation:
+    # Chấm bằng LLM qua API tương thích OpenAI (9Router). Bật lên thì
+    # LlmEvaluationEngine (@Order 0) được chọn trước heuristic.
+    llm:
+      enabled: ${AI_EVAL_ENABLED:false}
+      base-url: ${AI_EVAL_BASE_URL:}
+      api-key: ${AI_EVAL_API_KEY:}
+      model: ${AI_EVAL_MODEL:AI-PRO}
+      # Thấp hơn chatbot: chấm điểm phải nhất quán giữa các lần, không sáng tạo.
+      temperature: ${AI_EVAL_TEMPERATURE:0.2}
+      max-tokens: ${AI_EVAL_MAX_TOKENS:2048}
+      timeout-seconds: ${AI_EVAL_TIMEOUT:60}
+    # Bản dự phòng: chỉ đếm từ và dò từ nối, không phải AI. Giữ để luồng chấm
+    # vẫn chạy khi chưa cấu hình LLM.
+    # Analyzer local xử lý audio trước. Khối stt bên dưới chỉ là fallback từ xa
+    # có thể phát sinh phí và mặc định không được gọi.
+    local-audio:
+      enabled: ${LOCAL_SPEAKING_ENABLED:false}
+      base-url: ${LOCAL_SPEAKING_URL:http://localhost:8000}
+      timeout-seconds: ${LOCAL_SPEAKING_TIMEOUT:300}
+      # false prevents an unexpected paid audio request when the local service is down.
+      fallback-to-remote: ${LOCAL_SPEAKING_FALLBACK_REMOTE:false}
+    stt:
+      enabled: ${AI_STT_ENABLED:false}
+      base-url: ${AI_STT_BASE_URL:${AI_EVAL_BASE_URL:}}
+      api-key: ${AI_STT_API_KEY:${AI_EVAL_API_KEY:}}
+      model: ${AI_STT_MODEL:ag/gemini-3-flash}
+      timeout-seconds: ${AI_STT_TIMEOUT:120}
     heuristic:
-      enabled: true
+      enabled: ${AI_EVAL_HEURISTIC_ENABLED:true}
