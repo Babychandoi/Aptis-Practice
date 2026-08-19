@@ -649,9 +649,14 @@ public class AttemptService {
         attemptDocumentRepository.save(document);
         attemptQuestionSetRepository.save(row);
 
-        int correctItems = (int) score.getItemScores().stream()
-                .filter(AttemptDocument.ItemScore::isCorrect)
-                .count();
+        // Theo đơn vị, không theo cờ: xem lại một bộ MATCHING phải hiện đúng số
+        // cặp đã ghép trúng.
+        int correctItems = score.getItemScores().stream()
+                .mapToInt(AttemptDocument.ItemScore::unitsCorrect)
+                .sum();
+        int totalUnits = score.getItemScores().stream()
+                .mapToInt(AttemptDocument.ItemScore::unitsTotal)
+                .sum();
 
         // revealAnswers = true nhưng CHỈ cho bộ này
         QuestionSetDocument revealed = sanitizer.sanitize(
@@ -665,7 +670,7 @@ public class AttemptService {
                 score.getRawScore(),
                 score.getMaxScore(),
                 correctItems,
-                entry.getSnapshot().getItems().size(),
+                Math.max(totalUnits, entry.getSnapshot().getItems().size()),
                 score.getItemScores().stream()
                         .map(itemScore -> new PracticeDtos.ItemScoreResponse(
                                 itemScore.getItemId(),
@@ -767,12 +772,11 @@ public class AttemptService {
                 AttemptDocument.Score score = scored.get();
                 totalRaw = totalRaw.add(BigDecimal.valueOf(score.getRawScore()));
 
+                // Đếm theo đơn vị: item MATCHING chứa nhiều cặp ghép, dùng cờ
+                // isCorrect() thì ghép đúng 2/14 bị tính là 0 câu đúng.
                 for (AttemptDocument.ItemScore itemScore : score.getItemScores()) {
-                    if (itemScore.isCorrect()) {
-                        correctItems++;
-                    } else {
-                        incorrectItems++;
-                    }
+                    correctItems += itemScore.unitsCorrect();
+                    incorrectItems += itemScore.unitsTotal() - itemScore.unitsCorrect();
                 }
 
                 if (row != null) {
@@ -917,10 +921,33 @@ public class AttemptService {
                 || status == AttemptStatus.COMPLETED;
     }
 
+    /**
+     * Số câu học viên đã trả lời, đếm theo CÂU chứ không theo item.
+     *
+     * <p>Item MATCHING/ORDERING gộp nhiều câu vào một, nên đếm
+     * {@code itemResponses.size()} sẽ ra "đã làm 1 câu" trong khi màn kết quả
+     * hiện "đúng 2 câu" — hai con số của cùng một bài mà không khớp nhau.
+     */
     private static int countAnsweredItems(AttemptDocument document) {
         return document.getQuestionSets().stream()
-                .mapToInt(e -> e.getResponse().getItemResponses().size())
+                .flatMap(e -> e.getResponse().getItemResponses().stream())
+                .mapToInt(AttemptService::answeredUnits)
                 .sum();
+    }
+
+    /** Số câu đã trả lời bên trong một item; 1 với dạng bài một câu. */
+    private static int answeredUnits(AttemptDocument.ItemResponse response) {
+        String type = response.getResponseType();
+        if ("MATCHING".equals(type)) {
+            // Chỉ tính cặp đã chọn; bỏ trống không phải "đã làm".
+            return response.getMatches() == null ? 0 : (int) response.getMatches().values().stream()
+                    .filter(v -> v != null && !v.isBlank())
+                    .count();
+        }
+        if ("ORDERING".equals(type) || "SENTENCE_ORDERING".equals(type)) {
+            return response.getOrderedOptionIds() == null ? 0 : response.getOrderedOptionIds().size();
+        }
+        return 1;
     }
 
     private Integer estimateDuration(List<QuestionSet> questionSets) {

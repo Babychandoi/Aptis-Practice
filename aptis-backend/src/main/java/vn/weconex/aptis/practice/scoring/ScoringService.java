@@ -65,6 +65,8 @@ public class ScoringService {
             itemScore.setRawScore(result.rawScore());
             itemScore.setMaxScore(result.maxScore());
             itemScore.setCorrect(result.correct());
+            itemScore.setCorrectUnits(result.correctUnits());
+            itemScore.setTotalUnits(result.totalUnits());
             itemScores.add(itemScore);
 
             totalRaw += result.rawScore();

@@ -60,8 +60,11 @@ export function MatchingRenderer({
       {leftEntries.map((left) => {
         const picked = matches[left.id] ?? '';
         const correct = correctMatches[left.id];
-        const isCorrect = showAnswer && picked === correct;
+        const isCorrect = showAnswer && picked !== '' && picked === correct;
         const isWrong = showAnswer && picked !== '' && picked !== correct;
+        // Bỏ trống không phải "sai" (không tô đỏ) nhưng vẫn phải thấy đáp án:
+        // học viên xem lại bài để học, câu chưa làm là câu cần học nhất.
+        const isBlank = showAnswer && picked === '';
 
         return (
           <div
@@ -70,6 +73,7 @@ export function MatchingRenderer({
               'rounded-lg border p-3',
               isCorrect && 'border-emerald-400 bg-emerald-50',
               isWrong && 'border-red-400 bg-red-50',
+              isBlank && 'border-amber-300 bg-amber-50/50',
               !showAnswer && 'border-slate-200',
             )}
           >
@@ -95,7 +99,7 @@ export function MatchingRenderer({
               ))}
             </select>
 
-            {isWrong && correct && (
+            {(isWrong || isBlank) && correct && (
               <p className="mt-1.5 text-xs text-emerald-700">
                 Đáp án đúng: {rightOptions.find((r) => r.id === correct)?.content ?? correct}
               </p>
