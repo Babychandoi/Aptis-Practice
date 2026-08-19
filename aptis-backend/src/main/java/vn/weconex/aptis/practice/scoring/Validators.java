@@ -76,17 +76,20 @@ public final class Validators {
             if (expected.isEmpty()) {
                 return ItemResult.zero(max);
             }
+            int total = expected.size();
             if (expected.equals(actual)) {
-                return ItemResult.full(max);
-            }
-            if (!scoring.isPartialCredit()) {
-                return ItemResult.zero(max);
+                return ItemResult.units(max, max, total, total);
             }
 
             long hits = actual.stream().filter(expected::contains).count();
+            if (!scoring.isPartialCredit()) {
+                return ItemResult.units(0, max, (int) hits, total);
+            }
+
             long misses = actual.size() - hits;
-            double ratio = Math.max(0.0, (double) (hits - misses) / expected.size());
-            return ItemResult.partial(round(ratio * max), max);
+            // Trừ điểm cho lựa chọn sai để không thể chọn hết mà vẫn ăn điểm.
+            double ratio = Math.max(0.0, (double) (hits - misses) / total);
+            return ItemResult.units(round(ratio * max), max, (int) hits, total);
         }
     }
 
@@ -124,18 +127,25 @@ public final class Validators {
                     .filter(e -> e.getValue().equals(actual.get(e.getKey())))
                     .count();
 
-            if (correct == expected.size()) {
-                return ItemResult.full(max);
+            // Báo cáo theo số cặp ghép, không phải một cờ đúng/sai: item này là 14
+            // câu hỏi gộp lại, nên ghép đúng 2/14 phải hiện "2 câu đúng" thay vì 0.
+            int total = expected.size();
+            int done = (int) correct;
+
+            if (done == total) {
+                return ItemResult.units(max, max, total, total);
             }
             if (!scoring.isPartialCredit()) {
-                return ItemResult.zero(max);
+                // Không cho điểm lẻ, nhưng vẫn ghi nhận số cặp đúng để bảng điểm
+                // không nói "0 câu đúng" khi học viên thực sự ghép đúng vài cặp.
+                return ItemResult.units(0, max, done, total);
             }
             Object configuredPoints = item.getConstraints().get("pointsPerCorrect");
             if (configuredPoints instanceof Number number && number.doubleValue() > 0) {
                 double earned = Math.min(correct * number.doubleValue(), max);
-                return ItemResult.partial(round(earned), max);
+                return ItemResult.units(round(earned), max, done, total);
             }
-            return ItemResult.partial(round((double) correct / expected.size() * max), max);
+            return ItemResult.units(round((double) correct / total * max), max, done, total);
         }
     }
 
@@ -191,11 +201,16 @@ public final class Validators {
                     correctPositions++;
                 }
             }
+            int totalPositions = scoredExpected.size();
             Object configuredPoints = item.getConstraints().get("pointsPerCorrect");
             if (configuredPoints instanceof Number number && number.doubleValue() > 0) {
-                return ItemResult.partial(round(Math.min(correctPositions * number.doubleValue(), max)), max);
+                return ItemResult.units(
+                        round(Math.min(correctPositions * number.doubleValue(), max)),
+                        max, correctPositions, totalPositions);
             }
-            return ItemResult.partial(round((double) correctPositions / scoredExpected.size() * max), max);
+            return ItemResult.units(
+                    round((double) correctPositions / totalPositions * max),
+                    max, correctPositions, totalPositions);
         }
     }
 

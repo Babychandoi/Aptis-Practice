@@ -62,6 +62,9 @@ export function SingleChoiceSelectRenderer({ item, draft, disabled, showAnswer, 
   const correctId = item.answerKey?.selectedOptionId;
   const selectedId = draft.selectedOptionId ?? '';
   const selectedIsWrong = showAnswer && Boolean(selectedId) && selectedId !== correctId;
+  // Bỏ trống không tô đỏ (không phải chọn sai) nhưng vẫn hiện đáp án: câu chưa
+  // làm là câu học viên cần học nhất khi xem lại bài.
+  const selectedIsBlank = showAnswer && !selectedId;
   const correctOption = item.options.find((option) => option.id === correctId);
 
   return (
@@ -76,6 +79,7 @@ export function SingleChoiceSelectRenderer({ item, draft, disabled, showAnswer, 
           !showAnswer && 'border-[#d9cdb4] focus:border-brand-700 focus:ring-2 focus:ring-brand-100',
           showAnswer && selectedId === correctId && 'border-emerald-400 bg-emerald-50 text-emerald-900',
           selectedIsWrong && 'border-red-400 bg-red-50 text-red-900',
+        selectedIsBlank && 'border-amber-300 bg-amber-50/50',
           disabled && 'cursor-default opacity-100',
         )}
       >
@@ -87,7 +91,7 @@ export function SingleChoiceSelectRenderer({ item, draft, disabled, showAnswer, 
         ))}
       </select>
 
-      {selectedIsWrong && correctOption && (
+      {(selectedIsWrong || selectedIsBlank) && correctOption && (
         <p className="mt-1.5 text-xs font-medium text-emerald-700">
           Đáp án đúng: {correctOption.content}
         </p>

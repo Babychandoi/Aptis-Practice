@@ -170,5 +170,30 @@ public class AttemptDocument {
         private double rawScore;
         private double maxScore;
         private boolean correct;
+        /**
+         * Số đơn vị đúng bên trong item và tổng số đơn vị.
+         *
+         * <p>Item MATCHING của Reading Part 3 là 14 cặp ghép trong một item, nên
+         * cờ {@code correct} một mình không đủ: ghép đúng 2/14 vẫn là
+         * {@code correct=false} và bảng điểm hiện "0 câu đúng" dù có 4 điểm.
+         *
+         * <p>Bản ghi cũ không có hai field này (mặc định 0); {@link #unitsTotal()}
+         * và {@link #unitsCorrect()} suy ra từ {@code correct} khi đó.
+         */
+        private int correctUnits;
+        private int totalUnits;
+
+        /** Tổng số đơn vị, suy ra cho bản ghi cũ chưa có field. */
+        public int unitsTotal() {
+            return totalUnits > 0 ? totalUnits : 1;
+        }
+
+        /** Số đơn vị đúng, suy ra cho bản ghi cũ chưa có field. */
+        public int unitsCorrect() {
+            if (totalUnits > 0) {
+                return correctUnits;
+            }
+            return correct ? 1 : 0;
+        }
     }
 }

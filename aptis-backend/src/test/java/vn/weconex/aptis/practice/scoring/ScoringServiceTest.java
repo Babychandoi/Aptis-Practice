@@ -121,6 +121,62 @@ class ScoringServiceTest {
         assertThat(score.orElseThrow().getRawScore()).isZero();
     }
 
+    /**
+     * Item MATCHING phải báo số CẶP đúng, không phải một cờ đúng/sai cả item.
+     *
+     * <p>Lỗi thật gặp phải: Reading Part 3 có 14 cặp ghép trong một item. Học
+     * viên ghép đúng 2 cặp được 4 điểm, nhưng bảng điểm hiện "0 câu đúng" vì
+     * {@code ItemResult.partial()} đặt {@code correct = earned >= maxScore} —
+     * đúng 2/14 thì cờ đó là false. Bảng điểm tự mâu thuẫn: có điểm mà không có
+     * câu nào đúng.
+     */
+    @Test
+    void matchingReportsCorrectPairCountNotJustAllOrNothing() {
+        var item = new QuestionSetDocument.Item();
+        item.setId("item_1");
+        item.setResponseType("MATCHING");
+        item.setMaxScore(28);
+        item.setConstraints(Map.of("pointsPerCorrect", 2));
+        var key = new QuestionSetDocument.AnswerKey();
+        key.setMatches(Map.of(
+                "q1", "A", "q2", "B", "q3", "C", "q4", "D",
+                "q5", "A", "q6", "B", "q7", "C"));
+        item.setAnswerKey(key);
+
+        // Đúng 2 cặp (q1, q2), sai 2, bỏ trống 3.
+        var response = new AttemptDocument.ItemResponse();
+        response.setItemId("item_1");
+        response.setResponseType("MATCHING");
+        response.setMatches(Map.of("q1", "A", "q2", "B", "q3", "X", "q4", "X"));
+
+        var itemScore = scoringService.scoreEntry(entryWith(item, response, true))
+                .orElseThrow().getItemScores().get(0);
+
+        assertThat(itemScore.getRawScore()).isEqualTo(4.0);
+        assertThat(itemScore.unitsCorrect())
+                .as("2 cặp đúng phải được báo là 2, không phải 0")
+                .isEqualTo(2);
+        assertThat(itemScore.unitsTotal()).isEqualTo(7);
+        assertThat(itemScore.isCorrect())
+                .as("chưa đúng hết thì cờ correct vẫn là false")
+                .isFalse();
+    }
+
+    /** Bản ghi cũ chưa có totalUnits phải suy ra từ cờ correct, không thành 0. */
+    @Test
+    void legacyItemScoreWithoutUnitsFallsBackToCorrectFlag() {
+        var legacy = new AttemptDocument.ItemScore();
+        legacy.setCorrect(true);
+
+        assertThat(legacy.unitsTotal()).isEqualTo(1);
+        assertThat(legacy.unitsCorrect()).isEqualTo(1);
+
+        var legacyWrong = new AttemptDocument.ItemScore();
+        legacyWrong.setCorrect(false);
+        assertThat(legacyWrong.unitsCorrect()).isZero();
+        assertThat(legacyWrong.unitsTotal()).isEqualTo(1);
+    }
+
     @Test
     void matchingAwardsPartialCreditPerPair() {
         var item = new QuestionSetDocument.Item();

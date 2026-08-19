@@ -124,8 +124,13 @@ public class AttemptSnapshotFactory {
 
         attemptDocument.setQuestionSets(entries);
 
+        // Đếm theo số câu hỏi thật, không theo số item: item MATCHING của Reading
+        // Part 3 gộp 14 cặp ghép vào một item, nên items.size() sẽ báo "1 câu"
+        // trong khi học viên phải trả lời 14 lần.
         int totalItems = entries.stream()
-                .mapToInt(e -> e.getSnapshot().getItems().size())
+                .mapToInt(e -> e.getSnapshot().getItems().stream()
+                        .mapToInt(AttemptSnapshotFactory::answerableUnits)
+                        .sum())
                 .sum();
 
         return new Snapshot(attemptDocument, rows, totalItems);
@@ -310,6 +315,34 @@ public class AttemptSnapshotFactory {
         return fromItems > 0
                 ? BigDecimal.valueOf(fromItems)
                 : questionSet.getMaxScore();
+    }
+
+    /**
+     * Số câu trả lời mà học viên phải điền cho một item.
+     *
+     * <p>Phần lớn dạng bài là 1. MATCHING và ORDERING gộp nhiều câu vào một item
+     * nên phải đếm theo số cặp / số vị trí, nếu không bảng điểm hiện "1 câu" cho
+     * bài 14 câu.
+     */
+    private static int answerableUnits(QuestionSetDocument.Item item) {
+        String type = item.getResponseType();
+        if (type == null) {
+            return 1;
+        }
+        return switch (type) {
+            case "MATCHING" -> {
+                var key = item.getAnswerKey();
+                int pairs = key == null || key.getMatches() == null ? 0 : key.getMatches().size();
+                yield Math.max(1, pairs);
+            }
+            case "ORDERING", "SENTENCE_ORDERING" -> {
+                var key = item.getAnswerKey();
+                int slots = key == null || key.getOrderedOptionIds() == null
+                        ? 0 : key.getOrderedOptionIds().size();
+                yield Math.max(1, slots);
+            }
+            default -> 1;
+        };
     }
 
     public record Snapshot(

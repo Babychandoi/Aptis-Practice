@@ -20,18 +20,43 @@ public interface ResponseValidator {
             AttemptDocument.ItemResponse response,
             QuestionSetDocument.Scoring scoring);
 
-    record ItemResult(double rawScore, double maxScore, boolean correct) {
+    /**
+     * Kết quả chấm một item.
+     *
+     * <p>{@code correctUnits}/{@code totalUnits} tồn tại vì một item không luôn
+     * là một câu hỏi. Item MATCHING của Reading Part 3 chứa 14 cặp ghép; nếu chỉ
+     * có cờ {@code correct} thì học viên ghép đúng 2/14 bị đếm là "0 câu đúng"
+     * trong khi vẫn được 4 điểm — bảng điểm tự mâu thuẫn với chính nó.
+     *
+     * @param correct      đúng trọn item (dùng cho câu đơn và để tương thích cũ)
+     * @param correctUnits số đơn vị đúng bên trong item
+     * @param totalUnits   tổng số đơn vị của item; 1 với câu đơn
+     */
+    record ItemResult(
+            double rawScore,
+            double maxScore,
+            boolean correct,
+            int correctUnits,
+            int totalUnits) {
 
         public static ItemResult zero(double maxScore) {
-            return new ItemResult(0, maxScore, false);
+            return new ItemResult(0, maxScore, false, 0, 1);
         }
 
         public static ItemResult full(double maxScore) {
-            return new ItemResult(maxScore, maxScore, true);
+            return new ItemResult(maxScore, maxScore, true, 1, 1);
         }
 
         public static ItemResult partial(double earned, double maxScore) {
-            return new ItemResult(earned, maxScore, earned >= maxScore);
+            boolean all = earned >= maxScore;
+            return new ItemResult(earned, maxScore, all, all ? 1 : 0, 1);
+        }
+
+        /** Item nhiều đơn vị (MATCHING, ORDERING): nói rõ đúng bao nhiêu trên bao nhiêu. */
+        public static ItemResult units(double earned, double maxScore, int correctUnits, int totalUnits) {
+            int total = Math.max(1, totalUnits);
+            int done = Math.max(0, Math.min(correctUnits, total));
+            return new ItemResult(earned, maxScore, done == total, done, total);
         }
     }
 }
