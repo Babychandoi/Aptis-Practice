@@ -155,6 +155,7 @@ public class AttemptScoreAggregator {
                 }
             }
             attempt.updateScore(totalRaw, totalMax);
+            attempt.setCefrLevel(estimateCefr(attempt.getPercentageScore()));
             attemptRepository.save(attempt);
         }
     }
@@ -171,6 +172,18 @@ public class AttemptScoreAggregator {
         BigDecimal targetMax = rule.maxScore();
         if (sourceMax == null || sourceMax.signum() <= 0) {
             return new BigDecimal[] {BigDecimal.ZERO, targetMax};
+        }
+
+        // Một số dạng bài (đặc biệt Reading Part 3) đã chấm điểm từng ý
+        // trực tiếp trên thang điểm của Part: 2 điểm/match và cộng 2 điểm
+        // thưởng khi đúng đủ 7 ý, tức rawScore/maxScore đã là 14/16 hoặc
+        // 16/16. Không được scale lần nữa trong trường hợp này, nếu không
+        // 2 điểm sẽ bị biến thành 1.75 do công thức 14/16 * 2.
+        if (sourceMax.compareTo(targetMax) == 0) {
+            return new BigDecimal[] {
+                    raw.max(BigDecimal.ZERO).min(targetMax),
+                    targetMax
+            };
         }
 
         BigDecimal bonus = rule.perfectBonus() == null
@@ -239,6 +252,11 @@ public class AttemptScoreAggregator {
      * Aptis (British Council không công bố công thức). Khi có dữ liệu đối chiếu
      * thật thì thay bằng bảng quy đổi theo từng học phần.
      */
+    public static String estimateCefrLevel(BigDecimal percentage) {
+        CefrLevel level = estimateCefr(percentage);
+        return level == null ? null : level.name();
+    }
+
     private static CefrLevel estimateCefr(BigDecimal percentage) {
         if (percentage == null) {
             return null;

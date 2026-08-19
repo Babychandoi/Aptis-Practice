@@ -79,12 +79,27 @@ public final class PracticeDtos {
             int timeSpentSeconds,
             int totalItems,
             int answeredItems,
+            int correctItems,
             Double rawScore,
             Double maxScore,
             Double percentageScore,
+            String cefrLevel,
             boolean itemBankPart,
+            List<ComponentScoreResponse> componentScores,
             List<ComponentProgressResponse> componentProgress,
             List<AttemptQuestionSetResponse> questionSets) {
+    }
+
+    public record ComponentScoreResponse(
+            String componentId,
+            String componentCode,
+            String componentName,
+            int displayOrder,
+            Double rawScore,
+            Double maxScore,
+            Double percentageScore,
+            Double scaledScore,
+            String cefrLevel) {
     }
 
     /**

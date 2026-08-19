@@ -102,7 +102,15 @@ export function PartPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl py-4">
+    <div className="mx-auto max-w-2xl py-4 space-y-4">
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+        className="font-mono text-xs font-semibold uppercase tracking-wider text-slate-400 hover:text-brand-600"
+      >
+        ← Đổi cách luyện
+      </button>
+
       {premiumBlocked && <PremiumGate message="Các bài trong Part này cần gói Premium." />}
       {createAttempt.error && !premiumBlocked && (
         <ErrorBlock
@@ -115,71 +123,110 @@ export function PartPage() {
         />
       )}
 
-      <section className="mt-4 rounded-xl border border-stone-200 bg-white p-5 shadow-[0_8px_24px_rgba(43,39,30,.08)] sm:p-7">
-        <div className="text-center">
-          <span className="mx-auto grid h-12 w-12 place-items-center rounded-xl bg-[#e6f1ec] text-brand-800">
-            <SkillIcon skill={skillName} />
+      <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+        {/* Top Header Card */}
+        <div className="bg-dark p-6 text-white sm:p-8">
+          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-accent">
+            Luyện theo Part · {skillName ? `Aptis ${skillName}` : 'Aptis General'}
           </span>
-          <p className="mt-3 flex flex-wrap items-center justify-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide">
-            <span className="rounded-md bg-[#f5f3ec] px-2 py-0.5 text-stone-600">
-              {skillName ? `Aptis ${skillName}` : 'Aptis'}
-            </span>
-            <span className="rounded-md bg-brand-800 px-2 py-0.5 text-white">Luyện theo Part</span>
-          </p>
-          <h1 className="mt-3 rounded-lg border border-stone-900 px-4 py-2 text-xl font-semibold sm:text-2xl">
-            {readyHeadline(skillName)}
+          <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            {part.name}
           </h1>
-          <p className="mt-2 text-sm text-stone-500">Bài luyện mô phỏng theo format Aptis chuẩn</p>
+          <p className="mt-2 text-sm leading-relaxed text-slate-300">
+            {part.description || 'Luyện tập theo đúng dạng bài thi thật · Kết quả tự lưu sau mỗi câu'}
+          </p>
         </div>
 
-        <div className="mt-6 space-y-2">
-          <InfoRow
-            icon={<ListIcon />}
-            title="Số lượng câu hỏi"
-            value={`${part.name} · ${part.publishedQuestionSetCount} đề`}
-          />
-          {part.instructions && (
-            <InfoRow icon={<HelpIcon />} title="Cách trả lời" value={part.instructions} />
-          )}
-          <InfoRow
-            icon={<ClockIcon />}
-            title="Giới hạn thời gian"
-            value={durationLabel(part.defaultDurationSeconds, skillName)}
-          />
-        </div>
-
-        {tips.length > 0 && (
-          <div className="mt-4 rounded-xl bg-[#fdf6e7] p-4">
-            <h2 className="text-[10px] font-semibold uppercase tracking-wide text-[#8a6b1f]">
-              💡 Mẹo làm bài
-            </h2>
-            <ul className="mt-2 space-y-1">
-              {tips.map((tip) => (
-                <li key={tip} className="flex gap-2 text-xs leading-5 text-[#6f5716]">
-                  <span aria-hidden="true">•</span>
-                  <span>{tip}</span>
-                </li>
-              ))}
-            </ul>
+        {/* Facts & Guidelines */}
+        <div className="p-6 space-y-6 sm:p-8">
+          {/* 3 Facts Grid */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="rounded-xl bg-surface p-3.5 sm:p-4 text-center sm:text-left">
+              <span className="block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                SỐ ĐỀ
+              </span>
+              <span className="mt-1 block font-mono text-lg font-bold text-slate-900 sm:text-xl">
+                {part.publishedQuestionSetCount} đề
+              </span>
+            </div>
+            <div className="rounded-xl bg-surface p-3.5 sm:p-4 text-center sm:text-left">
+              <span className="block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                THỜI GIAN
+              </span>
+              <span className="mt-1 block font-mono text-lg font-bold text-slate-900 sm:text-xl">
+                {part.defaultDurationSeconds ? `${Math.round(part.defaultDurationSeconds / 60)} ph` : 'Linh hoạt'}
+              </span>
+            </div>
+            <div className="rounded-xl bg-surface p-3.5 sm:p-4 text-center sm:text-left">
+              <span className="block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                THIẾT BỊ
+              </span>
+              <span className="mt-1 block font-mono text-lg font-bold text-slate-900 sm:text-xl truncate">
+                {needsMicCheck ? 'Micro' : 'Tai nghe/Loa'}
+              </span>
+            </div>
           </div>
-        )}
 
-        <div className="mt-5 grid gap-2 sm:grid-cols-2">
-          <button type="button" className="btn-secondary" onClick={() => navigate(-1)}>← Quay lại</button>
-          <button
-            type="button"
-            className="btn-primary"
-            disabled={createAttempt.isPending}
-            onClick={() => (needsMicCheck ? setStep('mic-check') : createAttempt.mutate())}
-          >
-            {createAttempt.isPending ? 'Đang mở bài luyện…' : '▷ Bắt đầu làm bài'}
-          </button>
+          {/* Checklist */}
+          <div className="space-y-3 divide-y divide-border-subtle pt-2">
+            <div className="flex items-start gap-3 pt-2">
+              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-100 text-brand-700 text-xs font-bold">✓</span>
+              <div>
+                <p className="text-sm font-semibold text-slate-900">Tự động lưu câu trả lời</p>
+                <p className="text-xs text-slate-500">Tiến độ được cập nhật liên tục, không lo mất bài khi mất mạng.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 pt-3">
+              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-100 text-brand-700 text-xs font-bold">✓</span>
+              <div>
+                <p className="text-sm font-semibold text-slate-900">Xem giải thích & chấm điểm sau khi nộp</p>
+                <p className="text-xs text-slate-500">Xem đáp án chi tiết và feedback từng tiêu chí sau khi hoàn thành bài.</p>
+              </div>
+            </div>
+          </div>
+
+          {tips.length > 0 && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-4">
+              <h2 className="font-mono text-xs font-bold uppercase tracking-wider text-amber-800">
+                💡 Mẹo làm bài hiệu quả
+              </h2>
+              <ul className="mt-2 space-y-1.5">
+                {tips.map((tip) => (
+                  <li key={tip} className="flex gap-2 text-xs leading-relaxed text-amber-900">
+                    <span aria-hidden="true">•</span>
+                    <span>{tip}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Actions */}
+          <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => navigate(-1)}
+            >
+              ← Quay lại
+            </button>
+            <button
+              type="button"
+              className="btn-primary min-w-[200px]"
+              disabled={createAttempt.isPending}
+              onClick={() => (needsMicCheck ? setStep('mic-check') : createAttempt.mutate())}
+            >
+              {createAttempt.isPending ? 'Đang khởi tạo bài…' : 'Bắt đầu làm bài →'}
+            </button>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
 
+
+/** Tên kỹ năng khi URL không mang componentSlug (vào bằng /parts/:partId). */
 /** Tên kỹ năng khi URL không mang componentSlug (vào bằng /parts/:partId). */
 function skillFromComponentCode(code: string): string | null {
   const byCode: Record<string, string> = {
@@ -190,25 +237,6 @@ function skillFromComponentCode(code: string): string | null {
     GRAMMAR_VOCABULARY: 'Grammar & Vocabulary',
   };
   return byCode[code.toUpperCase()] ?? null;
-}
-
-/** Tiêu đề đổi theo kỹ năng: "làm bài nói" tự nhiên hơn "làm bài" chung. */
-function readyHeadline(skill: string | null) {
-  if (!skill) return 'Sẵn sàng làm bài?';
-  const lowered = skill.toLowerCase();
-  if (lowered.includes('speaking') || lowered.includes('nói')) return 'Sẵn sàng làm bài nói?';
-  if (lowered.includes('writing') || lowered.includes('viết')) return 'Sẵn sàng làm bài viết?';
-  if (lowered.includes('listening') || lowered.includes('nghe')) return 'Sẵn sàng làm bài nghe?';
-  if (lowered.includes('reading') || lowered.includes('đọc')) return 'Sẵn sàng làm bài đọc?';
-  return 'Sẵn sàng làm bài?';
-}
-
-function durationLabel(seconds: number | null, skill: string | null) {
-  const base = seconds ? `${Math.round(seconds / 60)} phút` : 'Không giới hạn';
-  const lowered = (skill ?? '').toLowerCase();
-  if (lowered.includes('speaking') || lowered.includes('nói')) return `${base} · luyện theo part, cần microphone`;
-  if (lowered.includes('listening') || lowered.includes('nghe')) return `${base} · luyện theo part, cần tai nghe`;
-  return `${base} · luyện theo part`;
 }
 
 /**
@@ -277,66 +305,3 @@ function tipsFor(componentCode: string, displayOrder: number, skill: string | nu
   return ['Tiến độ được lưu tự động, bạn có thể nộp từng đề để xem kết quả ngay'];
 }
 
-function InfoRow({ icon, title, value }: { icon: React.ReactNode; title: string; value: string }) {
-  return (
-    <div className="flex items-start gap-3 rounded-xl bg-[#f5f3ec] px-4 py-3">
-      <span className="mt-0.5 shrink-0 text-brand-800">{icon}</span>
-      <span className="min-w-0">
-        <span className="block text-xs font-semibold text-stone-800">{title}</span>
-        <span className="mt-0.5 block text-xs leading-5 text-stone-600">{value}</span>
-      </span>
-    </div>
-  );
-}
-
-function SkillIcon({ skill }: { skill: string | null }) {
-  const lowered = (skill ?? '').toLowerCase();
-  if (lowered.includes('speaking') || lowered.includes('nói')) {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden="true">
-        <path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3Z" />
-        <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
-      </svg>
-    );
-  }
-  if (lowered.includes('listening') || lowered.includes('nghe')) {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden="true">
-        <path d="M4 14v-2a8 8 0 0 1 16 0v2" />
-        <path d="M4 14h3v6H5a1 1 0 0 1-1-1v-5ZM20 14h-3v6h2a1 1 0 0 0 1-1v-5Z" />
-      </svg>
-    );
-  }
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden="true">
-      <path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
-      <path d="m8 12 2 2 5-5M8 18h8" />
-    </svg>
-  );
-}
-
-function ListIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden="true">
-      <path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" />
-    </svg>
-  );
-}
-
-function HelpIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.3M12 17h.01" />
-    </svg>
-  );
-}
-
-function ClockIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3 2" />
-    </svg>
-  );
-}

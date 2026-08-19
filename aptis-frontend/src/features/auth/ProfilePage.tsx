@@ -11,12 +11,12 @@ const CEFR_LEVELS: CefrLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 export function ProfilePage() {
   const { user, refreshUser, logout } = useAuthStore();
 
-  const [fullName, setFullName] = useState(user?.profile.fullName ?? '');
-  const [displayName, setDisplayName] = useState(user?.profile.displayName ?? '');
+  const [fullName, setFullName] = useState(user?.profile?.fullName ?? '');
+  const [displayName, setDisplayName] = useState(user?.profile?.displayName ?? '');
   const [targetCefrLevel, setTargetCefrLevel] = useState<CefrLevel | ''>(
-    user?.profile.targetCefrLevel ?? '',
+    user?.profile?.targetCefrLevel ?? '',
   );
-  const [targetExamDate, setTargetExamDate] = useState(user?.profile.targetExamDate ?? '');
+  const [targetExamDate, setTargetExamDate] = useState(user?.profile?.targetExamDate ?? '');
   const [saved, setSaved] = useState(false);
 
   const subscriptionsQuery = useQuery({

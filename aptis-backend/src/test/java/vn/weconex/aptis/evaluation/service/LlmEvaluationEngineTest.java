@@ -66,6 +66,33 @@ class LlmEvaluationEngineTest {
                 .path("criteria").isArray()).isTrue();
     }
 
+    /**
+     * Ca thật từ log production: AI-PRO là reasoning model, nó xuất chuỗi tự
+     * vấn ("Wait, the prompt says...", "Let's check the criteria codes:") rồi
+     * mới tới JSON. Miễn object còn nguyên thì vẫn phải chấm được.
+     */
+    @Test
+    void parsesJsonBuriedUnderReasoningNarrationFromReasoningModel() {
+        String reply = """
+                Wait, the prompt says "Reply with raw JSON only — no markdown fence".
+                Let's make sure the JSON is valid and has no markdown formatting.
+
+                Let's check the criteria codes:
+                - TASK_FULFILMENT
+                - GRAMMAR
+
+                {"criteria":[{"code":"TASK_FULFILMENT","score":4,"feedback":"Tốt."},
+                {"code":"GRAMMAR","score":3,"feedback":"Còn lỗi thì."}],
+                "cefrLevel":"B1","summary":"Khá","strengths":["Ý rõ"],
+                "weaknesses":["Thì"],"suggestions":["Ôn thì"],"correctedVersion":"x"}
+                """;
+
+        var parsed = LlmEvaluationEngine.parseModelJson(reply);
+
+        assertThat(parsed.path("criteria")).hasSize(2);
+        assertThat(parsed.path("cefrLevel").asText()).isEqualTo("B1");
+    }
+
     @Test
     void rejectsTruncatedOrNonObjectJsonInsteadOfGuessingScores() {
         assertThatThrownBy(() -> LlmEvaluationEngine.parseModelJson(
@@ -155,7 +182,10 @@ class LlmEvaluationEngineTest {
     }
 
     private static LlmEvaluationEngine engine() {
-        return new LlmEvaluationEngine(
-                "http://unused.local/v1", "test-key", "test-model", 0.2, 512, 5);
+        // Pool một nhà cung cấp giả: các test ở đây chỉ kiểm phần dựng prompt và
+        // đọc kết quả, không thực sự gọi mạng.
+        LlmProviderPool pool = new LlmProviderPool(
+                "", "http://unused.local/v1", "test-key", "test-model", 1);
+        return new LlmEvaluationEngine(pool, 0.2, 512, 5);
     }
 }

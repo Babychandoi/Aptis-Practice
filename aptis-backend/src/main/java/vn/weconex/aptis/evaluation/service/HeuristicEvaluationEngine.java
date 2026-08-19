@@ -72,7 +72,10 @@ public class HeuristicEvaluationEngine implements EvaluationEngine {
 
         for (CriterionSpec criterion : request.rubric().criteria()) {
             double ratio = ratioFor(criterion.code(), metrics, request);
-            double score = round(ratio * criterion.maxScore());
+            // Cùng quy tắc số nguyên như engine AI: học viên không được thấy điểm
+            // lẻ chỉ vì hôm đó AI hỏng và hệ thống rơi về engine dự phòng.
+            double score = CriterionScoreRounding.toWholeScore(
+                    ratio * criterion.maxScore(), criterion.maxScore());
 
             scores.add(new CriterionScore(
                     criterion.code(),
@@ -85,7 +88,6 @@ public class HeuristicEvaluationEngine implements EvaluationEngine {
             max += criterion.maxScore();
         }
 
-        total = round(total);
         double percentage = max > 0 ? total / max * 100 : 0;
 
         return new EvaluationResult(
@@ -350,9 +352,5 @@ public class HeuristicEvaluationEngine implements EvaluationEngine {
 
     private static double clamp(double value) {
         return Math.max(0, Math.min(1, value));
-    }
-
-    private static double round(double value) {
-        return Math.round(value * 100.0) / 100.0;
     }
 }

@@ -301,6 +301,18 @@ export interface QuestionSetScore {
   content: QuestionSetContent;
 }
 
+export interface ComponentScore {
+  componentId: string;
+  componentCode: string;
+  componentName: string;
+  displayOrder: number;
+  rawScore: number | null;
+  maxScore: number | null;
+  percentageScore: number | null;
+  scaledScore: number | null;
+  cefrLevel: string | null;
+}
+
 export interface Attempt {
   id: string;
   mode: PracticeMode;
@@ -316,15 +328,18 @@ export interface Attempt {
   timeSpentSeconds: number;
   totalItems: number;
   answeredItems: number;
+  correctItems?: number;
   /** Điểm luyện tập do backend tính theo cấu hình đã lưu. */
   rawScore: number | null;
   maxScore: number | null;
   percentageScore: number | null;
+  cefrLevel?: string | null;
   /**
    * Part là ngân hàng câu rời: mỗi bộ một câu, đề thi thật gộp nhiều câu
    * (Writing Part 1, Speaking Part 1). Ở đây không có "chủ đề" để chọn.
    */
   itemBankPart: boolean;
+  componentScores?: ComponentScore[];
   /**
    * Tiến độ từng kỹ năng của bài thi đủ 5 kỹ năng. Rỗng khi luyện từng part.
    */

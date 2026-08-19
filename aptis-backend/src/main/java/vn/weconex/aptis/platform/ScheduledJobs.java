@@ -28,6 +28,9 @@ import vn.weconex.aptis.platform.outbox.OutboxDispatcher;
 @RequiredArgsConstructor
 public class ScheduledJobs {
 
+    @org.springframework.beans.factory.annotation.Value("${aptis.evaluation.batch-size:16}")
+    private int evaluationBatchSize;
+
     private final SubscriptionActivationService activationService;
     private final OrderService orderService;
     private final BankTransferService bankTransferService;
@@ -110,7 +113,10 @@ public class ScheduledJobs {
     @Scheduled(fixedDelay = 10_000L, initialDelay = 30_000L)
     public void processEvaluationJobs() {
         lock.runIfAcquired("evaluation-jobs", Duration.ofMinutes(2), () -> {
-            int processed = evaluationDispatcher.processBatch(5);
+            // Batch phải đủ lớn để lấp hết luồng chấm song song; batch 5 với
+            // 8 luồng thì 3 luồng ngồi không. Trần thật nằm ở tổng số request
+            // đồng thời các nhà cung cấp chịu được (LlmProviderPool).
+            int processed = evaluationDispatcher.processBatch(evaluationBatchSize);
             if (processed > 0) {
                 log.info("Đã chấm {} job Speaking/Writing", processed);
             }

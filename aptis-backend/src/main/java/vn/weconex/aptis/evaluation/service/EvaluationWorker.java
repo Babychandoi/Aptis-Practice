@@ -188,7 +188,9 @@ public class EvaluationWorker {
             return new EvaluationOutcome(primary, evaluate(job, entry, primary));
         } catch (EvaluationProviderException ex) {
             boolean finalAttempt = job.getRetryCount() >= EvaluationDispatcher.MAX_RETRY - 1;
-            if (!finalAttempt || matching.size() < 2) {
+            // Lỗi tất định (sai schema) thì retry chỉ ra đúng kết quả cũ. Fallback
+            // ngay để học viên có điểm tạm thay vì chờ hết 3 lượt vô ích.
+            if ((!finalAttempt && ex.isRetryable()) || matching.size() < 2) {
                 throw ex;
             }
             EvaluationEngine fallback = matching.get(1);

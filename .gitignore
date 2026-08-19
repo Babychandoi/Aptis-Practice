@@ -2,10 +2,8 @@
 .env
 .env.*
 !.env.example
-# Theo dõi cấu hình runtime gốc vì repository migration này là private.
-!/.env
-# Bản cấu hình runtime phục vụ migration; chỉ được lưu khi repo là private.
-!backups/**/.env
+# File mẫu, không chứa giá trị thật — an toàn để commit.
+!.env.remote.example
 
 # Build
 target/
@@ -33,11 +31,11 @@ aptis-backend/eff
 *.log
 scripts/.e2e-tmp/
 
-# Backup migration hiện được theo dõi vì repository riêng tư.
-# Không chuyển repository sang public khi còn thư mục backups/.
-
-# MinIO raw archives can exceed GitHub's 100 MB file limit; commit .partNNN files.
-backups/**/minio/minio-data.tar.gz
+# Backup KHÔNG commit. Bản mới nằm ở backups/ trong project để copy sang USB;
+# các bản cũ đã chuyển ra D:/Aptis-Practise-Backups.
+# Hai lý do không commit: dump MinIO từng đẩy .git lên 557M, và backups/**/.env
+# đã lọt MAIL_PASSWORD cùng AI_EVAL_API_KEY vào lịch sử commit.
+backups/
 
 # OS
 .DS_Store
@@ -80,3 +78,11 @@ src/plugins/impeccable-live.client.ts
 __pycache__/
 *.py[cod]
 .venv/
+
+# ds2api là repository riêng (có .git của nó) và config.json chứa tài khoản
+# DeepSeek cùng api_keys. Clone riêng, không nhúng vào repo này.
+ds2api/
+
+# Bản thiết kế giao diện xuất từ công cụ dựng mẫu — file .dc.html nặng và
+# không phải mã nguồn. Giữ ngoài repo cho tới khi chốt phương án.
+giao dien moi/

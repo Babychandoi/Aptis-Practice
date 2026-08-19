@@ -67,13 +67,13 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
   };
 
   return (
-    <div className="rounded-xl border border-[#e5d4aa] bg-[linear-gradient(180deg,#fffaf0_0%,#faebc5_100%)] px-3 py-2.5 sm:px-4">
+    <div className="rounded-2xl bg-dark text-white p-4 shadow-sm border border-slate-800">
       {error ? (
-        <p className="text-sm text-red-700">{error}</p>
+        <p className="text-sm text-red-400">{error}</p>
       ) : !signedUrl ? (
-        <p className="py-1 text-xs text-stone-500">Đang tải audio…</p>
+        <p className="py-1 text-xs text-slate-400">Đang tải audio…</p>
       ) : (
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
           <audio
             ref={audioRef}
             src={signedUrl}
@@ -92,93 +92,95 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
             onEnded={() => setPlaying(false)}
           />
 
-          <button
-            type="button"
-            onClick={() => void togglePlayback()}
-            disabled={!canPlay}
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-800 text-white shadow-sm transition hover:bg-brand-900 disabled:cursor-not-allowed disabled:opacity-50"
-            aria-label={playing ? 'Tạm dừng audio' : 'Phát audio'}
-          >
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => void togglePlayback()}
+              disabled={!canPlay}
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-600 text-white shadow-md transition hover:bg-brand-500 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+              aria-label={playing ? 'Tạm dừng audio' : 'Phát audio'}
+              title={playing ? 'Tạm dừng' : 'Phát'}
+            >
+              {playing ? <PauseIcon /> : <PlayIcon />}
+            </button>
 
-          <span className="hidden shrink-0 font-mono text-[11px] text-stone-700 sm:inline">
-            {formatClock(currentTime)} / {formatClock(duration)}
-          </span>
+            <span className="font-mono text-xs text-slate-300 min-w-[70px]">
+              {formatTime(currentTime)} / {formatTime(duration)}
+            </span>
+          </div>
 
-          <input
-            type="range"
-            min={0}
-            max={Math.max(duration, 1)}
-            step={0.1}
-            value={Math.min(currentTime, Math.max(duration, 1))}
-            onChange={(event) => {
-              const next = Number(event.target.value);
-              setCurrentTime(next);
-              if (audioRef.current) audioRef.current.currentTime = next;
-            }}
-            disabled={disabled || duration === 0}
-            className="h-1.5 min-w-0 flex-1 cursor-pointer accent-brand-800"
-            aria-label="Vị trí audio"
-          />
+          <div className="flex flex-1 items-center gap-3">
+            <input
+              type="range"
+              min={0}
+              max={duration || 1}
+              step={0.1}
+              value={currentTime}
+              disabled={!canPlay}
+              onChange={(event) => {
+                const audio = audioRef.current;
+                const next = Number(event.target.value);
+                setCurrentTime(next);
+                if (audio) audio.currentTime = next;
+              }}
+              className="h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-slate-700 accent-brand-500 focus:outline-none"
+              aria-label="Thanh thời gian audio"
+            />
 
-          <button type="button" onClick={cycleRate} className="h-8 min-w-11 rounded-lg border border-white/80 bg-white px-2 text-[11px] font-medium text-stone-700" aria-label="Đổi tốc độ phát">
-            {playbackRate}x
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              const next = !muted;
-              setMuted(next);
-              if (audioRef.current) audioRef.current.muted = next;
-            }}
-            className="grid h-8 w-8 place-items-center rounded-lg border border-white/80 bg-white text-stone-700"
-            aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
-          >
-            <VolumeIcon muted={muted} />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              if (!audioRef.current) return;
-              audioRef.current.currentTime = 0;
-              setCurrentTime(0);
-            }}
-            className="grid h-8 w-8 place-items-center rounded-lg border border-white/80 bg-white text-stone-700"
-            aria-label="Phát lại từ đầu"
-          >
-            <RestartIcon />
-          </button>
+            <button
+              type="button"
+              onClick={cycleRate}
+              className="rounded-lg bg-slate-800 px-2 py-1 font-mono text-xs font-semibold text-slate-300 hover:bg-slate-700 hover:text-white"
+              title="Đổi tốc độ phát"
+            >
+              {playbackRate}x
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                const next = !muted;
+                setMuted(next);
+                if (audioRef.current) audioRef.current.muted = next;
+              }}
+              className="text-slate-400 hover:text-white"
+              aria-label={muted ? 'Bật âm' : 'Tắt âm'}
+            >
+              {muted ? <MutedIcon /> : <VolumeIcon />}
+            </button>
+          </div>
+
+          {playsLeft !== null && (
+            <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-accent shrink-0">
+              {exhausted ? 'Hết lượt phát' : `Còn ${playsLeft}/${maxAudioPlays} lượt`}
+            </span>
+          )}
         </div>
-      )}
-
-      {maxAudioPlays !== null && signedUrl && (
-        <p className="mt-1.5 text-right text-[10px] text-stone-500">
-          {exhausted ? 'Đã dùng hết số lần nghe' : `Còn ${playsLeft}/${maxAudioPlays} lần nghe`}
-        </p>
       )}
     </div>
   );
 }
 
-function formatClock(value: number) {
-  if (!Number.isFinite(value) || value < 0) return '0:00';
-  const seconds = Math.floor(value);
-  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+function formatTime(seconds: number) {
+  if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
 function PlayIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden="true"><path d="m9 7 8 5-8 5V7Z" /></svg>;
+  return <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4 translate-x-0.5"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86a1 1 0 0 0-1.5.86Z" /></svg>;
 }
 
 function PauseIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden="true"><path d="M9 7v10M15 7v10" /></svg>;
+  return <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4"><path d="M6 5h4v14H6zM14 5h4v14h-4z" /></svg>;
 }
 
-function VolumeIcon({ muted }: { muted: boolean }) {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden="true"><path d="M6 10H3v4h3l4 3V7l-4 3Z" />{muted ? <path d="m15 10 4 4m0-4-4 4" /> : <path d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12" />}</svg>;
+function VolumeIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4"><path d="M11 5 6 9H2v6h4l5 4V5ZM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" /></svg>;
 }
 
-function RestartIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden="true"><path d="M5 8V4m0 0h4M5 4l3 3a7 7 0 1 1-2 7" /></svg>;
+function MutedIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4"><path d="M11 5 6 9H2v6h4l5 4V5ZM23 9l-6 6M17 9l6 6" /></svg>;
 }
+

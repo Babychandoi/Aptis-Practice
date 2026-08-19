@@ -178,8 +178,11 @@ services:
       AI_EVAL_MODEL: "${AI_EVAL_MODEL:-AI-PRO}"
       AI_EVAL_TIMEOUT: "${AI_EVAL_TIMEOUT:-60}"
 
-      # Fallback STT audio từ xa có thể phát sinh phí. Analyzer local được ưu tiên;
-      # giữ false để audio không rời khỏi hệ thống.
+      # Nhieu nha cung cap, ngan bang dau ; — tranh mot diem chet va chia tai.
+      AI_EVAL_PROVIDERS: "${AI_EVAL_PROVIDERS:-}"
+      AI_EVAL_WORKER_THREADS: "${AI_EVAL_WORKER_THREADS:-8}"
+      AI_EVAL_BATCH_SIZE: "${AI_EVAL_BATCH_SIZE:-16}"
+      AI_EVAL_MAX_TOKENS: "${AI_EVAL_MAX_TOKENS:-16384}"
       AI_STT_ENABLED: "${AI_STT_ENABLED:-false}"
       AI_STT_MODEL: "${AI_STT_MODEL:-ag/gemini-3-flash}"
       AI_STT_TIMEOUT: "${AI_STT_TIMEOUT:-120}"
