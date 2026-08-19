@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
 import { practiceApi } from '@/api/endpoints';
@@ -118,6 +118,24 @@ export function AttemptPage() {
     [orderedSets],
   );
 
+  /**
+   * Đánh số thứ tự câu hỏi theo dạng Part.Câu (1.1, 1.2... 2.1, 2.2...)
+   * giúp giao diện hiển thị liên tục theo từng Part và kỹ năng.
+   */
+  const itemNumberById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const part of partGroups) {
+      let counter = 1;
+      for (const set of part.sets) {
+        for (const item of set.content.items) {
+          map.set(item.id, `${part.number}.${counter++}`);
+        }
+      }
+    }
+    return map;
+  }, [partGroups]);
+
+
   useEffect(() => {
     if (!attempt) return;
     setResponsesBySet((existing) => {
@@ -130,9 +148,15 @@ export function AttemptPage() {
     if (currentPartIndex >= partGroups.length && partGroups.length > 0) setCurrentPartIndex(0);
   }, [currentPartIndex, partGroups.length]);
 
+  const queryClient = useQueryClient();
+
   const startMutation = useMutation({
     mutationFn: () => practiceApi.start(attemptId!),
-    onSuccess: () => void attemptQuery.refetch(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['attempt', attemptId] });
+      queryClient.invalidateQueries({ queryKey: ['attempts'] });
+      void attemptQuery.refetch();
+    },
   });
 
   const submitMutation = useMutation({
@@ -140,7 +164,12 @@ export function AttemptPage() {
       await autosave.flush();
       return practiceApi.submit(attemptId!);
     },
-    onSuccess: () => navigate(`/attempts/${attemptId}/result`),
+    onSuccess: (data) => {
+      queryClient.setQueryData(['attempt', attemptId], data);
+      queryClient.invalidateQueries({ queryKey: ['attempt', attemptId] });
+      queryClient.invalidateQueries({ queryKey: ['attempts'] });
+      navigate(`/attempts/${attemptId}/result`);
+    },
   });
 
   /**
@@ -153,7 +182,11 @@ export function AttemptPage() {
       return practiceApi.scoreQuestionSet(attemptId!, questionSetId);
     },
     // Nạp lại lượt để bộ vừa chấm hiện điểm và đáp án
-    onSuccess: () => void attemptQuery.refetch(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['attempt', attemptId] });
+      queryClient.invalidateQueries({ queryKey: ['attempts'] });
+      void attemptQuery.refetch();
+    },
   });
 
   /**
@@ -165,7 +198,12 @@ export function AttemptPage() {
       await autosave.flush();
       return practiceApi.submitComponent(attemptId!, componentId);
     },
-    onSuccess: () => void attemptQuery.refetch(),
+    onSuccess: (data) => {
+      queryClient.setQueryData(['attempt', attemptId], data);
+      queryClient.invalidateQueries({ queryKey: ['attempt', attemptId] });
+      queryClient.invalidateQueries({ queryKey: ['attempts'] });
+      void attemptQuery.refetch();
+    },
   });
 
   /**
@@ -218,27 +256,66 @@ export function AttemptPage() {
   }, [parts]);
 
   /**
-   * Vào đúng Part đầu của kỹ năng đang mở.
+   * Tự động chuyển tới đúng Part và câu đang làm dở khi mở bài hoặc reload trang.
    *
-   * Nộp xong một kỹ năng, con trỏ vẫn nằm ở Part cũ; nếu không nhảy thì học viên
-   * thấy màn kỹ năng trước trong khi đồng hồ kỹ năng mới đã chạy.
+   * Với kỹ năng Nói (Speaking) chạy một chiều, học viên không quay lại được câu cũ,
+   * nên khi reload hệ thống phải nhảy thẳng tới Part chưa hoàn thành gần nhất
+   * (ví dụ: đã làm xong Part 1, Part 2 thì nhảy ngay vào Part 3).
    */
-  useEffect(() => {
-    if (!isFullMock || !openProgress || partGroups.length === 0) return;
-    const currentComponentId = currentPart
-      ? componentIdByPart.get(currentPart.id)
-      : undefined;
-    if (currentComponentId === openProgress.componentId) return;
+  const hasAutoResumedRef = useRef(false);
 
-    const target = partGroups.findIndex(
-      (part) => componentIdByPart.get(part.id) === openProgress.componentId,
-    );
-    if (target >= 0 && target !== currentPartIndex) {
-      setCurrentPartIndex(target);
-      setCurrentSetIndex(0);
+  useEffect(() => {
+    if (partGroups.length === 0) return;
+
+    // Chỉ tự động nhảy vị trí 1 lần lúc nạp bài (hoặc khi kỹ năng đang mở thay đổi)
+    const hydratedResponses = hydrateAttempt(attempt?.questionSets ?? []);
+
+    if (isFullMock && openProgress) {
+      const componentParts = partGroups.map((p, idx) => ({ part: p, idx }))
+        .filter(({ part }) => componentIdByPart.get(part.id) === openProgress.componentId);
+
+      if (componentParts.length > 0) {
+        const firstPart = componentParts[0]!;
+        const lastPart = componentParts[componentParts.length - 1]!;
+        // Tìm Part đầu tiên của kỹ năng này mà chưa hoàn thành đủ số câu
+        const unfinished = componentParts.find(
+          ({ part }) => countPartAnswered(part, hydratedResponses) < part.totalItems,
+        );
+        const targetIdx = unfinished ? unfinished.idx : firstPart.idx;
+        const targetPart = partGroups[targetIdx];
+
+        if (!hasAutoResumedRef.current || currentPartIndex < firstPart.idx || currentPartIndex > lastPart.idx) {
+          setCurrentPartIndex(targetIdx);
+          // Tìm set đầu tiên chưa làm trong Part đó
+          if (targetPart && targetPart.sets.length > 0) {
+            const unsetIdx = targetPart.sets.findIndex(
+              (set) => countAnswered(set.content.items, hydratedResponses[set.attemptQuestionSetId] ?? {}) < set.content.items.length,
+            );
+            setCurrentSetIndex(unsetIdx >= 0 ? unsetIdx : 0);
+          }
+          hasAutoResumedRef.current = true;
+        }
+      }
+
+    } else if (!hasAutoResumedRef.current) {
+      // Với bài luyện đơn kỹ năng: Nhảy tới Part chưa làm xong đầu tiên
+      const unfinishedIdx = partGroups.findIndex(
+        (part) => countPartAnswered(part, hydratedResponses) < part.totalItems,
+      );
+      if (unfinishedIdx >= 0 && unfinishedIdx !== currentPartIndex) {
+        setCurrentPartIndex(unfinishedIdx);
+        const targetPart = partGroups[unfinishedIdx];
+        if (targetPart && targetPart.sets.length > 0) {
+          const unsetIdx = targetPart.sets.findIndex(
+            (set) => countAnswered(set.content.items, hydratedResponses[set.attemptQuestionSetId] ?? {}) < set.content.items.length,
+          );
+          setCurrentSetIndex(unsetIdx >= 0 ? unsetIdx : 0);
+        }
+      }
+      hasAutoResumedRef.current = true;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFullMock, openProgress?.componentId, partGroups.length, componentIdByPart]);
+  }, [isFullMock, openProgress?.componentId, partGroups, componentIdByPart, attempt?.questionSets, currentPartIndex]);
+
 
   const answeredByPart = useMemo(
     () => new Map(partGroups.map((part) => [part.id, countPartAnswered(part, responsesBySet)])),
@@ -349,31 +426,33 @@ export function AttemptPage() {
   const submitCurrentComponent = async () => {
     if (!openProgress) return;
     const name = skillNameOf(openProgress.componentCode);
-    const remaining = partGroups
-      .filter((part) => componentIdByPart.get(part.id) === openProgress.componentId)
+    const componentParts = partGroups
+      .filter((part) => componentIdByPart.get(part.id) === openProgress.componentId);
+    const remaining = componentParts
       .reduce(
         (sum, part) => sum + part.totalItems - (answeredByPart.get(part.id) ?? 0),
         0,
       );
 
     const ok = await confirmDialog({
-      title: `Nộp kỹ năng ${name}?`,
+      title: `Nộp toàn bộ kỹ năng ${name}?`,
       text: remaining > 0
-        ? `Còn ${remaining} câu chưa trả lời. Nộp rồi sẽ không sửa hay xem lại được kỹ năng này.`
-        : `Nộp rồi sẽ không sửa hay xem lại được kỹ năng ${name}.`,
+        ? `Kỹ năng ${name} gồm ${componentParts.length} phần, hiện còn ${remaining} câu chưa trả lời. Nộp kỹ năng này sẽ nộp toàn bộ các phần và chuyển sang kỹ năng kế tiếp (không quay lại được).`
+        : `Bạn đã hoàn thành các phần của kỹ năng ${name}. Nộp kỹ năng này và chuyển sang kỹ năng tiếp theo?`,
       confirmText: 'Nộp kỹ năng này',
-      cancelText: 'Làm tiếp',
+      cancelText: 'Quay lại làm tiếp',
       danger: remaining > 0,
     });
     if (ok) submitComponentMutation.mutate(openProgress.componentId);
   };
 
-  const speakingStartIndex = partGroups.findIndex(
-    (part) => (part.skill ?? '').toLowerCase().includes('nói'),
-  );
-  const speakingLocked = isFullMock
-    && speakingStartIndex >= 0
-    && currentPartIndex >= speakingStartIndex
+  const isCurrentPartSpeaking = (currentPart?.skill ?? componentName ?? '').toLowerCase().includes('nói')
+    || (currentPart?.name ?? '').toLowerCase().includes('speaking')
+    || (currentPart?.label ?? '').toLowerCase().includes('speaking');
+
+  const speakingLocked = !readOnly
+    && isFullMock
+    && isCurrentPartSpeaking
     && !currentComponentSubmitted;
 
   /**
@@ -598,51 +677,129 @@ export function AttemptPage() {
     && partGroups[currentPartIndex + 1] !== undefined
     && componentIdByPart.get(partGroups[currentPartIndex + 1]!.id)
       === componentIdByPart.get(currentPart.id);
-  const atLastSetOfComponent = isFullMock
+  const atLastSetOfComponent = !readOnly
+    && isFullMock
     && !nextPartSameComponent
     && pageStart + setsPerPage >= setCount;
 
   return (
-    <div className="min-h-screen bg-[#f7f4eb] pb-24">
-      <header className="sticky top-0 z-30 border-b border-[#e5decd] bg-[#fffdf8]/95 backdrop-blur">
+    <div className="min-h-screen bg-surface pb-24 text-slate-900">
+      {/* Sticky Exam HUD Header */}
+      <header className="sticky top-0 z-30 border-b border-border bg-white/95 backdrop-blur shadow-sm">
         <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-3 px-4 py-3 sm:px-6">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-800 text-white shadow-sm"><HeadphoneIcon /></span>
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-600 text-white shadow-sm font-bold text-base">
+            <HeadphoneIcon />
+          </span>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-sm font-semibold sm:text-base">
+            <h1 className="truncate text-sm font-bold sm:text-base text-slate-900">
               {componentName} · {isSinglePartAttempt ? currentPart.name : 'Bài test full'}
             </h1>
-            <p className="text-[10px] text-stone-500">
-              {totalItems} câu hỏi · đã trả lời {totalAnswered}/{totalItems}
-              {isSinglePartAttempt && ` · sẵn sàng chấm ${currentPart.sets.filter((set) => set.status === 'SCORED').length}/${currentPart.sets.length}`}
+            <p className="font-mono text-[11px] text-slate-500">
+              {totalItems} câu hỏi · Đã trả lời {totalAnswered}/{totalItems}
+              {isSinglePartAttempt && ` · Sẵn sàng chấm ${currentPart.sets.filter((set) => set.status === 'SCORED').length}/${currentPart.sets.length}`}
             </p>
-            <p className="text-[10px] text-stone-500">● Nội dung có bản quyền</p>
           </div>
 
+          {/* Countdown Timer */}
           {secondsLeft !== null && (
-            <span className={clsx('rounded-lg px-3 py-2 text-sm font-semibold tabular-nums', secondsLeft < 60 ? 'bg-red-50 text-red-700' : 'bg-[#f2eee3] text-stone-800')} aria-label={`Thời gian còn lại ${formatDuration(secondsLeft)}`}>
+            <span
+              className={clsx(
+                'flex items-center gap-2 rounded-xl px-3.5 py-1.5 font-mono text-sm font-bold shadow-sm',
+                secondsLeft < 60
+                  ? 'bg-rose-600 text-white animate-pulse'
+                  : 'bg-dark text-white',
+              )}
+              aria-label={`Thời gian còn lại ${formatDuration(secondsLeft)}`}
+            >
               {openProgress && (
-                <span className="mr-1.5 text-[10px] font-medium opacity-70">
+                <span className="rounded bg-white/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent">
                   {skillNameOf(openProgress.componentCode)}
                 </span>
               )}
-              {formatDuration(secondsLeft)}
+              <span>{formatDuration(secondsLeft)}</span>
             </span>
           )}
-          <span className="hidden min-w-16 text-right text-[10px] text-stone-500 sm:block" aria-live="polite">
+
+          {/* Autosave Status */}
+          <span className="hidden min-w-16 text-right font-mono text-xs text-slate-400 sm:block" aria-live="polite">
             {autosave.state === 'saving' && 'Đang lưu…'}
-            {autosave.state === 'saved' && '✓ Đã lưu'}
-            {autosave.state === 'error' && <span className="text-red-600">Lỗi lưu</span>}
+            {autosave.state === 'saved' && <span className="text-emerald-600 font-semibold">✓ Đã lưu</span>}
+            {autosave.state === 'error' && <span className="text-rose-600 font-semibold">Lỗi lưu</span>}
           </span>
 
-          <div className="flex items-center gap-1.5">
-            {!readOnly && <button type="button" onClick={restoreSavedResponses} className="exam-action hidden lg:inline-flex"><RestoreIcon /> Khôi phục</button>}
-            <div className="flex rounded-xl border border-[#ded5c2] bg-white p-1 shadow-sm" aria-label="Chế độ hiển thị">
-              <button type="button" onClick={() => setViewMode('single')} className={clsx('rounded-lg px-3 py-2 text-xs font-semibold', viewMode === 'single' ? 'bg-[#15231e] text-white' : 'text-stone-600')}>Từng bài</button>
-              <button type="button" onClick={() => setViewMode('part')} className={clsx('rounded-lg px-3 py-2 text-xs font-semibold', viewMode === 'part' ? 'bg-[#15231e] text-white' : 'text-stone-600')}>Theo phần</button>
-              <button type="button" onClick={() => setViewMode('all')} className={clsx('rounded-lg px-3 py-2 text-xs font-semibold', viewMode === 'all' ? 'bg-[#15231e] text-white' : 'text-stone-600')}>Tất cả</button>
-            </div>
-            <button type="button" onClick={() => void exitAttempt()} className="exam-action"><span aria-hidden="true">‹</span> Quay lại</button>
-            <a href="mailto:aptispractices@gmail.com?subject=Báo lỗi bài thi Aptis Practice" className="exam-action hidden border-red-200 text-red-700 sm:inline-flex"><FlagIcon /> Báo lỗi</a>
+          {/* Actions & View Modes */}
+          <div className="flex items-center gap-2">
+            {/* Chế độ Luyện tập hoặc khi Xem lại kết quả (readOnly) cho phép chọn Chế độ hiển thị */}
+            {(attempt?.mode !== 'MOCK_TEST' || readOnly) && (
+              <>
+                {!readOnly && (
+                  <button
+                    type="button"
+                    onClick={restoreSavedResponses}
+                    className="hidden lg:inline-flex items-center gap-1.5 rounded-xl border border-border bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-surface transition-colors"
+                  >
+                    <RestoreIcon /> Khôi phục
+                  </button>
+                )}
+
+                {/* View Mode Segmented Control */}
+                <div className="flex rounded-xl bg-surface p-1 border border-border" aria-label="Chế độ hiển thị">
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('single')}
+                    className={clsx(
+                      'rounded-lg px-3 py-1.5 text-xs font-semibold transition-all',
+                      viewMode === 'single'
+                        ? 'bg-brand-600 text-white shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900',
+                    )}
+                  >
+                    Từng bài
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('part')}
+                    className={clsx(
+                      'rounded-lg px-3 py-1.5 text-xs font-semibold transition-all',
+                      viewMode === 'part'
+                        ? 'bg-brand-600 text-white shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900',
+                    )}
+                  >
+                    Theo phần
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('all')}
+                    className={clsx(
+                      'rounded-lg px-3 py-1.5 text-xs font-semibold transition-all',
+                      viewMode === 'all'
+                        ? 'bg-brand-600 text-white shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900',
+                    )}
+                  >
+                    Tất cả
+                  </button>
+                </div>
+              </>
+            )}
+
+            <button
+              type="button"
+              onClick={() => void exitAttempt()}
+              className="inline-flex items-center gap-1 rounded-xl border border-border bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-surface hover:text-slate-900 transition-colors"
+            >
+              <span aria-hidden="true">‹</span> {attempt?.mode === 'MOCK_TEST' ? 'Tạm dừng & Thoát' : 'Quay lại'}
+            </button>
+
+            {attempt?.mode !== 'MOCK_TEST' && (
+              <a
+                href="mailto:aptispractices@gmail.com?subject=Báo lỗi bài thi Aptis Practice"
+                className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50/70 px-3 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-100 transition-colors"
+              >
+                <FlagIcon /> Báo lỗi
+              </a>
+            )}
           </div>
         </div>
       </header>
@@ -653,8 +810,9 @@ export function AttemptPage() {
             partGroups={partGroups}
             answeredByPart={answeredByPart}
             currentPartIndex={currentPartIndex}
-            lockedFrom={isFullMock ? speakingStartIndex : undefined}
-            partStateOf={isFullMock ? partStateOf : undefined}
+            readOnly={readOnly}
+            speakingLocked={speakingLocked}
+            partStateOf={!readOnly && isFullMock ? partStateOf : undefined}
             onPick={(index) => void goToPart(index)}
           />
         )}
@@ -716,7 +874,7 @@ export function AttemptPage() {
             {partGroups.map((part, index) => {
               const answered = answeredByPart.get(part.id) ?? 0;
               const active = viewMode === 'part' && index === currentPartIndex;
-              const locked = speakingLocked && index !== currentPartIndex;
+              const locked = !readOnly && speakingLocked && index !== currentPartIndex;
               return (
                 <button key={part.id} type="button" onClick={() => void goToPart(index)} disabled={locked} className={clsx('rounded-xl border bg-[#fffdf8] px-3 py-2.5 text-left transition', active ? 'border-brand-800 bg-[#eaf4ef] shadow-sm' : locked ? 'border-[#e3dac7] opacity-40' : 'border-[#e3dac7] hover:border-brand-300')} aria-current={active ? 'step' : undefined}>
                   <span className="block text-sm font-semibold">
@@ -755,6 +913,7 @@ export function AttemptPage() {
               isSubmitted={isSubmitted}
               flaggedItems={flaggedItems}
               setNumberById={setNumberById}
+              itemNumberById={itemNumberById}
               examMode={speakingLocked}
               onExamFinished={handleExamAutoAdvance}
               onToggleFlag={(key) => setFlaggedItems((previous) => toggleSetValue(previous, key))}
@@ -763,34 +922,43 @@ export function AttemptPage() {
           ))}
         </div>
 
-        <div className="sticky bottom-3 mt-5 flex justify-end border-t border-[#e4dccb] pt-4">
-          <div className="flex items-center gap-2 rounded-xl border border-[#e2dac9] bg-white/95 p-2 shadow-[0_8px_24px_rgba(43,39,30,.10)] backdrop-blur">
+        <div className="sticky bottom-4 mt-8 flex justify-end border-t border-border pt-4">
+          <div className="flex flex-wrap items-center gap-2.5 rounded-2xl border border-border bg-white/95 p-2.5 shadow-xl backdrop-blur">
             {viewMode === 'single' ? (
               <>
-                <span className="px-2 text-[11px] font-medium tabular-nums text-stone-500">
+                <span className="px-3 font-mono text-xs font-medium tabular-nums text-slate-500">
                   Bài {pageStart + 1}
                   {pageSets.length > 1 && `–${pageStart + pageSets.length}`}
                   /{setCount} · {currentPart.skill ? `${currentPart.skill} · ` : ''}Phần {currentPart.number}
                 </span>
-                {/*
-                  Speaking tự chạy: máy tự ghi âm rồi tự sang câu — mọi nút điều
-                  hướng đều thừa và gây hiểu nhầm là bấm được.
 
-                  Kỹ năng khác: ở câu cuối chỉ còn một hành động là nộp kỹ năng,
-                  nên bỏ "Chủ đề tiếp theo" (nó sẽ nhảy sang kỹ năng chưa mở).
-                */}
                 {!speakingLocked && (
                   <>
-                    <button type="button" onClick={() => void goToSet(-1)} disabled={isFirstSetOverall} className="exam-footer-button">Chủ đề trước</button>
+                    <button
+                      type="button"
+                      onClick={() => void goToSet(-1)}
+                      disabled={isFirstSetOverall}
+                      className="inline-flex items-center gap-1 rounded-xl border border-border bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-surface disabled:opacity-40 transition-colors"
+                    >
+                      ← Bài trước
+                    </button>
                     {!atLastSetOfComponent && (
-                      <button type="button" onClick={() => void goToSet(1)} disabled={isLastSetOverall} className="exam-footer-button border-emerald-300 bg-[#e7f5ef] text-brand-900">Chủ đề tiếp theo</button>
+                      <button
+                        type="button"
+                        onClick={() => void goToSet(1)}
+                        disabled={isLastSetOverall}
+                        className="inline-flex items-center gap-1 rounded-xl bg-brand-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-brand-700 disabled:opacity-40 transition-colors"
+                      >
+                        Bài tiếp theo →
+                      </button>
                     )}
                   </>
                 )}
+
                 {/* Bài thi đủ 5 kỹ năng không chấm lẻ: điểm chỉ có khi nộp hết. */}
                 {!readOnly && !isFullMock && visibleSetOnly && (
                   visibleSetOnly.status === 'SCORED' ? (
-                    <span className="rounded-lg bg-[#eef6f2] px-3 py-2.5 text-xs font-semibold text-brand-900">
+                    <span className="rounded-xl bg-brand-50 px-3 py-2 font-mono text-xs font-bold text-brand-800">
                       ✓ {visibleSetOnly.awardedScore ?? 0}/{visibleSetOnly.maxScore} điểm
                     </span>
                   ) : (
@@ -798,45 +966,70 @@ export function AttemptPage() {
                       type="button"
                       onClick={() => scoreSetMutation.mutate(visibleSetOnly.questionSetId)}
                       disabled={scoreSetMutation.isPending}
-                      className="rounded-lg bg-brand-700 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-brand-800 disabled:opacity-50"
+                      className="rounded-xl bg-brand-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-brand-700 disabled:opacity-50 transition-colors"
                     >
-                      {scoreSetMutation.isPending ? 'Đang chấm…' : 'Nộp bài chủ đề này'}
+                      {scoreSetMutation.isPending ? 'Đang chấm…' : 'Chấm điểm bài này'}
                     </button>
                   )
                 )}
               </>
             ) : (
-              /* Speaking tự chạy: không có nút chuyển Part. */
               !speakingLocked && (
                 <>
-                  <button type="button" onClick={() => void goToPart(currentPartIndex - 1)} disabled={viewMode === 'all' || currentPartIndex === 0} className="exam-footer-button">Phần trước</button>
-                  <button type="button" onClick={() => void goToPart(currentPartIndex + 1)} disabled={viewMode === 'all' || currentPartIndex === partGroups.length - 1} className="exam-footer-button border-emerald-300 bg-[#e7f5ef] text-brand-900">Phần tiếp</button>
+                  <button
+                    type="button"
+                    onClick={() => void goToPart(currentPartIndex - 1)}
+                    disabled={viewMode === 'all' || currentPartIndex === 0}
+                    className="inline-flex items-center gap-1 rounded-xl border border-border bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-surface disabled:opacity-40 transition-colors"
+                  >
+                    ← Phần trước
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void goToPart(currentPartIndex + 1)}
+                    disabled={viewMode === 'all' || currentPartIndex === partGroups.length - 1}
+                    className="inline-flex items-center gap-1 rounded-xl bg-brand-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-brand-700 disabled:opacity-40 transition-colors"
+                  >
+                    Phần tiếp theo →
+                  </button>
                 </>
               )
             )}
+
             {readOnly ? (
-              <button type="button" onClick={() => navigate(`/attempts/${attempt.id}/result`)} className="rounded-lg bg-brand-800 px-4 py-2.5 text-xs font-semibold text-white">Xem kết quả</button>
+              <button
+                type="button"
+                onClick={() => navigate(`/attempts/${attempt.id}/result`)}
+                className="rounded-xl bg-brand-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-brand-700 transition-colors"
+              >
+                Xem kết quả →
+              </button>
             ) : isFullMock ? (
-              /*
-                Thi đủ 5 kỹ năng: nộp theo TỪNG kỹ năng, không nộp cả bài giữa
-                chừng. Nói tự nộp khi ghi xong câu cuối nên không có nút.
-              */
               openProgress && !speakingLocked && !currentComponentSubmitted && (
                 <button
                   type="button"
                   onClick={submitCurrentComponent}
                   disabled={submitComponentMutation.isPending}
-                  className="rounded-lg bg-amber-500 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-amber-600 disabled:opacity-50"
+                  className="rounded-xl bg-accent px-4 py-2 text-xs font-bold text-dark shadow-sm hover:bg-accent-light disabled:opacity-50 transition-all"
                 >
                   {submitComponentMutation.isPending
                     ? 'Đang nộp…'
-                    : `Nộp kỹ năng ${skillNameOf(openProgress.componentCode)}`}
+                    : `Hoàn thành & Nộp ${skillNameOf(openProgress.componentCode)} →`}
                 </button>
               )
             ) : (
-              <button type="button" onClick={submitAttempt} disabled={submitMutation.isPending} className="rounded-lg bg-amber-500 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-amber-600 disabled:opacity-50">{submitMutation.isPending
+              <button
+                type="button"
+                onClick={submitAttempt}
+                disabled={submitMutation.isPending}
+                className="rounded-xl bg-accent px-5 py-2 text-xs font-bold text-dark shadow-sm hover:bg-accent-light disabled:opacity-50 transition-all"
+              >
+                {submitMutation.isPending
                   ? 'Đang nộp…'
-                  : needsAiScoring ? 'Nộp toàn bộ · AI chấm' : 'Nộp toàn bộ'}</button>
+                  : needsAiScoring
+                  ? 'Nộp bài · AI Chấm điểm'
+                  : 'Nộp toàn bộ bài thi'}
+              </button>
             )}
           </div>
         </div>
@@ -1189,7 +1382,7 @@ function MicIcon() {
   );
 }
 
-function PartSection({ part, hideHeader, visibleSetIds, attemptId, responsesBySet, readOnly, isSubmitted, flaggedItems, setNumberById, examMode, onExamFinished, onToggleFlag, onItemChange }: {
+function PartSection({ part, hideHeader, visibleSetIds, attemptId, responsesBySet, readOnly, isSubmitted, flaggedItems, itemNumberById, examMode, onExamFinished, onToggleFlag, onItemChange }: {
   part: PartGroup;
   /** Speaking bài full: tự chạy, ghi một lần, không nghe lại. */
   examMode?: boolean;
@@ -1204,7 +1397,8 @@ function PartSection({ part, hideHeader, visibleSetIds, attemptId, responsesBySe
   readOnly: boolean;
   isSubmitted: boolean;
   flaggedItems: Set<string>;
-  setNumberById: Map<string, number>;
+  setNumberById?: Map<string, number>;
+  itemNumberById?: Map<string, string>;
   onToggleFlag: (key: string) => void;
   onItemChange: (set: AttemptQuestionSet, itemId: string, draft: ResponseDraft) => void;
 }) {
@@ -1238,7 +1432,7 @@ function PartSection({ part, hideHeader, visibleSetIds, attemptId, responsesBySe
           <QuestionSetBlock
             key={set.attemptQuestionSetId}
             set={set}
-            setNumber={setNumberById.get(set.attemptQuestionSetId) ?? 1}
+            itemNumberById={itemNumberById}
             attemptId={attemptId}
             responses={responsesBySet[set.attemptQuestionSetId] ?? {}}
             readOnly={readOnly}
@@ -1255,11 +1449,11 @@ function PartSection({ part, hideHeader, visibleSetIds, attemptId, responsesBySe
   );
 }
 
-function QuestionSetBlock({ set, setNumber, attemptId, responses, readOnly, isSubmitted, flaggedItems, examMode, onExamFinished, onToggleFlag, onItemChange }: {
+function QuestionSetBlock({ set, itemNumberById, attemptId, responses, readOnly, isSubmitted, flaggedItems, examMode, onExamFinished, onToggleFlag, onItemChange }: {
   set: AttemptQuestionSet;
   examMode?: boolean;
   onExamFinished?: () => void;
-  setNumber: number;
+  itemNumberById?: Map<string, string>;
   attemptId: string;
   responses: ResponseMap;
   readOnly: boolean;
@@ -1330,7 +1524,7 @@ function QuestionSetBlock({ set, setNumber, attemptId, responses, readOnly, isSu
         const itemIndex = set.content.items.indexOf(item);
         const itemKey = `${set.attemptQuestionSetId}:${item.id}`;
         const itemAudio = set.content.assets.filter((asset) => asset.role === `ITEM_AUDIO:${item.id}`);
-        const numberLabel = set.content.items.length > 1 ? `${setNumber}.${itemIndex + 1}` : String(setNumber);
+        const numberLabel = String(itemNumberById?.get(item.id) ?? (itemIndex + 1));
         return (
           <QuestionCard
             key={item.id}
@@ -1373,13 +1567,16 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
   const revealed = isSubmitted || set.status === 'SCORED';
 
   return (
-    <article className={clsx('rounded-xl border bg-[#fffdf9] p-3 shadow-[0_3px_12px_rgba(58,48,27,.05)] sm:p-4', flagged ? 'border-amber-400' : 'border-[#e5dcc8]')}>
-      <div className="flex items-start gap-2.5">
-        <span className="grid min-h-7 min-w-7 shrink-0 place-items-center rounded-full border border-sky-200 bg-sky-50 px-1 text-[11px] font-semibold text-sky-700 shadow-sm">{numberLabel}</span>
+    <article className={clsx('rounded-2xl border bg-white p-4 shadow-sm transition-all', flagged ? 'border-amber-400 ring-2 ring-amber-200' : 'border-border')}>
+      <div className="flex items-start gap-3">
+        <span className="grid min-h-7 min-w-7 shrink-0 place-items-center rounded-xl bg-brand-100 px-2 font-mono text-xs font-bold text-brand-700 shadow-sm">
+          {numberLabel}
+        </span>
         <ItemMetaBadge item={item} />
-        {item.prompt?.value ? <SafeContent content={item.prompt} className="question-content min-w-0 flex-1 pt-1 text-xs font-medium sm:text-[13px]" /> : <span className="flex-1" />}
-        <button type="button" onClick={onToggleFlag} className={clsx('inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-[10px] font-semibold transition sm:text-xs', flagged ? 'border-amber-400 bg-amber-50 text-amber-800' : 'border-[#d9cdb4] bg-white text-stone-600 hover:border-amber-400')} aria-pressed={flagged}><FlagIcon /> {flagged ? 'Đã đánh dấu' : 'Đánh dấu'}</button>
+        {item.prompt?.value ? <SafeContent content={item.prompt} className="question-content min-w-0 flex-1 pt-1 text-sm font-semibold text-slate-900" /> : <span className="flex-1" />}
+        <button type="button" onClick={onToggleFlag} className={clsx('inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-xl border px-3 text-xs font-semibold transition-colors', flagged ? 'border-amber-400 bg-amber-50 text-amber-800' : 'border-border bg-white text-slate-600 hover:bg-surface')} aria-pressed={flagged}><FlagIcon /> {flagged ? 'Đã đánh dấu' : 'Đánh dấu'}</button>
       </div>
+
 
       {itemAudio.length > 0 && <div className="mt-3"><AudioPlayer assets={itemAudio} maxAudioPlays={set.maxAudioPlays} initialPlayCount={0} disabled={readOnly} /></div>}
 
@@ -1471,19 +1668,18 @@ function buildPartGroups(questionSets: AttemptQuestionSet[], parts: PartSummary[
     // Dùng displayOrder thật của Part để Listening Part 2 không bị gắn nhãn Part 1.
     const presetIndex = metadata == null ? index : metadata.displayOrder - 1;
     const preset = listening ? LISTENING_PARTS[presetIndex] : undefined;
-    // Bài thi nhiều kỹ năng phải đánh số lại theo từng kỹ năng, nếu không sẽ ra
-    // "Phần 16" — Aptis không có Part 16.
-    const number = singleComponent || metadata == null ? index + 1 : metadata.displayOrder;
+    // Dùng displayOrder thật của Part để luôn có số Part chuẩn (Part 1, 2, 3, 4)
+    const number = metadata?.displayOrder ?? (index + 1);
     const skill = metadata?.componentCode
       ? COMPONENT_LABEL_VI[metadata.componentCode.toUpperCase()] ?? metadata.componentCode
       : undefined;
     return {
       id: partId,
       number,
-      name: preset?.name ?? metadata?.name ?? `Part ${index + 1}`,
+      name: preset?.name ?? metadata?.name ?? `Part ${number}`,
       label: singleComponent || !skill
-        ? preset?.label ?? metadata?.code ?? `PART ${index + 1}`
-        : `${skill.toUpperCase()} · PHẦN ${metadata!.displayOrder}`,
+        ? preset?.label ?? metadata?.code ?? `PART ${number}`
+        : `${skill.toUpperCase()} · PHẦN ${metadata?.displayOrder ?? number}`,
       skill: singleComponent ? undefined : skill,
       instruction: preset?.instruction ?? metadata?.instructions ?? metadata?.description ?? 'Hoàn thành lần lượt các câu hỏi trong phần này.',
       sets,
@@ -1502,15 +1698,17 @@ function ExamSidebar({
   partGroups,
   answeredByPart,
   currentPartIndex,
-  lockedFrom,
+  readOnly,
+  speakingLocked,
   partStateOf,
   onPick,
 }: {
   partGroups: PartGroup[];
   answeredByPart: Map<string, number>;
   currentPartIndex: number;
-  /** Từ chỉ số này trở đi không cho quay lại phần trước (Speaking bài full). */
-  lockedFrom?: number;
+  readOnly?: boolean;
+  /** Đang trong bài thi Speaking chạy một chiều. */
+  speakingLocked?: boolean;
   /**
    * Trạng thái kỹ năng chứa Part này trong bài thi đủ 5 kỹ năng:
    * đã nộp / đang làm / chưa tới lượt. Bỏ trống = không giới hạn.
@@ -1534,27 +1732,29 @@ function ExamSidebar({
   return (
     <nav
       aria-label="Các phần trong bài thi"
-      className="sticky top-20 hidden max-h-[calc(100vh-6rem)] w-60 shrink-0 overflow-y-auto rounded-xl border border-[#e3dac7] bg-[#fffdf8] p-3 lg:block"
+      className="sticky top-20 hidden max-h-[calc(100vh-6rem)] w-64 shrink-0 overflow-y-auto rounded-2xl border border-border bg-white p-4 shadow-sm lg:block"
     >
-      <p className="px-1 pb-2 text-[10px] font-semibold uppercase tracking-[.12em] text-stone-500">
+      <p className="px-1 pb-3 font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">
         Tiến độ · {doneCount}/{partGroups.length} phần
       </p>
 
       {skills.map((group) => (
-        <div key={group.skill} className="mb-3 last:mb-0">
-          <p className="px-1 pb-1 text-[11px] font-semibold text-brand-800">{group.skill}</p>
-          <ul className="space-y-0.5">
+        <div key={group.skill} className="mb-4 last:mb-0">
+          <p className="px-1 pb-1.5 font-mono text-xs font-bold uppercase tracking-wider text-brand-700">
+            {group.skill}
+          </p>
+          <ul className="space-y-1">
             {group.parts.map(({ part, index }) => {
               const answered = answeredByPart.get(part.id) ?? 0;
               const done = part.totalItems > 0 && answered >= part.totalItems;
               const active = index === currentPartIndex;
-              // Đã vào Speaking của bài full thì mọi phần trước đó bị khoá.
-              const speakingLock = lockedFrom !== undefined
-                && currentPartIndex >= lockedFrom
+              // Chỉ khoá nhảy Part tự do khi ĐANG trong bài thi Speaking một chiều.
+              const speakingLock = !readOnly
+                && Boolean(speakingLocked)
                 && index !== currentPartIndex;
-              // Kỹ năng đã nộp hoặc chưa tới lượt: không bấm vào được.
+              // Kỹ năng đã nộp hoặc chưa tới lượt: không bấm vào được khi đang làm bài.
               const state = partStateOf?.(part) ?? 'open';
-              const locked = speakingLock || state !== 'open';
+              const locked = !readOnly && (speakingLock || state !== 'open');
               return (
                 <li key={part.id}>
                   <button
@@ -1564,12 +1764,12 @@ function ExamSidebar({
                     title={locked ? 'Phần Nói chạy một chiều, không quay lại được' : undefined}
                     aria-current={active ? 'step' : undefined}
                     className={clsx(
-                      'flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs transition',
+                      'flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-xs transition',
                       active
-                        ? 'bg-[#eaf4ef] font-semibold text-brand-900'
+                        ? 'bg-brand-100 font-bold text-brand-900 shadow-sm'
                         : locked
-                          ? 'cursor-not-allowed text-stone-400'
-                          : 'text-stone-700 hover:bg-[#f3efe4]',
+                          ? 'cursor-not-allowed text-slate-300'
+                          : 'text-slate-700 hover:bg-surface font-medium',
                     )}
                   >
                     <span
@@ -1577,21 +1777,21 @@ function ExamSidebar({
                       className={clsx(
                         'grid h-4 w-4 shrink-0 place-items-center rounded-full text-[9px] font-bold',
                         done
-                          ? 'bg-brand-700 text-white'
+                          ? 'bg-accent text-dark'
                           : answered > 0
                             ? 'border-2 border-brand-600 bg-white text-brand-800'
-                            : 'border border-[#cfc6b2] bg-white text-transparent',
+                            : 'border border-slate-300 bg-white text-transparent',
                       )}
                     >
                       ✓
                     </span>
                     <span className="min-w-0 flex-1 truncate">
                       Phần {part.number}
-                      {state === 'submitted' && (
-                        <span className="ml-1 text-[9px] font-semibold text-brand-700">đã nộp</span>
+                      {!readOnly && state === 'submitted' && (
+                        <span className="ml-1 font-mono text-[10px] font-bold text-brand-700">đã nộp</span>
                       )}
                     </span>
-                    <span className="shrink-0 text-[10px] tabular-nums text-stone-500">
+                    <span className="shrink-0 font-mono text-[10px] tabular-nums text-slate-400">
                       {answered}/{part.totalItems}
                     </span>
                   </button>

@@ -57,6 +57,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/plans").permitAll()
                         .requestMatchers("/actuator/health/**", "/actuator/info").permitAll()
                         .requestMatchers("/api/docs/**", "/api/swagger/**", "/swagger-ui/**").permitAll()
+                        // WebSocket Handshake tự xác thực token JWT qua HandshakeInterceptor
+                        .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasAnyRole(
                                 "CONTENT_EDITOR", "CONTENT_REVIEWER", "TEACHER",
                                 "SUPPORT", "FINANCE", "ADMIN", "SUPER_ADMIN")

@@ -1,7 +1,10 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
+import { adminBankTransferApi } from '@/api/adminEndpoints';
 import { usePermission } from './usePermission';
 import { useAuthStore } from '@/features/auth/authStore';
+import { useAdminWebSocket } from './useAdminWebSocket';
 
 const NAV_ITEMS = [
   { to: '/admin/skill-tests', label: 'Bài test kỹ năng', permission: 'blueprint:write', icon: 'tests' },
@@ -10,18 +13,42 @@ const NAV_ITEMS = [
   { to: '/admin/scoring', label: 'Cấu hình điểm', permission: 'question_set:write', icon: 'scoring' },
   { to: '/admin/plans', label: 'Gói Premium', permission: 'plan:write', icon: 'plans' },
   { to: '/admin/orders', label: 'Đơn hàng', permission: 'order:read', icon: 'orders' },
-  { to: '/admin/bank-transfers', label: 'Đối soát chuyển khoản', permission: 'order:read', icon: 'transfers' },
+  { to: '/admin/bank-transfers', label: 'Đối soát chuyển khoản', permission: 'order:read', icon: 'transfers', hasBadge: true },
   { to: '/admin/refunds', label: 'Hoàn tiền', permission: 'refund:write', icon: 'refunds' },
   { to: '/admin/users', label: 'Quản lý người dùng', permission: 'user:read', icon: 'users' },
   { to: '/admin/reports', label: 'Báo cáo', permission: 'report:read', icon: 'reports' },
 ] as const;
 
 export function AdminLayout() {
+  const queryClient = useQueryClient();
   const { has } = usePermission();
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const canReadTransfers = has('order:read');
+
+  // Lắng nghe WebSocket để cập nhật badge thông báo sidebar tức thì
+  useAdminWebSocket({
+    enabled: canReadTransfers,
+    onEvent: (event) => {
+      if (
+        event.type === 'BANK_TRANSFER_CLAIMED' ||
+        event.type === 'BANK_TRANSFER_CONFIRMED' ||
+        event.type === 'BANK_TRANSFER_REJECTED'
+      ) {
+        void queryClient.invalidateQueries({ queryKey: ['admin', 'bank-transfers'] });
+      }
+    },
+  });
+
+  const pendingClaimsQuery = useQuery({
+    queryKey: ['admin', 'bank-transfers', 'claimed-badge'],
+    queryFn: () => adminBankTransferApi.list('CLAIMED', 0, 1),
+    enabled: canReadTransfers,
+  });
+  const pendingCount = pendingClaimsQuery.data?.totalElements ?? 0;
+
   const visible = NAV_ITEMS.filter((item) => has(item.permission));
-  const displayName = user?.profile.displayName || user?.profile.fullName || user?.email || 'Quản trị viên';
+  const displayName = user?.profile?.displayName || user?.profile?.fullName || user?.email || 'Quản trị viên';
 
   const handleLogout = async () => {
     await logout();
@@ -39,12 +66,22 @@ export function AdminLayout() {
         <div className="flex-1 overflow-y-auto px-3 py-5">
           <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#86b2a5]">Quản lý hệ thống</p>
           <nav className="space-y-1" aria-label="Khu quản trị">
-            {visible.map((item) => (
-              <NavLink key={item.to} to={item.to} className={({ isActive }) => clsx('flex min-h-11 items-center gap-3 rounded-lg px-3 text-[13px] font-medium transition-colors', isActive ? 'bg-white text-brand-900 shadow-sm' : 'text-[#d6e7e1] hover:bg-white/10 hover:text-white')}>
-                <AdminIcon name={item.icon} />
-                {item.label}
-              </NavLink>
-            ))}
+            {visible.map((item) => {
+              const showBadge = 'hasBadge' in item && item.hasBadge && pendingCount > 0;
+              return (
+                <NavLink key={item.to} to={item.to} className={({ isActive }) => clsx('flex min-h-11 items-center justify-between gap-3 rounded-lg px-3 text-[13px] font-medium transition-colors', isActive ? 'bg-white text-brand-900 shadow-sm' : 'text-[#d6e7e1] hover:bg-white/10 hover:text-white')}>
+                  <div className="flex items-center gap-3">
+                    <AdminIcon name={item.icon} />
+                    <span>{item.label}</span>
+                  </div>
+                  {showBadge && (
+                    <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1.5 text-[11px] font-bold text-white shadow-sm">
+                      {pendingCount}
+                    </span>
+                  )}
+                </NavLink>
+              );
+            })}
           </nav>
         </div>
 

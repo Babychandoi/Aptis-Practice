@@ -24,7 +24,7 @@ export function AppLayout() {
   const location = useLocation();
   const { user, logout } = useAuthStore();
   const { isAdmin } = usePermission();
-  const displayName = user?.profile.displayName || user?.profile.fullName || user?.email || 'Học viên';
+  const displayName = user?.profile?.displayName || user?.profile?.fullName || user?.email || 'Học viên';
 
   const handleLogout = async () => {
     await logout();
@@ -35,7 +35,7 @@ export function AppLayout() {
 
   if (isActiveAttempt) {
     return (
-      <div className="min-h-screen bg-[#f7f4eb] text-[#17211d]">
+      <div className="min-h-screen bg-[#f5f5f2] text-[#15161a]">
         <main>
           <Outlet />
         </main>
@@ -43,20 +43,38 @@ export function AppLayout() {
     );
   }
 
+  // Generate breadcrumb text
+  const getBreadcrumb = () => {
+    const path = location.pathname;
+    if (path === '/') return 'BẢNG ĐIỀU KHIỂN';
+    if (path.startsWith('/mock-tests')) return 'THI THỬ / MOCK TESTS';
+    if (path.startsWith('/meo-hoc')) return 'MẸO HỌC / STUDY TIPS';
+    if (path.startsWith('/history')) return 'LỊCH SỬ / KẾT QUẢ';
+    if (path.startsWith('/plans')) return 'GÓI PREMIUM';
+    if (path.startsWith('/profile')) return 'HỒ SƠ / TÀI KHOẢN';
+    if (path.includes('ngu-phap-tu-vung')) return 'LUYỆN TẬP / NGỮ PHÁP & TỪ VỰNG';
+    if (path.includes('/doc')) return 'LUYỆN TẬP / ĐỌC';
+    if (path.includes('/nghe')) return 'LUYỆN TẬP / NGHE';
+    if (path.includes('/viet')) return 'LUYỆN TẬP / VIẾT';
+    if (path.includes('/noi')) return 'LUYỆN TẬP / NÓI';
+    return 'APTIS PRACTICE';
+  };
+
   return (
-    <div className="min-h-screen bg-[#fafaf7] text-[#1a1a18]">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r border-[#e8e5dc] bg-[#f5f3ec] md:flex">
-        <Link to="/" className="flex h-16 items-center gap-3 border-b border-[#e8e5dc] px-5">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-800 text-white shadow-sm">
-            <BrandIcon />
+    <div className="min-h-screen bg-surface text-[#15161a]">
+      {/* Desktop Sidebar */}
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-white md:flex">
+        <Link to="/" className="flex h-18 items-center gap-3 border-b border-border px-5 py-4">
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-600 text-white font-bold text-base shadow-sm">
+            A
           </span>
           <span>
-            <span className="block text-sm font-bold tracking-[-0.02em]">APTIS PRACTICE</span>
-            <span className="block text-[10px] text-stone-500">Nền tảng luyện thi</span>
+            <span className="block text-[15px] font-bold tracking-tight text-slate-900">Aptis Practice</span>
+            <span className="block font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-400">General</span>
           </span>
         </Link>
 
-        <div className="flex-1 overflow-y-auto px-3 py-5">
+        <div className="flex-1 overflow-y-auto px-3.5 py-5">
           <NavSectionLabel>Menu chính</NavSectionLabel>
           <nav className="space-y-1" aria-label="Điều hướng chính">
             {PRIMARY_NAV.map((item) => (
@@ -64,81 +82,135 @@ export function AppLayout() {
             ))}
           </nav>
 
-          <NavSectionLabel className="mt-7">Luyện Aptis</NavSectionLabel>
+          <NavSectionLabel className="mt-6">Kỹ năng</NavSectionLabel>
           <nav className="space-y-1" aria-label="Các kỹ năng Aptis">
             {SKILL_NAV.map((item) => (
               <NavLink
                 key={item.label}
                 to={item.to}
                 className={({ isActive }) => clsx(
-                  'group flex min-h-10 items-center gap-3 rounded-lg px-3 text-[13px] font-medium transition-colors',
-                  isActive ? 'bg-[#dcefe8] text-brand-900' : 'text-stone-700 hover:bg-white hover:text-brand-800',
+                  'group flex min-h-[42px] items-center gap-3 rounded-xl px-3.5 text-sm font-medium transition-all duration-150',
+                  isActive 
+                    ? 'bg-brand-100 text-brand-800 font-semibold' 
+                    : 'text-slate-600 hover:bg-surface-paper hover:text-slate-900',
                 )}
               >
-                <span className="text-brand-700"><NavIcon name={item.icon} /></span>
-                {item.label}
+                <span className={clsx('transition-colors', 'text-brand-600')}><NavIcon name={item.icon} /></span>
+                <span className="flex-1 truncate">{item.label}</span>
               </NavLink>
             ))}
           </nav>
 
-          <NavSectionLabel className="mt-7">Tài khoản</NavSectionLabel>
+          <NavSectionLabel className="mt-6">Tài khoản</NavSectionLabel>
           <nav className="space-y-1" aria-label="Tài khoản">
             <SidebarLink to="/plans" label="Gói Premium" icon="premium" />
             {isAdmin && <SidebarLink to="/admin" label="Quản trị hệ thống" icon="admin" />}
           </nav>
         </div>
 
-        <div className="border-t border-[#e8e5dc] p-3">
-          <Link to="/profile" className="flex items-center gap-3 rounded-xl bg-white/70 p-2.5 transition-colors hover:bg-white">
-            <Avatar name={displayName} />
-            <span className="min-w-0">
-              <span className="block truncate text-xs font-semibold">{displayName}</span>
-              <span className="block text-[10px] text-stone-500">{user?.premiumActive ? 'Premium' : 'Học viên'}</span>
-            </span>
-          </Link>
+        {/* Premium Widget */}
+        <div className="p-3.5">
+          {!user?.premiumActive ? (
+            <div className="rounded-2xl bg-dark p-4 text-white shadow-sm">
+              <span className="inline-block font-mono text-[10px] font-bold tracking-widest uppercase text-accent">
+                Premium
+              </span>
+              <p className="mt-1.5 text-xs leading-relaxed text-slate-300">
+                Mở trọn bộ 600+ đề và AI chấm Writing & Speaking.
+              </p>
+              <Link
+                to="/plans"
+                className="mt-3 flex min-h-[36px] w-full items-center justify-center rounded-xl bg-accent px-3 text-xs font-bold text-dark transition-all hover:bg-accent-light"
+              >
+                Nâng cấp ngay →
+              </Link>
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-brand-200 bg-brand-50 p-3.5">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-accent" />
+                <span className="font-mono text-xs font-bold uppercase text-brand-800">Tài khoản Premium</span>
+              </div>
+              <p className="mt-1 text-[11px] text-slate-600">
+                {user.premiumEndsAt ? `Hết hạn ${formatDate(user.premiumEndsAt)}` : 'Gói kích hoạt đầy đủ'}
+              </p>
+            </div>
+          )}
         </div>
       </aside>
 
-      <header className="fixed inset-x-0 top-0 z-30 flex h-16 items-center border-b border-[#eceae3] bg-white/95 px-4 backdrop-blur md:left-60 md:px-6">
+      {/* Header */}
+      <header className="fixed inset-x-0 top-0 z-30 flex h-16 items-center border-b border-border bg-white/95 px-4 backdrop-blur md:left-64 md:px-8">
         <Link to="/" className="flex items-center gap-2 md:hidden">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-800 text-white"><BrandIcon /></span>
-          <span className="text-sm font-bold">APTIS PRACTICE</span>
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-white font-bold text-sm">A</span>
+          <span className="text-sm font-bold tracking-tight">Aptis Practice</span>
         </Link>
 
-        <div className="ml-auto flex items-center gap-2">
+        {/* Breadcrumbs for desktop */}
+        <div className="hidden items-center gap-2 md:flex">
+          <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+            {getBreadcrumb()}
+          </span>
+        </div>
+
+        <div className="ml-auto flex items-center gap-3">
+          {/* Streak pill */}
+          <div className="flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 font-mono text-xs text-slate-700">
+            <span className="h-2 w-2 rounded-full bg-accent" />
+            <span>Học liên tục</span>
+          </div>
+
           {!user?.premiumActive && (
-            <Link to="/plans" className="hidden min-h-9 items-center rounded-lg bg-[#fbf3dc] px-3 text-xs font-semibold text-[#8b6415] hover:bg-[#f6e8bc] sm:inline-flex">
+            <Link
+              to="/plans"
+              className="hidden min-h-[36px] items-center rounded-xl bg-brand-100 px-3.5 text-xs font-semibold text-brand-800 transition-colors hover:bg-brand-200 sm:inline-flex"
+            >
               Nâng cấp Premium
             </Link>
           )}
-          {user?.premiumActive && (
-            <span className="hidden rounded-full bg-[#e4f3ed] px-3 py-1 text-xs font-semibold text-brand-800 sm:inline" title={user.premiumEndsAt ? `Hết hạn ${formatDate(user.premiumEndsAt)}` : 'Trọn đời'}>
-              Premium
-            </span>
-          )}
-          <Link to="/profile" className="flex min-h-10 items-center gap-2 rounded-xl px-2 hover:bg-stone-100">
+
+          <Link to="/profile" className="flex items-center gap-2.5 rounded-xl p-1.5 transition-colors hover:bg-surface">
             <Avatar name={displayName} />
             <span className="hidden max-w-40 text-left lg:block">
-              <span className="block truncate text-xs font-semibold">{displayName}</span>
-              <span className="block text-[10px] text-stone-500">Học viên</span>
+              <span className="block truncate text-xs font-semibold text-slate-900">{displayName}</span>
+              <span className="block font-mono text-[10px] uppercase text-slate-400">
+                {user?.premiumActive ? 'Premium' : 'Free'}
+              </span>
             </span>
           </Link>
-          <button type="button" onClick={handleLogout} className="grid h-10 w-10 place-items-center rounded-xl text-stone-500 hover:bg-stone-100 hover:text-stone-900" aria-label="Đăng xuất" title="Đăng xuất">
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="grid h-9 w-9 place-items-center rounded-xl text-slate-400 transition-colors hover:bg-surface hover:text-slate-800"
+            aria-label="Đăng xuất"
+            title="Đăng xuất"
+          >
             <NavIcon name="logout" />
           </button>
         </div>
       </header>
 
-      <div className="pt-16 md:pl-60">
+      {/* Main Content Area */}
+      <div className="pt-16 md:pl-64">
         <main className="mx-auto max-w-[1240px] px-4 py-6 pb-24 sm:px-6 lg:px-8 lg:py-8">
           <Outlet />
         </main>
       </div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-stone-200 bg-white/95 px-2 pb-[max(.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur md:hidden" aria-label="Điều hướng di động">
+      {/* Mobile Bottom Navigation */}
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-white/95 px-2 pb-[max(.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur md:hidden" aria-label="Điều hướng di động">
         <div className="mx-auto grid max-w-md grid-cols-4">
           {[...PRIMARY_NAV, { to: '/plans', label: 'Premium', icon: 'premium' as const }].map((item) => (
-            <NavLink key={item.to} to={item.to} end={item.to === '/'} className={({ isActive }) => clsx('flex min-h-14 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[10px] font-medium', isActive ? 'bg-brand-50 text-brand-800' : 'text-stone-500')}>
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              className={({ isActive }) => clsx(
+                'flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-1 text-[10px] font-medium transition-colors',
+                isActive ? 'bg-brand-100 text-brand-800 font-semibold' : 'text-slate-500 hover:text-slate-900',
+              )}
+            >
               <NavIcon name={item.icon} />
               <span>{item.label}</span>
             </NavLink>
@@ -150,24 +222,31 @@ export function AppLayout() {
 }
 
 function NavSectionLabel({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <p className={clsx('mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.08em] text-stone-400', className)}>{children}</p>;
+  return <p className={clsx('mb-2 px-3.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400', className)}>{children}</p>;
 }
 
 function SidebarLink({ to, label, icon }: { to: string; label: string; icon: IconName }) {
   return (
-    <NavLink to={to} end={to === '/'} className={({ isActive }) => clsx('flex min-h-10 items-center gap-3 rounded-lg px-3 text-[13px] font-medium transition-colors', isActive ? 'bg-[#dcefe8] text-brand-900' : 'text-stone-700 hover:bg-white hover:text-brand-800')}>
-      <NavIcon name={icon} />
-      {label}
+    <NavLink
+      to={to}
+      end={to === '/'}
+      className={({ isActive }) => clsx(
+        'flex min-h-[42px] items-center gap-3 rounded-xl px-3.5 text-sm font-medium transition-all duration-150',
+        isActive ? 'bg-brand-100 text-brand-800 font-semibold' : 'text-slate-600 hover:bg-surface-paper hover:text-slate-900',
+      )}
+    >
+      <span className="text-brand-600"><NavIcon name={icon} /></span>
+      <span>{label}</span>
     </NavLink>
   );
 }
 
 function Avatar({ name }: { name: string }) {
-  return <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-800 text-xs font-bold text-white ring-2 ring-[#dcefe8]">{name.trim().charAt(0).toUpperCase() || 'A'}</span>;
-}
-
-function BrandIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden="true"><path d="M5 4.5h10.5A3.5 3.5 0 0 1 19 8v11.5H8.5A3.5 3.5 0 0 0 5 23V4.5Z" /><path d="M8.5 8H15M8.5 12H15M8.5 16H13" /></svg>;
+  return (
+    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-600 font-mono text-xs font-bold text-white shadow-sm ring-2 ring-brand-100">
+      {name.trim().charAt(0).toUpperCase() || 'A'}
+    </span>
+  );
 }
 
 type IconName = 'home' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout';
@@ -189,3 +268,4 @@ function NavIcon({ name }: { name: IconName }) {
   };
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-[18px] w-[18px]" aria-hidden="true">{paths[name]}</svg>;
 }
+

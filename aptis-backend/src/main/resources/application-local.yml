@@ -32,12 +32,18 @@ aptis:
     # LlmEvaluationEngine (@Order 0) được chọn trước heuristic.
     llm:
       enabled: ${AI_EVAL_ENABLED:false}
+      # Danh sach nha cung cap, moi dong: baseUrl|apiKey|model|maxConcurrent
+      # Trong de tranh 429: DS2API chi nhan 10 request dong thoi (do duoc),
+      # 9Router chiu duoc 50 van 100%. Bo trong thi dung base-url ben duoi.
+      providers: ${AI_EVAL_PROVIDERS:}
+      # So request dong thoi toi da khi chi cau hinh mot provider.
+      max-concurrent: ${AI_EVAL_MAX_CONCURRENT:8}
       base-url: ${AI_EVAL_BASE_URL:}
       api-key: ${AI_EVAL_API_KEY:}
       model: ${AI_EVAL_MODEL:AI-PRO}
       # Thấp hơn chatbot: chấm điểm phải nhất quán giữa các lần, không sáng tạo.
       temperature: ${AI_EVAL_TEMPERATURE:0.2}
-      max-tokens: ${AI_EVAL_MAX_TOKENS:2048}
+      max-tokens: ${AI_EVAL_MAX_TOKENS:16384}
       timeout-seconds: ${AI_EVAL_TIMEOUT:60}
     # Analyzer local xử lý audio trước. Khối stt bên dưới chỉ là fallback từ xa
     # có thể phát sinh phí và mặc định không được gọi.

@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import vn.weconex.aptis.common.util.Enums.EvaluationType;
 
@@ -58,24 +59,27 @@ public class LlmEvaluationEngine implements EvaluationEngine {
     private static final List<String> CEFR_LEVELS =
             List.of("A1", "A2", "B1", "B2", "C1", "C2");
 
-    private final String baseUrl;
-    private final String apiKey;
-    private final String model;
+    /** Số lần gọi provider trong cùng một job trước khi nhường cho fallback. */
+    private static final int LOCAL_ATTEMPTS = 2;
+
+    /**
+     * Chặn trên cho output token. Vượt hạn mức của model thì provider trả 400
+     * thay vì chấm, nên nới thêm không giúp gì.
+     */
+    private static final int MAX_OUTPUT_TOKENS = 32_768;
+
+    private final LlmProviderPool providerPool;
     private final double temperature;
     private final int maxTokens;
     private final RestTemplate restTemplate;
 
     public LlmEvaluationEngine(
-            @Value("${aptis.evaluation.llm.base-url:}") String baseUrl,
-            @Value("${aptis.evaluation.llm.api-key:}") String apiKey,
-            @Value("${aptis.evaluation.llm.model:AI-PRO}") String model,
+            LlmProviderPool providerPool,
             @Value("${aptis.evaluation.llm.temperature:0.2}") double temperature,
-            @Value("${aptis.evaluation.llm.max-tokens:2048}") int maxTokens,
+            @Value("${aptis.evaluation.llm.max-tokens:16384}") int maxTokens,
             @Value("${aptis.evaluation.llm.timeout-seconds:60}") int timeoutSeconds) {
 
-        this.baseUrl = baseUrl == null ? "" : baseUrl.trim();
-        this.apiKey = apiKey == null ? "" : apiKey.trim();
-        this.model = model;
+        this.providerPool = providerPool;
         this.temperature = temperature;
         this.maxTokens = maxTokens;
 
@@ -85,13 +89,12 @@ public class LlmEvaluationEngine implements EvaluationEngine {
         // một lời gọi chat thông thường.
         factory.setReadTimeout((int) Duration.ofSeconds(timeoutSeconds).toMillis());
         this.restTemplate = new RestTemplate(factory);
+    }
 
-        if (this.baseUrl.isBlank() || this.apiKey.isBlank()) {
-            log.warn("LlmEvaluationEngine bật nhưng thiếu base-url hoặc api-key — "
-                    + "mọi lượt chấm sẽ lỗi và bị đưa vào retry.");
-        } else {
-            log.info("LlmEvaluationEngine sẵn sàng: model={} endpoint={}", model, this.baseUrl);
-        }
+    /** Tên engine gồm model của nhà cung cấp đầu, để đối soát trong bản ghi chấm. */
+    private String primaryModel() {
+        var all = providerPool.all();
+        return all.isEmpty() ? "unknown" : all.get(0).model();
     }
 
     @Override
@@ -101,7 +104,7 @@ public class LlmEvaluationEngine implements EvaluationEngine {
 
     @Override
     public String engineName() {
-        return "llm-" + model;
+        return "llm-" + primaryModel();
     }
 
     @Override
@@ -116,25 +119,46 @@ public class LlmEvaluationEngine implements EvaluationEngine {
             return zeroResult(request.rubric(), request.type());
         }
 
-        try {
-            JsonNode parsed = callModel(buildSystemPrompt(request), buildUserPrompt(request, answer));
-            return toResult(parsed, request.rubric(), request);
-        } catch (EvaluationProviderException ex) {
-            throw ex;
-        } catch (RestClientException ex) {
-            throw new EvaluationProviderException(
-                    "Không gọi được 9Router: " + safeMessage(ex), ex);
-        } catch (RuntimeException ex) {
-            throw new EvaluationProviderException(
-                    "Kết quả chấm từ 9Router không hợp lệ: " + safeMessage(ex), ex);
+        // Reasoning model (AI-PRO) hay xuất chuỗi suy luận trước JSON và ăn hết
+        // output token. Cả hai lần gọi đều ép response_format=json_object; lần
+        // hai siết prompt thêm và nới token, nên hầu hết lỗi tự khỏi trong một
+        // job thay vì phải chờ scheduler retry.
+        RuntimeException lastFailure = null;
+        for (int attempt = 1; attempt <= LOCAL_ATTEMPTS; attempt++) {
+            boolean strict = attempt > 1;
+            try {
+                JsonNode parsed = callModel(
+                        buildSystemPrompt(request, strict),
+                        buildUserPrompt(request, answer),
+                        strict);
+                return toResult(parsed, request.rubric(), request);
+            } catch (RestClientException ex) {
+                lastFailure = new EvaluationProviderException(
+                        "Không gọi được 9Router: " + safeMessage(ex), ex);
+            } catch (RuntimeException ex) {
+                lastFailure = ex;
+            }
+            if (attempt < LOCAL_ATTEMPTS) {
+                log.warn("Lần gọi {} tới 9Router không dùng được ({}); thử lại với prompt siết chặt",
+                        attempt, safeMessage(lastFailure));
+            }
         }
+
+        if (lastFailure instanceof EvaluationProviderException providerFailure) {
+            throw providerFailure;
+        }
+        // JSON đúng cú pháp nhưng sai cấu trúc là lỗi tất định: gọi lại y hệt sẽ
+        // ra y hệt. Đánh dấu không cần retry để worker fallback ngay, đỡ đốt token.
+        throw new EvaluationProviderException(
+                "Kết quả chấm từ 9Router không hợp lệ: " + safeMessage(lastFailure),
+                lastFailure, false);
     }
 
     // -----------------------------------------------------------------
     // Prompt
     // -----------------------------------------------------------------
 
-    private String buildSystemPrompt(EvaluationRequest request) {
+    private String buildSystemPrompt(EvaluationRequest request, boolean strict) {
         String skill = request.type() == EvaluationType.SPEAKING_AI ? "Speaking" : "Writing";
         StringBuilder criteria = new StringBuilder();
         for (CriterionSpec criterion : request.rubric().criteria()) {
@@ -175,7 +199,17 @@ public class LlmEvaluationEngine implements EvaluationEngine {
                  "weaknesses":["<Vietnamese>"],
                  "suggestions":["<Vietnamese>"],
                  "correctedVersion":"<improved version of the learner's answer, same language as the answer>"}
-                """.formatted(skill, criteria, speakingRules);
+
+                Your entire reply must be that JSON object and nothing else.
+                Start your reply with the character { and end it with }.
+                Do NOT write any reasoning, planning, self-checks or commentary
+                before or after the JSON — not even a single word. Decide the
+                scores silently, then emit only the object.%s
+                """.formatted(skill, criteria, speakingRules,
+                        strict
+                                ? "\nThe previous reply was rejected because it "
+                                        + "contained text outside the JSON object. Emit JSON only."
+                                : "");
     }
 
     private String buildUserPrompt(EvaluationRequest request, String answer) {
@@ -218,35 +252,122 @@ public class LlmEvaluationEngine implements EvaluationEngine {
     // Gọi API
     // -----------------------------------------------------------------
 
-    private JsonNode callModel(String systemPrompt, String userPrompt) {
+    /**
+     * Gọi một nhà cung cấp còn chỗ trống.
+     *
+     * <p>Mọi provider đều bận hoặc đang bị ngắt thì ném lỗi có thể retry: để job
+     * quay lại hàng đợi còn hơn ép gọi rồi nhận 429 và mất bài. Đây chính là cách
+     * tôn trọng trần đồng thời của DS2API (10 request).
+     */
+    private JsonNode callModel(String systemPrompt, String userPrompt, boolean strict) {
+        try (LlmProviderPool.Lease lease = providerPool.acquire()) {
+            if (lease == null) {
+                throw new EvaluationProviderException(
+                        "Mọi nhà cung cấp đang bận hoặc tạm ngắt; job sẽ được chấm lại");
+            }
+            try {
+                JsonNode result = callProvider(lease.provider(), systemPrompt, userPrompt, strict);
+                lease.markSuccess();
+                return result;
+            } catch (RuntimeException ex) {
+                // 429 KHÔNG phải provider hỏng — nó còn sống, chỉ đang đông. Tính
+                // vào ngưỡng ngắt sẽ loại một provider khoẻ khỏi vòng xoay suốt 2
+                // phút, đúng lúc tải cao nhất. Đo thật trên Copilot: 10.000 request
+                // ở 30 luồng sinh 71 lần 429 (0,7%) rải rác — nếu tính là lỗi thì
+                // chỉ cần 3 cái gần nhau là mất provider nhanh nhất của hệ thống.
+                if (isRateLimited(ex)) {
+                    log.debug("{} đang giới hạn tốc độ; đổi nhà cung cấp khác",
+                            lease.provider().baseUrl());
+                    throw new EvaluationProviderException(
+                            "Nhà cung cấp đang giới hạn tốc độ: " + safeMessage(ex), ex);
+                }
+                lease.markFailure();
+                throw ex;
+            }
+        }
+    }
+
+    /**
+     * Lỗi có phải giới hạn tốc độ (429) hay không.
+     *
+     * <p>Bắt cả trường hợp lỗi bị bọc trong lớp khác: RestTemplate ném
+     * {@code HttpClientErrorException.TooManyRequests}, nhưng khi đi qua vài lớp
+     * thì chỉ còn chuỗi thông báo.
+     */
+    private static boolean isRateLimited(Throwable ex) {
+        for (Throwable cur = ex; cur != null; cur = cur.getCause()) {
+            if (cur instanceof HttpStatusCodeException http
+                    && http.getStatusCode().value() == 429) {
+                return true;
+            }
+            String msg = cur.getMessage();
+            if (msg != null && (msg.contains("429") || msg.contains("Too Many Requests"))) {
+                return true;
+            }
+            if (cur.getCause() == cur) {
+                break;
+            }
+        }
+        return false;
+    }
+
+    private JsonNode callProvider(
+            LlmProviderPool.Provider provider,
+            String systemPrompt,
+            String userPrompt,
+            boolean strict) {
+
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("model", model);
+        body.put("model", provider.model());
         body.put("messages", List.of(
                 Map.of("role", "system", "content", systemPrompt),
                 Map.of("role", "user", "content", userPrompt)));
-        body.put("temperature", temperature);
-        body.put("max_tokens", maxTokens);
+        body.put("temperature", strict ? 0.0 : temperature);
+        // Reasoning model tiêu token cho chuỗi suy luận trước khi viết JSON. Lần
+        // thử thứ hai nới hạn mức để JSON không bị cắt giữa object.
+        body.put("max_tokens", outputTokenBudget(strict));
+        // Chốt gốc vấn đề: buộc provider trả đúng một JSON object, không văn xuôi,
+        // không markdown fence. Provider nào không hiểu field này thì bỏ qua nó,
+        // nên phần parse phòng hộ bên dưới vẫn giữ nguyên.
+        body.put("response_format", Map.of("type", "json_object"));
         body.put("stream", false);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        if (!apiKey.isBlank()) {
-            headers.setBearerAuth(apiKey);
+        if (!provider.apiKey().isBlank()) {
+            headers.setBearerAuth(provider.apiKey());
         }
 
         ResponseEntity<Map> response = restTemplate.exchange(
-                chatCompletionsUrl(), HttpMethod.POST, new HttpEntity<>(body, headers), Map.class);
+                chatCompletionsUrl(provider.baseUrl()), HttpMethod.POST,
+                new HttpEntity<>(body, headers), Map.class);
 
         ModelMessage message = extractContent(response);
         if ("length".equalsIgnoreCase(message.finishReason())) {
             throw new EvaluationProviderException(
-                    "9Router dừng do hết giới hạn output token; cần retry");
+                    "9Router dừng do hết giới hạn output token (max_tokens="
+                            + outputTokenBudget(strict) + ")");
         }
         return parseModelJson(message.content());
     }
 
-    /** Ghép đường dẫn giống law-app: base kết thúc /v1 thì nối /chat/completions. */
-    private String chatCompletionsUrl() {
+    /**
+     * Hạn mức output token cho một lần gọi.
+     *
+     * <p>Đây là giới hạn số token model được phép <em>viết ra</em>, không phải
+     * context window. Context 1M chỉ nói model đọc được bao nhiêu; phần sinh ra
+     * vẫn bị chặn ở mức thấp hơn nhiều.
+     *
+     * <p>Lần strict nhân đôi để JSON không bị cắt, nhưng chặn ở
+     * {@value #MAX_OUTPUT_TOKENS} vì provider từ chối request vượt hạn mức
+     * output của model — lúc đó lỗi 400 còn tệ hơn JSON bị cắt.
+     */
+    private int outputTokenBudget(boolean strict) {
+        return strict ? Math.min(maxTokens * 2, MAX_OUTPUT_TOKENS) : maxTokens;
+    }
+
+    /** Ghép đường dẫn: base kết thúc /v1 thì nối /chat/completions. */
+    private static String chatCompletionsUrl(String baseUrl) {
         String url = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
         return url.endsWith("/v1") ? url + "/chat/completions" : url;
     }
@@ -621,19 +742,17 @@ public class LlmEvaluationEngine implements EvaluationEngine {
      * hiện lên bảng điểm.
      */
     private static double clamp(double score, double maxScore, String code) {
+        double result = CriterionScoreRounding.toWholeScore(score, maxScore);
+        // Log ở đây chứ không nhét vào lớp dùng chung: chỉ điểm do mô hình trả về
+        // mới đáng cảnh báo, còn engine heuristic tự tính nên luôn trong khoảng.
         if (score < 0) {
             log.warn("LLM chấm {} âm ({}), kẹp về 0", code, score);
-            return 0;
-        }
-        if (score > maxScore) {
+        } else if (score > maxScore) {
             log.warn("LLM chấm {} vượt trần ({} > {}), kẹp về trần", code, score, maxScore);
-            return Math.floor(maxScore);
+        } else if (result != score) {
+            log.debug("LLM chấm {} lẻ ({}), làm tròn thành {}", code, score, result);
         }
-        long rounded = Math.round(score);
-        if (rounded != score) {
-            log.debug("LLM chấm {} lẻ ({}), làm tròn thành {}", code, score, rounded);
-        }
-        return rounded;
+        return result;
     }
 
     private static String cefr(String value) {

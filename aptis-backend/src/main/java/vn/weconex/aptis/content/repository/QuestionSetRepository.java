@@ -177,4 +177,22 @@ public interface QuestionSetRepository
     @Query(value = "SELECT qs.topic_id FROM question_sets qs WHERE qs.id = :id",
             nativeQuery = true)
     Optional<String> findTopicIdById(@Param("id") String id);
+
+    @Query(value = "SELECT qs.title FROM question_sets qs WHERE qs.id = :id",
+            nativeQuery = true)
+    Optional<String> findTitleById(@Param("id") String id);
+
+    @Query(value = """
+            SELECT qs.id
+            FROM question_sets qs
+            WHERE qs.part_id = :partId
+              AND qs.status = 'PUBLISHED'
+              AND qs.title = :title
+              AND (qs.access_level = 'FREE' OR :hasPremium = TRUE)
+            LIMIT 1
+            """, nativeQuery = true)
+    Optional<String> findFirstByPartIdAndTitle(
+            @Param("partId") String partId,
+            @Param("title") String title,
+            @Param("hasPremium") boolean hasPremium);
 }

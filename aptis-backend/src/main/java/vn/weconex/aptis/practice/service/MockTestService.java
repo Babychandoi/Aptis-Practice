@@ -42,6 +42,10 @@ public class MockTestService {
     /** MySQL không nhận IN (), dùng sentinel khi danh sách loại trừ rỗng. */
     private static final List<String> NO_EXCLUSION = List.of("-");
 
+    private static final String WRITING_PART_2_ID = "16000000-0000-4000-8000-000000000042";
+    private static final String WRITING_PART_3_ID = "16000000-0000-4000-8000-000000000043";
+    private static final String WRITING_PART_4_ID = "16000000-0000-4000-8000-000000000044";
+
     private final TestBlueprintRepository blueprintRepository;
     private final BlueprintPartRuleRepository ruleRepository;
     private final BlueprintFixedQuestionSetRepository fixedRepository;
@@ -111,11 +115,30 @@ public class MockTestService {
 
         Set<String> chosen = new LinkedHashSet<>();
         List<String> shortages = new ArrayList<>();
+        String writingClubTitle = null;
 
         for (BlueprintPartRule rule : rules) {
-            List<String> ids = rule.isFixedSelection()
-                    ? selectFixed(rule)
-                    : selectByRule(userId, rule, hasPremium, chosen, seed);
+            List<String> ids;
+            if (rule.isFixedSelection()) {
+                ids = selectFixed(rule);
+            } else if ((WRITING_PART_3_ID.equals(rule.getPartId()) || WRITING_PART_4_ID.equals(rule.getPartId()))
+                    && writingClubTitle != null) {
+                // Aptis Writing Part 2, 3, 4 phải cùng một chủ đề CLB (Fashion Club, Travel Club...).
+                // Khớp chính xác theo tiêu đề CLB đã chọn từ Part 2.
+                var matchingId = questionSetRepository.findFirstByPartIdAndTitle(
+                        rule.getPartId(), writingClubTitle, hasPremium);
+                if (matchingId.isPresent() && !chosen.contains(matchingId.get())) {
+                    ids = List.of(matchingId.get());
+                } else {
+                    ids = selectByRule(userId, rule, hasPremium, chosen, seed);
+                }
+            } else {
+                ids = selectByRule(userId, rule, hasPremium, chosen, seed);
+            }
+
+            if (WRITING_PART_2_ID.equals(rule.getPartId()) && !ids.isEmpty()) {
+                writingClubTitle = questionSetRepository.findTitleById(ids.get(0)).orElse(null);
+            }
 
             if (ids.size() < rule.getQuestionSetCount()) {
                 shortages.add("%s: cần %d, có %d"

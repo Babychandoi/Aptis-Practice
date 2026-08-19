@@ -54,24 +54,23 @@ export function PlansPage() {
   }
 
   return (
-    <div className="space-y-5">
-      <header className="relative overflow-hidden rounded-2xl bg-brand-900 px-5 py-6 text-white sm:px-7">
-        <span className="absolute -right-16 -top-20 h-56 w-56 rounded-full bg-brand-700/50" aria-hidden="true" />
-        <div className="relative max-w-2xl">
-          <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-emerald-100">
+    <div className="space-y-6">
+      <header className="relative overflow-hidden rounded-2xl bg-dark px-6 py-8 text-white sm:px-8 shadow-sm">
+        <div className="relative max-w-2xl space-y-2">
+          <span className="inline-flex rounded-full bg-accent px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-dark">
             Aptis Practice Premium
           </span>
-          <h1 className="mt-3 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">Học trọn bộ, tiến bộ rõ ràng</h1>
-          <p className="mt-2 text-sm leading-6 text-emerald-100">
-            Mở toàn bộ kho luyện, thi thử đủ 4 kỹ năng và nhận góp ý Writing/Speaking bằng AI.
+          <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">Học trọn bộ, tiến bộ rõ ràng</h1>
+          <p className="text-sm leading-relaxed text-slate-300">
+            Mở toàn bộ 600+ câu hỏi luyện thi, thi thử 4 kỹ năng và nhận đánh giá Writing & Speaking bằng AI.
           </p>
         </div>
       </header>
 
       {user?.premiumActive && (
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
-          Bạn đang có Premium{user.premiumEndsAt ? ` đến ${formatDate(user.premiumEndsAt)}` : ' trọn đời'}.
-          Mua thêm sẽ nối tiếp thời hạn hiện tại.
+        <div className="rounded-2xl border border-brand-200 bg-brand-50 px-5 py-4 text-sm text-brand-900 font-medium">
+          Bạn đang có gói Premium{user.premiumEndsAt ? ` đến ${formatDate(user.premiumEndsAt)}` : ' trọn đời'}.
+          Mua thêm sẽ tự động cộng nối tiếp thời hạn.
         </div>
       )}
 
@@ -79,20 +78,19 @@ export function PlansPage() {
         <ErrorBlock message={createOrder.error instanceof ApiError ? createOrder.error.message : 'Không tạo được đơn hàng'} />
       )}
 
-      <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_330px]">
-        <section className="rounded-2xl border border-stone-200 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-stone-200 px-5 py-4">
-            <div className="flex items-center gap-3">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-800 text-sm font-bold text-white">1</span>
-              <div>
-                <h2 className="font-semibold text-stone-900">Chọn gói sử dụng</h2>
-                <p className="mt-0.5 text-xs text-stone-500">Quyền lợi giống nhau, chỉ khác thời hạn</p>
-              </div>
+      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
+        <section className="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between border-b border-border-subtle px-6 py-4">
+            <div>
+              <h2 className="font-bold text-slate-900">Chọn gói thời hạn phù hợp</h2>
+              <p className="mt-0.5 text-xs text-slate-500">Mọi gói đều có trọn vẹn toàn bộ tính năng và ngân hàng đề</p>
             </div>
-            <span className="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-800">{plans.length} gói</span>
+            <span className="rounded-full bg-brand-100 px-3 py-1 font-mono text-xs font-bold text-brand-800">
+              {plans.length} gói
+            </span>
           </div>
 
-          <div className="grid gap-3 p-4 md:grid-cols-2 2xl:grid-cols-3">
+          <div className="grid gap-4 p-6 md:grid-cols-2 2xl:grid-cols-3">
             {plans.map((plan) => (
               <PlanCard
                 key={plan.id}

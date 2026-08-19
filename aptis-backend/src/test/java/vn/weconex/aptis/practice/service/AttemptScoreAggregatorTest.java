@@ -53,6 +53,18 @@ class AttemptScoreAggregatorTest {
     }
 
     @Test
+    void doesNotRescaleScoreAlreadyOnPartScale() {
+        PartScoringRule rule = rule("16", "2");
+
+        BigDecimal[] result = AttemptScoreAggregator.normalize(
+                new BigDecimal("2"), new BigDecimal("16"), rule);
+
+        // Reading Part 3: one correct match is exactly 2/16, not 1.75/16.
+        assertThat(result[0]).isEqualByComparingTo("2");
+        assertThat(result[1]).isEqualByComparingTo("16");
+    }
+
+    @Test
     void sourcePointsAreScaledOntoPersistedPartMaximum() {
         PartScoringRule rule = rule("26", "0");
 

@@ -9,6 +9,7 @@ import { formatCurrency, formatDateTime } from '@/lib/format';
 import type { BankAccount, BankTransferStatus, SaveBankAccountRequest } from '@/types/admin';
 import { DataTable, PageHeader, Pager, ResultBanner } from './components/AdminUi';
 import { usePermission } from './usePermission';
+import { useAdminWebSocket } from './useAdminWebSocket';
 
 const PAGE_SIZE = 20;
 const FILTERS: Array<{ value: BankTransferStatus | undefined; label: string }> = [
@@ -26,12 +27,43 @@ export function BankTransferAdminPage() {
   const [status, setStatus] = useState<BankTransferStatus | undefined>('CLAIMED');
   const [page, setPage] = useState(0);
   const [banner, setBanner] = useState<string | null>(null);
+  const [toastNotice, setToastNotice] = useState<string | null>(null);
+
+  // WebSocket thời gian thực: nhận sự kiện từ Backend ngay lập tức (0s latency)
+  const { status: wsStatus, reconnect } = useAdminWebSocket({
+    enabled: true,
+    onEvent: (event) => {
+      if (
+        event.type === 'BANK_TRANSFER_CLAIMED' ||
+        event.type === 'BANK_TRANSFER_CONFIRMED' ||
+        event.type === 'BANK_TRANSFER_REJECTED'
+      ) {
+        // Tự động làm mới danh sách và số lượng chờ đối soát
+        void queryClient.invalidateQueries({ queryKey: ['admin', 'bank-transfers'] });
+        void queryClient.invalidateQueries({ queryKey: ['admin', 'orders'] });
+
+        if (event.type === 'BANK_TRANSFER_CLAIMED') {
+          const payload = event.payload as { transferCode?: string; amount?: number; userEmail?: string } | undefined;
+          const code = payload?.transferCode || '';
+          const amt = payload?.amount ? ` (${formatCurrency(payload.amount)})` : '';
+          const email = payload?.userEmail ? ` từ ${payload.userEmail}` : '';
+          setToastNotice(`🔔 Có đơn vừa báo chuyển khoản: ${code}${amt}${email}`);
+        }
+      }
+    },
+  });
 
   const transfersQuery = useQuery({
     queryKey: ['admin', 'bank-transfers', status, page],
     queryFn: () => adminBankTransferApi.list(status, page, PAGE_SIZE),
     placeholderData: (previous) => previous,
   });
+
+  const claimedCountQuery = useQuery({
+    queryKey: ['admin', 'bank-transfers', 'claimed-count'],
+    queryFn: () => adminBankTransferApi.list('CLAIMED', 0, 1),
+  });
+  const pendingClaimCount = claimedCountQuery.data?.totalElements ?? 0;
 
   const accountsQuery = useQuery({
     queryKey: ['admin', 'bank-accounts'],
@@ -61,7 +93,61 @@ export function BankTransferAdminPage() {
 
   return (
     <div className="space-y-7">
-      <PageHeader title="Đối soát chuyển khoản" description="Kiểm tra sao kê theo mã nội dung rồi xác nhận để kích hoạt Premium." />
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <PageHeader title="Đối soát chuyển khoản" description="Kiểm tra sao kê theo mã nội dung rồi xác nhận để kích hoạt Premium." />
+        <div className="flex items-center gap-2.5">
+          {wsStatus === 'CONNECTED' ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800" title="Đang kết nối WebSocket thời gian thực">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+              </span>
+              WS Live Realtime
+            </span>
+          ) : wsStatus === 'CONNECTING' ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">
+              <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
+              WS Đang kết nối…
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={reconnect}
+              className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-600 hover:bg-stone-200"
+              title="Nhấn để kết nối lại WebSocket"
+            >
+              <span className="h-2 w-2 rounded-full bg-stone-400"></span>
+              WS Offline (Thử lại)
+            </button>
+          )}
+          <button
+            type="button"
+            className="btn-secondary !py-1.5 !px-3 text-xs"
+            onClick={() => {
+              void transfersQuery.refetch();
+              void claimedCountQuery.refetch();
+            }}
+            disabled={transfersQuery.isFetching}
+          >
+            {transfersQuery.isFetching ? 'Đang cập nhật…' : '↻ Làm mới'}
+          </button>
+        </div>
+      </div>
+
+      {toastNotice && (
+        <div className="flex items-center justify-between rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 shadow-sm animate-pulse">
+          <div className="flex items-center gap-2">
+            <span>{toastNotice}</span>
+          </div>
+          <button
+            type="button"
+            className="text-xs font-bold text-amber-700 hover:text-amber-950 underline ml-4"
+            onClick={() => setToastNotice(null)}
+          >
+            Đóng
+          </button>
+        </div>
+      )}
 
       {banner && <ResultBanner tone="success" message={banner} onDismiss={() => setBanner(null)} />}
       {mutationError && <ResultBanner tone="danger" message={errorMessage(mutationError, 'Không xử lý được yêu cầu')} />}
@@ -75,16 +161,24 @@ export function BankTransferAdminPage() {
             <p className="mt-1 text-xs text-stone-500">Ưu tiên các yêu cầu học viên đã báo chuyển.</p>
           </div>
           <div className="flex flex-wrap gap-1 rounded-xl bg-stone-100 p-1">
-            {FILTERS.map((filter) => (
-              <button
-                key={filter.label}
-                type="button"
-                className={`rounded-lg px-3 py-2 text-xs font-semibold ${status === filter.value ? 'bg-white text-brand-900 shadow-sm' : 'text-stone-500 hover:text-stone-900'}`}
-                onClick={() => { setStatus(filter.value); setPage(0); }}
-              >
-                {filter.label}
-              </button>
-            ))}
+            {FILTERS.map((filter) => {
+              const showBadge = filter.value === 'CLAIMED' && pendingClaimCount > 0;
+              return (
+                <button
+                  key={filter.label}
+                  type="button"
+                  className={`relative inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold ${status === filter.value ? 'bg-white text-brand-900 shadow-sm' : 'text-stone-500 hover:text-stone-900'}`}
+                  onClick={() => { setStatus(filter.value); setPage(0); }}
+                >
+                  {filter.label}
+                  {showBadge && (
+                    <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-white shadow-sm">
+                      {pendingClaimCount}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -94,49 +188,52 @@ export function BankTransferAdminPage() {
         {transfersQuery.data && (
           <>
             <DataTable headers={['Mã CK', 'Mã đơn', 'Học viên', 'Số tiền', 'Trạng thái', 'Báo chuyển lúc', 'Thao tác']} isEmpty={transfersQuery.data.content.length === 0} empty="Không có yêu cầu phù hợp.">
-              {transfersQuery.data.content.map((transfer) => (
-                <tr key={transfer.id} className="border-b border-stone-100 last:border-0">
-                  <td className="whitespace-nowrap px-4 py-3 font-mono text-sm font-bold text-brand-800">{transfer.transferCode}</td>
-                  <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-stone-500">{transfer.orderCode ?? '—'}</td>
-                  <td className="px-4 py-3 text-sm text-stone-700">{transfer.userEmail ?? '—'}</td>
-                  <td className="whitespace-nowrap px-4 py-3 font-semibold text-stone-900">{formatCurrency(transfer.amount, transfer.currency)}</td>
-                  <td className="whitespace-nowrap px-4 py-3"><TransferStatusBadge status={transfer.status} /></td>
-                  <td className="whitespace-nowrap px-4 py-3 text-xs text-stone-500">{formatDateTime(transfer.claimedAt)}</td>
-                  <td className="whitespace-nowrap px-4 py-3">
-                    {canConfirm && ['PENDING', 'CLAIMED'].includes(transfer.status) ? (
-                      <div className="flex gap-2">
-                        <button
-                          type="button"
-                          className="rounded-lg bg-brand-800 px-3 py-2 text-xs font-semibold text-white hover:bg-brand-900 disabled:opacity-50"
-                          disabled={confirmMutation.isPending || rejectMutation.isPending}
-                          onClick={async () => {
-                            const ok = await confirmDialog({
-                              title: 'Xác nhận đã nhận tiền?',
-                              text: `${formatCurrency(transfer.amount, transfer.currency)} với nội dung ${transfer.transferCode}. Người dùng sẽ được kích hoạt quyền Premium.`,
-                              confirmText: 'Đã đối soát, xác nhận',
-                            });
-                            if (ok) confirmMutation.mutate({ id: transfer.id, amount: transfer.amount });
-                          }}
-                        >Xác nhận</button>
-                        <button
-                          type="button"
-                          className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-50"
-                          disabled={confirmMutation.isPending || rejectMutation.isPending}
-                          onClick={async () => {
-                            const ok = await confirmDialog({
-                              title: 'Từ chối yêu cầu chuyển khoản?',
-                              text: `Yêu cầu ${transfer.transferCode} sẽ bị đánh dấu từ chối và không thể hoàn tác.`,
-                              confirmText: 'Từ chối',
-                              danger: true,
-                            });
-                            if (ok) rejectMutation.mutate(transfer.id);
-                          }}
-                        >Từ chối</button>
-                      </div>
-                    ) : '—'}
-                  </td>
-                </tr>
-              ))}
+              {transfersQuery.data.content.map((transfer) => {
+                const isClaimed = transfer.status === 'CLAIMED';
+                return (
+                  <tr key={transfer.id} className={`border-b border-stone-100 last:border-0 transition-colors ${isClaimed ? 'bg-amber-50/40 hover:bg-amber-50/70' : 'hover:bg-stone-50/60'}`}>
+                    <td className="whitespace-nowrap px-4 py-3 font-mono text-sm font-bold text-brand-800">{transfer.transferCode}</td>
+                    <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-stone-500">{transfer.orderCode ?? '—'}</td>
+                    <td className="px-4 py-3 text-sm text-stone-700">{transfer.userEmail ?? '—'}</td>
+                    <td className="whitespace-nowrap px-4 py-3 font-semibold text-stone-900">{formatCurrency(transfer.amount, transfer.currency)}</td>
+                    <td className="whitespace-nowrap px-4 py-3"><TransferStatusBadge status={transfer.status} /></td>
+                    <td className="whitespace-nowrap px-4 py-3 text-xs text-stone-500">{formatDateTime(transfer.claimedAt)}</td>
+                    <td className="whitespace-nowrap px-4 py-3">
+                      {canConfirm && ['PENDING', 'CLAIMED'].includes(transfer.status) ? (
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            className="rounded-lg bg-brand-800 px-3 py-2 text-xs font-semibold text-white hover:bg-brand-900 disabled:opacity-50"
+                            disabled={confirmMutation.isPending || rejectMutation.isPending}
+                            onClick={async () => {
+                              const ok = await confirmDialog({
+                                title: 'Xác nhận đã nhận tiền?',
+                                text: `${formatCurrency(transfer.amount, transfer.currency)} với nội dung ${transfer.transferCode}. Người dùng sẽ được kích hoạt quyền Premium.`,
+                                confirmText: 'Đã đối soát, xác nhận',
+                              });
+                              if (ok) confirmMutation.mutate({ id: transfer.id, amount: transfer.amount });
+                            }}
+                          >Xác nhận</button>
+                          <button
+                            type="button"
+                            className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-50"
+                            disabled={confirmMutation.isPending || rejectMutation.isPending}
+                            onClick={async () => {
+                              const ok = await confirmDialog({
+                                title: 'Từ chối yêu cầu chuyển khoản?',
+                                text: `Yêu cầu ${transfer.transferCode} sẽ bị đánh dấu từ chối và không thể hoàn tác.`,
+                                confirmText: 'Từ chối',
+                                danger: true,
+                              });
+                              if (ok) rejectMutation.mutate(transfer.id);
+                            }}
+                          >Từ chối</button>
+                        </div>
+                      ) : '—'}
+                    </td>
+                  </tr>
+                );
+              })}
             </DataTable>
             <Pager page={page} totalPages={transfersQuery.data.totalPages} onChange={setPage} />
           </>

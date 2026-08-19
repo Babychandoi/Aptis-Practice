@@ -30,11 +30,13 @@ import vn.weconex.aptis.content.service.ContentAccessService;
 import vn.weconex.aptis.content.service.QuestionSetSanitizer;
 import vn.weconex.aptis.entitlement.service.EntitlementService;
 import vn.weconex.aptis.evaluation.repository.EvaluationDocumentRepository;
+import vn.weconex.aptis.practice.domain.AttemptComponentScore;
 import vn.weconex.aptis.practice.domain.AttemptQuestionSet;
 import vn.weconex.aptis.practice.domain.TestAttempt;
 import vn.weconex.aptis.practice.domain.TestBlueprint;
 import vn.weconex.aptis.practice.mongo.AttemptDocument;
 import vn.weconex.aptis.practice.mongo.AttemptDocumentRepository;
+import vn.weconex.aptis.practice.repository.AttemptComponentScoreRepository;
 import vn.weconex.aptis.practice.repository.AttemptQuestionSetRepository;
 import vn.weconex.aptis.practice.repository.TestAttemptRepository;
 import vn.weconex.aptis.practice.repository.TestBlueprintRepository;
@@ -71,6 +73,7 @@ public class AttemptService {
     private final AttemptScoreAggregator scoreAggregator;
     private final ComponentProgressService componentProgressService;
     private final ComponentRepository componentRepository;
+    private final AttemptComponentScoreRepository componentScoreRepository;
     private final TestBlueprintRepository blueprintRepository;
     private final EvaluationQueue evaluationQueue;
     private final EvaluationDocumentRepository evaluationDocumentRepository;
@@ -447,6 +450,36 @@ public class AttemptService {
                 })
                 .toList();
 
+        List<AttemptComponentScore> compScores = componentScoreRepository.findByAttemptId(attempt.getId());
+        Map<String, vn.weconex.aptis.catalog.domain.ExamStructure.Component> compMap = componentRepository.findAll()
+                .stream().collect(Collectors.toMap(c -> c.getId(), c -> c, (a, b) -> a));
+
+        List<PracticeDtos.ComponentScoreResponse> componentScoreResponses = compScores.stream()
+                .map(cs -> {
+                    vn.weconex.aptis.catalog.domain.ExamStructure.Component c = compMap.get(cs.getComponentId());
+                    String code = c == null ? "" : (c.getCode() == null ? "" : c.getCode());
+                    String name = c == null ? "" : c.getName();
+                    int order = c == null ? 0 : c.getDisplayOrder();
+                    return new PracticeDtos.ComponentScoreResponse(
+                            cs.getComponentId(),
+                            code,
+                            name,
+                            order,
+                            cs.getRawScore() == null ? null : cs.getRawScore().doubleValue(),
+                            cs.getMaxScore() == null ? null : cs.getMaxScore().doubleValue(),
+                            cs.getPercentageScore() == null ? null : cs.getPercentageScore().doubleValue(),
+                            cs.getScaledScore() == null ? null : cs.getScaledScore().doubleValue(),
+                            cs.getCefrLevel() == null ? null : cs.getCefrLevel().name());
+                })
+                .sorted(Comparator.comparingInt(PracticeDtos.ComponentScoreResponse::displayOrder))
+                .toList();
+
+        String overallCefr = attempt.getCefrLevel() != null
+                ? attempt.getCefrLevel().name()
+                : (attempt.getPercentageScore() != null
+                        ? AttemptScoreAggregator.estimateCefrLevel(attempt.getPercentageScore())
+                        : null);
+
         return new PracticeDtos.AttemptResponse(
                 attempt.getId(),
                 attempt.getMode().name(),
@@ -462,14 +495,17 @@ public class AttemptService {
                 attempt.getTimeSpentSeconds(),
                 attempt.getTotalItems(),
                 attempt.getAnsweredItems(),
+                attempt.getCorrectItems(),
                 attempt.getRawScore() == null ? null : attempt.getRawScore().doubleValue(),
                 attempt.getMaxScore() == null ? null : attempt.getMaxScore().doubleValue(),
                 attempt.getPercentageScore() == null
                         ? null : attempt.getPercentageScore().doubleValue(),
+                overallCefr,
                 // Chỉ có ý nghĩa khi luyện một Part; thi thử nhiều Part thì
                 // partId null nên cờ luôn false.
                 attempt.getPartId() != null
                         && properties.practice().mergeSizeOf(attempt.getPartId()).isPresent(),
+                componentScoreResponses,
                 componentProgressOf(attempt),
                 entries);
     }

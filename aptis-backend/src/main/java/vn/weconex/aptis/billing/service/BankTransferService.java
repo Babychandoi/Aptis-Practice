@@ -22,6 +22,8 @@ import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.exception.ErrorCode;
 import vn.weconex.aptis.common.util.Enums.OrderStatus;
 import vn.weconex.aptis.common.util.Enums.PaymentStatus;
+import vn.weconex.aptis.auth.repository.UserRepository;
+import vn.weconex.aptis.common.websocket.AdminEventPublisher;
 import vn.weconex.aptis.platform.audit.AuditService;
 import vn.weconex.aptis.platform.notification.NotificationSender;
 import vn.weconex.aptis.platform.outbox.OutboxService;
@@ -54,10 +56,12 @@ public class BankTransferService {
     private final BankTransferRequestRepository transferRepository;
     private final OrderRepository orderRepository;
     private final PaymentTransactionRepository paymentRepository;
+    private final UserRepository userRepository;
     private final SubscriptionActivationService activationService;
     private final NotificationSender notificationSender;
     private final AuditService auditService;
     private final OutboxService outboxService;
+    private final AdminEventPublisher adminEventPublisher;
 
     /** Dùng SecureRandom: mã đoán được thì người khác chiếm được đơn chờ. */
     private final SecureRandom random = new SecureRandom();
@@ -155,6 +159,18 @@ public class BankTransferService {
                         "orderCode", order.getOrderCode(),
                         "amount", request.getAmount(),
                         "userId", userId));
+
+        // Phát WebSocket thời gian thực tới tất cả Admin đang mở trang quản trị
+        String userEmail = userRepository.findById(userId)
+                .map(u -> u.getEmail())
+                .orElse("");
+        adminEventPublisher.publishBankTransferClaimed(
+                request.getId(),
+                request.getTransferCode(),
+                order.getOrderCode(),
+                request.getAmount(),
+                userEmail,
+                note);
 
         log.info("Học viên báo đã chuyển khoản, mã {}", request.getTransferCode());
         return request;
@@ -272,6 +288,13 @@ public class BankTransferService {
                         "amount", amount,
                         "orderCode", order.getOrderCode()));
 
+        // Thông báo WebSocket đơn đã xác nhận
+        adminEventPublisher.publishBankTransferConfirmed(
+                request.getId(),
+                request.getTransferCode(),
+                order.getOrderCode(),
+                amount);
+
         log.info("Xác nhận chuyển khoản {} cho đơn {}, đã kích hoạt Premium",
                 request.getTransferCode(), order.getOrderCode());
         return request;
@@ -292,6 +315,14 @@ public class BankTransferService {
         request.reject(actorId, note);
         auditService.record(actorId, "BANK_TRANSFER_REJECT", "BANK_TRANSFER", transferId,
                 null, Map.of("reason", note == null ? "" : note));
+
+        // Thông báo WebSocket đơn đã bị từ chối
+        adminEventPublisher.publishBankTransferRejected(
+                request.getId(),
+                request.getTransferCode(),
+                request.getOrderId(),
+                note);
+
         return request;
     }
 

@@ -4,11 +4,13 @@ import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import vn.weconex.aptis.common.util.Enums.EvaluationType;
 import vn.weconex.aptis.content.mongo.QuestionSetDocument;
 import vn.weconex.aptis.evaluation.domain.EvaluationJob;
+import vn.weconex.aptis.evaluation.event.EvaluationJobsQueuedEvent;
 import vn.weconex.aptis.evaluation.repository.EvaluationJobRepository;
 import vn.weconex.aptis.practice.domain.AttemptQuestionSet;
 import vn.weconex.aptis.practice.domain.TestAttempt;
@@ -26,6 +28,7 @@ import vn.weconex.aptis.practice.mongo.AttemptDocument;
 public class EvaluationQueue {
 
     private final EvaluationJobRepository jobRepository;
+    private final ApplicationEventPublisher events;
 
     /**
      * Tạo một job cho mỗi bộ câu hỏi có item cần chấm tay.
@@ -40,6 +43,7 @@ public class EvaluationQueue {
             Map<String, AttemptQuestionSet> rows) {
 
         int created = 0;
+        java.util.List<String> newJobIds = new java.util.ArrayList<>();
 
         for (AttemptDocument.QuestionSetEntry entry : document.getQuestionSets()) {
             EvaluationType type = resolveType(entry);
@@ -71,11 +75,15 @@ public class EvaluationQueue {
             }
 
             jobRepository.save(job);
+            newJobIds.add(job.getId());
             created++;
         }
 
         if (created > 0) {
             log.info("Đã tạo {} job chấm cho attempt {}", created, attempt.getId());
+            // Chấm ngay thay vì chờ lượt quét kế tiếp. Listener chạy AFTER_COMMIT
+            // nên job đã nằm trong DB khi worker đọc; scheduler vẫn là lưới an toàn.
+            events.publishEvent(new EvaluationJobsQueuedEvent(newJobIds));
         }
         return created;
     }

@@ -102,6 +102,33 @@ class EvaluationWorkerTest {
         verify(fallback, never()).evaluate(any());
     }
 
+    /**
+     * Sai schema là lỗi tất định: gọi lại cùng input ra cùng kết quả. Phải
+     * fallback ngay từ lần đầu thay vì đốt hết lượt retry.
+     */
+    @Test
+    void nonRetryableSchemaFailureFallsBackImmediately() {
+        EvaluationEngine primary = mock(EvaluationEngine.class);
+        EvaluationEngine fallback = mock(EvaluationEngine.class);
+        when(primary.supports(EvaluationType.WRITING_AI)).thenReturn(true);
+        when(fallback.supports(EvaluationType.WRITING_AI)).thenReturn(true);
+        when(primary.engineName()).thenReturn("llm-AI-PRO");
+        when(fallback.engineName()).thenReturn("heuristic-v1");
+        when(primary.evaluate(any())).thenThrow(new EvaluationProviderException(
+                "LLM trả về thiếu mảng criteria", null, false));
+        when(fallback.evaluate(any())).thenReturn(evaluationResult());
+
+        EvaluationWorker worker = worker(List.of(primary, fallback));
+        // retryCount = 0: còn xa lần cuối, nhưng lỗi tất định nên không chờ.
+        EvaluationJob job = writingJob(0);
+
+        Object outcome = ReflectionTestUtils.invokeMethod(
+                worker, "evaluateWithFallback", job, writingEntry());
+
+        assertThat(outcome).isNotNull();
+        verify(fallback).evaluate(any());
+    }
+
     @Test
     void successfulRetryClearsTransientProviderErrorButKeepsRetryCount() {
         EvaluationJob job = writingJob(2);

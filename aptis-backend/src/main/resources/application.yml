@@ -175,10 +175,12 @@ aptis:
       "[16000000-0000-4000-8000-000000000001]": 25
       # Listening Part 1 — 13 câu trắc nghiệm, mỗi câu một đoạn audio riêng
       "[16000000-0000-4000-8000-000000000021]": 13
-      # Listening Part 4 — 2 bài giảng x 2 câu suy luận
-      "[16000000-0000-4000-8000-000000000024]": 2
-      # Speaking Part 4 — 3 câu về cùng một chủ đề trừu tượng
-      "[16000000-0000-4000-8000-000000000034]": 3
+
+  evaluation:
+    # So luong cham song song va so job lay moi lan quet. Tran thuc te la tong
+    # so request dong thoi cac nha cung cap chiu duoc; dat cao hon chi nhan 429.
+    worker-threads: ${AI_EVAL_WORKER_THREADS:8}
+    batch-size: ${AI_EVAL_BATCH_SIZE:16}
 
   entitlement:
     premium-code: PREMIUM_CONTENT_ACCESS
