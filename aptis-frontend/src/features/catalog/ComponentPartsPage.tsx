@@ -3,9 +3,12 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { useComponents, useExamVersions, useParts } from '@/features/catalog/catalogQueries';
 import { componentDisplayName, componentPath, findComponentBySlug, partPath } from '@/features/catalog/catalogRoutes';
+import { PremiumGate } from '@/components/ui/PremiumGate';
+import { useIsPremium } from '@/features/auth/authStore';
 
 export function ComponentPartsPage() {
   const { componentSlug } = useParams<{ componentSlug: string }>();
+  const isPremium = useIsPremium();
   const versionsQuery = useExamVersions();
   const componentsQuery = useComponents(versionsQuery.data?.[0]?.id);
   const component = findComponentBySlug(componentsQuery.data ?? [], componentSlug);
@@ -20,6 +23,26 @@ export function ComponentPartsPage() {
   }
 
   if (!component) return <ErrorBlock message="Không tìm thấy kỹ năng này." />;
+
+  // Chặn ở đây nữa vì ô "Luyện theo Part" bị khóa không ngăn được người vào
+  // thẳng bằng URL. Backend vẫn chặn thật khi tạo lượt, nhưng để hiện danh sách
+  // Part rồi mới báo lỗi ở bước cuối thì gây hiểu nhầm là còn làm được.
+  if (!isPremium) {
+    return (
+      <div className="space-y-5">
+        <nav className="flex flex-wrap items-center gap-2 text-xs text-stone-500" aria-label="Đường dẫn">
+          <Link to="/" className="hover:text-brand-800">Trang chủ</Link>
+          <span aria-hidden="true">›</span>
+          <Link to={componentPath(component.code)} className="hover:text-brand-800">
+            Luyện {componentDisplayName(component)}
+          </Link>
+          <span aria-hidden="true">›</span>
+          <span className="font-semibold text-stone-800">Theo Part</span>
+        </nav>
+        <PremiumGate message="Luyện theo Part thuộc gói Premium. Tài khoản miễn phí làm được 3 đề thi thử đầu của mỗi kỹ năng." />
+      </div>
+    );
+  }
 
   const parts = partsQuery.data ?? [];
   const displayName = componentDisplayName(component);

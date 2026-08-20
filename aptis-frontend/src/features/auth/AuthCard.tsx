@@ -24,9 +24,15 @@ export function AuthCard({
 
           <div className="relative">
             <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-600 font-bold text-base text-white shadow-sm">
-                A
-              </span>
+              {/* Bản logo riêng cho nền tối: phần đen của logo gốc đã đổi sang
+                  trắng, nếu dùng logo thường thì nửa hình biến mất. */}
+              <img
+                src="/images/logo-mark-dark-sm.png"
+                alt=""
+                width="40"
+                height="40"
+                className="h-10 w-10 shrink-0 object-contain"
+              />
               <div>
                 <span className="block text-lg font-bold tracking-tight">Aptis Practice</span>
                 <span className="block font-mono text-[10px] uppercase tracking-widest text-slate-400">General</span>
@@ -61,9 +67,13 @@ export function AuthCard({
           <div className="mx-auto w-full max-w-sm">
             <div className="mb-8 lg:hidden">
               <div className="flex items-center gap-3 text-brand-600">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-600 text-white font-bold text-sm">
-                  A
-                </span>
+                <img
+                  src="/images/logo-mark-sm.png"
+                  alt=""
+                  width="40"
+                  height="40"
+                  className="h-10 w-10 shrink-0 object-contain"
+                />
                 <span className="text-lg font-bold text-slate-900">Aptis Practice</span>
               </div>
             </div>

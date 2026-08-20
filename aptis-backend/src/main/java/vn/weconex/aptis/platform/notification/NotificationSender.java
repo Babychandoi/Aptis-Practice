@@ -1,10 +1,15 @@
 package vn.weconex.aptis.platform.notification;
 
+import java.nio.charset.StandardCharsets;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.MailPreparationException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,42 +26,44 @@ public class NotificationSender {
 
     private final JavaMailSender mailSender;
     private final String fromAddress;
+    private final String frontendBaseUrl;
 
     public NotificationSender(
             JavaMailSender mailSender,
-            @Value("${aptis.mail.from:no-reply@aptis.local}") String fromAddress) {
+            @Value("${aptis.mail.from:no-reply@aptis.local}") String fromAddress,
+            @Value("${aptis.cors.allowed-origins:http://localhost:5173}") String frontendBaseUrl) {
         this.mailSender = mailSender;
         this.fromAddress = fromAddress;
+        this.frontendBaseUrl = frontendBaseUrl.split(",")[0].strip();
     }
 
     public void sendPremiumActivated(String email, String planCode, String endsAt) {
         String expiry = endsAt == null || endsAt.isBlank()
-                ? "trọn đời"
-                : "đến " + endsAt.substring(0, Math.min(10, endsAt.length()));
+                ? "Trọn đời"
+                : "Đến " + endsAt.substring(0, Math.min(10, endsAt.length()));
 
-        send(email,
-                "Premium đã được kích hoạt",
-                """
-                Chào bạn,
+        EmailTemplate.Rendered mail = EmailTemplate.builder("Premium đã được kích hoạt")
+                .intro("Cảm ơn bạn — tài khoản của bạn đã được nâng cấp Premium.")
+                .fact("Gói", planCode == null ? "Premium" : planCode)
+                .fact("Hiệu lực", expiry)
+                .paragraph("Bạn đã mở toàn bộ ngân hàng đề Premium, luyện theo Part, "
+                        + "mẹo học và chấm Speaking/Writing tự động.")
+                .action("Bắt đầu luyện thi", frontendBaseUrl + "/")
+                .build();
 
-                Gói %s đã được kích hoạt cho tài khoản của bạn (hiệu lực %s).
-
-                Bạn đã mở toàn bộ ngân hàng đề Premium, thi thử đầy đủ và chấm
-                Speaking/Writing tự động.
-
-                Chúc bạn ôn tập hiệu quả.
-                """.formatted(planCode == null ? "Premium" : planCode, expiry));
+        send(email, "Premium đã được kích hoạt", mail);
     }
 
     public void sendEvaluationCompleted(String email, int questionSetCount) {
-        send(email,
-                "Bài của bạn đã được chấm",
-                """
-                Chào bạn,
+        EmailTemplate.Rendered mail = EmailTemplate.builder("Bài của bạn đã được chấm")
+                .intro("%d bài Speaking/Writing của bạn đã được chấm xong."
+                        .formatted(questionSetCount))
+                .paragraph("Xem điểm theo từng tiêu chí và nhận xét chi tiết để biết "
+                        + "cần cải thiện ở đâu.")
+                .action("Xem kết quả", frontendBaseUrl + "/history")
+                .build();
 
-                %d bài Speaking/Writing của bạn đã được chấm xong. Đăng nhập để
-                xem điểm theo từng tiêu chí và nhận xét chi tiết.
-                """.formatted(questionSetCount));
+        send(email, "Bài của bạn đã được chấm", mail);
     }
 
     /**
@@ -67,30 +74,38 @@ public class NotificationSender {
     public void sendBankTransferClaimed(
             String adminEmail, String transferCode, String orderCode, long amount) {
 
-        send(adminEmail,
-                "Có yêu cầu chuyển khoản cần đối soát: " + transferCode,
-                """
-                Có học viên vừa báo đã chuyển khoản.
+        EmailTemplate.Rendered mail = EmailTemplate.builder("Có yêu cầu chuyển khoản cần đối soát")
+                .intro("Một học viên vừa báo đã chuyển khoản.")
+                .fact("Mã nội dung", transferCode)
+                .fact("Đơn hàng", orderCode)
+                .fact("Số tiền", "%,d VND".formatted(amount))
+                .paragraph("Kiểm tra sao kê ngân hàng, tìm giao dịch có nội dung chứa mã trên. "
+                        + "Nếu đã nhận đủ tiền, vào trang Quản trị để xác nhận — hệ thống sẽ "
+                        + "tự nâng cấp tài khoản theo gói đã mua.")
+                .action("Mở trang đối soát", frontendBaseUrl + "/admin")
+                .build();
 
-                Mã nội dung : %s
-                Đơn hàng    : %s
-                Số tiền     : %,d VND
-
-                Kiểm tra sao kê ngân hàng, tìm giao dịch có nội dung chứa mã
-                trên. Nếu đã nhận đủ tiền, vào trang Quản trị > Chuyển khoản để
-                xác nhận — hệ thống sẽ tự nâng cấp tài khoản theo gói đã mua.
-                """.formatted(transferCode, orderCode, amount));
+        send(adminEmail, "Có yêu cầu chuyển khoản cần đối soát: " + transferCode, mail);
     }
 
     /**
      * Ném {@link MailException} khi gửi thất bại — caller (outbox) sẽ retry.
      */
-    private void send(String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromAddress);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
+    private void send(String to, String subject, EmailTemplate.Rendered mail) {
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            // true đầu tiên = multipart: kèm cả bản text thuần cho client không
+            // đọc HTML, và thư đủ hai phần thì bộ lọc spam đánh giá tốt hơn.
+            MimeMessageHelper helper = new MimeMessageHelper(
+                    message, true, StandardCharsets.UTF_8.name());
+            helper.setFrom(fromAddress);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(mail.text(), mail.html());
+        } catch (MessagingException ex) {
+            // Bọc thành MailException để outbox xử lý thống nhất một loại lỗi.
+            throw new MailPreparationException("Không dựng được email: " + subject, ex);
+        }
 
         mailSender.send(message);
         log.debug("Đã gửi thông báo '{}' tới {}", subject, to);

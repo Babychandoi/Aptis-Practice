@@ -14,17 +14,23 @@ if [ ! -f .env ]; then
   exit 1
 fi
 
-# Chỉ đọc dòng KEY=VALUE, bỏ comment và dòng trống
-set -a
-# shellcheck disable=SC1091
-. ./.env
-set +a
+# Đọc riêng các khoá MAIL_*, KHÔNG `. ./.env`.
+#
+# `. ./.env` cho shell thực thi cả file, nên giá trị chứa ký tự shell nuốt luôn:
+# AI_EVAL_PROVIDERS có dạng "url|key|model;url|key|model" và bash hiểu `|` là
+# pipe, đổ ra hàng loạt "command not found" rồi có thể chạy cả chuỗi lạ.
+read_env() {
+    # cut -d= -f2- giữ nguyên phần giá trị dù trong đó còn dấu =
+    grep -m1 "^$1=" .env 2>/dev/null | cut -d= -f2- | tr -d '\r'
+}
 
-HOST="${MAIL_HOST:-}"
-PORT="${MAIL_PORT:-}"
-USER="${MAIL_USERNAME:-}"
-PASSWD="${MAIL_PASSWORD:-}"
-FROM="${MAIL_FROM:-$USER}"
+HOST=$(read_env MAIL_HOST)
+PORT=$(read_env MAIL_PORT)
+USER=$(read_env MAIL_USERNAME)
+PASSWD=$(read_env MAIL_PASSWORD)
+MAIL_FROM_VAL=$(read_env MAIL_FROM)
+
+FROM="${MAIL_FROM_VAL:-$USER}"
 TO="${1:-$USER}"
 
 echo "Cấu hình đang dùng:"
@@ -50,8 +56,37 @@ if [ "${#CLEAN}" -ne 16 ] && [[ "$HOST" == *gmail* ]]; then
   echo
 fi
 
+# Chọn cách chạy Python.
+#
+# Windows thường không có python trong PATH — và tệ hơn, nó có sẵn một shim
+# "python" giả chỉ in ra lời mời cài từ Microsoft Store rồi thoát 0, nên
+# `command -v python` thấy có mà chạy thì không gửi được gì. Vì vậy phải thử
+# chạy thật (`-c ""`) chứ không chỉ kiểm tra sự tồn tại; không được thì rơi về
+# container, dự án này đã cần Docker sẵn.
+PY=""
+for CMD in python3 python; do
+    if command -v "$CMD" >/dev/null 2>&1 && "$CMD" -c "" >/dev/null 2>&1; then
+        PY="$CMD"
+        break
+    fi
+done
+
+run_python() {
+    if [ -n "$PY" ]; then
+        "$PY" - "$@"
+    else
+        # -i để stdin (heredoc) vào được container; --network host không cần vì
+        # container tự ra Internet tới smtp.gmail.com được.
+        docker run --rm -i python:3.12-alpine python - "$@"
+    fi
+}
+
+if [ -z "$PY" ]; then
+    echo "Không có Python trên máy — dùng container python:3.12-alpine."
+fi
+
 echo "Đang gửi..."
-python - "$HOST" "$PORT" "$USER" "$CLEAN" "$FROM" "$TO" <<'PYEOF'
+run_python "$HOST" "$PORT" "$USER" "$CLEAN" "$FROM" "$TO" <<'PYEOF'
 import sys, smtplib, ssl
 from email.message import EmailMessage
 

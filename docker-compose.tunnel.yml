@@ -1,0 +1,53 @@
+# Cloudflare Tunnel: đưa hệ thống ra domain thật mà KHÔNG mở port nào trên máy.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.tunnel.yml up -d
+#
+# Cách hoạt động: cloudflared mở kết nối RA NGOÀI tới Cloudflare, rồi Cloudflare
+# đẩy request vào qua chính kết nối đó. Không cần IP public, không cần port
+# forwarding, không cần cert trên máy này — Cloudflare kết thúc TLS ở biên.
+#
+# Vì tunnel gọi vào bằng tên service trong docker network (frontend:80,
+# minio:9000), các port trên host chỉ còn để bạn tự kiểm tra ở localhost. Muốn
+# đóng hẳn chúng, xem ghi chú ở cuối file.
+#
+# Chuẩn bị (một lần): xem docs/DEPLOY-CLOUDFLARE.md
+
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: aptis-cloudflared
+    restart: unless-stopped
+    # --no-autoupdate: image cố định, cập nhật bằng docker pull để không bị
+    # binary tự đổi giữa lúc đang chạy.
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: "${CLOUDFLARE_TUNNEL_TOKEN:?Thiếu CLOUDFLARE_TUNNEL_TOKEN trong .env}"
+    depends_on:
+      frontend:
+        condition: service_started
+      minio:
+        condition: service_healthy
+
+  # Ghi đè cấu hình chỉ đúng khi chạy sau domain HTTPS.
+  backend:
+    environment:
+      # Trình duyệt gọi API cùng origin qua nginx, nhưng CORS vẫn phải khai
+      # domain thật cho các preflight và cho trường hợp gọi chéo subdomain.
+      CORS_ORIGINS: "${PUBLIC_ORIGIN:?Thiếu PUBLIC_ORIGIN trong .env}"
+
+      # Presigned URL phải ký bằng host mà TRÌNH DUYỆT dùng. Ký bằng
+      # localhost:9000 thì link asset chết ngay khi người dùng ở máy khác.
+      MINIO_PUBLIC_ENDPOINT: "${MINIO_PUBLIC_ORIGIN:?Thiếu MINIO_PUBLIC_ORIGIN trong .env}"
+
+      # Cookie refresh chỉ được gửi qua HTTPS khi đã lên domain. Mặc định true
+      # để chạy sau tunnel là đúng ngay; đặt REFRESH_COOKIE_SECURE trong .env
+      # nếu cần giá trị khác.
+      REFRESH_COOKIE_SECURE: "${REFRESH_COOKIE_SECURE:-true}"
+      REFRESH_COOKIE_SAME_SITE: "${REFRESH_COOKIE_SAME_SITE:-Lax}"
+
+# Đóng port trên host (không bắt buộc):
+#
+# Sau khi tunnel chạy ổn, các dòng `ports:` trong docker-compose.yml chỉ còn
+# phục vụ việc bạn tự kiểm tra. MySQL 3307, Mongo 27017 và MinIO 9000/9001 đang
+# nghe trên 0.0.0.0 — nếu máy này ở mạng không tin cậy, đổi chúng thành
+# "127.0.0.1:3307:3306" v.v. để chỉ localhost vào được.

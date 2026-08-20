@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { authApi, billingApi } from '@/api/endpoints';
 import { useAuthStore } from '@/features/auth/authStore';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
+import { SupportLinksCard } from '@/components/ui/SupportLinks';
 import { formatDate } from '@/lib/format';
 import type { CefrLevel } from '@/types/api';
 
@@ -175,6 +176,8 @@ export function ProfilePage() {
           Đăng xuất khỏi tất cả thiết bị
         </button>
       </section>
+
+      <SupportLinksCard />
     </div>
   );
 }

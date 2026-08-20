@@ -1,0 +1,29 @@
+{
+  "name": "Aptis Practice — Luyện thi Aptis General",
+  "short_name": "Aptis Practice",
+  "description": "Luyện thi Aptis General trực tuyến: đề thi thử bốn kỹ năng, chấm điểm tự động và chữa bài chi tiết.",
+  "lang": "vi",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f5f2",
+  "theme_color": "#5b52e8",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

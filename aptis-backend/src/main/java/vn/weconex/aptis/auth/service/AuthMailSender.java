@@ -1,12 +1,16 @@
 package vn.weconex.aptis.auth.service;
 
+import java.nio.charset.StandardCharsets;
+
+import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import vn.weconex.aptis.platform.notification.EmailTemplate;
 
 /**
  * Gửi email xác thực và đặt lại mật khẩu.
@@ -51,42 +55,49 @@ public class AuthMailSender {
     @Async
     public void sendVerificationEmail(String email, String rawToken) {
         String link = frontendBaseUrl + "/verify-email?token=" + rawToken;
-        send(email,
-                "Xác thực tài khoản Aptis Practice",
-                """
-                Chào bạn,
 
-                Nhấn vào liên kết sau để xác thực tài khoản:
-                %s
+        EmailTemplate.Rendered mail = EmailTemplate.builder("Xác thực địa chỉ email")
+                .intro("Chào bạn, cảm ơn bạn đã tạo tài khoản Aptis Practice.")
+                .paragraph("Bấm nút bên dưới để xác thực email và bắt đầu luyện thi.")
+                .action("Xác thực email", link)
+                .actionNote("Liên kết có hiệu lực trong 24 giờ.")
+                .footerNote("Nếu bạn không tạo tài khoản này, hãy bỏ qua email — "
+                        + "sẽ không có thay đổi nào xảy ra.")
+                .build();
 
-                Liên kết có hiệu lực trong 24 giờ.
-                """.formatted(link));
+        send(email, "Xác thực tài khoản Aptis Practice", mail);
     }
 
     @Async
     public void sendPasswordResetEmail(String email, String rawToken) {
         String link = frontendBaseUrl + "/reset-password?token=" + rawToken;
-        send(email,
-                "Đặt lại mật khẩu Aptis Practice",
-                """
-                Chào bạn,
 
-                Nhấn vào liên kết sau để đặt lại mật khẩu:
-                %s
+        EmailTemplate.Rendered mail = EmailTemplate.builder("Đặt lại mật khẩu")
+                .intro("Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn.")
+                .paragraph("Bấm nút bên dưới để chọn mật khẩu mới.")
+                .action("Đặt lại mật khẩu", link)
+                .actionNote("Liên kết có hiệu lực trong 1 giờ và chỉ dùng được một lần.")
+                .footerNote("Nếu bạn không yêu cầu đặt lại mật khẩu, hãy bỏ qua email này. "
+                        + "Mật khẩu hiện tại của bạn vẫn giữ nguyên.")
+                .build();
 
-                Liên kết có hiệu lực trong 1 giờ. Nếu bạn không yêu cầu, hãy bỏ qua email này.
-                """.formatted(link));
+        send(email, "Đặt lại mật khẩu Aptis Practice", mail);
     }
 
-    private void send(String to, String subject, String body) {
+    private void send(String to, String subject, EmailTemplate.Rendered mail) {
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(fromAddress);
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(body);
+            MimeMessage message = mailSender.createMimeMessage();
+            // true đầu tiên = multipart: gửi kèm cả bản text thuần. Client không
+            // đọc HTML vẫn thấy nội dung, và thư có đủ hai phần thì bộ lọc spam
+            // cũng đánh giá tốt hơn thư chỉ có HTML.
+            MimeMessageHelper helper = new MimeMessageHelper(
+                    message, true, StandardCharsets.UTF_8.name());
+            helper.setFrom(fromAddress);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(mail.text(), mail.html());
             mailSender.send(message);
-        } catch (MailException ex) {
+        } catch (MailException | jakarta.mail.MessagingException ex) {
             // Không ném lại: người dùng vẫn đăng ký được, có thể yêu cầu gửi lại email.
             //
             // Log cả nguyên nhân gốc: với Gmail, thông điệp ngoài cùng chỉ nói

@@ -1,0 +1,34 @@
+# Aptis Practice — https://aptispractices.io.vn
+#
+# Gần như toàn bộ ứng dụng nằm sau đăng nhập (ProtectedRoute trong App.tsx),
+# kể cả trang chủ. Bot không đăng nhập được nên chỉ thấy khung trống — chặn
+# những đường đó để Google không lập chỉ mục trang rỗng, vốn làm loãng chất
+# lượng site trong mắt công cụ tìm kiếm.
+
+User-agent: *
+Allow: /$
+Allow: /login
+Allow: /register
+
+# Trang cần đăng nhập: bot chỉ nhận được khung trống
+Disallow: /luyen-tap/
+Disallow: /mock-tests
+Disallow: /attempts/
+Disallow: /meo-hoc
+Disallow: /history
+Disallow: /plans
+Disallow: /checkout/
+Disallow: /profile
+Disallow: /components/
+Disallow: /parts/
+
+# Khu quản trị và luồng có token dùng một lần trong URL
+Disallow: /admin
+Disallow: /verify-email
+Disallow: /reset-password
+Disallow: /forgot-password
+
+# API không phải nội dung để đọc
+Disallow: /api/
+
+Sitemap: https://aptispractices.io.vn/sitemap.xml
