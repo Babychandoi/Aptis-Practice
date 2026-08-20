@@ -3,9 +3,11 @@ import { useComponents, useExamVersions, useParts } from '@/features/catalog/cat
 import { componentDisplayName, componentPath, findComponentBySlug } from '@/features/catalog/catalogRoutes';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
+import { useIsPremium } from '@/features/auth/authStore';
 
 export function ComponentPage() {
   const { componentSlug, componentId } = useParams<{ componentSlug?: string; componentId?: string }>();
+  const isPremium = useIsPremium();
   const versionsQuery = useExamVersions();
   const componentsQuery = useComponents(versionsQuery.data?.[0]?.id);
   const components = componentsQuery.data ?? [];
@@ -77,7 +79,7 @@ export function ComponentPage() {
 
       {/* 3 Main Modes */}
       <div className="grid gap-4 md:grid-cols-3">
-        {/* Mode 1: Theo Part */}
+        {/* Mode 1: Theo Part — chỉ dành cho Premium */}
         <div className="flex flex-col justify-between rounded-2xl border border-border bg-white p-6 shadow-sm transition-all hover:border-brand-200 hover:shadow-md">
           <div className="space-y-3">
             <span className="inline-flex rounded-full bg-brand-50 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-brand-700">
@@ -88,12 +90,25 @@ export function ComponentPage() {
               Chọn đúng dạng bài cần cải thiện. Tập trung rèn luyện từng Part với giải thích chi tiết.
             </p>
           </div>
-          <Link
-            to={`${componentPath(component.code)}/theo-part`}
-            className="mt-6 flex min-h-[44px] items-center justify-center rounded-xl bg-surface-paper border border-border font-semibold text-xs text-slate-700 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-800 transition-colors"
-          >
-            Chọn Part để luyện →
-          </Link>
+          {isPremium ? (
+            <Link
+              to={`${componentPath(component.code)}/theo-part`}
+              className="mt-6 flex min-h-[44px] items-center justify-center rounded-xl bg-surface-paper border border-border font-semibold text-xs text-slate-700 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-800 transition-colors"
+            >
+              Chọn Part để luyện →
+            </Link>
+          ) : (
+            // Dẫn sang trang gói thay vì chặn im lặng: học viên cần biết mở
+            // bằng cách nào. Backend vẫn là nơi chặn thật (PREMIUM_REQUIRED),
+            // đây chỉ để không cho bấm vào rồi mới báo lỗi.
+            <Link
+              to="/plans"
+              className="mt-6 flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 font-semibold text-xs text-amber-900 transition-colors hover:border-amber-300 hover:bg-amber-100"
+            >
+              <span aria-hidden="true">🔒</span>
+              Nâng cấp Premium để luyện theo Part
+            </Link>
+          )}
         </div>
 
         {/* Mode 2: Bài test full kỹ năng */}
@@ -130,7 +145,15 @@ export function ComponentPage() {
                 : 'Cách phân bổ thời gian và các lưu ý quan trọng để không bị mất điểm oan.'}
             </p>
           </div>
-          {hasTipsPage ? (
+          {hasTipsPage && !isPremium ? (
+            <Link
+              to="/plans"
+              className="mt-6 flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 font-semibold text-xs text-amber-900 transition-colors hover:border-amber-300 hover:bg-amber-100"
+            >
+              <span aria-hidden="true">🔒</span>
+              Nâng cấp Premium để xem mẹo
+            </Link>
+          ) : hasTipsPage ? (
             <Link
               to={tipsPath!}
               className="mt-6 flex min-h-[44px] items-center justify-center rounded-xl bg-surface-paper border border-border font-semibold text-xs text-slate-700 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-800 transition-colors"

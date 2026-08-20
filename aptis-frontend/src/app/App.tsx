@@ -4,7 +4,11 @@ import { setAuthFailureHandler } from '@/api/client';
 import { useAuthStore } from '@/features/auth/authStore';
 import { AppLayout } from '@/app/AppLayout';
 import { ProtectedRoute } from '@/app/ProtectedRoute';
+import { PremiumRoute } from '@/app/PremiumRoute';
 import { AdminRoute } from '@/features/admin/AdminRoute';
+
+const TIPS_LOCK_MESSAGE =
+  'Mẹo học thuộc gói Premium. Tài khoản miễn phí làm được 3 đề thi thử đầu của mỗi kỹ năng.';
 
 const LoginPage = lazy(() => import('@/features/auth/LoginPage').then((m) => ({ default: m.LoginPage })));
 const RegisterPage = lazy(() => import('@/features/auth/RegisterPage').then((m) => ({ default: m.RegisterPage })));
@@ -96,11 +100,15 @@ export function App() {
         <Route path="/mock-tests" element={<MockTestPage />} />
         <Route path="/attempts/:attemptId" element={<AttemptPage />} />
         <Route path="/attempts/:attemptId/result" element={<AttemptResultPage />} />
+        {/* Mục lục mẹo học mở cho mọi người: nó chỉ là danh sách kỹ năng, không
+            chứa đáp án. Từng thẻ tự khóa và dẫn sang trang gói — cho học viên
+            miễn phí thấy được sẽ mở ra những gì, thay vì một trang trắng.
+            Các trang chi tiết bên dưới mới là nội dung Premium. */}
         <Route path="/meo-hoc" element={<StudyTipsHomePage />} />
-        <Route path="/meo-hoc/nghe-phan-3" element={<StudyTipsListeningPart3Page />} />
-        <Route path="/meo-hoc/doc" element={<StudyTipsReadingPage />} />
-        <Route path="/meo-hoc/viet" element={<StudyTipsWritingPage />} />
-        <Route path="/meo-hoc/noi" element={<StudyTipsSpeakingPage />} />
+        <Route path="/meo-hoc/nghe-phan-3" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsListeningPart3Page /></PremiumRoute>} />
+        <Route path="/meo-hoc/doc" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsReadingPage /></PremiumRoute>} />
+        <Route path="/meo-hoc/viet" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsWritingPage /></PremiumRoute>} />
+        <Route path="/meo-hoc/noi" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsSpeakingPage /></PremiumRoute>} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/checkout/:orderId" element={<CheckoutPage />} />

@@ -87,6 +87,17 @@ public class AttemptService {
     public TestAttempt createPartAttempt(String userId, PracticeDtos.CreatePartAttemptRequest request) {
         boolean hasPremium = entitlementService.hasPremiumAccess(userId);
 
+        // Luyện theo Part là tính năng Premium, chặn ở đây thay vì dựa vào
+        // access_level của từng bộ câu hỏi.
+        //
+        // Lý do: một số bộ buộc phải để FREE để 3 đề thi thử miễn phí của mỗi kỹ
+        // năng có nội dung chạy (MockTestService kiểm quyền từng bộ sau khi
+        // chọn). Nếu chỉ lọc theo access_level thì tài khoản miễn phí vẫn mở
+        // được lượt luyện Part bằng đúng những bộ đó.
+        if (!hasPremium) {
+            throw ApiException.premiumRequired();
+        }
+
         // Luyện riêng một Part KHÔNG gộp câu (chỉ thi thử cả kỹ năng mới gộp, xem
         // AttemptSnapshotFactory), nên client xin N bộ là đúng N bộ — không nhân
         // với số câu mỗi đề như trước.

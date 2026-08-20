@@ -13,11 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vn.weconex.aptis.common.exception.ApiException;
+import vn.weconex.aptis.common.security.CurrentUser;
 import vn.weconex.aptis.common.util.Enums.ContentStatus;
 import vn.weconex.aptis.content.domain.QuestionSet;
 import vn.weconex.aptis.content.mongo.QuestionSetDocument;
 import vn.weconex.aptis.content.mongo.QuestionSetDocumentRepository;
 import vn.weconex.aptis.content.repository.QuestionSetRepository;
+import vn.weconex.aptis.entitlement.service.EntitlementService;
 
 /**
  * Mẹo học: bảng mã đáp án Listening Part 3.
@@ -49,10 +52,27 @@ public class StudyTipsController {
 
     private final QuestionSetRepository questionSetRepository;
     private final QuestionSetDocumentRepository documentRepository;
+    private final EntitlementService entitlementService;
+    private final CurrentUser currentUser;
+
+    /**
+     * Mẹo học thuộc gói Premium.
+     *
+     * <p>Chặn ở đây là bắt buộc, không thể dựa vào việc giao diện ẩn menu: mỗi
+     * endpoint dưới trả ĐÁP ÁN của toàn bộ ngân hàng đề (mã bốn số Listening
+     * Part 3, chuỗi tiêu đề Reading Part 3/4). Một lần gọi là lấy hết — giá trị
+     * hơn cả quyền làm bài.
+     */
+    private void requirePremium() {
+        if (!entitlementService.hasPremiumAccess(currentUser.requireUserId())) {
+            throw ApiException.premiumRequired();
+        }
+    }
 
     @GetMapping("/listening-part-3")
     @Transactional(readOnly = true)
     public List<StudyTipsDtos.SpeakerCodeResponse> listeningPart3() {
+        requirePremium();
         List<QuestionSet> sets = questionSetRepository
                 .findByPartIdAndStatusOrderByCodeAsc(LISTENING_PART_3, ContentStatus.PUBLISHED);
 
@@ -75,6 +95,7 @@ public class StudyTipsController {
     @GetMapping("/reading-part-4")
     @Transactional(readOnly = true)
     public List<StudyTipsDtos.HeadingChainResponse> readingPart4() {
+        requirePremium();
         List<QuestionSet> sets = questionSetRepository
                 .findByPartIdAndStatusOrderByCodeAsc(READING_PART_4, ContentStatus.PUBLISHED);
 
@@ -96,6 +117,7 @@ public class StudyTipsController {
     @GetMapping("/reading-part-3")
     @Transactional(readOnly = true)
     public List<StudyTipsDtos.HeadingChainResponse> readingPart3() {
+        requirePremium();
         List<QuestionSet> sets = questionSetRepository
                 .findByPartIdAndStatusOrderByCodeAsc(READING_PART_3, ContentStatus.PUBLISHED);
 

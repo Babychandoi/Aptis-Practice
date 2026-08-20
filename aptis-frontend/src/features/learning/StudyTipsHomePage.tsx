@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useIsPremium } from '@/features/auth/authStore';
 
 /**
  * Mục lục Mẹo học: chọn kỹ năng trước khi vào trang chi tiết.
@@ -35,6 +36,8 @@ const SKILLS = [
 ] as const;
 
 export function StudyTipsHomePage() {
+  const isPremium = useIsPremium();
+
   return (
     <div className="space-y-4">
       <nav className="flex items-center gap-2 text-xs text-stone-500">
@@ -52,19 +55,39 @@ export function StudyTipsHomePage() {
         </p>
       </header>
 
+      {!isPremium && (
+        <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-900">
+          Mẹo học thuộc gói Premium. Bấm vào một kỹ năng để xem các gói — tài khoản
+          miễn phí vẫn làm được 3 đề thi thử đầu của mỗi kỹ năng.
+        </p>
+      )}
+
       <div className="grid gap-3 sm:grid-cols-2">
         {SKILLS.map((skill) => (
+          // Chưa Premium: thẻ vẫn hiện đủ nội dung mô tả nhưng dẫn sang trang
+          // gói. Ẩn thẻ đi thì học viên không biết mình đang thiếu gì.
           <Link
             key={skill.to}
-            to={skill.to}
-            className="rounded-xl border border-[#dfe5dd] bg-white p-5 transition hover:border-brand-400 hover:shadow-sm"
+            to={isPremium ? skill.to : '/plans'}
+            className={
+              isPremium
+                ? 'rounded-xl border border-[#dfe5dd] bg-white p-5 transition hover:border-brand-400 hover:shadow-sm'
+                : 'rounded-xl border border-[#dfe5dd] bg-white p-5 transition hover:border-amber-300 hover:shadow-sm'
+            }
           >
             <div className="flex items-center justify-between gap-2">
               <h2 className="text-lg font-semibold">{skill.label}</h2>
-              <span aria-hidden className="text-brand-700">→</span>
+              <span aria-hidden className={isPremium ? 'text-brand-700' : 'text-amber-700'}>
+                {isPremium ? '→' : '🔒'}
+              </span>
             </div>
             <span className="text-[11px] font-semibold text-brand-800">{skill.parts}</span>
             <p className="mt-1.5 text-xs leading-5 text-stone-600">{skill.text}</p>
+            {!isPremium && (
+              <p className="mt-2.5 text-[11px] font-semibold text-amber-800">
+                Cần gói Premium — bấm để xem gói
+              </p>
+            )}
           </Link>
         ))}
       </div>
