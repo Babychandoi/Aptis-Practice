@@ -208,6 +208,18 @@ export function AttemptResultPage() {
   const hasSpeaking = (attempt.questionSets ?? []).some((entry) =>
     (entry.content?.items ?? []).some((item) => item.responseType === 'AUDIO_RECORDING'),
   );
+  // Ghi âm nhóm theo questionSetId để gắn đúng bản ghi vào thẻ nhận xét của
+  // chính bộ đó. Giữ thứ tự itemResponses vì đó là thứ tự câu trong đề.
+  const recordingsByQuestionSet = new Map<string, string[]>();
+  for (const entry of attempt.questionSets ?? []) {
+    const ids = (entry.savedResponse?.itemResponses ?? [])
+      .map((item) => item.recordingAssetId)
+      .filter((id): id is string => Boolean(id));
+    if (ids.length > 0) {
+      recordingsByQuestionSet.set(entry.questionSetId, ids);
+    }
+  }
+
   const isPartPractice = attempt.mode === 'PART_PRACTICE' || Boolean(attempt.partId);
 
   const currentPart = parts?.find((p) => p.id === attempt.partId);
@@ -494,7 +506,11 @@ export function AttemptResultPage() {
           </div>
           <div className="space-y-4">
             {evaluationsQuery.data.map((evaluation) => (
-              <EvaluationFeedbackCard key={evaluation.questionSetId} result={evaluation} />
+              <EvaluationFeedbackCard
+                key={evaluation.questionSetId}
+                result={evaluation}
+                recordingAssetIds={recordingsByQuestionSet.get(evaluation.questionSetId) ?? []}
+              />
             ))}
           </div>
         </section>

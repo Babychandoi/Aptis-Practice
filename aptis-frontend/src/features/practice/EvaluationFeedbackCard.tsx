@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import type { EvaluationResult } from '@/types/api';
 import { formatPercent } from '@/lib/format';
+import { RecordingPlayback } from '@/features/practice/RecordingPlayback';
 
 /**
  * Kết quả chấm Speaking/Writing theo rubric.
@@ -8,7 +9,14 @@ import { formatPercent } from '@/lib/format';
  * <p>Hiển thị rõ đây là chấm tự động: học viên cần biết điểm này không thay thế
  * nhận xét của giáo viên.
  */
-export function EvaluationFeedbackCard({ result }: { result: EvaluationResult }) {
+export function EvaluationFeedbackCard({
+  result,
+  recordingAssetIds = [],
+}: {
+  result: EvaluationResult;
+  /** Ghi âm của đúng bộ câu hỏi này, để học viên nghe lại bài nói của mình. */
+  recordingAssetIds?: string[];
+}) {
   const percentage = result.maxScore > 0 ? (result.totalScore / result.maxScore) * 100 : 0;
 
   return (
@@ -100,6 +108,25 @@ export function EvaluationFeedbackCard({ result }: { result: EvaluationResult })
           items={result.feedback.suggestions}
           tone="neutral"
         />
+      )}
+
+      {recordingAssetIds.length > 0 && (
+        <div>
+          <p className="mb-1.5 text-xs font-semibold uppercase text-slate-500">
+            Nghe lại bài nói của bạn
+          </p>
+          <div className="space-y-2.5">
+            {recordingAssetIds.map((assetId, index) => (
+              <RecordingPlayback
+                key={assetId}
+                assetId={assetId}
+                // Chỉ đánh số khi có nhiều bản ghi: Part 1 có 3 câu, còn Part 4
+                // chỉ một — thêm "Câu 1" khi chỉ có một là nhiễu.
+                label={recordingAssetIds.length > 1 ? `Câu ${index + 1}` : undefined}
+              />
+            ))}
+          </div>
+        </div>
       )}
 
       {result.transcript && (
