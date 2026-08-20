@@ -6,6 +6,7 @@ import { ApiError } from '@/api/client';
 import { billingApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
+import { SupportLinksCard } from '@/components/ui/SupportLinks';
 import { useAuthStore } from '@/features/auth/authStore';
 import { formatCurrency, formatDate, planDurationLabel } from '@/lib/format';
 import type { Plan } from '@/types/api';
@@ -147,6 +148,8 @@ export function PlansPage() {
           </aside>
         )}
       </div>
+
+      <SupportLinksCard />
     </div>
   );
 }

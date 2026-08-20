@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import { useAuthStore } from '@/features/auth/authStore';
 import { usePermission } from '@/features/admin/usePermission';
 import { formatDate } from '@/lib/format';
+import { SupportLinksCompact } from '@/components/ui/SupportLinks';
+import { useSidebarCollapsed } from '@/app/useSidebarCollapsed';
 
 const PRIMARY_NAV = [
   { to: '/', label: 'Bảng điều khiển', icon: 'home' },
@@ -24,6 +26,7 @@ export function AppLayout() {
   const location = useLocation();
   const { user, logout } = useAuthStore();
   const { isAdmin } = usePermission();
+  const { collapsed, toggle: toggleSidebar } = useSidebarCollapsed();
   const displayName = user?.profile?.displayName || user?.profile?.fullName || user?.email || 'Học viên';
 
   const handleLogout = async () => {
@@ -63,54 +66,121 @@ export function AppLayout() {
   return (
     <div className="min-h-screen bg-surface text-[#15161a]">
       {/* Desktop Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-white md:flex">
-        <Link to="/" className="flex h-18 items-center gap-3 border-b border-border px-5 py-4">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-600 text-white font-bold text-base shadow-sm">
-            A
-          </span>
-          <span>
-            <span className="block text-[15px] font-bold tracking-tight text-slate-900">Aptis Practice</span>
-            <span className="block font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-400">General</span>
-          </span>
-        </Link>
+      <aside
+        className={clsx(
+          'fixed inset-y-0 left-0 z-40 hidden flex-col border-r border-border bg-white md:flex',
+          // Chuyển động chỉ trên chiều rộng: animate cả layout làm nội dung
+          // chính giật theo mỗi lần bấm.
+          'transition-[width] duration-200 ease-out',
+          collapsed ? 'w-[4.5rem]' : 'w-64',
+        )}
+      >
+        <div className="flex h-18 items-center gap-3 border-b border-border px-3.5 py-4">
+          <Link
+            to="/"
+            className={clsx('flex min-w-0 items-center gap-3', collapsed && 'justify-center')}
+            title={collapsed ? 'Aptis Practice' : undefined}
+          >
+            {/* width/height khai sẵn để trình duyệt giữ chỗ, không giật layout khi
+                ảnh tải xong. File nguồn cao 128px nên hiển thị 36px vẫn nét ở màn
+                hình retina. */}
+            <img
+              src="/images/logo-mark-sm.png"
+              alt=""
+              width="36"
+              height="36"
+              className="h-9 w-9 shrink-0 object-contain"
+            />
+            {!collapsed && (
+              <span className="min-w-0">
+                <span className="block truncate text-[15px] font-bold tracking-tight text-slate-900">Aptis Practice</span>
+                <span className="block font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-400">General</span>
+              </span>
+            )}
+          </Link>
 
+          {!collapsed && (
+            <button
+              type="button"
+              onClick={toggleSidebar}
+              className="ml-auto grid h-8 w-8 shrink-0 place-items-center rounded-lg text-slate-400 transition-colors hover:bg-surface hover:text-slate-800"
+              aria-label="Thu gọn thanh điều hướng"
+              aria-expanded="true"
+              title="Thu gọn"
+            >
+              <ChevronLeftIcon />
+            </button>
+          )}
+        </div>
+
+        {/* Khi đã thu gọn, nút mở lại đứng riêng một dòng: nhồi chung với logo
+            thì cả hai đều bị bó trong 4.5rem và khó bấm đúng. */}
+        {collapsed && (
+          <button
+            type="button"
+            onClick={toggleSidebar}
+            className="mx-auto mt-2 grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-colors hover:bg-surface hover:text-slate-800"
+            aria-label="Mở rộng thanh điều hướng"
+            aria-expanded="false"
+            title="Mở rộng"
+          >
+            <ChevronRightIcon />
+          </button>
+        )}
         <div className="flex-1 overflow-y-auto px-3.5 py-5">
-          <NavSectionLabel>Menu chính</NavSectionLabel>
+          {/* Nhãn nhóm biến mất khi thu gọn: chữ "Menu chính" không vừa 4.5rem,
+              để lại chỉ thành một vệt bị cắt. Ranh giới nhóm vẫn nhận ra được
+              nhờ khoảng cách giữa các nav. */}
+          {!collapsed && <NavSectionLabel>Menu chính</NavSectionLabel>}
           <nav className="space-y-1" aria-label="Điều hướng chính">
             {PRIMARY_NAV.map((item) => (
-              <SidebarLink key={item.to} {...item} />
+              <SidebarLink key={item.to} {...item} collapsed={collapsed} />
             ))}
           </nav>
 
-          <NavSectionLabel className="mt-6">Kỹ năng</NavSectionLabel>
-          <nav className="space-y-1" aria-label="Các kỹ năng Aptis">
+          {!collapsed && <NavSectionLabel className="mt-6">Kỹ năng</NavSectionLabel>}
+          <nav className={clsx('space-y-1', collapsed && 'mt-4 border-t border-border pt-4')} aria-label="Các kỹ năng Aptis">
             {SKILL_NAV.map((item) => (
-              <NavLink
-                key={item.label}
-                to={item.to}
-                className={({ isActive }) => clsx(
-                  'group flex min-h-[42px] items-center gap-3 rounded-xl px-3.5 text-sm font-medium transition-all duration-150',
-                  isActive 
-                    ? 'bg-brand-100 text-brand-800 font-semibold' 
-                    : 'text-slate-600 hover:bg-surface-paper hover:text-slate-900',
-                )}
-              >
-                <span className={clsx('transition-colors', 'text-brand-600')}><NavIcon name={item.icon} /></span>
-                <span className="flex-1 truncate">{item.label}</span>
-              </NavLink>
+              <SidebarLink key={item.to} {...item} collapsed={collapsed} />
             ))}
           </nav>
 
-          <NavSectionLabel className="mt-6">Tài khoản</NavSectionLabel>
-          <nav className="space-y-1" aria-label="Tài khoản">
-            <SidebarLink to="/plans" label="Gói Premium" icon="premium" />
-            {isAdmin && <SidebarLink to="/admin" label="Quản trị hệ thống" icon="admin" />}
+          {!collapsed && <NavSectionLabel className="mt-6">Tài khoản</NavSectionLabel>}
+          <nav className={clsx('space-y-1', collapsed && 'mt-4 border-t border-border pt-4')} aria-label="Tài khoản">
+            <SidebarLink to="/plans" label="Gói Premium" icon="premium" collapsed={collapsed} />
+            {isAdmin && <SidebarLink to="/admin" label="Quản trị hệ thống" icon="admin" collapsed={collapsed} />}
           </nav>
+
+          {!collapsed && <SupportLinksCompact />}
         </div>
 
         {/* Premium Widget */}
         <div className="p-3.5">
-          {!user?.premiumActive ? (
+          {collapsed ? (
+            // Thu gọn: thẻ quảng cáo dài không vừa, nên chỉ còn một chỉ dấu
+            // bấm được — vẫn giữ đường vào trang gói.
+            !user?.premiumActive ? (
+              <Link
+                to="/plans"
+                className="grid h-10 w-full place-items-center rounded-xl bg-dark font-mono text-[10px] font-bold uppercase tracking-widest text-accent transition-colors hover:bg-dark/90"
+                title="Nâng cấp Premium"
+                aria-label="Nâng cấp Premium"
+              >
+                PRO
+              </Link>
+            ) : (
+              <div
+                className="grid h-10 w-full place-items-center rounded-xl border border-brand-200 bg-brand-50"
+                title={
+                  user.premiumEndsAt
+                    ? `Premium — hết hạn ${formatDate(user.premiumEndsAt)}`
+                    : 'Premium — gói kích hoạt đầy đủ'
+                }
+              >
+                <span className="h-2 w-2 rounded-full bg-accent" />
+              </div>
+            )
+          ) : !user?.premiumActive ? (
             <div className="rounded-2xl bg-dark p-4 text-white shadow-sm">
               <span className="inline-block font-mono text-[10px] font-bold tracking-widest uppercase text-accent">
                 Premium
@@ -140,9 +210,21 @@ export function AppLayout() {
       </aside>
 
       {/* Header */}
-      <header className="fixed inset-x-0 top-0 z-30 flex h-16 items-center border-b border-border bg-white/95 px-4 backdrop-blur md:left-64 md:px-8">
+      <header
+        className={clsx(
+          'fixed inset-x-0 top-0 z-30 flex h-16 items-center border-b border-border bg-white/95 px-4 backdrop-blur md:px-8',
+          'transition-[left] duration-200 ease-out',
+          collapsed ? 'md:left-[4.5rem]' : 'md:left-64',
+        )}
+      >
         <Link to="/" className="flex items-center gap-2 md:hidden">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-white font-bold text-sm">A</span>
+          <img
+            src="/images/logo-mark-sm.png"
+            alt=""
+            width="32"
+            height="32"
+            className="h-8 w-8 shrink-0 object-contain"
+          />
           <span className="text-sm font-bold tracking-tight">Aptis Practice</span>
         </Link>
 
@@ -192,7 +274,7 @@ export function AppLayout() {
       </header>
 
       {/* Main Content Area */}
-      <div className="pt-16 md:pl-64">
+      <div className={clsx('pt-16 transition-[padding] duration-200 ease-out', collapsed ? 'md:pl-[4.5rem]' : 'md:pl-64')}>
         <main className="mx-auto max-w-[1240px] px-4 py-6 pb-24 sm:px-6 lg:px-8 lg:py-8">
           <Outlet />
         </main>
@@ -225,19 +307,50 @@ function NavSectionLabel({ children, className }: { children: React.ReactNode; c
   return <p className={clsx('mb-2 px-3.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400', className)}>{children}</p>;
 }
 
-function SidebarLink({ to, label, icon }: { to: string; label: string; icon: IconName }) {
+function SidebarLink({
+  to,
+  label,
+  icon,
+  collapsed = false,
+}: {
+  to: string;
+  label: string;
+  icon: IconName;
+  collapsed?: boolean;
+}) {
   return (
     <NavLink
       to={to}
       end={to === '/'}
+      // title cho tooltip khi chỉ còn icon; aria-label để trình đọc màn hình
+      // vẫn đọc được tên mục dù chữ đã ẩn.
+      title={collapsed ? label : undefined}
+      aria-label={collapsed ? label : undefined}
       className={({ isActive }) => clsx(
-        'flex min-h-[42px] items-center gap-3 rounded-xl px-3.5 text-sm font-medium transition-all duration-150',
+        'flex min-h-[42px] items-center rounded-xl text-sm font-medium transition-all duration-150',
+        collapsed ? 'justify-center px-0' : 'gap-3 px-3.5',
         isActive ? 'bg-brand-100 text-brand-800 font-semibold' : 'text-slate-600 hover:bg-surface-paper hover:text-slate-900',
       )}
     >
       <span className="text-brand-600"><NavIcon name={icon} /></span>
-      <span>{label}</span>
+      {!collapsed && <span className="flex-1 truncate">{label}</span>}
     </NavLink>
+  );
+}
+
+function ChevronLeftIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  );
+}
+
+function ChevronRightIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m9 18 6-6-6-6" />
+    </svg>
   );
 }
 
