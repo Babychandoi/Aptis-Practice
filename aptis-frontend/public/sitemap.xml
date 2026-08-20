@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Chỉ khai ba trang bot thật sự đọc được. Mọi trang khác nằm sau đăng nhập nên
+  bot chỉ nhận khung trống — khai vào đây là tự đưa trang rỗng cho Google.
+
+  Khi có trang nội dung công khai (blog, mẹo học mở cho khách, giới thiệu gói),
+  thêm vào đây và mở tương ứng trong robots.txt.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://aptispractices.io.vn/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://aptispractices.io.vn/login</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://aptispractices.io.vn/register</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

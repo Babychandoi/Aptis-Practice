@@ -3,14 +3,91 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <title>Aptis Practice — Luyện thi Aptis General</title>
+
+    <!-- Favicon và icon cho màn hình chính.
+         favicon.ico gộp 16/32/48px cho trình duyệt cũ và taskbar Windows;
+         hai file PNG dưới cho trình duyệt hiện đại và iOS. -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#5b52e8">
+
+    <!--
+      Font self-host trong src/fonts.css — không còn gọi fonts.googleapis.com.
+      Hai dòng preload dưới nhắm đúng hai file mà mọi trang đều cần ngay: chữ
+      thường (latin) và dấu tiếng Việt của weight 400. Các weight khác để trình
+      duyệt tự lấy khi gặp, preload thêm chỉ tranh băng thông với bundle JS.
+
+      Preload cũng là thứ kích hoạt Early Hints của Cloudflare: nó chỉ gửi được
+      gợi ý 103 khi origin nói rõ file nào cần tải trước.
+    -->
+    <link rel="preload" href="/fonts/be-vietnam-pro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/be-vietnam-pro-400-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- SEO cơ bản -->
+    <title>Aptis Practice — Luyện thi Aptis General online</title>
+    <meta name="description" content="Luyện thi Aptis General trực tuyến với đề thi thử bốn kỹ năng Nghe, Nói, Đọc, Viết. Chấm điểm tự động, chữa bài chi tiết và theo dõi tiến độ theo từng phần thi.">
+    <link rel="canonical" href="https://aptispractices.io.vn/">
+
+    <!--
+      Hai thẻ dưới KHÔNG dùng để xếp hạng. Google bỏ meta keywords từ 2009, còn
+      robots mặc định đã là index,follow — chỉ khai rõ để không ai phải đoán.
+    -->
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph: Facebook, Zalo, LinkedIn đọc các thẻ này khi ai đó dán link.
+         og:image phải là URL tuyệt đối — đường dẫn tương đối thì các trang này
+         không giải được và ô chia sẻ sẽ trống. -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Aptis Practice">
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:url" content="https://aptispractices.io.vn/">
+    <meta property="og:title" content="Aptis Practice — Luyện thi Aptis General online">
+    <meta property="og:description" content="Đề thi thử Aptis General bốn kỹ năng, chấm điểm tự động và chữa bài chi tiết.">
+    <meta property="og:image" content="https://aptispractices.io.vn/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:alt" content="Logo Aptis Practices">
+
+    <!-- Twitter/X dùng bộ thẻ riêng; summary_large_image cho ảnh khổ lớn -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Aptis Practice — Luyện thi Aptis General online">
+    <meta name="twitter:description" content="Đề thi thử Aptis General bốn kỹ năng, chấm điểm tự động và chữa bài chi tiết.">
+    <meta name="twitter:image" content="https://aptispractices.io.vn/og-image.jpg">
+
+    <!--
+      Structured data cho Google. Khai WebSite + EducationalOrganization là đủ
+      cho một nền tảng luyện thi; đừng khai Course hay Review nếu nội dung thật
+      không có, Google coi đó là structured data sai và có thể phạt.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://aptispractices.io.vn/#website",
+            "url": "https://aptispractices.io.vn/",
+            "name": "Aptis Practice",
+            "description": "Nền tảng luyện thi Aptis General trực tuyến",
+            "inLanguage": "vi-VN",
+            "publisher": { "@id": "https://aptispractices.io.vn/#org" }
+          },
+          {
+            "@type": "EducationalOrganization",
+            "@id": "https://aptispractices.io.vn/#org",
+            "name": "Aptis Practice",
+            "url": "https://aptispractices.io.vn/",
+            "logo": "https://aptispractices.io.vn/icon-512.png"
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
