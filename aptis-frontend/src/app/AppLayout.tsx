@@ -5,6 +5,7 @@ import { usePermission } from '@/features/admin/usePermission';
 import { formatDate } from '@/lib/format';
 import { SupportLinksCompact } from '@/components/ui/SupportLinks';
 import { useSidebarCollapsed } from '@/app/useSidebarCollapsed';
+import { describePremiumExpiry } from '@/features/billing/premiumExpiry';
 
 // shortLabel dùng cho thanh nav dưới trên điện thoại: 5 mục trên máy hẹp
 // (~360px) chỉ còn ~64px mỗi ô, nhãn đầy đủ tràn ra ngoài vùng bấm. Sidebar
@@ -30,6 +31,7 @@ export function AppLayout() {
   const { user, logout } = useAuthStore();
   const { isAdmin } = usePermission();
   const { collapsed, toggle: toggleSidebar } = useSidebarCollapsed();
+  const expiry = describePremiumExpiry(user?.premiumEndsAt);
   const displayName = user?.profile?.displayName || user?.profile?.fullName || user?.email || 'Học viên';
 
   const handleLogout = async () => {
@@ -200,14 +202,47 @@ export function AppLayout() {
               </Link>
             </div>
           ) : (
-            <div className="rounded-2xl border border-brand-200 bg-brand-50 p-3.5">
+            <div
+              className={clsx(
+                'rounded-2xl border p-3.5',
+                expiry?.expiringSoon
+                  ? 'border-amber-200 bg-amber-50'
+                  : 'border-brand-200 bg-brand-50',
+              )}
+            >
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-accent" />
-                <span className="font-mono text-xs font-bold uppercase text-brand-800">Tài khoản Premium</span>
+                <span
+                  className={clsx(
+                    'h-2 w-2 rounded-full',
+                    expiry?.expiringSoon ? 'bg-amber-500' : 'bg-accent',
+                  )}
+                />
+                <span
+                  className={clsx(
+                    'font-mono text-xs font-bold uppercase',
+                    expiry?.expiringSoon ? 'text-amber-900' : 'text-brand-800',
+                  )}
+                >
+                  {expiry ? expiry.label : 'Premium trọn đời'}
+                </span>
               </div>
               <p className="mt-1 text-[11px] text-slate-600">
-                {user.premiumEndsAt ? `Hết hạn ${formatDate(user.premiumEndsAt)}` : 'Gói kích hoạt đầy đủ'}
+                {user.premiumEndsAt
+                  ? `Hết hạn ${formatDate(user.premiumEndsAt)}`
+                  : 'Gói kích hoạt đầy đủ'}
               </p>
+
+              {/* Nút gia hạn chỉ hiện khi sắp hết: gói còn dài mà cứ mời gia hạn
+                  thì thành quảng cáo, học viên bỏ qua và đến lúc cần thật cũng
+                  không để ý nữa. */}
+              {expiry?.expiringSoon && (
+                <Link
+                  to="/plans"
+                  className="mt-2.5 flex min-h-[34px] w-full items-center justify-center rounded-xl bg-amber-500 px-3 text-xs font-bold text-white transition-colors hover:bg-amber-600"
+                >
+                  Gia hạn ngay →
+                </Link>
+              )}
             </div>
           )}
         </div>
@@ -250,6 +285,32 @@ export function AppLayout() {
             >
               <span className="sm:hidden">Premium</span>
               <span className="hidden sm:inline">Nâng cấp Premium</span>
+            </Link>
+          )}
+
+          {/* Đã Premium: hiện thời hạn còn lại để học viên không bị mất quyền
+              giữa lúc đang ôn. Sắp hết hạn thì đổi sang nút gia hạn màu cảnh
+              báo — lúc đó thông tin không đủ, cần một hành động. */}
+          {user?.premiumActive && expiry?.expiringSoon && (
+            <Link
+              to="/plans"
+              className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-3 text-xs font-semibold text-amber-900 transition-colors hover:border-amber-300 hover:bg-amber-100"
+              title={`Premium ${expiry.label.toLowerCase()} — gia hạn để học không gián đoạn`}
+            >
+              <span aria-hidden="true">⏳</span>
+              <span className="sm:hidden">Gia hạn</span>
+              <span className="hidden sm:inline">{expiry.label} · Gia hạn</span>
+            </Link>
+          )}
+
+          {user?.premiumActive && expiry && !expiry.expiringSoon && (
+            <Link
+              to="/plans"
+              className="hidden min-h-[36px] shrink-0 items-center gap-1.5 rounded-xl border border-brand-200 bg-brand-50 px-3 text-xs font-semibold text-brand-800 transition-colors hover:bg-brand-100 sm:inline-flex"
+              title={`Premium hết hạn ${formatDate(user.premiumEndsAt)}`}
+            >
+              <span className="h-2 w-2 rounded-full bg-accent" />
+              Premium · {expiry.label}
             </Link>
           )}
 

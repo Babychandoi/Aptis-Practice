@@ -1,16 +1,19 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { authApi, billingApi } from '@/api/endpoints';
 import { useAuthStore } from '@/features/auth/authStore';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { SupportLinksCard } from '@/components/ui/SupportLinks';
 import { formatDate } from '@/lib/format';
+import { describePremiumExpiry } from '@/features/billing/premiumExpiry';
 import type { CefrLevel } from '@/types/api';
 
 const CEFR_LEVELS: CefrLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 export function ProfilePage() {
   const { user, refreshUser, logout } = useAuthStore();
+  const expiry = describePremiumExpiry(user?.premiumEndsAt);
 
   const [fullName, setFullName] = useState(user?.profile?.fullName ?? '');
   const [displayName, setDisplayName] = useState(user?.profile?.displayName ?? '');
@@ -140,12 +143,35 @@ export function ProfilePage() {
         <h2 className="mb-3 font-semibold">Gói dịch vụ</h2>
 
         {user.premiumActive ? (
-          <p className="text-sm text-slate-700">
-            Premium đang hiệu lực
-            {user.premiumEndsAt ? ` đến ${formatDate(user.premiumEndsAt)}` : ' trọn đời'}
-          </p>
+          <div>
+            <p className="text-sm text-slate-700">
+              Premium đang hiệu lực
+              {user.premiumEndsAt ? ` đến ${formatDate(user.premiumEndsAt)}` : ' trọn đời'}
+              {expiry && <span className="font-semibold"> · {expiry.label}</span>}
+            </p>
+
+            {expiry?.expiringSoon && (
+              <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3.5">
+                <p className="text-xs font-semibold text-amber-900">
+                  Gói sắp hết hạn
+                </p>
+                <p className="mt-1 text-[11px] leading-5 text-amber-800">
+                  Gia hạn trước khi hết để giữ nguyên tiến độ và không bị gián đoạn
+                  giữa lúc đang ôn.
+                </p>
+                <Link to="/plans" className="btn-primary mt-2.5 min-h-[36px] w-full text-xs">
+                  Gia hạn Premium →
+                </Link>
+              </div>
+            )}
+          </div>
         ) : (
-          <p className="text-sm text-slate-600">Bạn đang dùng gói miễn phí</p>
+          <div>
+            <p className="text-sm text-slate-600">Bạn đang dùng gói miễn phí</p>
+            <Link to="/plans" className="btn-secondary mt-2.5 min-h-[36px] w-full text-xs">
+              Xem các gói Premium →
+            </Link>
+          </div>
         )}
 
         {(subscriptionsQuery.data?.length ?? 0) > 0 && (
