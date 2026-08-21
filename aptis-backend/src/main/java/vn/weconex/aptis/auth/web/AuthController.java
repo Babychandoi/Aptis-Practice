@@ -5,12 +5,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import vn.weconex.aptis.auth.service.AuthService;
+import vn.weconex.aptis.auth.service.GoogleTokenVerifier;
 import vn.weconex.aptis.common.security.CurrentUser;
 
 @RestController
@@ -19,6 +21,7 @@ import vn.weconex.aptis.common.security.CurrentUser;
 public class AuthController {
 
     private final AuthService authService;
+    private final GoogleTokenVerifier googleTokenVerifier;
     private final CurrentUser currentUser;
     private final RefreshTokenCookieService refreshTokenCookies;
 
@@ -52,6 +55,39 @@ public class AuthController {
 
         AuthDtos.TokenResponse tokens = authService.login(
                 request, httpRequest.getHeader("User-Agent"), clientIp(httpRequest));
+        refreshTokenCookies.write(httpResponse, tokens.refreshToken());
+        return tokens.withoutRefreshToken();
+    }
+
+    /**
+     * Cấu hình đăng nhập ngoài cho trình duyệt.
+     *
+     * <p>Client ID của Google không phải bí mật (nó nằm trong mã trang khi khởi
+     * tạo nút Google), nhưng trả qua API thay vì nhúng lúc build để đổi Client
+     * ID chỉ cần sửa .env và khởi động lại backend — không phải build lại
+     * frontend.
+     */
+    @GetMapping("/config")
+    public AuthDtos.AuthConfigResponse config() {
+        return new AuthDtos.AuthConfigResponse(googleTokenVerifier.clientId());
+    }
+
+    /**
+     * Đăng nhập bằng Google. Trả về cùng dạng token như {@code /login}, kể cả
+     * cookie refresh — phía client sau đó không cần biết đã đăng nhập bằng cách
+     * nào.
+     */
+    @PostMapping("/google")
+    public AuthDtos.TokenResponse googleLogin(
+            @Valid @RequestBody AuthDtos.GoogleLoginRequest request,
+            HttpServletRequest httpRequest,
+            HttpServletResponse httpResponse) {
+
+        AuthDtos.TokenResponse tokens = authService.loginWithGoogle(
+                request.idToken(),
+                request.deviceId(),
+                httpRequest.getHeader("User-Agent"),
+                clientIp(httpRequest));
         refreshTokenCookies.write(httpResponse, tokens.refreshToken());
         return tokens.withoutRefreshToken();
     }

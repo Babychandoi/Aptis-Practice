@@ -45,6 +45,16 @@ public final class AuthDtos {
     public record ResendVerificationRequest(@NotBlank @Email String email) {
     }
 
+    /** Cấu hình cho trình duyệt: rỗng nghĩa là chưa bật đăng nhập Google. */
+    public record AuthConfigResponse(String googleClientId) {
+    }
+
+    /** ID token do Google Identity Services trả về ở phía trình duyệt. */
+    public record GoogleLoginRequest(
+            @NotBlank String idToken,
+            String deviceId) {
+    }
+
     public record ResetPasswordRequest(
             @NotBlank String token,
             @NotBlank @Size(min = 8, max = 128) String newPassword) {

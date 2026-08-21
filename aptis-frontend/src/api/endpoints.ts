@@ -3,6 +3,7 @@ import type {
   Attempt,
   AttemptSummary,
   AssetResponse,
+  AuthConfigResponse,
   BankTransferInstruction,
   ComponentSummary,
   CreateCustomAttemptRequest,
@@ -50,6 +51,14 @@ export const authApi = {
 
   login: (body: { email: string; password: string; deviceId?: string }) =>
     api.post<TokenResponse>('/auth/login', body).then((r) => r.data),
+
+  /** Cấu hình đăng nhập ngoài: googleClientId rỗng = chưa bật. */
+  config: () =>
+    api.get<AuthConfigResponse>('/auth/config').then((r) => r.data),
+
+  /** Đổi ID token của Google sang token của hệ thống. */
+  googleLogin: (body: { idToken: string; deviceId?: string }) =>
+    api.post<TokenResponse>('/auth/google', body).then((r) => r.data),
 
   logout: (body: { refreshToken?: string | null; allDevices?: boolean }) =>
     api.post<void>('/auth/logout', body).then((r) => r.data),

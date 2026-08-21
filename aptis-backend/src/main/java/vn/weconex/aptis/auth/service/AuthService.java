@@ -10,12 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vn.weconex.aptis.auth.domain.AuthIdentity;
 import vn.weconex.aptis.auth.domain.OneTimeToken;
 import vn.weconex.aptis.auth.domain.Permission;
 import vn.weconex.aptis.auth.domain.RefreshToken;
 import vn.weconex.aptis.auth.domain.Role;
 import vn.weconex.aptis.auth.domain.User;
 import vn.weconex.aptis.auth.domain.UserProfile;
+import vn.weconex.aptis.auth.repository.AuthIdentityRepository;
 import vn.weconex.aptis.auth.repository.EmailVerificationTokenRepository;
 import vn.weconex.aptis.auth.repository.PasswordResetTokenRepository;
 import vn.weconex.aptis.auth.repository.RefreshTokenRepository;
@@ -56,6 +58,8 @@ public class AuthService {
     private final TokenRevoker tokenRevoker;
     private final JwtService jwtService;
     private final AuthMailSender mailSender;
+    private final AuthIdentityRepository authIdentityRepository;
+    private final GoogleTokenVerifier googleTokenVerifier;
     private final AptisProperties properties;
 
     // -----------------------------------------------------------------
@@ -145,6 +149,82 @@ public class AuthService {
 
         user.recordSuccessfulLogin();
         return issueTokenPair(user, request.deviceId(), userAgent, ipAddress);
+    }
+
+    /**
+     * Đăng nhập/đăng ký bằng Google.
+     *
+     * <p>Google đã xác thực email nên bỏ hẳn bước xác thực qua thư — đây là lý
+     * do chính thêm luồng này: người dùng không còn kẹt ở email vào Spam.
+     *
+     * <p>Ba trường hợp:
+     * <ol>
+     *   <li>Đã liên kết Google trước đó → đăng nhập luôn.</li>
+     *   <li>Email đã có tài khoản (đăng ký bằng mật khẩu) → gộp: tạo liên kết và
+     *       đánh dấu email đã xác thực. An toàn vì Google xác nhận người đang
+     *       đăng nhập sở hữu chính email đó; đây cũng là đường thoát cho những
+     *       người đăng ký rồi không nhận được thư xác thực.</li>
+     *   <li>Chưa có gì → tạo tài khoản mới ở trạng thái ACTIVE luôn.</li>
+     * </ol>
+     */
+    @Transactional
+    public AuthDtos.TokenResponse loginWithGoogle(
+            String idToken, String deviceId, String userAgent, String ipAddress) {
+
+        GoogleTokenVerifier.GoogleUser google = googleTokenVerifier.verify(idToken);
+
+        User user = authIdentityRepository
+                .findByProviderAndProviderUserId(AuthIdentity.GOOGLE, google.subject())
+                .flatMap(identity -> userRepository.findByIdWithAuthorities(identity.getUserId()))
+                .orElseGet(() -> linkOrCreateGoogleUser(google));
+
+        // Tài khoản bị khoá/vô hiệu thì Google cũng không mở được — nếu bỏ qua
+        // kiểm tra này thì đăng nhập Google thành cửa sau vượt lệnh khoá.
+        if (user.isCurrentlyLocked()) {
+            throw new ApiException(ErrorCode.ACCOUNT_LOCKED, "Tài khoản đang bị khóa tạm thời");
+        }
+        if (user.getStatus() != UserStatus.ACTIVE) {
+            throw new ApiException(
+                    ErrorCode.ACCOUNT_SUSPENDED, "Tài khoản không ở trạng thái hoạt động");
+        }
+
+        user.recordSuccessfulLogin();
+        return issueTokenPair(user, deviceId, userAgent, ipAddress);
+    }
+
+    private User linkOrCreateGoogleUser(GoogleTokenVerifier.GoogleUser google) {
+        User user = userRepository.findByEmailWithAuthorities(google.email())
+                .orElseGet(() -> createGoogleUser(google));
+
+        // Tài khoản cũ chưa xác thực email: Google vừa xác nhận người này sở hữu
+        // email đó, nên coi như đã xác thực.
+        if (user.getEmailVerifiedAt() == null) {
+            user.markEmailVerified();
+            log.info("Xác thực email {} qua đăng nhập Google", google.email());
+        }
+
+        authIdentityRepository.save(
+                AuthIdentity.google(user.getId(), google.subject(), google.email()));
+        return user;
+    }
+
+    private User createGoogleUser(GoogleTokenVerifier.GoogleUser google) {
+        // passwordHash = null: tài khoản này chỉ đăng nhập bằng Google. Muốn
+        // dùng mật khẩu thì đi qua luồng "quên mật khẩu" để tự đặt.
+        User user = User.register(google.email(), null);
+        user.markEmailVerified();
+        userRepository.save(user);
+
+        UserProfile profile = UserProfile.forUser(user.getId());
+        profile.setFullName(google.name());
+        profileRepository.save(profile);
+
+        Role student = roleRepository.findByCode(Role.STUDENT)
+                .orElseThrow(() -> new IllegalStateException("Thiếu role STUDENT trong seed data"));
+        user.getRoles().add(student);
+
+        log.info("Tạo tài khoản mới qua Google: {}", google.email());
+        return user;
     }
 
     /**

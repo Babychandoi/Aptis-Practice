@@ -68,6 +68,11 @@ export interface PageResponse<T> {
 // Auth
 // ---------------------------------------------------------------------
 
+/** Cấu hình đăng nhập ngoài. googleClientId rỗng = chưa bật Google. */
+export interface AuthConfigResponse {
+  googleClientId: string;
+}
+
 export interface TokenResponse {
   accessToken: string;
   /** Backend mới giữ refresh token trong cookie HttpOnly. */

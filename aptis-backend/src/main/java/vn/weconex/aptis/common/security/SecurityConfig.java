@@ -50,6 +50,8 @@ public class SecurityConfig {
                                 // đăng nhập được, nên phải công khai
                                 "/api/v1/auth/resend-verification",
                                 "/api/v1/auth/login",
+                                "/api/v1/auth/google",
+                                "/api/v1/auth/config",
                                 "/api/v1/auth/refresh",
                                 "/api/v1/auth/forgot-password",
                                 "/api/v1/auth/reset-password")

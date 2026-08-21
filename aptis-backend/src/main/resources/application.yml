@@ -137,6 +137,11 @@ aptis:
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
 
+  oauth:
+    google:
+      # Lấy từ Google Cloud Console > APIs & Services > Credentials.
+      # Trống thì endpoint /auth/google từ chối mọi yêu cầu.
+      client-id: ${GOOGLE_CLIENT_ID:}
   minio:
     endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
     access-key: ${MINIO_ACCESS_KEY:minioadmin}

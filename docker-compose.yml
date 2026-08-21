@@ -216,6 +216,7 @@ services:
 
       # Frontend cùng origin qua nginx proxy; localhost:5173 cho vite dev
       CORS_ORIGINS: http://localhost,http://localhost:5173
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
 
       # Dev only — production phải đặt JWT_SECRET riêng trong .env, tối thiểu
       # 256 bit. Sinh mới: openssl rand -base64 48

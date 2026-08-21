@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ApiError } from '@/api/client';
 import { authApi } from '@/api/endpoints';
 import { AuthCard } from '@/features/auth/AuthCard';
 import { AuthSupportNote } from '@/features/auth/AuthSupportNote';
 import { ResendVerificationButton } from '@/features/auth/ResendVerificationButton';
+import { GoogleSignInButton } from '@/features/auth/GoogleSignInButton';
 
 export function RegisterPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
@@ -152,6 +154,8 @@ export function RegisterPage() {
           {loading ? 'Đang tạo…' : 'Tạo tài khoản'}
         </button>
       </form>
+
+      <GoogleSignInButton onSuccess={() => navigate('/', { replace: true })} />
 
       <p className="mt-4 text-center text-sm text-slate-600">
         Đã có tài khoản?{' '}

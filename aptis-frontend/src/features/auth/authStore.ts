@@ -11,6 +11,8 @@ interface AuthState {
   loading: boolean;
 
   login: (email: string, password: string) => Promise<void>;
+  /** Đăng nhập bằng ID token do Google Identity Services trả về. */
+  loginWithGoogle: (idToken: string) => Promise<void>;
   logout: (allDevices?: boolean) => Promise<void>;
   /** Gọi khi mở app: thử khôi phục phiên từ refresh cookie. */
   restore: () => Promise<void>;
@@ -28,6 +30,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ loading: true });
     try {
       const tokens = await authApi.login({ email, password });
+      tokenStorage.setAccessToken(tokens.accessToken, tokens.expiresInSeconds);
+      tokenStorage.clearLegacyRefreshToken();
+
+      const user = await authApi.me();
+      set({ user, loading: false });
+    } catch (error) {
+      set({ loading: false });
+      throw error;
+    }
+  },
+
+  loginWithGoogle: async (idToken) => {
+    set({ loading: true });
+    try {
+      const tokens = await authApi.googleLogin({ idToken });
       tokenStorage.setAccessToken(tokens.accessToken, tokens.expiresInSeconds);
       tokenStorage.clearLegacyRefreshToken();
 

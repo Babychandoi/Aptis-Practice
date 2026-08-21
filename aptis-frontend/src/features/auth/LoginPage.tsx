@@ -5,6 +5,7 @@ import { useAuthStore } from '@/features/auth/authStore';
 import { AuthCard } from '@/features/auth/AuthCard';
 import { AuthSupportNote } from '@/features/auth/AuthSupportNote';
 import { ResendVerificationButton } from '@/features/auth/ResendVerificationButton';
+import { GoogleSignInButton } from '@/features/auth/GoogleSignInButton';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -103,6 +104,8 @@ export function LoginPage() {
           {loading ? 'Đang đăng nhập…' : 'Đăng nhập'}
         </button>
       </form>
+
+      <GoogleSignInButton onSuccess={() => navigate((location.state as { from?: string } | null)?.from ?? '/', { replace: true })} />
 
       <p className="mt-7 text-center text-sm text-slate-600">
         Chưa có tài khoản?{' '}
