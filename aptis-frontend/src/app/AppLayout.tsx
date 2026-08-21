@@ -240,12 +240,6 @@ export function AppLayout() {
         </div>
 
         <div className="ml-auto flex items-center gap-3">
-          {/* Streak pill */}
-          <div className="flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 font-mono text-xs text-slate-700">
-            <span className="h-2 w-2 rounded-full bg-accent" />
-            <span>Học liên tục</span>
-          </div>
-
           {/* Hiện cả trên điện thoại: Premium đã rời khỏi thanh nav dưới để
               nhường chỗ cho Kỹ năng, nên đây là đường vào duy nhất trên mobile.
               Nhãn rút ngắn ở máy hẹp cho vừa header. */}
