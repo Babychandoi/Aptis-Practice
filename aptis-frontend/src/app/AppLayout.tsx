@@ -6,11 +6,14 @@ import { formatDate } from '@/lib/format';
 import { SupportLinksCompact } from '@/components/ui/SupportLinks';
 import { useSidebarCollapsed } from '@/app/useSidebarCollapsed';
 
+// shortLabel dùng cho thanh nav dưới trên điện thoại: 5 mục trên máy hẹp
+// (~360px) chỉ còn ~64px mỗi ô, nhãn đầy đủ tràn ra ngoài vùng bấm. Sidebar
+// desktop vẫn dùng label đầy đủ.
 const PRIMARY_NAV = [
-  { to: '/', label: 'Bảng điều khiển', icon: 'home' },
-  { to: '/mock-tests', label: 'Mô phỏng thi', icon: 'exam' },
-  { to: '/meo-hoc', label: 'Mẹo học', icon: 'tips' },
-  { to: '/history', label: 'Kết quả của tôi', icon: 'history' },
+  { to: '/', label: 'Bảng điều khiển', shortLabel: 'Trang chủ', icon: 'home' },
+  { to: '/mock-tests', label: 'Mô phỏng thi', shortLabel: 'Thi thử', icon: 'exam' },
+  { to: '/meo-hoc', label: 'Mẹo học', shortLabel: 'Mẹo học', icon: 'tips' },
+  { to: '/history', label: 'Kết quả của tôi', shortLabel: 'Kết quả', icon: 'history' },
 ] as const;
 
 const SKILL_NAV = [
@@ -50,6 +53,7 @@ export function AppLayout() {
   const getBreadcrumb = () => {
     const path = location.pathname;
     if (path === '/') return 'BẢNG ĐIỀU KHIỂN';
+    if (path === '/luyen-tap') return 'KỸ NĂNG / SKILLS';
     if (path.startsWith('/mock-tests')) return 'THI THỬ / MOCK TESTS';
     if (path.startsWith('/meo-hoc')) return 'MẸO HỌC / STUDY TIPS';
     if (path.startsWith('/history')) return 'LỊCH SỬ / KẾT QUẢ';
@@ -242,12 +246,16 @@ export function AppLayout() {
             <span>Học liên tục</span>
           </div>
 
+          {/* Hiện cả trên điện thoại: Premium đã rời khỏi thanh nav dưới để
+              nhường chỗ cho Kỹ năng, nên đây là đường vào duy nhất trên mobile.
+              Nhãn rút ngắn ở máy hẹp cho vừa header. */}
           {!user?.premiumActive && (
             <Link
               to="/plans"
-              className="hidden min-h-[36px] items-center rounded-xl bg-brand-100 px-3.5 text-xs font-semibold text-brand-800 transition-colors hover:bg-brand-200 sm:inline-flex"
+              className="inline-flex min-h-[36px] shrink-0 items-center rounded-xl bg-brand-100 px-3 text-xs font-semibold text-brand-800 transition-colors hover:bg-brand-200 sm:px-3.5"
             >
-              Nâng cấp Premium
+              <span className="sm:hidden">Premium</span>
+              <span className="hidden sm:inline">Nâng cấp Premium</span>
             </Link>
           )}
 
@@ -282,19 +290,32 @@ export function AppLayout() {
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-white/95 px-2 pb-[max(.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur md:hidden" aria-label="Điều hướng di động">
-        <div className="mx-auto grid max-w-md grid-cols-4">
-          {[...PRIMARY_NAV, { to: '/plans', label: 'Premium', icon: 'premium' as const }].map((item) => (
+        {/* grid-cols-5 khớp đúng số mục (4 của PRIMARY_NAV + Premium). Để
+            grid-cols-4 thì mục thứ 5 rơi xuống hàng hai, thanh nav cao gấp đôi
+            và che mất nội dung trang. */}
+        <div className="mx-auto grid max-w-md grid-cols-5">
+          {/* Kỹ năng thay chỗ Premium: sidebar desktop liệt kê cả 5 kỹ năng,
+              còn mobile không có sidebar nên cần một đường vào. Premium chuyển
+              lên header, nơi nó hiện ở mọi kích thước màn hình. */}
+          {[
+            ...PRIMARY_NAV,
+            { to: '/luyen-tap', label: 'Kỹ năng', shortLabel: 'Kỹ năng', icon: 'skills' as const },
+          ].map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               end={item.to === '/'}
               className={({ isActive }) => clsx(
-                'flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-1 text-[10px] font-medium transition-colors',
+                'flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-0.5 text-[10px] font-medium transition-colors',
                 isActive ? 'bg-brand-100 text-brand-800 font-semibold' : 'text-slate-500 hover:text-slate-900',
               )}
             >
               <NavIcon name={item.icon} />
-              <span>{item.label}</span>
+              {/* truncate thay vì cho xuống dòng: hai dòng chữ đội chiều cao
+                  thanh nav lên và ăn vào nội dung trang. */}
+              <span className="w-full truncate text-center leading-tight tracking-tight">
+                {item.shortLabel}
+              </span>
             </NavLink>
           ))}
         </div>
@@ -362,11 +383,13 @@ function Avatar({ name }: { name: string }) {
   );
 }
 
-type IconName = 'home' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout';
+type IconName = 'home' | 'skills' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout';
 
 function NavIcon({ name }: { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
     home: <><path d="m3 11 9-8 9 8" /><path d="M5 10v10h14V10M9 20v-6h6v6" /></>,
+    // Lưới 4 ô: gợi ý "chọn từ nhiều mục", không trùng icon của kỹ năng nào
+    skills: <><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></>,
     exam: <><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></>,
     tips: <><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6M10 22h4" /></>,
     history: <><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5M12 7v5l3 2" /></>,

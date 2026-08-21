@@ -17,6 +17,7 @@ const ForgotPasswordPage = lazy(() => import('@/features/auth/ForgotPasswordPage
 const ResetPasswordPage = lazy(() => import('@/features/auth/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage })));
 const ProfilePage = lazy(() => import('@/features/auth/ProfilePage').then((m) => ({ default: m.ProfilePage })));
 const DashboardPage = lazy(() => import('@/features/catalog/DashboardPage').then((m) => ({ default: m.DashboardPage })));
+const SkillListPage = lazy(() => import('@/features/catalog/SkillListPage').then((m) => ({ default: m.SkillListPage })));
 const ComponentPage = lazy(() => import('@/features/catalog/ComponentPage').then((m) => ({ default: m.ComponentPage })));
 const ComponentPartsPage = lazy(() => import('@/features/catalog/ComponentPartsPage').then((m) => ({ default: m.ComponentPartsPage })));
 const ComponentTestsPage = lazy(() => import('@/features/catalog/ComponentTestsPage').then((m) => ({ default: m.ComponentTestsPage })));
@@ -89,6 +90,9 @@ export function App() {
         }
       >
         <Route path="/" element={<DashboardPage />} />
+        {/* Mục lục kỹ năng cho thanh nav mobile; phải đứng trước route
+            :componentSlug để "/luyen-tap" không bị hiểu là một slug. */}
+        <Route path="/luyen-tap" element={<SkillListPage />} />
         <Route path="/luyen-tap/:componentSlug" element={<ComponentPage />} />
         <Route path="/luyen-tap/:componentSlug/theo-part" element={<ComponentPartsPage />} />
         <Route path="/luyen-tap/:componentSlug/bai-test" element={<ComponentTestsPage />} />
