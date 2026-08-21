@@ -4,6 +4,7 @@ import { ApiError } from '@/api/client';
 import { authApi } from '@/api/endpoints';
 import { AuthCard } from '@/features/auth/AuthCard';
 import { AuthSupportNote } from '@/features/auth/AuthSupportNote';
+import { ResendVerificationButton } from '@/features/auth/ResendVerificationButton';
 
 type State = 'verifying' | 'success' | 'error';
 
@@ -52,13 +53,20 @@ export function VerifyEmailPage() {
       {state === 'error' && (
         <>
           <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{message}</p>
-          <Link to="/login" className="btn-secondary mt-4 w-full">
+
+          {/* Liên kết hết hạn thì việc cần làm là lấy liên kết mới, nên nút gửi
+              lại đứng trước link đăng nhập. Không biết email của người đang mở
+              trang này nên component tự hiện ô nhập. */}
+          <p className="mt-4 text-xs leading-5 text-slate-600">
+            Nhập email đã đăng ký để nhận liên kết xác thực mới:
+          </p>
+          <ResendVerificationButton />
+
+          <Link to="/login" className="btn-ghost mt-3 w-full">
             Về trang đăng nhập
           </Link>
 
-          {/* Link hết hạn là đường cùng: chưa có API gửi lại nên người dùng
-              không tự thoát được, phải có kênh liên hệ ở đây. */}
-          <AuthSupportNote message="Liên kết không dùng được? Nhắn hỗ trợ để được kích hoạt tài khoản." />
+          <AuthSupportNote message="Vẫn không xác thực được? Nhắn hỗ trợ để được kích hoạt tài khoản." />
         </>
       )}
     </AuthCard>

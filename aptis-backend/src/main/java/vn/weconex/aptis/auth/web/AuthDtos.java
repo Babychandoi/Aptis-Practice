@@ -42,6 +42,9 @@ public final class AuthDtos {
     public record ForgotPasswordRequest(@NotBlank @Email String email) {
     }
 
+    public record ResendVerificationRequest(@NotBlank @Email String email) {
+    }
+
     public record ResetPasswordRequest(
             @NotBlank String token,
             @NotBlank @Size(min = 8, max = 128) String newPassword) {

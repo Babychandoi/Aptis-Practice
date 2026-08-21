@@ -21,4 +21,15 @@ public interface EmailVerificationTokenRepository
             WHERE t.userId = :userId AND t.usedAt IS NULL
             """)
     int invalidateAllForUser(@Param("userId") String userId, @Param("now") Instant now);
+
+    /**
+     * Số token đã phát cho user kể từ mốc thời gian — dùng để chặn bấm "gửi
+     * lại" liên tục. Endpoint gửi lại không cần đăng nhập, nên nếu không giới
+     * hạn thì một người có thể vét hết quota gửi thư trong ngày.
+     */
+    @Query("""
+            SELECT COUNT(t) FROM EmailVerificationToken t
+            WHERE t.userId = :userId AND t.createdAt >= :since
+            """)
+    long countIssuedSince(@Param("userId") String userId, @Param("since") Instant since);
 }

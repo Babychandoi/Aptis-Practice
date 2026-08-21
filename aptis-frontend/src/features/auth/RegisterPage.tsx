@@ -4,6 +4,7 @@ import { ApiError } from '@/api/client';
 import { authApi } from '@/api/endpoints';
 import { AuthCard } from '@/features/auth/AuthCard';
 import { AuthSupportNote } from '@/features/auth/AuthSupportNote';
+import { ResendVerificationButton } from '@/features/auth/ResendVerificationButton';
 
 export function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -68,11 +69,13 @@ export function RegisterPage() {
           </p>
         </div>
 
-        <Link to="/login" className="btn-secondary mt-4 w-full">
+        <ResendVerificationButton email={email} />
+
+        <Link to="/login" className="btn-ghost mt-3 w-full">
           Về trang đăng nhập
         </Link>
 
-        <AuthSupportNote message="Không nhận được email xác thực?" />
+        <AuthSupportNote message="Vẫn không nhận được email xác thực?" />
       </AuthCard>
     );
   }

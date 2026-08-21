@@ -4,6 +4,7 @@ import { ApiError } from '@/api/client';
 import { useAuthStore } from '@/features/auth/authStore';
 import { AuthCard } from '@/features/auth/AuthCard';
 import { AuthSupportNote } from '@/features/auth/AuthSupportNote';
+import { ResendVerificationButton } from '@/features/auth/ResendVerificationButton';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [needsVerification, setNeedsVerification] = useState(false);
 
   // Đã đăng nhập thì không hiển thị form nữa
   if (user) {
@@ -22,6 +24,7 @@ export function LoginPage() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
+    setNeedsVerification(false);
 
     try {
       await login(email, password);
@@ -29,6 +32,9 @@ export function LoginPage() {
       navigate(from, { replace: true });
     } catch (err) {
       setError(describeLoginError(err));
+      // Chỉ hiện nút gửi lại khi đúng nguyên nhân là chưa xác thực email —
+      // hiện với mọi lỗi (sai mật khẩu, tài khoản khoá) chỉ gây nhầm.
+      setNeedsVerification(err instanceof ApiError && err.code === 'EMAIL_NOT_VERIFIED');
     }
   };
 
@@ -87,6 +93,11 @@ export function LoginPage() {
             {error}
           </p>
         )}
+
+        {/* Đây là lúc người dùng đang bế tắc: biết mình chưa xác thực nhưng thư
+            thì không còn. Đưa nút gửi lại ngay dưới thông báo lỗi, dùng luôn
+            email họ vừa nhập. */}
+        {needsVerification && <ResendVerificationButton email={email} />}
 
         <button type="submit" disabled={loading} className="btn-primary min-h-11 w-full">
           {loading ? 'Đang đăng nhập…' : 'Đăng nhập'}

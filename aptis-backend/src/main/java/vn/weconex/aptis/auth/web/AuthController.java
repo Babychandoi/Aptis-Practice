@@ -33,6 +33,17 @@ public class AuthController {
         authService.verifyEmail(request.token());
     }
 
+    /**
+     * Gửi lại email xác thực. Luôn trả 202 dù email không tồn tại, đã xác thực
+     * rồi, hay bị chặn vì gửi quá nhiều — không tiết lộ email nào đã đăng ký.
+     */
+    @PostMapping("/resend-verification")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void resendVerification(
+            @Valid @RequestBody AuthDtos.ResendVerificationRequest request) {
+        authService.resendVerificationEmail(request.email());
+    }
+
     @PostMapping("/login")
     public AuthDtos.TokenResponse login(
             @Valid @RequestBody AuthDtos.LoginRequest request,

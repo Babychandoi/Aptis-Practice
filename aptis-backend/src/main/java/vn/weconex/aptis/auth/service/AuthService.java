@@ -1,5 +1,6 @@
 package vn.weconex.aptis.auth.service;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +36,14 @@ import vn.weconex.aptis.common.util.Enums.UserStatus;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
+    /**
+     * Trần gửi lại email xác thực. Đặt 3 lần/giờ: đủ cho người dùng thật thử
+     * lại vài lần, nhưng không cho vét hết quota gửi thư (Gmail giới hạn ~500
+     * thư/ngày cho toàn hệ thống).
+     */
+    private static final Duration RESEND_WINDOW = Duration.ofHours(1);
+    private static final long MAX_RESEND_PER_WINDOW = 3;
 
     private final UserRepository userRepository;
     private final UserProfileRepository profileRepository;
@@ -200,7 +209,6 @@ public class AuthService {
     // -----------------------------------------------------------------
     // Đặt lại mật khẩu
     // -----------------------------------------------------------------
-
     /**
      * Luôn trả thành công dù email không tồn tại, để không tiết lộ email nào
      * đã đăng ký.
@@ -243,11 +251,36 @@ public class AuthService {
         refreshTokenRepository.revokeAllForUser(user.getId(), Instant.now());
     }
 
+    /**
+     * Gửi lại email xác thực khi liên kết cũ hết hạn hoặc thư bị mất.
+     *
+     * <p>Không báo lỗi khi email không tồn tại hoặc đã xác thực rồi — giống
+     * {@link #forgotPassword}, để endpoint này không dùng được để dò xem email
+     * nào đã đăng ký.
+     *
+     * <p>{@code issueEmailVerificationToken} vô hiệu hoá token cũ trước khi tạo
+     * mới, nên liên kết trong thư trước hết tác dụng — người dùng bấm nhầm thư
+     * cũ sẽ thấy "hết hạn" thay vì kích hoạt sai.
+     */
     @Transactional
     public void resendVerificationEmail(String email) {
         userRepository.findByEmail(email.toLowerCase().strip())
                 .filter(user -> user.getStatus() == UserStatus.PENDING_VERIFICATION)
                 .ifPresent(user -> {
+                    // Chặn bấm liên tục: endpoint công khai nên nếu không giới
+                    // hạn thì một người có thể vét hết quota gửi thư trong ngày.
+                    //
+                    // Im lặng bỏ qua thay vì báo lỗi — người dùng thật bấm hai
+                    // lần vì chưa thấy thư, hiện lỗi đỏ chỉ làm họ lo thêm khi
+                    // thư đầu vẫn đang trên đường tới.
+                    long recent = emailVerificationRepository.countIssuedSince(
+                            user.getId(), Instant.now().minus(RESEND_WINDOW));
+                    if (recent >= MAX_RESEND_PER_WINDOW) {
+                        log.info("Bỏ qua gửi lại email xác thực cho {}: đã phát {} token trong {}",
+                                user.getEmail(), recent, RESEND_WINDOW);
+                        return;
+                    }
+
                     String rawToken = issueEmailVerificationToken(user.getId());
                     mailSender.sendVerificationEmail(user.getEmail(), rawToken);
                 });

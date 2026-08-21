@@ -40,6 +40,14 @@ export const authApi = {
   verifyEmail: (token: string) =>
     api.post<void>('/auth/verify-email', { token }).then((r) => r.data),
 
+  /**
+   * Gửi lại email xác thực. Luôn trả 202 dù email không tồn tại, đã xác thực
+   * rồi, hay bị chặn vì gửi quá nhiều — đừng suy ra trạng thái tài khoản từ
+   * phản hồi này.
+   */
+  resendVerification: (email: string) =>
+    api.post<void>('/auth/resend-verification', { email }).then((r) => r.data),
+
   login: (body: { email: string; password: string; deviceId?: string }) =>
     api.post<TokenResponse>('/auth/login', body).then((r) => r.data),
 
