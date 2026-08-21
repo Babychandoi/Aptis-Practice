@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { ApiError } from '@/api/client';
 import { authApi } from '@/api/endpoints';
 import { AuthCard } from '@/features/auth/AuthCard';
+import { AuthSupportNote } from '@/features/auth/AuthSupportNote';
 
 type State = 'verifying' | 'success' | 'error';
 
@@ -54,6 +55,10 @@ export function VerifyEmailPage() {
           <Link to="/login" className="btn-secondary mt-4 w-full">
             Về trang đăng nhập
           </Link>
+
+          {/* Link hết hạn là đường cùng: chưa có API gửi lại nên người dùng
+              không tự thoát được, phải có kênh liên hệ ở đây. */}
+          <AuthSupportNote message="Liên kết không dùng được? Nhắn hỗ trợ để được kích hoạt tài khoản." />
         </>
       )}
     </AuthCard>

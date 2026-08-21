@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { authApi } from '@/api/endpoints';
 import { AuthCard } from '@/features/auth/AuthCard';
+import { AuthSupportNote } from '@/features/auth/AuthSupportNote';
 
 export function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -27,9 +28,15 @@ export function ForgotPasswordPage() {
           Nếu <strong>{email}</strong> có tài khoản, bạn sẽ nhận được liên kết đặt lại mật
           khẩu trong vài phút.
         </p>
+        <p className="mt-2.5 rounded-lg bg-amber-50 px-3 py-2 text-xs leading-5 text-amber-800">
+          Không thấy thư? Kiểm tra thư mục <strong>Spam</strong> hoặc{' '}
+          <strong>Quảng cáo</strong>. Liên kết có hiệu lực trong 1 giờ.
+        </p>
         <Link to="/login" className="btn-secondary mt-4 w-full">
           Về trang đăng nhập
         </Link>
+
+        <AuthSupportNote message="Không nhận được email đặt lại mật khẩu?" />
       </AuthCard>
     );
   }

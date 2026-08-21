@@ -3,6 +3,7 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ApiError } from '@/api/client';
 import { useAuthStore } from '@/features/auth/authStore';
 import { AuthCard } from '@/features/auth/AuthCard';
+import { AuthSupportNote } from '@/features/auth/AuthSupportNote';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -101,6 +102,8 @@ export function LoginPage() {
           Tạo tài khoản
         </Link>
       </p>
+
+      <AuthSupportNote />
     </AuthCard>
   );
 }
@@ -115,7 +118,9 @@ function describeLoginError(error: unknown): string {
     case 'INVALID_CREDENTIALS':
       return 'Email hoặc mật khẩu không đúng';
     case 'EMAIL_NOT_VERIFIED':
-      return 'Email chưa được xác thực. Vui lòng kiểm tra hộp thư.';
+      // Nhắc Spam ngay trong thông báo lỗi: đây là lúc người dùng đang thắc mắc
+      // vì sao không vào được, không phải lúc để họ tự đi tìm.
+      return 'Email chưa được xác thực. Kiểm tra hộp thư và cả thư mục Spam để tìm liên kết xác thực.';
     case 'ACCOUNT_LOCKED':
       return 'Tài khoản đang bị khóa tạm thời do đăng nhập sai nhiều lần';
     case 'ACCOUNT_SUSPENDED':

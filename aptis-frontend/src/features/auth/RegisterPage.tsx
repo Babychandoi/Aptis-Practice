@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ApiError } from '@/api/client';
 import { authApi } from '@/api/endpoints';
 import { AuthCard } from '@/features/auth/AuthCard';
+import { AuthSupportNote } from '@/features/auth/AuthSupportNote';
 
 export function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -48,9 +49,30 @@ export function RegisterPage() {
           Chúng tôi đã gửi liên kết xác thực tới <strong>{email}</strong>. Mở liên kết đó để
           kích hoạt tài khoản.
         </p>
+
+        {/* Cảnh báo spam đặt ngay đây, không để người dùng tự đoán: thư gửi qua
+            Gmail nên hay bị lọc, và người không tìm thấy thư thường nghĩ hệ
+            thống lỗi rồi bỏ đi. */}
+        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3.5">
+          <p className="text-xs font-semibold text-amber-900">
+            Không thấy thư trong hộp thư đến?
+          </p>
+          <ul className="mt-1.5 space-y-1 text-[11px] leading-5 text-amber-800">
+            <li>• Kiểm tra thư mục <strong>Spam</strong> hoặc <strong>Quảng cáo</strong></li>
+            <li>• Tìm với từ khoá <strong>Aptis Practice</strong></li>
+            <li>• Thư có thể đến chậm 1–2 phút</li>
+          </ul>
+          <p className="mt-2 text-[11px] leading-5 text-amber-800">
+            Nếu thấy thư trong Spam, bấm <strong>“Không phải spam”</strong> để các thư sau
+            vào đúng hộp thư đến.
+          </p>
+        </div>
+
         <Link to="/login" className="btn-secondary mt-4 w-full">
           Về trang đăng nhập
         </Link>
+
+        <AuthSupportNote message="Không nhận được email xác thực?" />
       </AuthCard>
     );
   }
