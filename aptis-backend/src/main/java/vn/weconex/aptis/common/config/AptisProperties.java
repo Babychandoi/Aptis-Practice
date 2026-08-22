@@ -37,7 +37,9 @@ public record AptisProperties(
             int maxFailedLoginAttempts,
             Duration lockDuration,
             Duration emailVerificationTtl,
-            Duration passwordResetTtl) {
+            Duration passwordResetTtl,
+            /** true = mỗi tài khoản chỉ giữ một phiên; đăng nhập mới đẩy phiên cũ ra. */
+            boolean singleSession) {
     }
 
     public record Cors(List<String> allowedOrigins) {

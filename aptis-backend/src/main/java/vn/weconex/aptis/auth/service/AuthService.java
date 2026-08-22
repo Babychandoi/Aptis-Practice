@@ -242,6 +242,15 @@ public class AuthService {
                         ErrorCode.TOKEN_INVALID, "Refresh token không hợp lệ"));
 
         if (existing.getRevokedAt() != null) {
+            // Bị đẩy ra vì đăng nhập ở nơi khác thì KHÔNG phải dấu hiệu bị đánh
+            // cắp: máy cũ vẫn còn cookie và sẽ tự gọi refresh. Thu hồi cả nhà ở
+            // đây sẽ đăng xuất luôn phiên vừa đăng nhập — đã gặp đúng lỗi đó.
+            if (RefreshToken.SUPERSEDED.equals(existing.getRevokeReason())) {
+                throw new ApiException(
+                        ErrorCode.SESSION_REPLACED,
+                        "Tài khoản đã được đăng nhập ở thiết bị khác");
+            }
+
             log.warn("Refresh token đã thu hồi được dùng lại, thu hồi toàn bộ token của user {}",
                     existing.getUserId());
             // Gọi qua bean riêng với REQUIRES_NEW: exception bên dưới sẽ rollback
@@ -381,10 +390,38 @@ public class AuthService {
         return rawToken;
     }
 
+    /**
+     * Mỗi tài khoản chỉ giữ một phiên: đăng nhập mới thu hồi refresh token cũ,
+     * nên máy đang mở bị đẩy về trang đăng nhập.
+     *
+     * <p>Đặt ở đây thay vì trong {@code login} để cả đăng nhập Google cũng đi
+     * qua — quên một luồng là mở sẵn đường lách.
+     *
+     * <p>Nhân viên vận hành được miễn: admin hay phải mở nhiều máy cùng lúc, và
+     * đây là chống chia sẻ tài khoản học viên chứ không phải chính sách bảo mật
+     * nội bộ.
+     *
+     * <p>Giới hạn cần biết: access token còn hiệu lực 15 phút, nên máy bị đẩy ra
+     * vẫn gọi API được tới khi token đó hết hạn. Thu hồi ngay lập tức đòi kiểm
+     * tra danh sách đen ở mỗi request — đánh đổi không đáng cho mục đích này.
+     */
     private AuthDtos.TokenResponse issueTokenPair(
             User user, String deviceId, String userAgent, String ipAddress) {
 
+        if (properties.security().singleSession() && !isStaff(user)) {
+            int revoked = refreshTokenRepository.supersedeAllForUser(user.getId(), Instant.now());
+            if (revoked > 0) {
+                log.info("Đăng nhập mới của {} đã thu hồi {} phiên cũ", user.getEmail(), revoked);
+            }
+        }
+
         return issueTokenPairInternal(user, deviceId, userAgent, ipAddress).response();
+    }
+
+    private static boolean isStaff(User user) {
+        return user.getRoles().stream()
+                .map(Role::getCode)
+                .anyMatch(code -> !Role.STUDENT.equals(code));
     }
 
     /**

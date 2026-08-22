@@ -27,6 +27,8 @@ public enum ErrorCode {
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED),
     REFRESH_TOKEN_REUSED(HttpStatus.UNAUTHORIZED),
+    /** Phiên bị đẩy ra vì tài khoản đăng nhập ở thiết bị khác (chính sách một phiên). */
+    SESSION_REPLACED(HttpStatus.UNAUTHORIZED),
 
     // --- Nội dung & quyền truy cập ---
     PREMIUM_REQUIRED(HttpStatus.FORBIDDEN),

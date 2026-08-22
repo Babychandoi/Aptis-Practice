@@ -53,10 +53,19 @@ export const api: AxiosInstance = axios.create({
 let refreshPromise: Promise<string> | null = null;
 
 /** Đăng ký từ AuthProvider để chuyển về trang đăng nhập khi refresh thất bại. */
-let onAuthFailure: (() => void) | null = null;
+let onAuthFailure: ((reason?: string) => void) | null = null;
 
-export function setAuthFailureHandler(handler: () => void): void {
+export function setAuthFailureHandler(handler: (reason?: string) => void): void {
   onAuthFailure = handler;
+}
+
+/**
+ * Mã lỗi từ phản hồi refresh thất bại, để trang đăng nhập nói đúng lý do —
+ * bị đẩy ra vì đăng nhập nơi khác khác hẳn với hết phiên thường.
+ */
+function authFailureReason(error: unknown): string | undefined {
+  const code = (error as { response?: { data?: { code?: string } } })?.response?.data?.code;
+  return typeof code === 'string' ? code : undefined;
 }
 
 function isPublicPath(url?: string): boolean {
@@ -103,9 +112,9 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
     });
     try {
       await refreshPromise;
-    } catch {
+    } catch (refreshError) {
       tokenStorage.clear();
-      onAuthFailure?.();
+      onAuthFailure?.(authFailureReason(refreshError));
     }
   }
 
@@ -136,9 +145,9 @@ api.interceptors.response.use(
         const token = await refreshPromise;
         config.headers.Authorization = `Bearer ${token}`;
         return api.request(config);
-      } catch {
+      } catch (refreshError) {
         tokenStorage.clear();
-        onAuthFailure?.();
+        onAuthFailure?.(authFailureReason(refreshError));
       }
     }
 

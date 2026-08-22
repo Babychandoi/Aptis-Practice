@@ -133,6 +133,9 @@ aptis:
     lock-duration: PT15M
     email-verification-ttl: P1D
     password-reset-ttl: PT1H
+    # Mỗi tài khoản chỉ giữ một phiên: đăng nhập mới thu hồi phiên cũ. Nhân viên
+    # vận hành (role khác STUDENT) được miễn. Tắt bằng SINGLE_SESSION=false.
+    single-session: ${SINGLE_SESSION:true}
 
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:5173}

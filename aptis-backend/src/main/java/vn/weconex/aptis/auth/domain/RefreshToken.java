@@ -48,6 +48,17 @@ public class RefreshToken {
     @Column(name = "revoked_at")
     private Instant revokedAt;
 
+    /**
+     * Lý do thu hồi. {@link #SUPERSEDED} nghĩa là bị đẩy ra vì đăng nhập ở nơi
+     * khác — dùng lại token đó KHÔNG phải dấu hiệu bị đánh cắp, nên không thu
+     * hồi cả các phiên còn lại. NULL = thu hồi bình thường.
+     */
+    @Column(name = "revoke_reason", length = 32)
+    private String revokeReason;
+
+    /** Bị thay thế bởi phiên đăng nhập mới (chính sách một phiên). */
+    public static final String SUPERSEDED = "SUPERSEDED";
+
     @Column(name = "replaced_by_token_id", columnDefinition = "CHAR(36)")
     private String replacedByTokenId;
 

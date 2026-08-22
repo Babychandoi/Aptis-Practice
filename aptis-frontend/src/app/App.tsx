@@ -59,9 +59,11 @@ export function App() {
 
   // Refresh token hết hiệu lực → về trang đăng nhập, không để app treo ở lỗi 401
   useEffect(() => {
-    setAuthFailureHandler(() => {
+    setAuthFailureHandler((reason) => {
       clear();
-      navigate('/login', { replace: true });
+      // Truyền lý do qua state để trang đăng nhập giải thích được vì sao bị
+      // đẩy ra — "hết phiên" và "đăng nhập ở máy khác" cần nói khác nhau.
+      navigate('/login', { replace: true, state: { authFailure: reason } });
     });
   }, [navigate, clear]);
 

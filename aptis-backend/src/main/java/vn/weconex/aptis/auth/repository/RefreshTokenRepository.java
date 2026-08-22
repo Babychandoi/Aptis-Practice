@@ -31,6 +31,21 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Stri
             """)
     int revokeAllForUser(@Param("userId") String userId, @Param("now") Instant now);
 
+    /**
+     * Thu hồi phiên cũ khi có đăng nhập mới, đánh dấu lý do SUPERSEDED.
+     *
+     * <p>Phải phân biệt với thu hồi thường: máy cũ sẽ gọi refresh bằng token vừa
+     * bị đẩy ra, và nếu không có nhãn này thì luồng chống đánh cắp coi đó là
+     * token bị trộm rồi thu hồi luôn phiên mới vừa đăng nhập.
+     */
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("""
+            UPDATE RefreshToken t
+            SET t.revokedAt = :now, t.revokeReason = 'SUPERSEDED'
+            WHERE t.userId = :userId AND t.revokedAt IS NULL
+            """)
+    int supersedeAllForUser(@Param("userId") String userId, @Param("now") Instant now);
+
     @Modifying
     @Query("DELETE FROM RefreshToken t WHERE t.expiresAt < :before")
     int deleteExpiredBefore(@Param("before") Instant before);

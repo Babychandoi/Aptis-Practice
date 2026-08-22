@@ -17,6 +17,11 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [needsVerification, setNeedsVerification] = useState(false);
 
+  // Bị đẩy ra vì tài khoản đăng nhập ở nơi khác: nói rõ để họ không nghĩ hệ
+  // thống lỗi, và biết là tài khoản có thể đang bị người khác dùng.
+  const authFailure = (location.state as { authFailure?: string } | null)?.authFailure;
+  const replacedNotice = authFailure === 'SESSION_REPLACED';
+
   // Đã đăng nhập thì không hiển thị form nữa
   if (user) {
     return <Navigate to="/" replace />;
@@ -44,6 +49,19 @@ export function LoginPage() {
       title="Chào mừng bạn trở lại"
       subtitle="Đăng nhập để tiếp tục lộ trình luyện thi Aptis của bạn."
     >
+      {replacedNotice && (
+        <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-3.5">
+          <p className="text-xs font-semibold text-amber-900">
+            Phiên của bạn đã kết thúc
+          </p>
+          <p className="mt-1 text-[11px] leading-5 text-amber-800">
+            Tài khoản này vừa được đăng nhập ở thiết bị khác. Mỗi tài khoản chỉ dùng
+            được trên một thiết bị cùng lúc — đăng nhập lại để tiếp tục. Nếu không
+            phải bạn, hãy đổi mật khẩu ngay.
+          </p>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label htmlFor="email" className="label">
