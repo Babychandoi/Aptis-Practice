@@ -21,6 +21,7 @@ import vn.weconex.aptis.auth.repository.RoleRepository;
 import vn.weconex.aptis.auth.repository.UserProfileRepository;
 import vn.weconex.aptis.auth.repository.UserRepository;
 import vn.weconex.aptis.auth.web.AdminUserDtos;
+import vn.weconex.aptis.common.config.AptisProperties;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.exception.ErrorCode;
 import vn.weconex.aptis.common.util.Enums.UserStatus;
@@ -38,6 +39,7 @@ public class AdminUserService {
     private final RoleRepository roleRepository;
     private final UserEntitlementRepository entitlementRepository;
     private final AuditService auditService;
+    private final AptisProperties properties;
 
     @Transactional(readOnly = true)
     public Page<AdminUserDtos.AdminUserResponse> search(
@@ -126,14 +128,20 @@ public class AdminUserService {
     private AdminUserDtos.AdminUserResponse toResponse(User user) {
         UserProfile profile = profileRepository.findById(user.getId()).orElse(null);
         var entitlements = entitlementRepository.findAllActive(user.getId(), Instant.now());
+
+        // Lấy mã từ config chứ không so với hằng "PREMIUM": mã thật là
+        // PREMIUM_CONTENT_ACCESS, nên so sánh cứng làm cột Premium trong trang
+        // quản lý tài khoản LUÔN hiện Free kể cả người đã nâng cấp.
+        String premiumCode = properties.entitlement().premiumCode();
+
         Instant premiumEndsAt = entitlements.stream()
-                .filter(item -> "PREMIUM".equals(item.getEntitlementCode()))
+                .filter(item -> premiumCode.equals(item.getEntitlementCode()))
                 .map(item -> item.getEndsAt())
                 .filter(java.util.Objects::nonNull)
                 .max(Comparator.naturalOrder())
                 .orElse(null);
         boolean premiumActive = entitlements.stream()
-                .anyMatch(item -> "PREMIUM".equals(item.getEntitlementCode()));
+                .anyMatch(item -> premiumCode.equals(item.getEntitlementCode()));
 
         return new AdminUserDtos.AdminUserResponse(
                 user.getId(), user.getEmail(), user.getPhone(), user.getStatus(),
