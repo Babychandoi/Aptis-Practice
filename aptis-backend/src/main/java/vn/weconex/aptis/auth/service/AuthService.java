@@ -40,6 +40,12 @@ import vn.weconex.aptis.common.util.Enums.UserStatus;
 public class AuthService {
 
     /**
+     * Khoan dung khi nhiều tab đua nhau refresh: token vừa rotate trong khoảng
+     * này được coi là request chậm chân, không phải bị đánh cắp.
+     */
+    private static final Duration ROTATION_GRACE = Duration.ofSeconds(30);
+
+    /**
      * Trần gửi lại email xác thực. Đặt 3 lần/giờ: đủ cho người dùng thật thử
      * lại vài lần, nhưng không cho vét hết quota gửi thư (Gmail giới hạn ~500
      * thư/ngày cho toàn hệ thống).
@@ -249,6 +255,22 @@ public class AuthService {
                 throw new ApiException(
                         ErrorCode.SESSION_REPLACED,
                         "Tài khoản đã được đăng nhập ở thiết bị khác");
+            }
+
+            // Nhiều tab cùng mở sẽ đua nhau gọi refresh: tab đầu rotate token,
+            // tab sau gửi đúng token vừa bị rotate. Đó KHÔNG phải đánh cắp —
+            // token bị đánh cắp thật thì không có replacedByTokenId, còn token
+            // rotate hợp lệ luôn có.
+            //
+            // Chỉ khoan dung trong cửa sổ ngắn: token rotate từ lâu mà còn được
+            // dùng thì đúng là dấu hiệu bị trộm.
+            if (existing.getReplacedByTokenId() != null
+                    && existing.getRevokedAt().isAfter(Instant.now().minus(ROTATION_GRACE))) {
+                log.debug("Refresh token vừa rotate được dùng lại (nhiều tab), user {}",
+                        existing.getUserId());
+                throw new ApiException(
+                        ErrorCode.TOKEN_EXPIRED,
+                        "Phiên vừa được làm mới, hãy thử lại");
             }
 
             log.warn("Refresh token đã thu hồi được dùng lại, thu hồi toàn bộ token của user {}",
