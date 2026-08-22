@@ -25,7 +25,14 @@ public final class AdminUserDtos {
             boolean premiumActive,
             Instant premiumEndsAt,
             Instant createdAt,
-            Instant lastLoginAt) {
+            /** Lần cuối NHẬP mật khẩu / bấm Google. */
+            Instant lastLoginAt,
+            /**
+             * Lần cuối còn ở web. Suy từ thời điểm phát refresh token gần nhất,
+             * nên phản ánh cả những phiên vào lại mà không phải đăng nhập —
+             * refresh token sống 30 ngày.
+             */
+            Instant lastActivityAt) {
     }
 
     public record AdminRoleResponse(String code, String name, String description) {

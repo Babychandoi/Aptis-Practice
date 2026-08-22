@@ -426,6 +426,8 @@ export interface AdminUser {
   premiumEndsAt: string | null;
   createdAt: string;
   lastLoginAt: string | null;
+  /** Lần cuối còn ở web — suy từ refresh token gần nhất, chính xác hơn lastLoginAt. */
+  lastActivityAt: string | null;
 }
 
 export interface AdminRole {

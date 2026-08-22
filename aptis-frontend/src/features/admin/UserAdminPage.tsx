@@ -5,7 +5,7 @@ import { adminEntitlementApi, adminUserApi } from '@/api/adminEndpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { confirmDialog } from '@/lib/dialog';
-import { formatDateTime } from '@/lib/format';
+import { formatDateTime, relativeTime } from '@/lib/format';
 import type { AdminEntitlement, AdminSubscription, AdminUser, UserStatus } from '@/types/admin';
 import { DataTable, PageHeader, Pager, ResultBanner } from './components/AdminUi';
 import { usePermission } from './usePermission';
@@ -52,7 +52,7 @@ export function UserAdminPage() {
     return (
       <>
         <p className="mb-2 text-xs text-slate-500">{data.totalElements} người dùng</p>
-        <DataTable headers={['Người dùng', 'Trạng thái', 'Vai trò', 'Premium', 'Đăng nhập gần nhất', 'Ngày tạo', '']} isEmpty={data.content.length === 0} empty="Không tìm thấy người dùng phù hợp.">
+        <DataTable headers={['Người dùng', 'Trạng thái', 'Vai trò', 'Premium', 'Hoạt động gần nhất', 'Ngày tạo', '']} isEmpty={data.content.length === 0} empty="Không tìm thấy người dùng phù hợp.">
           {data.content.map((user) => (
             <tr key={user.id} className="transition-colors hover:bg-brand-50">
               <td className="px-4 py-3">
@@ -62,7 +62,16 @@ export function UserAdminPage() {
               <td className="px-4 py-3"><UserStatusBadge status={user.status} /></td>
               <td className="px-4 py-3"><div className="flex max-w-72 flex-wrap gap-1">{user.roles.map((role) => <span key={role} className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700">{role}</span>)}</div></td>
               <td className="px-4 py-3"><PremiumSummary user={user} canManage={canManagePremium} /></td>
-              <td className="whitespace-nowrap px-4 py-3 text-xs text-slate-500">{formatDateTime(user.lastLoginAt)}</td>
+              {/* Hoạt động là mốc "lần cuối còn ở web" — chính xác hơn đăng
+                  nhập, vì refresh token sống 30 ngày nên người vào lại hằng
+                  ngày không phải đăng nhập và lastLoginAt đứng im. Vẫn hiện
+                  đăng nhập ở dòng phụ để đối chiếu. */}
+              <td className="whitespace-nowrap px-4 py-3 text-xs">
+                <p className="font-medium text-slate-700">{relativeTime(user.lastActivityAt)}</p>
+                <p className="text-[11px] text-slate-400">
+                  Đăng nhập: {formatDateTime(user.lastLoginAt)}
+                </p>
+              </td>
               <td className="whitespace-nowrap px-4 py-3 text-xs text-slate-500">{formatDateTime(user.createdAt)}</td>
               <td className="px-4 py-3 text-right"><button type="button" className="btn-secondary !px-3 !py-1.5" onClick={() => setSelected(user)}>Quản lý</button></td>
             </tr>

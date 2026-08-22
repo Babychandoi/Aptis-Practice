@@ -1,6 +1,7 @@
 package vn.weconex.aptis.auth.repository;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,4 +34,24 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Stri
     @Modifying
     @Query("DELETE FROM RefreshToken t WHERE t.expiresAt < :before")
     int deleteExpiredBefore(@Param("before") Instant before);
+
+    /**
+     * Thời điểm phát refresh token gần nhất của từng user — dùng làm mốc "lần
+     * cuối còn ở web".
+     *
+     * <p>Chính xác hơn {@code users.last_login_at}: refresh token sống 30 ngày
+     * nên người dùng vào web hằng ngày mà không phải đăng nhập lại, và cột
+     * last_login_at đứng im. Mỗi lần app làm mới access token (15 phút một lần
+     * khi đang mở) sẽ sinh một bản ghi mới ở đây.
+     *
+     * <p>Nhận danh sách userId để trang admin chỉ tốn MỘT truy vấn cho cả trang,
+     * thay vì một truy vấn mỗi dòng.
+     */
+    @Query("""
+            SELECT t.userId, MAX(t.createdAt)
+            FROM RefreshToken t
+            WHERE t.userId IN :userIds
+            GROUP BY t.userId
+            """)
+    List<Object[]> findLastActivityByUserIds(@Param("userIds") List<String> userIds);
 }

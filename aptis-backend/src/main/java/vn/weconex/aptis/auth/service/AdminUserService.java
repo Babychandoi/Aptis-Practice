@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vn.weconex.aptis.auth.domain.Role;
 import vn.weconex.aptis.auth.domain.User;
 import vn.weconex.aptis.auth.domain.UserProfile;
+import vn.weconex.aptis.auth.repository.RefreshTokenRepository;
 import vn.weconex.aptis.auth.repository.RoleRepository;
 import vn.weconex.aptis.auth.repository.UserProfileRepository;
 import vn.weconex.aptis.auth.repository.UserRepository;
@@ -38,6 +39,7 @@ public class AdminUserService {
     private final UserProfileRepository profileRepository;
     private final RoleRepository roleRepository;
     private final UserEntitlementRepository entitlementRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final AuditService auditService;
     private final AptisProperties properties;
 
@@ -46,7 +48,7 @@ public class AdminUserService {
             String query, UserStatus status, Pageable pageable) {
 
         String term = query == null ? "" : query.trim().toLowerCase(Locale.ROOT);
-        return userRepository.findAll((root, ignored, cb) -> {
+        Page<User> page = userRepository.findAll((root, ignored, cb) -> {
             Predicate predicate = cb.conjunction();
             if (!term.isEmpty()) {
                 String like = "%" + term + "%";
@@ -58,7 +60,31 @@ public class AdminUserService {
                 predicate = cb.and(predicate, cb.equal(root.get("status"), status));
             }
             return predicate;
-        }, pageable).map(this::toResponse);
+        }, pageable);
+
+        // Một truy vấn cho cả trang thay vì một truy vấn mỗi dòng: 20 dòng x 1
+        // query là 20 lần round-trip DB chỉ để lấy một cột thời gian.
+        Map<String, Instant> lastActivity = loadLastActivity(
+                page.getContent().stream().map(User::getId).toList());
+
+        return page.map(user -> toResponse(user, lastActivity.get(user.getId())));
+    }
+
+    /** Cho một user lẻ (sau khi đổi trạng thái/vai trò). */
+    private Instant lastActivityOf(String userId) {
+        return loadLastActivity(List.of(userId)).get(userId);
+    }
+
+    /** Rỗng thì bỏ qua truy vấn: {@code IN ()} là cú pháp không hợp lệ. */
+    private Map<String, Instant> loadLastActivity(List<String> userIds) {
+        if (userIds.isEmpty()) {
+            return Map.of();
+        }
+        Map<String, Instant> result = new java.util.HashMap<>();
+        for (Object[] row : refreshTokenRepository.findLastActivityByUserIds(userIds)) {
+            result.put((String) row[0], (Instant) row[1]);
+        }
+        return result;
     }
 
     @Transactional(readOnly = true)
@@ -92,7 +118,7 @@ public class AdminUserService {
         userRepository.save(user);
         auditService.record(actorId, "USER_STATUS_UPDATE", "USER", userId,
                 Map.of("status", before.name()), Map.of("status", status.name()));
-        return toResponse(user);
+        return toResponse(user, lastActivityOf(user.getId()));
     }
 
     @Transactional
@@ -117,7 +143,7 @@ public class AdminUserService {
         userRepository.save(user);
         auditService.record(actorId, "USER_ROLES_UPDATE", "USER", userId,
                 Map.of("roles", before), Map.of("roles", codes));
-        return toResponse(user);
+        return toResponse(user, lastActivityOf(user.getId()));
     }
 
     private User requireUser(String userId) {
@@ -125,7 +151,7 @@ public class AdminUserService {
                 .orElseThrow(() -> ApiException.notFound("User", userId));
     }
 
-    private AdminUserDtos.AdminUserResponse toResponse(User user) {
+    private AdminUserDtos.AdminUserResponse toResponse(User user, Instant lastActivityAt) {
         UserProfile profile = profileRepository.findById(user.getId()).orElse(null);
         var entitlements = entitlementRepository.findAllActive(user.getId(), Instant.now());
 
@@ -149,6 +175,7 @@ public class AdminUserService {
                 profile == null ? null : profile.getFullName(),
                 profile == null ? null : profile.getDisplayName(),
                 user.getRoles().stream().map(Role::getCode).sorted().toList(),
-                premiumActive, premiumEndsAt, user.getCreatedAt(), user.getLastLoginAt());
+                premiumActive, premiumEndsAt, user.getCreatedAt(), user.getLastLoginAt(),
+                lastActivityAt);
     }
 }
