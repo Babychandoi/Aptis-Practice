@@ -383,6 +383,8 @@ export interface AttemptSummary {
 export interface CreatePartAttemptRequest {
   partId: string;
   questionSetCount?: number;
+  /** Chỉ định đúng bộ cần làm, bỏ qua selector của backend. */
+  questionSetIds?: string[];
   onlyIncorrect?: boolean;
   onlyNew?: boolean;
   timed?: boolean;

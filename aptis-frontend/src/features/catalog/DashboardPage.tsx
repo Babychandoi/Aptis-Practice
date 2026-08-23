@@ -11,6 +11,7 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { componentDisplayName, componentPath } from '@/features/catalog/catalogRoutes';
 import { formatPercent } from '@/lib/format';
+import { ContentUpdateCard } from '@/features/learning/ContentUpdateCard';
 
 const COMPONENT_ICONS: Record<string, IconName> = {
   GRAMMAR_VOCABULARY: 'grammar',
@@ -203,6 +204,9 @@ export function DashboardPage() {
           Làm đề thi thử đầy đủ →
         </Link>
       </div>
+
+      {/* Đề mới cập nhật; tự ẩn nếu chưa Premium hoặc chưa có đợt nào */}
+      <ContentUpdateCard />
 
       {/* Hero Banner: Tiếp tục ở đâu bạn dừng */}
       <div className="rounded-2xl bg-dark p-6 text-white shadow-md md:p-8">

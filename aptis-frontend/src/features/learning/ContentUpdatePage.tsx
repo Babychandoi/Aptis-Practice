@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { ApiError } from '@/api/client';
-import { contentUpdateApi } from '@/api/endpoints';
+import { contentUpdateApi, practiceApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { PremiumGate } from '@/components/ui/PremiumGate';
@@ -12,8 +13,31 @@ import { formatDate } from '@/lib/format';
  *
  * <p>Backend là nơi chặn Premium (trả 403), trang này chỉ hiển thị lại — không
  * tự quyết định quyền, để một chỗ duy nhất giữ luật.
+ *
+ * <p>Bấm để làm sẽ tạo lượt với ĐÚNG những đề của đợt đó (truyền
+ * questionSetIds), không dẫn sang trang Part — ở đó backend tự chọn từ cả ngân
+ * hàng nên học viên phải làm lại cả đề cũ.
  */
 export function ContentUpdatePage() {
+  const navigate = useNavigate();
+  const [startError, setStartError] = useState<string | null>(null);
+
+  const startAttempt = useMutation({
+    mutationFn: (input: { partId: string; questionSetIds: string[] }) =>
+      practiceApi.createPartAttempt(input),
+    onSuccess: (attempt) => navigate(`/attempts/${attempt.id}`),
+    onError: (error) =>
+      setStartError(
+        error instanceof ApiError ? error.message : 'Không mở được đề, thử lại sau',
+      ),
+  });
+
+  const start = (partId: string | null, questionSetIds: string[]) => {
+    if (!partId || questionSetIds.length === 0) return;
+    setStartError(null);
+    startAttempt.mutate({ partId, questionSetIds });
+  };
+
   const query = useQuery({
     queryKey: ['content-updates'],
     queryFn: contentUpdateApi.list,
@@ -64,6 +88,10 @@ export function ContentUpdatePage() {
         </p>
       </header>
 
+      {startError && (
+        <p role="alert" className="card text-sm text-red-700">{startError}</p>
+      )}
+
       {logs.length === 0 && (
         <p className="card text-center text-sm text-slate-500">
           Chưa có đợt cập nhật nào.
@@ -91,17 +119,36 @@ export function ContentUpdatePage() {
 
             {log.questionSets.length > 0 && (
               <div className="mt-4">
-                <p className="mb-2 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-                  {log.questionSets.length} đề mới
-                </p>
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                    {log.questionSets.length} đề mới
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      start(
+                        log.partId,
+                        log.questionSets.map((set) => set.questionSetId),
+                      )
+                    }
+                    disabled={startAttempt.isPending || !log.partId}
+                    className="btn-primary min-h-[36px] px-3.5 text-xs disabled:opacity-60"
+                  >
+                    {startAttempt.isPending
+                      ? 'Đang mở…'
+                      : `Làm cả ${log.questionSets.length} đề →`}
+                  </button>
+                </div>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {log.questionSets.map((set) => (
-                    // Vào thẳng trang Part rồi chọn đề: tạo lượt làm bài cần
-                    // partId + luồng riêng, nên không link trực tiếp tới đề.
-                    <Link
+                    // Mỗi đề mở được riêng: truyền đúng một questionSetId nên
+                    // lượt làm bài chỉ có đề này, không kèm đề cũ của Part.
+                    <button
                       key={set.questionSetId}
-                      to={log.partId ? `/parts/${log.partId}` : '/luyen-tap'}
-                      className="flex items-center justify-between gap-2 rounded-lg border border-border bg-surface-paper px-3.5 py-2.5 transition-colors hover:border-brand-400 hover:bg-brand-50"
+                      type="button"
+                      onClick={() => start(log.partId, [set.questionSetId])}
+                      disabled={startAttempt.isPending || !log.partId}
+                      className="flex items-center justify-between gap-2 rounded-lg border border-border bg-surface-paper px-3.5 py-2.5 text-left transition-colors hover:border-brand-400 hover:bg-brand-50 disabled:opacity-60"
                     >
                       <span className="min-w-0">
                         <span className="block truncate text-xs font-semibold text-slate-900">
@@ -112,7 +159,7 @@ export function ContentUpdatePage() {
                         </span>
                       </span>
                       <span aria-hidden className="shrink-0 text-brand-700">→</span>
-                    </Link>
+                    </button>
                   ))}
                 </div>
               </div>

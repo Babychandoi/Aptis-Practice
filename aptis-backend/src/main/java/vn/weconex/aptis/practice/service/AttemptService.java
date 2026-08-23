@@ -109,9 +109,20 @@ public class AttemptService {
                 .orElseGet(() -> (int) questionSetRepository.countByPartIdAndStatus(
                         request.partId(), ContentStatus.PUBLISHED));
 
-        List<QuestionSet> selected = questionSetSelector.selectForPart(
-                userId, request.partId(), size, hasPremium,
-                request.onlyNew(), request.onlyIncorrect());
+        List<QuestionSet> selected;
+        if (request.questionSetIds() != null && !request.questionSetIds().isEmpty()) {
+            // Client chỉ định đúng bộ cần làm (ví dụ mấy đề vừa cập nhật). Lọc
+            // lại theo partId và trạng thái PUBLISHED: id do client gửi nên
+            // không tin được là còn dùng hay thuộc đúng Part.
+            selected = questionSetRepository.findAllById(request.questionSetIds()).stream()
+                    .filter(QuestionSet::isPublished)
+                    .filter(qs -> request.partId().equals(qs.getPart().getId()))
+                    .toList();
+        } else {
+            selected = questionSetSelector.selectForPart(
+                    userId, request.partId(), size, hasPremium,
+                    request.onlyNew(), request.onlyIncorrect());
+        }
 
         if (selected.isEmpty()) {
             throw new ApiException(

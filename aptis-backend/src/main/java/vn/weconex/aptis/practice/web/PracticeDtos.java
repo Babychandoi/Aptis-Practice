@@ -27,6 +27,17 @@ public final class PracticeDtos {
     public record CreatePartAttemptRequest(
             @NotBlank String partId,
             @Min(1) @Max(300) Integer questionSetCount,
+            /**
+             * Chỉ định đúng những bộ cần làm, bỏ qua selector.
+             *
+             * <p>Dùng cho luồng "làm đề vừa cập nhật": học viên bấm vào một đợt
+             * cập nhật thì chỉ muốn làm mấy đề mới đó, không phải cả ngân hàng
+             * Part. Rỗng/null = giữ hành vi cũ, để backend tự chọn.
+             *
+             * <p>Quyền vẫn kiểm từng bộ như thường: truyền id không có quyền thì
+             * bộ đó bị loại.
+             */
+            List<String> questionSetIds,
             /** true = chỉ lấy bộ câu hỏi đã làm sai */
             boolean onlyIncorrect,
             /** true = chỉ lấy bộ chưa làm */
