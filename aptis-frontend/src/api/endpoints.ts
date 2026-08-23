@@ -4,6 +4,7 @@ import type {
   AttemptSummary,
   AssetResponse,
   AuthConfigResponse,
+  ContentUpdateLog,
   BankTransferInstruction,
   ComponentSummary,
   CreateCustomAttemptRequest,
@@ -294,4 +295,13 @@ export const studyTipsApi = {
   /** Chuỗi tiêu đề đáp án Reading Part 4, theo thứ tự đoạn văn. */
   readingPart4: () =>
     api.get<HeadingChain[]>('/study-tips/reading-part-4').then((r) => r.data),
+};
+
+// ---------------------------------------------------------------------
+// Nhật ký cập nhật nội dung
+// ---------------------------------------------------------------------
+
+export const contentUpdateApi = {
+  /** Timeline các đợt cập nhật đề. Chỉ Premium gọi được (backend trả 403). */
+  list: () => api.get<ContentUpdateLog[]>('/content-updates').then((r) => r.data),
 };

@@ -1,0 +1,1223 @@
+{
+  "tabs": {
+    "writing": {
+      "badgeCount": 30,
+      "renderedTopicCount": 30,
+      "difference": 0,
+      "groupCounts": {
+        "Ưu tiên cao": 25,
+        "Ưu tiên vừa": 5
+      },
+      "topics": [
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Nature",
+          "status": null,
+          "href": "/writing?predictionTopic=nature"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Debate",
+          "status": null,
+          "href": "/writing?predictionTopic=debate"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Music",
+          "status": null,
+          "href": "/writing?predictionTopic=music"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Cooking",
+          "status": null,
+          "href": "/writing?predictionTopic=cooking"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Technology",
+          "status": null,
+          "href": "/writing?predictionTopic=technology"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Photography",
+          "status": null,
+          "href": "/writing?predictionTopic=photography"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Business",
+          "status": null,
+          "href": "/writing?predictionTopic=business"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Home Living",
+          "status": null,
+          "href": "/writing?predictionTopic=home-living"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Book",
+          "status": null,
+          "href": "/writing?predictionTopic=book"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Fitness",
+          "status": null,
+          "href": "/writing?predictionTopic=fitness"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Museum",
+          "status": null,
+          "href": "/writing?predictionTopic=museum"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Science",
+          "status": null,
+          "href": "/writing?predictionTopic=science"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Film",
+          "status": null,
+          "href": "/writing?predictionTopic=film"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Car",
+          "status": null,
+          "href": "/writing?predictionTopic=car"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Computer",
+          "status": null,
+          "href": "/writing?predictionTopic=computer"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Gardening",
+          "status": null,
+          "href": "/writing?predictionTopic=gardening"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Art",
+          "status": null,
+          "href": "/writing?predictionTopic=art"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Sports",
+          "status": null,
+          "href": "/writing?predictionTopic=sports"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Social",
+          "status": null,
+          "href": "/writing?predictionTopic=social"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Language",
+          "status": null,
+          "href": "/writing?predictionTopic=language"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Travel",
+          "status": null,
+          "href": "/writing?predictionTopic=travel"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Reading",
+          "status": null,
+          "href": "/writing?predictionTopic=reading"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Walking",
+          "status": null,
+          "href": "/writing?predictionTopic=walking"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Beautiful Home",
+          "status": null,
+          "href": "/writing?predictionTopic=beautiful-home"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên cao",
+          "topic": "Food",
+          "status": null,
+          "href": "/writing?predictionTopic=food"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên vừa",
+          "topic": "Television",
+          "status": null,
+          "href": "/writing?predictionTopic=television"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên vừa",
+          "topic": "English",
+          "status": null,
+          "href": "/writing?predictionTopic=english"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên vừa",
+          "topic": "Home Living",
+          "status": null,
+          "href": "/writing?predictionTopic=home-living"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên vừa",
+          "topic": "Community",
+          "status": null,
+          "href": "/writing?predictionTopic=community"
+        },
+        {
+          "skill": "writing",
+          "group": "Ưu tiên vừa",
+          "topic": "Fashion",
+          "status": null,
+          "href": "/writing?predictionTopic=fashion"
+        }
+      ]
+    },
+    "listening": {
+      "badgeCount": 51,
+      "renderedTopicCount": 48,
+      "difference": 3,
+      "groupCounts": {
+        "Q14": 12,
+        "Q15": 15,
+        "Q16-17": 21
+      },
+      "topics": [
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Reading books",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=reading-books"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "New museum in town/Visit museum",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=new-museum-in-town-visit-museum"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Running",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=running"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Place to run",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=place-to-run"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Doing exercises",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=doing-exercises"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Listen to music",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=listen-to-music"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Outdoor activities",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=outdoor-activities"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Protect the environment",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=protect-the-environment"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Studying",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=studying"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Online shopping",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=online-shopping"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Their journey to work",
+          "status": "hot",
+          "href": "/listening/practice/part/2?topic=their-journey-to-work"
+        },
+        {
+          "skill": "listening",
+          "group": "Q14",
+          "topic": "Travel to work",
+          "status": "backup",
+          "href": "/listening/practice/part/2?topic=travel-to-work"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Workplace",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=workplace"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "University and Technology",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=university-and-technology"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Homeschooling",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=homeschooling"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Children and Teenagers with Technology",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=children-and-teenagers-with-technology"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "The art",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=the-art"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Politics",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=politics"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Beauty",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=beauty"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Cultural differences",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=cultural-differences"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Urban farming",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=urban-farming"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "The Internet",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=the-internet"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Community design",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=community-design"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Singers and music",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=singers-and-music"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Information Technology",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=information-technology"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Actors",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=actors"
+        },
+        {
+          "skill": "listening",
+          "group": "Q15",
+          "topic": "Changes in the workplace",
+          "status": "backup",
+          "href": "/listening/practice/part/3?topic=changes-in-the-workplace"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Importance of sleep",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=importance-of-sleep"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Script Production",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=script-production"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Security Camera",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=security-camera"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Work from home",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=work-from-home"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Making plans",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=making-plans"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Television series",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=television-series"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "The Sport",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=the-sport"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "A book about a life of scientist",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=a-book-about-a-life-of-scientist"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Writer's block",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=writer-s-block"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Professionalism at work",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=professionalism-at-work"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Podcast",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=podcast"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "A research into happiness",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=a-research-into-happiness"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Life after university",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=life-after-university"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "A break from studying",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=a-break-from-studying"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "A new guide",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=a-new-guide"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Famous writers",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=famous-writers"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "A musician's life",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=a-musician-s-life"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Criticism of a new novel",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=criticism-of-a-new-novel"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Productivity",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=productivity"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Managing financial spending",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=managing-financial-spending"
+        },
+        {
+          "skill": "listening",
+          "group": "Q16-17",
+          "topic": "Security cameras",
+          "status": "backup",
+          "href": "/listening/practice/part/4?topic=security-cameras"
+        }
+      ]
+    },
+    "speaking": {
+      "badgeCount": 92,
+      "renderedTopicCount": 91,
+      "difference": 1,
+      "groupCounts": {
+        "Part 1": 13,
+        "Part 2": 5,
+        "Part 3": 37,
+        "Part 4": 36
+      },
+      "topics": [
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Ưu tiên:",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=uu-tien"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Nơi bạn sống",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=noi-ban-song"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Thành phố nổi tiếng ở nước bạn",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=thanh-pho-noi-tieng-o-nuoc-ban"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Phòng của bạn",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=phong-cua-ban"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Thành viên trong gia đình",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=thanh-vien-trong-gia-dinh"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Your friend",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=your-friend"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Sinh nhật của bạn",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=sinh-nhat-cua-ban"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Làm gì khi ở với gia đình",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=lam-gi-khi-o-voi-gia-dinh"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Thích làm gì khi rả",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=thich-lam-gi-khi-ra"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Backup:",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=backup"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Bộ phim yêu thích / Lần cuối xem phim",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=bo-phim-yeu-thich-lan-cuoi-xem-phim"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Địa điểm nổi tiếng",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=dia-diem-noi-tieng"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 1",
+          "topic": "Trường học đầu tiên",
+          "status": "hot",
+          "href": "/speaking/practice/part/1?topic=truong-hoc-dau-tien"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 2",
+          "topic": "Backup: Xếp hàng",
+          "status": "hot",
+          "href": "/speaking/practice/part/2?topic=backup-xep-hang"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 2",
+          "topic": "Mua sắm / mua quần áo",
+          "status": "hot",
+          "href": "/speaking/practice/part/2?topic=mua-sam-mua-quan-ao"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 2",
+          "topic": "Trên đường / xe bus",
+          "status": "hot",
+          "href": "/speaking/practice/part/2?topic=tren-duong-xe-bus"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 2",
+          "topic": "Gia đình sinh hoạt cùng nhau (ăn uống, nấu ăn, xem TV)",
+          "status": "hot",
+          "href": "/speaking/practice/part/2?topic=gia-dinh-sinh-hoat-cung-nhau-an-uong-nau-an-xem-tv"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 2",
+          "topic": "Đứa trẻ nằm trong lòng người mẹ",
+          "status": "hot",
+          "href": "/speaking/practice/part/2?topic=dua-tre-nam-trong-long-nguoi-me"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Đọc sách vs chơi game",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=doc-sach-vs-choi-game"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Chơi game trên điện thoại vs chơi cờ vua",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=choi-game-tren-dien-thoai-vs-choi-co-vua"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Chơi trong nhà vs ngoài trời",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=choi-trong-nha-vs-ngoai-troi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Học trong thư viện vs học ở quán cafe",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=hoc-trong-thu-vien-vs-hoc-o-quan-cafe"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Học online vs học trên lớp",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=hoc-online-vs-hoc-tren-lop"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Làm việc một mình vs làm việc nhóm",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=lam-viec-mot-minh-vs-lam-viec-nhom"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Làm việc trên laptop",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=lam-viec-tren-laptop"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Làm việc ở nhà vs văn phòng",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=lam-viec-o-nha-vs-van-phong"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Làm việc trong phòng vs ngoài trời",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=lam-viec-trong-phong-vs-ngoai-troi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Viết bài trên vở vs trên iPad",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=viet-bai-tren-vo-vs-tren-ipad"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Indoor vs outdoor sport",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=indoor-vs-outdoor-sport"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Hai môn thể thao với nhau",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=hai-mon-the-thao-voi-nhau"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Hoạt động ngoài trời/ trong nhà...",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=hoat-dong-ngoai-troi-trong-nha"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Healthy food vs fast food",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=healthy-food-vs-fast-food"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Tự nấu ăn vs ăn ngoài",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=tu-nau-an-vs-an-ngoai"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Chợ local vs siêu thị",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=cho-local-vs-sieu-thi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Ăn trong nhà hàng vs xe bán đồ di động vs ở nhà vs sân vườn vs ăn ở biển...vs ăn 1 mình/ ăn cùng gia đình",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=an-trong-nha-hang-vs-xe-ban-do-di-dong-vs-o-nha-vs-san-vuon-vs-an-o-bien-vs-an-1-minh-an-cung-gia-dinh"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Bảo tàng vs thư viện",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=bao-tang-vs-thu-vien"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Bảo tàng vs chơi ngoài trời",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=bao-tang-vs-choi-ngoai-troi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Chụp bằng điện thoại vs máy ảnh",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=chup-bang-dien-thoai-vs-may-anh"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Chụp với bạn vs chụp một mình",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=chup-voi-ban-vs-chup-mot-minh"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Trồng cây",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=trong-cay"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Nhặt rác",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=nhat-rac"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Chăm người già",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=cham-nguoi-gia"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Làm vườn",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=lam-vuon"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Trồng vườn gia đình vs nghiên cứu vườn của nhà khoa học",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=trong-vuon-gia-dinh-vs-nghien-cuu-vuon-cua-nha-khoa-hoc"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Ôm các con vật (mèo, rắn...)",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=om-cac-con-vat-meo-ran"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Nuôi động vật trong nhà",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=nuoi-dong-vat-trong-nha"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Ở biển vs hồ vs núi vs thành phố vs nông thôn",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=o-bien-vs-ho-vs-nui-vs-thanh-pho-vs-nong-thon"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Du lịch bằng tàu vs máy bay vs bus",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=du-lich-bang-tau-vs-may-bay-vs-bus"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Ô tô vs máy bay vs phương tiện công cộng vs xe đạp",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=o-to-vs-may-bay-vs-phuong-tien-cong-cong-vs-xe-dap"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Nói chuyện ở quán cafe vs ngoài trời",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=noi-chuyen-o-quan-cafe-vs-ngoai-troi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Hát trên sân khấu vs nghe nhạc",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=hat-tren-san-khau-vs-nghe-nhac"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Mùa hè vs mùa đông",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=mua-he-vs-mua-dong"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Trời nắng vs trời lạnh",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=troi-nang-vs-troi-lanh"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Backup: Công nhân nhà máy vs làm việc một mình ở văn phòng",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=backup-cong-nhan-nha-may-vs-lam-viec-mot-minh-o-van-phong"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 3",
+          "topic": "Các môn thể thao với nhau",
+          "status": "hot",
+          "href": "/speaking/practice/part/3?topic=cac-mon-the-thao-voi-nhau"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần nhận tin tốt / nhận email",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-nhan-tin-tot-nhan-email"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần thành công làm việc gì đó",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-thanh-cong-lam-viec-gi-do"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần nhận một thông tin thú vị",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-nhan-mot-thong-tin-thu-vi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần kể về cách bạn dùng Internet",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-ke-ve-cach-ban-dung-internet"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần sử dụng công nghệ / Internet",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-su-dung-cong-nghe-internet"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần có một cuộc hội thoại thú vị",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-co-mot-cuoc-hoi-thoai-thu-vi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần đặt câu hỏi cho ai đó",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-dat-cau-hoi-cho-ai-do"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần hợp tác với người khác",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-hop-tac-voi-nguoi-khac"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Teamwork / làm việc nhóm",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=teamwork-lam-viec-nhom"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần gặp người nước ngoài",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-gap-nguoi-nuoc-ngoai"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần giúp ai đó / được giúp đỡ",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-giup-ai-do-duoc-giup-do"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần đi thăm ai đó",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-di-tham-ai-do"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần ở với người bé / lớn tuổi hơn",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-o-voi-nguoi-be-lon-tuoi-hon"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần làm gì đó cần nhiều nỗ lực",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-lam-gi-do-can-nhieu-no-luc"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần gặp thách thức",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-gap-thach-thuc"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần thử một điều mới",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-thu-mot-dieu-moi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần học kỹ năng mới",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-hoc-ky-nang-moi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần học ngôn ngữ mới",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-hoc-ngon-ngu-moi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần đạt được điều mơ ước",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-dat-duoc-dieu-mo-uoc"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần cố gắng thay đổi bản thân",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-co-gang-thay-doi-ban-than"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần thay đổi thói quen",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-thay-doi-thoi-quen"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần thiếu động lực",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-thieu-dong-luc"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần làm gì đó bạn không thích",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-lam-gi-do-ban-khong-thich"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần có nhiều lựa chọn",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-co-nhieu-lua-chon"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần so sánh hai thứ với nhau",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-so-sanh-hai-thu-voi-nhau"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Presentation trước nhiều người / ít người",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=presentation-truoc-nhieu-nguoi-it-nguoi"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần tham gia sự kiện thể thao",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-tham-gia-su-kien-the-thao"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần đọc một quyển sách hay",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-doc-mot-quyen-sach-hay"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần xem tác phẩm nghệ thuật ấn tượng",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-xem-tac-pham-nghe-thuat-an-tuong"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Kể về một chuyến đi dài",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=ke-ve-mot-chuyen-di-dai"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần du lịch / khám phá thiên nhiên",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-du-lich-kham-pha-thien-nhien"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần đi đến nơi chưa từng đi",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-di-den-noi-chua-tung-di"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần làm điều gì mạo hiểm (chơi thể thao...)",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-lam-dieu-gi-mao-hiem-choi-the-thao"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần mặc trang phục trang trọng",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-mac-trang-phuc-trang-trong"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Backup: Khoảng cách thế hệ",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=backup-khoang-cach-the-he"
+        },
+        {
+          "skill": "speaking",
+          "group": "Part 4",
+          "topic": "Lần nhận feedback tích cực",
+          "status": "hot",
+          "href": "/speaking/practice/part/4?topic=lan-nhan-feedback-tich-cuc"
+        }
+      ]
+    }
+  }
+}

@@ -18,6 +18,7 @@ const ResetPasswordPage = lazy(() => import('@/features/auth/ResetPasswordPage')
 const ProfilePage = lazy(() => import('@/features/auth/ProfilePage').then((m) => ({ default: m.ProfilePage })));
 const DashboardPage = lazy(() => import('@/features/catalog/DashboardPage').then((m) => ({ default: m.DashboardPage })));
 const SkillListPage = lazy(() => import('@/features/catalog/SkillListPage').then((m) => ({ default: m.SkillListPage })));
+const ContentUpdatePage = lazy(() => import('@/features/learning/ContentUpdatePage').then((m) => ({ default: m.ContentUpdatePage })));
 const ComponentPage = lazy(() => import('@/features/catalog/ComponentPage').then((m) => ({ default: m.ComponentPage })));
 const ComponentPartsPage = lazy(() => import('@/features/catalog/ComponentPartsPage').then((m) => ({ default: m.ComponentPartsPage })));
 const ComponentTestsPage = lazy(() => import('@/features/catalog/ComponentTestsPage').then((m) => ({ default: m.ComponentTestsPage })));
@@ -95,6 +96,9 @@ export function App() {
         {/* Mục lục kỹ năng cho thanh nav mobile; phải đứng trước route
             :componentSlug để "/luyen-tap" không bị hiểu là một slug. */}
         <Route path="/luyen-tap" element={<SkillListPage />} />
+        {/* Trang tự xử lý 403 để hiện PremiumGate kèm ngữ cảnh, nên không bọc
+            PremiumRoute — bọc thêm sẽ chặn trước khi gọi API và mất mô tả. */}
+        <Route path="/cap-nhat-de" element={<ContentUpdatePage />} />
         <Route path="/luyen-tap/:componentSlug" element={<ComponentPage />} />
         <Route path="/luyen-tap/:componentSlug/theo-part" element={<ComponentPartsPage />} />
         <Route path="/luyen-tap/:componentSlug/bai-test" element={<ComponentTestsPage />} />

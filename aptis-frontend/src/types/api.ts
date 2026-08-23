@@ -627,3 +627,24 @@ export interface SpeakerCode {
   examYear: number | null;
   hotness: number | null;
 }
+
+// ---------------------------------------------------------------------
+// Nhật ký cập nhật nội dung
+// ---------------------------------------------------------------------
+
+export interface ContentUpdateQuestionSet {
+  questionSetId: string;
+  code: string;
+  title: string;
+  itemCount: number;
+}
+
+export interface ContentUpdateLog {
+  id: string;
+  logDate: string;
+  label: string;
+  description: string;
+  /** null = cập nhật chung, không gắn đề nào để làm. */
+  partId: string | null;
+  questionSets: ContentUpdateQuestionSet[];
+}
