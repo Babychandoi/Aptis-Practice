@@ -225,7 +225,11 @@ public class AuthService {
         profile.setFullName(google.name());
         profileRepository.save(profile);
 
-        Role student = roleRepository.findByCode(Role.STUDENT)
+        // Nạp kèm permissions: khác luồng đăng ký thường (chỉ gửi mail xác
+        // thực), ở đây phát JWT ngay trong cùng request. Để lazy thì lúc
+        // issueTokenPairInternal duyệt role.getPermissions() session đã đóng và
+        // nổ LazyInitializationException.
+        Role student = roleRepository.findByCodeWithPermissions(Role.STUDENT)
                 .orElseThrow(() -> new IllegalStateException("Thiếu role STUDENT trong seed data"));
         user.getRoles().add(student);
 
