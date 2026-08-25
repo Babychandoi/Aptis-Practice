@@ -62,6 +62,38 @@ const cleanQuestion = (raw) =>
     .map((line) => line.trim())
     .find((line) => line.length > 0) ?? '';
 
+/**
+ * Bóc 3 câu hỏi từ {@code rawExpandedText} — bản text nguyên trang của nguồn.
+ *
+ * <p>Cần đến nó vì mảng {@code questions} của 2/27 đề bị lỗi khi nguồn xuất
+ * file: chỗ đáng ra là câu hỏi thì lặp lại câu 1 kèm dòng hướng dẫn, làm mất
+ * hẳn một câu (set 2 mất "How did you feel?", set 3 mất "What are the
+ * characteristics of a successful team?"). rawExpandedText giữ đủ cả ba.
+ *
+ * <p>Trả về mảng rỗng nếu không bóc được, để phía gọi quay lại dùng
+ * {@code questions}.
+ */
+function parseFromRaw(raw) {
+  let text = String(raw ?? '');
+
+  // Danh sách câu đánh số nằm SAU dòng hướng dẫn, và TRƯỚC khối nút/đáp án mẫu.
+  const start = text.search(/Trả lời cả \d+ câu hỏi trong \d+ giây/);
+  if (start >= 0) text = text.slice(start);
+  const end = text.search(/\n(?:Báo lỗi|Ghi âm|Câu trả lời mẫu)/);
+  if (end >= 0) text = text.slice(0, end);
+
+  const found = [];
+  const re = /\n\s*([123])\s*\n+([^\n]+)/g;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const index = Number(m[1]) - 1;
+    const value = m[2].trim();
+    // Giữ lần xuất hiện ĐẦU của mỗi số: phần sau trang có thể nhắc lại câu.
+    if (value && !found[index]) found[index] = value;
+  }
+  return found.filter(Boolean);
+}
+
 async function main() {
   const payload = JSON.parse(readFileSync(filePath, 'utf8'));
   const sets = payload.sets ?? [];
@@ -139,15 +171,20 @@ async function main() {
   let imported = 0;
 
   for (const set of targets) {
-    // Bỏ câu trùng: 2/27 đề trong file lặp lại một câu (set 2 có Q1 == Q2, set
-    // 3 có Q1 == Q3). Để nguyên thì học viên bị hỏi cùng một câu hai lần.
+    // Ưu tiên rawExpandedText: mảng questions của 2/27 đề bị mất một câu do
+    // nguồn xuất file lỗi. Chỉ quay lại questions khi bóc raw không ra đủ.
+    const fromRaw = parseFromRaw(set.rawExpandedText);
+    const fromArray = (set.questions ?? [])
+      .map((q) => cleanQuestion(q.question))
+      .filter(Boolean);
+    const picked = fromRaw.length >= fromArray.length ? fromRaw : fromArray;
+
+    // Vẫn lọc trùng cho chắc, dù raw đã đủ ba câu khác nhau.
     const seen = new Set();
     const questions = [];
-    for (const q of set.questions ?? []) {
-      const text = cleanQuestion(q.question);
-      if (!text) continue;
+    for (const text of picked) {
       const key = normalize(text);
-      if (seen.has(key)) continue;
+      if (!key || seen.has(key)) continue;
       seen.add(key);
       questions.push(text);
     }
