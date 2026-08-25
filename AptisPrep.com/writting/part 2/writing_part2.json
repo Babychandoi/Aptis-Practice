@@ -1,0 +1,966 @@
+{
+  "part": 2,
+  "topicCount": 38,
+  "lessonCount": 48,
+  "nonNullPartCount": 45,
+  "topics": [
+    {
+      "topic": "ART CLUB",
+      "sourceFile": "ART CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of an art club. Fill in the form. Write in sentences. Use 20-30 words.",
+            "content": [
+              "Tell me a painting or a photo that you like."
+            ],
+            "items": [
+              "Tell me a painting or a photo that you like."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "BEAUTIFUL HOMES CLUB",
+      "sourceFile": "Beautiful Homes Club.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: Why do you want to join the Beautiful Homes club?",
+            "content": [],
+            "items": []
+          }
+        }
+      ]
+    },
+    {
+      "topic": "BOOK CLUB",
+      "sourceFile": "BOOK CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You want to join a book club. Fill in the form. Write in sentences. Use 20-30 words.",
+            "content": [
+              "When and where do you usually read books?"
+            ],
+            "items": [
+              "When and where do you usually read books?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "BUSINESS CLUB",
+      "sourceFile": "Business Club.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "Why do you like business?"
+            ],
+            "items": [
+              "Why do you like business?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "CAR CLUB",
+      "sourceFile": "CAR CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: Do you usually travel by car?",
+            "content": [],
+            "items": []
+          }
+        }
+      ]
+    },
+    {
+      "topic": "CINEMA CLUB",
+      "sourceFile": "CINEMA CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a cinema club. Fill in the form. Write in sentences.",
+            "content": [
+              "When and how often do you watch films?"
+            ],
+            "items": [
+              "When and how often do you watch films?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "COLLEGE",
+      "sourceFile": "COLLEGE.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "Please tell us about the days and times you can attend courses and what you would like to study?"
+            ],
+            "items": [
+              "Please tell us about the days and times you can attend courses and what you would like to study?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "COMMUNITY CLUB",
+      "sourceFile": "COMMUNITY CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a community club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "Tell me about a famous area where you live."
+            ],
+            "items": [
+              "Tell me about a famous area where you live."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "COMPUTER CLUB",
+      "sourceFile": "COMPUTER CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a computer club. Fill in the form. Write in sentences. (20-30 words, word limit: 45)",
+            "content": [
+              "When and where do you use a computer?"
+            ],
+            "items": [
+              "When and where do you use a computer?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "DEBATE CLUB",
+      "sourceFile": "DEBATE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a debate club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "What do you usually talk about with your friends?"
+            ],
+            "items": [
+              "What do you usually talk about with your friends?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "DESIGN CLUB",
+      "sourceFile": "DESIGN CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "ENGLISH CLUB",
+      "sourceFile": "ENGLISH CLUB.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Phiên bản 1",
+          "part": {
+            "header": "Part 2. You want to join the English club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "When do you usually have to come into contact with English?"
+            ],
+            "items": [
+              "When do you usually have to come into contact with English?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Phiên bản 2:",
+          "part": {
+            "header": "Part 2. You want to join the English club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "When do you usually have to come into contact with English?"
+            ],
+            "items": [
+              "When do you usually have to come into contact with English?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Exercise Club",
+      "sourceFile": "EXERCISE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "FASHION CLUB",
+      "sourceFile": "Fashion club.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a fashion club. Fill in the form. Write in sentences. Use 20 - 30 words.",
+            "content": [
+              "When was the last time you went shopping for clothes?"
+            ],
+            "items": [
+              "When was the last time you went shopping for clothes?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Film Club",
+      "sourceFile": "FILM CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2. You are a new member of a film club. Fill in the form. Write in sentences.",
+            "content": [
+              "Please write some of your favourite films and why do you like watching them?"
+            ],
+            "items": [
+              "Please write some of your favourite films and why do you like watching them?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Finding a house",
+      "sourceFile": "FINDING HOUSE.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "What are the details that you are looking for in your new house?"
+            ],
+            "items": [
+              "What are the details that you are looking for in your new house?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "FITNESS CLUB",
+      "sourceFile": "FITNESS CLUB_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Part 4 (base)",
+          "part": {
+            "header": "Part 2: You are a new member of a fitness club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "Tell me about a time when you had to run somewhere."
+            ],
+            "items": [
+              "Tell me about a time when you had to run somewhere."
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Part 4 (phiên bản 2):",
+          "part": {
+            "header": "Part 2: You are a new member of a fitness club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "Tell me about a time when you had to run somewhere."
+            ],
+            "items": [
+              "Tell me about a time when you had to run somewhere."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "FOOD CLUB (COOKING CLUB)",
+      "sourceFile": "FOOD CLUB (COOKING CLUB)_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "PHIÊN BẢN 1:",
+          "part": {
+            "header": "Part 2. You are a new member of the Food club. Fill in the form. Write in sentences. Use 20–30 words.",
+            "content": [
+              "When and where do you usually have meals?"
+            ],
+            "items": [
+              "When and where do you usually have meals?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "PHIÊN BẢN 2:",
+          "part": {
+            "header": "Part 2: You are a new member of a cooking club. Fill in the form. Write in sentences.",
+            "content": [
+              "What do you usually eat for breakfast, and when do you eat it?"
+            ],
+            "items": [
+              "What do you usually eat for breakfast, and when do you eat it?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "GARDEN CLUB",
+      "sourceFile": "GARDEN CLUB.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Phiên bản 1:",
+          "part": {
+            "header": "Part 2: You are a new member of a garden club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "Why did you join the club?"
+            ],
+            "items": [
+              "Why did you join the club?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Phiên bản 2:",
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "Tell me about the garden or park near your home."
+            ],
+            "items": [
+              "Tell me about the garden or park near your home."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "HEALTH CLUB",
+      "sourceFile": "HEALTH CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a health club. Fill in the form. Write in sentences.",
+            "content": [
+              "Tell me the classes you want to take and what times and days are suitable for you."
+            ],
+            "items": [
+              "Tell me the classes you want to take and what times and days are suitable for you."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Home living Club",
+      "sourceFile": "HOME LIVING CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "Describe where you live."
+            ],
+            "items": [
+              "Describe where you live."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "LANGUAGE CLUB",
+      "sourceFile": "LANGUAGE CLUB (2 phi#U00ean b#U1ea3n).docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "PHIÊN BẢN 1:",
+          "part": {
+            "header": "Part 2: You are a new member of a language club. Fill in the form. Write in sentences.",
+            "content": [
+              "Tell me your free time and interests?"
+            ],
+            "items": [
+              "Tell me your free time and interests?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "PHIÊN BẢN 2:",
+          "part": {
+            "header": "Part 2: You are a new member of a language club. Fill in the form. Write in sentences.",
+            "content": [
+              "In which cases do you often use foreign languages?"
+            ],
+            "items": [
+              "In which cases do you often use foreign languages?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "LITERATURE CLUB",
+      "sourceFile": "LITERATURE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "MOVIE CLUB",
+      "sourceFile": "MOVIE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a movie club. Fill in the form. Write in sentences. Use",
+            "content": [
+              "20 - 30 words."
+            ],
+            "items": [
+              "20 - 30 words."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "MUSEUM CLUB",
+      "sourceFile": "MUSEUM CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a museum club. Write in sentences.",
+            "content": [
+              "Tell me the last time you went to a museum."
+            ],
+            "items": [
+              "Tell me the last time you went to a museum."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "MUSIC CLUB",
+      "sourceFile": "MUSIC CLUB.docx",
+      "lessonCount": 3,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "PHIÊN BẢN 1:",
+          "part": {
+            "header": "Part 2: You are a new member of a music club. Write in sentences.",
+            "content": [
+              "What do you usually do when you listen to music?"
+            ],
+            "items": [
+              "What do you usually do when you listen to music?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "PHIÊN BẢN 2:",
+          "part": {
+            "header": "Part 2: You are a new member of a music club. Fill in the form. Write in sentences.",
+            "content": [
+              "Please tell me the last time you listened to music!"
+            ],
+            "items": [
+              "Please tell me the last time you listened to music!"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 3,
+          "lessonLabel": "Bài 3",
+          "sourceVersion": 3,
+          "sourceVersionLabel": "PHIÊN BẢN 3:",
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "When and where do you usually listen to music?"
+            ],
+            "items": [
+              "When and where do you usually listen to music?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "NATURE CLUB",
+      "sourceFile": "NATURE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a nature club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "Please tell me about your free time and hobbies."
+            ],
+            "items": [
+              "Please tell me about your free time and hobbies."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "OUTDOOR CLUB",
+      "sourceFile": "OUTDOOR CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of an outdoor club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "Which outdoor activities do you like? Why?"
+            ],
+            "items": [
+              "Which outdoor activities do you like? Why?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "PHOTOGRAPHY CLUB",
+      "sourceFile": "PHOTOGRAPHY CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a photography club. Fill in the form. Write in sentences.",
+            "content": [
+              "When and where do you like taking photographs?"
+            ],
+            "items": [
+              "When and where do you like taking photographs?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "READING CLUB",
+      "sourceFile": "READING-CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "When was the last time you read a book and how was the book?"
+            ],
+            "items": [
+              "When was the last time you read a book and how was the book?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "SCIENCE CLUB",
+      "sourceFile": "SCIENCE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Task 2: You want to join the science club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "When and where do you usually read science books?"
+            ],
+            "items": [
+              "When and where do you usually read science books?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Writing Social Club",
+      "sourceFile": "SOCIAL CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a social club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "Tell me about your best friend."
+            ],
+            "items": [
+              "Tell me about your best friend."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "SPORTS CLUB",
+      "sourceFile": "SPORTS CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of the sports club. Fill in the form. Write in sentences.",
+            "content": [
+              "Why did you decide to join the club?"
+            ],
+            "items": [
+              "Why did you decide to join the club?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "TECHNOLOGY CLUB",
+      "sourceFile": "TECHNOLOGY CLUB.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "VERSION 1:",
+          "part": {
+            "header": "Part 2: : You are a new member of a technology club. Fill in the form. Write in sentences.",
+            "content": [
+              "What do you usually use your laptop for?"
+            ],
+            "items": [
+              "What do you usually use your laptop for?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "VERSION 2:",
+          "part": {
+            "header": "Part 2: : You are a new member of a technology club. Fill in the form. Write in sentences.",
+            "content": [
+              "What do you usually use your laptop for?"
+            ],
+            "items": [
+              "What do you usually use your laptop for?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "TELEVISION CLUB",
+      "sourceFile": "TELEVISION CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a television club. Fill in the form. Write in sentences. Use 20 – 30 words.",
+            "content": [
+              "When do you watch TV?"
+            ],
+            "items": [
+              "When do you watch TV?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "TRAVEL CLUB",
+      "sourceFile": "TRAVEL CLUB_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Part 4 (base)",
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "Why are you interested in travel?",
+              "Tell me a place you often visit?"
+            ],
+            "items": [
+              "Why are you interested in travel?",
+              "Tell me a place you often visit?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Part 4 (phiên bản 2):",
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "Why are you interested in travel?",
+              "Tell me a place you often visit?"
+            ],
+            "items": [
+              "Why are you interested in travel?",
+              "Tell me a place you often visit?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "WALKING CLUB",
+      "sourceFile": "WALKING CLUB_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "(PHIÊN BẢN 1)",
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "The last time you went for a walk?"
+            ],
+            "items": [
+              "The last time you went for a walk?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "(PHIÊN BẢN 2)",
+          "part": {
+            "header": "Part 2:",
+            "content": [
+              "The last time you went for a walk?"
+            ],
+            "items": [
+              "The last time you went for a walk?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Writing Club",
+      "sourceFile": "WRITING CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 2: You are a new member of a writing club. Fill in the form. Write in sentences.",
+            "content": [
+              "Tell me about the last time you wrote something."
+            ],
+            "items": [
+              "Tell me about the last time you wrote something."
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

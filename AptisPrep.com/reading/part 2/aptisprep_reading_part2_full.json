@@ -1,0 +1,3371 @@
+{
+  "source": "https://www.aptisprep.com/reading/practice/part/2-3",
+  "skill": "reading",
+  "pagePart": "2-3",
+  "type": "REORDER",
+  "expectedTopics": 61,
+  "extractedTopics": 61,
+  "totalVariants": 71,
+  "totalOrderedSentences": 354,
+  "partBreakdown": {
+    "part2": 37,
+    "part3": 34
+  },
+  "tips": [
+    "Tìm câu chủ đề/mở bài, thường là câu định hướng cả đoạn.",
+    "Dựa vào dấu hiệu liên kết: firstly, however, therefore, in conclusion...",
+    "Gắn các cặp tham chiếu (he/this/these) với danh từ trước đó để xếp đúng thứ tự.",
+    "Để ý thì quá khứ và hiện tại, thông thường đề bài sẽ nêu khoảng thời gian trong quá khứ ở những câu đầu và so sánh với hiện tại ở những câu sau.",
+    "Phần này thường giữ nguyên thứ tự đoạn văn, nhưng vẫn nên nắm mạch liên kết để tránh nhầm giữa các phiên bản."
+  ],
+  "topics": [
+    {
+      "number": 1,
+      "title": "The Famous Singer",
+      "availableVersions": [
+        4,
+        3,
+        2,
+        1
+      ],
+      "variantCount": 4,
+      "variants": [
+        {
+          "version": 4,
+          "versionLabel": "v4",
+          "title": "The Famous Singer (Version 4)",
+          "baseTitle": "The Famous Singer",
+          "leadText": "Jaden Nobelton is only 18 years old, and he is a famous singer.",
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Many people follow him on social media, and he has become a famous singer.",
+            "The uniqueness in his way of dressing and his songs makes him attract attention.",
+            "During his studies, he studied creativity and singing on stage.",
+            "Before becoming famous at his age, he studied art and music in high school.",
+            "In these performances, he often wears bright clothes and paints his face."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Before becoming famous at his age, he studied art and music in high school."
+            },
+            {
+              "position": 2,
+              "sentence": "During his studies, he studied creativity and singing on stage."
+            },
+            {
+              "position": 3,
+              "sentence": "In these performances, he often wears bright clothes and paints his face."
+            },
+            {
+              "position": 4,
+              "sentence": "The uniqueness in his way of dressing and his songs makes him attract attention."
+            },
+            {
+              "position": 5,
+              "sentence": "Many people follow him on social media, and he has become a famous singer."
+            }
+          ]
+        },
+        {
+          "version": 3,
+          "versionLabel": "v3",
+          "title": "The Famous Singer (Version 3)",
+          "baseTitle": "The Famous Singer",
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "He spent years practicing and improving his performance skills.",
+            "He is a famous singer who is loved by many people.",
+            "Because of this, more and more people began to recognize and admire him.",
+            "His unique clothing style and stage presence made him stand out.",
+            "Before becoming famous, he studied music at school when he was 15 years old."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "He is a famous singer who is loved by many people."
+            },
+            {
+              "position": 2,
+              "sentence": "Before becoming famous, he studied music at school when he was 15 years old."
+            },
+            {
+              "position": 3,
+              "sentence": "He spent years practicing and improving his performance skills."
+            },
+            {
+              "position": 4,
+              "sentence": "His unique clothing style and stage presence made him stand out."
+            },
+            {
+              "position": 5,
+              "sentence": "Because of this, more and more people began to recognize and admire him."
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "The Famous Singer (Version 2)",
+          "baseTitle": "The Famous Singer",
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Before becoming famous, he studied music at school when he was 15.",
+            "He is a famous singer.",
+            "His unique way of dressing and performing made him stand out from others.",
+            "This helped him receive many invitations for collaborations and performances.",
+            "He eventually became famous among audiences around the world."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "He is a famous singer."
+            },
+            {
+              "position": 2,
+              "sentence": "Before becoming famous, he studied music at school when he was 15."
+            },
+            {
+              "position": 3,
+              "sentence": "His unique way of dressing and performing made him stand out from others."
+            },
+            {
+              "position": 4,
+              "sentence": "This helped him receive many invitations for collaborations and performances."
+            },
+            {
+              "position": 5,
+              "sentence": "He eventually became famous among audiences around the world."
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "With his unique style and clothes, he soon attracted attention.",
+            "Before becoming famous, he had to practice very hard every day.",
+            "At the age of fifteen, he studied music at a special school.",
+            "Thanks to his talent and style, he became more and more famous and well-known.",
+            "He is a famous singer who is loved by many fans."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "He is a famous singer who is loved by many fans."
+            },
+            {
+              "position": 2,
+              "sentence": "At the age of fifteen, he studied music at a special school."
+            },
+            {
+              "position": 3,
+              "sentence": "Before becoming famous, he had to practice very hard every day."
+            },
+            {
+              "position": 4,
+              "sentence": "With his unique style and clothes, he soon attracted attention."
+            },
+            {
+              "position": 5,
+              "sentence": "Thanks to his talent and style, he became more and more famous and well-known."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Films / Movies then and now (Version 2 - khác nội dung nhưng cùng cách sắp xếp với Ver 1)",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Films / Movies then and now (Version 2 - khác nội dung nhưng cùng cách sắp xếp với Ver 1)",
+          "baseTitle": "Films / Movies then and now (Version 2 - khác nội dung nhưng cùng cách sắp xếp với Ver 1)",
+          "leadText": "The development of technology has greatly changed the movie industry over time.",
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "In addition to these technological limitations, the film producers also had a very low budget.",
+            "This is because these films were only in black and white, and they also had no sound.",
+            "This lack of money affected mostly the actors, so they didn’t earn much money.",
+            "The films in that time period were very different from the films of today.",
+            "Things have changed over time, and some of them now earn thousands of dollars after appearing in films."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The films in that time period were very different from the films of today."
+            },
+            {
+              "position": 2,
+              "sentence": "This is because these films were only in black and white, and they also had no sound."
+            },
+            {
+              "position": 3,
+              "sentence": "In addition to these technological limitations, the film producers also had a very low budget."
+            },
+            {
+              "position": 4,
+              "sentence": "This lack of money affected mostly the actors, so they didn’t earn much money."
+            },
+            {
+              "position": 5,
+              "sentence": "Things have changed over time, and some of them now earn thousands of dollars after appearing in films."
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "That's because the old movies were only in black and white, and sometimes without sound.",
+            "Due to the lack of money, actors also had few opportunities to earn money through acting.",
+            "Now things have changed, actors and filmmakers can earn millions of dollars from film production.",
+            "Not only did these technological limitations exist, but the movies were also low-budget.",
+            "Old movies were very different from today's movies."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Old movies were very different from today's movies."
+            },
+            {
+              "position": 2,
+              "sentence": "That's because the old movies were only in black and white, and sometimes without sound."
+            },
+            {
+              "position": 3,
+              "sentence": "Not only did these technological limitations exist, but the movies were also low-budget."
+            },
+            {
+              "position": 4,
+              "sentence": "Due to the lack of money, actors also had few opportunities to earn money through acting."
+            },
+            {
+              "position": 5,
+              "sentence": "Now things have changed, actors and filmmakers can earn millions of dollars from film production."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "The History of Transportation",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "The History of Transportation (Version 2)",
+          "baseTitle": "The History of Transportation",
+          "leadText": "Transportation has developed greatly over time, becoming faster and easier for people around the world.",
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "After these two means of transport, travelling becomes even easier with aeroplanes.",
+            "It is more convenient to travel to other parts of the world due to the transportation improvements.",
+            "In the past, only very rich people could afford to travel long distances.",
+            "The invention of cars and trains had changed everything and made travelling cheaper.",
+            "Because flying with them is so fast, more people now go abroad for holidays and business."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "In the past, only very rich people could afford to travel long distances."
+            },
+            {
+              "position": 2,
+              "sentence": "The invention of cars and trains had changed everything and made travelling cheaper."
+            },
+            {
+              "position": 3,
+              "sentence": "After these two means of transport, travelling becomes even easier with aeroplanes."
+            },
+            {
+              "position": 4,
+              "sentence": "Because flying with them is so fast, more people now go abroad for holidays and business."
+            },
+            {
+              "position": 5,
+              "sentence": "It is more convenient to travel to other parts of the world due to the transportation improvements."
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "In the past, transportation was primarily accessible to the wealthy.",
+            "Today, buses and trains are among the most common transportation options.",
+            "Later, air travel became popular among business professionals.",
+            "Eventually, buses and trains were introduced as affordable alternatives.",
+            "These made traveling more accessible to everyone."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "In the past, transportation was primarily accessible to the wealthy."
+            },
+            {
+              "position": 2,
+              "sentence": "Later, air travel became popular among business professionals."
+            },
+            {
+              "position": 3,
+              "sentence": "Eventually, buses and trains were introduced as affordable alternatives."
+            },
+            {
+              "position": 4,
+              "sentence": "These made traveling more accessible to everyone."
+            },
+            {
+              "position": 5,
+              "sentence": "Today, buses and trains are among the most common transportation options."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "There were 60 men and women, and among them, Ms. Kamus won the race with the fastest time.",
+            "Activities included football, swimming, skipping rope, and the children played happily together.",
+            "After playing, the children were very hungry and ate with their parents.",
+            "After she received the prize, the following time was dedicated to children's activities.",
+            "It started on Saturday morning, and there was a 10-lane race for adults."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "It started on Saturday morning, and there was a 10-lane race for adults."
+            },
+            {
+              "position": 2,
+              "sentence": "There were 60 men and women, and among them, Ms. Kamus won the race with the fastest time."
+            },
+            {
+              "position": 3,
+              "sentence": "After she received the prize, the following time was dedicated to children's activities."
+            },
+            {
+              "position": 4,
+              "sentence": "Activities included football, swimming, skipping rope, and the children played happily together."
+            },
+            {
+              "position": 5,
+              "sentence": "After playing, the children were very hungry and ate with their parents."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "This was about space, and it helped Mae to become a member of the research team.",
+            "Her degree in the subject enabled her to take a training course in the USA.",
+            "Some of those include growing plants and animals in a spaceship.",
+            "With the support of her parents, she went to university and studied science.",
+            "As a part of this group, she traveled to space frequently and conducted many experiments there."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "With the support of her parents, she went to university and studied science."
+            },
+            {
+              "position": 2,
+              "sentence": "Her degree in the subject enabled her to take a training course in the USA."
+            },
+            {
+              "position": 3,
+              "sentence": "This was about space, and it helped Mae to become a member of the research team."
+            },
+            {
+              "position": 4,
+              "sentence": "As a part of this group, she traveled to space frequently and conducted many experiments there."
+            },
+            {
+              "position": 5,
+              "sentence": "Some of those include growing plants and animals in a spaceship."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "You then have to use these pictures and your written work to create a presentation for the class.",
+            "This talk will give your key points, and it should be around five minutes.",
+            "It has to include relevant pictures and your own written text about the topic.",
+            "Your end-of-term project will focus on at least two of these.",
+            "After this time, other students will be able to ask some questions, and you will answer those."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Your end-of-term project will focus on at least two of these."
+            },
+            {
+              "position": 2,
+              "sentence": "It has to include relevant pictures and your own written text about the topic."
+            },
+            {
+              "position": 3,
+              "sentence": "You then have to use these pictures and your written work to create a presentation for the class."
+            },
+            {
+              "position": 4,
+              "sentence": "This talk will give your key points, and it should be around five minutes."
+            },
+            {
+              "position": 5,
+              "sentence": "After this time, other students will be able to ask some questions, and you will answer those."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "It is important to learn about the people and the history there carefully.",
+            "Such comparisons will make your writing more interesting and meaningful.",
+            "Even if you can not visit the place, your writing will still look similar to real experiences.",
+            "You should also compare that place with your own country.",
+            "Before writing about a place, you need to do some research on it."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Before writing about a place, you need to do some research on it."
+            },
+            {
+              "position": 2,
+              "sentence": "It is important to learn about the people and the history there carefully."
+            },
+            {
+              "position": 3,
+              "sentence": "Even if you can not visit the place, your writing will still look similar to real experiences."
+            },
+            {
+              "position": 4,
+              "sentence": "You should also compare that place with your own country."
+            },
+            {
+              "position": 5,
+              "sentence": "Such comparisons will make your writing more interesting and meaningful."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "During the presentation, we use pictures and our own words to explain the ideas.",
+            "First, we prepare materials for our group presentation.",
+            "After the presentation, the other students ask questions.",
+            "Then, we present our topic for five minutes.",
+            "Finally, group members take turns answering the questions."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "First, we prepare materials for our group presentation."
+            },
+            {
+              "position": 2,
+              "sentence": "Then, we present our topic for five minutes."
+            },
+            {
+              "position": 3,
+              "sentence": "During the presentation, we use pictures and our own words to explain the ideas."
+            },
+            {
+              "position": 4,
+              "sentence": "After the presentation, the other students ask questions."
+            },
+            {
+              "position": 5,
+              "sentence": "Finally, group members take turns answering the questions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The place was quite busy, with a lively atmosphere.",
+            "I decided to try a new café located at the end of the street.",
+            "Even so, a staff member quickly noticed me and brought over the menu.",
+            "I was a bit surprised to see that there were only a few items to choose from.",
+            "In the end, I went for the most expensive salad on the menu."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "I decided to try a new café located at the end of the street."
+            },
+            {
+              "position": 2,
+              "sentence": "The place was quite busy, with a lively atmosphere."
+            },
+            {
+              "position": 3,
+              "sentence": "Even so, a staff member quickly noticed me and brought over the menu."
+            },
+            {
+              "position": 4,
+              "sentence": "I was a bit surprised to see that there were only a few items to choose from."
+            },
+            {
+              "position": 5,
+              "sentence": "In the end, I went for the most expensive salad on the menu."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Families had a great time sampling healthy snacks and learning useful tips about overall wellness.",
+            "After the workshops, prizes were given to those with the most creative health posters.",
+            "The wellness fair took place on Saturday afternoon, promoting healthy habits and lifestyles.",
+            "The fair also featured activities such as cooking demonstrations, mindfulness sessions, and a fun run.",
+            "Over sixty participants joined the event, with Dr. Patel leading an exciting fitness workshop."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The wellness fair took place on Saturday afternoon, promoting healthy habits and lifestyles."
+            },
+            {
+              "position": 2,
+              "sentence": "Over sixty participants joined the event, with Dr. Patel leading an exciting fitness workshop."
+            },
+            {
+              "position": 3,
+              "sentence": "The fair also featured activities such as cooking demonstrations, mindfulness sessions, and a fun run."
+            },
+            {
+              "position": 4,
+              "sentence": "After the workshops, prizes were given to those with the most creative health posters."
+            },
+            {
+              "position": 5,
+              "sentence": "Families had a great time sampling healthy snacks and learning useful tips about overall wellness."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Finally, she received a valuable training course in the United States.",
+            "They supported Mae to go to university, where she studied science.",
+            "Mae planted ideas, worked hard, and achieved early success.",
+            "After that, she joined a dedicated team.",
+            "Her father was a doctor, and her mother was a teacher."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Her father was a doctor, and her mother was a teacher."
+            },
+            {
+              "position": 2,
+              "sentence": "They supported Mae to go to university, where she studied science."
+            },
+            {
+              "position": 3,
+              "sentence": "Mae planted ideas, worked hard, and achieved early success."
+            },
+            {
+              "position": 4,
+              "sentence": "After that, she joined a dedicated team."
+            },
+            {
+              "position": 5,
+              "sentence": "Finally, she received a valuable training course in the United States."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Homework for Next Week",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Homework for Next Week (Version 2)",
+          "baseTitle": "Homework for Next Week",
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "It is important to learn about the people, history, and culture of that location.",
+            "Try to compare that place with your own country to get a better understanding.",
+            "Making such comparisons helps you describe the place more clearly and make your writing more interesting.",
+            "Although you might not find exact information about the specific place, you will see similar places displayed.",
+            "Before writing, you should research the place thoroughly online."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Before writing, you should research the place thoroughly online."
+            },
+            {
+              "position": 2,
+              "sentence": "Although you might not find exact information about the specific place, you will see similar places displayed."
+            },
+            {
+              "position": 3,
+              "sentence": "It is important to learn about the people, history, and culture of that location."
+            },
+            {
+              "position": 4,
+              "sentence": "Try to compare that place with your own country to get a better understanding."
+            },
+            {
+              "position": 5,
+              "sentence": "Making such comparisons helps you describe the place more clearly and make your writing more interesting."
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Before writing, we need to find some information about the place.",
+            "When collecting information about these three aspects, you can compare them with places in your own country.",
+            "This comparison will help you find common ground between the countries.",
+            "That information can revolve around the aspects of people, culture, and history.",
+            "You might not find all the information mentioned, but you will find a place with similarities."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Before writing, we need to find some information about the place."
+            },
+            {
+              "position": 2,
+              "sentence": "That information can revolve around the aspects of people, culture, and history."
+            },
+            {
+              "position": 3,
+              "sentence": "You might not find all the information mentioned, but you will find a place with similarities."
+            },
+            {
+              "position": 4,
+              "sentence": "When collecting information about these three aspects, you can compare them with places in your own country."
+            },
+            {
+              "position": 5,
+              "sentence": "This comparison will help you find common ground between the countries."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "title": "A new café in town",
+      "availableVersions": [
+        3,
+        2,
+        1
+      ],
+      "variantCount": 3,
+      "variants": [
+        {
+          "version": 3,
+          "versionLabel": "v3",
+          "title": "A new café in town (Version 3)",
+          "baseTitle": "A new café in town",
+          "leadText": "Last night I went to the cafe opening, The Corner Cafe near my house.",
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "It tasted really good with cheese topping, and I will definitely return here.",
+            "It was full of people, and the staff were busy on their opening day.",
+            "When I first looked at it, I was disappointed because I hoped for a variety of dishes.",
+            "I had to choose one, so I chose the most expensive sandwich.",
+            "Despite the crowd, they got me a nice table and gave me the menu."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "It was full of people, and the staff were busy on their opening day."
+            },
+            {
+              "position": 2,
+              "sentence": "Despite the crowd, they got me a nice table and gave me the menu."
+            },
+            {
+              "position": 3,
+              "sentence": "When I first looked at it, I was disappointed because I hoped for a variety of dishes."
+            },
+            {
+              "position": 4,
+              "sentence": "I had to choose one, so I chose the most expensive sandwich."
+            },
+            {
+              "position": 5,
+              "sentence": "It tasted really good with cheese topping, and I will definitely return here."
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "A new café in town (Version 2)",
+          "baseTitle": "A new café in town",
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "A waiter assisted me in finding a table and handed me the menu.",
+            "The sandwich was both delicious and beautifully presented.",
+            "I arrived at the shop early in the morning, but it was crowded with people.",
+            "The menu was not as good as expected and quite pricey, so I decided to order a sandwich.",
+            "I might return to try different types of drinks next time."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "I arrived at the shop early in the morning, but it was crowded with people."
+            },
+            {
+              "position": 2,
+              "sentence": "A waiter assisted me in finding a table and handed me the menu."
+            },
+            {
+              "position": 3,
+              "sentence": "The menu was not as good as expected and quite pricey, so I decided to order a sandwich."
+            },
+            {
+              "position": 4,
+              "sentence": "The sandwich was both delicious and beautifully presented."
+            },
+            {
+              "position": 5,
+              "sentence": "I might return to try different types of drinks next time."
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "At first, I didn’t think it would be good, but I decided to give it a try.",
+            "It was my first time visiting a new local coffee shop.",
+            "When I tasted it, I found it really delicious and knew I would come back again.",
+            "I looked at the menu and saw many different kinds of food and drinks.",
+            "I chose one dish to try for myself."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "It was my first time visiting a new local coffee shop."
+            },
+            {
+              "position": 2,
+              "sentence": "At first, I didn’t think it would be good, but I decided to give it a try."
+            },
+            {
+              "position": 3,
+              "sentence": "I looked at the menu and saw many different kinds of food and drinks."
+            },
+            {
+              "position": 4,
+              "sentence": "I chose one dish to try for myself."
+            },
+            {
+              "position": 5,
+              "sentence": "When I tasted it, I found it really delicious and knew I would come back again."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "title": "A University's Opening Day",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "A University's Opening Day (Version 2)",
+          "baseTitle": "A University's Opening Day",
+          "leadText": "This year, the university will hold its Opening Day in June.",
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Before the opening day, you should call or email us so that we can take your personal details.",
+            "You must show it to access the introductory talk and the morning lectures.",
+            "With this information, we will create an identification card for you to collect on arrival.",
+            "Following these presentations, you will have the opportunity to visit different departments.",
+            "Each visitor can join a question-and-answer session with current students."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Before the opening day, you should call or email us so that we can take your personal details."
+            },
+            {
+              "position": 2,
+              "sentence": "With this information, we will create an identification card for you to collect on arrival."
+            },
+            {
+              "position": 3,
+              "sentence": "You must show it to access the introductory talk and the morning lectures."
+            },
+            {
+              "position": 4,
+              "sentence": "Each visitor can join a question-and-answer session with current students."
+            },
+            {
+              "position": 5,
+              "sentence": "Following these presentations, you will have the opportunity to visit different departments."
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The day will begin at 10 am in the morning with a short presentation.",
+            "These staff members will give you a guided tour in the buildings and our sports facilities in small groups.",
+            "This meal will be provided on the second floor of the engineering building.",
+            "At the end of this talk, you will meet the heads of departments and teachers.",
+            "During this visit, you will need to stay with these students until lunch break."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The day will begin at 10 am in the morning with a short presentation."
+            },
+            {
+              "position": 2,
+              "sentence": "At the end of this talk, you will meet the heads of departments and teachers."
+            },
+            {
+              "position": 3,
+              "sentence": "These staff members will give you a guided tour in the buildings and our sports facilities in small groups."
+            },
+            {
+              "position": 4,
+              "sentence": "During this visit, you will need to stay with these students until lunch break."
+            },
+            {
+              "position": 5,
+              "sentence": "This meal will be provided on the second floor of the engineering building."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "City buses today are much more efficient than those from ten years ago.",
+            "In the past, many cities had fewer bus routes because of budget limitations.",
+            "Drivers and staff now receive better training to provide improved passenger service.",
+            "Older buses often didn’t have air conditioning or comfortable seating.",
+            "Modern buses often use electric power, helping to reduce pollution in urban areas."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "In the past, many cities had fewer bus routes because of budget limitations."
+            },
+            {
+              "position": 2,
+              "sentence": "Older buses often didn’t have air conditioning or comfortable seating."
+            },
+            {
+              "position": 3,
+              "sentence": "City buses today are much more efficient than those from ten years ago."
+            },
+            {
+              "position": 4,
+              "sentence": "Drivers and staff now receive better training to provide improved passenger service."
+            },
+            {
+              "position": 5,
+              "sentence": "Modern buses often use electric power, helping to reduce pollution in urban areas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "title": "Music Festivals",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Music Festivals (Version 2)",
+          "baseTitle": "Music Festivals",
+          "leadText": "Last Saturday, the town hosted a major music event that drew people from across the region.",
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "As a result, entry was completely free, and nearly five thousand people attended.",
+            "The event was carefully planned, fully financed, and strongly supported by the local authorities.",
+            "Even though it was a very busy day, workers managed to finish everything ahead of schedule and then watched the famous singer perform.",
+            "The two-hour performance truly thrilled the audience, leaving everyone in high spirits and full of excitement.",
+            "Many visitors came early and spent time browsing the local shops before the program officially started."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The event was carefully planned, fully financed, and strongly supported by the local authorities."
+            },
+            {
+              "position": 2,
+              "sentence": "As a result, entry was completely free, and nearly five thousand people attended."
+            },
+            {
+              "position": 3,
+              "sentence": "Many visitors came early and spent time browsing the local shops before the program officially started."
+            },
+            {
+              "position": 4,
+              "sentence": "Even though it was a very busy day, workers managed to finish everything ahead of schedule and then watched the famous singer perform."
+            },
+            {
+              "position": 5,
+              "sentence": "The two-hour performance truly thrilled the audience, leaving everyone in high spirits and full of excitement."
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The singer performed for 2 hours, everyone had great fun.",
+            "The staff were very busy but still closed the shop early to watch the singer.",
+            "Because it was free, more than 5,000 people attended.",
+            "People came early and sat in nearby shops waiting for the start time.",
+            "The local government planned, funded and paid for everything."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The local government planned, funded and paid for everything."
+            },
+            {
+              "position": 2,
+              "sentence": "Because it was free, more than 5,000 people attended."
+            },
+            {
+              "position": 3,
+              "sentence": "People came early and sat in nearby shops waiting for the start time."
+            },
+            {
+              "position": 4,
+              "sentence": "The staff were very busy but still closed the shop early to watch the singer."
+            },
+            {
+              "position": 5,
+              "sentence": "The singer performed for 2 hours, everyone had great fun."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Many people started to notice him because of his talent and creativity.",
+            "That’s how he became a well-known celebrity.",
+            "Before becoming famous, he went to school like everyone else.",
+            "His unique fashion style and great music attracted a lot of attention.",
+            "He used to study performing arts, including acting, singing, and dancing."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Before becoming famous, he went to school like everyone else."
+            },
+            {
+              "position": 2,
+              "sentence": "He used to study performing arts, including acting, singing, and dancing."
+            },
+            {
+              "position": 3,
+              "sentence": "His unique fashion style and great music attracted a lot of attention."
+            },
+            {
+              "position": 4,
+              "sentence": "Many people started to notice him because of his talent and creativity."
+            },
+            {
+              "position": 5,
+              "sentence": "That’s how he became a well-known celebrity."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "High computational costs restricted AI development in the past.",
+            "Modern AI tools help businesses analyze data and improve decision-making.",
+            "Today, AI engineers create advanced models for tasks like language translation.",
+            "Artificial intelligence has transformed industries over the past decade.",
+            "Early AI systems were limited to basic pattern recognition tasks."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Artificial intelligence has transformed industries over the past decade."
+            },
+            {
+              "position": 2,
+              "sentence": "Early AI systems were limited to basic pattern recognition tasks."
+            },
+            {
+              "position": 3,
+              "sentence": "High computational costs restricted AI development in the past."
+            },
+            {
+              "position": 4,
+              "sentence": "Today, AI engineers create advanced models for tasks like language translation."
+            },
+            {
+              "position": 5,
+              "sentence": "Modern AI tools help businesses analyze data and improve decision-making."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "In the past, meals were often filled with sugar and unhealthy fats.",
+            "Modern diets now focus on fresh, whole foods rather than processed ones.",
+            "Nutritionists today educate people on how to plan balanced and nutritious meals.",
+            "Nowadays, mobile apps help track calories and suggest healthy recipes to support a healthier lifestyle.",
+            "Limited access to fresh produce made healthy eating much more difficult years ago."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "In the past, meals were often filled with sugar and unhealthy fats."
+            },
+            {
+              "position": 2,
+              "sentence": "Limited access to fresh produce made healthy eating much more difficult years ago."
+            },
+            {
+              "position": 3,
+              "sentence": "Modern diets now focus on fresh, whole foods rather than processed ones."
+            },
+            {
+              "position": 4,
+              "sentence": "Nutritionists today educate people on how to plan balanced and nutritious meals."
+            },
+            {
+              "position": 5,
+              "sentence": "Nowadays, mobile apps help track calories and suggest healthy recipes to support a healthier lifestyle."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Her desk is white, standing out in the open-plan office.",
+            "After work, they relax by reading books on productivity and wellness.",
+            "She uses a calendar to plan her tasks for the shortened workweek.",
+            "For lunch, she packs a homemade sandwich with fresh ingredients.",
+            "The office has flexible hours to accommodate employee schedules."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The office has flexible hours to accommodate employee schedules."
+            },
+            {
+              "position": 2,
+              "sentence": "Her desk is white, standing out in the open-plan office."
+            },
+            {
+              "position": 3,
+              "sentence": "She uses a calendar to plan her tasks for the shortened workweek."
+            },
+            {
+              "position": 4,
+              "sentence": "For lunch, she packs a homemade sandwich with fresh ingredients."
+            },
+            {
+              "position": 5,
+              "sentence": "After work, they relax by reading books on productivity and wellness."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Early platforms only offered simple features, such as text posts and basic images.",
+            "Today, influencers earn money mainly through sponsorships and online advertisements.",
+            "Over the years, social media platforms have evolved significantly in both design and functionality.",
+            "Modern platforms now rely on algorithms to personalize and shape each user's feed.",
+            "In the past, limited internet speeds made it difficult to stream or upload video content."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "In the past, limited internet speeds made it difficult to stream or upload video content."
+            },
+            {
+              "position": 2,
+              "sentence": "Early platforms only offered simple features, such as text posts and basic images."
+            },
+            {
+              "position": 3,
+              "sentence": "Over the years, social media platforms have evolved significantly in both design and functionality."
+            },
+            {
+              "position": 4,
+              "sentence": "Modern platforms now rely on algorithms to personalize and shape each user's feed."
+            },
+            {
+              "position": 5,
+              "sentence": "Today, influencers earn money mainly through sponsorships and online advertisements."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Attendees enjoyed networking over coffee and exploring interactive displays.",
+            "After the presentations, awards were given for the most creative prototype.",
+            "Activities included 3D printing demos, AI workshops, and virtual reality trials.",
+            "Over 75 participants attended, with Ms. Tony presenting a smart home device.",
+            "The tech expo was held on Sunday morning, showcasing cutting-edge innovations."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The tech expo was held on Sunday morning, showcasing cutting-edge innovations."
+            },
+            {
+              "position": 2,
+              "sentence": "Over 75 participants attended, with Ms. Tony presenting a smart home device."
+            },
+            {
+              "position": 3,
+              "sentence": "Activities included 3D printing demos, AI workshops, and virtual reality trials."
+            },
+            {
+              "position": 4,
+              "sentence": "After the presentations, awards were given for the most creative prototype."
+            },
+            {
+              "position": 5,
+              "sentence": "Attendees enjoyed networking over coffee and exploring interactive displays."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Families enjoyed the event, taking photos and sharing meals.",
+            "Activities included pottery workshops, folk music, and food tasting.",
+            "The cultural festival was held on Sunday, celebrating local traditions.",
+            "After the main event, awards were given for the best costume.",
+            "About 70 people participated, with Ms. Nguyen leading a dance group."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The cultural festival was held on Sunday, celebrating local traditions."
+            },
+            {
+              "position": 2,
+              "sentence": "About 70 people participated, with Ms. Nguyen leading a dance group."
+            },
+            {
+              "position": 3,
+              "sentence": "Activities included pottery workshops, folk music, and food tasting."
+            },
+            {
+              "position": 4,
+              "sentence": "After the main event, awards were given for the best costume."
+            },
+            {
+              "position": 5,
+              "sentence": "Families enjoyed the event, taking photos and sharing meals."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Today, online platforms make it much easier to plan carefully and book trips quickly.",
+            "In addition, local guides now offer personalized tours for visitors, creating more authentic experiences.",
+            "Modern tourism now offers far more options than in the past.",
+            "However, limited technology back then also meant fewer booking options were available.",
+            "In earlier times, travelers often relied mainly on guidebooks and paper maps."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Modern tourism now offers far more options than in the past."
+            },
+            {
+              "position": 2,
+              "sentence": "In earlier times, travelers often relied mainly on guidebooks and paper maps."
+            },
+            {
+              "position": 3,
+              "sentence": "However, limited technology back then also meant fewer booking options were available."
+            },
+            {
+              "position": 4,
+              "sentence": "Today, online platforms make it much easier to plan carefully and book trips quickly."
+            },
+            {
+              "position": 5,
+              "sentence": "In addition, local guides now offer personalized tours for visitors, creating more authentic experiences."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Activities included team yoga, time management talks, and a group walk.",
+            "Employees enjoyed healthy snacks and shared tips for managing stress.",
+            "The wellness day was held on Friday, promoting work-life balance.",
+            "After the workshops, awards were given for the best wellness idea.",
+            "Over 50 employees participated, with Mr. Nguyen leading a stress-relief workshop."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The wellness day was held on Friday, promoting work-life balance."
+            },
+            {
+              "position": 2,
+              "sentence": "Over 50 employees participated, with Mr. Nguyen leading a stress-relief workshop."
+            },
+            {
+              "position": 3,
+              "sentence": "Activities included team yoga, time management talks, and a group walk."
+            },
+            {
+              "position": 4,
+              "sentence": "After the workshops, awards were given for the best wellness idea."
+            },
+            {
+              "position": 5,
+              "sentence": "Employees enjoyed healthy snacks and shared tips for managing stress."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Attendees networked over smoothies, brainstorming future partnerships.",
+            "Activities included live app demos, coding sprints, and investor Q&A sessions.",
+            "After the pitches, awards were given for the most impactful innovation.",
+            "Over 55 entrepreneurs participated, with Ms. Vo pitching a health-tech app.",
+            "The startup showcase was held on Saturday, highlighting innovative apps."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The startup showcase was held on Saturday, highlighting innovative apps."
+            },
+            {
+              "position": 2,
+              "sentence": "Over 55 entrepreneurs participated, with Ms. Vo pitching a health-tech app."
+            },
+            {
+              "position": 3,
+              "sentence": "Activities included live app demos, coding sprints, and investor Q&A sessions."
+            },
+            {
+              "position": 4,
+              "sentence": "After the pitches, awards were given for the most impactful innovation."
+            },
+            {
+              "position": 5,
+              "sentence": "Attendees networked over smoothies, brainstorming future partnerships."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Over 50 exhibitors participated, with Dr. Lee presenting a robot demonstration.",
+            "The tech fair was held on Saturday morning, showcasing new gadgets.",
+            "Activities included VR gaming, coding workshops, and drone races.",
+            "After the demonstration, awards were given for the most innovative product.",
+            "Visitors enjoyed free coffee and snacks while exploring the exhibits."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The tech fair was held on Saturday morning, showcasing new gadgets."
+            },
+            {
+              "position": 2,
+              "sentence": "Over 50 exhibitors participated, with Dr. Lee presenting a robot demonstration."
+            },
+            {
+              "position": 3,
+              "sentence": "Activities included VR gaming, coding workshops, and drone races."
+            },
+            {
+              "position": 4,
+              "sentence": "After the demonstration, awards were given for the most innovative product."
+            },
+            {
+              "position": 5,
+              "sentence": "Visitors enjoyed free coffee and snacks while exploring the exhibits."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Early IoT devices were limited by slow internet speeds and compatibility issues.",
+            "Engineers now design smart devices for homes and industries.",
+            "High development costs restricted IoT adoption in the past.",
+            "Modern IoT systems enable real-time data monitoring and automation.",
+            "The Internet of Things connects everyday devices to enhance functionality."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The Internet of Things connects everyday devices to enhance functionality."
+            },
+            {
+              "position": 2,
+              "sentence": "Early IoT devices were limited by slow internet speeds and compatibility issues."
+            },
+            {
+              "position": 3,
+              "sentence": "High development costs restricted IoT adoption in the past."
+            },
+            {
+              "position": 4,
+              "sentence": "Engineers now design smart devices for homes and industries."
+            },
+            {
+              "position": 5,
+              "sentence": "Modern IoT systems enable real-time data monitoring and automation."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Modern workplaces are adopting more flexible work models.",
+            "Today, companies experiment with shorter workweeks to boost productivity.",
+            "Limited technology once restricted remote work possibilities.",
+            "In the past, employees followed strict nine-to-five schedules.",
+            "Managers now use software to track project progress remotely."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "In the past, employees followed strict nine-to-five schedules."
+            },
+            {
+              "position": 2,
+              "sentence": "Limited technology once restricted remote work possibilities."
+            },
+            {
+              "position": 3,
+              "sentence": "Modern workplaces are adopting more flexible work models."
+            },
+            {
+              "position": 4,
+              "sentence": "Managers now use software to track project progress remotely."
+            },
+            {
+              "position": 5,
+              "sentence": "Today, companies experiment with shorter workweeks to boost productivity."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Thanks to the invention of cars and trains, it became easier for people to travel.",
+            "Not only the above 2 means of transport, people later had the opportunity to travel by aeroplanes.",
+            "At that time, only the very wealthy could afford to travel.",
+            "Because flying is very fast, people can travel by this means to different locations for business or travel.",
+            "Thanks to the great development of means of transport, today people can travel to other parts of the world."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "At that time, only the very wealthy could afford to travel."
+            },
+            {
+              "position": 2,
+              "sentence": "Thanks to the invention of cars and trains, it became easier for people to travel."
+            },
+            {
+              "position": 3,
+              "sentence": "Not only the above 2 means of transport, people later had the opportunity to travel by aeroplanes."
+            },
+            {
+              "position": 4,
+              "sentence": "Because flying is very fast, people can travel by this means to different locations for business or travel."
+            },
+            {
+              "position": 5,
+              "sentence": "Thanks to the great development of means of transport, today people can travel to other parts of the world."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The bridge reopened to traffic once certified safe.",
+            "They replaced old beams and strengthened weak parts.",
+            "A team of engineers worked on a bridge repair project.",
+            "They inspected the damaged sections carefully.",
+            "They conducted safety tests after finishing the repairs."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "A team of engineers worked on a bridge repair project."
+            },
+            {
+              "position": 2,
+              "sentence": "They inspected the damaged sections carefully."
+            },
+            {
+              "position": 3,
+              "sentence": "They replaced old beams and strengthened weak parts."
+            },
+            {
+              "position": 4,
+              "sentence": "They conducted safety tests after finishing the repairs."
+            },
+            {
+              "position": 5,
+              "sentence": "The bridge reopened to traffic once certified safe."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The beach town prepared for tourist season.",
+            "Visitors arrived soon after the preparations finished.",
+            "Hotels cleaned and renovated their rooms.",
+            "Restaurants updated their menus.",
+            "Shops stocked souvenirs and local goods."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The beach town prepared for tourist season."
+            },
+            {
+              "position": 2,
+              "sentence": "Hotels cleaned and renovated their rooms."
+            },
+            {
+              "position": 3,
+              "sentence": "Shops stocked souvenirs and local goods."
+            },
+            {
+              "position": 4,
+              "sentence": "Restaurants updated their menus."
+            },
+            {
+              "position": 5,
+              "sentence": "Visitors arrived soon after the preparations finished."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "After months of practice, his handwriting improved greatly.",
+            "His letters gradually became clearer and more consistent.",
+            "He practiced writing sentences every evening.",
+            "Richard wanted to improve his handwriting.",
+            "He switched to pens that helped him write more smoothly."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Richard wanted to improve his handwriting."
+            },
+            {
+              "position": 2,
+              "sentence": "He practiced writing sentences every evening."
+            },
+            {
+              "position": 3,
+              "sentence": "He switched to pens that helped him write more smoothly."
+            },
+            {
+              "position": 4,
+              "sentence": "His letters gradually became clearer and more consistent."
+            },
+            {
+              "position": 5,
+              "sentence": "After months of practice, his handwriting improved greatly."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The car moved smoothly during trials.",
+            "They built a lightweight frame for maximum efficiency.",
+            "Their project won first place in a tech competition.",
+            "The robotics club designed a solar-powered car.",
+            "They tested different types of solar panels."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The robotics club designed a solar-powered car."
+            },
+            {
+              "position": 2,
+              "sentence": "They tested different types of solar panels."
+            },
+            {
+              "position": 3,
+              "sentence": "They built a lightweight frame for maximum efficiency."
+            },
+            {
+              "position": 4,
+              "sentence": "The car moved smoothly during trials."
+            },
+            {
+              "position": 5,
+              "sentence": "Their project won first place in a tech competition."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "A parade marched through the main street.",
+            "Visitors took photos and enjoyed street food.",
+            "The celebration ended with a fireworks show.",
+            "The city celebrated a historical anniversary.",
+            "Performers wore costumes from different time periods."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The city celebrated a historical anniversary."
+            },
+            {
+              "position": 2,
+              "sentence": "A parade marched through the main street."
+            },
+            {
+              "position": 3,
+              "sentence": "Performers wore costumes from different time periods."
+            },
+            {
+              "position": 4,
+              "sentence": "Visitors took photos and enjoyed street food."
+            },
+            {
+              "position": 5,
+              "sentence": "The celebration ended with a fireworks show."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The school introduced a digital attendance system.",
+            "Parents received weekly attendance summaries.",
+            "Students checked their attendance through a phone app.",
+            "The system made communication more efficient.",
+            "Teachers scanned QR codes to record student presence."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The school introduced a digital attendance system."
+            },
+            {
+              "position": 2,
+              "sentence": "Teachers scanned QR codes to record student presence."
+            },
+            {
+              "position": 3,
+              "sentence": "Students checked their attendance through a phone app."
+            },
+            {
+              "position": 4,
+              "sentence": "Parents received weekly attendance summaries."
+            },
+            {
+              "position": 5,
+              "sentence": "The system made communication more efficient."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Their findings showed which soil supported the best growth.",
+            "Students planted seeds in different soil types.",
+            "They measured plant height every week.",
+            "A biology class conducted a plant growth experiment.",
+            "They compared results and discussed the differences."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "A biology class conducted a plant growth experiment."
+            },
+            {
+              "position": 2,
+              "sentence": "Students planted seeds in different soil types."
+            },
+            {
+              "position": 3,
+              "sentence": "They measured plant height every week."
+            },
+            {
+              "position": 4,
+              "sentence": "They compared results and discussed the differences."
+            },
+            {
+              "position": 5,
+              "sentence": "Their findings showed which soil supported the best growth."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "He wrote a strong personal statement explaining his goals.",
+            "His teachers provided recommendation letters.",
+            "He gathered all necessary documents for the application.",
+            "A few months later, he received news that he was awarded the scholarship.",
+            "Liam applied for a scholarship to study abroad."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Liam applied for a scholarship to study abroad."
+            },
+            {
+              "position": 2,
+              "sentence": "He gathered all necessary documents for the application."
+            },
+            {
+              "position": 3,
+              "sentence": "He wrote a strong personal statement explaining his goals."
+            },
+            {
+              "position": 4,
+              "sentence": "His teachers provided recommendation letters."
+            },
+            {
+              "position": 5,
+              "sentence": "A few months later, he received news that he was awarded the scholarship."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Families visited as soon as it opened.",
+            "The playground became a favorite spot for children.",
+            "The town decided to build a new playground.",
+            "Architects designed a safe and modern space.",
+            "Construction workers installed swings and slides."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The town decided to build a new playground."
+            },
+            {
+              "position": 2,
+              "sentence": "Architects designed a safe and modern space."
+            },
+            {
+              "position": 3,
+              "sentence": "Construction workers installed swings and slides."
+            },
+            {
+              "position": 4,
+              "sentence": "Families visited as soon as it opened."
+            },
+            {
+              "position": 5,
+              "sentence": "The playground became a favorite spot for children."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "He wrote a few pages every day.",
+            "After a year, he finally completed the manuscript.",
+            "His draft grew longer each week.",
+            "He outlined the story and main characters.",
+            "Henry wanted to write his first novel."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Henry wanted to write his first novel."
+            },
+            {
+              "position": 2,
+              "sentence": "He outlined the story and main characters."
+            },
+            {
+              "position": 3,
+              "sentence": "He wrote a few pages every day."
+            },
+            {
+              "position": 4,
+              "sentence": "His draft grew longer each week."
+            },
+            {
+              "position": 5,
+              "sentence": "After a year, he finally completed the manuscript."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The bakery introduced a new pastry.",
+            "Customers were curious and ordered it immediately.",
+            "Many praised its flavor and texture.",
+            "The bakery received more orders than expected.",
+            "It soon became their best-selling item."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The bakery introduced a new pastry."
+            },
+            {
+              "position": 2,
+              "sentence": "Customers were curious and ordered it immediately."
+            },
+            {
+              "position": 3,
+              "sentence": "Many praised its flavor and texture."
+            },
+            {
+              "position": 4,
+              "sentence": "The bakery received more orders than expected."
+            },
+            {
+              "position": 5,
+              "sentence": "It soon became their best-selling item."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The zoo shared updates on social media.",
+            "Visitors came to see the baby animal.",
+            "Veterinarians checked its health daily.",
+            "The city zoo welcomed a newborn giraffe.",
+            "The giraffe grew quickly and became a major attraction."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The city zoo welcomed a newborn giraffe."
+            },
+            {
+              "position": 2,
+              "sentence": "Veterinarians checked its health daily."
+            },
+            {
+              "position": 3,
+              "sentence": "Visitors came to see the baby animal."
+            },
+            {
+              "position": 4,
+              "sentence": "The zoo shared updates on social media."
+            },
+            {
+              "position": 5,
+              "sentence": "The giraffe grew quickly and became a major attraction."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Local businesses donated gloves and bags.",
+            "Volunteers collected plastic and other waste.",
+            "An environmental group organized a beach cleanup.",
+            "They sorted items for proper recycling.",
+            "The beach looked much cleaner afterward."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "An environmental group organized a beach cleanup."
+            },
+            {
+              "position": 2,
+              "sentence": "Volunteers collected plastic and other waste."
+            },
+            {
+              "position": 3,
+              "sentence": "They sorted items for proper recycling."
+            },
+            {
+              "position": 4,
+              "sentence": "Local businesses donated gloves and bags."
+            },
+            {
+              "position": 5,
+              "sentence": "The beach looked much cleaner afterward."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "He talked with volunteers from other neighborhoods.",
+            "He helped distribute food to families in need.",
+            "The experience taught him the value of community service.",
+            "Mark volunteered at the community food bank.",
+            "He sorted donated items into boxes."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Mark volunteered at the community food bank."
+            },
+            {
+              "position": 2,
+              "sentence": "He sorted donated items into boxes."
+            },
+            {
+              "position": 3,
+              "sentence": "He helped distribute food to families in need."
+            },
+            {
+              "position": 4,
+              "sentence": "He talked with volunteers from other neighborhoods."
+            },
+            {
+              "position": 5,
+              "sentence": "The experience taught him the value of community service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "They laughed throughout the entire movie.",
+            "The night ended with everyone feeling relaxed and happy.",
+            "A group of friends planned a movie night.",
+            "They prepared popcorn and snacks.",
+            "They chose a comedy film to watch."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "A group of friends planned a movie night."
+            },
+            {
+              "position": 2,
+              "sentence": "They chose a comedy film to watch."
+            },
+            {
+              "position": 3,
+              "sentence": "They prepared popcorn and snacks."
+            },
+            {
+              "position": 4,
+              "sentence": "They laughed throughout the entire movie."
+            },
+            {
+              "position": 5,
+              "sentence": "The night ended with everyone feeling relaxed and happy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "A severe drought affected the region.",
+            "Residents reduced their daily water usage.",
+            "Farmers struggled to water their crops.",
+            "The region slowly recovered after several months of rainfall.",
+            "Local authorities introduced water-saving measures."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "A severe drought affected the region."
+            },
+            {
+              "position": 2,
+              "sentence": "Farmers struggled to water their crops."
+            },
+            {
+              "position": 3,
+              "sentence": "Local authorities introduced water-saving measures."
+            },
+            {
+              "position": 4,
+              "sentence": "Residents reduced their daily water usage."
+            },
+            {
+              "position": 5,
+              "sentence": "The region slowly recovered after several months of rainfall."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 47,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 2,
+          "type": "REORDER",
+          "answerBadge": "PART 2 - REORDER",
+          "sentenceCount": 4,
+          "sentencePool": [
+            "They bought tomatoes, carrots, and peaches.",
+            "They looked at fresh vegetables and fruits.",
+            "Mia helped carry the bags back to the car.",
+            "Mia went to the farmer’s market with her mother."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Mia went to the farmer’s market with her mother."
+            },
+            {
+              "position": 2,
+              "sentence": "They looked at fresh vegetables and fruits."
+            },
+            {
+              "position": 3,
+              "sentence": "They bought tomatoes, carrots, and peaches."
+            },
+            {
+              "position": 4,
+              "sentence": "Mia helped carry the bags back to the car."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "She trained it to follow basic commands.",
+            "The dog became more confident and friendly.",
+            "Emma felt grateful for her new companion.",
+            "Emma adopted a rescue dog.",
+            "She took the dog to the vet for a check-up."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Emma adopted a rescue dog."
+            },
+            {
+              "position": 2,
+              "sentence": "She took the dog to the vet for a check-up."
+            },
+            {
+              "position": 3,
+              "sentence": "She trained it to follow basic commands."
+            },
+            {
+              "position": 4,
+              "sentence": "The dog became more confident and friendly."
+            },
+            {
+              "position": 5,
+              "sentence": "Emma felt grateful for her new companion."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "A local author visited the school for a workshop.",
+            "Many students felt inspired to write more often.",
+            "Students listened to her explain how she writes stories.",
+            "They shared their stories at the end of the session.",
+            "They practiced writing short scenes in groups."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "A local author visited the school for a workshop."
+            },
+            {
+              "position": 2,
+              "sentence": "Students listened to her explain how she writes stories."
+            },
+            {
+              "position": 3,
+              "sentence": "They practiced writing short scenes in groups."
+            },
+            {
+              "position": 4,
+              "sentence": "They shared their stories at the end of the session."
+            },
+            {
+              "position": 5,
+              "sentence": "Many students felt inspired to write more often."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Their data provided valuable information about the environment.",
+            "A science team planned to study a distant island.",
+            "They packed equipment for weather and wildlife observation.",
+            "They traveled by boat for two days.",
+            "Upon arriving, they set up a small research camp."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "A science team planned to study a distant island."
+            },
+            {
+              "position": 2,
+              "sentence": "They packed equipment for weather and wildlife observation."
+            },
+            {
+              "position": 3,
+              "sentence": "They traveled by boat for two days."
+            },
+            {
+              "position": 4,
+              "sentence": "Upon arriving, they set up a small research camp."
+            },
+            {
+              "position": 5,
+              "sentence": "Their data provided valuable information about the environment."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 51,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The system also recommended books based on reading history.",
+            "They could borrow and return books without visiting the counter.",
+            "Library visits increased as more readers found the system convenient.",
+            "The library introduced a digital borrowing system.",
+            "Users could search for books using their phones."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The library introduced a digital borrowing system."
+            },
+            {
+              "position": 2,
+              "sentence": "Users could search for books using their phones."
+            },
+            {
+              "position": 3,
+              "sentence": "They could borrow and return books without visiting the counter."
+            },
+            {
+              "position": 4,
+              "sentence": "The system also recommended books based on reading history."
+            },
+            {
+              "position": 5,
+              "sentence": "Library visits increased as more readers found the system convenient."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "She continued the routine for several months.",
+            "She followed a 10-minute guided session each morning.",
+            "She noticed reduced stress after the first week.",
+            "Meditation became an essential part of her lifestyle.",
+            "Sarah started a daily meditation routine."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Sarah started a daily meditation routine."
+            },
+            {
+              "position": 2,
+              "sentence": "She followed a 10-minute guided session each morning."
+            },
+            {
+              "position": 3,
+              "sentence": "She noticed reduced stress after the first week."
+            },
+            {
+              "position": 4,
+              "sentence": "She continued the routine for several months."
+            },
+            {
+              "position": 5,
+              "sentence": "Meditation became an essential part of her lifestyle."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 53,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The brand became known for environmental responsibility.",
+            "The new company started offering eco-friendly products.",
+            "The company shared its sustainability goals online.",
+            "Customers appreciated the recyclable packaging.",
+            "Sales increased as more people supported the initiative."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The new company started offering eco-friendly products."
+            },
+            {
+              "position": 2,
+              "sentence": "Customers appreciated the recyclable packaging."
+            },
+            {
+              "position": 3,
+              "sentence": "The company shared its sustainability goals online."
+            },
+            {
+              "position": 4,
+              "sentence": "Sales increased as more people supported the initiative."
+            },
+            {
+              "position": 5,
+              "sentence": "The brand became known for environmental responsibility."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 54,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The fox received medicine and careful treatment.",
+            "Veterinarians examined its wounds.",
+            "The wildlife rescue center cared for an injured fox.",
+            "Eventually, the fox was released back into the forest.",
+            "It slowly regained its strength."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The wildlife rescue center cared for an injured fox."
+            },
+            {
+              "position": 2,
+              "sentence": "Veterinarians examined its wounds."
+            },
+            {
+              "position": 3,
+              "sentence": "The fox received medicine and careful treatment."
+            },
+            {
+              "position": 4,
+              "sentence": "It slowly regained its strength."
+            },
+            {
+              "position": 5,
+              "sentence": "Eventually, the fox was released back into the forest."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 55,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The app gained thousands of downloads after release.",
+            "Beta testers provided helpful feedback.",
+            "The research team developed a new smartphone app.",
+            "Developers fixed bugs and improved features.",
+            "The app helped users track their daily habits."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The research team developed a new smartphone app."
+            },
+            {
+              "position": 2,
+              "sentence": "The app helped users track their daily habits."
+            },
+            {
+              "position": 3,
+              "sentence": "Beta testers provided helpful feedback."
+            },
+            {
+              "position": 4,
+              "sentence": "Developers fixed bugs and improved features."
+            },
+            {
+              "position": 5,
+              "sentence": "The app gained thousands of downloads after release."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "He assembled everything carefully at home.",
+            "James wanted to build his own computer.",
+            "He ordered components from several shops.",
+            "His computer ran smoothly once he turned it on.",
+            "He researched different parts like CPUs and graphics cards."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "James wanted to build his own computer."
+            },
+            {
+              "position": 2,
+              "sentence": "He researched different parts like CPUs and graphics cards."
+            },
+            {
+              "position": 3,
+              "sentence": "He ordered components from several shops."
+            },
+            {
+              "position": 4,
+              "sentence": "He assembled everything carefully at home."
+            },
+            {
+              "position": 5,
+              "sentence": "His computer ran smoothly once he turned it on."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 57,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "Emergency teams monitored the situation closely.",
+            "Fortunately, the rain stopped before flooding occurred.",
+            "Residents were warned to prepare for possible evacuation.",
+            "The river near the town began to rise.",
+            "Everyone returned to their normal routines the next day."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The river near the town began to rise."
+            },
+            {
+              "position": 2,
+              "sentence": "Emergency teams monitored the situation closely."
+            },
+            {
+              "position": 3,
+              "sentence": "Residents were warned to prepare for possible evacuation."
+            },
+            {
+              "position": 4,
+              "sentence": "Fortunately, the rain stopped before flooding occurred."
+            },
+            {
+              "position": 5,
+              "sentence": "Everyone returned to their normal routines the next day."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 58,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "They decorated the house before he arrived.",
+            "They enjoyed snacks, games, and music all evening.",
+            "Olivia planned a surprise birthday party for her brother.",
+            "He was delighted when everyone shouted 'Surprise!'.",
+            "She invited his closest friends."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Olivia planned a surprise birthday party for her brother."
+            },
+            {
+              "position": 2,
+              "sentence": "She invited his closest friends."
+            },
+            {
+              "position": 3,
+              "sentence": "They decorated the house before he arrived."
+            },
+            {
+              "position": 4,
+              "sentence": "He was delighted when everyone shouted 'Surprise!'."
+            },
+            {
+              "position": 5,
+              "sentence": "They enjoyed snacks, games, and music all evening."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 59,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The company upgraded its computer systems.",
+            "Employees received training on updated software tools.",
+            "Technicians installed new hardware across all departments.",
+            "Overall productivity improved noticeably within weeks.",
+            "Technical issues decreased significantly afterward."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The company upgraded its computer systems."
+            },
+            {
+              "position": 2,
+              "sentence": "Technicians installed new hardware across all departments."
+            },
+            {
+              "position": 3,
+              "sentence": "Employees received training on updated software tools."
+            },
+            {
+              "position": 4,
+              "sentence": "Technical issues decreased significantly afterward."
+            },
+            {
+              "position": 5,
+              "sentence": "Overall productivity improved noticeably within weeks."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 60,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "The festival successfully brought the community together.",
+            "The town hosted an annual cultural festival.",
+            "Local artists displayed their paintings and crafts.",
+            "Visitors tasted food from different regions.",
+            "Musicians performed traditional songs on stage."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "The town hosted an annual cultural festival."
+            },
+            {
+              "position": 2,
+              "sentence": "Local artists displayed their paintings and crafts."
+            },
+            {
+              "position": 3,
+              "sentence": "Musicians performed traditional songs on stage."
+            },
+            {
+              "position": 4,
+              "sentence": "Visitors tasted food from different regions."
+            },
+            {
+              "position": 5,
+              "sentence": "The festival successfully brought the community together."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 61,
+      "title": null,
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": null,
+          "baseTitle": null,
+          "leadText": null,
+          "part": 3,
+          "type": "REORDER",
+          "answerBadge": "PART 3 - REORDER",
+          "sentenceCount": 5,
+          "sentencePool": [
+            "He researched which plants grow well in his climate.",
+            "He watered them regularly and removed weeds.",
+            "He prepared the soil and planted the seeds.",
+            "Tom decided to start a small vegetable garden.",
+            "After a few weeks, the vegetables began to grow healthy and strong."
+          ],
+          "correctOrder": [
+            {
+              "position": 1,
+              "sentence": "Tom decided to start a small vegetable garden."
+            },
+            {
+              "position": 2,
+              "sentence": "He researched which plants grow well in his climate."
+            },
+            {
+              "position": 3,
+              "sentence": "He prepared the soil and planted the seeds."
+            },
+            {
+              "position": 4,
+              "sentence": "He watered them regularly and removed weeds."
+            },
+            {
+              "position": 5,
+              "sentence": "After a few weeks, the vegetables began to grow healthy and strong."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "extractedAt": "2026-08-25T18:12:23.697Z"
+}

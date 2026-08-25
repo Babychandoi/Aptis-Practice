@@ -1,0 +1,3124 @@
+{
+  "source": "https://www.aptisprep.com/reading/practice/part/4",
+  "skill": "reading",
+  "part": 4,
+  "type": "MATCHING",
+  "expectedTopics": 10,
+  "extractedTopics": 10,
+  "totalVariants": 19,
+  "totalQuestions": 133,
+  "totalAnswers": 133,
+  "tips": [
+    "Có 4 người nhưng 7 câu hỏi, vậy nên thông thường 4 câu hỏi đầu tiên sẽ đại diện cho 4 ý chính của 4 người nói. Nếu 4 câu đầu có hai đáp án trùng người, hãy kiểm tra lại.",
+    "Hãy đọc hết đoạn văn và chú ý ở đoạn cuối vì thông thường, ý định của người nói thường xuất hiện cuối cùng để đánh lừa người đọc.",
+    "Đặt nhãn từ khóa cho từng người/đoạn (career, health, technology...).",
+    "So các từ khóa trong câu hỏi với cụm đồng nghĩa trong đoạn (paraphrase).",
+    "Hãy dò lại các đáp án đã chọn sau khi đã hoàn thành cả bài, tránh để mất điểm oan."
+  ],
+  "topics": [
+    {
+      "number": 1,
+      "title": "Music Festival",
+      "availableVersions": [
+        3,
+        2,
+        1
+      ],
+      "variantCount": 3,
+      "variants": [
+        {
+          "version": 3,
+          "versionLabel": "v3",
+          "title": "Music Festival",
+          "instruction": "(Version 3) Read the opinions of four people about a music festival. Match each person with the correct opinion.\n\n💡\nTip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩa\n\nPerson A\nThis is my first time going to a concert, and the experience was quite mixed during the first two days. The music was rather ordinary, and the event would have been far more enjoyable if there had been just a little sunshine to brighten things up. Luckily, the last day completely changed my impression, as I finally got to see my favorite singers. Meeting them and enjoying the performances made the whole trip memorable and truly special.\nPerson B\nI attend music festivals every year, and over time, it has become something of a personal tradition. I really enjoy the energetic atmosphere where people come together to share music and excitement. This particular festival, however, felt quite different from what I am used to. The weather conditions were less than perfect, though it didn't bother me that much, as I have enjoyed festivals in the rain before. The venue was moderately convenient and the performances themselves were rather unremarkable. To be honest, I doubt I will choose to come back in the future.\nPerson C\nI don't like one particular type of music being played at festivals, as I much prefer a variety of genres to enjoy and dance to. Luckily, this event truly lived up to what I was hoping for. The songs and melodies were absolutely impressive, leaving a strong impression on me. Although there was some rain, I actually felt it made the atmosphere even more vibrant and fun. One drawback, however, was that the ticket price was quite high, which many students, including me, found difficult to afford.\nPerson D\nMy band and I were invited to play at this festival, and we delivered the kind of performance our audience has come to expect from us. The show turned out to be truly memorable, not only because of the energy on stage but also because some of our former members and past collaborators were present. It felt great to reconnect with them and share stories after the performance. The atmosphere overall was very positive, and the crowd seemed to enjoy every moment. The only real challenge was that the venue was located quite far from the main road, which made moving our instruments and equipment rather inconvenient.\n1. Who is disappointed with the weather?\nChọn người\n2. Who was not impressed by the event overall?\nChọn người\n3. Who enjoyed all the music at the music event?\nChọn người\n4. Who thought the event was expensive?\nChọn người\n5. Who likes meeting old friends?\nChọn người\n6. Who thought the location was not good?\nChọn người\n7. Who enjoyed the final day of the music event?\nChọn người",
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "This is my first time going to a concert, and the experience was quite mixed during the first two days. The music was rather ordinary, and the event would have been far more enjoyable if there had been just a little sunshine to brighten things up. Luckily, the last day completely changed my impression, as I finally got to see my favorite singers. Meeting them and enjoying the performances made the whole trip memorable and truly special."
+            },
+            {
+              "label": "Person B",
+              "text": "I attend music festivals every year, and over time, it has become something of a personal tradition. I really enjoy the energetic atmosphere where people come together to share music and excitement. This particular festival, however, felt quite different from what I am used to. The weather conditions were less than perfect, though it didn't bother me that much, as I have enjoyed festivals in the rain before. The venue was moderately convenient and the performances themselves were rather unremarkable. To be honest, I doubt I will choose to come back in the future."
+            },
+            {
+              "label": "Person C",
+              "text": "I don't like one particular type of music being played at festivals, as I much prefer a variety of genres to enjoy and dance to. Luckily, this event truly lived up to what I was hoping for. The songs and melodies were absolutely impressive, leaving a strong impression on me. Although there was some rain, I actually felt it made the atmosphere even more vibrant and fun. One drawback, however, was that the ticket price was quite high, which many students, including me, found difficult to afford."
+            },
+            {
+              "label": "Person D",
+              "text": "My band and I were invited to play at this festival, and we delivered the kind of performance our audience has come to expect from us. The show turned out to be truly memorable, not only because of the energy on stage but also because some of our former members and past collaborators were present. It felt great to reconnect with them and share stories after the performance. The atmosphere overall was very positive, and the crowd seemed to enjoy every moment. The only real challenge was that the venue was located quite far from the main road, which made moving our instruments and equipment rather inconvenient."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 1,
+              "ariaLabel": "Chọn người cho câu 1",
+              "prompt": "Who is disappointed with the weather?",
+              "localNumber": 1,
+              "displayNumber": 1,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 2,
+              "ariaLabel": "Chọn người cho câu 2",
+              "prompt": "Who was not impressed by the event overall?",
+              "localNumber": 2,
+              "displayNumber": 2,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 3,
+              "ariaLabel": "Chọn người cho câu 3",
+              "prompt": "Who enjoyed all the music at the music event?",
+              "localNumber": 3,
+              "displayNumber": 3,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 4,
+              "ariaLabel": "Chọn người cho câu 4",
+              "prompt": "Who thought the event was expensive?",
+              "localNumber": 4,
+              "displayNumber": 4,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 5,
+              "ariaLabel": "Chọn người cho câu 5",
+              "prompt": "Who likes meeting old friends?",
+              "localNumber": 5,
+              "displayNumber": 5,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 6,
+              "ariaLabel": "Chọn người cho câu 6",
+              "prompt": "Who thought the location was not good?",
+              "localNumber": 6,
+              "displayNumber": 6,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 7,
+              "ariaLabel": "Chọn người cho câu 7",
+              "prompt": "Who enjoyed the final day of the music event?",
+              "localNumber": 7,
+              "displayNumber": 7,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person A"
+            },
+            {
+              "number": 2,
+              "answer": "Person B"
+            },
+            {
+              "number": 3,
+              "answer": "Person C"
+            },
+            {
+              "number": 4,
+              "answer": "Person C"
+            },
+            {
+              "number": 5,
+              "answer": "Person D"
+            },
+            {
+              "number": 6,
+              "answer": "Person D"
+            },
+            {
+              "number": 7,
+              "answer": "Person A"
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Music Festival",
+          "instruction": "(Version 2) Read the opinions of four people about a music festival. Match each person with the correct opinion.\n\n💡\nTip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩa\n\nNadia\nI went to the music event and at first, the weather wasn’t very nice. It rained a lot, and everything was wet, which made it a bit uncomfortable to move around. However, on the final day, everything completely changed. The performances were amazing, the crowd was excited, and I really enjoyed myself by the end. Looking back, I’m glad I decided to go.\nCora\nI go to this event every year, and I also attended it again this year. The whole event felt poorly organized, and I didn’t feel the exciting vibe I usually get from live shows. To be honest, I don’t think I’ll come back next year because it wasn’t worth the time and effort.\nAlek\nI’m not keen on one particular type of music, but I decided to go to the event anyway. Every performance was full of energy, and I loved all the music from start to finish. However, I think the ticket price was too expensive, and I ended up spending more than I expected. I hope next year the organizers will consider lowering the fees so more people can attend.\nFarhan\nI was one of the band members playing at the music event. I met some of my old band members, and it was great to perform together again. Even though I enjoyed the music, I didn’t really like the location, as it was far away and difficult to get to. Next time, I hope they will choose a more convenient place to hold the event.\n1. Who enjoyed the final day?\nChọn người\n2. Who is not impressed by the event overall?\nChọn người\n3. Who liked meeting old friends?\nChọn người\n4. Who was disappointed about the weather?\nChọn người\n5. Who thought the fees were expensive?\nChọn người\n6. Who liked all the music of the event?\nChọn người\n7. Who didn’t like the location?\nChọn người",
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "I went to the music event and at first, the weather wasn’t very nice. It rained a lot, and everything was wet, which made it a bit uncomfortable to move around. However, on the final day, everything completely changed. The performances were amazing, the crowd was excited, and I really enjoyed myself by the end. Looking back, I’m glad I decided to go."
+            },
+            {
+              "label": "Person B",
+              "text": "I go to this event every year, and I also attended it again this year. The whole event felt poorly organized, and I didn’t feel the exciting vibe I usually get from live shows. To be honest, I don’t think I’ll come back next year because it wasn’t worth the time and effort."
+            },
+            {
+              "label": "Person C",
+              "text": "I’m not keen on one particular type of music, but I decided to go to the event anyway. Every performance was full of energy, and I loved all the music from start to finish. However, I think the ticket price was too expensive, and I ended up spending more than I expected. I hope next year the organizers will consider lowering the fees so more people can attend."
+            },
+            {
+              "label": "Person D",
+              "text": "I was one of the band members playing at the music event. I met some of my old band members, and it was great to perform together again. Even though I enjoyed the music, I didn’t really like the location, as it was far away and difficult to get to. Next time, I hope they will choose a more convenient place to hold the event."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 1,
+              "ariaLabel": "Chọn người cho câu 1",
+              "prompt": "Who enjoyed the final day?",
+              "localNumber": 1,
+              "displayNumber": 1,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Nadia"
+            },
+            {
+              "number": 2,
+              "ariaLabel": "Chọn người cho câu 2",
+              "prompt": "Who is not impressed by the event overall?",
+              "localNumber": 2,
+              "displayNumber": 2,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Cora"
+            },
+            {
+              "number": 3,
+              "ariaLabel": "Chọn người cho câu 3",
+              "prompt": "Who liked meeting old friends?",
+              "localNumber": 3,
+              "displayNumber": 3,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Farhan"
+            },
+            {
+              "number": 4,
+              "ariaLabel": "Chọn người cho câu 4",
+              "prompt": "Who was disappointed about the weather?",
+              "localNumber": 4,
+              "displayNumber": 4,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Nadia"
+            },
+            {
+              "number": 5,
+              "ariaLabel": "Chọn người cho câu 5",
+              "prompt": "Who thought the fees were expensive?",
+              "localNumber": 5,
+              "displayNumber": 5,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Alek"
+            },
+            {
+              "number": 6,
+              "ariaLabel": "Chọn người cho câu 6",
+              "prompt": "Who liked all the music of the event?",
+              "localNumber": 6,
+              "displayNumber": 6,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Alek"
+            },
+            {
+              "number": 7,
+              "ariaLabel": "Chọn người cho câu 7",
+              "prompt": "Who didn’t like the location?",
+              "localNumber": 7,
+              "displayNumber": 7,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Farhan"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Nadia"
+            },
+            {
+              "number": 2,
+              "answer": "Cora"
+            },
+            {
+              "number": 3,
+              "answer": "Farhan"
+            },
+            {
+              "number": 4,
+              "answer": "Nadia"
+            },
+            {
+              "number": 5,
+              "answer": "Alek"
+            },
+            {
+              "number": 6,
+              "answer": "Alek"
+            },
+            {
+              "number": 7,
+              "answer": "Farhan"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "Music Festival",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "I stayed until the very last moment of the festival and absolutely loved the grand finale. The stage lit up with dazzling lights and fireworks, creating an unforgettable atmosphere. Although getting there was a hassle due to heavy traffic and packed buses, once I arrived, all those inconveniences faded away. In the end, the final performance made every bit of the struggle worthwhile."
+            },
+            {
+              "label": "Person B",
+              "text": "Normally, I steer clear of festivals, but I decided to give this one a try. Unfortunately, I didn’t have a great time. The sound quality was poor, the event schedule seemed chaotic, and to top it off, it started raining heavily. The muddy ground made things even worse, and I spent most of the day feeling uncomfortable. Honestly, I didn’t think it was worth the trouble. The only highlight for me was the beautiful park where the festival took place."
+            },
+            {
+              "label": "Person C",
+              "text": "I really enjoyed the lively atmosphere created by the music. One of the bands on the opening night was so amazing that I couldn’t help but sing along. However, everything was quite expensive. The tickets were pricey, and the food and drinks were ridiculously overcharged. I ended up spending more than I had planned. Even though the performances were great, I do hope the organizers will bring the prices down next year."
+            },
+            {
+              "label": "Person D",
+              "text": "For me, the most memorable part of the festival was its location. The park by the river was vast and picturesque, with plenty of spots to sit and unwind between performances. I enjoyed a nice lunch there, though it was a bit pricey. Some of the shows were enjoyable, but I didn’t stay for the entire event. Overall, it was the venue that left the biggest impression on me."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 1,
+              "ariaLabel": "Chọn người cho câu 1",
+              "prompt": "Who experienced bad weather?",
+              "localNumber": 1,
+              "displayNumber": 1,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 2,
+              "ariaLabel": "Chọn người cho câu 2",
+              "prompt": "Who loved one of the performances?",
+              "localNumber": 2,
+              "displayNumber": 2,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 3,
+              "ariaLabel": "Chọn người cho câu 3",
+              "prompt": "Who thought it was too expensive?",
+              "localNumber": 3,
+              "displayNumber": 3,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 4,
+              "ariaLabel": "Chọn người cho câu 4",
+              "prompt": "Who found the traffic difficult?",
+              "localNumber": 4,
+              "displayNumber": 4,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 5,
+              "ariaLabel": "Chọn người cho câu 5",
+              "prompt": "Who liked the final performance of the show?",
+              "localNumber": 5,
+              "displayNumber": 5,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 6,
+              "ariaLabel": "Chọn người cho câu 6",
+              "prompt": "Who didn’t like the festival overall?",
+              "localNumber": 6,
+              "displayNumber": 6,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 7,
+              "ariaLabel": "Chọn người cho câu 7",
+              "prompt": "Who liked the location?",
+              "localNumber": 7,
+              "displayNumber": 7,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person B"
+            },
+            {
+              "number": 2,
+              "answer": "Person C"
+            },
+            {
+              "number": 3,
+              "answer": "Person C"
+            },
+            {
+              "number": 4,
+              "answer": "Person A"
+            },
+            {
+              "number": 5,
+              "answer": "Person A"
+            },
+            {
+              "number": 6,
+              "answer": "Person B"
+            },
+            {
+              "number": 7,
+              "answer": "Person D"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Childhood",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Childhood",
+          "instruction": "(Version 2) Read the opinions of four people about their childhood. Match each person with the correct opinion.\n\n💡\nTip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩa\n\nPerson A\nAs a child, I spent countless hours playing board games with my friends. The rules were simple and easy to grasp, which made the games enjoyable and accessible. As I grew older, I came to believe that board games could be a wonderful way for families to bond. However, modern games have become far more complex, with numerous rules and a wide range of characters to choose from. Although I truly enjoyed playing with my two boys and we often laughed together, I found that learning how to play required quite a bit of effort.\nPerson B\nI preferred playing outdoors with my friends when I was small. Fortunately, the weather where we lived was usually pleasant, so we often spent hours running around and chasing each other on the field. At times, we would lie down on the grass and make funny faces, enjoying the carefree moments of childhood. Those memories remain incredibly precious to me and shaped my desire to be surrounded by people. Even now, I find it difficult to stay at home alone for long.\nPerson C\nI wasn't able to move much as a child and even now. Instead, I was captivated by books and often preferred reading in my free time. There was a library I frequently visited, where I could lose myself in different stories for hours. Nowadays, I don't read as much as I used to, but I also don't go out very often because I spend time on my computer. I especially enjoy interactive games, as they allow me to socialise and connect with people online.\nPerson D\nI love playing outdoors. On gloomy days, which happened quite often, I would stare sadly out of the window, wishing I could be outside. There wasn't much to do indoors back then-until one day my mother surprised me with a box full of art supplies. Inside were vibrant palettes, paintbrushes of different sizes, and stacks of clean paper. That was the moment I discovered another passion: painting. I could spend hours simply gazing at a blank canvas, imagining what picture I might bring to life next.\n8. Who enjoyed playing games with their children?\nChọn người\n9. Who enjoyed playing with their friends as a child?\nChọn người\n10. Who preferred reading books as a child?\nChọn người\n11. Who enjoyed playing modern games?\nChọn người\n12. Who enjoyed doing arts as a child?\nChọn người\n13. Who thought traditional games were much simpler?\nChọn người\n14. Who wished they could spend more time outdoors?\nChọn người",
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "As a child, I spent countless hours playing board games with my friends. The rules were simple and easy to grasp, which made the games enjoyable and accessible. As I grew older, I came to believe that board games could be a wonderful way for families to bond. However, modern games have become far more complex, with numerous rules and a wide range of characters to choose from. Although I truly enjoyed playing with my two boys and we often laughed together, I found that learning how to play required quite a bit of effort."
+            },
+            {
+              "label": "Person B",
+              "text": "I preferred playing outdoors with my friends when I was small. Fortunately, the weather where we lived was usually pleasant, so we often spent hours running around and chasing each other on the field. At times, we would lie down on the grass and make funny faces, enjoying the carefree moments of childhood. Those memories remain incredibly precious to me and shaped my desire to be surrounded by people. Even now, I find it difficult to stay at home alone for long."
+            },
+            {
+              "label": "Person C",
+              "text": "I wasn't able to move much as a child and even now. Instead, I was captivated by books and often preferred reading in my free time. There was a library I frequently visited, where I could lose myself in different stories for hours. Nowadays, I don't read as much as I used to, but I also don't go out very often because I spend time on my computer. I especially enjoy interactive games, as they allow me to socialise and connect with people online."
+            },
+            {
+              "label": "Person D",
+              "text": "I love playing outdoors. On gloomy days, which happened quite often, I would stare sadly out of the window, wishing I could be outside. There wasn't much to do indoors back then-until one day my mother surprised me with a box full of art supplies. Inside were vibrant palettes, paintbrushes of different sizes, and stacks of clean paper. That was the moment I discovered another passion: painting. I could spend hours simply gazing at a blank canvas, imagining what picture I might bring to life next."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 8,
+              "ariaLabel": "Chọn người cho câu 8",
+              "prompt": "Who enjoyed playing games with their children?",
+              "localNumber": 1,
+              "displayNumber": 8,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 9,
+              "ariaLabel": "Chọn người cho câu 9",
+              "prompt": "Who enjoyed playing with their friends as a child?",
+              "localNumber": 2,
+              "displayNumber": 9,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 10,
+              "ariaLabel": "Chọn người cho câu 10",
+              "prompt": "Who preferred reading books as a child?",
+              "localNumber": 3,
+              "displayNumber": 10,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 11,
+              "ariaLabel": "Chọn người cho câu 11",
+              "prompt": "Who enjoyed playing modern games?",
+              "localNumber": 4,
+              "displayNumber": 11,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 12,
+              "ariaLabel": "Chọn người cho câu 12",
+              "prompt": "Who enjoyed doing arts as a child?",
+              "localNumber": 5,
+              "displayNumber": 12,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 13,
+              "ariaLabel": "Chọn người cho câu 13",
+              "prompt": "Who thought traditional games were much simpler?",
+              "localNumber": 6,
+              "displayNumber": 13,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 14,
+              "ariaLabel": "Chọn người cho câu 14",
+              "prompt": "Who wished they could spend more time outdoors?",
+              "localNumber": 7,
+              "displayNumber": 14,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person A"
+            },
+            {
+              "number": 2,
+              "answer": "Person B"
+            },
+            {
+              "number": 3,
+              "answer": "Person C"
+            },
+            {
+              "number": 4,
+              "answer": "Person C"
+            },
+            {
+              "number": 5,
+              "answer": "Person D"
+            },
+            {
+              "number": 6,
+              "answer": "Person A"
+            },
+            {
+              "number": 7,
+              "answer": "Person D"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "Childhood",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "When I was younger, I watched TV shows about gadgets and inventions with my siblings. Rainy days kept us indoors, and we were always excited for new episodes. These shows sparked my interest in technology. Now, I prefer taking online courses to learn about topics like AI and blockchain. They’re flexible and keep me updated in a fast-changing world."
+            },
+            {
+              "label": "Person B",
+              "text": "When I was a child, I spent hours building and controlling toy robots with my friends. I loved making them move and watching how they worked. These toys helped develop my passion for technology, and I still enjoy exploring new devices and inventions today."
+            },
+            {
+              "label": "Person C",
+              "text": "As a kid, I couldn’t get enough of science magazines — especially ones about robots and computers. They inspired me to think creatively and learn how things work. That early interest stayed with me, and now I develop mobile apps to make everyday life easier. I still find the process just as exciting."
+            },
+            {
+              "label": "Person D",
+              "text": "I grew up playing simple computer games my dad programmed. Now, I enjoy teaching my children how to code using fun and easy platforms like Scratch. These modern tools make it much easier to learn. Coding together helps us bond while developing logical thinking and creativity."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 8,
+              "ariaLabel": "Chọn người cho câu 8",
+              "prompt": "Who now enjoys app development?",
+              "localNumber": 1,
+              "displayNumber": 8,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 9,
+              "ariaLabel": "Chọn người cho câu 9",
+              "prompt": "Who now prefers online learning?",
+              "localNumber": 2,
+              "displayNumber": 9,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 10,
+              "ariaLabel": "Chọn người cho câu 10",
+              "prompt": "Who enjoys coding with family?",
+              "localNumber": 3,
+              "displayNumber": 10,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 11,
+              "ariaLabel": "Chọn người cho câu 11",
+              "prompt": "Who loved science magazines in the past?",
+              "localNumber": 4,
+              "displayNumber": 11,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 12,
+              "ariaLabel": "Chọn người cho câu 12",
+              "prompt": "Who loved watching technology shows as a child?",
+              "localNumber": 5,
+              "displayNumber": 12,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 13,
+              "ariaLabel": "Chọn người cho câu 13",
+              "prompt": "Who loved playing with toy robots as a child?",
+              "localNumber": 6,
+              "displayNumber": 13,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 14,
+              "ariaLabel": "Chọn người cho câu 14",
+              "prompt": "Who finds modern tools more accessible?",
+              "localNumber": 7,
+              "displayNumber": 14,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person C"
+            },
+            {
+              "number": 2,
+              "answer": "Person A"
+            },
+            {
+              "number": 3,
+              "answer": "Person D"
+            },
+            {
+              "number": 4,
+              "answer": "Person C"
+            },
+            {
+              "number": 5,
+              "answer": "Person A"
+            },
+            {
+              "number": 6,
+              "answer": "Person B"
+            },
+            {
+              "number": 7,
+              "answer": "Person D"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Extreme Sports",
+      "availableVersions": [
+        4,
+        3,
+        2,
+        1
+      ],
+      "variantCount": 4,
+      "variants": [
+        {
+          "version": 4,
+          "versionLabel": "v4",
+          "title": "Extreme Sports",
+          "instruction": "(Version 4) Read the opinions of four people about online learning. Match each person with the correct opinion.\n\n💡\nTip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩa\n\nJose\nI don't usually like sports, but once I tried sea diving at the invitation of my friends. I fell in love with this sport ever since my first attempt. Extreme sports can be very dangerous; therefore, before I decided to take it up as a hobby, I made sure that I fully understood all the guidance from my expert trainers, who have years of experience. This helped me improve myself and feel more confident.\nMarisol\nSome people like jumping out of aeroplanes or exploring the sea. I'm a pilot, and I have never understood why people would throw themselves into such danger. I once tried an extreme sport and realised I was right from the beginning. My job is already overwhelming and involves enough risky activities. Now, I prefer something more casual, such as baseball or volleyball.\nBao\nAs a child, I used to play sports because they were part of our school curriculum. I mean, whose school isn't? However, I have never enjoyed those activities. Some students are naturally gifted, as they have strong physiques and are able to endure long running sessions; however, not everyone is the same. For me, these lessons were rather a waste of time, as I preferred staying indoors and reading books.\nSira\nDoing free-diving requires a lot of patience and effort to become proficient. I live far away from the sea, so it is even more difficult for me. I can only do it a few times a year, which is never enough to satisfy my passion. Once I am in the water, I feel at home. I am surrounded by various types of fish and can almost touch them.\n15. Who enjoys doing extreme sports after the first attempt?\nChọn người\n16. Who avoids doing any sports?\nChọn người\n17. Who wishes they were able to do extreme sports more often?\nChọn người\n18. Who enjoys nature while doing sports?\nChọn người\n19. Who thinks training is important before doing extreme sports?\nChọn người\n20. Who prefers traditional sports?\nChọn người\n21. Who always avoids extreme sports?\nChọn người",
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "I don't usually like sports, but once I tried sea diving at the invitation of my friends. I fell in love with this sport ever since my first attempt. Extreme sports can be very dangerous; therefore, before I decided to take it up as a hobby, I made sure that I fully understood all the guidance from my expert trainers, who have years of experience. This helped me improve myself and feel more confident."
+            },
+            {
+              "label": "Person B",
+              "text": "Some people like jumping out of aeroplanes or exploring the sea. I'm a pilot, and I have never understood why people would throw themselves into such danger. I once tried an extreme sport and realised I was right from the beginning. My job is already overwhelming and involves enough risky activities. Now, I prefer something more casual, such as baseball or volleyball."
+            },
+            {
+              "label": "Person C",
+              "text": "As a child, I used to play sports because they were part of our school curriculum. I mean, whose school isn't? However, I have never enjoyed those activities. Some students are naturally gifted, as they have strong physiques and are able to endure long running sessions; however, not everyone is the same. For me, these lessons were rather a waste of time, as I preferred staying indoors and reading books."
+            },
+            {
+              "label": "Person D",
+              "text": "Doing free-diving requires a lot of patience and effort to become proficient. I live far away from the sea, so it is even more difficult for me. I can only do it a few times a year, which is never enough to satisfy my passion. Once I am in the water, I feel at home. I am surrounded by various types of fish and can almost touch them."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 15,
+              "ariaLabel": "Chọn người cho câu 15",
+              "prompt": "Who enjoys doing extreme sports after the first attempt?",
+              "localNumber": 1,
+              "displayNumber": 15,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Jose"
+            },
+            {
+              "number": 16,
+              "ariaLabel": "Chọn người cho câu 16",
+              "prompt": "Who avoids doing any sports?",
+              "localNumber": 2,
+              "displayNumber": 16,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Bao"
+            },
+            {
+              "number": 17,
+              "ariaLabel": "Chọn người cho câu 17",
+              "prompt": "Who wishes they were able to do extreme sports more often?",
+              "localNumber": 3,
+              "displayNumber": 17,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Sira"
+            },
+            {
+              "number": 18,
+              "ariaLabel": "Chọn người cho câu 18",
+              "prompt": "Who enjoys nature while doing sports?",
+              "localNumber": 4,
+              "displayNumber": 18,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Sira"
+            },
+            {
+              "number": 19,
+              "ariaLabel": "Chọn người cho câu 19",
+              "prompt": "Who thinks training is important before doing extreme sports?",
+              "localNumber": 5,
+              "displayNumber": 19,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Jose"
+            },
+            {
+              "number": 20,
+              "ariaLabel": "Chọn người cho câu 20",
+              "prompt": "Who prefers traditional sports?",
+              "localNumber": 6,
+              "displayNumber": 20,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Marisol"
+            },
+            {
+              "number": 21,
+              "ariaLabel": "Chọn người cho câu 21",
+              "prompt": "Who always avoids extreme sports?",
+              "localNumber": 7,
+              "displayNumber": 21,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Marisol"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Jose"
+            },
+            {
+              "number": 2,
+              "answer": "Bao"
+            },
+            {
+              "number": 3,
+              "answer": "Sira"
+            },
+            {
+              "number": 4,
+              "answer": "Sira"
+            },
+            {
+              "number": 5,
+              "answer": "Jose"
+            },
+            {
+              "number": 6,
+              "answer": "Marisol"
+            },
+            {
+              "number": 7,
+              "answer": "Marisol"
+            }
+          ]
+        },
+        {
+          "version": 3,
+          "versionLabel": "v3",
+          "title": "Extreme Sports",
+          "instruction": "(Version 3) Read the opinions of four people about online learning. Match each person with the correct opinion.\n\n💡\nTip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩa\n\nLiam\nBefore trying any extreme sport, I believe it’s absolutely essential to train properly. These kinds of activities are exciting, but they can also be dangerous if you don’t know what you’re doing. I’ve seen people get hurt because they didn’t prepare well. That’s why I always make sure to take a training course and understand the safety rules before I try anything new. With the right preparation, I think extreme sports can be a great experience.\nNoah\nI’ve always been more into traditional sports like swimming, running, or playing tennis. They’re fun and easy to do regularly. But a few months ago, I went bungee jumping during a holiday, and it was an incredible experience. I didn’t expect to enjoy it so much! I still prefer regular sports for everyday fitness, but now I’m definitely more open to trying extreme sports once in a while for the adventure.\nSophia\nWhat I love most about extreme sports is how they let me enjoy nature in a different way. Activities like rock climbing or mountain biking allow me to explore amazing places while challenging myself physically and mentally. It’s a way to disconnect from daily life and feel completely alive. If I had more time and money, I’d love to do these kinds of sports more often, especially in wild, remote areas.\nOlivia\nI know some people find extreme sports exciting, but for me, they’ve never been important. I actually avoid them as much as possible. I don’t like the idea of putting myself in danger just for fun. There are plenty of safer ways to stay active and enjoy life. I’d rather go for a walk or do yoga than jump out of a plane or climb a mountain. It’s just not my thing.\n15. Who still likes extreme sports after playing once?\nChọn người\n16. Who enjoys nature?\nChọn người\n17. Who finds extreme sports unimportant?\nChọn người\n18. Who finds training before participating is important?\nChọn người\n19. Who wants to play more extreme sports?\nChọn người\n20. Who likes traditional sports like swimming?\nChọn người\n21. Who always avoid playing extreme sports?\nChọn người",
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "Before trying any extreme sport, I believe it’s absolutely essential to train properly. These kinds of activities are exciting, but they can also be dangerous if you don’t know what you’re doing. I’ve seen people get hurt because they didn’t prepare well. That’s why I always make sure to take a training course and understand the safety rules before I try anything new. With the right preparation, I think extreme sports can be a great experience."
+            },
+            {
+              "label": "Person B",
+              "text": "I’ve always been more into traditional sports like swimming, running, or playing tennis. They’re fun and easy to do regularly. But a few months ago, I went bungee jumping during a holiday, and it was an incredible experience. I didn’t expect to enjoy it so much! I still prefer regular sports for everyday fitness, but now I’m definitely more open to trying extreme sports once in a while for the adventure."
+            },
+            {
+              "label": "Person C",
+              "text": "What I love most about extreme sports is how they let me enjoy nature in a different way. Activities like rock climbing or mountain biking allow me to explore amazing places while challenging myself physically and mentally. It’s a way to disconnect from daily life and feel completely alive. If I had more time and money, I’d love to do these kinds of sports more often, especially in wild, remote areas."
+            },
+            {
+              "label": "Person D",
+              "text": "I know some people find extreme sports exciting, but for me, they’ve never been important. I actually avoid them as much as possible. I don’t like the idea of putting myself in danger just for fun. There are plenty of safer ways to stay active and enjoy life. I’d rather go for a walk or do yoga than jump out of a plane or climb a mountain. It’s just not my thing."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 15,
+              "ariaLabel": "Chọn người cho câu 15",
+              "prompt": "Who still likes extreme sports after playing once?",
+              "localNumber": 1,
+              "displayNumber": 15,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Noah"
+            },
+            {
+              "number": 16,
+              "ariaLabel": "Chọn người cho câu 16",
+              "prompt": "Who enjoys nature?",
+              "localNumber": 2,
+              "displayNumber": 16,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Sophia"
+            },
+            {
+              "number": 17,
+              "ariaLabel": "Chọn người cho câu 17",
+              "prompt": "Who finds extreme sports unimportant?",
+              "localNumber": 3,
+              "displayNumber": 17,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Olivia"
+            },
+            {
+              "number": 18,
+              "ariaLabel": "Chọn người cho câu 18",
+              "prompt": "Who finds training before participating is important?",
+              "localNumber": 4,
+              "displayNumber": 18,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Liam"
+            },
+            {
+              "number": 19,
+              "ariaLabel": "Chọn người cho câu 19",
+              "prompt": "Who wants to play more extreme sports?",
+              "localNumber": 5,
+              "displayNumber": 19,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Sophia"
+            },
+            {
+              "number": 20,
+              "ariaLabel": "Chọn người cho câu 20",
+              "prompt": "Who likes traditional sports like swimming?",
+              "localNumber": 6,
+              "displayNumber": 20,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Noah"
+            },
+            {
+              "number": 21,
+              "ariaLabel": "Chọn người cho câu 21",
+              "prompt": "Who always avoid playing extreme sports?",
+              "localNumber": 7,
+              "displayNumber": 21,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Olivia"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Noah"
+            },
+            {
+              "number": 2,
+              "answer": "Sophia"
+            },
+            {
+              "number": 3,
+              "answer": "Olivia"
+            },
+            {
+              "number": 4,
+              "answer": "Liam"
+            },
+            {
+              "number": 5,
+              "answer": "Sophia"
+            },
+            {
+              "number": 6,
+              "answer": "Noah"
+            },
+            {
+              "number": 7,
+              "answer": "Olivia"
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Extreme Sports",
+          "instruction": "(Version 2) Read the opinions of four people about extreme sports. Match each person with the correct opinion.\n\n💡\nTip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩa\n\nPerson A\nI had never tried any extreme sports before. One day, my friend, who was training to become a professional skydiver, invited me to join him. At first, I was really nervous when I had to jump out of the plane, and for a few seconds, I felt both scared and unsure of myself. It is crucial to perfect these skills again and again until we feel completely confident. Once I was flying freely in the sky, I suddenly felt relaxed and excited at the same time. The wonderful view above the clouds gave me a unique sense of freedom. After finishing my first skydiving experience, I realized that I truly liked extreme sports and I would be very happy to do them again in the future.\nPerson B\nI have rarely taken part in extreme sports because I know they usually need both time and money. However, last summer I decided go underwater diving. It was one of the most wonderful experiences of my life. When I was swimming below the surface, I could touch many beautifully coloured fish moving gracefully around me. I felt completely amazed by the beauty of nature under the sea and realized how relaxing it was just to watch these creatures in their own environment. I believe underwater sports are truly great, and I think we should take part in them more often.\nPerson C\nI work as a pilot, and my job is already very challenging and exciting every single day. For that reason, I feel that extreme sports are not necessary for me. I do not want to spend my free time taking part in dangerous activities that could add extra risk to my life. However, I still wanted to do something healthy, so I decided to try swimming and basketball instead. Both of these traditional sports turned out to be fantastic choices. When I swim, I feel refreshed, and my whole body becomes stronger. Playing basketball with friends also gives me energy and makes me feel relaxed after a long flight. These activities are much safer than extreme sports but still very enjoyable. I can honestly say that I do not regret choosing them, because they help me stay both fit and happy without needing to take unnecessary risks.\nPerson D\nI have never been interested in playing extreme sports because I don’t like the idea of putting myself in danger just for fun. For me, there are so many safer ways to stay active and enjoy life without having to jump out of a plane or climb a mountain. I always prefer simple and relaxing activities such as going for a walk in the park or practicing yoga at home. These activities make me feel healthy and calm at the same time. After a long and tiring day at work, I like lying down on my bed or sofa, reading a book that I enjoy.\n15. Who finds training before participating important?\nChọn người\n16. Who likes traditional sports?\nChọn người\n17. Who still likes extreme sports after playing once?\nChọn người\n18. Who enjoys nature?\nChọn người\n19. Who wants to play more extreme sports?\nChọn người\n20. Who finds extreme sports unimportant?\nChọn người\n21. Who always avoids playing extreme sports?\nChọn người",
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "I had never tried any extreme sports before. One day, my friend, who was training to become a professional skydiver, invited me to join him. At first, I was really nervous when I had to jump out of the plane, and for a few seconds, I felt both scared and unsure of myself. It is crucial to perfect these skills again and again until we feel completely confident. Once I was flying freely in the sky, I suddenly felt relaxed and excited at the same time. The wonderful view above the clouds gave me a unique sense of freedom. After finishing my first skydiving experience, I realized that I truly liked extreme sports and I would be very happy to do them again in the future."
+            },
+            {
+              "label": "Person B",
+              "text": "I have rarely taken part in extreme sports because I know they usually need both time and money. However, last summer I decided go underwater diving. It was one of the most wonderful experiences of my life. When I was swimming below the surface, I could touch many beautifully coloured fish moving gracefully around me. I felt completely amazed by the beauty of nature under the sea and realized how relaxing it was just to watch these creatures in their own environment. I believe underwater sports are truly great, and I think we should take part in them more often."
+            },
+            {
+              "label": "Person C",
+              "text": "I work as a pilot, and my job is already very challenging and exciting every single day. For that reason, I feel that extreme sports are not necessary for me. I do not want to spend my free time taking part in dangerous activities that could add extra risk to my life. However, I still wanted to do something healthy, so I decided to try swimming and basketball instead. Both of these traditional sports turned out to be fantastic choices. When I swim, I feel refreshed, and my whole body becomes stronger. Playing basketball with friends also gives me energy and makes me feel relaxed after a long flight. These activities are much safer than extreme sports but still very enjoyable. I can honestly say that I do not regret choosing them, because they help me stay both fit and happy without needing to take unnecessary risks."
+            },
+            {
+              "label": "Person D",
+              "text": "I have never been interested in playing extreme sports because I don’t like the idea of putting myself in danger just for fun. For me, there are so many safer ways to stay active and enjoy life without having to jump out of a plane or climb a mountain. I always prefer simple and relaxing activities such as going for a walk in the park or practicing yoga at home. These activities make me feel healthy and calm at the same time. After a long and tiring day at work, I like lying down on my bed or sofa, reading a book that I enjoy."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 15,
+              "ariaLabel": "Chọn người cho câu 15",
+              "prompt": "Who finds training before participating important?",
+              "localNumber": 1,
+              "displayNumber": 15,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 16,
+              "ariaLabel": "Chọn người cho câu 16",
+              "prompt": "Who likes traditional sports?",
+              "localNumber": 2,
+              "displayNumber": 16,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 17,
+              "ariaLabel": "Chọn người cho câu 17",
+              "prompt": "Who still likes extreme sports after playing once?",
+              "localNumber": 3,
+              "displayNumber": 17,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 18,
+              "ariaLabel": "Chọn người cho câu 18",
+              "prompt": "Who enjoys nature?",
+              "localNumber": 4,
+              "displayNumber": 18,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 19,
+              "ariaLabel": "Chọn người cho câu 19",
+              "prompt": "Who wants to play more extreme sports?",
+              "localNumber": 5,
+              "displayNumber": 19,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 20,
+              "ariaLabel": "Chọn người cho câu 20",
+              "prompt": "Who finds extreme sports unimportant?",
+              "localNumber": 6,
+              "displayNumber": 20,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 21,
+              "ariaLabel": "Chọn người cho câu 21",
+              "prompt": "Who always avoids playing extreme sports?",
+              "localNumber": 7,
+              "displayNumber": 21,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person A"
+            },
+            {
+              "number": 2,
+              "answer": "Person C"
+            },
+            {
+              "number": 3,
+              "answer": "Person A"
+            },
+            {
+              "number": 4,
+              "answer": "Person B"
+            },
+            {
+              "number": 5,
+              "answer": "Person B"
+            },
+            {
+              "number": 6,
+              "answer": "Person C"
+            },
+            {
+              "number": 7,
+              "answer": "Person D"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "Extreme Sports",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "For me, the most important thing about extreme sports is being well-prepared. Many people think it’s all about excitement and courage, but I don’t see it that way. Without proper training, it’s easy to get hurt or even put others at risk. I once took a rock-climbing course and spent weeks learning how to use the equipment correctly. After that, the actual climb was much more enjoyable because I felt confident. I believe training not only keeps you safe but also makes the experience more relaxed and rewarding."
+            },
+            {
+              "label": "Person B",
+              "text": "I’ve always preferred traditional sports like swimming and running because they help me stay healthy without being too risky. Still, I was curious about how extreme sports might feel, so I tried bungee jumping during a holiday last year. At first, I was really nervous, but once I jumped, the feeling was incredible. It was a kind of thrill I had never felt before. Even so, I still swim every week because it’s safer and more practical, though I admit extreme sports can be exciting to try at least once."
+            },
+            {
+              "label": "Person C",
+              "text": "Honestly, I don’t really understand why people enjoy extreme sports. They seem dangerous and unnecessary to me. I’ve never tried one, and I don’t intend to. Some friends have invited me to go snowboarding or paragliding, but I always refuse. It’s not that I dislike sports—I actually enjoy cycling and tennis—but I just don’t see any reason to risk my health for a few seconds of excitement. In my opinion, extreme sports aren’t essential for happiness, so I stay away from them whenever I can."
+            },
+            {
+              "label": "Person D",
+              "text": "What I love most about extreme sports is that they often take place in beautiful natural settings. Last summer, I went kayaking on a wild river, and the scenery was breathtaking. I also tried mountain biking through the forest and loved the feeling of fresh air and freedom. For me, it’s not just about the sport itself but also about being surrounded by mountains, trees, and rivers. I sometimes wish I had more time and money to do these activities more often. Extreme sports give me energy and make me feel close to nature."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 15,
+              "ariaLabel": "Chọn người cho câu 15",
+              "prompt": "Who thinks preparation is necessary before doing extreme sports?",
+              "localNumber": 1,
+              "displayNumber": 15,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 16,
+              "ariaLabel": "Chọn người cho câu 16",
+              "prompt": "Who usually does ordinary sports?",
+              "localNumber": 2,
+              "displayNumber": 16,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 17,
+              "ariaLabel": "Chọn người cho câu 17",
+              "prompt": "Who once tried an extreme sport and enjoyed it?",
+              "localNumber": 3,
+              "displayNumber": 17,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 18,
+              "ariaLabel": "Chọn người cho câu 18",
+              "prompt": "Who enjoys being outdoors when doing extreme sports?",
+              "localNumber": 4,
+              "displayNumber": 18,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 19,
+              "ariaLabel": "Chọn người cho câu 19",
+              "prompt": "Who wishes to do more extreme sports in the future?",
+              "localNumber": 5,
+              "displayNumber": 19,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 20,
+              "ariaLabel": "Chọn người cho câu 20",
+              "prompt": "Who believes extreme sports are not important?",
+              "localNumber": 6,
+              "displayNumber": 20,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 21,
+              "ariaLabel": "Chọn người cho câu 21",
+              "prompt": "Who always avoids extreme sports?",
+              "localNumber": 7,
+              "displayNumber": 21,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person A"
+            },
+            {
+              "number": 2,
+              "answer": "Person B"
+            },
+            {
+              "number": 3,
+              "answer": "Person B"
+            },
+            {
+              "number": 4,
+              "answer": "Person D"
+            },
+            {
+              "number": 5,
+              "answer": "Person D"
+            },
+            {
+              "number": 6,
+              "answer": "Person C"
+            },
+            {
+              "number": 7,
+              "answer": "Person C"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Volunteering",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Volunteering",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "I understand many young people like volunteering abroad, because it gives them the chance to experience different cultures in real life. Working with local people helps volunteers understand traditions and daily habits better. However, I believe volunteering should not only be about cultural experience. It should also focus on supporting local communities by meeting real needs, such as education or environmental projects, so both volunteers and local people benefit."
+            },
+            {
+              "label": "Person B",
+              "text": "My mother was very involved with local charities, which influenced my view on volunteering. I think volunteering helps people develop useful skills like communication and teamwork, which can be helpful for future careers. In addition, it is a great way to make new friends, as volunteers often work closely together and share similar values. This social connection makes volunteering more enjoyable and meaningful."
+            },
+            {
+              "label": "Person C",
+              "text": "I'm busy with work these days, so I don't always have time to volunteer in person. However, I believe people can still help by donating money to reliable organizations. Financial support allows charities to continue their projects and help more people. Even small donations can make a positive difference, especially when many people contribute together."
+            },
+            {
+              "label": "Person D",
+              "text": "I don't have many financial resources, so I prefer to volunteer my time and effort instead. Volunteering gives me a good reason to travel and explore new places while helping others. Many volunteer activities also involve physical work, which is good for my health. For me, volunteering brings both physical benefits and meaningful travel experiences."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 22,
+              "ariaLabel": "Chọn người cho câu 22",
+              "prompt": "Who thinks volunteering is a good way to make friends?",
+              "localNumber": 1,
+              "displayNumber": 22,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Emilia"
+            },
+            {
+              "number": 23,
+              "ariaLabel": "Chọn người cho câu 23",
+              "prompt": "Who thinks volunteering can help advance a career?",
+              "localNumber": 2,
+              "displayNumber": 23,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Emilia"
+            },
+            {
+              "number": 24,
+              "ariaLabel": "Chọn người cho câu 24",
+              "prompt": "Who thinks volunteering can be helped by giving money?",
+              "localNumber": 3,
+              "displayNumber": 24,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Noah"
+            },
+            {
+              "number": 25,
+              "ariaLabel": "Chọn người cho câu 25",
+              "prompt": "Who thinks volunteering is a good reason to travel?",
+              "localNumber": 4,
+              "displayNumber": 25,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Chinua"
+            },
+            {
+              "number": 26,
+              "ariaLabel": "Chọn người cho câu 26",
+              "prompt": "Who thinks volunteering is good for culture?",
+              "localNumber": 5,
+              "displayNumber": 26,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Boyd"
+            },
+            {
+              "number": 27,
+              "ariaLabel": "Chọn người cho câu 27",
+              "prompt": "Who thinks volunteering has physical benefits?",
+              "localNumber": 6,
+              "displayNumber": 27,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Chinua"
+            },
+            {
+              "number": 28,
+              "ariaLabel": "Chọn người cho câu 28",
+              "prompt": "Who thinks volunteering should help local communities?",
+              "localNumber": 7,
+              "displayNumber": 28,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Boyd"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Emilia"
+            },
+            {
+              "number": 2,
+              "answer": "Emilia"
+            },
+            {
+              "number": 3,
+              "answer": "Noah"
+            },
+            {
+              "number": 4,
+              "answer": "Chinua"
+            },
+            {
+              "number": 5,
+              "answer": "Boyd"
+            },
+            {
+              "number": 6,
+              "answer": "Chinua"
+            },
+            {
+              "number": 7,
+              "answer": "Boyd"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "Volunteering",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "Some people enjoy volunteering abroad, but honestly, I feel most people are more interested in travelling. I believe we should use our time more meaningfully. Each town has many people in need. Their situations are difficult, and they don’t have the means to improve their quality of life. They are individuals who have contributed a lot to the country. Sharing stories with them helps us understand the differences between generations. We can also broaden our knowledge about local history, traditions, and culture through their experiences."
+            },
+            {
+              "label": "Person B",
+              "text": "My mother told me to do local volunteering because she is part of that organisation, but I’m not into it. I prefer volunteering abroad because I can develop soft skills – something that will benefit my future career. Also, meeting new people helps me expand my network and create valuable connections I can use later in my professional life."
+            },
+            {
+              "label": "Person C",
+              "text": "I’m too busy and rarely have any free time to do anything, so spending even a few hours volunteering is difficult. I would have to take half a day off work. I see many people in need and they genuinely require some extra financial support. That’s something I can help with because I earn a good salary. Making monthly donations is not a problem for me – it's how I show my support and contribution."
+            },
+            {
+              "label": "Person D",
+              "text": "I believe there are many ways we can show kindness through volunteering. I'm retired now, and I currently help build houses for people in need. I work with a volunteering organisation that already has clear plans in place. Through this work, I’ve had the chance to experience different foreign cultures. We’re often sent to various countries to carry out these projects, so it’s also a great way to travel while doing something meaningful. The job involves manual labour, so we’re able to improve our physical health – something that some people only begin to notice after a while."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 22,
+              "ariaLabel": "Chọn người cho câu 22",
+              "prompt": "Who wants to enhance future career?",
+              "localNumber": 1,
+              "displayNumber": 22,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 23,
+              "ariaLabel": "Chọn người cho câu 23",
+              "prompt": "Who helps support charity work with money?",
+              "localNumber": 2,
+              "displayNumber": 23,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 24,
+              "ariaLabel": "Chọn người cho câu 24",
+              "prompt": "Who thinks it should help local community?",
+              "localNumber": 3,
+              "displayNumber": 24,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 25,
+              "ariaLabel": "Chọn người cho câu 25",
+              "prompt": "Who thinks volunteering helps improve physical health?",
+              "localNumber": 4,
+              "displayNumber": 25,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 26,
+              "ariaLabel": "Chọn người cho câu 26",
+              "prompt": "Who thinks it can improve knowledge about culture?",
+              "localNumber": 5,
+              "displayNumber": 26,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 27,
+              "ariaLabel": "Chọn người cho câu 27",
+              "prompt": "Who thinks it is a way to travel?",
+              "localNumber": 6,
+              "displayNumber": 27,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 28,
+              "ariaLabel": "Chọn người cho câu 28",
+              "prompt": "Who wants to make new friends?",
+              "localNumber": 7,
+              "displayNumber": 28,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person B"
+            },
+            {
+              "number": 2,
+              "answer": "Person C"
+            },
+            {
+              "number": 3,
+              "answer": "Person A"
+            },
+            {
+              "number": 4,
+              "answer": "Person D"
+            },
+            {
+              "number": 5,
+              "answer": "Person A"
+            },
+            {
+              "number": 6,
+              "answer": "Person D"
+            },
+            {
+              "number": 7,
+              "answer": "Person B"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Technology In Childhood",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Technology In Childhood",
+          "instruction": "(Version 2) Read the opinions of four people about technology in childhood. Match each person with the correct opinion.\n\n💡\nTip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩa\n\nPerson A\nWhen I was a child, I enjoyed building simple circuits with my parents using basic kits. Today, I collaborate on tech projects with my cousins using drag-and-drop coding platforms. These tools make the development process easier, but I always take the time to thoroughly test our creations. It’s a wonderful way to foster creativity and work together.\nPerson B\nAs a kid, I played with programmable toys like robotic pets alongside my friends. I can still recall the excitement of programming their movements. Those toys sparked my interest in logic and curiosity, and I continue to cherish those early experiences with technology.\nPerson C\nGrowing up, I was fascinated by books about inventors and their innovative creations. Those stories inspired my imagination. Today, I design prototypes using 3D modeling software. The tools are much more precise now, but the joy of creating something new still feels just like the excitement of those childhood books.\nPerson D\nI spent many hours as a child exploring my family’s old computer, learning basic commands. Rainy days often meant staying indoors and experimenting with different software. Today, I keep up with the latest innovations by listening to tech podcasts. They’re not only entertaining but also help me stay connected to the ever-evolving tech world.\n29. Who now enjoys 3D modeling?\nChọn người\n30. Who finds modern platforms user-friendly?\nChọn người\n31. Who loved playing with programmable toys as a child?\nChọn người\n32. Who loved exploring early computers as a child?\nChọn người\n33. Who enjoys creating tech projects with family?\nChọn người\n34. Who loved reading about inventions as a child?\nChọn người\n35. Who now prefers tech podcasts?\nChọn người",
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "When I was a child, I enjoyed building simple circuits with my parents using basic kits. Today, I collaborate on tech projects with my cousins using drag-and-drop coding platforms. These tools make the development process easier, but I always take the time to thoroughly test our creations. It’s a wonderful way to foster creativity and work together."
+            },
+            {
+              "label": "Person B",
+              "text": "As a kid, I played with programmable toys like robotic pets alongside my friends. I can still recall the excitement of programming their movements. Those toys sparked my interest in logic and curiosity, and I continue to cherish those early experiences with technology."
+            },
+            {
+              "label": "Person C",
+              "text": "Growing up, I was fascinated by books about inventors and their innovative creations. Those stories inspired my imagination. Today, I design prototypes using 3D modeling software. The tools are much more precise now, but the joy of creating something new still feels just like the excitement of those childhood books."
+            },
+            {
+              "label": "Person D",
+              "text": "I spent many hours as a child exploring my family’s old computer, learning basic commands. Rainy days often meant staying indoors and experimenting with different software. Today, I keep up with the latest innovations by listening to tech podcasts. They’re not only entertaining but also help me stay connected to the ever-evolving tech world."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 29,
+              "ariaLabel": "Chọn người cho câu 29",
+              "prompt": "Who now enjoys 3D modeling?",
+              "localNumber": 1,
+              "displayNumber": 29,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 30,
+              "ariaLabel": "Chọn người cho câu 30",
+              "prompt": "Who finds modern platforms user-friendly?",
+              "localNumber": 2,
+              "displayNumber": 30,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 31,
+              "ariaLabel": "Chọn người cho câu 31",
+              "prompt": "Who loved playing with programmable toys as a child?",
+              "localNumber": 3,
+              "displayNumber": 31,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 32,
+              "ariaLabel": "Chọn người cho câu 32",
+              "prompt": "Who loved exploring early computers as a child?",
+              "localNumber": 4,
+              "displayNumber": 32,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 33,
+              "ariaLabel": "Chọn người cho câu 33",
+              "prompt": "Who enjoys creating tech projects with family?",
+              "localNumber": 5,
+              "displayNumber": 33,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 34,
+              "ariaLabel": "Chọn người cho câu 34",
+              "prompt": "Who loved reading about inventions as a child?",
+              "localNumber": 6,
+              "displayNumber": 34,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 35,
+              "ariaLabel": "Chọn người cho câu 35",
+              "prompt": "Who now prefers tech podcasts?",
+              "localNumber": 7,
+              "displayNumber": 35,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person C"
+            },
+            {
+              "number": 2,
+              "answer": "Person A"
+            },
+            {
+              "number": 3,
+              "answer": "Person B"
+            },
+            {
+              "number": 4,
+              "answer": "Person D"
+            },
+            {
+              "number": 5,
+              "answer": "Person A"
+            },
+            {
+              "number": 6,
+              "answer": "Person C"
+            },
+            {
+              "number": 7,
+              "answer": "Person D"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "Technology In Childhood",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "When I was young, I enjoyed playing simple computer games that my dad had programmed for me. Today, I teach my children to code using easy-to-use platforms like Scratch. These tools make learning programming enjoyable, though I spend time helping them grasp the logic behind it. Working together on coding fosters both creativity and teamwork."
+            },
+            {
+              "label": "Person B",
+              "text": "As a child, I loved spending time with my friends, building and controlling toy robots. I’ll never forget the thrill of making them move. Those experiences sparked my passion for technology, and I still look back fondly on those moments of discovery."
+            },
+            {
+              "label": "Person C",
+              "text": "When I was younger, I was fascinated by science magazines about robots and computers. The articles fueled my curiosity. Now, I develop mobile apps, creating tools for daily life. Thanks to modern software, the development process has become faster, but the excitement of innovation remains the same."
+            },
+            {
+              "label": "Person D",
+              "text": "As a kid, I spent rainy days with my siblings watching TV shows about gadgets and inventions. We eagerly awaited each new episode. Today, I prefer taking online courses to stay up-to-date with AI and blockchain. They offer flexibility and are a great way to keep pace with the rapidly changing tech world."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 29,
+              "ariaLabel": "Chọn người cho câu 29",
+              "prompt": "Who finds modern tools more accessible?",
+              "localNumber": 1,
+              "displayNumber": 29,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 30,
+              "ariaLabel": "Chọn người cho câu 30",
+              "prompt": "Who now enjoys app development?",
+              "localNumber": 2,
+              "displayNumber": 30,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 31,
+              "ariaLabel": "Chọn người cho câu 31",
+              "prompt": "Who loved playing with toy robots as a child?",
+              "localNumber": 3,
+              "displayNumber": 31,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 32,
+              "ariaLabel": "Chọn người cho câu 32",
+              "prompt": "Who loved watching tech shows as a child?",
+              "localNumber": 4,
+              "displayNumber": 32,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 33,
+              "ariaLabel": "Chọn người cho câu 33",
+              "prompt": "Who now prefers online learning?",
+              "localNumber": 5,
+              "displayNumber": 33,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 34,
+              "ariaLabel": "Chọn người cho câu 34",
+              "prompt": "Who enjoys coding with family?",
+              "localNumber": 6,
+              "displayNumber": 34,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 35,
+              "ariaLabel": "Chọn người cho câu 35",
+              "prompt": "Who loved science magazines as a child?",
+              "localNumber": 7,
+              "displayNumber": 35,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person A"
+            },
+            {
+              "number": 2,
+              "answer": "Person C"
+            },
+            {
+              "number": 3,
+              "answer": "Person B"
+            },
+            {
+              "number": 4,
+              "answer": "Person D"
+            },
+            {
+              "number": 5,
+              "answer": "Person D"
+            },
+            {
+              "number": 6,
+              "answer": "Person A"
+            },
+            {
+              "number": 7,
+              "answer": "Person C"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Job And Trainning",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Job And Trainning",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "When I first graduated from school, I was undecided about what to do, so I joined several volunteer programs for many companies and organizations to gain experience. I liked volunteering because it helped me choose a career and gave me many valuable experiences. I also believe I was able to help people through my work."
+            },
+            {
+              "label": "Person B",
+              "text": "When I was at school, I already knew I wanted to become a teacher, so I didn’t need experience in another field. I chose to study education at university, and in my country this is also free. Last summer, I did practical training in some schools, and it was very useful for my future job."
+            },
+            {
+              "label": "Person C",
+              "text": "When I was young, I often helped my neighbor, a plumber, with jobs like measuring pipes, opening screws, and working with tools. I think it was very natural for me to learn this job, and later I studied two years at university to become an electrician. Now, I know there are some short courses in this field, and I regret not choosing them instead."
+            },
+            {
+              "label": "Person D",
+              "text": "After graduation, it was very hard to find a job. I applied to many companies, but I was not accepted because I had no experience. Later, I worked for a gaming company from home. It did not affect my schedule, and I worked at night while my colleagues worked in the day — but I was fine with it."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 36,
+              "ariaLabel": "Chọn người cho câu 36",
+              "prompt": "Who thinks they benefited from working for free?",
+              "localNumber": 1,
+              "displayNumber": 36,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 37,
+              "ariaLabel": "Chọn người cho câu 37",
+              "prompt": "Who did not want to choose another job?",
+              "localNumber": 2,
+              "displayNumber": 37,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 38,
+              "ariaLabel": "Chọn người cho câu 38",
+              "prompt": "Who enjoys working during their training?",
+              "localNumber": 3,
+              "displayNumber": 38,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 39,
+              "ariaLabel": "Chọn người cho câu 39",
+              "prompt": "Who likes working with their hands?",
+              "localNumber": 4,
+              "displayNumber": 39,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 40,
+              "ariaLabel": "Chọn người cho câu 40",
+              "prompt": "Who thinks their training was too long?",
+              "localNumber": 5,
+              "displayNumber": 40,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 41,
+              "ariaLabel": "Chọn người cho câu 41",
+              "prompt": "Who thinks it is very hard to get your first job?",
+              "localNumber": 6,
+              "displayNumber": 41,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 42,
+              "ariaLabel": "Chọn người cho câu 42",
+              "prompt": "Who enjoys working in a flexible working environment?",
+              "localNumber": 7,
+              "displayNumber": 42,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person A"
+            },
+            {
+              "number": 2,
+              "answer": "Person B"
+            },
+            {
+              "number": 3,
+              "answer": "Person B"
+            },
+            {
+              "number": 4,
+              "answer": "Person C"
+            },
+            {
+              "number": 5,
+              "answer": "Person C"
+            },
+            {
+              "number": 6,
+              "answer": "Person D"
+            },
+            {
+              "number": 7,
+              "answer": "Person D"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Choosing A Career",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Choosing A Career",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "When I finished school, I didn't really know what I wanted to do. Some people advised me to get a job right away. However, I preferred to gain some practical experience first. That's why I applied for many volunteering roles. Even though I didn't earn any money, I was able to try different kinds of work. Looking back, I'm happy with my decision because of the useful knowledge I gained."
+            },
+            {
+              "label": "Person B",
+              "text": "I went straight to university after I graduated from high school. I had always wanted to become a teacher, so there was no need to look at other careers. Three months ago, I joined an internship at a local school. It was really an eye-opening experience, although the workload was heavier than I thought. Still, I believe it was very worthwhile."
+            },
+            {
+              "label": "Person C",
+              "text": "As a child, I lived near a plumber and sometimes worked with her. She asked me to do easy jobs like checking for pipe leaks or fastening the nails with a screw. So later, it felt natural for me to study at university to become an electrician. Now that I see there are short online electrical courses, I wish I had chosen that instead."
+            },
+            {
+              "label": "Person D",
+              "text": "After school, I wanted some time to figure out what I really wanted. So I started looking for temporary jobs. However, it was difficult to find one because most companies didn't accept people without experience. In the end, a game company contacted me and I agreed to work with them. The job was hybrid, so sometimes I worked in the evenings, but that was fine for me."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 43,
+              "ariaLabel": "Chọn người cho câu 43",
+              "prompt": "Who did not want to change to other careers?",
+              "localNumber": 1,
+              "displayNumber": 43,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 44,
+              "ariaLabel": "Chọn người cho câu 44",
+              "prompt": "Who thinks it was hard to get the first job?",
+              "localNumber": 2,
+              "displayNumber": 44,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 45,
+              "ariaLabel": "Chọn người cho câu 45",
+              "prompt": "Who enjoys working in a flexible work environment?",
+              "localNumber": 3,
+              "displayNumber": 45,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 46,
+              "ariaLabel": "Chọn người cho câu 46",
+              "prompt": "Who enjoyed doing things with their hands?",
+              "localNumber": 4,
+              "displayNumber": 46,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 47,
+              "ariaLabel": "Chọn người cho câu 47",
+              "prompt": "Who thinks their training was too long?",
+              "localNumber": 5,
+              "displayNumber": 47,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 48,
+              "ariaLabel": "Chọn người cho câu 48",
+              "prompt": "Who enjoyed working when training?",
+              "localNumber": 6,
+              "displayNumber": 48,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 49,
+              "ariaLabel": "Chọn người cho câu 49",
+              "prompt": "Who thinks they benefited from working for free?",
+              "localNumber": 7,
+              "displayNumber": 49,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person B"
+            },
+            {
+              "number": 2,
+              "answer": "Person D"
+            },
+            {
+              "number": 3,
+              "answer": "Person D"
+            },
+            {
+              "number": 4,
+              "answer": "Person C"
+            },
+            {
+              "number": 5,
+              "answer": "Person C"
+            },
+            {
+              "number": 6,
+              "answer": "Person B"
+            },
+            {
+              "number": 7,
+              "answer": "Person A"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "Choosing A Career",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "She had just graduated from university, but instead of immediately starting a paid job, she chose to volunteer for several charity organizations. She strongly believed that working without pay could help her gain valuable skills and real-world experience. She also felt that the personal satisfaction she received was more rewarding than money at that stage of her life. Her friends sometimes questioned her choice, but she remained confident that this path would eventually benefit her career in the long run."
+            },
+            {
+              "label": "Person B",
+              "text": "From the very beginning of her studies, she had always planned to become a teacher. After finishing university, she decided to follow this career path without hesitation. She worked as a trainee in several schools and enjoyed every single moment of her training. The children, the classroom atmosphere, and even the daily challenges motivated her a lot. She described the whole process as exciting and truly rewarding, which confirmed that she had made the right career decision."
+            },
+            {
+              "label": "Person C",
+              "text": "He had worked for years as a manual laborer, mainly as a plumber, but he wanted a fresh start in his career. Eventually, he decided to take a professional course to become an electrician. The program was designed to last for two months, but he was very eager to finish it earlier so that he could start working as soon as possible. Although the training required a lot of effort, he was determined to succeed. Changing jobs was not easy, but he felt it was the right move for his future."
+            },
+            {
+              "label": "Person D",
+              "text": "After graduation, she faced many difficulties in finding a job because her work experience was very limited. She sent out dozens of applications but received very few replies. Finally, she managed to find some freelance opportunities online. She could complete her tasks from home in the evenings, which gave her a lot of flexibility. Although she still hoped for a permanent position, she appreciated the freedom and independence that freelance work provided."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 43,
+              "ariaLabel": "Chọn người cho câu 43",
+              "prompt": "Who worked without pay?",
+              "localNumber": 1,
+              "displayNumber": 43,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 44,
+              "ariaLabel": "Chọn người cho câu 44",
+              "prompt": "Who was enthusiastic throughout her training?",
+              "localNumber": 2,
+              "displayNumber": 44,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 45,
+              "ariaLabel": "Chọn người cho câu 45",
+              "prompt": "Who did manual work?",
+              "localNumber": 3,
+              "displayNumber": 45,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 46,
+              "ariaLabel": "Chọn người cho câu 46",
+              "prompt": "Who wanted to finish his training earlier?",
+              "localNumber": 4,
+              "displayNumber": 46,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 47,
+              "ariaLabel": "Chọn người cho câu 47",
+              "prompt": "Who struggled to find a job after graduation?",
+              "localNumber": 5,
+              "displayNumber": 47,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 48,
+              "ariaLabel": "Chọn người cho câu 48",
+              "prompt": "Who stayed in the same career path she had chosen before?",
+              "localNumber": 6,
+              "displayNumber": 48,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 49,
+              "ariaLabel": "Chọn người cho câu 49",
+              "prompt": "Who worked in a flexible environment?",
+              "localNumber": 7,
+              "displayNumber": 49,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person A"
+            },
+            {
+              "number": 2,
+              "answer": "Person B"
+            },
+            {
+              "number": 3,
+              "answer": "Person C"
+            },
+            {
+              "number": 4,
+              "answer": "Person C"
+            },
+            {
+              "number": 5,
+              "answer": "Person D"
+            },
+            {
+              "number": 6,
+              "answer": "Person B"
+            },
+            {
+              "number": 7,
+              "answer": "Person D"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Free Time Activities",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Free Time Activities",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "As a teenager, I truly enjoyed recording short stories on a simple tape recorder together with my cousins. We often spent hours coming up with ideas and acting them out. Now, we create podcasts using modern apps that simplify editing and publishing, making the whole process smoother and more enjoyable. Although the technology helps a lot, we still devote plenty of time to planning episodes carefully. For me, podcasting has become a creative way to share ideas and connect with others on a deeper level."
+            },
+            {
+              "label": "Person B",
+              "text": "When I was young, I spent many sunny afternoons flying kites in the park with my siblings. Watching my kite soar high into the sky always filled me with joy and excitement. Those simple but memorable moments taught me valuable lessons about patience and coordination. Even today, whenever I see children in the park with their kites, I feel a sense of nostalgia and warmth. Those carefree days remain some of my most cherished childhood memories."
+            },
+            {
+              "label": "Person C",
+              "text": "As a kid, I was completely fascinated by solving jigsaw puzzles with my family. The challenge of carefully fitting the pieces together gave me both fun and satisfaction. Now that I am older, I find myself playing strategy-based video games, which I see as a kind of digital puzzle. They are not only entertaining but also help to keep my mind sharp and focused. These games give me the same sense of challenge and achievement that puzzles once did, but in a more dynamic and interactive form."
+            },
+            {
+              "label": "Person D",
+              "text": "Growing up near a beautiful lake, I used to go swimming almost every day with my friends. It was my favorite way to spend time outdoors, although rainy days often kept me inside feeling restless and bored. Nowadays, I practice yoga at home as a way to relax and recharge after long hours of work. Yoga has taught me how to stay calm, balanced, and focused, and it has become an important part of my daily routine for both my physical and mental health."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 50,
+              "ariaLabel": "Chọn người cho câu 50",
+              "prompt": "Who now prefers yoga?",
+              "localNumber": 1,
+              "displayNumber": 50,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 51,
+              "ariaLabel": "Chọn người cho câu 51",
+              "prompt": "Who finds modern apps easier to use?",
+              "localNumber": 2,
+              "displayNumber": 51,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 52,
+              "ariaLabel": "Chọn người cho câu 52",
+              "prompt": "Who loved kite flying as a child?",
+              "localNumber": 3,
+              "displayNumber": 52,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 53,
+              "ariaLabel": "Chọn người cho câu 53",
+              "prompt": "Who loved swimming as a child?",
+              "localNumber": 4,
+              "displayNumber": 53,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 54,
+              "ariaLabel": "Chọn người cho câu 54",
+              "prompt": "Who loved puzzles as a child?",
+              "localNumber": 5,
+              "displayNumber": 54,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 55,
+              "ariaLabel": "Chọn người cho câu 55",
+              "prompt": "Who enjoys podcasting with friends?",
+              "localNumber": 6,
+              "displayNumber": 55,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 56,
+              "ariaLabel": "Chọn người cho câu 56",
+              "prompt": "Who now enjoys video games?",
+              "localNumber": 7,
+              "displayNumber": 56,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person D"
+            },
+            {
+              "number": 2,
+              "answer": "Person A"
+            },
+            {
+              "number": 3,
+              "answer": "Person B"
+            },
+            {
+              "number": 4,
+              "answer": "Person D"
+            },
+            {
+              "number": 5,
+              "answer": "Person C"
+            },
+            {
+              "number": 6,
+              "answer": "Person A"
+            },
+            {
+              "number": 7,
+              "answer": "Person C"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Childhood Memories",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Childhood Memories",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "As a child, I loved listening to my grandfather's folktales by the fireplace, and I can still remember his voice making every character come alive. Those evenings felt magical and taught me the value of imagination. Now, I spend time with my nieces, reading interactive storybooks on tablets. Digital books with animations and sounds make the stories more vivid, and the children find them exciting. However, I always choose carefully to make sure the content is age-appropriate. For me, this mix of tradition and modern technology is a wonderful way to share stories across generations."
+            },
+            {
+              "label": "Person B",
+              "text": "When I was young, I rode my bike through the village with my friends almost every afternoon. I still remember the wind in my hair, the thrill of racing, and the sense of freedom it gave me. Those simple rides taught me independence and adventure, shaping how I face challenges later in life. Sadly, children today often spend more time indoors with screens instead of outside. I sometimes miss those carefree days when joy came from simple things like a bicycle ride. Looking back, I believe those childhood experiences helped me appreciate the outdoors and value friendship deeply."
+            },
+            {
+              "label": "Person C",
+              "text": "As a kid, I could spend hours sketching animals, trees, and landscapes with crayons and pencils. The bright colors and shapes always inspired me, and I enjoyed showing my drawings to family members. Over time, that passion grew into something more serious. Today, I work as a graphic designer, creating digital art for different clients. Using software tools allows me to make my designs more precise, but the sense of creativity feels just the same as when I was a child. Drawing has always been my way of expressing ideas, and it continues to bring me happiness every day."
+            },
+            {
+              "label": "Person D",
+              "text": "When I was a child, I loved camping trips in the countryside with my family. We set up tents, cooked outdoors, and spent hours staring at the stars. Those experiences made me feel close to nature and gave me lasting memories. Of course, bad weather sometimes forced us to stay indoors, which always left me a little disappointed. Nowadays, instead of outdoor adventures, I enjoy visiting museums and exhibitions. Learning about history through artifacts and stories gives me the same sense of wonder, but in a calmer and more comfortable environment. For me, museums are a peaceful way to explore the past."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 57,
+              "ariaLabel": "Chọn người cho câu 57",
+              "prompt": "Who loved camping as a child?",
+              "localNumber": 1,
+              "displayNumber": 57,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 58,
+              "ariaLabel": "Chọn người cho câu 58",
+              "prompt": "Who enjoys storytelling with family?",
+              "localNumber": 2,
+              "displayNumber": 58,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 59,
+              "ariaLabel": "Chọn người cho câu 59",
+              "prompt": "Who loved drawing as a child?",
+              "localNumber": 3,
+              "displayNumber": 59,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 60,
+              "ariaLabel": "Chọn người cho câu 60",
+              "prompt": "Who loved bike riding as a child?",
+              "localNumber": 4,
+              "displayNumber": 60,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 61,
+              "ariaLabel": "Chọn người cho câu 61",
+              "prompt": "Who now enjoys graphic design?",
+              "localNumber": 5,
+              "displayNumber": 61,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 62,
+              "ariaLabel": "Chọn người cho câu 62",
+              "prompt": "Who finds modern books more engaging?",
+              "localNumber": 6,
+              "displayNumber": 62,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 63,
+              "ariaLabel": "Chọn người cho câu 63",
+              "prompt": "Who now prefers museum visits?",
+              "localNumber": 7,
+              "displayNumber": 63,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person D"
+            },
+            {
+              "number": 2,
+              "answer": "Person A"
+            },
+            {
+              "number": 3,
+              "answer": "Person C"
+            },
+            {
+              "number": 4,
+              "answer": "Person B"
+            },
+            {
+              "number": 5,
+              "answer": "Person C"
+            },
+            {
+              "number": 6,
+              "answer": "Person A"
+            },
+            {
+              "number": 7,
+              "answer": "Person D"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Work Life Balance",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Work Life Balance",
+          "instruction": null,
+          "part": 4,
+          "type": "MATCHING",
+          "answerBadge": "PART 4 - MATCHING",
+          "people": [
+            {
+              "label": "Person A",
+              "text": "When I was little, I loved playing board games with my parents after they got home from work. Now, I do the same with my own children, and my four-day workweek gives us even more time together. Having a flexible schedule helps, but I still plan carefully to keep a good balance between my job and family life. These moments mean a lot and leave lasting memories."
+            },
+            {
+              "label": "Person B",
+              "text": "As a child, I used to play pretend offices with my friends, using toy phones and notebooks. I liked being the \"boss\" and organizing tasks. Those playful moments actually taught me how to be organized and lead others - I still laugh when I think about how serious our \"meetings\" were."
+            },
+            {
+              "label": "Person C",
+              "text": "When I was a kid, I loved reading books about different professions and imagining what I'd be when I grew up. Those stories inspired me to be ambitious. Now, I use productivity apps to manage my work during a four-day work week. They make things more efficient, but I still feel that same excitement I had when planning my future."
+            },
+            {
+              "label": "Person D",
+              "text": "As a child, I spent my evenings playing tag with neighborhood friends. On rainy days, I often felt bored staying indoors. Nowadays, I practice mindfulness to relax after work. It keeps me focused and energized, especially since my shorter workweek allows more time to recharge."
+            }
+          ],
+          "questionCount": 7,
+          "questions": [
+            {
+              "number": 64,
+              "ariaLabel": "Chọn người cho câu 64",
+              "prompt": "Who enjoys family time with board games?",
+              "localNumber": 1,
+              "displayNumber": 64,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 65,
+              "ariaLabel": "Chọn người cho câu 65",
+              "prompt": "Who finds modern schedules more flexible?",
+              "localNumber": 2,
+              "displayNumber": 65,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person A"
+            },
+            {
+              "number": 66,
+              "ariaLabel": "Chọn người cho câu 66",
+              "prompt": "Who loved organizing pretend offices as a child?",
+              "localNumber": 3,
+              "displayNumber": 66,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person B"
+            },
+            {
+              "number": 67,
+              "ariaLabel": "Chọn người cho câu 67",
+              "prompt": "Who loved reading about careers as a child?",
+              "localNumber": 4,
+              "displayNumber": 67,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 68,
+              "ariaLabel": "Chọn người cho câu 68",
+              "prompt": "Who now enjoys productivity apps?",
+              "localNumber": 5,
+              "displayNumber": 68,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person C"
+            },
+            {
+              "number": 69,
+              "ariaLabel": "Chọn người cho câu 69",
+              "prompt": "Who loved outdoor play as a child?",
+              "localNumber": 6,
+              "displayNumber": 69,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            },
+            {
+              "number": 70,
+              "ariaLabel": "Chọn người cho câu 70",
+              "prompt": "Who now prefers mindfulness practices?",
+              "localNumber": 7,
+              "displayNumber": 70,
+              "options": [
+                "Person A",
+                "Person B",
+                "Person C",
+                "Person D"
+              ],
+              "correctAnswer": "Person D"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Person A"
+            },
+            {
+              "number": 2,
+              "answer": "Person A"
+            },
+            {
+              "number": 3,
+              "answer": "Person B"
+            },
+            {
+              "number": 4,
+              "answer": "Person C"
+            },
+            {
+              "number": 5,
+              "answer": "Person C"
+            },
+            {
+              "number": 6,
+              "answer": "Person D"
+            },
+            {
+              "number": 7,
+              "answer": "Person D"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "extractedAt": "2026-08-25T18:36:05.009Z"
+}

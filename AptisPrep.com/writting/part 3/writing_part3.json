@@ -1,0 +1,1166 @@
+{
+  "part": 3,
+  "topicCount": 38,
+  "lessonCount": 48,
+  "nonNullPartCount": 45,
+  "topics": [
+    {
+      "topic": "ART CLUB",
+      "sourceFile": "ART CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of the art club. You are talking to three other members in the art club chat room.",
+            "content": [
+              "Use 30 - 40 words.",
+              "A: I kept a painting for a long time. Tell me a thing that you have had for a long time.",
+              "B: I would like to learn painting, but I have not found an effective way. Should I take a course at my local college? Please, give me some advice.",
+              "C: Street art – where people paint on the building – is becoming popular. However, some people criticise that it is bad. What is your opinion?"
+            ],
+            "items": [
+              "Use 30 - 40 words.",
+              "A: I kept a painting for a long time. Tell me a thing that you have had for a long time.",
+              "B: I would like to learn painting, but I have not found an effective way. Should I take a course at my local college? Please, give me some advice.",
+              "C: Street art – where people paint on the building – is becoming popular. However, some people criticise that it is bad. What is your opinion?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "BEAUTIFUL HOMES CLUB",
+      "sourceFile": "Beautiful Homes Club.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "A: I have a bad relationship with my neighbours because they often make noise. Tell me, how is your relationship with your neighbours?",
+              "B: Do you prefer living in old buildings or modern buildings? Why?",
+              "C: The house should be designed in a way that is good for the environment. Do you agree?"
+            ],
+            "items": [
+              "A: I have a bad relationship with my neighbours because they often make noise. Tell me, how is your relationship with your neighbours?",
+              "B: Do you prefer living in old buildings or modern buildings? Why?",
+              "C: The house should be designed in a way that is good for the environment. Do you agree?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "BOOK CLUB",
+      "sourceFile": "BOOK CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are talking to other members of the club in the chat room. Talk to them using sentences. Use 30 – 40 words per answer.",
+            "content": [
+              "A: Hi! I like reading fiction books. What genre of books do you like to read?",
+              "B: Hi! I would like to give my friend a book. What would you suggest for me to buy?",
+              "C: Online books replace traditional books? What do you think about that?"
+            ],
+            "items": [
+              "A: Hi! I like reading fiction books. What genre of books do you like to read?",
+              "B: Hi! I would like to give my friend a book. What would you suggest for me to buy?",
+              "C: Online books replace traditional books? What do you think about that?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "BUSINESS CLUB",
+      "sourceFile": "Business Club.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "A: I want to open a coffee shop; give me some suggestions.",
+              "B: There are already 2 food stores in town. I want to open another one. What do you think?",
+              "C: What is your idea for doing a small business?"
+            ],
+            "items": [
+              "A: I want to open a coffee shop; give me some suggestions.",
+              "B: There are already 2 food stores in town. I want to open another one. What do you think?",
+              "C: What is your idea for doing a small business?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "CAR CLUB",
+      "sourceFile": "CAR CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "A: Tell me about a time you travelled by car.",
+              "B: Tell me about memories from when travelling by car.",
+              "C: Should we take public transportation or buy a car?"
+            ],
+            "items": [
+              "A: Tell me about a time you travelled by car.",
+              "B: Tell me about memories from when travelling by car.",
+              "C: Should we take public transportation or buy a car?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "CINEMA CLUB",
+      "sourceFile": "CINEMA CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a cinema club. You are talking to three other members in the cinema club chat room. Talk to them using sentences.",
+            "content": [
+              "A: I like to sit near the screen when I go to the cinema. I never drink or eat anything during the film. What about you?",
+              "B: I don’t like watching old black-and-white movies. They are boring. I prefer modern films. Which do you prefer, and why?",
+              "C: Some people say we don’t need cinemas anymore. Can we watch everything on TV or online at home? What do you think about this?"
+            ],
+            "items": [
+              "A: I like to sit near the screen when I go to the cinema. I never drink or eat anything during the film. What about you?",
+              "B: I don’t like watching old black-and-white movies. They are boring. I prefer modern films. Which do you prefer, and why?",
+              "C: Some people say we don’t need cinemas anymore. Can we watch everything on TV or online at home? What do you think about this?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "COLLEGE",
+      "sourceFile": "COLLEGE.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "Hi! Welcome to college. What course are you doing, and why did you choose it?",
+              "Welcome! How do you feel about the college so far?",
+              "Did you hear that the college sports club has closed? What do you think about this?"
+            ],
+            "items": [
+              "Hi! Welcome to college. What course are you doing, and why did you choose it?",
+              "Welcome! How do you feel about the college so far?",
+              "Did you hear that the college sports club has closed? What do you think about this?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "COMMUNITY CLUB",
+      "sourceFile": "COMMUNITY CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a community club. You are talking to three other members in the Community Club chat room. Talk to them using sentences. Use 30–40 words.",
+            "content": [
+              "A: My friend wants to go to the hair salon, but her car isn't working. Can you suggest some ways for her to get there?",
+              "B: Volunteering provides great learning opportunities and helps others a lot. Do you agree with this?",
+              "C: Do you agree with the view that volunteering is a form of learning, especially for young people? Why?"
+            ],
+            "items": [
+              "A: My friend wants to go to the hair salon, but her car isn't working. Can you suggest some ways for her to get there?",
+              "B: Volunteering provides great learning opportunities and helps others a lot. Do you agree with this?",
+              "C: Do you agree with the view that volunteering is a form of learning, especially for young people? Why?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "COMPUTER CLUB",
+      "sourceFile": "COMPUTER CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a music club. You are talking to three other members in the music club chat room. Talk to them using sentences.",
+            "content": [
+              "(30-40 words/1 question, word limit 60/1 question)",
+              "Kim: I love new technology. Can you please tell me about the last time you used a computer to do something?",
+              "Marco: My grandmother doesn’t know anything about computers? How can she learn about them? What should she do?",
+              "Sylvia: Young people spend too much time using computers. Some say it is not good for them. What is your opinion?"
+            ],
+            "items": [
+              "(30-40 words/1 question, word limit 60/1 question)",
+              "Kim: I love new technology. Can you please tell me about the last time you used a computer to do something?",
+              "Marco: My grandmother doesn’t know anything about computers? How can she learn about them? What should she do?",
+              "Sylvia: Young people spend too much time using computers. Some say it is not good for them. What is your opinion?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "DEBATE CLUB",
+      "sourceFile": "DEBATE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a book club. You are talking to three other members in the book club chat room. Talk to them using sentences. Use 30 – 40 words.",
+            "content": [
+              "A: Hi! Nowadays, there are many ways to update news. How do you keep up with world issues?",
+              "B: I am going to have a debate in front of 50 people. I am wondering about how to make a good impression, do you have any advice for me?",
+              "C: Before making a decision, people should think about two sides of the argument. Do you agree? Why or why not?"
+            ],
+            "items": [
+              "A: Hi! Nowadays, there are many ways to update news. How do you keep up with world issues?",
+              "B: I am going to have a debate in front of 50 people. I am wondering about how to make a good impression, do you have any advice for me?",
+              "C: Before making a decision, people should think about two sides of the argument. Do you agree? Why or why not?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "DESIGN CLUB",
+      "sourceFile": "DESIGN CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "ENGLISH CLUB",
+      "sourceFile": "ENGLISH CLUB.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Phiên bản 1",
+          "part": {
+            "header": "Part 3. You are talking to other members of the club in the chat room. Reply to their question. Write in sentences. Use 30 – 40 words per answer.",
+            "content": [
+              "Tell me about your English learning experience?",
+              "I can read and write, but I can't speak English. Do you have any advice for me?",
+              "English is a popular language in the world. What are your thoughts on this opinion?"
+            ],
+            "items": [
+              "Tell me about your English learning experience?",
+              "I can read and write, but I can't speak English. Do you have any advice for me?",
+              "English is a popular language in the world. What are your thoughts on this opinion?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Phiên bản 2:",
+          "part": {
+            "header": "Part 3. You are talking to other members of the club in the chat room. Reply to their question. Write in sentences. Use 30 – 40 words per answer.",
+            "content": [
+              "Tell me about your English learning experience?",
+              "I can read and write, but I can't speak English. Do you have any advice for me?",
+              "English is a popular language in the world. What are your thoughts on this opinion?"
+            ],
+            "items": [
+              "Tell me about your English learning experience?",
+              "I can read and write, but I can't speak English. Do you have any advice for me?",
+              "English is a popular language in the world. What are your thoughts on this opinion?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Exercise Club",
+      "sourceFile": "EXERCISE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "FASHION CLUB",
+      "sourceFile": "Fashion club.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a fashion club. You are talking to three other members in the fashion club chat room. Talk to them using sentences. Use 30 - 40 words.",
+            "content": [
+              "A: Some people like to buy clothes to try on themselves. Some prefer to buy online. How do you like it and why?",
+              "B: Hi! Why did you decide to join the club?",
+              "C: Why do people like fashion?"
+            ],
+            "items": [
+              "A: Some people like to buy clothes to try on themselves. Some prefer to buy online. How do you like it and why?",
+              "B: Hi! Why did you decide to join the club?",
+              "C: Why do people like fashion?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Film Club",
+      "sourceFile": "FILM CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3. You are a member of a film club. You are talking to three other members in the food club chat room. Talk to them using sentences.",
+            "content": [
+              "Hi. Welcome to the club. How often do you watch films?",
+              "Hi. Can you remember the first film that you watched? What was it like?",
+              "What would you like to learn from the film club?"
+            ],
+            "items": [
+              "Hi. Welcome to the club. How often do you watch films?",
+              "Hi. Can you remember the first film that you watched? What was it like?",
+              "What would you like to learn from the film club?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Finding a house",
+      "sourceFile": "FINDING HOUSE.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "A: Do you have a question you need a consultant to answer?",
+              "B: How do you feel about the newly rented room?",
+              "C: What is your requirement in a room?"
+            ],
+            "items": [
+              "A: Do you have a question you need a consultant to answer?",
+              "B: How do you feel about the newly rented room?",
+              "C: What is your requirement in a room?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "FITNESS CLUB",
+      "sourceFile": "FITNESS CLUB_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Part 4 (base)",
+          "part": {
+            "header": "Part 3: You are a member of a fitness club. You are talking to three other members in the fitness club chat room. Talk to them using sentences.",
+            "content": [
+              "A: I live in a tall building, I usually walk downstairs to exercise, how do you usually exercise?",
+              "B: I usually get up early to run in the morning because I usually get tired in the evening. What about you?",
+              "C: Nowadays, technology makes people's lives easier, but it also makes them lazy and dislike exercise. Do you agree with this opinion?"
+            ],
+            "items": [
+              "A: I live in a tall building, I usually walk downstairs to exercise, how do you usually exercise?",
+              "B: I usually get up early to run in the morning because I usually get tired in the evening. What about you?",
+              "C: Nowadays, technology makes people's lives easier, but it also makes them lazy and dislike exercise. Do you agree with this opinion?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Part 4 (phiên bản 2):",
+          "part": {
+            "header": "Part 3: You are a member of a fitness club. You are talking to three other members in the fitness club chat room. Talk to them using sentences.",
+            "content": [
+              "A: I live in a tall building, I usually walk downstairs to exercise, how do you usually exercise?",
+              "B: I usually get up early to run in the morning because I usually get tired in the evening. What about you?",
+              "C: Nowadays, technology makes people's lives easier, but it also makes them lazy and dislike exercise. Do you agree with this opinion?"
+            ],
+            "items": [
+              "A: I live in a tall building, I usually walk downstairs to exercise, how do you usually exercise?",
+              "B: I usually get up early to run in the morning because I usually get tired in the evening. What about you?",
+              "C: Nowadays, technology makes people's lives easier, but it also makes them lazy and dislike exercise. Do you agree with this opinion?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "FOOD CLUB (COOKING CLUB)",
+      "sourceFile": "FOOD CLUB (COOKING CLUB)_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "PHIÊN BẢN 1:",
+          "part": {
+            "header": "Part 3. You are communicating with other members of the club in the chat room. Reply to their questions. Write in sentences. Use 30–40 words per answer.",
+            "content": [
+              "﻿﻿﻿Tell me the last time you had a good meal?",
+              "﻿﻿﻿I want to visit your country? Do you have any suggestions for me on what delicious food to eat?",
+              "Today, many people eat pizza. But it is not healthy, and they should limit eating it. What is your opinion?"
+            ],
+            "items": [
+              "﻿﻿﻿Tell me the last time you had a good meal?",
+              "﻿﻿﻿I want to visit your country? Do you have any suggestions for me on what delicious food to eat?",
+              "Today, many people eat pizza. But it is not healthy, and they should limit eating it. What is your opinion?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "PHIÊN BẢN 2:",
+          "part": {
+            "header": "Part 3: You are a member of a cooking club. You are talking to three other members in the club chat room. Talk to them using sentences.",
+            "content": [
+              "A: What do you eat when you don’t have much time to cook?",
+              "B: What do you prefer? Buy food at some small local shops or supermarkets?",
+              "C: Cooking is an important skill for children to study at school. What do you think?"
+            ],
+            "items": [
+              "A: What do you eat when you don’t have much time to cook?",
+              "B: What do you prefer? Buy food at some small local shops or supermarkets?",
+              "C: Cooking is an important skill for children to study at school. What do you think?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "GARDEN CLUB",
+      "sourceFile": "GARDEN CLUB.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Phiên bản 1:",
+          "part": {
+            "header": "Part 3: You are a member of the garden club. You are talking to three other members in the garden club chat room. Talk to them using sentences. Use 30 – 40 words.",
+            "content": [
+              "A: Describe your garden?",
+              "B: Do people in your country like gardening?",
+              "C: What is your favorite season? Why?"
+            ],
+            "items": [
+              "A: Describe your garden?",
+              "B: Do people in your country like gardening?",
+              "C: What is your favorite season? Why?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Phiên bản 2:",
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "3.1 I don't live in the countryside, so when I want to appreciate nature, I have to go to the park. How about you?",
+              "3.2 I am planning to buy a house. Do you think I should buy a house with a garden or without a garden?",
+              "3.3 People should pay a small fee to maintain public parks and gardens. What do you think?"
+            ],
+            "items": [
+              "3.1 I don't live in the countryside, so when I want to appreciate nature, I have to go to the park. How about you?",
+              "3.2 I am planning to buy a house. Do you think I should buy a house with a garden or without a garden?",
+              "3.3 People should pay a small fee to maintain public parks and gardens. What do you think?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "HEALTH CLUB",
+      "sourceFile": "HEALTH CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a health club. You are talking to three other members in the health club chat room. Talk to them using sentences.",
+            "content": [
+              "A: Hi! Welcome to the club. How did you hear about the club?",
+              "B: Hi! What do you hope to achieve by joining the club?",
+              "C: What do you think of the health club facilities? Should we change anything?"
+            ],
+            "items": [
+              "A: Hi! Welcome to the club. How did you hear about the club?",
+              "B: Hi! What do you hope to achieve by joining the club?",
+              "C: What do you think of the health club facilities? Should we change anything?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Home living Club",
+      "sourceFile": "HOME LIVING CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "A: You have to stay in the bedroom but have to share with your brother. How do you feel?",
+              "B: It is better to live in the city than in the countryside. Do you agree? Why?",
+              "C: Nowadays, old buildings are demolished and replaced with modern buildings. I feel we should protect historic buildings. What do you think?"
+            ],
+            "items": [
+              "A: You have to stay in the bedroom but have to share with your brother. How do you feel?",
+              "B: It is better to live in the city than in the countryside. Do you agree? Why?",
+              "C: Nowadays, old buildings are demolished and replaced with modern buildings. I feel we should protect historic buildings. What do you think?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "LANGUAGE CLUB",
+      "sourceFile": "LANGUAGE CLUB (2 phi#U00ean b#U1ea3n).docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "PHIÊN BẢN 1:",
+          "part": {
+            "header": "Part 3: You are a member of the language club. You are talking to three other members in the language club chat room. Talk to them using sentences.",
+            "content": [
+              "A: Why did you choose this course?",
+              "B: How have you found the course so far? What’s been difficult?",
+              "C: What are you hoping to do when you finish the course?"
+            ],
+            "items": [
+              "A: Why did you choose this course?",
+              "B: How have you found the course so far? What’s been difficult?",
+              "C: What are you hoping to do when you finish the course?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "PHIÊN BẢN 2:",
+          "part": {
+            "header": "Part 3: You are a member of the language club. You are talking to three other members in the language club chat room. Talk to them using sentences.",
+            "content": [
+              "A: I used to learn French and found it very interesting. Tell me about a memory you have with a foreign language.",
+              "B: I am very forgetful. Can you give me some tips on how to remember new words?",
+              "C: Some people learn English through videos and reading books. However, there are also many private classes and teachers. What do you think is the most effective way to learn?"
+            ],
+            "items": [
+              "A: I used to learn French and found it very interesting. Tell me about a memory you have with a foreign language.",
+              "B: I am very forgetful. Can you give me some tips on how to remember new words?",
+              "C: Some people learn English through videos and reading books. However, there are also many private classes and teachers. What do you think is the most effective way to learn?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "LITERATURE CLUB",
+      "sourceFile": "LITERATURE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "MOVIE CLUB",
+      "sourceFile": "MOVIE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a movie club. You are talking to three other members in the movie club chat room. Talk to them using sentences. Use 30 - 40 words.",
+            "content": [
+              "A: Hi! When and where do you usually watch movies?",
+              "B: I want to make movies for young children. Give me some suggestions.",
+              "C: How do you think technology affects the way we watch movies in the future?"
+            ],
+            "items": [
+              "A: Hi! When and where do you usually watch movies?",
+              "B: I want to make movies for young children. Give me some suggestions.",
+              "C: How do you think technology affects the way we watch movies in the future?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "MUSEUM CLUB",
+      "sourceFile": "MUSEUM CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a museum club. You are talking to three other members in the museum club chat room. Talk to them using sentences. Use 30 – 40 words.",
+            "content": [
+              "A: I went to the museum at school. How was the time when you visited the museum when you were a child?",
+              "B: I want to take my children to a museum, but I don’t know which, the History Museum or the Sports Museum. Can you give me advice?",
+              "C: Nowadays, many museums use technology to create online exhibitions. Do you think that will be successful?"
+            ],
+            "items": [
+              "A: I went to the museum at school. How was the time when you visited the museum when you were a child?",
+              "B: I want to take my children to a museum, but I don’t know which, the History Museum or the Sports Museum. Can you give me advice?",
+              "C: Nowadays, many museums use technology to create online exhibitions. Do you think that will be successful?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "MUSIC CLUB",
+      "sourceFile": "MUSIC CLUB.docx",
+      "lessonCount": 3,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "PHIÊN BẢN 1:",
+          "part": {
+            "header": "Part 3: You are a member of a music club. You are talking to three other members in the music club chat room. Talk to them using sentences.",
+            "content": [
+              "A: There are songs that make me relax and there are songs that make me sad. What about you?",
+              "B: Playing loud music annoys people around you; what do you think?",
+              "C: I want to learn how to play music, and I want to find a good teacher. Can you give me some advice?"
+            ],
+            "items": [
+              "A: There are songs that make me relax and there are songs that make me sad. What about you?",
+              "B: Playing loud music annoys people around you; what do you think?",
+              "C: I want to learn how to play music, and I want to find a good teacher. Can you give me some advice?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "PHIÊN BẢN 2:",
+          "part": {
+            "header": "Part 3: You are a member of a music club. You are talking to three other members in the music club chat room. Talk to them using sentences.",
+            "content": [
+              "A: Hi! How often do you listen to music?",
+              "B: I plan to give my son music lessons, but he doesn’t like it. What should I do?",
+              "C: Do you agree that music is important in cultural differences?"
+            ],
+            "items": [
+              "A: Hi! How often do you listen to music?",
+              "B: I plan to give my son music lessons, but he doesn’t like it. What should I do?",
+              "C: Do you agree that music is important in cultural differences?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 3,
+          "lessonLabel": "Bài 3",
+          "sourceVersion": 3,
+          "sourceVersionLabel": "PHIÊN BẢN 3:",
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "A: My grandmother often sang to me when I was little. She has a beautiful voice. Tell me about a good memory of yours.",
+              "B: Playing loud music annoys people around you; what do you think?",
+              "C: Music taste differs with each generation. What is your opinion?"
+            ],
+            "items": [
+              "A: My grandmother often sang to me when I was little. She has a beautiful voice. Tell me about a good memory of yours.",
+              "B: Playing loud music annoys people around you; what do you think?",
+              "C: Music taste differs with each generation. What is your opinion?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "NATURE CLUB",
+      "sourceFile": "NATURE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a nature club. You are talking to three other members in the nature club chat room. Talk to them using sentences. Use 30 – 40 words.",
+            "content": [
+              "A: Hi! Welcome to the club. Where do you like to visit?",
+              "B: Hi! Why did you decide to join the club?",
+              "C: The bigger the club, the more environmentally conscious people are, right?"
+            ],
+            "items": [
+              "A: Hi! Welcome to the club. Where do you like to visit?",
+              "B: Hi! Why did you decide to join the club?",
+              "C: The bigger the club, the more environmentally conscious people are, right?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "OUTDOOR CLUB",
+      "sourceFile": "OUTDOOR CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of an outdoor club. You are talking to three other members in the outdoor club chat room. Talk to them using sentences. Use 30 – 40 words.",
+            "content": [
+              "A: Hi! Welcome to the club. Tell me about the outdoor activities in the bad weather.",
+              "B: Hi! Please give your ideas and advice for hiking.",
+              "C: What are the most popular outdoor activities in your country?"
+            ],
+            "items": [
+              "A: Hi! Welcome to the club. Tell me about the outdoor activities in the bad weather.",
+              "B: Hi! Please give your ideas and advice for hiking.",
+              "C: What are the most popular outdoor activities in your country?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "PHOTOGRAPHY CLUB",
+      "sourceFile": "PHOTOGRAPHY CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a photography club. You are talking to three other members in the photography club chat room. Talk to them using sentences.",
+            "content": [
+              "Sajed: My favorite family photograph is a picture of me when I was a child. Can you tell me about one of your family photos?",
+              "B: I often save my photos as files on my computer or print them out. How do you save your photos?",
+              "Chris: People are always taking photos of themselves with their phones these days. Do you think this is a good thing? Why or why not?"
+            ],
+            "items": [
+              "Sajed: My favorite family photograph is a picture of me when I was a child. Can you tell me about one of your family photos?",
+              "B: I often save my photos as files on my computer or print them out. How do you save your photos?",
+              "Chris: People are always taking photos of themselves with their phones these days. Do you think this is a good thing? Why or why not?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "READING CLUB",
+      "sourceFile": "READING-CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "Person A: I like reading sports magazines. What genre of books do you like to read? Why?",
+              "Person B: I have a lot of books for my studies, but I can't remember everything I read. Do you have any suggestions for me?",
+              "Person C: Children nowadays prefer playing games to reading books. Do you think this is worrying, why?"
+            ],
+            "items": [
+              "Person A: I like reading sports magazines. What genre of books do you like to read? Why?",
+              "Person B: I have a lot of books for my studies, but I can't remember everything I read. Do you have any suggestions for me?",
+              "Person C: Children nowadays prefer playing games to reading books. Do you think this is worrying, why?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "SCIENCE CLUB",
+      "sourceFile": "SCIENCE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Task 3: You are communicating with other members of the club in the chat room. Reply to their questions. Write in sentences. Use 30–40 words per answer.",
+            "content": [
+              "Person A: In the past, you learnt about science in school. Do you remember something about science?",
+              "Person B: Do you prefer watching science programmes or reading science books?",
+              "Person C: Some people think technology has a negative effect on our lives. What do you think?"
+            ],
+            "items": [
+              "Person A: In the past, you learnt about science in school. Do you remember something about science?",
+              "Person B: Do you prefer watching science programmes or reading science books?",
+              "Person C: Some people think technology has a negative effect on our lives. What do you think?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Writing Social Club",
+      "sourceFile": "SOCIAL CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a social club. You are talking to three other members in the social club chat room. Talk to them using sentences. Use 30 – 40 words.",
+            "content": [
+              "A: What do you do when you go out with your friends?",
+              "B: Is it easier for young people to have friends?",
+              "C: It is much easier to make new friends these days because of computers and mobile phones. Do you agree? Why or why not?"
+            ],
+            "items": [
+              "A: What do you do when you go out with your friends?",
+              "B: Is it easier for young people to have friends?",
+              "C: It is much easier to make new friends these days because of computers and mobile phones. Do you agree? Why or why not?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "SPORTS CLUB",
+      "sourceFile": "SPORTS CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a sports club. You are talking to three other members in the sports club chat room. Talk to them using sentences.",
+            "content": [
+              "A: When was the last time you played sports?",
+              "B: I usually play sports with my friends and watch sports programmes. What about you?",
+              "C: I like playing sports with my friend, but my brother likes playing sports alone. What do you think about this issue?"
+            ],
+            "items": [
+              "A: When was the last time you played sports?",
+              "B: I usually play sports with my friends and watch sports programmes. What about you?",
+              "C: I like playing sports with my friend, but my brother likes playing sports alone. What do you think about this issue?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "TECHNOLOGY CLUB",
+      "sourceFile": "TECHNOLOGY CLUB.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "VERSION 1:",
+          "part": {
+            "header": "Part 3: : You are a new member of a technology club. Fill in the form. Write in sentences.",
+            "content": [
+              "A: I used to work on a laptop, and it stopped, and I lost all my notes. Tell me about a bad time with your computer.",
+              "B: Do you often watch movies on your laptop or go to the theatre?",
+              "C: Technological improvements have made our lives easier. What do you think?"
+            ],
+            "items": [
+              "A: I used to work on a laptop, and it stopped, and I lost all my notes. Tell me about a bad time with your computer.",
+              "B: Do you often watch movies on your laptop or go to the theatre?",
+              "C: Technological improvements have made our lives easier. What do you think?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "VERSION 2:",
+          "part": {
+            "header": "Part 3: : You are a new member of a technology club. Fill in the form. Write in sentences.",
+            "content": [
+              "A: I used to work on a laptop, and it stopped, and I lost all my notes. Tell me about a bad time with your computer.",
+              "B: Do you often watch movies on your laptop or go to the theatre?",
+              "C: Technological improvements have made our lives easier. What do you think?"
+            ],
+            "items": [
+              "A: I used to work on a laptop, and it stopped, and I lost all my notes. Tell me about a bad time with your computer.",
+              "B: Do you often watch movies on your laptop or go to the theatre?",
+              "C: Technological improvements have made our lives easier. What do you think?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "TELEVISION CLUB",
+      "sourceFile": "TELEVISION CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are talking to other members of the club in the chat room. Talk to them using sentences. Use 30 – 40 words per answer.",
+            "content": [
+              "A: Children shouldn’t watch too much TV. Do you think so?",
+              "B: I usually sit on a comfortable chair and eat something while watching TV. How do you relax when watching TV?",
+              "C: Which do you prefer: watch alone or with others?"
+            ],
+            "items": [
+              "A: Children shouldn’t watch too much TV. Do you think so?",
+              "B: I usually sit on a comfortable chair and eat something while watching TV. How do you relax when watching TV?",
+              "C: Which do you prefer: watch alone or with others?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "TRAVEL CLUB",
+      "sourceFile": "TRAVEL CLUB_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Part 4 (base)",
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "1. Tell me a time you had a trip in bad weather.",
+              "2. Travelling a long distance by some means of transportation is not good for the environment? Do you agree?",
+              "3. What are the most interesting places to visit in your country?",
+              "4. What is the most exciting journey you’ve been on?",
+              "5. Can you remember the first time you went on a journey by yourself? What was it like?",
+              "6. Some people like taking photos when they have a vacation. Your opinion?"
+            ],
+            "items": [
+              "1. Tell me a time you had a trip in bad weather.",
+              "2. Travelling a long distance by some means of transportation is not good for the environment? Do you agree?",
+              "3. What are the most interesting places to visit in your country?",
+              "4. What is the most exciting journey you’ve been on?",
+              "5. Can you remember the first time you went on a journey by yourself? What was it like?",
+              "6. Some people like taking photos when they have a vacation. Your opinion?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Part 4 (phiên bản 2):",
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "1. Tell me a time you had a trip in bad weather.",
+              "2. Travelling a long distance by some means of transportation is not good for the environment? Do you agree?",
+              "3. What are the most interesting places to visit in your country?",
+              "4. What is the most exciting journey you’ve been on?",
+              "5. Can you remember the first time you went on a journey by yourself? What was it like?",
+              "6. Some people like taking photos when they have a vacation. Your opinion?"
+            ],
+            "items": [
+              "1. Tell me a time you had a trip in bad weather.",
+              "2. Travelling a long distance by some means of transportation is not good for the environment? Do you agree?",
+              "3. What are the most interesting places to visit in your country?",
+              "4. What is the most exciting journey you’ve been on?",
+              "5. Can you remember the first time you went on a journey by yourself? What was it like?",
+              "6. Some people like taking photos when they have a vacation. Your opinion?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "WALKING CLUB",
+      "sourceFile": "WALKING CLUB_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "(PHIÊN BẢN 1)",
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "A: I often go for a walk. What about you?",
+              "B: I prefer to go to the countryside for a walk. Walking in the city is stressful and noisy. What do you think?",
+              "C: In the past, people walked long distances as part of their lives. These days, they don't walk anymore. Why?"
+            ],
+            "items": [
+              "A: I often go for a walk. What about you?",
+              "B: I prefer to go to the countryside for a walk. Walking in the city is stressful and noisy. What do you think?",
+              "C: In the past, people walked long distances as part of their lives. These days, they don't walk anymore. Why?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "(PHIÊN BẢN 2)",
+          "part": {
+            "header": "Part 3:",
+            "content": [
+              "A: I often go for a walk. What about you?",
+              "B: I prefer to go to the countryside for a walk. Walking in the city is stressful and noisy. What do you think?",
+              "C: In the past, people walked long distances as part of their lives. These days, they don't walk anymore. Why?"
+            ],
+            "items": [
+              "A: I often go for a walk. What about you?",
+              "B: I prefer to go to the countryside for a walk. Walking in the city is stressful and noisy. What do you think?",
+              "C: In the past, people walked long distances as part of their lives. These days, they don't walk anymore. Why?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Writing Club",
+      "sourceFile": "WRITING CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 3: You are a member of a writing club. You are talking to three other members in the writing club chat room. Talk to them using sentences.",
+            "content": [
+              "A: I usually write at the coffee shop. What about you?",
+              "B: Do you prefer handwriting or typing?",
+              "C: There are many people who like to write, but only a few become writers. What makes a successful writer?"
+            ],
+            "items": [
+              "A: I usually write at the coffee shop. What about you?",
+              "B: Do you prefer handwriting or typing?",
+              "C: There are many people who like to write, but only a few become writers. What makes a successful writer?"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

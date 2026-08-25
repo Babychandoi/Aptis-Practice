@@ -1,0 +1,2135 @@
+{
+  "source": "https://www.aptisprep.com/reading/practice/part/5",
+  "skill": "reading",
+  "part": 5,
+  "type": "MATCHING",
+  "expectedTopics": 12,
+  "extractedTopics": 12,
+  "totalVariants": 20,
+  "totalParagraphs": 140,
+  "totalAnswers": 140,
+  "tips": [
+    "Đây là một bài viết tổng thể, vì vậy hãy đọc cả bài một lượt để xác định nội dung chính của đoạn văn trước, sau đó mới làm rõ ý nghĩa của từng đoạn văn để chọn tiêu đề cho phù hợp.",
+    "Câu đầu tiên thường mang nghĩa tổng quan của cả bài, hãy chọn đáp án mang nghĩa tổng quan nhất",
+    "Mỗi đoạn thường mang một ý chính — khớp tiêu đề theo ý chính đó, không theo từ khóa bề mặt.",
+    "Nếu vẫn chưa tìm được đáp án phù hợp, hãy đọc lại đoạn văn ở trên để tìm kiếm thêm gợi ý vì hai đoạn văn sẽ có liên quan với nhau trong một bài.",
+    "Nếu còn khó, hãy ôn theo mạch nội dung và lý do chọn đáp án; tránh ghi nhớ máy móc vì nhiều bài có các phiên bản gần giống nhau."
+  ],
+  "topics": [
+    {
+      "number": 1,
+      "title": "Women Mathematicians",
+      "availableVersions": [
+        4,
+        3,
+        2,
+        1
+      ],
+      "variantCount": 4,
+      "variants": [
+        {
+          "version": 4,
+          "versionLabel": "v4",
+          "title": "Women Mathematicians (Version 4)",
+          "baseTitle": "Women Mathematicians",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Trailblazing Computer Science",
+            "Breaking New Ground in Ancient Mathematics",
+            "Driving Space Exploration Forward",
+            "Transforming Geometry and Motion",
+            "Encouraging Diversity in STEM",
+            "Connecting Symmetry to Physics",
+            "Breaking Through Educational Barriers"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "69ecd311720b44cb5cca6b00::B1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69ecd311720b44cb5cca6b00::B1",
+              "text": "Long before modern scientific institutions emerged, certain individuals in ancient history established the foundations of mathematics as we know it. One such pioneer was Hypatia of Alexandria, a famous philosopher and mathematician in the 4th century.",
+              "correctHeading": "Breaking New Ground in Ancient Mathematics"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "69ecd311720b44cb5cca6b00::B2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69ecd311720b44cb5cca6b00::B2",
+              "text": "The early 20th century saw remarkable advancements in computing, largely propelled by the innovative work of figures like Alan Turing. Turing’s concept of a universal machine, capable of performing any computable task, laid the foundation for modern computers.",
+              "correctHeading": "Trailblazing Computer Science"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "69ecd311720b44cb5cca6b00::B3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69ecd311720b44cb5cca6b00::B3",
+              "text": "Humanity’s quest to explore the cosmos has been defined by groundbreaking milestones. From the launch of Sputnik 1 to the Apollo moon landings, each mission has broadened our understanding of space and our place in the universe.",
+              "correctHeading": "Driving Space Exploration Forward"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "69ecd311720b44cb5cca6b00::B4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69ecd311720b44cb5cca6b00::B4",
+              "text": "The study of geometry and motion was irrevocably altered by the works of Isaac Newton and later Albert Einstein. Newton’s laws provided the mathematical foundation for understanding motion on Earth and in space, while Einstein’s theory of general relativity revolutionized our understanding of gravity.",
+              "correctHeading": "Transforming Geometry and Motion"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "69ecd311720b44cb5cca6b00::B5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69ecd311720b44cb5cca6b00::B5",
+              "text": "One of the most profound ideas in modern physics is the link between symmetry and the laws of nature. Emmy Noether, a brilliant German mathematician, proved a theorem that demonstrated how physical laws are intrinsically linked to symmetrical properties.",
+              "correctHeading": "Connecting Symmetry to Physics"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "69ecd311720b44cb5cca6b00::B6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69ecd311720b44cb5cca6b00::B6",
+              "text": "Despite advancements in science and technology, many groups remain underrepresented in STEM fields. In recent decades, educators and organizations have worked to foster more inclusive environments, offering scholarships, mentorship, and outreach programs.",
+              "correctHeading": "Encouraging Diversity in STEM"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "69ecd311720b44cb5cca6b00::B7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69ecd311720b44cb5cca6b00::B7",
+              "text": "In many parts of the world, individuals have had to fight for the right to education, particularly in scientific disciplines. A well-known example is the story of 19th-century women who were denied entry to universities.",
+              "correctHeading": "Breaking Through Educational Barriers"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Breaking New Ground in Ancient Mathematics"
+            },
+            {
+              "number": 2,
+              "answer": "Trailblazing Computer Science"
+            },
+            {
+              "number": 3,
+              "answer": "Driving Space Exploration Forward"
+            },
+            {
+              "number": 4,
+              "answer": "Transforming Geometry and Motion"
+            },
+            {
+              "number": 5,
+              "answer": "Connecting Symmetry to Physics"
+            },
+            {
+              "number": 6,
+              "answer": "Encouraging Diversity in STEM"
+            },
+            {
+              "number": 7,
+              "answer": "Breaking Through Educational Barriers"
+            }
+          ]
+        },
+        {
+          "version": 3,
+          "versionLabel": "v3",
+          "title": "Women Mathematicians (Version 3)",
+          "baseTitle": "Women Mathematicians",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Men are unfairly given credit",
+            "Recognizing the accomplishments of pioneering women",
+            "The labels can change perceptions",
+            "A long career demonstrates exceptional ability",
+            "Striving to create gender balance",
+            "Achievements obscured by gender",
+            "Uniformity can be a disadvantage"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "697c25227fc3a0919aafd30b::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697c25227fc3a0919aafd30b::P1",
+              "text": "Achievements often go unnoticed when gender biases come into play. Many groundbreaking contributions from women in science, technology, and other fields are overshadowed by societal expectations, leading to a lack of recognition for their hard work and dedication.",
+              "correctHeading": "Achievements obscured by gender"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "697c25227fc3a0919aafd30b::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697c25227fc3a0919aafd30b::P2",
+              "text": "Recognizing the accomplishments of pioneering women is essential for breaking stereotypes and inspiring future generations. Women like Marie Curie, Ada Lovelace, and Katherine Johnson changed the world with their brilliance, yet their achievements were often marginalized due to their gender.",
+              "correctHeading": "Recognizing the accomplishments of pioneering women"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "697c25227fc3a0919aafd30b::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697c25227fc3a0919aafd30b::P3",
+              "text": "Men are unfairly given credit for work that was often a joint effort or even led by women. History has been shaped by this bias, where the achievements of women were either ignored or misattributed, despite their immense contributions to progress.",
+              "correctHeading": "Men are unfairly given credit"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "697c25227fc3a0919aafd30b::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697c25227fc3a0919aafd30b::P4",
+              "text": "A long career is a testament to one's exceptional abilities. Take the story of a female engineer who spent decades improving infrastructure in underdeveloped regions. Despite her groundbreaking work, she was often overlooked simply because of her gender, but her work left an indelible mark on society.",
+              "correctHeading": "A long career demonstrates exceptional ability"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "697c25227fc3a0919aafd30b::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697c25227fc3a0919aafd30b::P5",
+              "text": "Labels can change perceptions dramatically. The label of 'genius' or 'pioneer' is often reserved for men, but when a woman is labeled in the same way, it challenges stereotypes and forces society to recognize her contributions. This shift in perception is key to breaking down barriers and opening doors for others.",
+              "correctHeading": "The labels can change perceptions"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "697c25227fc3a0919aafd30b::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697c25227fc3a0919aafd30b::P6",
+              "text": "Striving to create gender balance in the workplace and society at large has become a movement. Companies and governments are starting to realize that diverse teams lead to better solutions, yet the struggle for equal representation continues. The push for gender balance is not just about fairness but also about enhancing productivity and creativity.",
+              "correctHeading": "Striving to create gender balance"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "697c25227fc3a0919aafd30b::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697c25227fc3a0919aafd30b::P7",
+              "text": "Uniformity can be a disadvantage in many settings. When everyone is expected to conform to the same mold, innovation and individuality suffer. The story of a diverse team at a tech startup shows how embracing different perspectives led to creative breakthroughs, proving that diversity is a powerful asset.",
+              "correctHeading": "Uniformity can be a disadvantage"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Achievements obscured by gender"
+            },
+            {
+              "number": 2,
+              "answer": "Recognizing the accomplishments of pioneering women"
+            },
+            {
+              "number": 3,
+              "answer": "Men are unfairly given credit"
+            },
+            {
+              "number": 4,
+              "answer": "A long career demonstrates exceptional ability"
+            },
+            {
+              "number": 5,
+              "answer": "The labels can change perceptions"
+            },
+            {
+              "number": 6,
+              "answer": "Striving to create gender balance"
+            },
+            {
+              "number": 7,
+              "answer": "Uniformity can be a disadvantage"
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Women Mathematicians (Version 2 - Thứ tự và tiêu đề giống Ver 1, chỉ paraphrase nội dung các đoạn)",
+          "baseTitle": "Women Mathematicians (Version 2 - Thứ tự và tiêu đề giống Ver 1, chỉ paraphrase nội dung các đoạn)",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Attempting to create a gender balance",
+            "Gender obscure achievements",
+            "Man unfairly credited",
+            "Labels can change the perspective on people",
+            "Acknowledging the achievement of a pioneer",
+            "A long career showing exceptional ability",
+            "Uniformity is not always beneficial"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "6977375a235d629565ec848d::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 6977375a235d629565ec848d::P1",
+              "text": "For centuries, women contributed greatly to mathematics, yet their names were often overshadowed. Cultural expectations and gender bias meant that many discoveries were attributed to men, while women’s work remained hidden in footnotes. Historical letters and archives now reveal how female mathematicians played crucial roles in developing algebra, geometry, and statistics. Their efforts were essential, but because of unequal opportunities in universities and research institutions, their recognition was delayed for decades. By revisiting this past, scholars hope to ensure that these achievements are no longer invisible. Gender should not obscure intellectual contribution.",
+              "correctHeading": "Gender obscure achievements"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "6977375a235d629565ec848d::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 6977375a235d629565ec848d::P2",
+              "text": "Sophie Germain, a self-taught French mathematician, overcame family opposition and social prejudice in the 18th century. Despite being denied formal education, she secretly studied advanced mathematics and corresponded with famous scholars, using a male pseudonym to gain respect. Her work on elasticity theory later became fundamental in engineering and physics. Today, Germain is celebrated as a pioneer who proved that intellectual talent has no gender. Universities across Europe and America have named awards and scholarships after her, ensuring that new generations recognize her remarkable legacy. Acknowledging pioneers like Germain helps correct the historical imbalance.",
+              "correctHeading": "Acknowledging the achievement of a pioneer"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "6977375a235d629565ec848d::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 6977375a235d629565ec848d::P3",
+              "text": "In several cases, women’s research was unfairly credited to male colleagues. A famous example is the work of Emmy Noether, one of the greatest algebraists of the 20th century. Her groundbreaking theorem, which connects symmetry and conservation laws in physics, was often cited under the names of male scientists she assisted. At the time, her teaching positions were limited and often unpaid because of her gender. While her male peers praised her brilliance privately, official recognition was slow to arrive. Only decades later did the scientific community fully admit how central Noether’s contributions were.",
+              "correctHeading": "Man unfairly credited"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "6977375a235d629565ec848d::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 6977375a235d629565ec848d::P4",
+              "text": "Mary Cartwright, a British mathematician, built a career spanning more than fifty years. She was one of the first people to apply mathematics to radio and radar problems during World War II, helping Britain defend its airspace. Later, she worked on nonlinear differential equations, laying the foundation for chaos theory. Cartwright also became the first woman to serve as president of the London Mathematical Society. Her career demonstrates how consistent dedication and exceptional ability can influence both science and society. She remains a role model for resilience and intellectual excellence in mathematics.",
+              "correctHeading": "A long career showing exceptional ability"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "6977375a235d629565ec848d::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 6977375a235d629565ec848d::P5",
+              "text": "The way society labels a mathematician can transform how they are remembered. Ada Lovelace was once dismissed as merely the “assistant” of Charles Babbage, the inventor of the early mechanical computer. Today, however, historians recognize her as the first computer programmer because of her visionary notes on how machines could process symbols and not just numbers. This change of label—from “assistant” to “programmer”—reshaped her public image and inspired countless women to enter computer science. The story shows that language and recognition deeply affect how people’s contributions are valued.",
+              "correctHeading": "Labels can change the perspective on people"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "6977375a235d629565ec848d::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 6977375a235d629565ec848d::P6",
+              "text": "Modern institutions are making conscious efforts to address gender imbalance in mathematics. Universities now run mentorship programs, research fellowships, and outreach initiatives specifically designed to support women in STEM fields. Conferences encourage equal representation on panels, and journals pay attention to diversity in editorial boards. These actions aim not to give unfair advantage, but to remove hidden barriers that historically limited women’s participation. While progress is visible, challenges remain, especially in encouraging girls from an early age to pursue mathematical careers. Creating balance is a long-term investment in intellectual diversity.",
+              "correctHeading": "Attempting to create a gender balance"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "6977375a235d629565ec848d::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 6977375a235d629565ec848d::P7",
+              "text": "When research groups or faculties are composed almost entirely of one gender, innovation can suffer. Diverse teams often bring different perspectives, which leads to creative problem-solving and new approaches. Studies show that women mathematicians may ask questions or identify applications overlooked by male colleagues. Therefore, uniformity—whether male or female—does not benefit the advancement of knowledge. Encouraging mixed teams ensures that talent is recognized beyond stereotypes. Mathematics thrives when people of different backgrounds collaborate, proving that diversity is not a symbolic gesture but a genuine scientific advantage.",
+              "correctHeading": "Uniformity is not always beneficial"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Gender obscure achievements"
+            },
+            {
+              "number": 2,
+              "answer": "Acknowledging the achievement of a pioneer"
+            },
+            {
+              "number": 3,
+              "answer": "Man unfairly credited"
+            },
+            {
+              "number": 4,
+              "answer": "A long career showing exceptional ability"
+            },
+            {
+              "number": 5,
+              "answer": "Labels can change the perspective on people"
+            },
+            {
+              "number": 6,
+              "answer": "Attempting to create a gender balance"
+            },
+            {
+              "number": 7,
+              "answer": "Uniformity is not always beneficial"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "Women Mathematicians",
+          "baseTitle": "Women Mathematicians",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Attempting to create a gender balance",
+            "Uniformity is not always beneficial",
+            "A long career showing exceptional ability",
+            "Labels can change perspective on people",
+            "Acknowledging achievement of a pioneer",
+            "Gender obscure achievements",
+            "Man unfairly credited"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "694c1abb5012afb1b8820d1c::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c1abb5012afb1b8820d1c::P1",
+              "text": "In 2014, Iranian mathematician Maryam Mirzakhani received the prestigious Fields Prize, the highest honor in mathematics, and the first time in its 70 years that a woman has won it. For centuries, the achievements of women in mathematics were either omitted from historical records or attributed to male colleagues. Many of their contributions were later credited to male scholars. Such erasure has been a recurring theme in the history of women in this field.",
+              "correctHeading": "Gender obscure achievements"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "694c1abb5012afb1b8820d1c::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c1abb5012afb1b8820d1c::P2",
+              "text": "Despite the many obstacles women faced in entering the field of mathematics, Sophie Germain stood out as a great female mathematician. Largely self-taught, she pursued her passion in a time when women were discouraged from academic pursuits. She made significant contributions to number theory and elasticity, and her work on Fermat’s Last Theorem was particularly notable. In recognition of her groundbreaking efforts, she became the first woman to win a prize from the Paris Academy of Sciences in 1816 — an award originally proposed back in 1716. This long-standing prize had never before been awarded to a woman, highlighting the importance of Germain’s achievements and marking a turning point in the acknowledgment of women in science.",
+              "correctHeading": "Acknowledging achievement of a pioneer"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "694c1abb5012afb1b8820d1c::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c1abb5012afb1b8820d1c::P3",
+              "text": "Maria Agnesi, an 18th-century Italian mathematician, was one of the first women to write a comprehensive mathematics textbook. Her work, the Instituzioni Analitiche, was highly praised and became an important reference in the study of calculus. Despite her original contributions, one of the mathematical curves she described — the \"Witch of Agnesi\" — was mistranslated from Italian, giving it a mystical name that misrepresented her intent. Moreover, over time, credit for aspects of her work was sometimes attributed to male mathematicians who built upon her ideas. This reflects a broader pattern in history where women’s intellectual achievements were overlooked or reassigned to men.",
+              "correctHeading": "Man unfairly credited"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "694c1abb5012afb1b8820d1c::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c1abb5012afb1b8820d1c::P4",
+              "text": "Millicent Fawcett demonstrated remarkable intellectual ability from a young age. At just 19, she delivered a public lecture on Sir Isaac Newton at a time when women rarely spoke in academic settings. Although she did not pursue a professional career in mathematics, her early accomplishments in the subject reflected a sharp analytical mind. Over the decades, Fawcett dedicated herself to advocating for women’s education and suffrage, tirelessly working to open academic and political doors for future generations. Her lifelong commitment to intellectual and social progress stands as a testament to her exceptional capabilities and enduring influence.",
+              "correctHeading": "A long career showing exceptional ability"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "694c1abb5012afb1b8820d1c::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c1abb5012afb1b8820d1c::P5",
+              "text": "When female mathematicians are described as “women geniuses” or “female prodigies,” the gender label, while well-intended, often implies that excellence is rare among women. Such terms, though celebratory, can unintentionally reinforce the idea that women’s success in mathematics is unusual, rather than simply the result of talent and hard work.",
+              "correctHeading": "Labels can change perspective on people"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "694c1abb5012afb1b8820d1c::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c1abb5012afb1b8820d1c::P6",
+              "text": "To address the gender imbalance in mathematics, many universities and organizations now run outreach programs, offer scholarships specifically for women, and encourage female mentorship in STEM fields. Some universities are required to arrange places where female mathematicians can work and research. These efforts aim not to give unfair advantage, but to create equal opportunities in a domain where women have historically been underrepresented.",
+              "correctHeading": "Attempting to create a gender balance"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "694c1abb5012afb1b8820d1c::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c1abb5012afb1b8820d1c::P7",
+              "text": "In efforts to level the playing field, some institutions have implemented standardized criteria for admissions or research evaluation. However, such uniform methods can sometimes ignore the diverse paths and challenges faced by individuals, particularly women balancing academic and societal expectations. A one-size-fits-all approach may not always foster true equity.",
+              "correctHeading": "Uniformity is not always beneficial"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Gender obscure achievements"
+            },
+            {
+              "number": 2,
+              "answer": "Acknowledging achievement of a pioneer"
+            },
+            {
+              "number": 3,
+              "answer": "Man unfairly credited"
+            },
+            {
+              "number": 4,
+              "answer": "A long career showing exceptional ability"
+            },
+            {
+              "number": 5,
+              "answer": "Labels can change perspective on people"
+            },
+            {
+              "number": 6,
+              "answer": "Attempting to create a gender balance"
+            },
+            {
+              "number": 7,
+              "answer": "Uniformity is not always beneficial"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Mountains",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Mountains (Version 2)",
+          "baseTitle": "Mountains",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "The wrong priority",
+            "Changing the definition of mountain",
+            "A more intimate relationship",
+            "A disturbing relevant",
+            "Focus on sustainability",
+            "The unique feeling of achievement",
+            "Publicity of achievement"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "697b2c208addf6caf4c058b8::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b2c208addf6caf4c058b8::P1",
+              "text": "In the modern consciousness, the definition of a mountain has evolved far beyond its geological description as a massive landform of rock and ice. Historically viewed as sacred barriers or purely natural entities, mountains are increasingly defined by humans as 'vertical arenas' for personal testing. This conceptual shift transforms the mountain from a part of the ecosystem into a commodity—a challenge to be overcome rather than a landscape to be respected.",
+              "correctHeading": "Changing the definition of mountain"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "697b2c208addf6caf4c058b8::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b2c208addf6caf4c058b8::P2",
+              "text": "This new definition is driven by a powerful psychological reward: the unique feeling of achievement. When a climber pushes their physical limits to reach a summit, the combination of exhaustion and altitude creates a potent cocktail of adrenaline and pride. It is a singular sensation of conquering the impossible, offering a temporary escape from the mundane routines of daily life. This internal 'high' creates a deep-seated desire to return.",
+              "correctHeading": "The unique feeling of achievement"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "697b2c208addf6caf4c058b8::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b2c208addf6caf4c058b8::P3",
+              "text": "However, in our hyper-connected era, internal satisfaction is rarely enough; it is the publicity of achievement that now drives the masses. The solitude of the peaks is often broken by the need to document and broadcast the success on social media. The mountain becomes a backdrop for digital validation, where the value of the climb is measured in likes and shares rather than personal growth.",
+              "correctHeading": "Publicity of achievement"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "697b2c208addf6caf4c058b8::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b2c208addf6caf4c058b8::P4",
+              "text": "The obsession with public recognition inevitably establishes the wrong priority. Instead of prioritizing safety, skill acquisition, or the appreciation of nature's subtle beauty, many climbers become fixated solely on 'bagging the peak'. This 'summit fever' encourages rushing, dangerous shortcuts, and a lack of preparation. The journey itself is ignored in a frantic race to the top, reducing the majestic experience to a mere checklist item.",
+              "correctHeading": "The wrong priority"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "697b2c208addf6caf4c058b8::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b2c208addf6caf4c058b8::P5",
+              "text": "This distorted mindset leads to a disturbing relevant—a troubling reality where our ego directly impacts the environment. As more people flock to the mountains with the wrong priorities, we witness a direct correlation between human traffic and environmental degradation. Trails are eroded, campsites are littered with non-biodegradable waste, and delicate wildlife habitats are disturbed.",
+              "correctHeading": "A disturbing relevant"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "697b2c208addf6caf4c058b8::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b2c208addf6caf4c058b8::P6",
+              "text": "Facing this ecological crisis, the mountaineering community is being forced to shift its focus on sustainability. We are realizing that the mountains are finite resources that cannot withstand endless abuse. This creates a new imperative: implementing stricter limits on climber numbers, enforcing 'leave no trace' policies, and promoting ethical tourism. The goal is shifting from conquering the land to preserving it.",
+              "correctHeading": "Focus on sustainability"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "697b2c208addf6caf4c058b8::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b2c208addf6caf4c058b8::P7",
+              "text": "Ultimately, this move toward preservation fosters a more intimate relationship with the mountain. When we stop viewing the peak as an enemy to defeat or a trophy to display, we begin to see it as a partner. This new relationship is built on humility, silence, and deep respect for the natural world. We learn to climb not just to stand on the mountain, but to be with the mountain.",
+              "correctHeading": "A more intimate relationship"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Changing the definition of mountain"
+            },
+            {
+              "number": 2,
+              "answer": "The unique feeling of achievement"
+            },
+            {
+              "number": 3,
+              "answer": "Publicity of achievement"
+            },
+            {
+              "number": 4,
+              "answer": "The wrong priority"
+            },
+            {
+              "number": 5,
+              "answer": "A disturbing relevant"
+            },
+            {
+              "number": 6,
+              "answer": "Focus on sustainability"
+            },
+            {
+              "number": 7,
+              "answer": "A more intimate relationship"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "Mountains",
+          "baseTitle": "Mountains",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "A disturbing relevant",
+            "Publicity of achievement",
+            "Worrying connections",
+            "Changing the definition of mountain",
+            "Focus on sustainability",
+            "A more intimate relationship",
+            "The unique feeling of achievement"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "69d4a8c06c26b5f0af09ff0a::1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69d4a8c06c26b5f0af09ff0a::1",
+              "text": "The term \"mountain\" has evolved over time, reflecting not only physical characteristics but also cultural significance. In contemporary discussions, mountains may symbolize challenges to overcome or destinations for adventure, transcending their geographical attributes.",
+              "correctHeading": "Changing the definition of mountain"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "69d4a8c06c26b5f0af09ff0a::2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69d4a8c06c26b5f0af09ff0a::2",
+              "text": "Climbing a mountain often leads to a profound sense of accomplishment. It represents not just reaching a physical summit but also conquering personal fears and pushing one's limits, creating memories that last a lifetime.",
+              "correctHeading": "The unique feeling of achievement"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "69d4a8c06c26b5f0af09ff0a::3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69d4a8c06c26b5f0af09ff0a::3",
+              "text": "In today's digital age, sharing achievements has become prevalent. Climbing a mountain is frequently documented on social media, turning personal milestones into public spectacles that inspire others while also raising questions about authenticity.",
+              "correctHeading": "Publicity of achievement"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "69d4a8c06c26b5f0af09ff0a::4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69d4a8c06c26b5f0af09ff0a::4",
+              "text": "The pursuit of climbing mountains can sometimes lead to misplaced priorities. While seeking adventure and recognition, individuals may neglect personal relationships or responsibilities, emphasizing the need for a balanced approach to life.",
+              "correctHeading": "A disturbing relevant"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "69d4a8c06c26b5f0af09ff0a::5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69d4a8c06c26b5f0af09ff0a::5",
+              "text": "Engaging in extreme sports, such as mountain climbing, can forge strong bonds among participants. However, it may also create worrying connections where individuals prioritize adrenaline over safety, potentially leading to dangerous situations.",
+              "correctHeading": "Worrying connections"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "69d4a8c06c26b5f0af09ff0a::6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69d4a8c06c26b5f0af09ff0a::6",
+              "text": "Shared experiences in challenging environments, like mountains, can deepen intimacy in relationships. Couples or friends who navigate the challenges of climbing together often find their bonds strengthened through mutual support and understanding.",
+              "correctHeading": "A more intimate relationship"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "69d4a8c06c26b5f0af09ff0a::7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69d4a8c06c26b5f0af09ff0a::7",
+              "text": "While adventure is thrilling, there is a growing recognition of the importance of stability in life. Balancing the desire for adventure with the need for security is crucial, prompting individuals to reflect on their life choices and long-term goals.",
+              "correctHeading": "Focus on sustainability"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Changing the definition of mountain"
+            },
+            {
+              "number": 2,
+              "answer": "The unique feeling of achievement"
+            },
+            {
+              "number": 3,
+              "answer": "Publicity of achievement"
+            },
+            {
+              "number": 4,
+              "answer": "A disturbing relevant"
+            },
+            {
+              "number": 5,
+              "answer": "Worrying connections"
+            },
+            {
+              "number": 6,
+              "answer": "A more intimate relationship"
+            },
+            {
+              "number": 7,
+              "answer": "Focus on sustainability"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "The Arrival of the Four-Day Work Week",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "The Arrival of the Four-Day Work Week (Version 2)",
+          "baseTitle": "The Arrival of the Four-Day Work Week",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "A traditional way of life is now outdated",
+            "Alternative solutions worth considering carefully",
+            "Unforeseen challenges faced for employees",
+            "Undesirable financial consequences",
+            "Difficult in changing long-standing habits",
+            "Why it may feel unfair for certain people",
+            "Key benefits for employees"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "697731c46d7ab6606ff62c96::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697731c46d7ab6606ff62c96::P1",
+              "text": "The traditional five-day workweek, once considered the foundation of modern employment, is increasingly viewed as outdated in today’s dynamic economy. Advancements in automation, digital tools, and flexible work models have challenged the assumption that productivity is tied to long office hours. Employees now value work-life balance more than ever, and many organizations recognize that efficiency depends on results rather than time spent at desks. While the five-day structure once symbolized stability, it no longer aligns with evolving workforce expectations and the demands of a rapidly transforming global market.",
+              "correctHeading": "A traditional way of life is now outdated"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "697731c46d7ab6606ff62c96::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697731c46d7ab6606ff62c96::P2",
+              "text": "A four-day workweek offers employees tangible physical, psychological, and social benefits. Research shows that reduced working hours improve mental health, job satisfaction, and overall well-being. Shorter weeks give workers more time for personal development, family commitments, and rest, leading to higher productivity and creativity. Employees often report feeling more engaged and motivated when granted greater control over their schedules. Moreover, companies adopting this model frequently experience lower turnover rates and improved recruitment outcomes, as flexible work policies appeal to top talent seeking a better quality of life.",
+              "correctHeading": "Key benefits for employees"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "697731c46d7ab6606ff62c96::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697731c46d7ab6606ff62c96::P3",
+              "text": "Despite its advantages, a four-day workweek may impose significant financial challenges for both businesses and employees. Companies operating in competitive markets might struggle to maintain profitability if fewer working hours reduce output. In industries reliant on hourly wages, workers could face reduced income, worsening financial insecurity rather than alleviating it. Additionally, implementing shorter schedules often requires restructuring workflows, investing in automation, and renegotiating contracts, all of which can be costly. Without careful planning, the transition risks creating economic instability that outweighs the perceived benefits.",
+              "correctHeading": "Undesirable financial consequences"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "697731c46d7ab6606ff62c96::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697731c46d7ab6606ff62c96::P4",
+              "text": "While employees generally welcome shorter workweeks, unexpected challenges can arise. Compressing five days of tasks into four often leads to increased workloads and longer individual workdays, potentially causing fatigue and burnout. Some workers may struggle to adapt to the faster pace, especially in roles requiring high levels of collaboration where team schedules no longer align. Furthermore, remote and hybrid setups can blur the boundary between professional and personal life, meaning that fewer official workdays do not always equate to reduced overall stress levels.",
+              "correctHeading": "Unforeseen challenges faced for employees"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "697731c46d7ab6606ff62c96::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697731c46d7ab6606ff62c96::P5",
+              "text": "Transitioning to a four-day workweek requires a cultural shift that is often more challenging than logistical changes. Many organizations still associate productivity with physical presence and long hours, making leaders hesitant to adopt new structures. Employees, too, may feel pressured to maintain old routines, fearing negative judgments about their commitment. Overcoming this resistance demands clear communication, training, and a results-oriented mindset. Without changing long-standing perceptions of “hard work,” efforts to reduce hours risk becoming symbolic rather than transformative for workplace culture.",
+              "correctHeading": "Difficult in changing long-standing habits"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "697731c46d7ab6606ff62c96::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697731c46d7ab6606ff62c96::P6",
+              "text": "While a four-day schedule benefits many, it can unintentionally create inequality among workers. Employees in sectors like healthcare, retail, and manufacturing often cannot reduce their hours without affecting service quality or income. Meanwhile, high-skill professionals in technology or finance may enjoy greater flexibility, widening the gap between privileged and marginalized workers. Additionally, small businesses lacking resources to adapt risk falling behind competitors that can afford efficiency-enhancing technologies. Unless carefully designed, four-day policies may exacerbate social and economic disparities instead of promoting fairness.",
+              "correctHeading": "Why it may feel unfair for certain people"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "697731c46d7ab6606ff62c96::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697731c46d7ab6606ff62c96::P7",
+              "text": "For organizations hesitant to adopt a four-day workweek, alternative models can still deliver similar benefits. Options such as flexible scheduling, hybrid work arrangements, job-sharing, or output-based performance evaluations allow companies to tailor strategies to their workforce’s unique needs. Some businesses experiment with seasonal compressed schedules or offering additional paid leave to balance employee well-being with operational demands. By embracing data-driven experimentation, organizations can explore more sustainable approaches to improving productivity and work-life balance without committing to a one-size-fits-all solution.",
+              "correctHeading": "Alternative solutions worth considering carefully"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "A traditional way of life is now outdated"
+            },
+            {
+              "number": 2,
+              "answer": "Key benefits for employees"
+            },
+            {
+              "number": 3,
+              "answer": "Undesirable financial consequences"
+            },
+            {
+              "number": 4,
+              "answer": "Unforeseen challenges faced for employees"
+            },
+            {
+              "number": 5,
+              "answer": "Difficult in changing long-standing habits"
+            },
+            {
+              "number": 6,
+              "answer": "Why it may feel unfair for certain people"
+            },
+            {
+              "number": 7,
+              "answer": "Alternative solutions worth considering carefully"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "The Arrival of the Four-Day Work Week",
+          "baseTitle": "The Arrival of the Four-Day Work Week",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "A way of life now out of date",
+            "Benefits for employees",
+            "Unforeseen challenges for employees",
+            "Undesirable financial consequences",
+            "Alternative solutions worth considering",
+            "Unfair for employees",
+            "Difficult to change old habits"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "694c176f5012afb1b8820d17::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c176f5012afb1b8820d17::P1",
+              "text": "For many decades, working five or even six days a week was seen as the norm. About 100 years ago, Henry Ford (founder of Ford Motor Company) proposed giving workers Saturday and Sunday off with full pay. However, with modern technology, changing values, and a greater focus on work-life balance, that lifestyle is becoming less relevant. Employees and companies alike are beginning to question whether spending most of one’s week at work is still necessary or productive.",
+              "correctHeading": "A way of life now out of date"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "694c176f5012afb1b8820d17::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c176f5012afb1b8820d17::P2",
+              "text": "Supporters of the four-day workweek argue that this model brings many obvious benefits to employees. They feel more satisfied with their jobs, more relaxed and more motivated to contribute. Having an extra day off helps them balance work and personal life, giving them the opportunity to care for their family, relax or pursue personal interests. This not only improves mental health but also contributes to increased productivity when they return to work.",
+              "correctHeading": "Benefits for employees"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "694c176f5012afb1b8820d17::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c176f5012afb1b8820d17::P3",
+              "text": "Despite its positive potential, the adoption of a four-day workweek also comes with its fair share of concerns, particularly financial ones. In Japan in 1988, when several technology firms experimented with shorter work schedules, they reported a slight drop in productivity during the initial months and a noticeable rise in operational expenses. Businesses in the service or retail sectors may struggle to maintain continuous operations with reduced staffing. To compensate, they may have to hire more people, leading to increased costs in salaries, training and management. For smaller companies, this can easily become a major challenge in terms of budgets and ability to maintain operations.",
+              "correctHeading": "Undesirable financial consequences"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "694c176f5012afb1b8820d17::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c176f5012afb1b8820d17::P4",
+              "text": "A shortened workweek does not always bring a sense of relief. In fact, many employees worry that the workload will be compressed, making the four-day workday more stressful than usual. The compressed schedule can increase psychological and physical pressure, causing work efficiency to decline rather than improve. Concerns that “compressing work into shorter hours” may be counterproductive to the original goal.",
+              "correctHeading": "Unforeseen challenges for employees"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "694c176f5012afb1b8820d17::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c176f5012afb1b8820d17::P5",
+              "text": "One of the biggest barriers to changing working patterns is the stability of long-standing habits. The five-day workday structure affects not only the office workers but is also closely linked to the education system, public services and many other social activities. From schools, government agencies to shopping or entertainment centers – all are operating on this time frame. Adjusting the entire system like this will not be easy and is likely to face opposition from many sides. In France in 2000, when the government introduced a nationwide reduction of working hours, numerous companies discovered that employees continued to follow their old patterns, such as staying late or taking work home.",
+              "correctHeading": "Difficult to change old habits"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "694c176f5012afb1b8820d17::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c176f5012afb1b8820d17::P6",
+              "text": "Another issue raised is fairness between labor groups. While office workers may benefit from the new work schedule, professions that require physical presence such as police, fire or emergency services have few options. They cannot simply reduce the working day without ensuring continuity in work. This could widen the gap between occupational classes and create divisions in society.",
+              "correctHeading": "Unfair for employees"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "694c176f5012afb1b8820d17::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c176f5012afb1b8820d17::P7",
+              "text": "Given the potential difficulties, some experts suggest more flexible approaches instead of shortening the work week. Models such as remote working, job sharing or flexible working hours are considered more suitable in some cases. These solutions give employees more control over their time without putting pressure on businesses to change the entire operating structure. Thereby, the goal of work-life balance can still be achieved without creating many barriers.",
+              "correctHeading": "Alternative solutions worth considering"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "A way of life now out of date"
+            },
+            {
+              "number": 2,
+              "answer": "Benefits for employees"
+            },
+            {
+              "number": 3,
+              "answer": "Undesirable financial consequences"
+            },
+            {
+              "number": 4,
+              "answer": "Unforeseen challenges for employees"
+            },
+            {
+              "number": 5,
+              "answer": "Difficult to change old habits"
+            },
+            {
+              "number": 6,
+              "answer": "Unfair for employees"
+            },
+            {
+              "number": 7,
+              "answer": "Alternative solutions worth considering"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Mountain Summits",
+      "availableVersions": [
+        3,
+        2,
+        1
+      ],
+      "variantCount": 3,
+      "variants": [
+        {
+          "version": 3,
+          "versionLabel": "v3",
+          "title": "Mountain Summits (Version 3)",
+          "baseTitle": "Mountain Summits",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "A worrying priority",
+            "More focus on sustainability",
+            "Unique sense of achievement",
+            "A new intimate relationship",
+            "The disturbing revelation",
+            "Changing the perspective towards mountains",
+            "Publicising of achievement"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "69b8c11856b920c70c63a9b8::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69b8c11856b920c70c63a9b8::P1",
+              "text": "In the early 1800s, people were believed not to enjoy climbing mountains. Later, as mountain climbing became a popular trend, interest grew rapidly. However, there is evidence that humans have always been fascinated by mountains. The difference now is that people focus mainly on reaching the summit to admire the majestic views rather than simply exploring the mountain itself.",
+              "correctHeading": "Changing the perspective towards mountains"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "69b8c11856b920c70c63a9b8::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69b8c11856b920c70c63a9b8::P2",
+              "text": "Climbing to the top of a mountain creates the same adrenaline rush as other extreme sports. But it goes far beyond that. Because of the sheer size and grandeur of the mountains, the experience becomes a powerful metaphor, making climbers feel deeply inspired. This intense feeling can even become addictive, as people unconsciously develop a strong desire to keep reaching the peak.",
+              "correctHeading": "Unique sense of achievement"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "69b8c11856b920c70c63a9b8::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69b8c11856b920c70c63a9b8::P3",
+              "text": "People have always enjoyed capturing and sharing the moment of standing on a mountaintop. This practice existed even before social media, as climbers admired the view or described their experiences to others. With the rise of social media, this trend has become even more common. Now, almost everyone takes selfies and posts them online for friends and family to see after reaching the summit.",
+              "correctHeading": "Publicising of achievement"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "69b8c11856b920c70c63a9b8::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69b8c11856b920c70c63a9b8::P4",
+              "text": "Recently, some climbers have begun questioning whether this focus on the summit is truly meaningful. The most beautiful views might not be from the peak itself, and the path to the summit is often exhausting, requiring great physical strength. This approach excludes many people and overlooks the beauty found all along the mountain, not just at the top.",
+              "correctHeading": "A worrying priority"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "69b8c11856b920c70c63a9b8::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69b8c11856b920c70c63a9b8::P5",
+              "text": "A photo taken on Mount Everest in 2020, showing a “traffic jam” of climbers, shocked the world. It revealed how many climbers were rushing to reach the summit during the short window of good weather. This image raised concerns about overcrowding and highlighted how Everest, once seen as a remote and unreachable peak, has now become a site of intense competition and environmental strain.",
+              "correctHeading": "The disturbing revelation"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "69b8c11856b920c70c63a9b8::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69b8c11856b920c70c63a9b8::P6",
+              "text": "The viral photo made some people feel that climbing Everest had lost its charm. However, mountain climbing itself is not the problem. Instead, climbers must carefully reflect on their goals and habits, ensuring that future global tourism does not negatively impact the environment. A more mindful approach can protect mountains for generations to come.",
+              "correctHeading": "More focus on sustainability"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "69b8c11856b920c70c63a9b8::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69b8c11856b920c70c63a9b8::P7",
+              "text": "Perhaps we should approach mountains with a gentle mindset, seeing them as companions rather than challenges to conquer. In the 1940 book The Living Mountain by Shepherd, the author describes climbing near her family farm. She wandered the mountains without specific goals, treating each climb as a visit to old friends instead of a mission to claim victory over nature.",
+              "correctHeading": "A new intimate relationship"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Changing the perspective towards mountains"
+            },
+            {
+              "number": 2,
+              "answer": "Unique sense of achievement"
+            },
+            {
+              "number": 3,
+              "answer": "Publicising of achievement"
+            },
+            {
+              "number": 4,
+              "answer": "A worrying priority"
+            },
+            {
+              "number": 5,
+              "answer": "The disturbing revelation"
+            },
+            {
+              "number": 6,
+              "answer": "More focus on sustainability"
+            },
+            {
+              "number": 7,
+              "answer": "A new intimate relationship"
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Mountain Summits (Version 2)",
+          "baseTitle": "Mountain Summits",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "A focus on sustainability",
+            "A sense of achievement",
+            "A more intimate relationship",
+            "A disturbing relevant",
+            "The wrong priority",
+            "Publishing one’s achievement",
+            "Our changing definition of mountains"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "69773901235d629565ec848e::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69773901235d629565ec848e::P1",
+              "text": "Even before the nineteenth century, mountains had always exerted a powerful attraction on travellers. They captivated visitors largely because of their natural beauty and the sense of awe inspired by dramatic landscapes. For early explorers, climbing to the summit was primarily about enjoyment and wonder, rather than proving personal strength. In contrast, today the peak is no longer seen merely as a scenic viewpoint but as a highly symbolic destination. Reaching the top has increasingly come to represent success, endurance, and a once-in-a-lifetime accomplishment that many people aspire to achieve.",
+              "correctHeading": "Our changing definition of mountains"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "69773901235d629565ec848e::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69773901235d629565ec848e::P2",
+              "text": "For a large number of climbers, conquering a mountain summit embodies profound personal significance. The \"summit\" is often interpreted as a metaphor for success in life, a clear representation of overcoming barriers and pushing human limits. The physical obstacles encountered on the climb mirror psychological struggles, which makes the achievement deeply rewarding. Over time, mountaineering has evolved into a cultural practice where people challenge themselves for adventure, resilience, and self-affirmation. Consequently, the scenery or encounters along the trail have become secondary to the psychological triumph of standing at the very top.",
+              "correctHeading": "A sense of achievement"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "69773901235d629565ec848e::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69773901235d629565ec848e::P3",
+              "text": "Mountaineering as a celebrated \"achievement\" has been amplified by the phenomenon of the \"summit selfie.\" Even in the pre-digital era, photographs at the summit were considered valuable mementoes, proof of the effort invested. What began as a way to preserve memories gradually turned into an opportunity to broadcast one's success to others. The rise of social media has intensified this trend, as climbers are often more concerned with curating a perfect image than immersing themselves in the experience. In many cases, the journey itself becomes overshadowed by the simple desire to showcase the fact of having reached the summit.",
+              "correctHeading": "Publishing one’s achievement"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "69773901235d629565ec848e::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69773901235d629565ec848e::P4",
+              "text": "The photograph captured by Thomas in 1993 exposed the unsettling reality of contemporary mountaineering. It depicted hundreds of people queuing in a single file line to reach the summit- an image that contrasts starkly with the solitude once associated with genuine exploration. The climbers' expressions reflected exhaustion and frustration rather than determination or joy, suggesting that the climb had lost its authenticity. Once published online, the image provoked widespread debate about whether the meaning of summiting had been reduced to mere spectacle. For many critics, it illustrated how the essence of mountaineering has been compromised by mass participation and social validation.",
+              "correctHeading": "A disturbing relevant"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "69773901235d629565ec848e::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69773901235d629565ec848e::P5",
+              "text": "From this picture, critics conclude that the summit has become an end in itself, often detached from the original spirit of exploration. Many people now seem to disregard the multifaceted nature of mountaineering, treating it simply as a fashionable objective. For some, neither the genuine process of climbing nor the authentic arrival at the peak matters, as their motivation is largely external. Furthermore, the preparation that should accompany such an endeavour-rigorous physical training, budgeting, and logistical planning is frequently underestimated. As a result, the experience risks being superficial, emphasising prestige rather than true engagement with the mountain.",
+              "correctHeading": "The wrong priority"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "69773901235d629565ec848e::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69773901235d629565ec848e::P6",
+              "text": "One of the most urgent debates surrounding contemporary mountaineering concerns sustainability. Popular climbing destinations often suffer from waste accumulation, environmental degradation, and disrespect for local ecosystems. Many activists argue that this trend-driven approach to climbing must be reconsidered in order to preserve fragile landscapes. Responsibility, they emphasise, should be integral to every stage of the climbing journey, from preparation to leaving the site clean. Ultimately, they believe that the summit can only be considered \"worthwhile\" if the path toward it contributes positively to both the environment and the climber's personal growth.",
+              "correctHeading": "A focus on sustainability"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "69773901235d629565ec848e::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69773901235d629565ec848e::P7",
+              "text": "Perhaps the time has come to reassess our perspective on climbing and return to its more authentic roots. Instead of pursuing mountains solely for recognition, individuals could rediscover the joy of walking, observing, and slowing down. In her autobiography, Cherke described how hiking offered her moments of reflection and a deeper connection with the natural world. Such experiences remind us that mountains provide not only physical challenges but also opportunities for serenity and contemplation. By cultivating a more intimate relationship with nature, climbing may once again regain its balance between personal fulfilment and environmental respect.",
+              "correctHeading": "A more intimate relationship"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Our changing definition of mountains"
+            },
+            {
+              "number": 2,
+              "answer": "A sense of achievement"
+            },
+            {
+              "number": 3,
+              "answer": "Publishing one’s achievement"
+            },
+            {
+              "number": 4,
+              "answer": "A disturbing relevant"
+            },
+            {
+              "number": 5,
+              "answer": "The wrong priority"
+            },
+            {
+              "number": 6,
+              "answer": "A focus on sustainability"
+            },
+            {
+              "number": 7,
+              "answer": "A more intimate relationship"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "Mountain Summits",
+          "baseTitle": "Mountain Summits",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Publicity of achievement",
+            "A more intimate relationship",
+            "Focus on sustainability",
+            "A disturbing relevant",
+            "Changing the perspective towards mountain",
+            "The wrong priority",
+            "Unique sense of achievement"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "694c0e625012afb1b8820d11::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c0e625012afb1b8820d11::P1",
+              "text": "The term \"mountain\" has evolved over time, reflecting not only physical characteristics but also cultural significance. Before the 19th century, people were quite shy when it came to conquering mountains. Today, with the development of technology, reaching the highest peaks has become easier. In contemporary discussions, mountains may symbolize challenges to overcome or destinations for adventure, transcending their geographical attributes.",
+              "correctHeading": "Changing the perspective towards mountain"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "694c0e625012afb1b8820d11::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c0e625012afb1b8820d11::P2",
+              "text": "Climbing a mountain often leads to a profound sense of accomplishment. It represents not just reaching a physical summit but also conquering personal fears and pushing one's limits, creating memories that last a lifetime. Besides, mountain climbing also creates Adrenaline - a hormone that creates a feeling of excitement like when playing other adventure sports.",
+              "correctHeading": "Unique sense of achievement"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "694c0e625012afb1b8820d11::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c0e625012afb1b8820d11::P3",
+              "text": "In today's digital age, sharing achievements has become prevalent. Climbing a mountain is frequently documented on social media, turning personal milestones into public spectacles that inspire others while also raising questions about authenticity.",
+              "correctHeading": "Publicity of achievement"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "694c0e625012afb1b8820d11::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c0e625012afb1b8820d11::P4",
+              "text": "In recent years, some climbers have become more focused on taking photos for social media than respecting the mountains they visit. Long lines form near popular summits as people wait for the perfect picture, often ignoring weather warnings or safety advice. In some cases, this obsession with online fame has led to serious accidents. It shows how personal image is sometimes valued more than safety or responsibility.",
+              "correctHeading": "The wrong priority"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "694c0e625012afb1b8820d11::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c0e625012afb1b8820d11::P5",
+              "text": "Mount Everest, once a symbol of human courage, has now become a worrying example of how adventure can harm nature. Every climbing season, long lines of climbers crowd the narrow paths to the summit, leaving behind waste and pollution on the fragile slopes. What used to be a personal challenge has turned into a commercial race, where success is measured by photos and fame rather than respect for the mountain. This situation is disturbing because it shows how our desire to conquer the world’s highest peak has created serious environmental and moral concerns.",
+              "correctHeading": "A disturbing relevant"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "694c0e625012afb1b8820d11::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c0e625012afb1b8820d11::P6",
+              "text": "As the number of climbers on Mount Everest continues to rise, the need to focus on sustainability has become urgent. Local authorities and environmental groups are now introducing stricter waste management rules, encouraging climbers to bring back what they carry, and limiting the number of expeditions each season. Some teams have even started “clean-up climbs” to remove rubbish left behind on the slopes. These efforts remind us that protecting the mountain is just as important as reaching its peak. True success on Everest should mean leaving the mountain cleaner and safer for future generations.",
+              "correctHeading": "Focus on sustainability"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "694c0e625012afb1b8820d11::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c0e625012afb1b8820d11::P7",
+              "text": "Shared experiences in challenging environments, like mountains, can deepen intimacy in relationships. Couples or friends who navigate the challenges of climbing together often find their bonds strengthened through mutual support and understanding.",
+              "correctHeading": "A more intimate relationship"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Changing the perspective towards mountain"
+            },
+            {
+              "number": 2,
+              "answer": "Unique sense of achievement"
+            },
+            {
+              "number": 3,
+              "answer": "Publicity of achievement"
+            },
+            {
+              "number": 4,
+              "answer": "The wrong priority"
+            },
+            {
+              "number": 5,
+              "answer": "A disturbing relevant"
+            },
+            {
+              "number": 6,
+              "answer": "Focus on sustainability"
+            },
+            {
+              "number": 7,
+              "answer": "A more intimate relationship"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Mission to Mars",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Mission to Mars",
+          "baseTitle": "Mission to Mars",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Is space really the future for mankind?",
+            "A truly successful outcome",
+            "A long and challenging journey in space",
+            "A distant and mysterious new world",
+            "Imitating real life in outer space",
+            "The many difficulties of living in space",
+            "Only an experiment in simulation"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "697b27e4c2a579ea0d5d2224::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b27e4c2a579ea0d5d2224::P1",
+              "text": "On 3 June 2010, an international crew of six astronauts entered a spaceship and prepared themselves for a 520-day voyage to the planet Mars and back. The module that was to be their home for the next year and a half contained their sleeping quarters, a kitchen/dining room, a living room, a control room, and a toilet. There was also space for food storage, a small greenhouse, a bathroom, a sauna, and even a gym. The Mars landing was scheduled for 12 February 2011, following a 255-day flight, and would involve a full two days of exploration of the planet’s surface. An equally long return journey would see the astronauts return to Earth on 4 November 2011.",
+              "correctHeading": "A long and challenging journey in space"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "697b27e4c2a579ea0d5d2224::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b27e4c2a579ea0d5d2224::P2",
+              "text": "Emerging from the spaceship after an exhausting 520 days, Russian commander Alexei Sitev declared the mission finally over. “The programme has been fully carried out,” he announced at a press conference. “All the crew members are in good health. We are now ready for further tests.” Indeed, the general consensus in the scientific community was that the Mars 500 project had achieved its aims, and, what is more, the crew had managed to complete their mission without ever having to leave the earth’s atmosphere.",
+              "correctHeading": "A truly successful outcome"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "697b27e4c2a579ea0d5d2224::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b27e4c2a579ea0d5d2224::P3",
+              "text": "Mars 500 was, in fact, a simulation exercise. The astronauts never even left the ground, and their spaceship was a specially constructed working model situated in a warehouse in the suburbs of Moscow. The aims of the mission were to see how well humans could cope with the confinement and stress involved in extended interplanetary travel. The astronauts – three Russians, a Frenchman, an Italian and a Chinese national – were volunteers for the project, and although all of them had the option of leaving their 550-cubic metre living space at any time, none of them chose to do so.",
+              "correctHeading": "Only an experiment in simulation"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "697b27e4c2a579ea0d5d2224::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b27e4c2a579ea0d5d2224::P4",
+              "text": "All communications between the crew and mission control were subject to a twenty-minute delay to simulate the time it would take signals to reach the earth from outer space. Although not all the elements of space flight – such as the effects of zero gravity – could be reproduced, the conditions on board were made as realistic as possible. The astronauts breathed recycled air, showered only once every ten days, and lived mostly on a diet of tinned food. Even the surface of Mars had been recreated to allow the crew the simulated experience of walking on the red planet.",
+              "correctHeading": "Imitating real life in outer space"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "697b27e4c2a579ea0d5d2224::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b27e4c2a579ea0d5d2224::P5",
+              "text": "In addition to the discomforts of living in a confined space, the astronauts also had to endure the psychological stresses brought about by isolation and boredom. Scientific studies have already shown that extended periods of social isolation can disrupt the normal mechanisms of the body. This can lead to increased levels of stress and higher blood pressure, which, in turn, can create feelings of anxiety and aggression. The astronauts were subject to regular medical tests throughout the experiment, and they were under constant observation via a twenty-four-hour closed-circuit television system. The tests continued even after the men had completed their mission, as the scientists were interested to see how the astronauts would cope with a return to normal life.",
+              "correctHeading": "The many difficulties of living in space"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "697b27e4c2a579ea0d5d2224::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b27e4c2a579ea0d5d2224::P6",
+              "text": "The data collected by the experiment is further evidence that human beings are capable of overcoming the pressures of long space flight that will be necessary if future exploration of planets is to be feasible. Although there is resistance in some quarters to investment in space exploration, some scientists believe that our future lies in the stars. With the world's population exceeding seven billion and showing no sign of slowing down, future generations may be forced to seek out new worlds beyond our own, increasingly overcrowded planet.",
+              "correctHeading": "Is space really the future for mankind?"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "697b27e4c2a579ea0d5d2224::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b27e4c2a579ea0d5d2224::P7",
+              "text": "Although the dry and dusty landscape of Mars may not be the most suitable spot for future habitation, there are other planets that could sustain human life. To date, about 700 planets with similarities to Earth have been identified outside our own solar system, and about 15 of these are potentially habitable. The most recent to be discovered – Kepler 22-b – has a surface temperature of about 22°C and orbits a star not unlike our own sun. Scientists believe that it may even contain water. However, although it may seem like a good candidate for a future space colony, it is 600 light-years away, and so it is likely to remain beyond human reach for many generations to come.",
+              "correctHeading": "A distant and mysterious new world"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "A long and challenging journey in space"
+            },
+            {
+              "number": 2,
+              "answer": "A truly successful outcome"
+            },
+            {
+              "number": 3,
+              "answer": "Only an experiment in simulation"
+            },
+            {
+              "number": 4,
+              "answer": "Imitating real life in outer space"
+            },
+            {
+              "number": 5,
+              "answer": "The many difficulties of living in space"
+            },
+            {
+              "number": 6,
+              "answer": "Is space really the future for mankind?"
+            },
+            {
+              "number": 7,
+              "answer": "A distant and mysterious new world"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Digital Innovation",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Digital Innovation",
+          "baseTitle": "Digital Innovation",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Redefining leisure in the digital era",
+            "The risks of excessive screen-based entertainment",
+            "Building inclusive and respectful online communities",
+            "Promoting essential digital literacy",
+            "Ongoing concerns about data privacy",
+            "Enhancing connectivity with mobile apps",
+            "Prioritizing user-friendly and human-centered designs"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "697b26466274db6045f351ba::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b26466274db6045f351ba::P1",
+              "text": "In the digital era, technology has revolutionized the concept of leisure, transforming how individuals relax, interact, and consume entertainment. From on-demand streaming platforms to immersive virtual reality gaming, technology enables highly personalized experiences that cater to diverse preferences. However, this shift also blurs the boundary between work and recreation, as mobile devices and online platforms constantly compete for users’ attention. Redefining leisure in the digital age means balancing technological convenience with the need for offline well-being, ensuring that innovation enhances life quality rather than creating constant digital dependency.",
+              "correctHeading": "Redefining leisure in the digital era"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "697b26466274db6045f351ba::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b26466274db6045f351ba::P2",
+              "text": "Mobile applications have become powerful enablers of global connectivity, reshaping how people communicate, collaborate, and build relationships. From instant messaging and video conferencing to AI-driven social platforms, apps foster real-time interaction across geographic and cultural boundaries. Beyond personal connections, app ecosystems support professional networking, telemedicine, e-learning, and cross-border commerce. However, this growing reliance also raises challenges, including digital fatigue and increased competition for users’ attention. To maximize their benefits, app developers must focus on designing solutions that prioritize accessibility, inclusivity, and seamless integration into users’ daily lives.",
+              "correctHeading": "Enhancing connectivity with mobile apps"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "697b26466274db6045f351ba::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b26466274db6045f351ba::P3",
+              "text": "As society becomes increasingly digitized, digital literacy has evolved into an essential skill set for education, employment, and civic participation. Beyond basic technical competence, digital literacy involves critical thinking, information evaluation, and responsible online behavior. Schools, workplaces, and governments must collaborate to create programs that empower individuals to navigate digital platforms effectively, safeguard their privacy, and recognize misinformation. Bridging the digital divide is particularly crucial to ensure that marginalized communities are not excluded from economic and social opportunities. Promoting digital literacy fosters equitable access and prepares citizens for success in a technology-driven future.",
+              "correctHeading": "Promoting essential digital literacy"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "697b26466274db6045f351ba::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b26466274db6045f351ba::P4",
+              "text": "While technology has enriched entertainment choices, excessive reliance on screen-based activities poses significant health and social challenges. Prolonged exposure to smartphones, video games, and streaming platforms can lead to eye strain, poor sleep quality, reduced physical activity, and shortened attention spans. Socially, individuals risk experiencing isolation when online entertainment replaces meaningful offline connections. Addressing this issue requires a balanced approach: promoting digital well-being, encouraging outdoor recreation, and fostering mindful consumption habits. As technology continues to evolve, society must redefine healthy entertainment practices that maximize benefits without compromising physical or mental health.",
+              "correctHeading": "The risks of excessive screen-based entertainment"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "697b26466274db6045f351ba::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b26466274db6045f351ba::P5",
+              "text": "The digital transformation has intensified debates over personal data security. With the rapid growth of AI-driven services, e-commerce, and social platforms, users constantly share sensitive information—often without fully understanding the implications. Data breaches, unauthorized tracking, and algorithmic profiling raise concerns about surveillance, exploitation, and loss of autonomy. Governments, tech companies, and advocacy groups must collaborate to establish stricter data protection frameworks, enforce transparency, and empower users to control their information. In a world where data functions as a currency of innovation, protecting privacy is essential for maintaining trust and ethical progress.",
+              "correctHeading": "Ongoing concerns about data privacy"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "697b26466274db6045f351ba::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b26466274db6045f351ba::P6",
+              "text": "Digital platforms have the power to unite people globally, yet they can also amplify division, misinformation, and exclusion if poorly managed. Building inclusive online communities requires intentional design, fostering spaces where individuals from diverse backgrounds feel respected and represented. This involves combating cyberbullying, hate speech, and algorithmic bias while promoting equitable access for underrepresented groups. Social platforms and community-driven apps should prioritize transparency, diversity, and collaborative governance, enabling users to shape the norms of interaction. When inclusivity becomes a design priority, digital ecosystems can empower meaningful connections rather than deepen social divides.",
+              "correctHeading": "Building inclusive and respectful online communities"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "697b26466274db6045f351ba::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697b26466274db6045f351ba::P7",
+              "text": "In an era of rapid technological advancement, intuitive and user-friendly design has become central to the success of digital products. A well-crafted interface goes beyond aesthetics; it simplifies complex systems, enhances accessibility, and ensures that technology serves people rather than overwhelms them. Companies now adopt human-centered design principles, leveraging user feedback, behavioral analytics, and accessibility testing to create solutions tailored to diverse needs. Prioritizing usability not only improves customer satisfaction but also fosters digital inclusivity, ensuring that innovation remains functional, engaging, and accessible to everyone—regardless of age, ability, or technical expertise.",
+              "correctHeading": "Prioritizing user-friendly and human-centered designs"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Redefining leisure in the digital era"
+            },
+            {
+              "number": 2,
+              "answer": "Enhancing connectivity with mobile apps"
+            },
+            {
+              "number": 3,
+              "answer": "Promoting essential digital literacy"
+            },
+            {
+              "number": 4,
+              "answer": "The risks of excessive screen-based entertainment"
+            },
+            {
+              "number": 5,
+              "answer": "Ongoing concerns about data privacy"
+            },
+            {
+              "number": 6,
+              "answer": "Building inclusive and respectful online communities"
+            },
+            {
+              "number": 7,
+              "answer": "Prioritizing user-friendly and human-centered designs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Wellness Trends",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Wellness Trends",
+          "baseTitle": "Wellness Trends",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Encouraging community fitness programs",
+            "Building supportive health communities",
+            "Promoting mental health awareness",
+            "Focusing on sustainable lifestyle changes",
+            "Redefining holistic health approaches",
+            "Concerns about wellness misinformation",
+            "Overemphasis on trendy diets"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "697732a2180cf3659ca49018::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697732a2180cf3659ca49018::P1",
+              "text": "In recent years, the concept of health has expanded to include more than just physical well-being. Holistic approaches emphasize the interconnectedness of the body, mind, and environment, encouraging individuals to consider emotional balance, mental clarity, nutrition, and lifestyle habits all together. This broader perspective helps people achieve deeper and more sustainable wellness by addressing multiple aspects of their lives rather than isolated symptoms.",
+              "correctHeading": "Redefining holistic health approaches"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "697732a2180cf3659ca49018::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697732a2180cf3659ca49018::P2",
+              "text": "Mental health has increasingly become a priority in public health discussions. Awareness campaigns aim to reduce the stigma around mental illnesses and encourage people to talk openly about their struggles. Providing education on recognizing early signs of anxiety, depression, and stress empowers individuals to seek help sooner. Many organizations also offer support networks and resources to foster a more compassionate and understanding society.",
+              "correctHeading": "Promoting mental health awareness"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "697732a2180cf3659ca49018::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697732a2180cf3659ca49018::P3",
+              "text": "Community-based fitness initiatives are gaining popularity as a way to make exercise more enjoyable and accessible. By participating in group activities like yoga classes, walking clubs, or sports leagues, people not only improve their physical health but also build meaningful social connections. These programs create a sense of belonging and motivate individuals to stick with their fitness goals over time, contributing to healthier and happier communities.",
+              "correctHeading": "Encouraging community fitness programs"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "697732a2180cf3659ca49018::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697732a2180cf3659ca49018::P4",
+              "text": "Although fad diets often promise rapid weight loss or improved health, relying too heavily on these trends can be problematic. Many popular diets lack scientific backing and may exclude important nutrients, leading to imbalanced nutrition. Nutrition experts stress that sustainable eating should focus on balanced meals, moderation, and personal needs rather than quick fixes. Developing a healthy relationship with food is more beneficial than following the latest diet craze.",
+              "correctHeading": "Overemphasis on trendy diets"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "697732a2180cf3659ca49018::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697732a2180cf3659ca49018::P5",
+              "text": "The rise of social media and online platforms has led to widespread sharing of health information, but not all of it is accurate or safe. Misinformation about supplements, treatments, and health practices can cause confusion or even harm. It is important for individuals to critically evaluate sources, consult healthcare professionals, and rely on evidence-based guidance when making decisions about their wellness routines.",
+              "correctHeading": "Concerns about wellness misinformation"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "697732a2180cf3659ca49018::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697732a2180cf3659ca49018::P6",
+              "text": "Supportive groups focused on wellness play a crucial role in helping people maintain healthy lifestyles. Whether online forums or local meetups, these communities offer encouragement, share tips, and provide accountability. Members can exchange experiences, celebrate successes, and find motivation during challenges, creating an environment where individuals feel empowered to achieve their health goals.",
+              "correctHeading": "Building supportive health communities"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "697732a2180cf3659ca49018::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697732a2180cf3659ca49018::P7",
+              "text": "Achieving long-term health requires more than temporary diets or exercise bursts. Sustainable wellness involves adopting gradual changes that can be maintained over time, such as improving sleep habits, managing stress, and incorporating regular physical activity. By setting realistic goals and making incremental adjustments, individuals are more likely to enjoy lasting benefits and improve their overall quality of life.",
+              "correctHeading": "Focusing on sustainable lifestyle changes"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Redefining holistic health approaches"
+            },
+            {
+              "number": 2,
+              "answer": "Promoting mental health awareness"
+            },
+            {
+              "number": 3,
+              "answer": "Encouraging community fitness programs"
+            },
+            {
+              "number": 4,
+              "answer": "Overemphasis on trendy diets"
+            },
+            {
+              "number": 5,
+              "answer": "Concerns about wellness misinformation"
+            },
+            {
+              "number": 6,
+              "answer": "Building supportive health communities"
+            },
+            {
+              "number": 7,
+              "answer": "Focusing on sustainable lifestyle changes"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Tech Forward (Version 2 - Thứ tự và tiêu đề giống nhau, chỉ paraphrase nội dung đoạn văn)",
+      "availableVersions": [
+        2,
+        1
+      ],
+      "variantCount": 2,
+      "variants": [
+        {
+          "version": 2,
+          "versionLabel": "v2",
+          "title": "Tech Forward (Version 2 - Thứ tự và tiêu đề giống nhau, chỉ paraphrase nội dung đoạn văn)",
+          "baseTitle": "Tech Forward (Version 2 - Thứ tự và tiêu đề giống nhau, chỉ paraphrase nội dung đoạn văn)",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Enhancing productivity through smart automation",
+            "Redefining human-technology interaction",
+            "Concerns about technology access disparities",
+            "Focusing on sustainable digital solutions",
+            "Building innovative tech communities",
+            "Overreliance on digital interfaces",
+            "Promoting tech-driven education programs"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "69772d43b5357b330079cfb7::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69772d43b5357b330079cfb7::P1",
+              "text": "The rapid advancement of digital tools has fundamentally redefined human-technology interaction. From voice-activated assistants to wearable devices, people now engage with machines in ways that feel almost intuitive. These changes blur the line between human and artificial intelligence, raising questions about autonomy, ethics, and the boundaries of personal privacy.",
+              "correctHeading": "Redefining human-technology interaction"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "69772d43b5357b330079cfb7::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69772d43b5357b330079cfb7::P2",
+              "text": "Organizations across industries are enhancing productivity through smart automation. AI-powered platforms handle repetitive tasks, streamline workflows, and reduce errors, allowing employees to focus on more creative and strategic responsibilities. While automation boosts efficiency, it also requires companies to reskill workers to remain competitive in a tech-driven economy.",
+              "correctHeading": "Enhancing productivity through smart automation"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "69772d43b5357b330079cfb7::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69772d43b5357b330079cfb7::P3",
+              "text": "Schools and universities are promoting tech-driven education programs to prepare students for a digital future. Interactive apps, virtual classrooms, and AI tutors expand learning opportunities far beyond traditional settings. These tools not only make education more engaging but also equip learners with critical digital literacy skills essential for tomorrow’s workforce.",
+              "correctHeading": "Promoting tech-driven education programs"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "69772d43b5357b330079cfb7::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69772d43b5357b330079cfb7::P4",
+              "text": "Despite its benefits, an overreliance on digital interfaces can lead to problems such as reduced face-to-face communication, digital fatigue, and shorter attention spans. As society becomes increasingly screen-centered, finding a balance between online convenience and offline well-being is essential for maintaining healthy human connections.",
+              "correctHeading": "Overreliance on digital interfaces"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "69772d43b5357b330079cfb7::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69772d43b5357b330079cfb7::P5",
+              "text": "Not everyone benefits equally from innovation, and concerns about technology access disparities are growing. Rural communities, low-income families, and marginalized groups often lack reliable internet or modern devices. Bridging this digital divide is vital to ensure that technology promotes inclusivity rather than deepening social inequality.",
+              "correctHeading": "Concerns about technology access disparities"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "69772d43b5357b330079cfb7::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69772d43b5357b330079cfb7::P6",
+              "text": "Across the globe, people are building innovative tech communities that foster collaboration and entrepreneurship. Start-up hubs, coding bootcamps, and online forums encourage knowledge sharing and collective problem-solving. These communities drive technological breakthroughs and ensure that innovation is shaped by diverse perspectives.",
+              "correctHeading": "Building innovative tech communities"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "69772d43b5357b330079cfb7::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 69772d43b5357b330079cfb7::P7",
+              "text": "As digital transformation accelerates, there is increasing emphasis on focusing on sustainable digital solutions. From energy-efficient data centers to eco-friendly manufacturing of devices, companies are seeking ways to minimize environmental impact. Sustainability ensures that technological progress aligns with long-term global well-being.",
+              "correctHeading": "Focusing on sustainable digital solutions"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Redefining human-technology interaction"
+            },
+            {
+              "number": 2,
+              "answer": "Enhancing productivity through smart automation"
+            },
+            {
+              "number": 3,
+              "answer": "Promoting tech-driven education programs"
+            },
+            {
+              "number": 4,
+              "answer": "Overreliance on digital interfaces"
+            },
+            {
+              "number": 5,
+              "answer": "Concerns about technology access disparities"
+            },
+            {
+              "number": 6,
+              "answer": "Building innovative tech communities"
+            },
+            {
+              "number": 7,
+              "answer": "Focusing on sustainable digital solutions"
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "versionLabel": "v1",
+          "title": "Tech Forward",
+          "baseTitle": "Tech Forward",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Concerns About Disparities in Access to Technology",
+            "Promoting Technology-Based Education Programs",
+            "Building Innovative Tech Communities",
+            "Focusing on Sustainable Digital Solutions",
+            "Overreliance on Digital Interfaces",
+            "Redefining Human-Technology Interaction",
+            "Boosting Productivity Through Intelligent Automation"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "694c19e85012afb1b8820d1b::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c19e85012afb1b8820d1b::P1",
+              "text": "In the digital age, the way humans engage with technology is constantly evolving. Rather than viewing devices as separate tools, people now experience them as extensions of daily life. From smartphones to wearable gadgets, technology is reshaping communication, decision-making, and even personal identity. This shift represents a redefinition of how humans and technology interact on multiple levels.",
+              "correctHeading": "Redefining Human-Technology Interaction"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "694c19e85012afb1b8820d1b::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c19e85012afb1b8820d1b::P2",
+              "text": "Smart automation is becoming a powerful force in the workplace. By taking over repetitive and routine tasks, automated systems free employees to focus on creativity, problem-solving, and strategic planning. Companies report significant productivity gains as they implement artificial intelligence, machine learning, and robotics to streamline processes and enhance efficiency.",
+              "correctHeading": "Boosting Productivity Through Intelligent Automation"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "694c19e85012afb1b8820d1b::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c19e85012afb1b8820d1b::P3",
+              "text": "Education is transforming with the help of technology-driven initiatives. Online learning platforms, digital classrooms, and interactive simulations give students more flexible and engaging ways to acquire knowledge. Governments and institutions now actively promote these programs to reduce barriers and ensure more people gain essential digital skills for the future workforce.",
+              "correctHeading": "Promoting Technology-Based Education Programs"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "694c19e85012afb1b8820d1b::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c19e85012afb1b8820d1b::P4",
+              "text": "While technology offers many benefits, heavy dependence on digital interfaces can also create challenges. People often spend hours on screens, which may weaken interpersonal connections, reduce attention spans, and cause physical strain. Experts warn that balance is necessary so that digital tools remain useful aids without becoming overwhelming distractions.",
+              "correctHeading": "Overreliance on Digital Interfaces"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "694c19e85012afb1b8820d1b::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c19e85012afb1b8820d1b::P5",
+              "text": "Not everyone benefits equally from technological progress. In many areas, especially rural or underdeveloped regions, access to high-speed internet, modern devices, or digital training is limited. These gaps highlight a digital divide that can worsen social and economic inequalities, making equal access to technology a pressing concern.",
+              "correctHeading": "Concerns About Disparities in Access to Technology"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "694c19e85012afb1b8820d1b::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c19e85012afb1b8820d1b::P6",
+              "text": "Tech communities bring together individuals passionate about technology to share ideas, support projects, and collaborate. These groups foster innovation and creativity, providing mentorship and resources that help turn new concepts into reality.",
+              "correctHeading": "Building Innovative Tech Communities"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "694c19e85012afb1b8820d1b::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c19e85012afb1b8820d1b::P7",
+              "text": "Technology is no longer just about speed and convenience—it must also be sustainable. Modern developers and organizations emphasize eco-friendly digital practices, such as reducing energy consumption in data centers, creating recyclable devices, and designing long-lasting software solutions. The focus is on sustainability to ensure digital growth supports both people and the planet.",
+              "correctHeading": "Focusing on Sustainable Digital Solutions"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Redefining Human-Technology Interaction"
+            },
+            {
+              "number": 2,
+              "answer": "Boosting Productivity Through Intelligent Automation"
+            },
+            {
+              "number": 3,
+              "answer": "Promoting Technology-Based Education Programs"
+            },
+            {
+              "number": 4,
+              "answer": "Overreliance on Digital Interfaces"
+            },
+            {
+              "number": 5,
+              "answer": "Concerns About Disparities in Access to Technology"
+            },
+            {
+              "number": 6,
+              "answer": "Building Innovative Tech Communities"
+            },
+            {
+              "number": 7,
+              "answer": "Focusing on Sustainable Digital Solutions"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Cultural Exchange",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Cultural Exchange",
+          "baseTitle": "Cultural Exchange",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Promoting language exchange programs",
+            "Encouraging cross-cultural festivals",
+            "Concerns about cultural preservation",
+            "Building mutual respect among communities",
+            "Overemphasis on commercial tourism",
+            "Redefining global cultural understanding",
+            "Focusing on authentic cultural experiences"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "697721e8b5357b330079cfb6::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697721e8b5357b330079cfb6::P1",
+              "text": "In today’s interconnected world, global cultural understanding goes beyond simply learning about traditions and customs. It requires developing cultural intelligence—the ability to interpret behaviors, values, and communication styles in diverse contexts. While stereotypes once shaped international perceptions, cross-border collaborations now demand a more nuanced and adaptive mindset. Individuals must recognize that culture is dynamic rather than fixed, influenced by globalization, migration, and technological change. Redefining cultural understanding means moving away from superficial knowledge and adopting a deeper appreciation of shared human experiences while respecting distinct identities.",
+              "correctHeading": "Redefining global cultural understanding"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "697721e8b5357b330079cfb6::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697721e8b5357b330079cfb6::P2",
+              "text": "Cross-cultural festivals play a pivotal role in fostering inclusivity and unity among diverse populations. These events provide a platform where communities can showcase their art, music, cuisine, and heritage, encouraging meaningful dialogue and mutual appreciation. More importantly, they create opportunities for participants to interact directly, dismantling prejudices and stereotypes through firsthand experiences. Governments and cultural organizations increasingly recognize the educational and economic value of such festivals, supporting them to enhance social cohesion. When managed effectively, cross-cultural festivals not only celebrate diversity but also build stronger, more resilient communities in a globalized society.",
+              "correctHeading": "Encouraging cross-cultural festivals"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "697721e8b5357b330079cfb6::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697721e8b5357b330079cfb6::P3",
+              "text": "Language exchange programs are one of the most effective tools for promoting intercultural communication and understanding. By enabling learners to practice directly with native speakers, these initiatives help participants grasp cultural nuances, including humor, idioms, and nonverbal cues that textbooks often overlook. Moreover, such programs cultivate empathy by allowing individuals to experience another culture’s perspective on identity, history, and values. With the rise of virtual platforms, international exchanges are becoming more accessible and affordable, empowering students and professionals alike to develop cross-cultural competence—a critical skill in education, business, and diplomacy.",
+              "correctHeading": "Promoting language exchange programs"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "697721e8b5357b330079cfb6::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697721e8b5357b330079cfb6::P4",
+              "text": "While tourism promotes economic growth, its over-commercialization often undermines authentic cultural exchange. Popular destinations risk being transformed into commodified attractions, where traditions are staged to meet tourists’ expectations rather than reflecting genuine practices. This phenomenon can lead to the erosion of local identity and the homogenization of cultural experiences. Travelers seeking authenticity may instead encounter curated performances and mass-produced souvenirs. To counter this, policymakers and tourism boards must balance economic benefits with cultural integrity, prioritizing sustainable tourism models that respect local communities, preserve heritage, and encourage more meaningful interactions between visitors and residents.",
+              "correctHeading": "Overemphasis on commercial tourism"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "697721e8b5357b330079cfb6::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697721e8b5357b330079cfb6::P5",
+              "text": "Globalization and rapid urbanization have intensified concerns about the loss of intangible cultural heritage. Languages, rituals, folk traditions, and crafts are disappearing at alarming rates as younger generations adopt global trends. While modernization brings convenience and economic opportunities, it also risks creating cultural homogenization. Governments, educators, and community leaders must collaborate on initiatives that document, protect, and revitalize endangered traditions. Technology can play a vital role, from digitizing ancient manuscripts to creating virtual museums. Preserving culture is not about resisting change but maintaining diversity, ensuring that global progress does not come at the cost of cultural richness.",
+              "correctHeading": "Concerns about cultural preservation"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "697721e8b5357b330079cfb6::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697721e8b5357b330079cfb6::P6",
+              "text": "True cultural exchange thrives only when grounded in mutual respect and empathy. Communities must move beyond tolerance and strive for genuine understanding of each other’s values, beliefs, and histories. Prejudices often stem from ignorance, and open dialogue can dismantle misconceptions while fostering collaboration. Educational institutions, media, and public policies have the power to promote inclusive narratives that highlight common humanity rather than differences. By recognizing that cultural diversity strengthens societies, individuals and communities can build trust-based relationships that lead to cooperation in addressing global challenges, from climate change to social inequality.",
+              "correctHeading": "Building mutual respect among communities"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "697721e8b5357b330079cfb6::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 697721e8b5357b330079cfb6::P7",
+              "text": "As globalization reshapes travel and lifestyle choices, there is a growing demand for authentic cultural experiences. Travelers increasingly seek opportunities to engage with local communities, learn traditional crafts, and participate in everyday cultural practices rather than consuming staged performances. Authenticity, however, requires sensitivity and humility: visitors must approach new cultures as learners, not consumers. Meanwhile, communities hosting tourists should feel empowered to share their heritage on their own terms. Prioritizing authenticity transforms cultural exchange from a passive observation into an immersive, transformative experience that fosters deeper understanding and meaningful connections.",
+              "correctHeading": "Focusing on authentic cultural experiences"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Redefining global cultural understanding"
+            },
+            {
+              "number": 2,
+              "answer": "Encouraging cross-cultural festivals"
+            },
+            {
+              "number": 3,
+              "answer": "Promoting language exchange programs"
+            },
+            {
+              "number": 4,
+              "answer": "Overemphasis on commercial tourism"
+            },
+            {
+              "number": 5,
+              "answer": "Concerns about cultural preservation"
+            },
+            {
+              "number": 6,
+              "answer": "Building mutual respect among communities"
+            },
+            {
+              "number": 7,
+              "answer": "Focusing on authentic cultural experiences"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Frozen Land",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Frozen Land",
+          "baseTitle": "Frozen Land",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Race to the pole",
+            "First step on the ice",
+            "Hidden geography",
+            "Less effort needed",
+            "Why is it so cold?",
+            "Where is the end of the Earth?",
+            "Who is in charge?"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "694c192c5012afb1b8820d19::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c192c5012afb1b8820d19::P1",
+              "text": "Although Antarctica is not claimed as a country, several nations have laid territorial claims over parts of the continent. However, under the Antarctic Treaty System signed in 1959, no single country has full ownership. Instead, the region is governed collectively by over 50 countries that have agreed to preserve it for peaceful and scientific purposes. No military activity is allowed, and scientific cooperation is encouraged. This unique model of international governance helps protect the fragile environment of the frozen land and ensures that its resources are not exploited for commercial gain.",
+              "correctHeading": "Who is in charge?"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "694c192c5012afb1b8820d19::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c192c5012afb1b8820d19::P2",
+              "text": "The first known landing on Antarctica took place in the early 19th century when a group of seal hunters unintentionally arrived at the icy coastline. Later, exploratory missions were organized specifically to set foot on the continent. In 1895, a Norwegian expedition became the first officially recognized landing. These early steps were dangerous and uncertain, with little knowledge of the terrain or weather. Still, the achievement marked a turning point in human exploration, showing that even the most remote and inhospitable places on Earth could be reached with courage and persistence.",
+              "correctHeading": "First step on the ice"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "694c192c5012afb1b8820d19::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c192c5012afb1b8820d19::P3",
+              "text": "Antarctica has often been described as the end of the Earth. Located at the southernmost point of the planet, it remains one of the most mysterious and least accessible places for humans. It’s surrounded by the Southern Ocean and sits opposite the Arctic in the global geography. For centuries, explorers speculated whether such a place existed at all. Today, while satellite images and scientific missions provide more data, the continent still retains an aura of the unknown, attracting adventurers and scientists who want to experience the planet’s final frontier.",
+              "correctHeading": "Where is the end of the Earth?"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "694c192c5012afb1b8820d19::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c192c5012afb1b8820d19::P4",
+              "text": "Despite being covered in thick sheets of ice, Antarctica has a surprisingly diverse and dramatic landscape hidden beneath its surface. Using ground-penetrating radar and satellite imaging, scientists have discovered vast mountain ranges, deep valleys, and even ancient lakes buried under kilometers of ice. These findings suggest that Antarctica was once a very different environment. Studying this hidden geography helps researchers understand the Earth's geological past, as well as how changes in climate may affect the region’s ice coverage in the future.",
+              "correctHeading": "Hidden geography"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "694c192c5012afb1b8820d19::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c192c5012afb1b8820d19::P5",
+              "text": "The early 20th century saw a dramatic competition between nations to reach the South Pole. Most famously, British explorer Robert Falcon Scott and Norwegian Roald Amundsen led rival expeditions. Amundsen reached the Pole first in 1911, using dog sleds and careful planning. Scott arrived weeks later, only to perish on the return journey with his team. The race to the pole was one of the most extreme tests of human endurance and remains one of the most iconic chapters in the history of polar exploration.",
+              "correctHeading": "Race to the pole"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "694c192c5012afb1b8820d19::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c192c5012afb1b8820d19::P6",
+              "text": "Travel across Antarctica remains one of the most difficult journeys on Earth. However, modern technology has significantly reduced the physical effort required. In the past, explorers dragged heavy sleds by hand or used animals, often in dangerous and freezing conditions. Today, snowmobiles, tracked vehicles, and even aircraft allow researchers to move equipment and people more easily. While the environment is still harsh, advances in transportation and survival gear make scientific missions more efficient and less life-threatening than those of early explorers.",
+              "correctHeading": "Less effort needed"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "694c192c5012afb1b8820d19::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c192c5012afb1b8820d19::P7",
+              "text": "Antarctica is the coldest place on Earth, with temperatures regularly dropping below –60°C in winter. The continent’s high altitude, its position near the South Pole, and the fact that sunlight is absent for months all contribute to its extreme chill. Its white ice surface also reflects most of the sun’s heat back into the atmosphere. These unique features make it difficult for heat to accumulate, and as a result, the region remains frozen even in summer. Understanding these conditions helps scientists study global weather patterns and climate change.",
+              "correctHeading": "Why is it so cold?"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Who is in charge?"
+            },
+            {
+              "number": 2,
+              "answer": "First step on the ice"
+            },
+            {
+              "number": 3,
+              "answer": "Where is the end of the Earth?"
+            },
+            {
+              "number": 4,
+              "answer": "Hidden geography"
+            },
+            {
+              "number": 5,
+              "answer": "Race to the pole"
+            },
+            {
+              "number": 6,
+              "answer": "Less effort needed"
+            },
+            {
+              "number": 7,
+              "answer": "Why is it so cold?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Early Australia",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Early Australia",
+          "baseTitle": "Early Australia",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "An alternative history of settlement",
+            "Lack of knowledge and skills",
+            "Determination of the explorers through the ages",
+            "A new evidence that leads to speculation",
+            "A Journey made by stages",
+            "Technology helps uncover the ocean’s secret",
+            "Natural barrier to resettlement"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "694c15d15012afb1b8820d15::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c15d15012afb1b8820d15::P1",
+              "text": "Scientists have found evidence that humans have lived in Australia for about 65,000 years. This is different from the previous thinking that the first people only arrived in Australia a few tens of thousands of years ago. The results from the analysis of archaeological relics have given rise to many different opinions about the origin of the first people in Australia. This discovery shows that the Australian aborigines have been present and lived here for a long time.",
+              "correctHeading": "An alternative history of settlement"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "694c15d15012afb1b8820d15::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c15d15012afb1b8820d15::P2",
+              "text": "Humans coming to Australia did not happen only once. In addition to the first group of people, scientists have also discovered traces of two other groups that also came here. This shows that many groups of people came to Australia in the past. However, in ancient times, it was very difficult to get to Australia because they had to cross a large ocean without modern technology like today.",
+              "correctHeading": "Natural barrier to resettlement"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "694c15d15012afb1b8820d15::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c15d15012afb1b8820d15::P3",
+              "text": "Thanks to modern machinery, scientists have discovered a chain of small islands that form a route to Australia. Technology such as remote sensing and electronic maps helps them identify the islands and the movements of ancient people. Thanks to that, they have a better understanding of the path that their ancestors may have taken to reach Australia.",
+              "correctHeading": "Technology helps uncover the ocean’s secret"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "694c15d15012afb1b8820d15::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c15d15012afb1b8820d15::P4",
+              "text": "Ancient people may have reached Australia by passing through many small islands. Each island was a place where they stopped to rest and find food, then continued their journey. This way of moving shows that they knew how to adapt to difficult conditions to be able to live in Australia.",
+              "correctHeading": "A Journey made by stages"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "694c15d15012afb1b8820d15::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c15d15012afb1b8820d15::P5",
+              "text": "Currently, researchers cannot know for sure how many people participated in the journey to Australia. It could have been only a few dozen people, or it could have been up to thousands. Due to the lack of clear evidence, it is difficult to determine the exact number. However, future research may help find the answer.",
+              "correctHeading": "A new evidence that leads to speculation"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "694c15d15012afb1b8820d15::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c15d15012afb1b8820d15::P6",
+              "text": "Some people think that ancient people were not smart enough or skilled enough to cross the sea to Australia. They think that without modern tools, ancient people could not navigate or cross the ocean. But history has proven that humans have always been smart and can overcome many difficulties.",
+              "correctHeading": "Lack of knowledge and skills"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "694c15d15012afb1b8820d15::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c15d15012afb1b8820d15::P7",
+              "text": "From ancient times to the present, humans have always wanted to explore new places. Whether it was going to sea in ancient times or going to space today, we always find ways to overcome the limits. Ancient people may have crossed the sea because they wanted to find a better place to live. Thanks to their courage, we understand more about human history.",
+              "correctHeading": "Determination of the explorers through the ages"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "An alternative history of settlement"
+            },
+            {
+              "number": 2,
+              "answer": "Natural barrier to resettlement"
+            },
+            {
+              "number": 3,
+              "answer": "Technology helps uncover the ocean’s secret"
+            },
+            {
+              "number": 4,
+              "answer": "A Journey made by stages"
+            },
+            {
+              "number": 5,
+              "answer": "A new evidence that leads to speculation"
+            },
+            {
+              "number": 6,
+              "answer": "Lack of knowledge and skills"
+            },
+            {
+              "number": 7,
+              "answer": "Determination of the explorers through the ages"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Digital Transformation",
+      "availableVersions": [],
+      "variantCount": 1,
+      "variants": [
+        {
+          "version": null,
+          "versionLabel": null,
+          "title": "Digital Transformation",
+          "baseTitle": "Digital Transformation",
+          "part": 5,
+          "type": "MATCHING",
+          "answerBadge": "PART 5 - MATCHING",
+          "headingBank": [
+            "Redefining business models with technology",
+            "Focusing on ethical technology development",
+            "Enhancing productivity through automation",
+            "Over-reliance on automated systems",
+            "Concerns about cybersecurity risks",
+            "Promoting digital training skills",
+            "Building inclusive digital ecosystems"
+          ],
+          "paragraphCount": 7,
+          "paragraphs": [
+            {
+              "localNumber": 1,
+              "segmentKey": "694c13565012afb1b8820d13::P1",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c13565012afb1b8820d13::P1",
+              "text": "Many companies are now changing the way they operate by shifting from traditional models to digital ones. Instead of running physical stores, for example, they may move entirely online or create hybrid experiences for customers. This transformation allows them to reach wider markets, reduce costs, and offer more personalized services. Digital tools are not just supporting business — they’re completely reshaping it.",
+              "correctHeading": "Redefining business models with technology"
+            },
+            {
+              "localNumber": 2,
+              "segmentKey": "694c13565012afb1b8820d13::P2",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c13565012afb1b8820d13::P2",
+              "text": "Automated systems, such as robotics and artificial intelligence, have significantly improved workplace efficiency. Tasks that once took hours can now be completed in minutes. Employees are able to focus on more complex or creative work, while machines handle the repetitive jobs. This has led to higher productivity and faster results across industries.",
+              "correctHeading": "Enhancing productivity through automation"
+            },
+            {
+              "localNumber": 3,
+              "segmentKey": "694c13565012afb1b8820d13::P3",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c13565012afb1b8820d13::P3",
+              "text": "As technology continues to advance, there is a growing need to equip people with the right skills to succeed. Governments and organizations are investing in training programs to teach digital literacy, coding, data analysis, and cybersecurity. Ensuring that both young people and adults have these skills is essential for a future-ready workforce.",
+              "correctHeading": "Promoting digital training skills"
+            },
+            {
+              "localNumber": 4,
+              "segmentKey": "694c13565012afb1b8820d13::P4",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c13565012afb1b8820d13::P4",
+              "text": "While automation brings many benefits, some companies have become too dependent on it. When systems fail or encounter unexpected issues, operations can come to a complete stop. This over-reliance can lead to serious risks, especially if there’s no human oversight or backup processes in place. Balance is key when integrating technology.",
+              "correctHeading": "Over-reliance on automated systems"
+            },
+            {
+              "localNumber": 5,
+              "segmentKey": "694c13565012afb1b8820d13::P5",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c13565012afb1b8820d13::P5",
+              "text": "With more personal and financial data being stored online, cybersecurity has become a top concern. Hackers are constantly developing new ways to attack systems, steal information, or cause disruption. Businesses must invest in strong security measures and regularly update their software to protect themselves and their customers.",
+              "correctHeading": "Concerns about cybersecurity risks"
+            },
+            {
+              "localNumber": 6,
+              "segmentKey": "694c13565012afb1b8820d13::P6",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c13565012afb1b8820d13::P6",
+              "text": "To create a truly digital world, it's important that no one is left behind. This means designing platforms and systems that are accessible to people of all backgrounds, including those with disabilities or limited access to technology. Digital inclusion helps close the gap between different social groups and creates equal opportunities for all.",
+              "correctHeading": "Building inclusive digital ecosystems"
+            },
+            {
+              "localNumber": 7,
+              "segmentKey": "694c13565012afb1b8820d13::P7",
+              "ariaLabel": "Chọn tiêu đề cho đoạn 694c13565012afb1b8820d13::P7",
+              "text": "As technology becomes more powerful, so does the responsibility of using it wisely. Developers and companies are being urged to consider the ethical impact of their innovations. From protecting user privacy to avoiding bias in AI, ethical development ensures that technology serves society in a fair and positive way.",
+              "correctHeading": "Focusing on ethical technology development"
+            }
+          ],
+          "correctAnswers": [
+            {
+              "number": 1,
+              "answer": "Redefining business models with technology"
+            },
+            {
+              "number": 2,
+              "answer": "Enhancing productivity through automation"
+            },
+            {
+              "number": 3,
+              "answer": "Promoting digital training skills"
+            },
+            {
+              "number": 4,
+              "answer": "Over-reliance on automated systems"
+            },
+            {
+              "number": 5,
+              "answer": "Concerns about cybersecurity risks"
+            },
+            {
+              "number": 6,
+              "answer": "Building inclusive digital ecosystems"
+            },
+            {
+              "number": 7,
+              "answer": "Focusing on ethical technology development"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "extractedAt": "2026-08-25T18:41:59.984Z"
+}

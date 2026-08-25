@@ -1,0 +1,5755 @@
+{
+  "source": "https://www.aptisprep.com/reading/practice/part/1",
+  "skill": "reading",
+  "part": 1,
+  "type": "GAP_FILL",
+  "expectedSets": 66,
+  "extractedSets": 66,
+  "expectedGapItems": 330,
+  "extractedGapItems": 330,
+  "correctAnswersFound": 330,
+  "wordBanksFound": 330,
+  "wordBankOptionCount": 1179,
+  "tips": [
+    "Đọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).",
+    "So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.",
+    "Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.",
+    "Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé."
+  ],
+  "sets": [
+    {
+      "number": 1,
+      "instruction": "Read the message below. Choose one word from the list for each gap.",
+      "passage": "Dear Sarah,\n\nWhere is the train ___1___ in this town?\n\nThe bus ___2___ here every morning.\n\nThe traffic light is ___3___ so you can go now.\n\nWe usually have ___4___ at 7 p.m.\n\nDo you like watching ___5___ on weekends?\n\nBest regards,\nJohn",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho Where is the train ___ in this town?",
+          "prompt": "Where is the train ___ in this town?",
+          "wordBank": [
+            "station",
+            "school",
+            "market"
+          ],
+          "correctAnswer": "station"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho The bus ___ here every morning.",
+          "prompt": "The bus ___ here every morning.",
+          "wordBank": [
+            "stops",
+            "runs",
+            "flies"
+          ],
+          "correctAnswer": "stops"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho The traffic light is ___ so you can go now.",
+          "prompt": "The traffic light is ___ so you can go now.",
+          "wordBank": [
+            "green",
+            "red",
+            "blue"
+          ],
+          "correctAnswer": "green"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho We usually have ___ at 7 p.m.",
+          "prompt": "We usually have ___ at 7 p.m.",
+          "wordBank": [
+            "breakfast",
+            "lunch",
+            "dinner"
+          ],
+          "correctAnswer": "dinner"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Do you like watching ___ on weekends?",
+          "prompt": "Do you like watching ___ on weekends?",
+          "wordBank": [
+            "movies",
+            "books",
+            "games"
+          ],
+          "correctAnswer": "movies"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "station"
+        },
+        {
+          "number": 2,
+          "answer": "stops"
+        },
+        {
+          "number": 3,
+          "answer": "green"
+        },
+        {
+          "number": 4,
+          "answer": "dinner"
+        },
+        {
+          "number": 5,
+          "answer": "movies"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "instruction": "Read the email from Janna to her friend. Choose one word from the list for each gap.",
+      "passage": "Dear Michael,\n\nMy ___1___ are really friendly and kind.\n\nThey sometimes help me ___2___ the documents.\n\nWe also like to ___3___ for some clothes on weekends.\n\nWe all have enough ___4___ to pay for clothes.\n\nAll things we buy at the stores will be put in the ___5___.\n\nBest regards,\nJanna",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho My ___ are really friendly and kind.",
+          "prompt": "My ___ are really friendly and kind.",
+          "wordBank": [
+            "cat",
+            "cars",
+            "colleagues"
+          ],
+          "correctAnswer": "colleagues"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho They sometimes help me ___ the documents.",
+          "prompt": "They sometimes help me ___ the documents.",
+          "wordBank": [
+            "read",
+            "draw",
+            "write"
+          ],
+          "correctAnswer": "write"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho We also like to ___ for some clothes on weekends.",
+          "prompt": "We also like to ___ for some clothes on weekends.",
+          "wordBank": [
+            "take",
+            "wear",
+            "shop"
+          ],
+          "correctAnswer": "shop"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho We all have enough ___ to pay for clothes.",
+          "prompt": "We all have enough ___ to pay for clothes.",
+          "wordBank": [
+            "color",
+            "time",
+            "money"
+          ],
+          "correctAnswer": "money"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho All things we buy at the stores will be put in the ___.",
+          "prompt": "All things we buy at the stores will be put in the ___.",
+          "wordBank": [
+            "bag",
+            "shirt",
+            "hat"
+          ],
+          "correctAnswer": "bag"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "colleagues"
+        },
+        {
+          "number": 2,
+          "answer": "write"
+        },
+        {
+          "number": 3,
+          "answer": "shop"
+        },
+        {
+          "number": 4,
+          "answer": "money"
+        },
+        {
+          "number": 5,
+          "answer": "bag"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "instruction": "Read the email from Nancy to her friend. Choose one word from the list for each gap.",
+      "passage": "Dear Mary,\n\nWe have good chances to see our favorite ___1___.\n\nWe often spend time ___2___ films at night.\n\nIt is because we can have some ___3___ movies to watch.\n\nSometimes, we make ___4___ when we don’t see each other.\n\nAnd my friends will order some ___5___ to eat when we watch.\n\nBest regards,\nNancy",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho We have good chances to see our favorite ___.",
+          "prompt": "We have good chances to see our favorite ___.",
+          "wordBank": [
+            "dress",
+            "actors",
+            "friends"
+          ],
+          "correctAnswer": "actors"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We often spend time ___ films at night.",
+          "prompt": "We often spend time ___ films at night.",
+          "wordBank": [
+            "watching",
+            "reading",
+            "listening"
+          ],
+          "correctAnswer": "watching"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho It is because we can have some ___ movies to watch.",
+          "prompt": "It is because we can have some ___ movies to watch.",
+          "wordBank": [
+            "good",
+            "strange",
+            "bad"
+          ],
+          "correctAnswer": "good"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Sometimes, we make ___ when we don’t see each other.",
+          "prompt": "Sometimes, we make ___ when we don’t see each other.",
+          "wordBank": [
+            "chats",
+            "phones",
+            "talks"
+          ],
+          "correctAnswer": "phones"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho And my friends will order some ___ to eat when we watch.",
+          "prompt": "And my friends will order some ___ to eat when we watch.",
+          "wordBank": [
+            "food",
+            "toys",
+            "clothes"
+          ],
+          "correctAnswer": "food"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "actors"
+        },
+        {
+          "number": 2,
+          "answer": "watching"
+        },
+        {
+          "number": 3,
+          "answer": "good"
+        },
+        {
+          "number": 4,
+          "answer": "phones"
+        },
+        {
+          "number": 5,
+          "answer": "food"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "instruction": "Read the email from John to his friend. Choose one word from the list for each gap.",
+      "passage": "Dear Sarah,\n\nMy ___1___ is now far from work.\n\nI have to ___2___ to work.\n\nI sometimes meet ___3___ at the coffee shop for lunch.\n\nWe walk in the ___4___ sometimes.\n\nThe trees are ___5___ so we like looking at them.\n\nBest regards,\nJohn",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho My ___ is now far from work.",
+          "prompt": "My ___ is now far from work.",
+          "wordBank": [
+            "office",
+            "home",
+            "school"
+          ],
+          "correctAnswer": "home"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I have to ___ to work.",
+          "prompt": "I have to ___ to work.",
+          "wordBank": [
+            "drive",
+            "arrive",
+            "come"
+          ],
+          "correctAnswer": "drive"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I sometimes meet ___ at the coffee shop for lunch.",
+          "prompt": "I sometimes meet ___ at the coffee shop for lunch.",
+          "wordBank": [
+            "phone",
+            "music",
+            "friends"
+          ],
+          "correctAnswer": "friends"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho We walk in the ___ sometimes.",
+          "prompt": "We walk in the ___ sometimes.",
+          "wordBank": [
+            "home",
+            "park",
+            "car"
+          ],
+          "correctAnswer": "park"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho The trees are ___ so we like looking at them.",
+          "prompt": "The trees are ___ so we like looking at them.",
+          "wordBank": [
+            "kind",
+            "pretty",
+            "awful"
+          ],
+          "correctAnswer": "pretty"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "home"
+        },
+        {
+          "number": 2,
+          "answer": "drive"
+        },
+        {
+          "number": 3,
+          "answer": "friends"
+        },
+        {
+          "number": 4,
+          "answer": "park"
+        },
+        {
+          "number": 5,
+          "answer": "pretty"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "instruction": "Read the email from Mark to his partner. Choose one word from the list for each gap.",
+      "passage": "Dear Anna,\n\nThe whole contract is fifty-five pages – it’s very ___1___.\n\nCan you read it carefully and check every ___2___?\n\nI will make a photocopy of it and give you a ___3___.\n\nI’m very ___4___ and don’t have much free time.\n\nI have a business meeting with an important ___5___.\n\nBest regards,\nMark",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The whole contract is fifty-five pages – it’s very ___.",
+          "prompt": "The whole contract is fifty-five pages – it’s very ___.",
+          "wordBank": [
+            "cheap",
+            "long",
+            "small"
+          ],
+          "correctAnswer": "long"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Can you read it carefully and check every ___?",
+          "prompt": "Can you read it carefully and check every ___?",
+          "wordBank": [
+            "details",
+            "weather",
+            "happiness"
+          ],
+          "correctAnswer": "details"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I will make a photocopy of it and give you a ___.",
+          "prompt": "I will make a photocopy of it and give you a ___.",
+          "wordBank": [
+            "paper",
+            "copy",
+            "food"
+          ],
+          "correctAnswer": "copy"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho I’m very ___ and don’t have much free time.",
+          "prompt": "I’m very ___ and don’t have much free time.",
+          "wordBank": [
+            "slowly",
+            "quiet",
+            "busy"
+          ],
+          "correctAnswer": "busy"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I have a business meeting with an important ___.",
+          "prompt": "I have a business meeting with an important ___.",
+          "wordBank": [
+            "family",
+            "friend",
+            "client"
+          ],
+          "correctAnswer": "client"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "long"
+        },
+        {
+          "number": 2,
+          "answer": "details"
+        },
+        {
+          "number": 3,
+          "answer": "copy"
+        },
+        {
+          "number": 4,
+          "answer": "busy"
+        },
+        {
+          "number": 5,
+          "answer": "client"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "instruction": "Read the email from Josh to his friend. Choose one word from the list for each gap.",
+      "passage": "Dear Connor,\n\nThe weather was ___1___.\n\nYesterday morning, we went on a ___2___ to catch some fish.\n\nWe had lunch at a café, and ___3___ we visited an old church.\n\nTomorrow, we are going to take a car and ___4___ around.\n\nI hope it won’t be ___5___ hot.\n\nBest regards,\nJosh",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The weather was ___.",
+          "prompt": "The weather was ___.",
+          "wordBank": [
+            "great",
+            "large",
+            "big"
+          ],
+          "correctAnswer": "great"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Yesterday morning, we went on a ___ to catch some fish.",
+          "prompt": "Yesterday morning, we went on a ___ to catch some fish.",
+          "wordBank": [
+            "boat",
+            "room",
+            "bowl"
+          ],
+          "correctAnswer": "boat"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho We had lunch at a café, and ___ we visited an old church.",
+          "prompt": "We had lunch at a café, and ___ we visited an old church.",
+          "wordBank": [
+            "but",
+            "so",
+            "then"
+          ],
+          "correctAnswer": "then"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow, we are going to take a car and ___ around.",
+          "prompt": "Tomorrow, we are going to take a car and ___ around.",
+          "wordBank": [
+            "learn",
+            "speak",
+            "drive"
+          ],
+          "correctAnswer": "drive"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I hope it won’t be ___ hot.",
+          "prompt": "I hope it won’t be ___ hot.",
+          "wordBank": [
+            "much",
+            "to",
+            "too"
+          ],
+          "correctAnswer": "too"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "great"
+        },
+        {
+          "number": 2,
+          "answer": "boat"
+        },
+        {
+          "number": 3,
+          "answer": "then"
+        },
+        {
+          "number": 4,
+          "answer": "drive"
+        },
+        {
+          "number": 5,
+          "answer": "too"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "instruction": "Read the email from Naomi to her friend. Choose one word from the list for each gap.",
+      "passage": "Dear Yen,\n\nI ___1___ in an apartment near the city center.\n\nI ___2___ the apartment with a friend.\n\nShe and I were in the same ___3___ at school.\n\nWe ___4___ to work in my car.\n\nIn the evenings, we like to ___5___ different food.\n\nBest regards,\nNaomi",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I ___ in an apartment near the city center.",
+          "prompt": "I ___ in an apartment near the city center.",
+          "wordBank": [
+            "have",
+            "live",
+            "come"
+          ],
+          "correctAnswer": "live"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I ___ the apartment with a friend.",
+          "prompt": "I ___ the apartment with a friend.",
+          "wordBank": [
+            "share",
+            "hope",
+            "send"
+          ],
+          "correctAnswer": "share"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho She and I were in the same ___ at school.",
+          "prompt": "She and I were in the same ___ at school.",
+          "wordBank": [
+            "cup",
+            "class",
+            "tree"
+          ],
+          "correctAnswer": "class"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho We ___ to work in my car.",
+          "prompt": "We ___ to work in my car.",
+          "wordBank": [
+            "earn",
+            "drive",
+            "say"
+          ],
+          "correctAnswer": "drive"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho In the evenings, we like to ___ different food.",
+          "prompt": "In the evenings, we like to ___ different food.",
+          "wordBank": [
+            "cook",
+            "stir",
+            "get"
+          ],
+          "correctAnswer": "cook"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "live"
+        },
+        {
+          "number": 2,
+          "answer": "share"
+        },
+        {
+          "number": 3,
+          "answer": "class"
+        },
+        {
+          "number": 4,
+          "answer": "drive"
+        },
+        {
+          "number": 5,
+          "answer": "cook"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "instruction": "Read the email from John to his friend. Choose one word from the list for each gap.",
+      "passage": "Dear Sarah,\n\nI live with my cousin ___1___ the city.\n\nMy cousin’s children are ___2___.\n\nPeter likes to ___3___ speaking English every day.\n\nSometimes, I ___4___ words to Peter.\n\nLast night, we went out to eat, ___5___ I could not eat.\n\nBest regards,\nJohn",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I live with my cousin ___ the city.",
+          "prompt": "I live with my cousin ___ the city.",
+          "wordBank": [
+            "near",
+            "in front",
+            "next"
+          ],
+          "correctAnswer": "near"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho My cousin’s children are ___.",
+          "prompt": "My cousin’s children are ___.",
+          "wordBank": [
+            "delicious",
+            "pretty",
+            "friendly"
+          ],
+          "correctAnswer": "friendly"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Peter likes to ___ speaking English every day.",
+          "prompt": "Peter likes to ___ speaking English every day.",
+          "wordBank": [
+            "practice",
+            "get",
+            "comment"
+          ],
+          "correctAnswer": "practice"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Sometimes, I ___  words to Peter.",
+          "prompt": "Sometimes, I ___  words to Peter.",
+          "wordBank": [
+            "pick",
+            "read",
+            "have"
+          ],
+          "correctAnswer": "read"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Last night, we went out to eat, ___ I could not eat.",
+          "prompt": "Last night, we went out to eat, ___ I could not eat.",
+          "wordBank": [
+            "so",
+            "then",
+            "but"
+          ],
+          "correctAnswer": "but"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "near"
+        },
+        {
+          "number": 2,
+          "answer": "friendly"
+        },
+        {
+          "number": 3,
+          "answer": "practice"
+        },
+        {
+          "number": 4,
+          "answer": "read"
+        },
+        {
+          "number": 5,
+          "answer": "but"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "instruction": "Read the email from Sarah to her friend. Choose one word from the list for each gap.",
+      "passage": "Dear Annie,\n\nThe budget doesn’t ___1___ because the numbers don’t add up.\n\nCould you visit the bank and get the financial ___2___?\n\nI ___3___ it will help.\n\nThis time, read the information ___4___, not quickly.\n\nAlso, send me the results ___5___ you go home, not after.\n\nBest regards,\nSarah",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The budget doesn’t ___ because the numbers don’t add up. ",
+          "prompt": "The budget doesn’t ___ because the numbers don’t add up.",
+          "wordBank": [
+            "balance",
+            "stay",
+            "go"
+          ],
+          "correctAnswer": "balance"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Could you visit the bank and get the financial ___? ",
+          "prompt": "Could you visit the bank and get the financial ___?",
+          "wordBank": [
+            "statement",
+            "creativity",
+            "library"
+          ],
+          "correctAnswer": "statement"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I ___ it will help. ",
+          "prompt": "I ___ it will help.",
+          "wordBank": [
+            "step",
+            "think",
+            "touch"
+          ],
+          "correctAnswer": "think"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho This time, read the information ___, not quickly. ",
+          "prompt": "This time, read the information ___, not quickly.",
+          "wordBank": [
+            "slowly",
+            "fastly",
+            "hardly"
+          ],
+          "correctAnswer": "slowly"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Also, send me the results ___ you go home, not after. ",
+          "prompt": "Also, send me the results ___ you go home, not after.",
+          "wordBank": [
+            "early",
+            "until",
+            "before"
+          ],
+          "correctAnswer": "before"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "balance"
+        },
+        {
+          "number": 2,
+          "answer": "statement"
+        },
+        {
+          "number": 3,
+          "answer": "think"
+        },
+        {
+          "number": 4,
+          "answer": "slowly"
+        },
+        {
+          "number": 5,
+          "answer": "before"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "instruction": "Read the email from Brandon to his friend. Choose one word from the list for each gap.",
+      "passage": "Dear Solem,\n\nI am never ___1___ to work and I get to work at 9 am.\n\nIn the morning, I attend the ___2___ in the office.\n\nI have lunch in the ___3___ near my work.\n\nAfter work, I buy food in a ___4___.\n\nI always ___5___ a good dinner for myself.\n\nBest regards,\nBrandon",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I am never ___ to work and I get to work at 9 am.",
+          "prompt": "I am never ___ to work and I get to work at 9 am.",
+          "wordBank": [
+            "late",
+            "lazy",
+            "soon"
+          ],
+          "correctAnswer": "late"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho In the morning, I attend the ___ in the office.",
+          "prompt": "In the morning, I attend the ___ in the office.",
+          "wordBank": [
+            "course",
+            "class",
+            "meeting"
+          ],
+          "correctAnswer": "meeting"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I have lunch in the ___ near my work.",
+          "prompt": "I have lunch in the ___ near my work.",
+          "wordBank": [
+            "home",
+            "park",
+            "tree"
+          ],
+          "correctAnswer": "park"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho After work, I buy food in a ___.",
+          "prompt": "After work, I buy food in a ___.",
+          "wordBank": [
+            "room",
+            "flat",
+            "shop"
+          ],
+          "correctAnswer": "shop"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I always ___ a good dinner for myself.",
+          "prompt": "I always ___ a good dinner for myself.",
+          "wordBank": [
+            "have",
+            "cook",
+            "make"
+          ],
+          "correctAnswer": "cook"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "late"
+        },
+        {
+          "number": 2,
+          "answer": "meeting"
+        },
+        {
+          "number": 3,
+          "answer": "park"
+        },
+        {
+          "number": 4,
+          "answer": "shop"
+        },
+        {
+          "number": 5,
+          "answer": "cook"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "instruction": "Read the email from Nick to his friend. Choose one word from the list for each gap.",
+      "passage": "Dear Josh,\n\nMy colleague is not at work today because he was ___1___.\n\nI am going to ___2___ three reports this afternoon.\n\nThen, I have an important meeting in the ___3___ with a client.\n\nThe telephone in my office is ___4___ all the time.\n\nI am going to have a break and ___5___ coffee.\n\nBest regards,\nNick",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho My colleague is not at work today because he was ___.",
+          "prompt": "My colleague is not at work today because he was ___.",
+          "wordBank": [
+            "fine",
+            "well",
+            "sick"
+          ],
+          "correctAnswer": "sick"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I am going to ___ three reports this afternoon.",
+          "prompt": "I am going to ___ three reports this afternoon.",
+          "wordBank": [
+            "have",
+            "listen",
+            "read"
+          ],
+          "correctAnswer": "read"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Then, I have an important meeting in the ___ with a client.",
+          "prompt": "Then, I have an important meeting in the ___ with a client.",
+          "wordBank": [
+            "tree",
+            "home",
+            "park"
+          ],
+          "correctAnswer": "park"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho The telephone in my office is ___ all the time.",
+          "prompt": "The telephone in my office is ___ all the time.",
+          "wordBank": [
+            "singing",
+            "ringing",
+            "calling"
+          ],
+          "correctAnswer": "ringing"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I am going to have a break and ___ coffee.",
+          "prompt": "I am going to have a break and ___ coffee.",
+          "wordBank": [
+            "drink",
+            "have",
+            "eat"
+          ],
+          "correctAnswer": "drink"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "sick"
+        },
+        {
+          "number": 2,
+          "answer": "read"
+        },
+        {
+          "number": 3,
+          "answer": "park"
+        },
+        {
+          "number": 4,
+          "answer": "ringing"
+        },
+        {
+          "number": 5,
+          "answer": "drink"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "instruction": "Read the email from Eleven to her friend. Choose one word from the list for each gap.",
+      "passage": "Dear Timmy,\n\nI love this place because everybody here is ___1___.\n\nI live in a flat near the university so I can ___2___ to my class.\n\nYesterday I met Lesly for the ___3___ time - she is sharing the flat with me.\n\nShe is studying French and she can ___4___ five languages.\n\nLast night we went out for dinner ___5___.\n\nBest regards,\nEleven",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I love this place because everybody here is ___.",
+          "prompt": "I love this place because everybody here is ___.",
+          "wordBank": [
+            "safe",
+            "clean",
+            "friendly"
+          ],
+          "correctAnswer": "friendly"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I live in a flat near the university so I can ___ to my class. ",
+          "prompt": "I live in a flat near the university so I can ___ to my class.",
+          "wordBank": [
+            "talk",
+            "walk",
+            "meet"
+          ],
+          "correctAnswer": "walk"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Yesterday I met Lesly for the ___ time - she is sharing the flat with me.",
+          "prompt": "Yesterday I met Lesly for the ___ time - she is sharing the flat with me.",
+          "wordBank": [
+            "original",
+            "most",
+            "first"
+          ],
+          "correctAnswer": "first"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho She is studying French and she can ___ five languages.",
+          "prompt": "She is studying French and she can ___ five languages.",
+          "wordBank": [
+            "tell",
+            "say",
+            "speak"
+          ],
+          "correctAnswer": "speak"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Last night we went out for dinner ___.",
+          "prompt": "Last night we went out for dinner ___.",
+          "wordBank": [
+            "quickly",
+            "together",
+            "collectively"
+          ],
+          "correctAnswer": "together"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "friendly"
+        },
+        {
+          "number": 2,
+          "answer": "walk"
+        },
+        {
+          "number": 3,
+          "answer": "first"
+        },
+        {
+          "number": 4,
+          "answer": "speak"
+        },
+        {
+          "number": 5,
+          "answer": "together"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "instruction": "Read the email from Jason to her friend. Choose one word from the list for each gap.",
+      "passage": "Dear Bob,\n\nI imagine you don't want to ___1___ this happiness.\n\nI have ___2___ you earlier but you were not home.\n\nCan you be ___3___ before 7 p.m?\n\nI can ___4___ you at your place then.\n\nDon't have too much ___5___ because we're going to eat a cake.\n\nBest regards,\nJason",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I imagine you don't want to ___ this happiness.",
+          "prompt": "I imagine you don't want to ___ this happiness.",
+          "wordBank": [
+            "take",
+            "say",
+            "miss"
+          ],
+          "correctAnswer": "miss"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I have ___ you earlier but you were not home.",
+          "prompt": "I have ___ you earlier but you were not home.",
+          "wordBank": [
+            "watched",
+            "called",
+            "played"
+          ],
+          "correctAnswer": "called"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Can you be ___ before 7 p.m?\n",
+          "prompt": "Can you be ___ before 7 p.m?",
+          "wordBank": [
+            "awake",
+            "ready",
+            "fresh"
+          ],
+          "correctAnswer": "ready"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho I can ___ you at your place then.",
+          "prompt": "I can ___ you at your place then.",
+          "wordBank": [
+            "meet",
+            "help",
+            "have"
+          ],
+          "correctAnswer": "meet"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Don't have too much ___ because we're going to eat a cake.",
+          "prompt": "Don't have too much ___ because we're going to eat a cake.",
+          "wordBank": [
+            "place",
+            "dinner",
+            "time"
+          ],
+          "correctAnswer": "dinner"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "miss"
+        },
+        {
+          "number": 2,
+          "answer": "called"
+        },
+        {
+          "number": 3,
+          "answer": "ready"
+        },
+        {
+          "number": 4,
+          "answer": "meet"
+        },
+        {
+          "number": 5,
+          "answer": "dinner"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "instruction": "Read the email from Janice to her friend. Choose one word from the list for each gap.",
+      "passage": "Dear Max,\n\nI have ___1___ gone to a clothing store.\n\nAnd the color is perfect, ___2___.\n\nI am going to wear it ___3___ my birthday party.\n\nSorry you can't come, I will bring ___4___ cakes for you.\n\n___5___ my love to everyone for me.\n\nBest regards,\nJanice",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I have ___ gone to a clothing store.",
+          "prompt": "I have ___ gone to a clothing store.",
+          "wordBank": [
+            "just",
+            "hardly",
+            "still"
+          ],
+          "correctAnswer": "just"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho And the color is perfect, ___.",
+          "prompt": "And the color is perfect, ___.",
+          "wordBank": [
+            "also",
+            "so",
+            "too"
+          ],
+          "correctAnswer": "too"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I am going to wear it ___ my birthday party.",
+          "prompt": "I am going to wear it ___ my birthday party.",
+          "wordBank": [
+            "on",
+            "in",
+            "to"
+          ],
+          "correctAnswer": "to"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Sorry you can't come, I will bring ___ cakes for you.",
+          "prompt": "Sorry you can't come, I will bring ___ cakes for you.",
+          "wordBank": [
+            "some",
+            "any",
+            "a"
+          ],
+          "correctAnswer": "some"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho ___ my love to everyone for me.",
+          "prompt": "___ my love to everyone for me.",
+          "wordBank": [
+            "Look",
+            "Arrive",
+            "Give"
+          ],
+          "correctAnswer": "Give"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "just"
+        },
+        {
+          "number": 2,
+          "answer": "too"
+        },
+        {
+          "number": 3,
+          "answer": "to"
+        },
+        {
+          "number": 4,
+          "answer": "some"
+        },
+        {
+          "number": 5,
+          "answer": "Give"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "instruction": "Read the email from John to her friend. Choose one word from the list for each gap.",
+      "passage": "Dear Sarah,\n\nMy house is really beautiful, and it has a ___1___ garden.\n\nIt has a nice kitchen in the house, and I really ___2___ it.\n\nI work in a ___3___ in town, I sell clothes.\n\nI meet many people everyday, I like to ___4___ to them.\n\nI will ___5___ you soon.\n\nBest regards,\nJohn",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho My house is really beautiful, and it has a ___ garden.",
+          "prompt": "My house is really beautiful, and it has a ___ garden.",
+          "wordBank": [
+            "clean",
+            "ugly",
+            "small"
+          ],
+          "correctAnswer": "small"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho It has a nice kitchen in the house, and I really ___ it.",
+          "prompt": "It has a nice kitchen in the house, and I really ___ it.",
+          "wordBank": [
+            "enjoy",
+            "love",
+            "hate"
+          ],
+          "correctAnswer": "love"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I work in a ___ in town, I sell clothes.",
+          "prompt": "I work in a ___ in town, I sell clothes.",
+          "wordBank": [
+            "shop",
+            "market",
+            "house"
+          ],
+          "correctAnswer": "shop"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho I meet many people everyday, I like to ___ to them.",
+          "prompt": "I meet many people everyday, I like to ___ to them.",
+          "wordBank": [
+            "hug",
+            "talk",
+            "look"
+          ],
+          "correctAnswer": "talk"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I will ___ you soon.",
+          "prompt": "I will ___ you soon.",
+          "wordBank": [
+            "visit",
+            "go",
+            "come"
+          ],
+          "correctAnswer": "visit"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "small"
+        },
+        {
+          "number": 2,
+          "answer": "love"
+        },
+        {
+          "number": 3,
+          "answer": "shop"
+        },
+        {
+          "number": 4,
+          "answer": "talk"
+        },
+        {
+          "number": 5,
+          "answer": "visit"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "instruction": "Read the email from John to his friend. Choose one word from the list for each gap.",
+      "passage": "Dear Sarah,\n\nThey book a flight to ___1___ their relatives abroad.\n\nThe airport has many ___2___ selling souvenirs.\n\nTheir luggage is ___3___, making it easy to find at the terminal.\n\nFor ___4___, they try local street food with spicy flavors.\n\nAt night, they ___5___ a performance of traditional dance.\n\nBest regards,\nJohn",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho They book a flight to ___ their relatives abroad.",
+          "prompt": "They book a flight to ___ their relatives abroad.",
+          "wordBank": [
+            "come",
+            "visit",
+            "go"
+          ],
+          "correctAnswer": "visit"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho The airport has many ___ selling souvenirs.",
+          "prompt": "The airport has many ___ selling souvenirs.",
+          "wordBank": [
+            "books",
+            "shirts",
+            "shops"
+          ],
+          "correctAnswer": "shops"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Their luggage is ___, making it easy to find at the terminal.",
+          "prompt": "Their luggage is ___, making it easy to find at the terminal.",
+          "wordBank": [
+            "black",
+            "old",
+            "red"
+          ],
+          "correctAnswer": "red"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho For ___, they try local street food with spicy flavors.",
+          "prompt": "For ___, they try local street food with spicy flavors.",
+          "wordBank": [
+            "store",
+            "dinner",
+            "homework"
+          ],
+          "correctAnswer": "dinner"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho At night, they ___ a performance of traditional dance.",
+          "prompt": "At night, they ___ a performance of traditional dance.",
+          "wordBank": [
+            "talk",
+            "watch",
+            "learn"
+          ],
+          "correctAnswer": "watch"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "visit"
+        },
+        {
+          "number": 2,
+          "answer": "shops"
+        },
+        {
+          "number": 3,
+          "answer": "red"
+        },
+        {
+          "number": 4,
+          "answer": "dinner"
+        },
+        {
+          "number": 5,
+          "answer": "watch"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "instruction": "Read the email from Janice to her friend. Choose one word from the list for each gap.",
+      "passage": "Dear Sarah,\n\nI went to the museum to ___1___ the new art exhibition.\n\nThere was a big tree in the middle of the ___2___.\n\nThe weather was very ___3___ that day.\n\nOn the way home, I took the ___4___ you again next week.\n\nAt the museum, I could ___5___ with a tour guide about history.\n\nBest regards,\nJanice",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I went to the museum to ___ the new art exhibition.",
+          "prompt": "I went to the museum to ___ the new art exhibition.",
+          "wordBank": [
+            "think",
+            "travel",
+            "visit"
+          ],
+          "correctAnswer": "visit"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho There was a big tree in the middle of the ___.",
+          "prompt": "There was a big tree in the middle of the ___.",
+          "wordBank": [
+            "room",
+            "table",
+            "class"
+          ],
+          "correctAnswer": "room"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho The weather was very ___ that day.",
+          "prompt": "The weather was very ___ that day.",
+          "wordBank": [
+            "cold",
+            "hot",
+            "rain"
+          ],
+          "correctAnswer": "hot"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho On the way home, I took the ___ you again next week.",
+          "prompt": "On the way home, I took the ___ you again next week.",
+          "wordBank": [
+            "food",
+            "train",
+            "book"
+          ],
+          "correctAnswer": "train"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho At the museum, I could ___ with a tour guide about history.",
+          "prompt": "At the museum, I could ___ with a tour guide about history.",
+          "wordBank": [
+            "say",
+            "speak",
+            "tell"
+          ],
+          "correctAnswer": "speak"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "visit"
+        },
+        {
+          "number": 2,
+          "answer": "room"
+        },
+        {
+          "number": 3,
+          "answer": "hot"
+        },
+        {
+          "number": 4,
+          "answer": "train"
+        },
+        {
+          "number": 5,
+          "answer": "speak"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "instruction": "Read the email from Atoni to her friend. Choose one word from the list for each gap.",
+      "passage": "Hi John,\n\nI had a chance to visit a ___1___ where my uncle lives.\n\nIt was really ___2___ to play with my cousins every day.\n\nSometimes, they ___3___ me alone in a field.\n\nI had to try to find the ___4___ to get home.\n\nWe also sometimes ___5___ cane juice when we feel tired.\n\nLove,\nAtoni",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I had a chance to visit a ___ where my uncle lives.",
+          "prompt": "I had a chance to visit a ___ where my uncle lives.",
+          "wordBank": [
+            "factory",
+            "farm",
+            "museum"
+          ],
+          "correctAnswer": "farm"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho It was really ___ to play with my cousins every day.",
+          "prompt": "It was really ___ to play with my cousins every day.",
+          "wordBank": [
+            "difficult",
+            "boring",
+            "exciting"
+          ],
+          "correctAnswer": "exciting"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Sometimes, they ___ me alone in a field.",
+          "prompt": "Sometimes, they ___ me alone in a field.",
+          "wordBank": [
+            "kept",
+            "left",
+            "found"
+          ],
+          "correctAnswer": "left"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho I had to try to find the ___ to get home.",
+          "prompt": "I had to try to find the ___ to get home.",
+          "wordBank": [
+            "book",
+            "trip",
+            "street"
+          ],
+          "correctAnswer": "street"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho We also sometimes ___ cane juice when we feel tired.",
+          "prompt": "We also sometimes ___ cane juice when we feel tired.",
+          "wordBank": [
+            "drink",
+            "cook",
+            "sell"
+          ],
+          "correctAnswer": "drink"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "farm"
+        },
+        {
+          "number": 2,
+          "answer": "exciting"
+        },
+        {
+          "number": 3,
+          "answer": "left"
+        },
+        {
+          "number": 4,
+          "answer": "street"
+        },
+        {
+          "number": 5,
+          "answer": "drink"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "instruction": "Read the email from Anna to her friend. Choose one word from the list for each gap.",
+      "passage": "Hi Jay,\n\nShe jogs in the ___1___ every morning to stay fit.\n\nThe gym offers free ___2___ for yoga and pilates.\n\nHer water bottle is ___3___, easy to spot during workouts.\n\nFor ___4___, she blends a smoothie with berries and spinach.\n\nAfter exercising, they relax with a ___5___ session at home.\n\nLove,\nAnna",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho She jogs in the ___ every morning to stay fit.",
+          "prompt": "She jogs in the ___ every morning to stay fit.",
+          "wordBank": [
+            "park",
+            "market",
+            "office"
+          ],
+          "correctAnswer": "park"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho The gym offers free ___ for yoga and pilates.",
+          "prompt": "The gym offers free ___ for yoga and pilates.",
+          "wordBank": [
+            "tickets",
+            "classes",
+            "prices"
+          ],
+          "correctAnswer": "classes"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Her water bottle is ___, easy to spot during workouts.",
+          "prompt": "Her water bottle is ___, easy to spot during workouts.",
+          "wordBank": [
+            "heavy",
+            "empty",
+            "silver"
+          ],
+          "correctAnswer": "silver"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho For ___, she blends a smoothie with berries and spinach.",
+          "prompt": "For ___, she blends a smoothie with berries and spinach.",
+          "wordBank": [
+            "lunch",
+            "dinner",
+            "breakfast"
+          ],
+          "correctAnswer": "breakfast"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho After exercising, they relax with a ___ session at home.",
+          "prompt": "After exercising, they relax with a ___ session at home.",
+          "wordBank": [
+            "meditation",
+            "competition",
+            "conversation"
+          ],
+          "correctAnswer": "meditation"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "park"
+        },
+        {
+          "number": 2,
+          "answer": "classes"
+        },
+        {
+          "number": 3,
+          "answer": "silver"
+        },
+        {
+          "number": 4,
+          "answer": "breakfast"
+        },
+        {
+          "number": 5,
+          "answer": "meditation"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "instruction": "Read the message below. Choose one word from the list for each gap.",
+      "passage": "Hi Alex,\n\nOur family is going on a vacation.\n\nYesterday, we visited a ___1___ village.\n\nWe ___2___ in a small house in the village.\n\nThere is a ___3___ in the house.\n\nThere are a lot of ___4___ in the garden.\n\nToday, we are going to visit the ___5___ buildings in this village. There is a long history behind them.\n\nLove,\nAnna",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho Yesterday, we visited a ___ village.",
+          "prompt": "Yesterday, we visited a ___ village.",
+          "wordBank": [
+            "cold",
+            "small",
+            "long"
+          ],
+          "correctAnswer": "small"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ in a small house in the village.",
+          "prompt": "We ___ in a small house in the village.",
+          "wordBank": [
+            "live",
+            "go",
+            "stay"
+          ],
+          "correctAnswer": "stay"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho There is a ___ in the house.",
+          "prompt": "There is a ___ in the house.",
+          "wordBank": [
+            "garden",
+            "yard",
+            "park"
+          ],
+          "correctAnswer": "garden"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho There are a lot of ___ in the garden.",
+          "prompt": "There are a lot of ___ in the garden.",
+          "wordBank": [
+            "children",
+            "trees",
+            "equipment"
+          ],
+          "correctAnswer": "trees"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Today, we are going to visit the ___ buildings in this village. There is a long history behind them.",
+          "prompt": "Today, we are going to visit the ___ buildings in this village. There is a long history behind them.",
+          "wordBank": [
+            "old",
+            "mordern",
+            "young"
+          ],
+          "correctAnswer": "old"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "small"
+        },
+        {
+          "number": 2,
+          "answer": "stay"
+        },
+        {
+          "number": 3,
+          "answer": "garden"
+        },
+        {
+          "number": 4,
+          "answer": "trees"
+        },
+        {
+          "number": 5,
+          "answer": "old"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "instruction": "Read the email from John to her friend. Choose one word from the list for each gap. The first one is done for you.",
+      "passage": "Hi Steven,\n\nIt is really nice to come here to study.\n\nThe ___1___ is really new to me and other students.\n\nThe park is really ___2___ and we can have talks or walk there.\n\nWe love to have some games after ___3___.\n\nI live with ___4___ students who come from different countries.\n\nWe can learn some ___5___ which are really good for speaking.\n\nLove,\nJohn",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The ___ is really new to me and other students.",
+          "prompt": "The ___ is really new to me and other students.",
+          "wordBank": [
+            "city",
+            "counties",
+            "country"
+          ],
+          "correctAnswer": "country"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho The park is really ___ and we can have talks or walk there.",
+          "prompt": "The park is really ___ and we can have talks or walk there.",
+          "wordBank": [
+            "clean",
+            "cleanly",
+            "large"
+          ],
+          "correctAnswer": "clean"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho \nWe love to have some games after ___.",
+          "prompt": "We love to have some games after ___.",
+          "wordBank": [
+            "school",
+            "class",
+            "classroom"
+          ],
+          "correctAnswer": "class"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho I live with ___ students who come from different countries.",
+          "prompt": "I live with ___ students who come from different countries.",
+          "wordBank": [
+            "others",
+            "another",
+            "other"
+          ],
+          "correctAnswer": "other"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho We can learn some ___ which are really good for speaking.",
+          "prompt": "We can learn some ___ which are really good for speaking.",
+          "wordBank": [
+            "words",
+            "notes",
+            "letters"
+          ],
+          "correctAnswer": "words"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "country"
+        },
+        {
+          "number": 2,
+          "answer": "clean"
+        },
+        {
+          "number": 3,
+          "answer": "class"
+        },
+        {
+          "number": 4,
+          "answer": "other"
+        },
+        {
+          "number": 5,
+          "answer": "words"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "instruction": "Read the email from Janny to her friend. Choose one word from the list for each gap.",
+      "passage": "Hi Jessica,\n\nI use my laptop to work from ___1___ every day.\n\nThe café has free Wi-Fi for all ___2___.\n\nMy phone case is yellow, making it ___3___ to spot.\n\nFor snacks, we ___4___ popcorn and fruit smoothies.\n\nOn weekends, we ___5___ videos on our smart TV.\n\nLove,\n\nJanny",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I use my laptop to work from ___ every day.",
+          "prompt": "I use my laptop to work from ___ every day.",
+          "wordBank": [
+            "house",
+            "office",
+            "home"
+          ],
+          "correctAnswer": "home"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho The café has free Wi-Fi for all ___.",
+          "prompt": "The café has free Wi-Fi for all ___.",
+          "wordBank": [
+            "guests",
+            "users",
+            "customers"
+          ],
+          "correctAnswer": "customers"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho My phone case is yellow, making it ___ to spot.",
+          "prompt": "My phone case is yellow, making it ___ to spot.",
+          "wordBank": [
+            "quick",
+            "easy",
+            "easily"
+          ],
+          "correctAnswer": "easy"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho For snacks, we ___ popcorn and fruit smoothies.",
+          "prompt": "For snacks, we ___ popcorn and fruit smoothies.",
+          "wordBank": [
+            "prepare",
+            "cook",
+            "make"
+          ],
+          "correctAnswer": "prepare"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho On weekends, we ___ videos on our smart TV.",
+          "prompt": "On weekends, we ___ videos on our smart TV.",
+          "wordBank": [
+            "look",
+            "see",
+            "watch"
+          ],
+          "correctAnswer": "watch"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "home"
+        },
+        {
+          "number": 2,
+          "answer": "customers"
+        },
+        {
+          "number": 3,
+          "answer": "easy"
+        },
+        {
+          "number": 4,
+          "answer": "prepare"
+        },
+        {
+          "number": 5,
+          "answer": "watch"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "instruction": "Choose one word from the list for each gap",
+      "passage": "Hi Koji,\n\nI decided to do more exercise this year.\n\nWhen I wake up in the ___1___, I go running.\n\nMy ___2___ come with me, and we run in the park.\n\nI ___3___ my car at home and walk to work.\n\nI like doing exercises because it is ___4___ for my body.\n\nI also drink more water and eat healthy ___5___.\n\nLove,\nKen",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho When I wake up in the ___, I go running.",
+          "prompt": "When I wake up in the ___, I go running.",
+          "wordBank": [
+            "early",
+            "night",
+            "morning"
+          ],
+          "correctAnswer": "morning"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho My ___ come with me, and we run in the park.",
+          "prompt": "My ___ come with me, and we run in the park.",
+          "wordBank": [
+            "friendly",
+            "realatives",
+            "friends"
+          ],
+          "correctAnswer": "friends"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I ___ my car at home and walk to work.",
+          "prompt": "I ___ my car at home and walk to work.",
+          "wordBank": [
+            "leave",
+            "keep",
+            "lose"
+          ],
+          "correctAnswer": "leave"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho I like doing exercises because it is ___ for my body.",
+          "prompt": "I like doing exercises because it is ___ for my body.",
+          "wordBank": [
+            "good",
+            "well",
+            "bad"
+          ],
+          "correctAnswer": "good"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I also drink more water and eat healthy ___.",
+          "prompt": "I also drink more water and eat healthy ___.",
+          "wordBank": [
+            "food",
+            "diet",
+            "meat"
+          ],
+          "correctAnswer": "food"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "morning"
+        },
+        {
+          "number": 2,
+          "answer": "friends"
+        },
+        {
+          "number": 3,
+          "answer": "leave"
+        },
+        {
+          "number": 4,
+          "answer": "good"
+        },
+        {
+          "number": 5,
+          "answer": "food"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "instruction": "Read the email from Alex to his friend. Choose one word from the list for each gap.",
+      "passage": "Hi Janny,\n\nTomorrow, I have to go to the main bus ___1___ to meet my cousin.\n\nLuckily, one of the bus ___2___ is very close to my house.\n\nMy house is easy to find – it’s ___3___ and stands out from the others.\n\nThis evening I’ll make some eggs for ___4___ because it’s quick and simple.\n\nAfter that, we can relax and watch some ___5___ together on TV.\n\nLove, Jessica",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho Tomorrow, I have to go to the main bus ___ to meet my cousin.",
+          "prompt": "Tomorrow, I have to go to the main bus ___ to meet my cousin.",
+          "wordBank": [
+            "station",
+            "stop",
+            "park"
+          ],
+          "correctAnswer": "station"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Luckily, one of the bus ___ is very close to my house.",
+          "prompt": "Luckily, one of the bus ___ is very close to my house.",
+          "wordBank": [
+            "ways",
+            "stops",
+            "garages"
+          ],
+          "correctAnswer": "stops"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho My house is easy to find – it’s ___ and stands out from the others.",
+          "prompt": "My house is easy to find – it’s ___ and stands out from the others.",
+          "wordBank": [
+            "painted",
+            "fresh",
+            "green"
+          ],
+          "correctAnswer": "green"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho This evening I’ll make some eggs for ___ because it’s quick and simple.",
+          "prompt": "This evening I’ll make some eggs for ___ because it’s quick and simple.",
+          "wordBank": [
+            "lunch",
+            "dinner",
+            "food"
+          ],
+          "correctAnswer": "dinner"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho After that, we can relax and watch some ___ together on TV.",
+          "prompt": "After that, we can relax and watch some ___ together on TV.",
+          "wordBank": [
+            "pictures",
+            "films",
+            "channels"
+          ],
+          "correctAnswer": "films"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "station"
+        },
+        {
+          "number": 2,
+          "answer": "stops"
+        },
+        {
+          "number": 3,
+          "answer": "green"
+        },
+        {
+          "number": 4,
+          "answer": "dinner"
+        },
+        {
+          "number": 5,
+          "answer": "films"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "instruction": null,
+      "passage": "Luyện đọcCâu hỏi 25 / 66Trộn câuĐáp ánLuyện đọcCâu hỏi 25 / 66Auto shuffleXem đáp ánFill in the blanks.💡Tip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩaThe water is so ___1___ and I can see the fish.\n\nThe ___2___ is always out and it's very hot.\n\nAfter ___3___ so hard, I need to rest.\n\nI am having an ___4___ holiday.\n\nI hope to ___5___ a letter from you soon.Nộp bàiThoátBảng điều khiểnLàm lạiNộp bàiTrướcSauKinh nghiệm làm Part 1ẨnĐọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé.Bạn đã dùng hết 10 phút luyện miễn phí hôm nayĐăng nhập để nhận hạn mức của gói Miễn phí hoặc chọn gói học phù hợp.Đăng nhập để tiếp tụcVề trang chủ",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The water is so ___  and I can see the fish.",
+          "prompt": "The water is so ___  and I can see the fish.",
+          "wordBank": [
+            "cold",
+            "colorful",
+            "clear"
+          ],
+          "correctAnswer": "clear"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho The ___ is always out and it's very hot.",
+          "prompt": "The ___ is always out and it's very hot.",
+          "wordBank": [
+            "sun",
+            "wind",
+            "cloud"
+          ],
+          "correctAnswer": "sun"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After ___ so hard, I need to rest.",
+          "prompt": "After ___ so hard, I need to rest.",
+          "wordBank": [
+            "working",
+            "worked",
+            "work"
+          ],
+          "correctAnswer": "working"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho I am having an ___ holiday.",
+          "prompt": "I am having an ___ holiday.",
+          "wordBank": [
+            "fun",
+            "tasty",
+            "enjoyable"
+          ],
+          "correctAnswer": "enjoyable"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I hope to ___ a letter from you soon.",
+          "prompt": "I hope to ___ a letter from you soon.",
+          "wordBank": [
+            "read",
+            "forward",
+            "tell"
+          ],
+          "correctAnswer": "read"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "clear"
+        },
+        {
+          "number": 2,
+          "answer": "sun"
+        },
+        {
+          "number": 3,
+          "answer": "working"
+        },
+        {
+          "number": 4,
+          "answer": "enjoyable"
+        },
+        {
+          "number": 5,
+          "answer": "read"
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "instruction": null,
+      "passage": "Luyện đọcCâu hỏi 26 / 66Trộn câuĐáp ánLuyện đọcCâu hỏi 26 / 66Auto shuffleXem đáp ánFill in the blanks💡Tip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩaI am living with a family ___1___ the city.\n\nThe children are ___2___ to me.\n\nSeamus and Agnes ___3___ speaking English with me.\n\nSometimes, I ___4___ to Seamus and Agnes.\n\nI hate the food, ___5___ yesterday I ate out.Nộp bàiThoátBảng điều khiểnLàm lạiNộp bàiTrướcSauKinh nghiệm làm Part 1ẨnĐọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé.Bạn đã dùng hết 10 phút luyện miễn phí hôm nayĐăng nhập để nhận hạn mức của gói Miễn phí hoặc chọn gói học phù hợp.Đăng nhập để tiếp tụcVề trang chủ",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I am living with a family ___ the city.",
+          "prompt": "I am living with a family ___ the city.",
+          "wordBank": [
+            "near",
+            "next",
+            "under"
+          ],
+          "correctAnswer": "near"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho The children are ___ to me.",
+          "prompt": "The children are ___ to me.",
+          "wordBank": [
+            "cruel",
+            "noisy",
+            "friendly"
+          ],
+          "correctAnswer": "friendly"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Seamus and Agnes ___ speaking English with me.",
+          "prompt": "Seamus and Agnes ___ speaking English with me.",
+          "wordBank": [
+            "read",
+            "practise",
+            "hold"
+          ],
+          "correctAnswer": "practise"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Sometimes, I ___ to Seamus and Agnes.",
+          "prompt": "Sometimes, I ___ to Seamus and Agnes.",
+          "wordBank": [
+            "see",
+            "say",
+            "read"
+          ],
+          "correctAnswer": "read"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I hate the food, ___ yesterday I ate out.",
+          "prompt": "I hate the food, ___ yesterday I ate out.",
+          "wordBank": [
+            "so",
+            "also",
+            "then"
+          ],
+          "correctAnswer": "so"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "near"
+        },
+        {
+          "number": 2,
+          "answer": "friendly"
+        },
+        {
+          "number": 3,
+          "answer": "practise"
+        },
+        {
+          "number": 4,
+          "answer": "read"
+        },
+        {
+          "number": 5,
+          "answer": "so"
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "instruction": null,
+      "passage": "Luyện đọcCâu hỏi 27 / 66Trộn câuĐáp ánLuyện đọcCâu hỏi 27 / 66Auto shuffleXem đáp ánFill in the blanks.💡Tip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩaI saw some shoes through the ___1___ of the shop in the afternoon.\n\nI didn't ___2___ them because they are too expensive.\n\nI buy some food at the ___3___.\n\nI ate ___4___.\n\nI ___5___ a program on TV.Nộp bàiThoátBảng điều khiểnLàm lạiNộp bàiTrướcSauKinh nghiệm làm Part 1ẨnĐọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé.Bạn đã dùng hết 10 phút luyện miễn phí hôm nayĐăng nhập để nhận hạn mức của gói Miễn phí hoặc chọn gói học phù hợp.Đăng nhập để tiếp tụcVề trang chủ",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I saw some shoes through the ___ of the shop in the afternoon.",
+          "prompt": "I saw some shoes through the ___ of the shop in the afternoon.",
+          "wordBank": [
+            "table",
+            "window",
+            "curtain"
+          ],
+          "correctAnswer": "window"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I didn't ___ them because they are too expensive.",
+          "prompt": "I didn't ___ them because they are too expensive.",
+          "wordBank": [
+            "help",
+            "buy",
+            "invite"
+          ],
+          "correctAnswer": "buy"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I bought some food at the ___.",
+          "prompt": "I bought some food at the ___.",
+          "wordBank": [
+            "market",
+            "park",
+            "classroom"
+          ],
+          "correctAnswer": "market"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho I drank soda and ate ___ at home.",
+          "prompt": "I drank soda and ate ___ at home.",
+          "wordBank": [
+            "water",
+            "book",
+            "cake"
+          ],
+          "correctAnswer": "cake"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho In the evening, I ___ a program on TV.",
+          "prompt": "In the evening, I ___ a program on TV.",
+          "wordBank": [
+            "listened",
+            "read",
+            "watched"
+          ],
+          "correctAnswer": "watched"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "window"
+        },
+        {
+          "number": 2,
+          "answer": "buy"
+        },
+        {
+          "number": 3,
+          "answer": "market"
+        },
+        {
+          "number": 4,
+          "answer": "cake"
+        },
+        {
+          "number": 5,
+          "answer": "watched"
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "instruction": null,
+      "passage": "Luyện đọcCâu hỏi 28 / 66Trộn câuĐáp ánLuyện đọcCâu hỏi 28 / 66Auto shuffleXem đáp ánFill in the blanks.💡Tip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩaTake the bus to the main ___1___.\n\nThe bus ___2___ are near my house.\n\nMy house is ___3___ and you can easily recognize it by the color.\n\nI cook eggs for a quick ___4___.\n\nAfter dinner, we will watch ___5___ on TV.\nNộp bàiThoátBảng điều khiểnLàm lạiNộp bàiTrướcSauKinh nghiệm làm Part 1ẨnĐọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé.Bạn đã dùng hết 10 phút luyện miễn phí hôm nayĐăng nhập để nhận hạn mức của gói Miễn phí hoặc chọn gói học phù hợp.Đăng nhập để tiếp tụcVề trang chủ",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho Take the bus to the main ___.",
+          "prompt": "Take the bus to the main ___.",
+          "wordBank": [
+            "run",
+            "walk",
+            "station"
+          ],
+          "correctAnswer": "station"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho The bus ___ are near my house.",
+          "prompt": "The bus ___ are near my house.",
+          "wordBank": [
+            "stops",
+            "color",
+            "driver"
+          ],
+          "correctAnswer": "stops"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho My house is ___ and you can easily recognize it by the color.",
+          "prompt": "My house is ___ and you can easily recognize it by the color.",
+          "wordBank": [
+            "fat",
+            "tall",
+            "green"
+          ],
+          "correctAnswer": "green"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho I cook eggs for a quick ___.",
+          "prompt": "I cook eggs for a quick ___.",
+          "wordBank": [
+            "dinner",
+            "sore",
+            "homework"
+          ],
+          "correctAnswer": "dinner"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho After dinner, we will watch ___ on TV.",
+          "prompt": "After dinner, we will watch ___ on TV.",
+          "wordBank": [
+            "movies",
+            "news",
+            "sing"
+          ],
+          "correctAnswer": "movies"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "station"
+        },
+        {
+          "number": 2,
+          "answer": "stops"
+        },
+        {
+          "number": 3,
+          "answer": "green"
+        },
+        {
+          "number": 4,
+          "answer": "dinner"
+        },
+        {
+          "number": 5,
+          "answer": "movies"
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "instruction": "Read the email about Climate Change. Choose one word from the list for each gap.",
+      "passage": "Luyện đọcCâu hỏi 29 / 66Trộn câuĐáp ánLuyện đọcCâu hỏi 29 / 66Auto shuffleXem đáp ánRead the email about Climate Change. Choose one word from the list for each gap.💡Tip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩaHey Tom,\n\nI learned about climate ___1___ in school today.\n\nThe weather is getting ___2___ in many places.\n\nWe need to ___3___ more trees to help.\n\nUsing less ___4___ is also important.\n\nEveryone can do ___5___ to help the planet.\n\nLove,\nAnnaNộp bàiThoátBảng điều khiểnLàm lạiNộp bàiTrướcSauKinh nghiệm làm Part 1ẨnĐọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé.Bạn đã dùng hết 10 phút luyện miễn phí hôm nayĐăng nhập để nhận hạn mức của gói Miễn phí hoặc chọn gói học phù hợp.Đăng nhập để tiếp tụcVề trang chủ",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I learned about climate ___ in school today.",
+          "prompt": "I learned about climate ___ in school today.",
+          "wordBank": [
+            "change",
+            "problem",
+            "matter",
+            "issue"
+          ],
+          "correctAnswer": "change"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho The weather is getting ___ in many places.",
+          "prompt": "The weather is getting ___ in many places.",
+          "wordBank": [
+            "cold",
+            "hotter",
+            "good",
+            "nice"
+          ],
+          "correctAnswer": "hotter"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho We need to ___ more trees to help.",
+          "prompt": "We need to ___ more trees to help.",
+          "wordBank": [
+            "cut",
+            "see",
+            "buy",
+            "plant"
+          ],
+          "correctAnswer": "plant"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Using less ___ is also important.",
+          "prompt": "Using less ___ is also important.",
+          "wordBank": [
+            "time",
+            "plastic",
+            "food",
+            "water"
+          ],
+          "correctAnswer": "plastic"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Everyone can do ___ to help the planet.",
+          "prompt": "Everyone can do ___ to help the planet.",
+          "wordBank": [
+            "something",
+            "nothing",
+            "everything",
+            "anything"
+          ],
+          "correctAnswer": "something"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "change"
+        },
+        {
+          "number": 2,
+          "answer": "hotter"
+        },
+        {
+          "number": 3,
+          "answer": "plant"
+        },
+        {
+          "number": 4,
+          "answer": "plastic"
+        },
+        {
+          "number": 5,
+          "answer": "something"
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "instruction": null,
+      "passage": "Hi Aunt Rose,\n\nMy school project is going well. I chose to write about a ___1___ animal species.\n\nYesterday I ___2___ some books from the library.\n\nI also ___3___ videos online to learn more.\n\nTomorrow I will ___4___ my presentation slides.\n\nWish me ___5___!\n\nSophia",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho I chose to write about a ___ animal species.",
+          "prompt": "I chose to write about a ___ animal species.",
+          "wordBank": [
+            "rare",
+            "loud",
+            "dirty",
+            "fast"
+          ],
+          "correctAnswer": "rare"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Yesterday I ___ some books from the library.",
+          "prompt": "Yesterday I ___ some books from the library.",
+          "wordBank": [
+            "borrowing",
+            "borrow",
+            "buys",
+            "borrowed"
+          ],
+          "correctAnswer": "borrowed"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I also ___ videos online to learn more.",
+          "prompt": "I also ___ videos online to learn more.",
+          "wordBank": [
+            "see",
+            "watching",
+            "watched",
+            "watch"
+          ],
+          "correctAnswer": "watched"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ my presentation slides.",
+          "prompt": "Tomorrow I will ___ my presentation slides.",
+          "wordBank": [
+            "take",
+            "fix",
+            "drive",
+            "prepare"
+          ],
+          "correctAnswer": "prepare"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Wish me ___!",
+          "prompt": "Wish me ___!",
+          "wordBank": [
+            "rain",
+            "bread",
+            "water",
+            "luck"
+          ],
+          "correctAnswer": "luck"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "rare"
+        },
+        {
+          "number": 2,
+          "answer": "borrowed"
+        },
+        {
+          "number": 3,
+          "answer": "watched"
+        },
+        {
+          "number": 4,
+          "answer": "prepare"
+        },
+        {
+          "number": 5,
+          "answer": "luck"
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "instruction": null,
+      "passage": "Hi Lily,\n\nI'm helping mom in the garden today. The flowers look very ___1___ after the rain.\n\nWe ___2___ some new seeds this morning.\n\nThen we ___3___ the soil around the trees.\n\nTomorrow we will ___4___ the backyard fence.\n\nHope your day is ___5___!\n\nNora",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The flowers look very ___ after the rain.",
+          "prompt": "The flowers look very ___ after the rain.",
+          "wordBank": [
+            "broken",
+            "late",
+            "fresh",
+            "dirty"
+          ],
+          "correctAnswer": "fresh"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ some new seeds this morning.",
+          "prompt": "We ___ some new seeds this morning.",
+          "wordBank": [
+            "plant",
+            "planting",
+            "planted",
+            "plants"
+          ],
+          "correctAnswer": "planted"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Then we ___ the soil around the trees.",
+          "prompt": "Then we ___ the soil around the trees.",
+          "wordBank": [
+            "drop",
+            "watered",
+            "see",
+            "wash"
+          ],
+          "correctAnswer": "watered"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ the backyard fence.",
+          "prompt": "Tomorrow we will ___ the backyard fence.",
+          "wordBank": [
+            "paint",
+            "fix",
+            "eat",
+            "pull"
+          ],
+          "correctAnswer": "paint"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope your day is ___!",
+          "prompt": "Hope your day is ___!",
+          "wordBank": [
+            "cold",
+            "slow",
+            "nice",
+            "short"
+          ],
+          "correctAnswer": "nice"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "fresh"
+        },
+        {
+          "number": 2,
+          "answer": "planted"
+        },
+        {
+          "number": 3,
+          "answer": "watered"
+        },
+        {
+          "number": 4,
+          "answer": "paint"
+        },
+        {
+          "number": 5,
+          "answer": "nice"
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "instruction": null,
+      "passage": "Hi Tom,\n\nI started my new job yesterday. The office is very ___1___ and modern.\n\nMy manager ___2___ me around and introduced me to the team.\n\nAt lunchtime we ___3___ together in the cafeteria.\n\nTomorrow I will ___4___ on a new project.\n\nHope things are going ___5___ for you too!\n\nJake",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The office is very ___ and modern.",
+          "prompt": "The office is very ___ and modern.",
+          "wordBank": [
+            "clean",
+            "slow",
+            "broken",
+            "crowded"
+          ],
+          "correctAnswer": "clean"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho My manager ___ me around and introduced me to the team.",
+          "prompt": "My manager ___ me around and introduced me to the team.",
+          "wordBank": [
+            "shows",
+            "showed",
+            "show",
+            "showing"
+          ],
+          "correctAnswer": "showed"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho At lunchtime we ___ together in the cafeteria.",
+          "prompt": "At lunchtime we ___ together in the cafeteria.",
+          "wordBank": [
+            "eating",
+            "ate",
+            "eats",
+            "eat"
+          ],
+          "correctAnswer": "ate"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ on a new project.",
+          "prompt": "Tomorrow I will ___ on a new project.",
+          "wordBank": [
+            "work",
+            "play",
+            "move",
+            "jump"
+          ],
+          "correctAnswer": "work"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope things are going ___ for you too!",
+          "prompt": "Hope things are going ___ for you too!",
+          "wordBank": [
+            "big",
+            "old",
+            "fast",
+            "well"
+          ],
+          "correctAnswer": "well"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "clean"
+        },
+        {
+          "number": 2,
+          "answer": "showed"
+        },
+        {
+          "number": 3,
+          "answer": "ate"
+        },
+        {
+          "number": 4,
+          "answer": "work"
+        },
+        {
+          "number": 5,
+          "answer": "well"
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "instruction": null,
+      "passage": "Hi Lily,\n\nDad asked me to take care of the chores today. First, I ___1___ the plants in the garden.\n\nThen I ___2___ the laundry and hung it outside.\n\nAfter that, I ___3___ the living room and hallway.\n\nFor dinner, I will ___4___ pasta.\n\nHope you're having a ___5___ day!\n\nLove,\nEmma",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho First, I ___ the plants in the garden.",
+          "prompt": "First, I ___ the plants in the garden.",
+          "wordBank": [
+            "eat",
+            "fly",
+            "push",
+            "watered"
+          ],
+          "correctAnswer": "watered"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Then I ___ the laundry and hung it outside.",
+          "prompt": "Then I ___ the laundry and hung it outside.",
+          "wordBank": [
+            "washing",
+            "washed",
+            "washes",
+            "wash"
+          ],
+          "correctAnswer": "washed"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After that, I ___ the living room and hallway.",
+          "prompt": "After that, I ___ the living room and hallway.",
+          "wordBank": [
+            "cleaned",
+            "open",
+            "cook",
+            "fix"
+          ],
+          "correctAnswer": "cleaned"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho For dinner, I will ___ pasta.",
+          "prompt": "For dinner, I will ___ pasta.",
+          "wordBank": [
+            "cook",
+            "take",
+            "run",
+            "drive"
+          ],
+          "correctAnswer": "cook"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope you're having a ___ day!",
+          "prompt": "Hope you're having a ___ day!",
+          "wordBank": [
+            "short",
+            "late",
+            "great",
+            "cold"
+          ],
+          "correctAnswer": "great"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "watered"
+        },
+        {
+          "number": 2,
+          "answer": "washed"
+        },
+        {
+          "number": 3,
+          "answer": "cleaned"
+        },
+        {
+          "number": 4,
+          "answer": "cook"
+        },
+        {
+          "number": 5,
+          "answer": "great"
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "instruction": "Read the note from Julia to her friend. Choose one word from the list for each gap.",
+      "passage": "Hi Emma,\n\nI'm staying at a small hotel by the beach. The weather is ___1___ today, so we might go swimming.\n\nThis morning we had a delicious ___2___ at a local café.\n\nLater we ___3___ a bike and rode around the island.\n\nTomorrow we are going to ___4___ the famous lighthouse nearby.\n\nI will bring some ___5___ back home for you.\n\nLove,\nJulia",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The weather is ___ today, so we might go swimming.",
+          "prompt": "The weather is ___ today, so we might go swimming.",
+          "wordBank": [
+            "foggy",
+            "cold",
+            "stormy",
+            "sunny"
+          ],
+          "correctAnswer": "sunny"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho This morning we had a delicious ___ at a local café.",
+          "prompt": "This morning we had a delicious ___ at a local café.",
+          "wordBank": [
+            "cart",
+            "party",
+            "breakfast",
+            "ticket"
+          ],
+          "correctAnswer": "breakfast"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Later we ___ a bike and rode around the island.",
+          "prompt": "Later we ___ a bike and rode around the island.",
+          "wordBank": [
+            "rented",
+            "rent",
+            "renting",
+            "buy"
+          ],
+          "correctAnswer": "rented"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we are going to ___ the famous lighthouse nearby.",
+          "prompt": "Tomorrow we are going to ___ the famous lighthouse nearby.",
+          "wordBank": [
+            "take",
+            "look",
+            "drive",
+            "visit"
+          ],
+          "correctAnswer": "visit"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I will bring some ___ back home for you.",
+          "prompt": "I will bring some ___ back home for you.",
+          "wordBank": [
+            "tools",
+            "letters",
+            "papers",
+            "gifts"
+          ],
+          "correctAnswer": "gifts"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "sunny"
+        },
+        {
+          "number": 2,
+          "answer": "breakfast"
+        },
+        {
+          "number": 3,
+          "answer": "rented"
+        },
+        {
+          "number": 4,
+          "answer": "visit"
+        },
+        {
+          "number": 5,
+          "answer": "gifts"
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "instruction": null,
+      "passage": "Luyện đọcCâu hỏi 35 / 66Trộn câuĐáp ánLuyện đọcCâu hỏi 35 / 66Auto shuffleXem đáp ánRead the message from Daniel to his best friend.💡Tip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩaHey Max,\n\nWe moved to our new apartment yesterday. The living room is really ___1___!\n\nDad and I ___2___ the sofa near the window.\n\nMom ___3___ the kitchen while we worked.\n\nTomorrow we're going to ___4___ new curtains.\n\nHope you can visit ___5___!\n\nDanielNộp bàiThoátBảng điều khiểnLàm lạiNộp bàiTrướcSauKinh nghiệm làm Part 1ẨnĐọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé.Bạn đã dùng hết 10 phút luyện miễn phí hôm nayĐăng nhập để nhận hạn mức của gói Miễn phí hoặc chọn gói học phù hợp.Đăng nhập để tiếp tụcVề trang chủ",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The living room is really ___!",
+          "prompt": "The living room is really ___!",
+          "wordBank": [
+            "old",
+            "dark",
+            "tiny",
+            "big"
+          ],
+          "correctAnswer": "big"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Dad and I ___ the sofa near the window.",
+          "prompt": "Dad and I ___ the sofa near the window.",
+          "wordBank": [
+            "places",
+            "placed",
+            "placing",
+            "place"
+          ],
+          "correctAnswer": "placed"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Mom ___ the kitchen while we worked.",
+          "prompt": "Mom ___ the kitchen while we worked.",
+          "wordBank": [
+            "clean",
+            "cleaned",
+            "cleans",
+            "cleaning"
+          ],
+          "correctAnswer": "cleaned"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we're going to ___ new curtains.",
+          "prompt": "Tomorrow we're going to ___ new curtains.",
+          "wordBank": [
+            "swim",
+            "buy",
+            "eat",
+            "run"
+          ],
+          "correctAnswer": "buy"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope you can visit ___!",
+          "prompt": "Hope you can visit ___!",
+          "wordBank": [
+            "soon",
+            "down",
+            "slow",
+            "late"
+          ],
+          "correctAnswer": "soon"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "big"
+        },
+        {
+          "number": 2,
+          "answer": "placed"
+        },
+        {
+          "number": 3,
+          "answer": "cleaned"
+        },
+        {
+          "number": 4,
+          "answer": "buy"
+        },
+        {
+          "number": 5,
+          "answer": "soon"
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "instruction": null,
+      "passage": "Hello Ms. Clark,\n\nI finished the science assignment yesterday. The last question was quite ___1___!\n\nI ___2___ the chapter twice to understand it.\n\nThen I ___3___ the worksheet carefully.\n\nTomorrow I will ___4___ it in class.\n\nThank you for your ___5___!\n\nEmma",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The last question was quite ___!",
+          "prompt": "The last question was quite ___!",
+          "wordBank": [
+            "easy",
+            "short",
+            "loud",
+            "difficult"
+          ],
+          "correctAnswer": "difficult"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I ___ the chapter twice to understand it.",
+          "prompt": "I ___ the chapter twice to understand it.",
+          "wordBank": [
+            "reading",
+            "red",
+            "reads",
+            "read"
+          ],
+          "correctAnswer": "read"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Then I ___ the worksheet carefully.",
+          "prompt": "Then I ___ the worksheet carefully.",
+          "wordBank": [
+            "complete",
+            "completed",
+            "completing",
+            "completes"
+          ],
+          "correctAnswer": "completed"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ it in class.",
+          "prompt": "Tomorrow I will ___ it in class.",
+          "wordBank": [
+            "cook",
+            "lift",
+            "throw",
+            "submit"
+          ],
+          "correctAnswer": "submit"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Thank you for your ___!",
+          "prompt": "Thank you for your ___!",
+          "wordBank": [
+            "milk",
+            "stone",
+            "noise",
+            "help"
+          ],
+          "correctAnswer": "help"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "difficult"
+        },
+        {
+          "number": 2,
+          "answer": "read"
+        },
+        {
+          "number": 3,
+          "answer": "completed"
+        },
+        {
+          "number": 4,
+          "answer": "submit"
+        },
+        {
+          "number": 5,
+          "answer": "help"
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "instruction": null,
+      "passage": "Hi Sam,\n\nThanks for watering my plants. They look very ___1___ now.\n\nI ___2___ home late last night.\n\nI also ___3___ your tools back in the shed.\n\nTomorrow I will ___4___ you a small gift.\n\nHave a ___5___ day!\n\nHenry",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho They look very ___ now.",
+          "prompt": "They look very ___ now.",
+          "wordBank": [
+            "lost",
+            "healthy",
+            "thin",
+            "angry"
+          ],
+          "correctAnswer": "healthy"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I ___ home late last night.",
+          "prompt": "I ___ home late last night.",
+          "wordBank": [
+            "arrive",
+            "arrives",
+            "arriving",
+            "arrived"
+          ],
+          "correctAnswer": "arrived"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I also ___ your tools back in the shed.",
+          "prompt": "I also ___ your tools back in the shed.",
+          "wordBank": [
+            "place",
+            "put",
+            "puts",
+            "putting"
+          ],
+          "correctAnswer": "put"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ you a small gift.",
+          "prompt": "Tomorrow I will ___ you a small gift.",
+          "wordBank": [
+            "bring",
+            "drive",
+            "hold",
+            "eat"
+          ],
+          "correctAnswer": "bring"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Have a ___ day!",
+          "prompt": "Have a ___ day!",
+          "wordBank": [
+            "short",
+            "great",
+            "late",
+            "hard"
+          ],
+          "correctAnswer": "great"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "healthy"
+        },
+        {
+          "number": 2,
+          "answer": "arrived"
+        },
+        {
+          "number": 3,
+          "answer": "put"
+        },
+        {
+          "number": 4,
+          "answer": "bring"
+        },
+        {
+          "number": 5,
+          "answer": "great"
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "instruction": null,
+      "passage": "Luyện đọcCâu hỏi 38 / 66Trộn câuĐáp ánLuyện đọcCâu hỏi 38 / 66Auto shuffleXem đáp ánRead the note from Kevin to his friend.💡Tip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩaHey Ben,\n\nI got a new bicycle today. It’s very ___1___ and fast.\n\nDad ___2___ it for me.\n\nIn the evening we ___3___ around the park.\n\nTomorrow I will ___4___ it to school.\n\nHope you can try it ___5___!\n\nKevinNộp bàiThoátBảng điều khiểnLàm lạiNộp bàiTrướcSauKinh nghiệm làm Part 1ẨnĐọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé.Bạn đã dùng hết 10 phút luyện miễn phí hôm nayĐăng nhập để nhận hạn mức của gói Miễn phí hoặc chọn gói học phù hợp.Đăng nhập để tiếp tụcVề trang chủ",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho It’s very ___ and fast.",
+          "prompt": "It’s very ___ and fast.",
+          "wordBank": [
+            "sharp",
+            "late",
+            "loud",
+            "light"
+          ],
+          "correctAnswer": "light"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Dad ___ it for me.",
+          "prompt": "Dad ___ it for me.",
+          "wordBank": [
+            "fix",
+            "fixed",
+            "fixes",
+            "fixing"
+          ],
+          "correctAnswer": "fixed"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho In the evening we ___ around the park.",
+          "prompt": "In the evening we ___ around the park.",
+          "wordBank": [
+            "riding",
+            "rides",
+            "ride",
+            "rode"
+          ],
+          "correctAnswer": "rode"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ it to school.",
+          "prompt": "Tomorrow I will ___ it to school.",
+          "wordBank": [
+            "take",
+            "eat",
+            "jump",
+            "run"
+          ],
+          "correctAnswer": "take"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope you can try it ___!",
+          "prompt": "Hope you can try it ___!",
+          "wordBank": [
+            "high",
+            "old",
+            "far",
+            "soon"
+          ],
+          "correctAnswer": "soon"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "light"
+        },
+        {
+          "number": 2,
+          "answer": "fixed"
+        },
+        {
+          "number": 3,
+          "answer": "rode"
+        },
+        {
+          "number": 4,
+          "answer": "take"
+        },
+        {
+          "number": 5,
+          "answer": "soon"
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "instruction": null,
+      "passage": "Hi Aunt May,\n\nWe went hiking this morning. The view from the hill was absolutely ___1___.\n\nI ___2___ lots of photos.\n\nAfter that, we ___3___ lunch under a big tree.\n\nTomorrow we plan to ___4___ the river trail.\n\nHope you're having a ___5___ day!\n\nJulia",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The view from the hill was absolutely ___.",
+          "prompt": "The view from the hill was absolutely ___.",
+          "wordBank": [
+            "dark",
+            "beautiful",
+            "quiet",
+            "small"
+          ],
+          "correctAnswer": "beautiful"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I ___ lots of photos.",
+          "prompt": "I ___ lots of photos.",
+          "wordBank": [
+            "taking",
+            "took",
+            "take",
+            "takes"
+          ],
+          "correctAnswer": "took"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After that, we ___ lunch under a big tree.",
+          "prompt": "After that, we ___ lunch under a big tree.",
+          "wordBank": [
+            "having",
+            "has",
+            "have",
+            "had"
+          ],
+          "correctAnswer": "had"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we plan to ___ the river trail.",
+          "prompt": "Tomorrow we plan to ___ the river trail.",
+          "wordBank": [
+            "jump",
+            "walk",
+            "cook",
+            "drive"
+          ],
+          "correctAnswer": "walk"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope you're having a ___ day!",
+          "prompt": "Hope you're having a ___ day!",
+          "wordBank": [
+            "tight",
+            "lovely",
+            "short",
+            "late"
+          ],
+          "correctAnswer": "lovely"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "beautiful"
+        },
+        {
+          "number": 2,
+          "answer": "took"
+        },
+        {
+          "number": 3,
+          "answer": "had"
+        },
+        {
+          "number": 4,
+          "answer": "walk"
+        },
+        {
+          "number": 5,
+          "answer": "lovely"
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "instruction": null,
+      "passage": "Hi Zara,\n\nI'm baking cookies today. The kitchen smells really ___1___.\n\nI ___2___ the dough this morning.\n\nThen I ___3___ chocolate pieces inside.\n\nTomorrow I will ___4___ some to school.\n\nHope you get to try them ___5___!\n\nChloe",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The kitchen smells really ___.",
+          "prompt": "The kitchen smells really ___.",
+          "wordBank": [
+            "loud",
+            "nice",
+            "old",
+            "slow"
+          ],
+          "correctAnswer": "nice"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I ___ the dough this morning.",
+          "prompt": "I ___ the dough this morning.",
+          "wordBank": [
+            "make",
+            "makes",
+            "made",
+            "making"
+          ],
+          "correctAnswer": "made"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Then I ___ chocolate pieces inside.",
+          "prompt": "Then I ___ chocolate pieces inside.",
+          "wordBank": [
+            "drops",
+            "mixing",
+            "mixed",
+            "mix"
+          ],
+          "correctAnswer": "mixed"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ some to school.",
+          "prompt": "Tomorrow I will ___ some to school.",
+          "wordBank": [
+            "eat",
+            "cut",
+            "bring",
+            "throw"
+          ],
+          "correctAnswer": "bring"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope you get to try them ___!",
+          "prompt": "Hope you get to try them ___!",
+          "wordBank": [
+            "soon",
+            "up",
+            "far",
+            "down"
+          ],
+          "correctAnswer": "soon"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "nice"
+        },
+        {
+          "number": 2,
+          "answer": "made"
+        },
+        {
+          "number": 3,
+          "answer": "mixed"
+        },
+        {
+          "number": 4,
+          "answer": "bring"
+        },
+        {
+          "number": 5,
+          "answer": "soon"
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "instruction": null,
+      "passage": "Hi Uncle Joe,\n\nWe spent the weekend fishing. The lake was very ___1___ and peaceful.\n\nWe ___2___ two big fish.\n\nAfter lunch, dad ___3___ a small fire.\n\nTomorrow we plan to ___4___ home early.\n\nHope your weekend was ___5___ too!\n\nCarl",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The lake was very ___ and peaceful.",
+          "prompt": "The lake was very ___ and peaceful.",
+          "wordBank": [
+            "calm",
+            "loud",
+            "sharp",
+            "hot"
+          ],
+          "correctAnswer": "calm"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ two big fish.",
+          "prompt": "We ___ two big fish.",
+          "wordBank": [
+            "catches",
+            "catching",
+            "catch",
+            "caught"
+          ],
+          "correctAnswer": "caught"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After lunch, dad ___ a small fire.",
+          "prompt": "After lunch, dad ___ a small fire.",
+          "wordBank": [
+            "starts",
+            "starting",
+            "start",
+            "started"
+          ],
+          "correctAnswer": "started"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we plan to ___ home early.",
+          "prompt": "Tomorrow we plan to ___ home early.",
+          "wordBank": [
+            "jump",
+            "cook",
+            "open",
+            "drive"
+          ],
+          "correctAnswer": "drive"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope your weekend was ___ too!",
+          "prompt": "Hope your weekend was ___ too!",
+          "wordBank": [
+            "tall",
+            "late",
+            "nice",
+            "fast"
+          ],
+          "correctAnswer": "nice"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "calm"
+        },
+        {
+          "number": 2,
+          "answer": "caught"
+        },
+        {
+          "number": 3,
+          "answer": "started"
+        },
+        {
+          "number": 4,
+          "answer": "drive"
+        },
+        {
+          "number": 5,
+          "answer": "nice"
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "instruction": null,
+      "passage": "Hi Amy,\n\nI just arrived at the hotel. The room is very ___1___ and has a big window.\n\nThis morning we ___2___ our bags at reception.\n\nThen we ___3___ the city centre to look for food.\n\nTomorrow we will ___4___ the famous waterfall nearby.\n\nWish you were ___5___ me!\n\nLaura",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The room is very ___ and has a big window.",
+          "prompt": "The room is very ___ and has a big window.",
+          "wordBank": [
+            "broken",
+            "loud",
+            "bright",
+            "tiny"
+          ],
+          "correctAnswer": "bright"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho This morning we ___ our bags at reception.",
+          "prompt": "This morning we ___ our bags at reception.",
+          "wordBank": [
+            "lifts",
+            "left",
+            "leave",
+            "leaving"
+          ],
+          "correctAnswer": "left"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Then we ___ the city centre to look for food.",
+          "prompt": "Then we ___ the city centre to look for food.",
+          "wordBank": [
+            "explored",
+            "explore",
+            "exploring",
+            "explores"
+          ],
+          "correctAnswer": "explored"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ the famous waterfall nearby.",
+          "prompt": "Tomorrow we will ___ the famous waterfall nearby.",
+          "wordBank": [
+            "visit",
+            "eat",
+            "bring",
+            "run"
+          ],
+          "correctAnswer": "visit"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Wish you were ___ me!",
+          "prompt": "Wish you were ___ me!",
+          "wordBank": [
+            "for",
+            "on",
+            "with",
+            "at"
+          ],
+          "correctAnswer": "with"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "bright"
+        },
+        {
+          "number": 2,
+          "answer": "left"
+        },
+        {
+          "number": 3,
+          "answer": "explored"
+        },
+        {
+          "number": 4,
+          "answer": "visit"
+        },
+        {
+          "number": 5,
+          "answer": "with"
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "instruction": "Read the email from Rachel to her coworker. Choose one word from the list for each gap.",
+      "passage": "Hi Kevin,\n\nJust letting you know that today's meeting has been ___1___ to Thursday.\n\nWe need to ___2___ the new project plan before presenting it.\n\nI have already ___3___ the updated document to your inbox.\n\nPlease ___4___ it and tell me if anything needs to be changed.\n\nThanks for your ___5___!\n\nBest,\nRachel",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho Today's meeting has been ___ to Thursday.",
+          "prompt": "Today's meeting has been ___ to Thursday.",
+          "wordBank": [
+            "cancelled",
+            "moved",
+            "ended",
+            "closed"
+          ],
+          "correctAnswer": "moved"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We need to ___ the new project plan before presenting it.",
+          "prompt": "We need to ___ the new project plan before presenting it.",
+          "wordBank": [
+            "hide",
+            "play",
+            "reduce",
+            "review"
+          ],
+          "correctAnswer": "review"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho I have already ___ the updated document to your inbox.",
+          "prompt": "I have already ___ the updated document to your inbox.",
+          "wordBank": [
+            "sended",
+            "sent",
+            "send",
+            "sending"
+          ],
+          "correctAnswer": "sent"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Please ___ it and tell me if anything needs to be changed.",
+          "prompt": "Please ___ it and tell me if anything needs to be changed.",
+          "wordBank": [
+            "cook",
+            "lift",
+            "check",
+            "drive"
+          ],
+          "correctAnswer": "check"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Thanks for your ___!",
+          "prompt": "Thanks for your ___!",
+          "wordBank": [
+            "help",
+            "water",
+            "table",
+            "noise"
+          ],
+          "correctAnswer": "help"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "moved"
+        },
+        {
+          "number": 2,
+          "answer": "review"
+        },
+        {
+          "number": 3,
+          "answer": "sent"
+        },
+        {
+          "number": 4,
+          "answer": "check"
+        },
+        {
+          "number": 5,
+          "answer": "help"
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "instruction": null,
+      "passage": "Hi Mom,\n\nI'm taking care of the house while you're away. The dog is being very ___1___ today.\n\nThis morning I ___2___ him for a long walk.\n\nAfter that, I ___3___ the kitchen and living room.\n\nTomorrow I will ___4___ some shopping for dinner.\n\nDon't worry, everything is under ___5___.\n\nLove,\nHannah",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The dog is being very ___ today.",
+          "prompt": "The dog is being very ___ today.",
+          "wordBank": [
+            "angry",
+            "sleepy",
+            "playful",
+            "lost"
+          ],
+          "correctAnswer": "playful"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho This morning I ___ him for a long walk.",
+          "prompt": "This morning I ___ him for a long walk.",
+          "wordBank": [
+            "took",
+            "taking",
+            "takes",
+            "take"
+          ],
+          "correctAnswer": "took"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After that, I ___ the kitchen and living room.",
+          "prompt": "After that, I ___ the kitchen and living room.",
+          "wordBank": [
+            "cleaning",
+            "cleaned",
+            "cleans",
+            "clean"
+          ],
+          "correctAnswer": "cleaned"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ some shopping for dinner.",
+          "prompt": "Tomorrow I will ___ some shopping for dinner.",
+          "wordBank": [
+            "make",
+            "do",
+            "play",
+            "cook"
+          ],
+          "correctAnswer": "do"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Don't worry, everything is under ___.",
+          "prompt": "Don't worry, everything is under ___.",
+          "wordBank": [
+            "control",
+            "lock",
+            "water",
+            "table"
+          ],
+          "correctAnswer": "control"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "playful"
+        },
+        {
+          "number": 2,
+          "answer": "took"
+        },
+        {
+          "number": 3,
+          "answer": "cleaned"
+        },
+        {
+          "number": 4,
+          "answer": "do"
+        },
+        {
+          "number": 5,
+          "answer": "control"
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "instruction": null,
+      "passage": "Dear Mom and Dad,\n\nFrance is beautiful! The food here is really ___1___ and tasty.\n\nYesterday we ___2___ a cheese factory.\n\nAfter lunch, we ___3___ photos near the old castle.\n\nTomorrow we are going to ___4___ a boat trip.\n\nSee you ___5___ week!\n\nLove,\nMia",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The food here is really ___ and tasty.",
+          "prompt": "The food here is really ___ and tasty.",
+          "wordBank": [
+            "boring",
+            "hard",
+            "empty",
+            "delicious"
+          ],
+          "correctAnswer": "delicious"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Yesterday we ___ a cheese factory.",
+          "prompt": "Yesterday we ___ a cheese factory.",
+          "wordBank": [
+            "visited",
+            "visit",
+            "visiting",
+            "go"
+          ],
+          "correctAnswer": "visited"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After lunch, we ___ photos near the old castle.",
+          "prompt": "After lunch, we ___ photos near the old castle.",
+          "wordBank": [
+            "taking",
+            "take",
+            "took",
+            "takes"
+          ],
+          "correctAnswer": "took"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we are going to ___ a boat trip.",
+          "prompt": "Tomorrow we are going to ___ a boat trip.",
+          "wordBank": [
+            "make",
+            "take",
+            "do",
+            "play"
+          ],
+          "correctAnswer": "take"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho See you ___ week!",
+          "prompt": "See you ___ week!",
+          "wordBank": [
+            "last",
+            "same",
+            "big",
+            "next"
+          ],
+          "correctAnswer": "next"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "delicious"
+        },
+        {
+          "number": 2,
+          "answer": "visited"
+        },
+        {
+          "number": 3,
+          "answer": "took"
+        },
+        {
+          "number": 4,
+          "answer": "take"
+        },
+        {
+          "number": 5,
+          "answer": "next"
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "instruction": null,
+      "passage": "Hello Mr. Lee,\n\nI finished my math homework. The last problem was really ___1___!\n\nI ___2___ the example in the book.\n\nAfter that, I ___3___ the answer.\n\nTomorrow I will ___4___ the assignment.\n\nThank you for your ___5___.\n\nSam",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The last problem was really ___!",
+          "prompt": "The last problem was really ___!",
+          "wordBank": [
+            "thin",
+            "hard",
+            "warm",
+            "blue"
+          ],
+          "correctAnswer": "hard"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I ___ the example in the book.",
+          "prompt": "I ___ the example in the book.",
+          "wordBank": [
+            "following",
+            "followed",
+            "follows",
+            "follow"
+          ],
+          "correctAnswer": "followed"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After that, I ___ the answer.",
+          "prompt": "After that, I ___ the answer.",
+          "wordBank": [
+            "checked",
+            "checks",
+            "checking",
+            "check"
+          ],
+          "correctAnswer": "checked"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ the assignment.",
+          "prompt": "Tomorrow I will ___ the assignment.",
+          "wordBank": [
+            "fix",
+            "drop",
+            "cook",
+            "submit"
+          ],
+          "correctAnswer": "submit"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Thank you for your ___.",
+          "prompt": "Thank you for your ___.",
+          "wordBank": [
+            "light",
+            "help",
+            "noise",
+            "car"
+          ],
+          "correctAnswer": "help"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "hard"
+        },
+        {
+          "number": 2,
+          "answer": "followed"
+        },
+        {
+          "number": 3,
+          "answer": "checked"
+        },
+        {
+          "number": 4,
+          "answer": "submit"
+        },
+        {
+          "number": 5,
+          "answer": "help"
+        }
+      ]
+    },
+    {
+      "number": 47,
+      "instruction": null,
+      "passage": "Hi Anna,\n\nWe visited the zoo today. The lions were very ___1___!\n\nWe ___2___ lots of photos.\n\nAfter lunch, we ___3___ the penguin show.\n\nTomorrow we will ___4___ souvenirs.\n\nIt was a really ___5___ day!\n\nLisa",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The lions were very ___!",
+          "prompt": "The lions were very ___!",
+          "wordBank": [
+            "slow",
+            "quiet",
+            "loud",
+            "thin"
+          ],
+          "correctAnswer": "loud"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ lots of photos.",
+          "prompt": "We ___ lots of photos.",
+          "wordBank": [
+            "took",
+            "taking",
+            "taken",
+            "take"
+          ],
+          "correctAnswer": "took"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After lunch, we ___ the penguin show.",
+          "prompt": "After lunch, we ___ the penguin show.",
+          "wordBank": [
+            "watch",
+            "watched",
+            "watching",
+            "watches"
+          ],
+          "correctAnswer": "watched"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ souvenirs.",
+          "prompt": "Tomorrow we will ___ souvenirs.",
+          "wordBank": [
+            "buy",
+            "hold",
+            "push",
+            "cut"
+          ],
+          "correctAnswer": "buy"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho It was a really ___ day!",
+          "prompt": "It was a really ___ day!",
+          "wordBank": [
+            "tall",
+            "dark",
+            "dry",
+            "fun"
+          ],
+          "correctAnswer": "fun"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "loud"
+        },
+        {
+          "number": 2,
+          "answer": "took"
+        },
+        {
+          "number": 3,
+          "answer": "watched"
+        },
+        {
+          "number": 4,
+          "answer": "buy"
+        },
+        {
+          "number": 5,
+          "answer": "fun"
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "instruction": null,
+      "passage": "Hi Dad,\n\nI'm learning guitar now. The chords are a bit ___1___ but I'm improving.\n\nI ___2___ a new song yesterday.\n\nToday I ___3___ for an hour.\n\nTomorrow I will ___4___ my practice.\n\nHope you're ___5___!\n\nMark",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The chords are a bit ___ but I'm improving.",
+          "prompt": "The chords are a bit ___ but I'm improving.",
+          "wordBank": [
+            "broken",
+            "loud",
+            "difficult",
+            "thin"
+          ],
+          "correctAnswer": "difficult"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I ___ a new song yesterday.",
+          "prompt": "I ___ a new song yesterday.",
+          "wordBank": [
+            "learns",
+            "learning",
+            "learn",
+            "learned"
+          ],
+          "correctAnswer": "learned"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Today I ___ for an hour.",
+          "prompt": "Today I ___ for an hour.",
+          "wordBank": [
+            "practices",
+            "practice",
+            "practiced",
+            "practicing"
+          ],
+          "correctAnswer": "practiced"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ my practice.",
+          "prompt": "Tomorrow I will ___ my practice.",
+          "wordBank": [
+            "break",
+            "throw",
+            "continue",
+            "build"
+          ],
+          "correctAnswer": "continue"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope you're ___!",
+          "prompt": "Hope you're ___!",
+          "wordBank": [
+            "late",
+            "cold",
+            "hard",
+            "fine"
+          ],
+          "correctAnswer": "fine"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "difficult"
+        },
+        {
+          "number": 2,
+          "answer": "learned"
+        },
+        {
+          "number": 3,
+          "answer": "practiced"
+        },
+        {
+          "number": 4,
+          "answer": "continue"
+        },
+        {
+          "number": 5,
+          "answer": "fine"
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "instruction": null,
+      "passage": "Hi Joe,\n\nWe cleaned the garage today. It was very ___1___.\n\nWe ___2___ all the boxes into the backyard.\n\nThen I ___3___ the floor.\n\nTomorrow we will ___4___ the old tools.\n\nSee you ___5___!\n\nPeter",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho It was very ___.",
+          "prompt": "It was very ___.",
+          "wordBank": [
+            "fun",
+            "quiet",
+            "messy",
+            "green"
+          ],
+          "correctAnswer": "messy"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ all the boxes into the backyard.",
+          "prompt": "We ___ all the boxes into the backyard.",
+          "wordBank": [
+            "carrying",
+            "carry",
+            "carried",
+            "carries"
+          ],
+          "correctAnswer": "carried"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Then I ___ the floor.",
+          "prompt": "Then I ___ the floor.",
+          "wordBank": [
+            "washing",
+            "washes",
+            "wash",
+            "washed"
+          ],
+          "correctAnswer": "washed"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ the old tools.",
+          "prompt": "Tomorrow we will ___ the old tools.",
+          "wordBank": [
+            "organize",
+            "eat",
+            "run",
+            "drive"
+          ],
+          "correctAnswer": "organize"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho See you ___!",
+          "prompt": "See you ___!",
+          "wordBank": [
+            "soon",
+            "under",
+            "back",
+            "up"
+          ],
+          "correctAnswer": "soon"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "messy"
+        },
+        {
+          "number": 2,
+          "answer": "carried"
+        },
+        {
+          "number": 3,
+          "answer": "washed"
+        },
+        {
+          "number": 4,
+          "answer": "organize"
+        },
+        {
+          "number": 5,
+          "answer": "soon"
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "instruction": null,
+      "passage": "Hi Everyone,\n\nWe visited a science museum today. The robots were really ___1___.\n\nWe ___2___ a fun demonstration.\n\nAfter that, we ___3___ the space section.\n\nTomorrow we will ___4___ the dinosaur exhibition.\n\nMiss you all very ___5___!\n\nLeo",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The robots were really ___.",
+          "prompt": "The robots were really ___.",
+          "wordBank": [
+            "quiet",
+            "thin",
+            "slow",
+            "cool"
+          ],
+          "correctAnswer": "cool"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ a fun demonstration.",
+          "prompt": "We ___ a fun demonstration.",
+          "wordBank": [
+            "sees",
+            "watched",
+            "watch",
+            "watching"
+          ],
+          "correctAnswer": "watched"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After that, we ___ the space section.",
+          "prompt": "After that, we ___ the space section.",
+          "wordBank": [
+            "explores",
+            "exploring",
+            "explore",
+            "explored"
+          ],
+          "correctAnswer": "explored"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ the dinosaur exhibition.",
+          "prompt": "Tomorrow we will ___ the dinosaur exhibition.",
+          "wordBank": [
+            "visit",
+            "cut",
+            "run",
+            "throw"
+          ],
+          "correctAnswer": "visit"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Miss you all very ___!",
+          "prompt": "Miss you all very ___!",
+          "wordBank": [
+            "late",
+            "fast",
+            "much",
+            "loud"
+          ],
+          "correctAnswer": "much"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "cool"
+        },
+        {
+          "number": 2,
+          "answer": "watched"
+        },
+        {
+          "number": 3,
+          "answer": "explored"
+        },
+        {
+          "number": 4,
+          "answer": "visit"
+        },
+        {
+          "number": 5,
+          "answer": "much"
+        }
+      ]
+    },
+    {
+      "number": 51,
+      "instruction": null,
+      "passage": "Hello Ms. Green,\n\nI finished reading the book. The story was really ___1___.\n\nI ___2___ the summary last night.\n\nToday I ___3___ the quiz.\n\nTomorrow I will ___4___ my project.\n\nThanks for your ___5___.\n\nNoah",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The story was really ___.",
+          "prompt": "The story was really ___.",
+          "wordBank": [
+            "quiet",
+            "old",
+            "interesting",
+            "short"
+          ],
+          "correctAnswer": "interesting"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho I ___ the summary last night.",
+          "prompt": "I ___ the summary last night.",
+          "wordBank": [
+            "write",
+            "wrote",
+            "writing",
+            "writes"
+          ],
+          "correctAnswer": "wrote"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho Today I ___ the quiz.",
+          "prompt": "Today I ___ the quiz.",
+          "wordBank": [
+            "completing",
+            "complete",
+            "completes",
+            "completed"
+          ],
+          "correctAnswer": "completed"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ my project.",
+          "prompt": "Tomorrow I will ___ my project.",
+          "wordBank": [
+            "drop",
+            "eat",
+            "walk",
+            "start"
+          ],
+          "correctAnswer": "start"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Thanks for your ___.",
+          "prompt": "Thanks for your ___.",
+          "wordBank": [
+            "sound",
+            "light",
+            "support",
+            "sugar"
+          ],
+          "correctAnswer": "support"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "interesting"
+        },
+        {
+          "number": 2,
+          "answer": "wrote"
+        },
+        {
+          "number": 3,
+          "answer": "completed"
+        },
+        {
+          "number": 4,
+          "answer": "start"
+        },
+        {
+          "number": 5,
+          "answer": "support"
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "instruction": null,
+      "passage": "Luyện đọcCâu hỏi 52 / 66Trộn câuĐáp ánLuyện đọcCâu hỏi 52 / 66Auto shuffleXem đáp ánRead the message from Carl to his brother.💡Tip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩaHey Dan,\n\nWe cleaned the attic today. It was very ___1___.\n\nWe ___2___ lots of old things.\n\nAfter lunch, Dad ___3___ some broken chairs.\n\nTomorrow we will ___4___ the rest.\n\nSee you ___5___!\n\nCarlNộp bàiThoátBảng điều khiểnLàm lạiNộp bàiTrướcSauKinh nghiệm làm Part 1ẨnĐọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé.Bạn đã dùng hết 10 phút luyện miễn phí hôm nayĐăng nhập để nhận hạn mức của gói Miễn phí hoặc chọn gói học phù hợp.Đăng nhập để tiếp tụcVề trang chủ",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho It was very ___.",
+          "prompt": "It was very ___.",
+          "wordBank": [
+            "wet",
+            "slow",
+            "short",
+            "dusty"
+          ],
+          "correctAnswer": "dusty"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ lots of old things.",
+          "prompt": "We ___ lots of old things.",
+          "wordBank": [
+            "find",
+            "finds",
+            "found",
+            "finding"
+          ],
+          "correctAnswer": "found"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After lunch, Dad ___ some broken chairs.",
+          "prompt": "After lunch, Dad ___ some broken chairs.",
+          "wordBank": [
+            "fixes",
+            "fix",
+            "fixed",
+            "fixing"
+          ],
+          "correctAnswer": "fixed"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ the rest.",
+          "prompt": "Tomorrow we will ___ the rest.",
+          "wordBank": [
+            "organize",
+            "jump",
+            "eat",
+            "throw"
+          ],
+          "correctAnswer": "organize"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho See you ___!",
+          "prompt": "See you ___!",
+          "wordBank": [
+            "under",
+            "soon",
+            "up",
+            "late"
+          ],
+          "correctAnswer": "soon"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "dusty"
+        },
+        {
+          "number": 2,
+          "answer": "found"
+        },
+        {
+          "number": 3,
+          "answer": "fixed"
+        },
+        {
+          "number": 4,
+          "answer": "organize"
+        },
+        {
+          "number": 5,
+          "answer": "soon"
+        }
+      ]
+    },
+    {
+      "number": 53,
+      "instruction": "Read the message from Leo to his aunt. Choose one word from the list for each gap.",
+      "passage": "Hi Aunt May,\n\nWe finally moved into our new house! The living room is very ___1___ and bright.\n\nYesterday dad ___2___ the furniture into the right places.\n\nIn the evening we ___3___ pizza because we were too tired to cook.\n\nNext week we will ___4___ our neighbours and introduce ourselves.\n\nI hope you can ___5___ us soon!\n\nLove,\nLeo",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The living room is very ___ and bright.",
+          "prompt": "The living room is very ___ and bright.",
+          "wordBank": [
+            "old",
+            "spacious",
+            "dark",
+            "tiny"
+          ],
+          "correctAnswer": "spacious"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Yesterday dad ___ the furniture into the right places.",
+          "prompt": "Yesterday dad ___ the furniture into the right places.",
+          "wordBank": [
+            "moves",
+            "moved",
+            "move",
+            "moving"
+          ],
+          "correctAnswer": "moved"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho In the evening we ___ pizza because we were too tired to cook.",
+          "prompt": "In the evening we ___ pizza because we were too tired to cook.",
+          "wordBank": [
+            "ordered",
+            "ordering",
+            "order",
+            "make"
+          ],
+          "correctAnswer": "ordered"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Next week we will ___ our neighbours and introduce ourselves.",
+          "prompt": "Next week we will ___ our neighbours and introduce ourselves.",
+          "wordBank": [
+            "call",
+            "open",
+            "build",
+            "meet"
+          ],
+          "correctAnswer": "meet"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I hope you can ___ us soon!",
+          "prompt": "I hope you can ___ us soon!",
+          "wordBank": [
+            "drive",
+            "text",
+            "follow",
+            "visit"
+          ],
+          "correctAnswer": "visit"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "spacious"
+        },
+        {
+          "number": 2,
+          "answer": "moved"
+        },
+        {
+          "number": 3,
+          "answer": "ordered"
+        },
+        {
+          "number": 4,
+          "answer": "meet"
+        },
+        {
+          "number": 5,
+          "answer": "visit"
+        }
+      ]
+    },
+    {
+      "number": 54,
+      "instruction": null,
+      "passage": "Luyện đọcCâu hỏi 54 / 66Trộn câuĐáp ánLuyện đọcCâu hỏi 54 / 66Auto shuffleXem đáp ánRead the message from Tim to his brother.💡Tip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩaHey Sam,\n\nWe finally arrived at the campsite. The weather is ___1___ but still good for hiking.\n\nWe ___2___ our tent close to a small stream.\n\nIn the evening we ___3___ marshmallows over the fire.\n\nTomorrow we're going to ___4___ the mountain trail.\n\nWish you were ___5___ us!\n\nTimNộp bàiThoátBảng điều khiểnLàm lạiNộp bàiTrướcSauKinh nghiệm làm Part 1ẨnĐọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé.Bạn đã dùng hết 10 phút luyện miễn phí hôm nayĐăng nhập để nhận hạn mức của gói Miễn phí hoặc chọn gói học phù hợp.Đăng nhập để tiếp tụcVề trang chủ",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The weather is ___ but still good for hiking.",
+          "prompt": "The weather is ___ but still good for hiking.",
+          "wordBank": [
+            "windy",
+            "freezing",
+            "closed",
+            "dark"
+          ],
+          "correctAnswer": "windy"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ our tent close to a small stream.",
+          "prompt": "We ___ our tent close to a small stream.",
+          "wordBank": [
+            "sets",
+            "set",
+            "setting",
+            "setted"
+          ],
+          "correctAnswer": "set"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho In the evening we ___ marshmallows over the fire.",
+          "prompt": "In the evening we ___ marshmallows over the fire.",
+          "wordBank": [
+            "roasts",
+            "roasted",
+            "roasting",
+            "roast"
+          ],
+          "correctAnswer": "roasted"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we're going to ___ the mountain trail.",
+          "prompt": "Tomorrow we're going to ___ the mountain trail.",
+          "wordBank": [
+            "push",
+            "build",
+            "hike",
+            "paint"
+          ],
+          "correctAnswer": "hike"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Wish you were ___ us!",
+          "prompt": "Wish you were ___ us!",
+          "wordBank": [
+            "at",
+            "on",
+            "for",
+            "with"
+          ],
+          "correctAnswer": "with"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "windy"
+        },
+        {
+          "number": 2,
+          "answer": "set"
+        },
+        {
+          "number": 3,
+          "answer": "roasted"
+        },
+        {
+          "number": 4,
+          "answer": "hike"
+        },
+        {
+          "number": 5,
+          "answer": "with"
+        }
+      ]
+    },
+    {
+      "number": 55,
+      "instruction": null,
+      "passage": "Hi Mom and Dad,\n\nSpain is lovely! The weather is very ___1___ today.\n\nWe ___2___ sandwiches by the beach.\n\nAfter that, we ___3___ the old lighthouse.\n\nTomorrow we will ___4___ souvenirs.\n\nMiss you ___5___!\n\nNina",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The weather is very ___ today.",
+          "prompt": "The weather is very ___ today.",
+          "wordBank": [
+            "slow",
+            "warm",
+            "old",
+            "loud"
+          ],
+          "correctAnswer": "warm"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ sandwiches by the beach.",
+          "prompt": "We ___ sandwiches by the beach.",
+          "wordBank": [
+            "ate",
+            "eats",
+            "eating",
+            "eat"
+          ],
+          "correctAnswer": "ate"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After that, we ___ the old lighthouse.",
+          "prompt": "After that, we ___ the old lighthouse.",
+          "wordBank": [
+            "visit",
+            "visiting",
+            "visited",
+            "go"
+          ],
+          "correctAnswer": "visited"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ souvenirs.",
+          "prompt": "Tomorrow we will ___ souvenirs.",
+          "wordBank": [
+            "run",
+            "kick",
+            "sleep",
+            "buy"
+          ],
+          "correctAnswer": "buy"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Miss you ___!",
+          "prompt": "Miss you ___!",
+          "wordBank": [
+            "far",
+            "all",
+            "tight",
+            "late"
+          ],
+          "correctAnswer": "all"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "warm"
+        },
+        {
+          "number": 2,
+          "answer": "ate"
+        },
+        {
+          "number": 3,
+          "answer": "visited"
+        },
+        {
+          "number": 4,
+          "answer": "buy"
+        },
+        {
+          "number": 5,
+          "answer": "all"
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "instruction": null,
+      "passage": "Hi Ella,\n\nGrandma baked some cookies today. They smell really ___1___!\n\nAfter school I ___2___ her in the kitchen.\n\nWe ___3___ chocolate chips into the dough.\n\nTomorrow we plan to ___4___ more treats.\n\nI'll save some cookies ___5___ you!\n\nKevin",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho They smell really ___!",
+          "prompt": "They smell really ___!",
+          "wordBank": [
+            "loud",
+            "bad",
+            "good",
+            "slow"
+          ],
+          "correctAnswer": "good"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho After school I ___ her in the kitchen.",
+          "prompt": "After school I ___ her in the kitchen.",
+          "wordBank": [
+            "help",
+            "helping",
+            "helps",
+            "helped"
+          ],
+          "correctAnswer": "helped"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho We ___ chocolate chips into the dough.",
+          "prompt": "We ___ chocolate chips into the dough.",
+          "wordBank": [
+            "mixed",
+            "mix",
+            "mixing",
+            "mixes"
+          ],
+          "correctAnswer": "mixed"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we plan to ___ more treats.",
+          "prompt": "Tomorrow we plan to ___ more treats.",
+          "wordBank": [
+            "run",
+            "make",
+            "fix",
+            "do"
+          ],
+          "correctAnswer": "make"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I'll save some cookies ___ you!",
+          "prompt": "I'll save some cookies ___ you!",
+          "wordBank": [
+            "at",
+            "on",
+            "to",
+            "for"
+          ],
+          "correctAnswer": "for"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "good"
+        },
+        {
+          "number": 2,
+          "answer": "helped"
+        },
+        {
+          "number": 3,
+          "answer": "mixed"
+        },
+        {
+          "number": 4,
+          "answer": "make"
+        },
+        {
+          "number": 5,
+          "answer": "for"
+        }
+      ]
+    },
+    {
+      "number": 57,
+      "instruction": null,
+      "passage": "Hi Coach,\n\nTraining was really ___1___ today because the sun was strong.\n\nWe ___2___ laps around the field.\n\nAfter that, I ___3___ extra stretching.\n\nTomorrow I will ___4___ more water.\n\nThanks for all your ___5___.\n\nAdam",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho Training was really ___ today because the sun was strong.",
+          "prompt": "Training was really ___ today because the sun was strong.",
+          "wordBank": [
+            "cold",
+            "thin",
+            "tough",
+            "light"
+          ],
+          "correctAnswer": "tough"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ laps around the field.",
+          "prompt": "We ___ laps around the field.",
+          "wordBank": [
+            "running",
+            "run",
+            "runs",
+            "ran"
+          ],
+          "correctAnswer": "ran"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After that, I ___ extra stretching.",
+          "prompt": "After that, I ___ extra stretching.",
+          "wordBank": [
+            "do",
+            "does",
+            "doing",
+            "did"
+          ],
+          "correctAnswer": "did"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I will ___ more water.",
+          "prompt": "Tomorrow I will ___ more water.",
+          "wordBank": [
+            "carry",
+            "drink",
+            "throw",
+            "wash"
+          ],
+          "correctAnswer": "drink"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Thanks for all your ___.",
+          "prompt": "Thanks for all your ___.",
+          "wordBank": [
+            "guidance",
+            "bread",
+            "noise",
+            "salt"
+          ],
+          "correctAnswer": "guidance"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "tough"
+        },
+        {
+          "number": 2,
+          "answer": "ran"
+        },
+        {
+          "number": 3,
+          "answer": "did"
+        },
+        {
+          "number": 4,
+          "answer": "drink"
+        },
+        {
+          "number": 5,
+          "answer": "guidance"
+        }
+      ]
+    },
+    {
+      "number": 58,
+      "instruction": null,
+      "passage": "Luyện đọcCâu hỏi 58 / 66Trộn câuĐáp ánLuyện đọcCâu hỏi 58 / 66Auto shuffleXem đáp ánRead the message from Sara to her cousin.💡Tip: Double-click vào từ tiếng Anh bất kỳ để tra nghĩaHey Mia,\n\nMom bought strawberries today. They taste really ___1___.\n\nWe ___2___ a cake using them.\n\nAfter that, I ___3___ the dishes.\n\nTomorrow we will ___4___ more ingredients.\n\nHope your day is ___5___!\n\nSaraNộp bàiThoátBảng điều khiểnLàm lạiNộp bàiTrướcSauKinh nghiệm làm Part 1ẨnĐọc toàn bộ câu trước, xác định từ loại cần điền (verb/noun/prep...).So khớp ngữ pháp xung quanh chỗ trống để loại nhanh đáp án sai.Nếu còn phân vân, thử thay từng đáp án vào câu và đọc to thành tiếng.Đây là phần dễ ăn điểm nhất, hãy cố gắng làm đúng hết trong khoảng 5 phút đổ lại để dành thời gian làm tiếp các phần sau nhé.Bạn đã dùng hết 10 phút luyện miễn phí hôm nayĐăng nhập để nhận hạn mức của gói Miễn phí hoặc chọn gói học phù hợp.Đăng nhập để tiếp tụcVề trang chủ",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho They taste really ___.",
+          "prompt": "They taste really ___.",
+          "wordBank": [
+            "loud",
+            "thin",
+            "sweet",
+            "slow"
+          ],
+          "correctAnswer": "sweet"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ a cake using them.",
+          "prompt": "We ___ a cake using them.",
+          "wordBank": [
+            "make",
+            "makes",
+            "made",
+            "making"
+          ],
+          "correctAnswer": "made"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After that, I ___ the dishes.",
+          "prompt": "After that, I ___ the dishes.",
+          "wordBank": [
+            "wash",
+            "washing",
+            "washed",
+            "washes"
+          ],
+          "correctAnswer": "washed"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ more ingredients.",
+          "prompt": "Tomorrow we will ___ more ingredients.",
+          "wordBank": [
+            "push",
+            "buy",
+            "break",
+            "sleep"
+          ],
+          "correctAnswer": "buy"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope your day is ___!",
+          "prompt": "Hope your day is ___!",
+          "wordBank": [
+            "dry",
+            "late",
+            "great",
+            "hard"
+          ],
+          "correctAnswer": "great"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "sweet"
+        },
+        {
+          "number": 2,
+          "answer": "made"
+        },
+        {
+          "number": 3,
+          "answer": "washed"
+        },
+        {
+          "number": 4,
+          "answer": "buy"
+        },
+        {
+          "number": 5,
+          "answer": "great"
+        }
+      ]
+    },
+    {
+      "number": 59,
+      "instruction": null,
+      "passage": "Hi Mr. Clark,\n\nThanks for helping us yesterday. The boxes were really ___1___.\n\nWe ___2___ everything into the garage.\n\nAfter dinner, I ___3___ the tools.\n\nTomorrow we will ___4___ the shelves.\n\nHave a ___5___ evening!\n\nOlivia",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The boxes were really ___.",
+          "prompt": "The boxes were really ___.",
+          "wordBank": [
+            "heavy",
+            "cold",
+            "soft",
+            "light"
+          ],
+          "correctAnswer": "heavy"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ everything into the garage.",
+          "prompt": "We ___ everything into the garage.",
+          "wordBank": [
+            "carrying",
+            "carries",
+            "carried",
+            "carry"
+          ],
+          "correctAnswer": "carried"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After dinner, I ___ the tools.",
+          "prompt": "After dinner, I ___ the tools.",
+          "wordBank": [
+            "organized",
+            "organizing",
+            "organizes",
+            "organize"
+          ],
+          "correctAnswer": "organized"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ the shelves.",
+          "prompt": "Tomorrow we will ___ the shelves.",
+          "wordBank": [
+            "jump",
+            "install",
+            "eat",
+            "wash"
+          ],
+          "correctAnswer": "install"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Have a ___ evening!",
+          "prompt": "Have a ___ evening!",
+          "wordBank": [
+            "late",
+            "thin",
+            "nice",
+            "big"
+          ],
+          "correctAnswer": "nice"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "heavy"
+        },
+        {
+          "number": 2,
+          "answer": "carried"
+        },
+        {
+          "number": 3,
+          "answer": "organized"
+        },
+        {
+          "number": 4,
+          "answer": "install"
+        },
+        {
+          "number": 5,
+          "answer": "nice"
+        }
+      ]
+    },
+    {
+      "number": 60,
+      "instruction": "Read the message from Oliver to his friend. Choose one word from the list for each gap.",
+      "passage": "Hi Ben,\n\nI'm staying with my grandparents this week. Their house is very ___1___ and comfortable.\n\nYesterday grandpa ___2___ me how to plant tomatoes in the garden.\n\nIn the afternoon, we ___3___ a movie together.\n\nTomorrow we plan to ___4___ a picnic by the river.\n\nI will bring some fresh ___5___ back for you.\n\nBest,\nOliver",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho Their house is very ___ and comfortable.",
+          "prompt": "Their house is very ___ and comfortable.",
+          "wordBank": [
+            "loud",
+            "broken",
+            "cozy",
+            "tiny"
+          ],
+          "correctAnswer": "cozy"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Yesterday grandpa ___ me how to plant tomatoes in the garden.",
+          "prompt": "Yesterday grandpa ___ me how to plant tomatoes in the garden.",
+          "wordBank": [
+            "taught",
+            "teach",
+            "teached",
+            "teaching"
+          ],
+          "correctAnswer": "taught"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho In the afternoon, we ___ a movie together.",
+          "prompt": "In the afternoon, we ___ a movie together.",
+          "wordBank": [
+            "watching",
+            "see",
+            "watch",
+            "watched"
+          ],
+          "correctAnswer": "watched"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we plan to ___ a picnic by the river.",
+          "prompt": "Tomorrow we plan to ___ a picnic by the river.",
+          "wordBank": [
+            "play",
+            "do",
+            "take",
+            "have"
+          ],
+          "correctAnswer": "have"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I will bring some fresh ___ back for you.",
+          "prompt": "I will bring some fresh ___ back for you.",
+          "wordBank": [
+            "tickets",
+            "pillows",
+            "fruit",
+            "cars"
+          ],
+          "correctAnswer": "fruit"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "cozy"
+        },
+        {
+          "number": 2,
+          "answer": "taught"
+        },
+        {
+          "number": 3,
+          "answer": "watched"
+        },
+        {
+          "number": 4,
+          "answer": "have"
+        },
+        {
+          "number": 5,
+          "answer": "fruit"
+        }
+      ]
+    },
+    {
+      "number": 61,
+      "instruction": "Read the note from Sarah to her classmate. Choose one word for each gap.",
+      "passage": "Hi Mia,\n\nDon't forget that our school trip is tomorrow! Make sure your bag is ___1___ with everything you need.\n\nThis morning the teacher ___2___ us a checklist.\n\nWe also need to ___3___ warm clothes because it might rain.\n\nAt lunchtime we will ___4___ our sandwiches by the lake.\n\nThe trip is going to be so ___5___!\n\nSee you,\nSarah",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho Make sure your bag is ___ with everything you need.",
+          "prompt": "Make sure your bag is ___ with everything you need.",
+          "wordBank": [
+            "open",
+            "broken",
+            "empty",
+            "packed"
+          ],
+          "correctAnswer": "packed"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho This morning the teacher ___ us a checklist.",
+          "prompt": "This morning the teacher ___ us a checklist.",
+          "wordBank": [
+            "gives",
+            "gave",
+            "giving",
+            "give"
+          ],
+          "correctAnswer": "gave"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho We also need to ___ warm clothes because it might rain.",
+          "prompt": "We also need to ___ warm clothes because it might rain.",
+          "wordBank": [
+            "bring",
+            "wash",
+            "buy",
+            "eat"
+          ],
+          "correctAnswer": "bring"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho At lunchtime we will ___ our sandwiches by the lake.",
+          "prompt": "At lunchtime we will ___ our sandwiches by the lake.",
+          "wordBank": [
+            "throw",
+            "paint",
+            "eat"
+          ],
+          "correctAnswer": "eat"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho The trip is going to be so ___!",
+          "prompt": "The trip is going to be so ___!",
+          "wordBank": [
+            "hard",
+            "slow",
+            "fun",
+            "boring"
+          ],
+          "correctAnswer": "fun"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "packed"
+        },
+        {
+          "number": 2,
+          "answer": "gave"
+        },
+        {
+          "number": 3,
+          "answer": "bring"
+        },
+        {
+          "number": 4,
+          "answer": "eat"
+        },
+        {
+          "number": 5,
+          "answer": "fun"
+        }
+      ]
+    },
+    {
+      "number": 62,
+      "instruction": "Read the email from Ben to his cousin. Choose one word for each gap.",
+      "passage": "Hi Lucy,\n\nWe're spending a few days in the countryside. The air is very ___1___ and fresh here.\n\nYesterday we ___2___ a small farm and fed some animals.\n\nIn the afternoon, we ___3___ around the lake.\n\nTomorrow we plan to ___4___ a horse for the first time.\n\nHope you're doing ___5___!\n\nBen",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The air is very ___ and fresh here.",
+          "prompt": "The air is very ___ and fresh here.",
+          "wordBank": [
+            "loud",
+            "dark",
+            "clean",
+            "dirty"
+          ],
+          "correctAnswer": "clean"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Yesterday we ___ a small farm and fed some animals.",
+          "prompt": "Yesterday we ___ a small farm and fed some animals.",
+          "wordBank": [
+            "go",
+            "visiting",
+            "visited",
+            "visit"
+          ],
+          "correctAnswer": "visited"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho In the afternoon, we ___ around the lake.",
+          "prompt": "In the afternoon, we ___ around the lake.",
+          "wordBank": [
+            "walks",
+            "walk",
+            "walking",
+            "walked"
+          ],
+          "correctAnswer": "walked"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we plan to ___ a horse for the first time.",
+          "prompt": "Tomorrow we plan to ___ a horse for the first time.",
+          "wordBank": [
+            "push",
+            "ride",
+            "drive",
+            "kick"
+          ],
+          "correctAnswer": "ride"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Hope you're doing ___!",
+          "prompt": "Hope you're doing ___!",
+          "wordBank": [
+            "well",
+            "late",
+            "old",
+            "fast"
+          ],
+          "correctAnswer": "well"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "clean"
+        },
+        {
+          "number": 2,
+          "answer": "visited"
+        },
+        {
+          "number": 3,
+          "answer": "walked"
+        },
+        {
+          "number": 4,
+          "answer": "ride"
+        },
+        {
+          "number": 5,
+          "answer": "well"
+        }
+      ]
+    },
+    {
+      "number": 63,
+      "instruction": null,
+      "passage": "Dear Family,\n\nGermany is amazing! The buildings here are very ___1___ and beautiful.\n\nYesterday we ___2___ a huge cathedral.\n\nIn the afternoon, we ___3___ hot chocolate at a café.\n\nTomorrow we will ___4___ the Christmas market.\n\nI’ll bring back some ___5___!\n\nAlex",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The buildings here are very ___ and beautiful.",
+          "prompt": "The buildings here are very ___ and beautiful.",
+          "wordBank": [
+            "broken",
+            "empty",
+            "old",
+            "thin"
+          ],
+          "correctAnswer": "old"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Yesterday we ___ a huge cathedral.",
+          "prompt": "Yesterday we ___ a huge cathedral.",
+          "wordBank": [
+            "visit",
+            "visiting",
+            "visited",
+            "go"
+          ],
+          "correctAnswer": "visited"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho In the afternoon, we ___ hot chocolate at a café.",
+          "prompt": "In the afternoon, we ___ hot chocolate at a café.",
+          "wordBank": [
+            "drinks",
+            "drinking",
+            "drank",
+            "drink"
+          ],
+          "correctAnswer": "drank"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ the Christmas market.",
+          "prompt": "Tomorrow we will ___ the Christmas market.",
+          "wordBank": [
+            "paint",
+            "push",
+            "visit",
+            "open"
+          ],
+          "correctAnswer": "visit"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I’ll bring back some ___!",
+          "prompt": "I’ll bring back some ___!",
+          "wordBank": [
+            "gifts",
+            "pencils",
+            "cars",
+            "stones"
+          ],
+          "correctAnswer": "gifts"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "old"
+        },
+        {
+          "number": 2,
+          "answer": "visited"
+        },
+        {
+          "number": 3,
+          "answer": "drank"
+        },
+        {
+          "number": 4,
+          "answer": "visit"
+        },
+        {
+          "number": 5,
+          "answer": "gifts"
+        }
+      ]
+    },
+    {
+      "number": 64,
+      "instruction": null,
+      "passage": "Hi Mark,\n\nThe meeting today was very ___1___ and productive.\n\nWe ___2___ all the important points.\n\nAfter that, I ___3___ the report.\n\nTomorrow we will ___4___ the final draft to the manager.\n\nLet me know if you ___5___ anything.\n\nOlivia",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The meeting today was very ___ and productive.",
+          "prompt": "The meeting today was very ___ and productive.",
+          "wordBank": [
+            "quiet",
+            "late",
+            "angry",
+            "useful"
+          ],
+          "correctAnswer": "useful"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho We ___ all the important points.",
+          "prompt": "We ___ all the important points.",
+          "wordBank": [
+            "drive",
+            "discuss",
+            "discussed",
+            "discussing"
+          ],
+          "correctAnswer": "discussed"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After that, I ___ the report.",
+          "prompt": "After that, I ___ the report.",
+          "wordBank": [
+            "finishing",
+            "finishes",
+            "finish",
+            "finished"
+          ],
+          "correctAnswer": "finished"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we will ___ the final draft to the manager.",
+          "prompt": "Tomorrow we will ___ the final draft to the manager.",
+          "wordBank": [
+            "send",
+            "carry",
+            "drop",
+            "eat"
+          ],
+          "correctAnswer": "send"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Let me know if you ___ anything.",
+          "prompt": "Let me know if you ___ anything.",
+          "wordBank": [
+            "push",
+            "break",
+            "need",
+            "shake"
+          ],
+          "correctAnswer": "need"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "useful"
+        },
+        {
+          "number": 2,
+          "answer": "discussed"
+        },
+        {
+          "number": 3,
+          "answer": "finished"
+        },
+        {
+          "number": 4,
+          "answer": "send"
+        },
+        {
+          "number": 5,
+          "answer": "need"
+        }
+      ]
+    },
+    {
+      "number": 65,
+      "instruction": "Read the email from Mark to his sister. Choose one word from the list for each gap.",
+      "passage": "Hi Anna,\n\nI'm having a great time here in Japan. The city is ___1___ and full of life.\n\nYesterday we visited a famous ___2___ and learned a lot about its history.\n\nIn the afternoon, we ___3___ delicious noodles at a small restaurant.\n\nTomorrow we are planning to ___4___ a boat tour along the river.\n\nI will buy some ___5___ for you before I leave.\n\nLove,\nMark",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho The city is ___ and full of life.",
+          "prompt": "The city is ___ and full of life.",
+          "wordBank": [
+            "busy",
+            "dark",
+            "empty",
+            "quiet"
+          ],
+          "correctAnswer": "busy"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Yesterday we visited a famous ___ and learned a lot about its history.",
+          "prompt": "Yesterday we visited a famous ___ and learned a lot about its history.",
+          "wordBank": [
+            "museum",
+            "hotel",
+            "restaurant",
+            "park"
+          ],
+          "correctAnswer": "museum"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho In the afternoon, we ___ delicious noodles at a small restaurant.",
+          "prompt": "In the afternoon, we ___ delicious noodles at a small restaurant.",
+          "wordBank": [
+            "eat",
+            "eaten",
+            "ate",
+            "eating"
+          ],
+          "correctAnswer": "ate"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow we are planning to ___ a boat tour along the river.",
+          "prompt": "Tomorrow we are planning to ___ a boat tour along the river.",
+          "wordBank": [
+            "do",
+            "take",
+            "make",
+            "go"
+          ],
+          "correctAnswer": "take"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho I will buy some ___ for you before I leave.",
+          "prompt": "I will buy some ___ for you before I leave.",
+          "wordBank": [
+            "souvenirs",
+            "books",
+            "tickets",
+            "tools"
+          ],
+          "correctAnswer": "souvenirs"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "busy"
+        },
+        {
+          "number": 2,
+          "answer": "museum"
+        },
+        {
+          "number": 3,
+          "answer": "ate"
+        },
+        {
+          "number": 4,
+          "answer": "take"
+        },
+        {
+          "number": 5,
+          "answer": "souvenirs"
+        }
+      ]
+    },
+    {
+      "number": 66,
+      "instruction": null,
+      "passage": "Hi Coach,\n\nI trained very hard this week. My legs feel ___1___ today.\n\nYesterday we ___2___ running drills for an hour.\n\nAfter that, I ___3___ some stretching.\n\nTomorrow I'm going to ___4___ at the park.\n\nThanks for all your ___5___!\n\nChris",
+      "gaps": [
+        {
+          "number": 1,
+          "ariaLabel": "Chọn đáp án cho My legs feel ___ today.",
+          "prompt": "My legs feel ___ today.",
+          "wordBank": [
+            "fast",
+            "late",
+            "hard",
+            "tired"
+          ],
+          "correctAnswer": "tired"
+        },
+        {
+          "number": 2,
+          "ariaLabel": "Chọn đáp án cho Yesterday we ___ running drills for an hour.",
+          "prompt": "Yesterday we ___ running drills for an hour.",
+          "wordBank": [
+            "done",
+            "do",
+            "did",
+            "doing"
+          ],
+          "correctAnswer": "did"
+        },
+        {
+          "number": 3,
+          "ariaLabel": "Chọn đáp án cho After that, I ___ some stretching.",
+          "prompt": "After that, I ___ some stretching.",
+          "wordBank": [
+            "does",
+            "doing",
+            "did",
+            "do"
+          ],
+          "correctAnswer": "did"
+        },
+        {
+          "number": 4,
+          "ariaLabel": "Chọn đáp án cho Tomorrow I'm going to ___ at the park.",
+          "prompt": "Tomorrow I'm going to ___ at the park.",
+          "wordBank": [
+            "clap",
+            "train",
+            "laugh",
+            "sleep"
+          ],
+          "correctAnswer": "train"
+        },
+        {
+          "number": 5,
+          "ariaLabel": "Chọn đáp án cho Thanks for all your ___!",
+          "prompt": "Thanks for all your ___!",
+          "wordBank": [
+            "snow",
+            "milk",
+            "support",
+            "noise"
+          ],
+          "correctAnswer": "support"
+        }
+      ],
+      "correctAnswers": [
+        {
+          "number": 1,
+          "answer": "tired"
+        },
+        {
+          "number": 2,
+          "answer": "did"
+        },
+        {
+          "number": 3,
+          "answer": "did"
+        },
+        {
+          "number": 4,
+          "answer": "train"
+        },
+        {
+          "number": 5,
+          "answer": "support"
+        }
+      ]
+    }
+  ],
+  "extractedAt": "2026-08-25T18:01:59.516Z"
+}

@@ -1,0 +1,1202 @@
+{
+  "part": 1,
+  "topicCount": 38,
+  "lessonCount": 48,
+  "nonNullPartCount": 37,
+  "topics": [
+    {
+      "topic": "ART CLUB",
+      "sourceFile": "ART CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join an art club. You have 5 messages from a member of the club. Write short answers (1–5 words) to each message.",
+            "content": [
+              "What do you like doing with your friend?",
+              "Which sport do you like to play the most?",
+              "What did you do last night?",
+              "Do you like shopping?",
+              "What is your job?"
+            ],
+            "items": [
+              "What do you like doing with your friend?",
+              "Which sport do you like to play the most?",
+              "What did you do last night?",
+              "Do you like shopping?",
+              "What is your job?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "BEAUTIFUL HOMES CLUB",
+      "sourceFile": "Beautiful Homes Club.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "BOOK CLUB",
+      "sourceFile": "BOOK CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a book club. You have 5 messages from a member of the club. Write short answers (1–5 words) to each message.",
+            "content": [
+              "Which sport is the most popular in your country?",
+              "How do you get to work?",
+              "What do you like to do in the evening?",
+              "What kinds of movies do you like?",
+              "What’s your favourite food?"
+            ],
+            "items": [
+              "Which sport is the most popular in your country?",
+              "How do you get to work?",
+              "What do you like to do in the evening?",
+              "What kinds of movies do you like?",
+              "What’s your favourite food?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "BUSINESS CLUB",
+      "sourceFile": "Business Club.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1:",
+            "content": [
+              "What is your job?",
+              "What is your hobby?",
+              "What do you do on the weekend?",
+              "What is the weather today?",
+              "Where do you like going on vacation?"
+            ],
+            "items": [
+              "What is your job?",
+              "What is your hobby?",
+              "What do you do on the weekend?",
+              "What is the weather today?",
+              "Where do you like going on vacation?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "CAR CLUB",
+      "sourceFile": "CAR CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "CINEMA CLUB",
+      "sourceFile": "CINEMA CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a cinema club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "Where are you from?",
+              "What’s the weather like today?",
+              "What do you do in your free time?",
+              "First language?",
+              "Who do you usually go to the movies with?"
+            ],
+            "items": [
+              "Where are you from?",
+              "What’s the weather like today?",
+              "What do you do in your free time?",
+              "First language?",
+              "Who do you usually go to the movies with?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "COLLEGE",
+      "sourceFile": "COLLEGE.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "COMMUNITY CLUB",
+      "sourceFile": "COMMUNITY CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "COMPUTER CLUB",
+      "sourceFile": "COMPUTER CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a computer club. Fill in the form. (1-5 words)",
+            "content": [
+              "Where are you from?",
+              "Do you like watching films?",
+              "Where do you like to go on holiday?",
+              "What’s your favourite colour?",
+              "What did you do last night?"
+            ],
+            "items": [
+              "Where are you from?",
+              "Do you like watching films?",
+              "Where do you like to go on holiday?",
+              "What’s your favourite colour?",
+              "What did you do last night?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "DEBATE CLUB",
+      "sourceFile": "DEBATE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a debate club. You have 5 messages from a member of the club. Write short answers (1–5 words) to each message.",
+            "content": [
+              "What is your favourite time of the year?",
+              "What is your favourite sport?",
+              "Where do you want to go on holiday?",
+              "What is the weather today?",
+              "What do you like to do in the evening?"
+            ],
+            "items": [
+              "What is your favourite time of the year?",
+              "What is your favourite sport?",
+              "Where do you want to go on holiday?",
+              "What is the weather today?",
+              "What do you like to do in the evening?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "DESIGN CLUB",
+      "sourceFile": "DESIGN CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "ENGLISH CLUB",
+      "sourceFile": "ENGLISH CLUB.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Phiên bản 1",
+          "part": {
+            "header": "Part 1: You want to join an English club. You have 5 messages from a member of the club. Write short answers (1-5 words) to each message.",
+            "content": [
+              "What is your job?",
+              "What is your favourite time of year?",
+              "What is your favourite colour?",
+              "What do you like to do in the evening?",
+              "What is the weather like today?"
+            ],
+            "items": [
+              "What is your job?",
+              "What is your favourite time of year?",
+              "What is your favourite colour?",
+              "What do you like to do in the evening?",
+              "What is the weather like today?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Phiên bản 2:",
+          "part": {
+            "header": "Part 1: You want to join an English club. You have 5 messages from a member of the club. Write short answers (1-5 words) to each message.",
+            "content": [
+              "What is your job?",
+              "What is your favourite time of year?",
+              "What is your favourite colour?",
+              "What do you like to do in the evening?",
+              "What is the weather like today?"
+            ],
+            "items": [
+              "What is your job?",
+              "What is your favourite time of year?",
+              "What is your favourite colour?",
+              "What do you like to do in the evening?",
+              "What is the weather like today?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Exercise Club",
+      "sourceFile": "EXERCISE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "FASHION CLUB",
+      "sourceFile": "Fashion club.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1:",
+            "content": [
+              "1. What are you wearing today?",
+              "2. How many people are in your family?",
+              "3. What did you do yesterday?",
+              "4. How do you go to school?",
+              "5. What's your hobby?"
+            ],
+            "items": [
+              "1. What are you wearing today?",
+              "2. How many people are in your family?",
+              "3. What did you do yesterday?",
+              "4. How do you go to school?",
+              "5. What's your hobby?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Film Club",
+      "sourceFile": "FILM CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1. Fill in the form.",
+            "content": [
+              "What’s your favourite sport?",
+              "How many people are in your family?",
+              "What did you do yesterday?",
+              "How do you go to school?",
+              "What’s your hobby?"
+            ],
+            "items": [
+              "What’s your favourite sport?",
+              "How many people are in your family?",
+              "What did you do yesterday?",
+              "How do you go to school?",
+              "What’s your hobby?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Finding a house",
+      "sourceFile": "FINDING HOUSE.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1:",
+            "content": [
+              "What’s the weather like today?",
+              "How are you?",
+              "What’s your favourite hobby?",
+              "How do you get to work?",
+              "What do you like to do in the evening?"
+            ],
+            "items": [
+              "What’s the weather like today?",
+              "How are you?",
+              "What’s your favourite hobby?",
+              "How do you get to work?",
+              "What do you like to do in the evening?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "FITNESS CLUB",
+      "sourceFile": "FITNESS CLUB_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Part 4 (base)",
+          "part": {
+            "header": "Part 1: You want to join an fitness club. Fill in the form.",
+            "content": [
+              "Where are you from?",
+              "Do you like doing exercise?",
+              "Where do you like to go on holiday?",
+              "What’s your favorite color?",
+              "What did you do last night?"
+            ],
+            "items": [
+              "Where are you from?",
+              "Do you like doing exercise?",
+              "Where do you like to go on holiday?",
+              "What’s your favorite color?",
+              "What did you do last night?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Part 4 (phiên bản 2):",
+          "part": {
+            "header": "Part 1: You want to join an fitness club. Fill in the form.",
+            "content": [
+              "Where are you from?",
+              "Do you like doing exercise?",
+              "Where do you like to go on holiday?",
+              "What’s your favorite color?",
+              "What did you do last night?"
+            ],
+            "items": [
+              "Where are you from?",
+              "Do you like doing exercise?",
+              "Where do you like to go on holiday?",
+              "What’s your favorite color?",
+              "What did you do last night?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "FOOD CLUB (COOKING CLUB)",
+      "sourceFile": "FOOD CLUB (COOKING CLUB)_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "PHIÊN BẢN 1:",
+          "part": {
+            "header": "Part 1. You want to join a food club. You have 5 messages from a member of the club. Write short answers (1–5 words) to each message.",
+            "content": [
+              "What is your favourite time of year?",
+              "What is your favourite animal?",
+              "Where did you go last night?",
+              "What is your job?",
+              "What is your favourite subject in high school?"
+            ],
+            "items": [
+              "What is your favourite time of year?",
+              "What is your favourite animal?",
+              "Where did you go last night?",
+              "What is your job?",
+              "What is your favourite subject in high school?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "PHIÊN BẢN 2:",
+          "part": {
+            "header": "Part 1: You want to join a cooking club. You have 5 messages from a member of the club. Write short answers (1–5 words) to each message.",
+            "content": [
+              "Who do you usually go to the movies with?",
+              "Do you like to eat fast food?",
+              "Where do you like to go on holiday?",
+              "What’s your favourite colour?",
+              "What did you do last night?"
+            ],
+            "items": [
+              "Who do you usually go to the movies with?",
+              "Do you like to eat fast food?",
+              "Where do you like to go on holiday?",
+              "What’s your favourite colour?",
+              "What did you do last night?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "GARDEN CLUB",
+      "sourceFile": "GARDEN CLUB.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Phiên bản 1:",
+          "part": {
+            "header": "Part 1: You want to join a garden club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "Where are you from?",
+              "What’s the weather like today?",
+              "What did you do last night?",
+              "First language?",
+              "What is your favorite color?"
+            ],
+            "items": [
+              "Where are you from?",
+              "What’s the weather like today?",
+              "What did you do last night?",
+              "First language?",
+              "What is your favorite color?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Phiên bản 2:",
+          "part": {
+            "header": "Part 1:",
+            "content": [
+              "What is your job?",
+              "What are you going to do tomorrow?",
+              "What is your favourite sport?",
+              "What do you like to do after work?",
+              "How often do you walk?"
+            ],
+            "items": [
+              "What is your job?",
+              "What are you going to do tomorrow?",
+              "What is your favourite sport?",
+              "What do you like to do after work?",
+              "How often do you walk?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "HEALTH CLUB",
+      "sourceFile": "HEALTH CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a health club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "1. Where are you from?",
+              "2. What’s the weather like today?",
+              "3. What do you do in your free time?",
+              "4. First language?",
+              "5. Who do you usually go to the movies with?"
+            ],
+            "items": [
+              "1. Where are you from?",
+              "2. What’s the weather like today?",
+              "3. What do you do in your free time?",
+              "4. First language?",
+              "5. Who do you usually go to the movies with?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Home living Club",
+      "sourceFile": "HOME LIVING CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "LANGUAGE CLUB",
+      "sourceFile": "LANGUAGE CLUB (2 phi#U00ean b#U1ea3n).docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "PHIÊN BẢN 1:",
+          "part": {
+            "header": "Part 1: You want to join a language club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "1. Where are you from?",
+              "2. What’s the weather like today?",
+              "3. What do you do in your free time?",
+              "4. First language?",
+              "5. Who do you usually go to the movies with?"
+            ],
+            "items": [
+              "1. Where are you from?",
+              "2. What’s the weather like today?",
+              "3. What do you do in your free time?",
+              "4. First language?",
+              "5. Who do you usually go to the movies with?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "PHIÊN BẢN 2:",
+          "part": {
+            "header": "Part 1: You want to join a language club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "Where are you from?",
+              "What’s the weather like today?",
+              "What do you do in your free time?",
+              "First language?",
+              "Who do you usually go to the movies with?"
+            ],
+            "items": [
+              "Where are you from?",
+              "What’s the weather like today?",
+              "What do you do in your free time?",
+              "First language?",
+              "Who do you usually go to the movies with?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "LITERATURE CLUB",
+      "sourceFile": "LITERATURE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "MOVIE CLUB",
+      "sourceFile": "MOVIE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a movie club. Fill in the form. Use 1 - 5 words.",
+            "content": [
+              "1. Full name?",
+              "2. What kinds of movies do you like?",
+              "3. What's your favourite food?",
+              "4. What's the weather like today?",
+              "5. How are you?"
+            ],
+            "items": [
+              "1. Full name?",
+              "2. What kinds of movies do you like?",
+              "3. What's your favourite food?",
+              "4. What's the weather like today?",
+              "5. How are you?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "MUSEUM CLUB",
+      "sourceFile": "MUSEUM CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a museum club. You have 5 messages from a member of the club. Write short answers (1–5 words) to each message.",
+            "content": [
+              "What is the weather like today?",
+              "What are you wearing today?",
+              "What is your favourite kind of music?",
+              "Which sport is the most popular in your country?",
+              "What is your job?"
+            ],
+            "items": [
+              "What is the weather like today?",
+              "What are you wearing today?",
+              "What is your favourite kind of music?",
+              "Which sport is the most popular in your country?",
+              "What is your job?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "MUSIC CLUB",
+      "sourceFile": "MUSIC CLUB.docx",
+      "lessonCount": 3,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "PHIÊN BẢN 1:",
+          "part": {
+            "header": "Part 1: You want to join a music club. You have 5 messages from a member of the club. Write short answers (1–5 words) to each message.",
+            "content": [
+              "1. What’s your favourite sport?",
+              "2. How many people are in your family?",
+              "3. What did you do yesterday?",
+              "4. How do you go to school?",
+              "5. What’s your hobby?"
+            ],
+            "items": [
+              "1. What’s your favourite sport?",
+              "2. How many people are in your family?",
+              "3. What did you do yesterday?",
+              "4. How do you go to school?",
+              "5. What’s your hobby?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "PHIÊN BẢN 2:",
+          "part": {
+            "header": "Part 1: You want to join a music club. Fill in the form.",
+            "content": [
+              "1. What’s your favourite sport?",
+              "2. How many people are in your family?",
+              "3. What did you do yesterday?",
+              "4. How do you go to school?",
+              "5. What’s your hobby?"
+            ],
+            "items": [
+              "1. What’s your favourite sport?",
+              "2. How many people are in your family?",
+              "3. What did you do yesterday?",
+              "4. How do you go to school?",
+              "5. What’s your hobby?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 3,
+          "lessonLabel": "Bài 3",
+          "sourceVersion": 3,
+          "sourceVersionLabel": "PHIÊN BẢN 3:",
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "NATURE CLUB",
+      "sourceFile": "NATURE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a nature club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "What’s your favourite sport?",
+              "How many people are in your family?",
+              "What did you do yesterday?",
+              "How do you go to school?",
+              "What’s your hobby?"
+            ],
+            "items": [
+              "What’s your favourite sport?",
+              "How many people are in your family?",
+              "What did you do yesterday?",
+              "How do you go to school?",
+              "What’s your hobby?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "OUTDOOR CLUB",
+      "sourceFile": "OUTDOOR CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join an outdoor club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "Who do you usually go to the movies with?",
+              "Do you like to take photos?",
+              "Where do you like to go on holiday?",
+              "What’s your favourite colour?",
+              "What did you do last night?"
+            ],
+            "items": [
+              "Who do you usually go to the movies with?",
+              "Do you like to take photos?",
+              "Where do you like to go on holiday?",
+              "What’s your favourite colour?",
+              "What did you do last night?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "PHOTOGRAPHY CLUB",
+      "sourceFile": "PHOTOGRAPHY CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a photography club. You have 5 messages from a member of the club. Write short answers (1–5 words) to each message.",
+            "content": [
+              "1. Where are you from?",
+              "2. What’s the weather like today?",
+              "3. What do you do in your free time?",
+              "4. First language?",
+              "5. Who do you usually go to the movies with?"
+            ],
+            "items": [
+              "1. Where are you from?",
+              "2. What’s the weather like today?",
+              "3. What do you do in your free time?",
+              "4. First language?",
+              "5. Who do you usually go to the movies with?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "READING CLUB",
+      "sourceFile": "READING-CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1:",
+            "content": [
+              "- How is the weather today?",
+              "- What is your favourite season of the year?",
+              "- what do you like to do every morning?",
+              "- What do you like to do in your free time?",
+              "- What is your job?"
+            ],
+            "items": [
+              "- How is the weather today?",
+              "- What is your favourite season of the year?",
+              "- what do you like to do every morning?",
+              "- What do you like to do in your free time?",
+              "- What is your job?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "SCIENCE CLUB",
+      "sourceFile": "SCIENCE CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Task 1: You want to join the science club. You have 5 messages from a member of the club. Write short answers (1–5 words) to each message.",
+            "content": [
+              "1. What is your favourite colour?",
+              "2. What is your first school?",
+              "3. What do you do in your free time?",
+              "4. What is your favourite sport?",
+              "5. What did you do last night?"
+            ],
+            "items": [
+              "1. What is your favourite colour?",
+              "2. What is your first school?",
+              "3. What do you do in your free time?",
+              "4. What is your favourite sport?",
+              "5. What did you do last night?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Writing Social Club",
+      "sourceFile": "SOCIAL CLUB_.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a social club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "What’s the weather like today?",
+              "How are you?",
+              "What’s your favorite hobby?",
+              "How do you get to work?",
+              "What do you like to do in the evening?"
+            ],
+            "items": [
+              "What’s the weather like today?",
+              "How are you?",
+              "What’s your favorite hobby?",
+              "How do you get to work?",
+              "What do you like to do in the evening?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "SPORTS CLUB",
+      "sourceFile": "SPORTS CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a sports club. Fill in the form.",
+            "content": [
+              "1. What’s the weather like today?",
+              "2. How are you?",
+              "3. What’s your favourite hobby?",
+              "4. How do you get to work?",
+              "5. What do you like to do in the evening?"
+            ],
+            "items": [
+              "1. What’s the weather like today?",
+              "2. How are you?",
+              "3. What’s your favourite hobby?",
+              "4. How do you get to work?",
+              "5. What do you like to do in the evening?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "TECHNOLOGY CLUB",
+      "sourceFile": "TECHNOLOGY CLUB.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "VERSION 1:",
+          "part": {
+            "header": "Part 1: You want to join a technology club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "Where are you from?",
+              "What’s the weather like today?",
+              "What do you do in your free time?",
+              "First language?",
+              "Who do you usually go to the movies with?"
+            ],
+            "items": [
+              "Where are you from?",
+              "What’s the weather like today?",
+              "What do you do in your free time?",
+              "First language?",
+              "Who do you usually go to the movies with?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "VERSION 2:",
+          "part": {
+            "header": "Part 1: You want to join a technology club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "Where are you from?",
+              "What’s the weather like today?",
+              "What do you do in your free time?",
+              "First language?",
+              "Who do you usually go to the movies with?"
+            ],
+            "items": [
+              "Where are you from?",
+              "What’s the weather like today?",
+              "What do you do in your free time?",
+              "First language?",
+              "Who do you usually go to the movies with?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "TELEVISION CLUB",
+      "sourceFile": "TELEVISION CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a television club. You have 5 messages from a member of the club. Write short answers (1-5 words) to each message.",
+            "content": [
+              "Who do you usually go to the movies with?",
+              "Do you like to take photos?",
+              "Where do you like to go on holiday?",
+              "What’s your favourite colour?",
+              "What did you do last night?"
+            ],
+            "items": [
+              "Who do you usually go to the movies with?",
+              "Do you like to take photos?",
+              "Where do you like to go on holiday?",
+              "What’s your favourite colour?",
+              "What did you do last night?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "TRAVEL CLUB",
+      "sourceFile": "TRAVEL CLUB_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "Part 4 (base)",
+          "part": null
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "Part 4 (phiên bản 2):",
+          "part": null
+        }
+      ]
+    },
+    {
+      "topic": "WALKING CLUB",
+      "sourceFile": "WALKING CLUB_.docx",
+      "lessonCount": 2,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": "(PHIÊN BẢN 1)",
+          "part": {
+            "header": "Part 1:",
+            "content": [
+              "How is the weather today?",
+              "What is your favourite season of the year?",
+              "What do you usually do in your free time?",
+              "What is your favourite sport?",
+              "What is a place you would like to visit in your country?"
+            ],
+            "items": [
+              "How is the weather today?",
+              "What is your favourite season of the year?",
+              "What do you usually do in your free time?",
+              "What is your favourite sport?",
+              "What is a place you would like to visit in your country?"
+            ]
+          }
+        },
+        {
+          "lessonNumber": 2,
+          "lessonLabel": "Bài 2",
+          "sourceVersion": 2,
+          "sourceVersionLabel": "(PHIÊN BẢN 2)",
+          "part": {
+            "header": "Part 1:",
+            "content": [
+              "How is the weather today?",
+              "What is your favourite season of the year?",
+              "What do you usually do in your free time?",
+              "What is your favourite sport?",
+              "What is a place you would like to visit in your country?"
+            ],
+            "items": [
+              "How is the weather today?",
+              "What is your favourite season of the year?",
+              "What do you usually do in your free time?",
+              "What is your favourite sport?",
+              "What is a place you would like to visit in your country?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Writing Club",
+      "sourceFile": "WRITING CLUB.docx",
+      "lessonCount": 1,
+      "lessons": [
+        {
+          "lessonNumber": 1,
+          "lessonLabel": "Bài 1",
+          "sourceVersion": 1,
+          "sourceVersionLabel": null,
+          "part": {
+            "header": "Part 1: You want to join a writing club. Fill in the form. Use 1 – 5 words.",
+            "content": [
+              "What’s the weather like today?",
+              "How are you?",
+              "What’s your favourite hobby?",
+              "How do you get to work?",
+              "What do you like to do in the evening?"
+            ],
+            "items": [
+              "What’s the weather like today?",
+              "How are you?",
+              "What’s your favourite hobby?",
+              "How do you get to work?",
+              "What do you like to do in the evening?"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
