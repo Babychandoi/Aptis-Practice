@@ -8,8 +8,8 @@
  * thành tựu") và mỗi bộ tính 20 điểm -> Part 4 thành 60 điểm thay vì 20.
  *
  * Đề thi thật là một chủ đề duy nhất với 3 câu nối tiếp nhau, chuẩn bị 1 phút
- * rồi nói 2 phút cho CẢ BA câu. Nên mỗi bộ ở đây gồm đúng 3 item của cùng chủ
- * đề, tổng 20 điểm (rubric APTIS_SPEAKING_PART_4_V1 giữ nguyên).
+ * rồi nói 2 phút cho CẢ BA câu trong MỘT lần ghi âm. Nên mỗi bộ ở đây là MỘT
+ * item duy nhất, prompt liệt kê cả 3 câu, tổng 20 điểm (rubric giữ nguyên).
  *
  * Script chạy lại được: đề đã có (so theo nội dung câu hỏi) sẽ bị bỏ qua.
  */
@@ -21,8 +21,10 @@ import { MongoClient } from 'mongodb';
 
 const SPEAKING_PART_4_ID = '16000000-0000-4000-8000-000000000034';
 const RUBRIC_CODE = 'APTIS_SPEAKING_PART_4_V1';
-/** Tổng điểm một đề Part 4, chia đều cho 3 câu. Khớp part_scoring_rules. */
+/** Tổng điểm một đề Part 4. Khớp part_scoring_rules. */
 const SET_MAX_SCORE = 20;
+/** Thời gian chuẩn bị trước khi ghi âm, theo đề thi thật. */
+const PREP_SECONDS = 60;
 
 const [, , filePath, ...flags] = process.argv;
 const dryRun = flags.includes('--dry-run');
@@ -76,20 +78,24 @@ async function main() {
   await mongo.connect();
   const docs = mongo.db().collection('question_set_documents');
 
-  // Chỉ so với bộ dạng MỚI (>=3 câu). Bộ 1-câu cũ luôn khớp câu đầu nên nếu
-  // tính vào thì đề mới nào cũng bị coi là đã có.
+  // Chỉ so với bộ dạng MỚI — nhận ra bằng sourceRef, không bằng số item: đề
+  // mới cũng chỉ có 1 item (một lần ghi âm) như đề cũ.
   const existing = await docs
-    .find({ partId: SPEAKING_PART_4_ID, 'items.2': { $exists: true } })
+    .find({ partId: SPEAKING_PART_4_ID, 'sourceRef.provider': 'aptisprep' })
     .toArray();
 
+  // Prompt của đề mới là nhiều câu ghép bằng "\n" và có tiền tố "1. ", "2. ".
+  // Tách lại từng câu để so với file.
   const known = new Set();
   for (const doc of existing) {
     for (const item of doc.items ?? []) {
-      const v = item?.prompt?.value;
-      if (v) known.add(normalize(v));
+      for (const line of String(item?.prompt?.value ?? '').split('\n')) {
+        const text = line.replace(/^\s*\d+\.\s*/, '');
+        if (text.trim()) known.add(normalize(text));
+      }
     }
   }
-  console.log(`DB đang có ${existing.length} bộ dạng mới (>=3 câu).`);
+  console.log(`DB đang có ${existing.length} bộ dạng mới.`);
 
   const fresh = sets.filter((set) => {
     const qs = (set.questions ?? []).map((q) => normalize(cleanQuestion(q.question)));
@@ -116,9 +122,10 @@ async function main() {
   const [[{ createdBy }]] = await sql.query(
     `SELECT id AS createdBy FROM users WHERE email = 'plat-admin@test.local' LIMIT 1`,
   );
+  // Không tra từ bộ có sẵn: khi xoá hết đề cũ thì Part này rỗng, không lấy
+  // được. AUDIO_RECORDING là task type cố định của mọi phần Speaking.
   const [[{ taskTypeId }]] = await sql.query(
-    `SELECT task_type_id AS taskTypeId FROM question_sets WHERE part_id = ? LIMIT 1`,
-    [SPEAKING_PART_4_ID],
+    `SELECT id AS taskTypeId FROM task_types WHERE code = 'AUDIO_RECORDING' LIMIT 1`,
   );
   // 22 = độ dài 'SPEAKING_P4_TOPIC_' + 1 ... tính lại cho chắc bằng CHAR_LENGTH.
   const [[{ maxNo }]] = await sql.query(
@@ -146,31 +153,39 @@ async function main() {
     }
     if (questions.length === 0) continue;
 
-    // Chia đều 20 điểm cho các câu; câu cuối nhận phần dư để tổng luôn đúng 20.
-    const per = Math.floor((SET_MAX_SCORE / questions.length) * 100) / 100;
-    const items = questions.map((q, index) => ({
-      id: randomUUID(),
-      sequenceNo: index + 1,
-      prompt: { format: 'PLAIN_TEXT', value: q },
-      responseType: 'AUDIO_RECORDING',
-      required: true,
-      maxScore:
-        index === questions.length - 1
-          ? Number((SET_MAX_SCORE - per * (questions.length - 1)).toFixed(2))
-          : per,
-      options: [],
-      leftItems: [],
-      rightItems: [],
-      constraints: {},
-      rubricCode: RUBRIC_CODE,
-      answerKey: null,
-      explanation: null,
-    }));
+    // MỘT item duy nhất chứa cả 3 câu: đề thi thật Part 4 cho ghi âm MỘT LẦN
+    // 2 phút (sau 1 phút chuẩn bị) để trả lời liền mạch cả ba, khác Part 2/3
+    // là mỗi câu một lần ghi 45 giây. Tách thành 3 item thì frontend
+    // (RecordingRenderer) render 3 ô ghi âm riêng — sai bản chất phần thi.
+    const seconds = Number(set.timeLimitSeconds) || 120;
+    const items = [
+      {
+        id: randomUUID(),
+        sequenceNo: 1,
+        prompt: {
+          format: 'PLAIN_TEXT',
+          value: questions.map((q, i) => `${i + 1}. ${q}`).join('\n'),
+        },
+        responseType: 'AUDIO_RECORDING',
+        required: true,
+        maxScore: SET_MAX_SCORE,
+        options: [],
+        leftItems: [],
+        rightItems: [],
+        constraints: {
+          prepSeconds: PREP_SECONDS,
+          responseSeconds: seconds,
+          questionCount: questions.length,
+        },
+        rubricCode: RUBRIC_CODE,
+        answerKey: null,
+        explanation: null,
+      },
+    ];
 
     const code = `SPEAKING_P4_TOPIC_${String(nextNo).padStart(3, '0')}`;
     const title = titleFrom(questions[0]);
     const questionSetId = randomUUID();
-    const seconds = Number(set.timeLimitSeconds) || 120;
 
     await sql.execute(
       `INSERT INTO question_sets
@@ -178,6 +193,7 @@ async function main() {
           access_level, status, current_revision, item_count, max_score,
           published_at, created_by, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, 3, 2026, 'PREMIUM', 'PUBLISHED', 1, ?, ?, NOW(), ?, NOW(), NOW())`,
+      // item_count = 1: cả đề là MỘT lần ghi âm, dù prompt liệt kê nhiều câu.
       [questionSetId, SPEAKING_PART_4_ID, taskTypeId, code, title,
         items.length, SET_MAX_SCORE, createdBy],
     );
@@ -190,7 +206,7 @@ async function main() {
       partId: SPEAKING_PART_4_ID,
       taskTypeCode: 'AUDIO_RECORDING',
       title,
-      instructions: `Chuẩn bị 1 phút, sau đó trả lời cả ${items.length} câu hỏi trong ${Math.round(seconds / 60)} phút.`,
+      instructions: `Chuẩn bị ${Math.round(PREP_SECONDS / 60)} phút, sau đó trả lời cả ${questions.length} câu hỏi trong ${Math.round(seconds / 60)} phút bằng MỘT lần ghi âm.`,
       accessLevel: 'PREMIUM',
       stimulus: null,
       sections: [],
@@ -214,7 +230,7 @@ async function main() {
       _class: 'vn.weconex.aptis.content.mongo.QuestionSetDocument',
     });
 
-    console.log(`  + ${code} — ${title} (${items.length} câu, ${SET_MAX_SCORE} điểm)`);
+    console.log(`  + ${code} — ${title} (${questions.length} câu trong 1 lần ghi âm, ${SET_MAX_SCORE} điểm)`);
     nextNo += 1;
     imported += 1;
   }
