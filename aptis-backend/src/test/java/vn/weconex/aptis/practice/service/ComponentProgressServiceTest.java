@@ -15,9 +15,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import vn.weconex.aptis.catalog.repository.ComponentRepository;
+import vn.weconex.aptis.catalog.repository.PartRepository;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.practice.domain.AttemptComponentProgress;
 import vn.weconex.aptis.practice.repository.AttemptComponentProgressRepository;
+import vn.weconex.aptis.practice.repository.BlueprintPartRuleRepository;
 
 @ExtendWith(MockitoExtension.class)
 class ComponentProgressServiceTest {
@@ -27,6 +29,12 @@ class ComponentProgressServiceTest {
 
     @Mock
     private ComponentRepository componentRepository;
+
+    @Mock
+    private BlueprintPartRuleRepository ruleRepository;
+
+    @Mock
+    private PartRepository partRepository;
 
     @Test
     void repeatedSubmitOfClosedLastComponentIsIdempotent() {
@@ -39,7 +47,7 @@ class ComponentProgressServiceTest {
                 .thenReturn(List.of(component));
 
         ComponentProgressService service =
-                new ComponentProgressService(progressRepository, componentRepository);
+                new ComponentProgressService(progressRepository, componentRepository, ruleRepository, partRepository);
 
         assertThat(service.submitComponent("attempt-1", "listening")).isTrue();
         verify(progressRepository, never()).saveAll(org.mockito.ArgumentMatchers.anyList());
@@ -55,7 +63,7 @@ class ComponentProgressServiceTest {
                 .thenReturn(List.of(component));
 
         ComponentProgressService service =
-                new ComponentProgressService(progressRepository, componentRepository);
+                new ComponentProgressService(progressRepository, componentRepository, ruleRepository, partRepository);
 
         AttemptComponentProgress result = service.beginComponent("attempt-1", "speaking");
 
@@ -72,7 +80,7 @@ class ComponentProgressServiceTest {
                 .thenReturn(List.of(first, second));
 
         ComponentProgressService service =
-                new ComponentProgressService(progressRepository, componentRepository);
+                new ComponentProgressService(progressRepository, componentRepository, ruleRepository, partRepository);
 
         assertThatThrownBy(() -> service.beginComponent("attempt-1", "reading"))
                 .isInstanceOf(ApiException.class)
@@ -90,7 +98,7 @@ class ComponentProgressServiceTest {
                 .thenReturn(List.of(first, second));
 
         ComponentProgressService service =
-                new ComponentProgressService(progressRepository, componentRepository);
+                new ComponentProgressService(progressRepository, componentRepository, ruleRepository, partRepository);
 
         assertThat(service.submitComponent("attempt-1", "listening")).isFalse();
         assertThat(first.getSubmittedAt()).isNotNull();

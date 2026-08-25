@@ -49,6 +49,8 @@ public class ComponentProgressService {
 
     private final AttemptComponentProgressRepository progressRepository;
     private final ComponentRepository componentRepository;
+    private final vn.weconex.aptis.practice.repository.BlueprintPartRuleRepository ruleRepository;
+    private final vn.weconex.aptis.catalog.repository.PartRepository partRepository;
 
     /** Lượt này có chia thời gian theo kỹ năng không. */
     public boolean appliesTo(TestAttempt attempt) {
@@ -75,6 +77,21 @@ public class ComponentProgressService {
             return List.of();
         }
 
+        // Chỉ giữ kỹ năng mà đề này THẬT SỰ có part. Đề rút gọn (ví dụ
+        // MOCK_SHORT_FREE_V1 chỉ gồm Grammar + Reading) cũng là MOCK_TEST không
+        // gắn component, nên nếu sinh đủ 5 kỹ năng thì học viên bị hỏi Nói/Nghe/
+        // Viết trong khi đề không có phần đó.
+        java.util.Set<String> componentIdsInBlueprint = componentIdsOf(attempt);
+        if (!componentIdsInBlueprint.isEmpty()) {
+            components = components.stream()
+                    .filter(c -> componentIdsInBlueprint.contains(c.getId()))
+                    .toList();
+            if (components.isEmpty()) {
+                log.warn("Lượt {} không khớp kỹ năng nào của blueprint", attempt.getId());
+                return List.of();
+            }
+        }
+
         List<AttemptComponentProgress> rows = new ArrayList<>();
         for (Component component : components) {
             AttemptComponentProgress row = new AttemptComponentProgress();
@@ -89,6 +106,31 @@ public class ComponentProgressService {
         // rồi bấm bắt đầu (beginComponent). Nếu mở sẵn thì giờ đã trôi trong khi
         // học viên còn đang đọc hướng dẫn.
         return progressRepository.saveAll(rows);
+    }
+
+    /**
+     * Kỹ năng mà blueprint của lượt này có part.
+     *
+     * <p>Trả về rỗng khi lượt không gắn blueprint — lúc đó giữ hành vi cũ là
+     * sinh đủ mọi kỹ năng, vì không có căn cứ nào để lọc.
+     */
+    private java.util.Set<String> componentIdsOf(TestAttempt attempt) {
+        if (attempt.getBlueprintId() == null) {
+            return java.util.Set.of();
+        }
+        List<String> partIds = ruleRepository
+                .findByBlueprintIdOrderByDisplayOrder(attempt.getBlueprintId())
+                .stream()
+                .map(vn.weconex.aptis.practice.domain.BlueprintPartRule::getPartId)
+                .toList();
+        if (partIds.isEmpty()) {
+            return java.util.Set.of();
+        }
+        // getComponent() là lazy nhưng chỉ đọc id nên Hibernate dùng proxy, không
+        // phát thêm truy vấn.
+        return partRepository.findAllById(partIds).stream()
+                .map(part -> part.getComponent().getId())
+                .collect(java.util.stream.Collectors.toSet());
     }
 
     private int durationOf(Component component) {
