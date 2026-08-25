@@ -24,11 +24,12 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 const PART_ID = {
   1: '16000000-0000-4000-8000-000000000021',
+  2: '16000000-0000-4000-8000-000000000022',
   3: '16000000-0000-4000-8000-000000000023',
   4: '16000000-0000-4000-8000-000000000024',
 };
-const DOC_TASK_TYPE = { 1: 'SINGLE_CHOICE', 3: 'SPEAKER_MATCHING', 4: 'SINGLE_CHOICE' };
-const SQL_TASK_TYPE = { 1: 'SINGLE_CHOICE', 3: 'SPEAKER_MATCHING', 4: 'SINGLE_CHOICE' };
+const DOC_TASK_TYPE = { 1: 'SINGLE_CHOICE', 2: 'SPEAKER_MATCHING', 3: 'SPEAKER_MATCHING', 4: 'SINGLE_CHOICE' };
+const SQL_TASK_TYPE = { 1: 'SINGLE_CHOICE', 2: 'SPEAKER_MATCHING', 3: 'SPEAKER_MATCHING', 4: 'SINGLE_CHOICE' };
 const CONTENT_BUCKET = 'aptis-content';
 const OPTION_CODES = ['A', 'B', 'C', 'D', 'E', 'F'];
 /** Điểm mỗi câu, khớp part_scoring_rules (points_per_correct = 2). */
@@ -36,6 +37,7 @@ const POINTS_PER_ITEM = 2;
 
 const INSTRUCTIONS = {
   1: 'Nghe đoạn hội thoại và chọn đáp án đúng.',
+  2: 'Nghe bốn người nói và ghép mỗi người với ý phù hợp.',
   3: 'Nghe hai người trao đổi và xác định mỗi ý kiến thuộc về người đàn ông, người phụ nữ hoặc cả hai.',
   4: 'Nghe bài nói và chọn đáp án đúng cho mỗi câu hỏi.',
 };
@@ -109,6 +111,53 @@ function buildPart1(record) {
   };
 }
 
+/**
+ * Part 2: nghe 4 người rồi ghép mỗi người với một ý trong danh sách 6 lựa chọn.
+ *
+ * <p>File để {@code prompt} của từng người RỖNG — nhãn người nói nằm ở
+ * {@code person} ("Person A"). DB hiện lưu prompt là "Người nói A", nên đặt
+ * đúng như vậy để giao diện thống nhất với 29 bộ có sẵn.
+ *
+ * <p>Mỗi người một audio riêng: DB gắn ITEM_AUDIO:item_1..4. File chỉ có MỘT
+ * audioUrl cho cả bộ, nên dùng chung một asset cho cả 4 item.
+ */
+function buildPart2(record) {
+  const persons = record.persons ?? [];
+  if (persons.length === 0 || !record.audioUrl) return null;
+
+  const items = [];
+  for (const [index, person] of persons.entries()) {
+    const letter =
+      String(person.person ?? '').match(/([A-Z])\s*$/)?.[1] ?? String.fromCharCode(65 + index);
+    const options = (person.choices ?? []).map((choice, i) => ({
+      id: OPTION_CODES[i],
+      code: OPTION_CODES[i],
+      content: String(choice).trim(),
+    }));
+    let answer = Number.isInteger(person.answerIndex) ? person.answerIndex : -1;
+    if (answer < 0 && person.correctAnswer) {
+      answer = options.findIndex((o) => normalize(o.content) === normalize(person.correctAnswer));
+    }
+    if (options.length === 0 || answer < 0 || answer >= options.length) return null;
+    items.push({
+      prompt: `Người nói ${letter}`,
+      options,
+      answerId: options[answer].id,
+      transcript: null,
+    });
+  }
+
+  const topic = String(record.topic ?? record.topicSlug ?? 'Listening Part 2').trim();
+  return {
+    title: `${topic} (2026)`,
+    audioUrl: record.audioUrl,
+    // Một audio dùng cho cả 4 item, gắn theo từng item như 29 bộ hiện có.
+    audioRole: 'ITEM_AUDIO_ALL',
+    stimulus: null,
+    items,
+  };
+}
+
 /** Part 3: 4 nhận định, chọn Man / Woman / Both; một audio cho cả bộ. */
 function buildPart3(record) {
   const statements = record.statements ?? [];
@@ -179,6 +228,7 @@ function buildPart4(variant, topic) {
 
 const FILES = {
   1: 'AptisPrep.com/listenning/part 1/aptisprep_listening_part1_full.json',
+  2: 'AptisPrep.com/listenning/part 2/aptisprep_listening_part2_partial.json',
   3: 'AptisPrep.com/listenning/part 3/aptisprep_listening_part3_full_rsc.json',
   4: 'AptisPrep.com/listenning/part 4/aptisprep_listening_part4_practice_full.json',
 };
@@ -198,7 +248,7 @@ async function importPart(part, sql, docs, s3, createdBy) {
       }
     }
   } else {
-    const build = part === 1 ? buildPart1 : buildPart3;
+    const build = part === 1 ? buildPart1 : part === 2 ? buildPart2 : buildPart3;
     for (const record of payload.records ?? []) {
       const built = build(record);
       if (built) candidates.push(built);
@@ -207,16 +257,27 @@ async function importPart(part, sql, docs, s3, createdBy) {
   }
 
   const existing = await docs.find({ partId }).toArray();
+
+  // Part 2 không so được bằng prompt: mọi bộ đều dùng "Người nói A..D". Đặc
+  // trưng của đề là danh sách 6 lựa chọn, nên so bằng đó.
+  const byOptions = part === 2;
   const known = new Set();
   for (const doc of existing) {
     for (const item of doc.items ?? []) {
-      const v = item?.prompt?.value;
-      if (v) known.add(normalize(v));
+      if (byOptions) {
+        const key = (item.options ?? []).map((o) => o.content).join('|');
+        if (key) known.add(normalize(key));
+      } else {
+        const v = item?.prompt?.value;
+        if (v) known.add(normalize(v));
+      }
     }
   }
 
-  const fresh = candidates.filter(
-    (set) => !set.items.some((i) => known.has(normalize(i.prompt))),
+  const fresh = candidates.filter((set) =>
+    byOptions
+      ? !known.has(normalize(set.items[0].options.map((o) => o.content).join('|')))
+      : !set.items.some((i) => known.has(normalize(i.prompt))),
   );
 
   console.log(
@@ -337,14 +398,22 @@ async function importPart(part, sql, docs, s3, createdBy) {
       stimulus: set.stimulus,
       sections: [],
       items,
-      assets: [
-        {
-          assetId,
-          // Part 1 gắn theo item để mỗi câu có đoạn nghe riêng.
-          role: set.audioRole === 'ITEM_AUDIO' ? `ITEM_AUDIO:${items[0].id}` : 'MAIN_AUDIO',
-          displayOrder: 1,
-        },
-      ],
+      // Part 1 gắn theo item duy nhất; Part 2 gắn CÙNG asset cho cả 4 item vì
+      // file chỉ có một audio; Part 3/4 dùng một audio chung MAIN_AUDIO.
+      assets:
+        set.audioRole === 'ITEM_AUDIO_ALL'
+          ? items.map((item, index) => ({
+              assetId,
+              role: `ITEM_AUDIO:${item.id}`,
+              displayOrder: index + 1,
+            }))
+          : [
+              {
+                assetId,
+                role: set.audioRole === 'ITEM_AUDIO' ? `ITEM_AUDIO:${items[0].id}` : 'MAIN_AUDIO',
+                displayOrder: 1,
+              },
+            ],
       settings: {
         shuffleOptions: false,
         shuffleItems: false,
@@ -398,7 +467,7 @@ async function main() {
     forcePathStyle: true,
   });
 
-  const parts = target === 'all' ? [1, 3, 4] : [Number(target)];
+  const parts = target === 'all' ? [1, 2, 3, 4] : [Number(target)];
   let total = 0;
   for (const part of parts) {
     if (!PART_ID[part]) throw new Error(`Part không hợp lệ: ${part}`);
