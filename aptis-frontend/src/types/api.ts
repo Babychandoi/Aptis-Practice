@@ -650,3 +650,73 @@ export interface ContentUpdateLog {
   partId: string | null;
   questionSets: ContentUpdateQuestionSet[];
 }
+
+// ---------------------------------------------------------------------
+// Dự đoán đề
+// ---------------------------------------------------------------------
+
+export interface ExamPredictionItem {
+  id: string;
+  topicId: string;
+  /** null = dự đoán cho cả kỹ năng, không riêng part nào. */
+  partId: string | null;
+  label: string;
+  priority: 'HOT' | 'BACKUP';
+  /** 0 = chưa có đề, client làm mờ và không cho bấm. */
+  questionSetCount: number;
+  /** Số lần chủ đề xuất hiện trong khoảng đang xem; chỉ có ở tab "hot nhất". */
+  repeatCount: number;
+}
+
+/** Nhóm hiển thị trong kỹ năng: "Part 5", "Q16-17", "Part 2+3"... */
+export interface ExamPredictionSection {
+  sectionLabel: string;
+  items: ExamPredictionItem[];
+}
+
+export interface ExamPredictionSkill {
+  componentId: string;
+  componentCode: string;
+  componentName: string;
+  displayOrder: number;
+  topicCount: number;
+  sections: ExamPredictionSection[];
+}
+
+export interface ExamPredictionFeed {
+  /** Có thể sớm hơn hôm nay khi admin chưa cập nhật. */
+  predictDate: string;
+  source: string | null;
+  skills: ExamPredictionSkill[];
+}
+
+export interface AdminExamPrediction {
+  id: string;
+  predictDate: string;
+  topicId: string;
+  topicName: string | null;
+  partId: string | null;
+  partName: string | null;
+  componentId: string;
+  componentCode: string | null;
+  priority: 'HOT' | 'BACKUP';
+  label: string | null;
+  sectionLabel: string | null;
+  source: string | null;
+  status: 'DRAFT' | 'PUBLISHED';
+  displayOrder: number;
+  questionSetCount: number;
+}
+
+export interface SaveExamPredictionRequest {
+  predictDate: string;
+  topicId: string;
+  partId?: string | null;
+  componentId: string;
+  priority?: 'HOT' | 'BACKUP';
+  label?: string | null;
+  sectionLabel?: string | null;
+  source?: string | null;
+  status?: 'DRAFT' | 'PUBLISHED';
+  displayOrder?: number;
+}

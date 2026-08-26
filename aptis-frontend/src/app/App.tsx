@@ -19,6 +19,7 @@ const ProfilePage = lazy(() => import('@/features/auth/ProfilePage').then((m) =>
 const DashboardPage = lazy(() => import('@/features/catalog/DashboardPage').then((m) => ({ default: m.DashboardPage })));
 const SkillListPage = lazy(() => import('@/features/catalog/SkillListPage').then((m) => ({ default: m.SkillListPage })));
 const ContentUpdatePage = lazy(() => import('@/features/learning/ContentUpdatePage').then((m) => ({ default: m.ContentUpdatePage })));
+const ExamPredictionPage = lazy(() => import('@/features/learning/ExamPredictionPage').then((m) => ({ default: m.ExamPredictionPage })));
 const ComponentPage = lazy(() => import('@/features/catalog/ComponentPage').then((m) => ({ default: m.ComponentPage })));
 const ComponentPartsPage = lazy(() => import('@/features/catalog/ComponentPartsPage').then((m) => ({ default: m.ComponentPartsPage })));
 const ComponentTestsPage = lazy(() => import('@/features/catalog/ComponentTestsPage').then((m) => ({ default: m.ComponentTestsPage })));
@@ -49,6 +50,7 @@ const BankTransferAdminPage = lazy(() => import('@/features/admin/BankTransferAd
 const UserAdminPage = lazy(() => import('@/features/admin/UserAdminPage').then((m) => ({ default: m.UserAdminPage })));
 const ScoringConfigPage = lazy(() => import('@/features/admin/ScoringConfigPage').then((m) => ({ default: m.ScoringConfigPage })));
 const SkillTestAdminPage = lazy(() => import('@/features/admin/SkillTestAdminPage').then((m) => ({ default: m.SkillTestAdminPage })));
+const ExamPredictionAdminPage = lazy(() => import('@/features/admin/ExamPredictionAdminPage').then((m) => ({ default: m.ExamPredictionAdminPage })));
 
 export function App() {
   const navigate = useNavigate();
@@ -99,6 +101,8 @@ export function App() {
         {/* Trang tự xử lý 403 để hiện PremiumGate kèm ngữ cảnh, nên không bọc
             PremiumRoute — bọc thêm sẽ chặn trước khi gọi API và mất mô tả. */}
         <Route path="/cap-nhat-de" element={<ContentUpdatePage />} />
+        {/* Cũng tự xử lý 403 để hiện PremiumGate, nên không bọc PremiumRoute. */}
+        <Route path="/du-doan-de" element={<ExamPredictionPage />} />
         <Route path="/luyen-tap/:componentSlug" element={<ComponentPage />} />
         <Route path="/luyen-tap/:componentSlug/theo-part" element={<ComponentPartsPage />} />
         <Route path="/luyen-tap/:componentSlug/bai-test" element={<ComponentTestsPage />} />
@@ -146,6 +150,7 @@ export function App() {
         <Route path="question-sets/:id" element={<QuestionSetDetailPage />} />
         <Route path="scoring" element={<ScoringConfigPage />} />
         <Route path="skill-tests" element={<SkillTestAdminPage />} />
+        <Route path="exam-predictions" element={<ExamPredictionAdminPage />} />
         <Route path="imports" element={<ImportAdminPage />} />
         <Route path="plans" element={<PlanAdminPage />} />
         <Route path="orders" element={<OrderAdminPage />} />

@@ -4,7 +4,10 @@ import type {
   AttemptSummary,
   AssetResponse,
   AuthConfigResponse,
+  AdminExamPrediction,
   ContentUpdateLog,
+  ExamPredictionFeed,
+  SaveExamPredictionRequest,
   BankTransferInstruction,
   ComponentSummary,
   CreateCustomAttemptRequest,
@@ -304,4 +307,37 @@ export const studyTipsApi = {
 export const contentUpdateApi = {
   /** Timeline các đợt cập nhật đề. Chỉ Premium gọi được (backend trả 403). */
   list: () => api.get<ContentUpdateLog[]>('/content-updates').then((r) => r.data),
+};
+
+// ---------------------------------------------------------------------
+// Dự đoán đề
+// ---------------------------------------------------------------------
+
+export const examPredictionApi = {
+  /** Bản tin của một ngày; bỏ trống date thì backend lấy hôm nay. */
+  today: (date?: string) =>
+    api
+      .get<ExamPredictionFeed>('/exam-predictions', { params: date ? { date } : undefined })
+      .then((r) => r.data),
+
+  /** Chủ đề lặp nhiều nhất trong N tháng gần đây. */
+  hottest: (months = 2) =>
+    api
+      .get<ExamPredictionFeed>('/exam-predictions/hottest', { params: { months } })
+      .then((r) => r.data),
+};
+
+export const adminExamPredictionApi = {
+  list: (date?: string) =>
+    api
+      .get<AdminExamPrediction[]>('/admin/exam-predictions', { params: date ? { date } : undefined })
+      .then((r) => r.data),
+
+  create: (body: SaveExamPredictionRequest) =>
+    api.post<AdminExamPrediction>('/admin/exam-predictions', body).then((r) => r.data),
+
+  update: (id: string, body: SaveExamPredictionRequest) =>
+    api.put<AdminExamPrediction>(`/admin/exam-predictions/${id}`, body).then((r) => r.data),
+
+  remove: (id: string) => api.delete<void>(`/admin/exam-predictions/${id}`).then(() => undefined),
 };

@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { to: '/admin/question-sets', label: 'Ngân hàng câu hỏi', permission: 'question_set:read', icon: 'questions' },
   { to: '/admin/imports', label: 'Import câu hỏi', permission: 'question_set:write', icon: 'import' },
   { to: '/admin/scoring', label: 'Cấu hình điểm', permission: 'question_set:write', icon: 'scoring' },
+  { to: '/admin/exam-predictions', label: 'Dự đoán đề', permission: 'question_set:write', icon: 'scoring' },
   { to: '/admin/plans', label: 'Gói Premium', permission: 'plan:write', icon: 'plans' },
   { to: '/admin/orders', label: 'Đơn hàng', permission: 'order:read', icon: 'orders' },
   { to: '/admin/bank-transfers', label: 'Đối soát chuyển khoản', permission: 'order:read', icon: 'transfers', hasBadge: true },
