@@ -195,4 +195,23 @@ public interface QuestionSetRepository
             @Param("partId") String partId,
             @Param("title") String title,
             @Param("hasPremium") boolean hasPremium);
+
+    /**
+     * Đếm đề đã publish theo từng cặp (chủ đề, part) trong một lần truy vấn.
+     *
+     * <p>Dùng cho trang dự đoán đề: mỗi mục cần biết có bao nhiêu đề làm được,
+     * 0 thì làm mờ và không cho bấm. Gọi count từng mục sẽ thành N truy vấn cho
+     * một trang có vài chục mục.
+     *
+     * <p>Trả về (topic_id, part_id, count). Part được nhóm riêng vì cùng chủ đề
+     * có thể có đề ở nhiều part khác nhau.
+     */
+    @Query(value = """
+            SELECT qs.topic_id AS topicId, qs.part_id AS partId, COUNT(*) AS total
+            FROM question_sets qs
+            WHERE qs.status = 'PUBLISHED'
+              AND qs.topic_id IN (:topicIds)
+            GROUP BY qs.topic_id, qs.part_id
+            """, nativeQuery = true)
+    List<Object[]> countPublishedByTopicAndPart(@Param("topicIds") List<String> topicIds);
 }
