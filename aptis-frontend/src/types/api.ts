@@ -666,6 +666,11 @@ export interface ExamPredictionItem {
   questionSetCount: number;
   /** Số lần chủ đề xuất hiện trong khoảng đang xem; chỉ có ở tab "hot nhất". */
   repeatCount: number;
+  /**
+   * Các part CÓ đề của chủ đề này. Writing Part 2/3/4 là cùng một club và đề
+   * thi thật làm liền cả ba, nên client xin một bộ mỗi part.
+   */
+  partIds: string[];
 }
 
 /** Nhóm hiển thị trong kỹ năng: "Part 5", "Q16-17", "Part 2+3"... */

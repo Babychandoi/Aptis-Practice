@@ -194,11 +194,40 @@ public class AttemptService {
                 }
                 selected.addAll(partSelection);
             }
-            // Snapshot phải luôn theo đúng thứ tự Part của cấu trúc bài thi.
+            // Ghép bài test theo Part: luôn theo thứ tự cấu trúc bài thi.
             selected.sort(Comparator.comparingInt(qs -> qs.getPart().getDisplayOrder()));
         } else {
             int size = Math.min(Optional.ofNullable(request.questionSetCount()).orElse(10), max);
-            selected = questionSetSelector.selectForCustom(userId, request, size, hasPremium);
+
+            // "Một bộ mỗi Part": nhận ra khi số bộ yêu cầu vừa đúng số Part.
+            // Phải lấy DƯ rồi mới lọc, vì selectForCustom xếp theo ưu tiên học
+            // tập nên lấy đúng N có thể dồn cả N vào một Part.
+            boolean onePerPart = request.partIds() != null
+                    && request.partIds().size() > 1
+                    && size == request.partIds().size()
+                    && !request.shuffle();
+            int fetch = onePerPart ? Math.min(size * 6, max) : size;
+
+            selected = new ArrayList<>(
+                    questionSetSelector.selectForCustom(userId, request, fetch, hasPremium));
+
+            // selectForCustom sắp theo độ ưu tiên học tập chứ không theo Part,
+            // nên lượt trải nhiều Part (Writing Part 2/3/4 cùng một club) sẽ
+            // hiện Part 4 trước Part 2. Trừ khi học viên chọn trộn — lúc đó sắp
+            // lại là phá đúng cái họ vừa yêu cầu ở trang Luyện tuỳ chọn.
+            if (!request.shuffle()) {
+                selected.sort(Comparator.comparingInt(qs -> qs.getPart().getDisplayOrder()));
+
+                if (onePerPart) {
+                    Map<String, QuestionSet> firstOfPart = new java.util.LinkedHashMap<>();
+                    for (QuestionSet qs : selected) {
+                        firstOfPart.putIfAbsent(qs.getPart().getId(), qs);
+                    }
+                    selected = new ArrayList<>(firstOfPart.values());
+                } else if (selected.size() > size) {
+                    selected = new ArrayList<>(selected.subList(0, size));
+                }
+            }
         }
 
         if (selected.isEmpty()) {

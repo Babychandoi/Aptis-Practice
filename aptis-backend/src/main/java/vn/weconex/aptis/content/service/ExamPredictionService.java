@@ -118,7 +118,7 @@ public class ExamPredictionService {
                         .toList()),
                 Component::getId);
 
-        Map<String, Integer> setCounts = countQuestionSets(items);
+        QuestionSetStats stats = countQuestionSets(items);
 
         // Nhóm hai tầng: kỹ năng -> section, giữ nguyên thứ tự admin đặt.
         Map<String, Map<String, List<ExamPredictionDtos.PredictionItemResponse>>> grouped =
@@ -126,7 +126,7 @@ public class ExamPredictionService {
         for (ExamPrediction item : items) {
             // Bỏ hẳn mục chưa có đề: học viên bấm vào không làm được gì, hiện
             // ra chỉ gây thất vọng. Trang admin vẫn thấy đủ để biết mà bổ sung.
-            if (setCounts.getOrDefault(countKey(item), 0) == 0) {
+            if (stats.counts().getOrDefault(countKey(item), 0) == 0) {
                 continue;
             }
 
@@ -148,8 +148,9 @@ public class ExamPredictionService {
                             item.getPartId(),
                             label,
                             item.getPriority().name(),
-                            setCounts.getOrDefault(countKey(item), 0),
-                            repeatByPredictionId.getOrDefault(item.getId(), 0)));
+                            stats.counts().getOrDefault(countKey(item), 0),
+                            repeatByPredictionId.getOrDefault(item.getId(), 0),
+                            stats.partIds().getOrDefault(countKey(item), List.of())));
         }
 
         List<ExamPredictionDtos.PredictionSkillResponse> skills = new ArrayList<>();
@@ -186,32 +187,47 @@ public class ExamPredictionService {
      * <p>Mục có partId thì đếm đúng part đó; mục để trống part thì cộng mọi part
      * của chủ đề, vì lúc làm bài cũng lọc theo cả kỹ năng.
      */
-    private Map<String, Integer> countQuestionSets(List<ExamPrediction> items) {
+    private QuestionSetStats countQuestionSets(List<ExamPrediction> items) {
         List<String> topicIds = items.stream().map(ExamPrediction::getTopicId).distinct().toList();
         if (topicIds.isEmpty()) {
-            return Map.of();
+            return new QuestionSetStats(Map.of(), Map.of());
         }
 
         Map<String, Integer> byTopicAndPart = new HashMap<>();
         Map<String, Integer> byTopic = new HashMap<>();
+        Map<String, List<String>> partsByTopic = new HashMap<>();
         for (Object[] row : questionSetRepository.countPublishedByTopicAndPart(topicIds)) {
             String topicId = (String) row[0];
             String partId = (String) row[1];
             int total = row[2] == null ? 0 : ((Number) row[2]).intValue();
             byTopicAndPart.merge(topicId + "|" + (partId == null ? "" : partId), total, Integer::sum);
             byTopic.merge(topicId, total, Integer::sum);
+            if (partId != null) {
+                partsByTopic.computeIfAbsent(topicId, key -> new ArrayList<>()).add(partId);
+            }
         }
 
-        Map<String, Integer> result = new HashMap<>();
+        Map<String, Integer> counts = new HashMap<>();
+        Map<String, List<String>> parts = new HashMap<>();
         for (ExamPrediction item : items) {
-            result.put(
-                    countKey(item),
-                    item.getPartId() == null
-                            ? byTopic.getOrDefault(item.getTopicId(), 0)
-                            : byTopicAndPart.getOrDefault(
-                                    item.getTopicId() + "|" + item.getPartId(), 0));
+            String key = countKey(item);
+            if (item.getPartId() == null) {
+                counts.put(key, byTopic.getOrDefault(item.getTopicId(), 0));
+                parts.put(key, partsByTopic.getOrDefault(item.getTopicId(), List.of()));
+            } else {
+                counts.put(
+                        key,
+                        byTopicAndPart.getOrDefault(
+                                item.getTopicId() + "|" + item.getPartId(), 0));
+                parts.put(key, List.of(item.getPartId()));
+            }
         }
-        return result;
+        return new QuestionSetStats(counts, parts);
+    }
+
+    /** Số đề và danh sách part có đề, khoá theo {@link #countKey}. */
+    private record QuestionSetStats(
+            Map<String, Integer> counts, Map<String, List<String>> partIds) {
     }
 
     private static String countKey(ExamPrediction item) {

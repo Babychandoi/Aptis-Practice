@@ -46,15 +46,27 @@ export function ExamPredictionPage() {
   });
 
   const startAttempt = useMutation({
-    mutationFn: ({ item, componentId }: { item: ExamPredictionItem; componentId: string }) =>
-      practiceApi.createCustomAttempt({
+    mutationFn: ({ item, componentId }: { item: ExamPredictionItem; componentId: string }) => {
+      const parts = item.partId ? [item.partId] : item.partIds;
+
+      // KHÔNG dùng partQuestionSetCounts ở đây: nhánh đó trong AttemptService
+      // gọi selectForPart(partId) và bỏ hẳn topicIds, nên ra đề bất kỳ của part
+      // — bấm "Book" từng ra Part 2 của Book Club nhưng Part 3/4 của Art Club.
+      //
+      // Chủ đề trải nhiều Part (Writing Part 2/3/4 cùng một club) thì xin đúng
+      // số Part, không xin hết đề của chủ đề: ngân hàng có nhiều bản mỗi Part
+      // nên xin hết sẽ ra Part 2 hai lần, Part 3 hai lần.
+      const wanted = parts.length > 1 ? parts.length : Math.max(item.questionSetCount, 1);
+
+      return practiceApi.createCustomAttempt({
         topicIds: [item.topicId],
         // Luôn phải giới hạn phạm vi: chỉ lọc theo topicIds thì một chủ đề dùng
         // chung tên ở nhiều kỹ năng sẽ ra đề sai hẳn — nhãn "Book" của Writing
         // từng ra đề Listening vì cùng trỏ vào topic "Work And Books".
-        ...(item.partId ? { partIds: [item.partId] } : { componentIds: [componentId] }),
-        questionSetCount: Math.min(item.questionSetCount || 1, 10),
-      }),
+        ...(parts.length > 0 ? { partIds: parts } : { componentIds: [componentId] }),
+        questionSetCount: Math.min(wanted, 12),
+      });
+    },
     onSuccess: (attempt) => navigate(`/attempts/${attempt.id}`),
     onError: (err) =>
       setError(err instanceof ApiError ? err.message : 'Không mở được đề, thử lại sau'),

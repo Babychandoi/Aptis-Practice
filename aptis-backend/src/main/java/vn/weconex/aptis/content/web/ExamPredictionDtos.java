@@ -49,6 +49,10 @@ public final class ExamPredictionDtos {
      *                         và không cho bấm, vì bấm vào sẽ ra lượt rỗng
      * @param repeatCount      số lần chủ đề xuất hiện trong khoảng đang xem,
      *                         dùng cho tab "đề hot nhất"
+     * @param partIds          các part CÓ đề của chủ đề này. Cần đến vì Writing
+     *                         Part 2/3/4 là cùng một club và đề thi thật làm
+     *                         liền cả ba: client xin một bộ mỗi part để không
+     *                         bị trùng bộ khi part này nhiều đề hơn part kia.
      */
     public record PredictionItemResponse(
             String id,
@@ -57,7 +61,8 @@ public final class ExamPredictionDtos {
             String label,
             String priority,
             int questionSetCount,
-            int repeatCount) {
+            int repeatCount,
+            List<String> partIds) {
     }
 
     // ---------- Admin ----------
