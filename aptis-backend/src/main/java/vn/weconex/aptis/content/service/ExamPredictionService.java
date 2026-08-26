@@ -124,6 +124,12 @@ public class ExamPredictionService {
         Map<String, Map<String, List<ExamPredictionDtos.PredictionItemResponse>>> grouped =
                 new LinkedHashMap<>();
         for (ExamPrediction item : items) {
+            // Bỏ hẳn mục chưa có đề: học viên bấm vào không làm được gì, hiện
+            // ra chỉ gây thất vọng. Trang admin vẫn thấy đủ để biết mà bổ sung.
+            if (setCounts.getOrDefault(countKey(item), 0) == 0) {
+                continue;
+            }
+
             Topic topic = topics.get(item.getTopicId());
             String label = item.getLabel() != null && !item.getLabel().isBlank()
                     ? item.getLabel()
