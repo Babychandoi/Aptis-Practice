@@ -46,11 +46,13 @@ export function ExamPredictionPage() {
   });
 
   const startAttempt = useMutation({
-    mutationFn: (item: ExamPredictionItem) =>
+    mutationFn: ({ item, componentId }: { item: ExamPredictionItem; componentId: string }) =>
       practiceApi.createCustomAttempt({
         topicIds: [item.topicId],
-        // partId null = dự đoán cho cả kỹ năng, để backend tự chọn trong kỹ năng.
-        ...(item.partId ? { partIds: [item.partId] } : {}),
+        // Luôn phải giới hạn phạm vi: chỉ lọc theo topicIds thì một chủ đề dùng
+        // chung tên ở nhiều kỹ năng sẽ ra đề sai hẳn — nhãn "Book" của Writing
+        // từng ra đề Listening vì cùng trỏ vào topic "Work And Books".
+        ...(item.partId ? { partIds: [item.partId] } : { componentIds: [componentId] }),
         questionSetCount: Math.min(item.questionSetCount || 1, 10),
       }),
     onSuccess: (attempt) => navigate(`/attempts/${attempt.id}`),
@@ -275,7 +277,7 @@ export function ExamPredictionPage() {
                         showRepeat={tab === 'hottest'}
                         onStart={() => {
                           setError(null);
-                          startAttempt.mutate(item);
+                          startAttempt.mutate({ item, componentId: activeSkill.componentId });
                         }}
                       />
                     ))}
