@@ -192,8 +192,25 @@ async function main() {
               ` -> ${resolved.topic.name} (${resolved.how})`,
           );
         } else {
-          // INSERT IGNORE: unique key (ngày, topic, part) chặn mục trùng khi
-          // chạy lại, và khi hai nhãn khác nhau khớp về cùng một topic.
+          // Tự kiểm trùng trước khi chèn: unique key (ngày, topic, part) KHÔNG
+          // chặn được khi part_id NULL, vì MySQL coi NULL khác NULL. Mục
+          // Writing dự đoán theo cả kỹ năng nên part_id luôn NULL và chạy lại
+          // script sẽ nhân đôi toàn bộ.
+          const [dup] = await sql.query(
+            `SELECT id FROM exam_predictions
+              WHERE predict_date = ? AND topic_id = ?
+                AND (part_id <=> ?) AND priority = ? AND (section_label <=> ?)
+              LIMIT 1`,
+            [
+              payload.predictDate,
+              resolved.topic.id,
+              part?.id ?? null,
+              item.priority === 'BACKUP' ? 'BACKUP' : 'HOT',
+              section.sectionLabel ?? null,
+            ],
+          );
+          if (dup.length > 0) continue;
+
           const [result] = await sql.execute(
             `INSERT IGNORE INTO exam_predictions
                (id, predict_date, topic_id, part_id, component_id, priority,
