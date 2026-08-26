@@ -134,9 +134,10 @@ export function ExamPredictionPage() {
           </div>
         </div>
 
-        {/* Tab: tin hôm nay hay thống kê nhiều tháng. Tab đang chọn dùng nền
-            trắng liền với phần thân bên dưới nên nhìn ra ngay đang ở đâu. */}
-        <div role="tablist" className="flex gap-1.5 border-t border-amber-200/60 bg-amber-50/50 px-2.5 pt-2.5 sm:px-4">
+        {/* Tab đánh dấu bằng GẠCH TRÊN, không dùng kiểu "nối liền thân" bằng
+            viền + -mb-px: header có overflow-hidden nên phần âm bị cắt, viền
+            vàng chạy hết vòng và tab nhìn như cái hộp kẹt lại. */}
+        <div role="tablist" className="flex gap-1.5 border-t border-amber-200/60 bg-amber-50/40 p-2 sm:px-3">
           {(
             [
               ['today', 'Hôm nay', 'Đề mới nhất từ admin', <ClockIcon key="c" />],
@@ -161,12 +162,19 @@ export function ExamPredictionPage() {
                   setError(null);
                 }}
                 className={clsx(
-                  'relative -mb-px flex min-w-0 flex-1 items-center gap-2.5 rounded-t-xl border border-b-0 px-3 py-2.5 text-left transition-colors',
+                  'relative flex min-w-0 flex-1 items-center gap-2.5 overflow-hidden rounded-xl px-3 py-2.5 text-left transition-colors',
                   active
-                    ? 'border-amber-300 bg-white'
-                    : 'border-transparent hover:bg-white/70',
+                    ? 'bg-white shadow-[0_8px_20px_-14px_rgba(234,88,12,0.5)]'
+                    : 'hover:bg-white/60',
                 )}
               >
+                {/* Gạch trên chỉ tab đang chọn — đủ rõ mà không cần viền bao */}
+                {active && (
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500"
+                  />
+                )}
                 <span
                   className={clsx(
                     'grid h-8 w-8 shrink-0 place-items-center rounded-lg transition-colors',
