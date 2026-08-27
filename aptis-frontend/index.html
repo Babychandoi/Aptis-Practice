@@ -7,8 +7,13 @@
     <!-- Favicon và icon cho màn hình chính.
          favicon.ico gộp 16/32/48px cho trình duyệt cũ và taskbar Windows;
          hai file PNG dưới cho trình duyệt hiện đại và iOS. -->
+    <!-- Mọi icon phải VUÔNG: Google bỏ qua favicon lệch tỷ lệ và dùng quả cầu
+         mặc định. Logo gốc là 145x128 nên các icon được dựng bằng cách đặt logo
+         giữa khung vuông nền trắng, không phải resize trực tiếp.
+         Khai thêm 96x96 vì đó là cỡ Google ưu tiên đọc cho kết quả tìm kiếm. -->
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="theme-color" content="#5b52e8">
