@@ -7,6 +7,8 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vn.weconex.aptis.auth.domain.User;
+import vn.weconex.aptis.auth.repository.UserRepository;
 import vn.weconex.aptis.common.config.AptisProperties;
 import vn.weconex.aptis.entitlement.domain.UserEntitlement;
 import vn.weconex.aptis.entitlement.repository.UserEntitlementRepository;
@@ -21,11 +23,65 @@ import vn.weconex.aptis.entitlement.repository.UserEntitlementRepository;
 public class EntitlementService {
 
     private final UserEntitlementRepository entitlementRepository;
+    private final UserRepository userRepository;
     private final AptisProperties properties;
 
+    /**
+     * Có quyền Premium — do đã mua, hoặc còn trong thời gian dùng thử tính từ
+     * lúc tạo tài khoản.
+     *
+     * <p>Dùng thử tính theo {@code users.created_at} thay vì cấp entitlement
+     * riêng: khỏi phải chạy job cấp quyền cho từng người đăng ký, và đổi số ngày
+     * trong cấu hình là đổi hạn của cả những người đã đăng ký.
+     *
+     * <p>Mọi luồng kiểm quyền đều gọi qua đây (ContentAccessService,
+     * AttemptService, MockTestService, các controller nội dung Premium), nên chỉ
+     * cần nới ở một chỗ.
+     */
     @Transactional(readOnly = true)
     public boolean hasPremiumAccess(String userId) {
-        return hasEntitlement(userId, properties.entitlement().premiumCode());
+        if (hasEntitlement(userId, properties.entitlement().premiumCode())) {
+            return true;
+        }
+        return withinSignupTrial(userId);
+    }
+
+    /** Còn trong hạn dùng thử kể từ lúc tạo tài khoản? */
+    @Transactional(readOnly = true)
+    public boolean withinSignupTrial(String userId) {
+        if (properties.entitlement().signupTrialDays() <= 0) {
+            return false;
+        }
+        return userRepository.findById(userId)
+                .map(user -> properties.entitlement()
+                        .withinSignupTrial(user.getCreatedAt(), Instant.now()))
+                .orElse(false);
+    }
+
+    /**
+     * Thời điểm hết hạn dùng thử. {@code Optional.empty()} khi tắt dùng thử hoặc
+     * không tìm thấy tài khoản — dùng để hiện đếm ngược cho học viên.
+     */
+    @Transactional(readOnly = true)
+    public Optional<Instant> signupTrialEndsAt(String userId) {
+        int days = properties.entitlement().signupTrialDays();
+        if (days <= 0) {
+            return Optional.empty();
+        }
+        return userRepository.findById(userId)
+                .map(User::getCreatedAt)
+                .filter(java.util.Objects::nonNull)
+                .map(createdAt -> createdAt.plus(java.time.Duration.ofDays(days)));
+    }
+
+    /**
+     * Nội dung gắn nhãn FREE có còn mở cho người không trả phí?
+     *
+     * <p>Bật {@code paywall-after-trial} thì FREE chỉ còn là phân loại nội bộ:
+     * hết dùng thử là mọi bộ đề, mọi đề thi thử đều cần Premium.
+     */
+    public boolean freeContentStillOpen() {
+        return !properties.entitlement().paywallAfterTrial();
     }
 
     @Transactional(readOnly = true)

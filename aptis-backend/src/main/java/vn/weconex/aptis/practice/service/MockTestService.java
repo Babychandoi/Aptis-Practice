@@ -89,7 +89,8 @@ public class MockTestService {
         TestBlueprint blueprint = requireAvailable(blueprintId);
         boolean hasPremium = entitlementService.hasPremiumAccess(userId);
 
-        if (!blueprint.isFree() && !hasPremium) {
+        // Đề FREE cũng bị khoá khi đã bật paywall sau dùng thử.
+        if (!(blueprint.isFree() && entitlementService.freeContentStillOpen()) && !hasPremium) {
             throw ApiException.premiumRequired();
         }
 

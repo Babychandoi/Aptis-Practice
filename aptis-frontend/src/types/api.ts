@@ -105,6 +105,12 @@ export interface MeResponse {
   /** Đọc từ entitlement ở backend, không suy ra từ token */
   premiumActive: boolean;
   premiumEndsAt: string | null;
+  /**
+   * true = quyền đang có là dùng thử theo ngày tạo tài khoản, chưa mua gói.
+   * premiumEndsAt lúc này là hạn dùng thử, nên nhãn phải nói "dùng thử" thay vì
+   * "Premium" — người dùng bấm mới hiểu là cần mua.
+   */
+  premiumFromTrial: boolean;
 }
 
 // ---------------------------------------------------------------------

@@ -8,6 +8,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vn.weconex.aptis.common.config.AptisProperties;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.exception.ErrorCode;
 import vn.weconex.aptis.common.util.Enums.AccessLevel;
@@ -38,6 +39,17 @@ public class ContentAccessService {
     private final QuestionSetRepository questionSetRepository;
     private final ContentAccessOverrideRepository overrideRepository;
     private final EntitlementService entitlementService;
+    private final AptisProperties properties;
+
+    /**
+     * Nội dung gắn nhãn FREE có còn mở cho người không trả phí?
+     *
+     * <p>Bật paywall thì FREE mất nghĩa với học viên (chỉ còn là phân loại nội
+     * bộ): hết dùng thử là mọi bộ đều cần Premium.
+     */
+    private boolean freeStillOpen() {
+        return !properties.entitlement().paywallAfterTrial();
+    }
 
     /**
      * Kết quả kiểm tra, dùng cho cả API danh sách (hiển thị ổ khóa) và

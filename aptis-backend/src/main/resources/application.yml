@@ -198,6 +198,20 @@ aptis:
     # EXTEND_CURRENT = cộng dồn vào subscription hiện tại
     # QUEUE_NEXT     = tạo subscription mới nối tiếp sau ends_at
     renewal-policy: EXTEND_CURRENT
+    # Số ngày dùng thử tính từ lúc TẠO tài khoản. Hết hạn thì mọi nội dung đều
+    # cần trả phí — không còn đề miễn phí vĩnh viễn.
+    #
+    # Tính theo created_at của user, không cấp entitlement riêng: khỏi phải chạy
+    # job cấp quyền cho từng người đăng ký và khỏi sinh thêm bản ghi cho mỗi tài
+    # khoản. Đổi số này là đổi hạn của cả những người đã đăng ký.
+    #
+    # 0 = tắt, quay về mô hình có nội dung miễn phí vĩnh viễn.
+    signup-trial-days: ${SIGNUP_TRIAL_DAYS:2}
+    # true = hết dùng thử thì KỂ CẢ nội dung gắn nhãn FREE cũng cần trả phí.
+    # Nhãn FREE trên question_sets/test_blueprints vẫn giữ nguyên trong DB, chỉ
+    # mất tác dụng với học viên — tắt cờ này là mở lại ngay, không phải sửa dữ
+    # liệu.
+    paywall-after-trial: ${PAYWALL_AFTER_TRIAL:true}
 
   billing:
     # Hộp thư nhận báo khi học viên khai đã chuyển khoản, để đối soát sao kê.

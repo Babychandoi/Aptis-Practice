@@ -88,7 +88,13 @@ public final class AuthDtos {
             ProfileResponse profile,
             /** Trạng thái Premium đọc từ entitlement tại thời điểm gọi API */
             boolean premiumActive,
-            Instant premiumEndsAt) {
+            Instant premiumEndsAt,
+            /**
+             * true = quyền hiện tại đến từ dùng thử theo ngày tạo tài khoản, chưa
+             * mua gói. Client dùng để phân biệt "còn N ngày dùng thử" với "gói còn
+             * N ngày", vì premiumEndsAt của hai trường hợp giống nhau.
+             */
+            boolean premiumFromTrial) {
     }
 
     public record ProfileResponse(

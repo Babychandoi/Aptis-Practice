@@ -18,6 +18,7 @@ import vn.weconex.aptis.auth.domain.User;
 import vn.weconex.aptis.auth.domain.UserProfile;
 import vn.weconex.aptis.auth.repository.UserProfileRepository;
 import vn.weconex.aptis.auth.repository.UserRepository;
+import vn.weconex.aptis.common.config.AptisProperties;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.security.CurrentUser;
 import vn.weconex.aptis.entitlement.service.EntitlementService;
@@ -31,6 +32,7 @@ public class MeController {
     private final UserProfileRepository profileRepository;
     private final EntitlementService entitlementService;
     private final CurrentUser currentUser;
+    private final AptisProperties properties;
 
     @GetMapping
     @Transactional(readOnly = true)
@@ -55,6 +57,17 @@ public class MeController {
         boolean premiumActive = entitlementService.hasPremiumAccess(userId);
         Instant premiumEndsAt = entitlementService.premiumEndsAt(userId).orElse(null);
 
+        // Có quyền mà không có entitlement nào nghĩa là đang trong hạn dùng thử
+        // theo ngày tạo tài khoản: trả hạn dùng thử vào cùng trường premiumEndsAt
+        // để client hiện đếm ngược mà không cần biết quyền đến từ nguồn nào.
+        boolean premiumFromTrial = false;
+        if (premiumActive
+                && !entitlementService.hasEntitlement(
+                        userId, properties.entitlement().premiumCode())) {
+            premiumFromTrial = true;
+            premiumEndsAt = entitlementService.signupTrialEndsAt(userId).orElse(null);
+        }
+
         return new AuthDtos.MeResponse(
                 user.getId(),
                 user.getEmail(),
@@ -64,7 +77,8 @@ public class MeController {
                 user.getEmailVerifiedAt() != null,
                 toProfileResponse(profile),
                 premiumActive,
-                premiumEndsAt);
+                premiumEndsAt,
+                premiumFromTrial);
     }
 
     @PatchMapping("/profile")

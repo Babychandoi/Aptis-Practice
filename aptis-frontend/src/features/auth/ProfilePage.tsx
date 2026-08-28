@@ -145,7 +145,7 @@ export function ProfilePage() {
         {user.premiumActive ? (
           <div>
             <p className="text-sm text-slate-700">
-              Premium đang hiệu lực
+              {user.premiumFromTrial ? 'Đang dùng thử miễn phí' : 'Premium đang hiệu lực'}
               {user.premiumEndsAt ? ` đến ${formatDate(user.premiumEndsAt)}` : ' trọn đời'}
               {expiry && <span className="font-semibold"> · {expiry.label}</span>}
             </p>

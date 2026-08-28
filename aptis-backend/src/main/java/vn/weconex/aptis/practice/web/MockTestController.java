@@ -145,7 +145,7 @@ public class MockTestController {
                 blueprint.getDescription(),
                 blueprint.getAccessLevel().name(),
                 blueprint.getDurationSeconds(),
-                blueprint.isFree() || hasPremium,
+                (blueprint.isFree() && entitlementService.freeContentStillOpen()) || hasPremium,
                 partResponses,
                 rules.stream().mapToInt(BlueprintPartRule::getQuestionSetCount).sum());
     }

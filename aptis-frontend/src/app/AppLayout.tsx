@@ -34,6 +34,9 @@ export function AppLayout() {
   const { isAdmin } = usePermission();
   const { collapsed, toggle: toggleSidebar } = useSidebarCollapsed();
   const expiry = describePremiumExpiry(user?.premiumEndsAt);
+  // Dùng thử và gói đã mua cùng dùng premiumEndsAt, chỉ khác chữ hiển thị.
+  const trial = user?.premiumActive === true && user.premiumFromTrial === true;
+  const planLabel = trial ? 'Dùng thử' : 'Premium';
   const displayName = user?.profile?.displayName || user?.profile?.fullName || user?.email || 'Học viên';
 
   const handleLogout = async () => {
@@ -183,7 +186,7 @@ export function AppLayout() {
                 className="grid h-10 w-full place-items-center rounded-xl border border-brand-200 bg-brand-50"
                 title={
                   user.premiumEndsAt
-                    ? `Premium — hết hạn ${formatDate(user.premiumEndsAt)}`
+                    ? `${planLabel} — hết hạn ${formatDate(user.premiumEndsAt)}`
                     : 'Premium — gói kích hoạt đầy đủ'
                 }
               >
@@ -299,11 +302,11 @@ export function AppLayout() {
             <Link
               to="/plans"
               className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-3 text-xs font-semibold text-amber-900 transition-colors hover:border-amber-300 hover:bg-amber-100"
-              title={`Premium ${expiry.label.toLowerCase()} — gia hạn để học không gián đoạn`}
+              title={`${planLabel} ${expiry.label.toLowerCase()} — ${trial ? 'mua gói để học tiếp' : 'gia hạn để học không gián đoạn'}`}
             >
               <span aria-hidden="true">⏳</span>
-              <span className="sm:hidden">Gia hạn</span>
-              <span className="hidden sm:inline">{expiry.label} · Gia hạn</span>
+              <span className="sm:hidden">{trial ? 'Mua gói' : 'Gia hạn'}</span>
+              <span className="hidden sm:inline">{expiry.label} · {trial ? 'Mua gói' : 'Gia hạn'}</span>
             </Link>
           )}
 
@@ -311,10 +314,10 @@ export function AppLayout() {
             <Link
               to="/plans"
               className="hidden min-h-[36px] shrink-0 items-center gap-1.5 rounded-xl border border-brand-200 bg-brand-50 px-3 text-xs font-semibold text-brand-800 transition-colors hover:bg-brand-100 sm:inline-flex"
-              title={`Premium hết hạn ${formatDate(user.premiumEndsAt)}`}
+              title={`${planLabel} hết hạn ${formatDate(user.premiumEndsAt)}`}
             >
               <span className="h-2 w-2 rounded-full bg-accent" />
-              Premium · {expiry.label}
+              {planLabel} · {expiry.label}
             </Link>
           )}
 
@@ -323,7 +326,7 @@ export function AppLayout() {
             <span className="hidden max-w-40 text-left lg:block">
               <span className="block truncate text-xs font-semibold text-slate-900">{displayName}</span>
               <span className="block font-mono text-[10px] uppercase text-slate-400">
-                {user?.premiumActive ? 'Premium' : 'Free'}
+                {user?.premiumActive ? (trial ? 'Dùng thử' : 'Premium') : 'Hết hạn'}
               </span>
             </span>
           </Link>

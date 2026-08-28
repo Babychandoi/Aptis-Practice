@@ -91,11 +91,32 @@ public record AptisProperties(
     /**
      * @param renewalPolicy EXTEND_CURRENT hoặc QUEUE_NEXT (PHẦN IV §34)
      */
-    public record Entitlement(String premiumCode, RenewalPolicy renewalPolicy) {
+    /**
+     * @param signupTrialDays   số ngày dùng thử kể từ khi TẠO tài khoản. 0 = tắt
+     *                          dùng thử tự động, quay về mô hình có nội dung miễn
+     *                          phí vĩnh viễn.
+     * @param paywallAfterTrial  true = hết dùng thử thì kể cả nội dung gắn nhãn
+     *                          FREE cũng phải trả phí. Để false thì 104 bộ và các
+     *                          blueprint FREE vẫn mở, tức vẫn còn đường học miễn
+     *                          phí vĩnh viễn.
+     */
+    public record Entitlement(
+            String premiumCode,
+            RenewalPolicy renewalPolicy,
+            int signupTrialDays,
+            boolean paywallAfterTrial) {
 
         public enum RenewalPolicy {
             EXTEND_CURRENT,
             QUEUE_NEXT
+        }
+
+        /** Còn trong thời gian dùng thử tính từ lúc tạo tài khoản? */
+        public boolean withinSignupTrial(java.time.Instant createdAt, java.time.Instant now) {
+            if (signupTrialDays <= 0 || createdAt == null) {
+                return false;
+            }
+            return now.isBefore(createdAt.plus(java.time.Duration.ofDays(signupTrialDays)));
         }
     }
 
