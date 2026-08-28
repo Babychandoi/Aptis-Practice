@@ -27,6 +27,7 @@ import type {
   UpdatePlanRequest,
   UpdateQuestionSetRequest,
   SaveBankAccountRequest,
+  AccessState,
   AdminRole,
   AdminUser,
   UserStatus,
@@ -220,7 +221,15 @@ export const adminEntitlementApi = {
 };
 
 export const adminUserApi = {
-  list: (params: { q?: string; status?: UserStatus; page?: number; size?: number } = {}) =>
+  list: (
+    params: {
+      q?: string;
+      status?: UserStatus;
+      access?: AccessState;
+      page?: number;
+      size?: number;
+    } = {},
+  ) =>
     api
       .get<PageResponse<AdminUser>>('/admin/users', {
         params: { page: 0, size: 20, ...params },

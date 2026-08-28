@@ -6,7 +6,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { confirmDialog } from '@/lib/dialog';
 import { formatDateTime, relativeTime } from '@/lib/format';
-import type { AdminEntitlement, AdminSubscription, AdminUser, UserStatus } from '@/types/admin';
+import type { AccessState, AdminEntitlement, AdminSubscription, AdminUser, UserStatus } from '@/types/admin';
 import { DataTable, PageHeader, Pager, ResultBanner } from './components/AdminUi';
 import { usePermission } from './usePermission';
 
@@ -24,6 +24,7 @@ export function UserAdminPage() {
   const [searchInput, setSearchInput] = useState('');
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState<UserStatus | ''>('');
+  const [access, setAccess] = useState<AccessState | ''>('');
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<AdminUser | null>(null);
   const [banner, setBanner] = useState<string | null>(null);
@@ -37,8 +38,15 @@ export function UserAdminPage() {
   }, [searchInput]);
 
   const usersQuery = useQuery({
-    queryKey: ['admin', 'users', query, status, page],
-    queryFn: () => adminUserApi.list({ q: query || undefined, status: status || undefined, page, size: PAGE_SIZE }),
+    queryKey: ['admin', 'users', query, status, access, page],
+    queryFn: () =>
+      adminUserApi.list({
+        q: query || undefined,
+        status: status || undefined,
+        access: access || undefined,
+        page,
+        size: PAGE_SIZE,
+      }),
     placeholderData: (previous) => previous,
   });
 
@@ -52,7 +60,7 @@ export function UserAdminPage() {
     return (
       <>
         <p className="mb-2 text-xs text-slate-500">{data.totalElements} người dùng</p>
-        <DataTable headers={['Người dùng', 'Trạng thái', 'Vai trò', 'Premium', 'Hoạt động gần nhất', 'Ngày tạo', '']} isEmpty={data.content.length === 0} empty="Không tìm thấy người dùng phù hợp.">
+        <DataTable headers={['Người dùng', 'Trạng thái', 'Vai trò', 'Quyền truy cập', 'Premium', 'Hoạt động gần nhất', 'Ngày tạo', '']} isEmpty={data.content.length === 0} empty="Không tìm thấy người dùng phù hợp.">
           {data.content.map((user) => (
             <tr key={user.id} className="transition-colors hover:bg-brand-50">
               <td className="px-4 py-3">
@@ -61,6 +69,7 @@ export function UserAdminPage() {
               </td>
               <td className="px-4 py-3"><UserStatusBadge status={user.status} /></td>
               <td className="px-4 py-3"><div className="flex max-w-72 flex-wrap gap-1">{user.roles.map((role) => <span key={role} className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700">{role}</span>)}</div></td>
+              <td className="px-4 py-3"><AccessStateBadge user={user} /></td>
               <td className="px-4 py-3"><PremiumSummary user={user} canManage={canManagePremium} /></td>
               {/* Hoạt động là mốc "lần cuối còn ở web" — chính xác hơn đăng
                   nhập, vì refresh token sống 30 ngày nên người vào lại hằng
@@ -86,9 +95,23 @@ export function UserAdminPage() {
     <div>
       <PageHeader title="Quản lý người dùng" description="Tìm tài khoản, quản lý trạng thái, vai trò và nâng cấp, gia hạn hoặc huỷ gói Premium." />
       {banner && <ResultBanner tone="success" message={banner} onDismiss={() => setBanner(null)} />}
-      <div className="mb-5 grid gap-3 rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(31,41,35,.07)] sm:grid-cols-[minmax(0,1fr)_220px]">
+      <div className="mb-5 grid gap-3 rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(31,41,35,.07)] sm:grid-cols-[minmax(0,1fr)_200px_200px]">
         <div><label htmlFor="user-search" className="label">Tìm người dùng</label><input id="user-search" className="input" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} placeholder="Email hoặc số điện thoại" /></div>
         <div><label htmlFor="user-status" className="label">Trạng thái</label><select id="user-status" className="input" value={status} onChange={(event) => { setStatus(event.target.value as UserStatus | ''); setPage(0); }}><option value="">Tất cả</option><option value="ACTIVE">Đang hoạt động</option><option value="SUSPENDED">Tạm khóa</option><option value="PENDING_VERIFICATION">Chờ xác minh</option><option value="LOCKED">Khóa tạm thời</option></select></div>
+        <div>
+          <label htmlFor="user-access" className="label">Quyền truy cập</label>
+          <select
+            id="user-access"
+            className="input"
+            value={access}
+            onChange={(event) => { setAccess(event.target.value as AccessState | ''); setPage(0); }}
+          >
+            <option value="">Tất cả</option>
+            <option value="PAID">Đã mua gói</option>
+            <option value="TRIAL">Đang dùng thử</option>
+            <option value="EXPIRED">Hết hạn — phải trả phí</option>
+          </select>
+        </div>
       </div>
       {content()}
       {selected && <UserPanel user={selected} canWrite={canWrite} canManagePremium={canManagePremium} onClose={() => setSelected(null)} onSaved={(updated, message) => { setSelected(updated); setBanner(message); void queryClient.invalidateQueries({ queryKey: ['admin', 'users'] }); }} />}
@@ -128,6 +151,52 @@ function UserPanel({ user, canWrite, canManagePremium, onClose, onSaved }: { use
   );
 }
 
+/**
+ * Nguồn quyền của tài khoản.
+ *
+ * Dùng thử không có bản ghi riêng trong DB — quyền suy ra từ ngày tạo tài khoản
+ * — nên cột này là cách duy nhất nhìn ra ai đang dùng thử mà chưa trả tiền.
+ */
+function AccessStateBadge({ user }: { user: AdminUser }) {
+  if (user.accessState === 'PAID') {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-800">
+        <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+        Đã mua gói
+      </span>
+    );
+  }
+
+  if (user.accessState === 'TRIAL') {
+    return (
+      <div>
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-semibold text-amber-900">
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+          Đang dùng thử
+        </span>
+        {user.trialEndsAt && (
+          <p className="mt-1 text-[11px] text-slate-500">{describeTrialLeft(user.trialEndsAt)}</p>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">
+      <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+      Hết hạn
+    </span>
+  );
+}
+
+/** Đếm bằng giờ, không bằng ngày: dùng thử chỉ dài 2 ngày. */
+function describeTrialLeft(endsAt: string) {
+  const hours = Math.ceil((new Date(endsAt).getTime() - Date.now()) / 3_600_000);
+  if (hours <= 0) return 'Vừa hết hạn';
+  if (hours < 24) return `Còn ${hours} giờ`;
+  return `Còn ${Math.floor(hours / 24)} ngày ${hours % 24} giờ`;
+}
+
 const PREMIUM_CODE = 'PREMIUM_CONTENT_ACCESS';
 
 function PremiumSummary({ user, canManage }: { user: AdminUser; canManage: boolean }) {
@@ -137,7 +206,7 @@ function PremiumSummary({ user, canManage }: { user: AdminUser; canManage: boole
     enabled: canManage,
   });
   const period = getPremiumPeriod(entitlementsQuery.data ?? []);
-  const isPremium = period != null || (!entitlementsQuery.isSuccess && user.premiumActive);
+  const isPremium = period != null || (!entitlementsQuery.isSuccess && user.accessState === 'PAID');
   const startsAt = period?.startsAt;
   const endsAt = period?.endsAt ?? user.premiumEndsAt;
 
@@ -172,7 +241,7 @@ function PremiumSection({ user, canManage, onSaved }: {
   });
   const premiumEntitlements = (entitlementsQuery.data ?? []).filter((item) => item.entitlementCode === PREMIUM_CODE);
   const premiumPeriod = getPremiumPeriod(premiumEntitlements);
-  const hasPremium = premiumPeriod != null || (!entitlementsQuery.isSuccess && user.premiumActive);
+  const hasPremium = premiumPeriod != null || (!entitlementsQuery.isSuccess && user.accessState === 'PAID');
   const premiumEndsAt = premiumPeriod?.endsAt ?? user.premiumEndsAt;
 
   const grantMutation = useMutation({
@@ -189,7 +258,13 @@ function PremiumSection({ user, canManage, onSaved }: {
     onSuccess: (entitlement) => {
       void refreshPremiumQueries(queryClient, user.id);
       onSaved(
-        { ...user, premiumActive: true, premiumEndsAt: entitlement.endsAt },
+        {
+          ...user,
+          premiumActive: true,
+          premiumEndsAt: entitlement.endsAt,
+          accessState: 'PAID',
+          trialEndsAt: null,
+        },
         hasPremium ? `Đã gia hạn Premium thêm ${durationDays} ngày.` : `Đã nâng cấp Premium ${durationDays} ngày.`,
       );
     },
@@ -211,7 +286,18 @@ function PremiumSection({ user, canManage, onSaved }: {
     },
     onSuccess: () => {
       void refreshPremiumQueries(queryClient, user.id);
-      onSaved({ ...user, premiumActive: false, premiumEndsAt: null }, 'Đã huỷ gói Premium của người dùng.');
+      // Huỷ gói mà tài khoản vẫn trong hạn dùng thử thì học viên chưa mất quyền
+      // — giữ nguyên TRIAL, đợi lần tải lại lấy trạng thái thật từ backend.
+      const stillTrial = user.accessState === 'TRIAL';
+      onSaved(
+        {
+          ...user,
+          premiumActive: stillTrial,
+          premiumEndsAt: null,
+          accessState: stillTrial ? 'TRIAL' : 'EXPIRED',
+        },
+        'Đã huỷ gói Premium của người dùng.',
+      );
     },
   });
 

@@ -45,9 +45,18 @@ public class AdminUserService {
 
     @Transactional(readOnly = true)
     public Page<AdminUserDtos.AdminUserResponse> search(
-            String query, UserStatus status, Pageable pageable) {
+            String query,
+            UserStatus status,
+            AdminUserDtos.AccessState access,
+            Pageable pageable) {
 
         String term = query == null ? "" : query.trim().toLowerCase(Locale.ROOT);
+        // Lọc quyền phải làm ở DB chứ không lọc sau khi phân trang: lọc trên 20
+        // dòng của một trang thì tổng số và số trang đều sai.
+        Instant now = Instant.now();
+        Instant trialFrom = now.minus(java.time.Duration.ofDays(
+                Math.max(properties.entitlement().signupTrialDays(), 0)));
+
         Page<User> page = userRepository.findAll((root, ignored, cb) -> {
             Predicate predicate = cb.conjunction();
             if (!term.isEmpty()) {
@@ -59,6 +68,9 @@ public class AdminUserService {
             if (status != null) {
                 predicate = cb.and(predicate, cb.equal(root.get("status"), status));
             }
+            if (access != null) {
+                predicate = cb.and(predicate, accessPredicate(root, ignored, cb, access, now, trialFrom));
+            }
             return predicate;
         }, pageable);
 
@@ -68,6 +80,41 @@ public class AdminUserService {
                 page.getContent().stream().map(User::getId).toList());
 
         return page.map(user -> toResponse(user, lastActivity.get(user.getId())));
+    }
+
+    /**
+     * Điều kiện lọc theo nguồn quyền.
+     *
+     * <p>Dùng thử KHÔNG có bản ghi riêng — quyền suy ra từ users.created_at (xem
+     * EntitlementService#withinSignupTrial), nên ở đây phải diễn đạt lại chính
+     * quy tắc đó: có entitlement là PAID, còn lại chia theo created_at.
+     */
+    private Predicate accessPredicate(
+            jakarta.persistence.criteria.Root<User> root,
+            jakarta.persistence.criteria.CriteriaQuery<?> criteriaQuery,
+            jakarta.persistence.criteria.CriteriaBuilder cb,
+            AdminUserDtos.AccessState access,
+            Instant now,
+            Instant trialFrom) {
+
+        jakarta.persistence.criteria.Subquery<String> paid =
+                criteriaQuery.subquery(String.class);
+        var ent = paid.from(vn.weconex.aptis.entitlement.domain.UserEntitlement.class);
+        paid.select(ent.get("userId"))
+                .where(cb.and(
+                        cb.equal(ent.get("userId"), root.get("id")),
+                        cb.equal(ent.get("entitlementCode"), properties.entitlement().premiumCode()),
+                        cb.isNull(ent.get("revokedAt")),
+                        cb.or(cb.isNull(ent.get("endsAt")), cb.greaterThan(ent.get("endsAt"), now))));
+
+        Predicate hasPaid = cb.exists(paid);
+        Predicate withinTrial = cb.greaterThanOrEqualTo(root.get("createdAt"), trialFrom);
+
+        return switch (access) {
+            case PAID -> hasPaid;
+            case TRIAL -> cb.and(cb.not(hasPaid), withinTrial);
+            case EXPIRED -> cb.and(cb.not(hasPaid), cb.not(withinTrial));
+        };
     }
 
     /** Cho một user lẻ (sau khi đổi trạng thái/vai trò). */
@@ -166,8 +213,23 @@ public class AdminUserService {
                 .filter(java.util.Objects::nonNull)
                 .max(Comparator.naturalOrder())
                 .orElse(null);
-        boolean premiumActive = entitlements.stream()
+        boolean paid = entitlements.stream()
                 .anyMatch(item -> premiumCode.equals(item.getEntitlementCode()));
+
+        // Còn dùng thử thì premiumActive vẫn true — cột Premium trong trang quản
+        // trị phải khớp với quyền thật mà học viên đang có, không chỉ với đơn hàng.
+        boolean withinTrial = !paid
+                && properties.entitlement().withinSignupTrial(user.getCreatedAt(), Instant.now());
+        boolean premiumActive = paid || withinTrial;
+
+        AdminUserDtos.AccessState accessState = paid
+                ? AdminUserDtos.AccessState.PAID
+                : withinTrial ? AdminUserDtos.AccessState.TRIAL : AdminUserDtos.AccessState.EXPIRED;
+
+        Instant trialEndsAt = withinTrial
+                ? user.getCreatedAt().plus(java.time.Duration.ofDays(
+                        properties.entitlement().signupTrialDays()))
+                : null;
 
         return new AdminUserDtos.AdminUserResponse(
                 user.getId(), user.getEmail(), user.getPhone(), user.getStatus(),
@@ -175,7 +237,8 @@ public class AdminUserService {
                 profile == null ? null : profile.getFullName(),
                 profile == null ? null : profile.getDisplayName(),
                 user.getRoles().stream().map(Role::getCode).sorted().toList(),
-                premiumActive, premiumEndsAt, user.getCreatedAt(), user.getLastLoginAt(),
+                premiumActive, premiumEndsAt, accessState, trialEndsAt,
+                user.getCreatedAt(), user.getLastLoginAt(),
                 lastActivityAt);
     }
 }

@@ -424,11 +424,20 @@ export interface AdminUser {
   roles: string[];
   premiumActive: boolean;
   premiumEndsAt: string | null;
+  /**
+   * Nguồn quyền: PAID đã mua, TRIAL còn dùng thử theo ngày tạo tài khoản,
+   * EXPIRED hết và phải trả phí. premiumActive true cho cả PAID và TRIAL.
+   */
+  accessState: AccessState;
+  /** Hạn dùng thử; null khi đã mua hoặc đã hết. */
+  trialEndsAt: string | null;
   createdAt: string;
   lastLoginAt: string | null;
   /** Lần cuối còn ở web — suy từ refresh token gần nhất, chính xác hơn lastLoginAt. */
   lastActivityAt: string | null;
 }
+
+export type AccessState = 'PAID' | 'TRIAL' | 'EXPIRED';
 
 export interface AdminRole {
   code: string;
