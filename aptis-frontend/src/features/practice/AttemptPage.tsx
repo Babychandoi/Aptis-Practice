@@ -1049,10 +1049,18 @@ export function AttemptPage() {
  * Part vô nghĩa, học viên cần chọn theo ĐỀ.
  */
 /**
- * Câu trả lời mẫu, mặc định ẩn để học viên tự nói trước rồi mới đối chiếu.
+ * Nội dung tham khảo mặc định ẩn, để học viên tự làm trước rồi mới đối chiếu.
  * Chỉ render khi backend trả explanation (luyện tập, chưa nộp).
+ *
+ * <p>Cùng một trường explanation mang hai loại nội dung khác nhau: với Speaking
+ * và Writing đó là câu trả lời mẫu, với Listening là transcript hội thoại. Gọi
+ * transcript là "câu trả lời mẫu" thì học viên tưởng mình phải nói lại y như
+ * vậy, nên nhãn phải đổi theo kỹ năng.
  */
-function SampleAnswer({ content }: { content: NonNullable<QuestionItem['explanation']> }) {
+function SampleAnswer({ content, kind }: {
+  content: NonNullable<QuestionItem['explanation']>;
+  kind: 'TRANSCRIPT' | 'SAMPLE';
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -1064,18 +1072,20 @@ function SampleAnswer({ content }: { content: NonNullable<QuestionItem['explanat
           aria-expanded={open}
           className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 px-3 py-1.5 text-[11px] font-semibold text-amber-800 transition hover:bg-amber-50"
         >
-          {open ? '🙈 Ẩn câu mẫu' : '👁 Xem câu mẫu'}
+          {kind === 'TRANSCRIPT'
+            ? (open ? '🙈 Ẩn transcript' : '👁 Xem transcript')
+            : (open ? '🙈 Ẩn câu mẫu' : '👁 Xem câu mẫu')}
         </button>
       </div>
 
       {open && (
         <div className="mt-2 rounded-xl border border-amber-300 bg-amber-50/70 p-3">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-amber-800">
-            Câu trả lời tham khảo
+            {kind === 'TRANSCRIPT' ? 'Nội dung bài nghe' : 'Câu trả lời tham khảo'}
           </p>
           <div className="mt-2 flex gap-2 rounded-lg border-l-4 border-amber-400 bg-white/70 p-2.5">
             <span className="h-fit shrink-0 rounded bg-amber-200 px-1.5 py-0.5 text-[10px] font-bold text-amber-900">
-              SAMPLE
+              {kind === 'TRANSCRIPT' ? 'SCRIPT' : 'SAMPLE'}
             </span>
             <SafeContent content={content} className="question-content flex-1 text-xs leading-relaxed" />
           </div>
@@ -1084,6 +1094,24 @@ function SampleAnswer({ content }: { content: NonNullable<QuestionItem['explanat
     </div>
   );
 }
+
+/**
+ * explanation của bộ này là transcript hay câu trả lời mẫu?
+ *
+ * Suy từ Part: Listening có sẵn đáp án đúng nên explanation chỉ có thể là lời
+ * thoại; Speaking và Writing không có đáp án đúng nên đó là bài mẫu.
+ */
+function explanationKind(set: AttemptQuestionSet): 'TRANSCRIPT' | 'SAMPLE' {
+  return LISTENING_PART_IDS.has(set.content.partId) ? 'TRANSCRIPT' : 'SAMPLE';
+}
+
+/** Bốn Part của kỹ năng Nghe — id cố định theo seed. */
+const LISTENING_PART_IDS = new Set([
+  '16000000-0000-4000-8000-000000000021',
+  '16000000-0000-4000-8000-000000000022',
+  '16000000-0000-4000-8000-000000000023',
+  '16000000-0000-4000-8000-000000000024',
+]);
 
 /** Đề được coi là "nhiều lửa" khi biên tập viên đặt độ hot từ mức này trở lên. */
 const HOT_THRESHOLD = 4;
@@ -1604,7 +1632,7 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
       */}
       {item.explanation?.value && (revealed
         ? <SafeContent content={item.explanation} className="question-content mt-3 rounded-lg bg-stone-100 p-3 text-xs" />
-        : <SampleAnswer content={item.explanation} />)}
+        : <SampleAnswer content={item.explanation} kind={explanationKind(set)} />)}
     </article>
   );
 }
