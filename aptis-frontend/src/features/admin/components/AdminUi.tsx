@@ -110,13 +110,19 @@ export function PageHeader({
 }
 
 /** Bảng cuộn ngang trên màn hẹp thay vì ép co cột đến mức không đọc được. */
+/**
+ * Tiêu đề cột: chuỗi cho cột thường, hoặc {key, label} khi cần đặt nội dung
+ * bấm được (ví dụ nút sắp xếp) — React cần key ổn định, không lấy được từ node.
+ */
+export type TableHeader = string | { key: string; label: ReactNode };
+
 export function DataTable({
   headers,
   children,
   empty,
   isEmpty,
 }: {
-  headers: string[];
+  headers: TableHeader[];
   children: ReactNode;
   empty?: string;
   isEmpty?: boolean;
@@ -134,14 +140,18 @@ export function DataTable({
       <table className="w-full min-w-[640px] text-sm">
         <thead>
           <tr className="border-b border-[#e8e5dc] bg-[#f7f6f1] text-left">
-            {headers.map((header) => (
-              <th
-                key={header}
-                className="whitespace-nowrap px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-slate-500"
-              >
-                {header}
-              </th>
-            ))}
+            {headers.map((header) => {
+              const key = typeof header === 'string' ? header : header.key;
+              const label = typeof header === 'string' ? header : header.label;
+              return (
+                <th
+                  key={key}
+                  className="whitespace-nowrap px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-slate-500"
+                >
+                  {label}
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">{children}</tbody>

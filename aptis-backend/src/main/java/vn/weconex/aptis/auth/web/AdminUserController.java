@@ -5,7 +5,6 @@ import java.util.List;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -35,11 +34,14 @@ public class AdminUserController {
             @RequestParam(required = false) UserStatus status,
             @RequestParam(required = false) AdminUserDtos.AccessState access,
             @RequestParam(required = false) AdminUserDtos.ActivityWindow activity,
+            @RequestParam(required = false) AdminUserDtos.UserSort sort,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
 
-        return PageResponse.of(service.search(q, status, access, activity,
-                PageRequest.of(page, Math.min(size, 100), Sort.by(Sort.Direction.DESC, "createdAt"))));
+        // Thứ tự do service quyết (xem AdminUserService#applyOrder): sắp theo
+        // hoạt động cần subquery, Sort của Pageable không diễn đạt được.
+        return PageResponse.of(service.search(q, status, access, activity, sort,
+                PageRequest.of(page, Math.min(size, 100))));
     }
 
     @GetMapping("/roles")

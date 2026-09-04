@@ -31,6 +31,7 @@ import type {
   ActivityWindow,
   AdminRole,
   AdminUser,
+  UserSort,
   UserStatus,
   PartScoringRule,
   UpdatePartScoringRule,
@@ -228,6 +229,7 @@ export const adminUserApi = {
       status?: UserStatus;
       access?: AccessState;
       activity?: ActivityWindow;
+      sort?: UserSort;
       page?: number;
       size?: number;
     } = {},

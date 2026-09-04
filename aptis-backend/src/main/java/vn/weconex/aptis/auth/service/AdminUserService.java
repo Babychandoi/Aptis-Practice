@@ -49,6 +49,7 @@ public class AdminUserService {
             UserStatus status,
             AdminUserDtos.AccessState access,
             AdminUserDtos.ActivityWindow activity,
+            AdminUserDtos.UserSort sort,
             Pageable pageable) {
 
         String term = query == null ? "" : query.trim().toLowerCase(Locale.ROOT);
@@ -75,6 +76,7 @@ public class AdminUserService {
             if (activity != null) {
                 predicate = cb.and(predicate, activityPredicate(root, ignored, cb, activity, now));
             }
+            applyOrder(root, ignored, cb, sort);
             return predicate;
         }, pageable);
 
@@ -84,6 +86,55 @@ public class AdminUserService {
                 page.getContent().stream().map(User::getId).toList());
 
         return page.map(user -> toResponse(user, lastActivity.get(user.getId())));
+    }
+
+    /**
+     * Thứ tự trả về.
+     *
+     * <p>Sắp theo hoạt động phải dùng subquery tương quan chứ không dùng
+     * {@code Sort} của Pageable: lastActivityAt không phải cột của users mà là
+     * MAX(refresh_tokens.created_at), và nó được nạp SAU khi phân trang.
+     *
+     * <p>Người chưa từng đăng nhập có subquery NULL. MySQL xếp NULL lên đầu khi
+     * ASC nên "lâu không vào nhất" sẽ ra họ trước — đúng ý: đó chính là nhóm bỏ
+     * đi ngay sau khi đăng ký.
+     */
+    private void applyOrder(
+            jakarta.persistence.criteria.Root<User> root,
+            jakarta.persistence.criteria.CriteriaQuery<?> criteriaQuery,
+            jakarta.persistence.criteria.CriteriaBuilder cb,
+            AdminUserDtos.UserSort sort) {
+
+        if (criteriaQuery == null
+                || Long.class.equals(criteriaQuery.getResultType())
+                || long.class.equals(criteriaQuery.getResultType())) {
+            // Truy vấn COUNT của phân trang: thêm ORDER BY vào là MySQL báo lỗi
+            // vì cột sắp xếp không nằm trong SELECT.
+            return;
+        }
+
+        AdminUserDtos.UserSort effective =
+                sort == null ? AdminUserDtos.UserSort.CREATED_DESC : sort;
+
+        switch (effective) {
+            case CREATED_DESC -> criteriaQuery.orderBy(cb.desc(root.get("createdAt")));
+            case CREATED_ASC -> criteriaQuery.orderBy(cb.asc(root.get("createdAt")));
+            case ACTIVITY_DESC, ACTIVITY_ASC -> {
+                jakarta.persistence.criteria.Subquery<Instant> last =
+                        criteriaQuery.subquery(Instant.class);
+                var token = last.from(vn.weconex.aptis.auth.domain.RefreshToken.class);
+                last.select(cb.greatest(token.<Instant>get("createdAt")))
+                        .where(cb.equal(token.get("userId"), root.get("id")));
+
+                criteriaQuery.orderBy(
+                        effective == AdminUserDtos.UserSort.ACTIVITY_DESC
+                                ? cb.desc(last)
+                                : cb.asc(last),
+                        // Chốt thứ tự cho người cùng mốc (hoặc cùng NULL), nếu
+                        // không thì phân trang có thể lặp/bỏ sót dòng.
+                        cb.desc(root.get("createdAt")));
+            }
+        }
     }
 
     /**

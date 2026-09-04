@@ -46,6 +46,23 @@ public final class AdminUserDtos {
     }
 
     /**
+     * Cách sắp xếp danh sách tài khoản.
+     *
+     * <p>ACTIVITY_DESC/ASC sắp theo lần cuối còn ở web. Cột đó không có trong
+     * bảng users (nó là MAX(refresh_tokens.created_at)) nên phải sắp bằng
+     * subquery tương quan, xem AdminUserService#applyOrder.
+     */
+    public enum UserSort {
+        /** Mới đăng ký trước — mặc định. */
+        CREATED_DESC,
+        CREATED_ASC,
+        /** Vừa vào web gần đây nhất trước. */
+        ACTIVITY_DESC,
+        /** Lâu không vào nhất trước — để tìm người bỏ học. */
+        ACTIVITY_ASC
+    }
+
+    /**
      * Khoảng lọc theo lần cuối còn ở web.
      *
      * <p>Lũy tiến, không phải các khoảng rời nhau: LAST_7_DAYS gồm cả người vào

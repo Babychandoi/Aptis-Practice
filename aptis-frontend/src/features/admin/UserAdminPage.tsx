@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/api/client';
@@ -6,7 +7,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { confirmDialog } from '@/lib/dialog';
 import { formatDateTime, relativeTime } from '@/lib/format';
-import type { AccessState, ActivityWindow, AdminEntitlement, AdminSubscription, AdminUser, UserStatus } from '@/types/admin';
+import type { AccessState, ActivityWindow, AdminEntitlement, AdminSubscription, AdminUser, UserSort, UserStatus } from '@/types/admin';
 import { DataTable, PageHeader, Pager, ResultBanner } from './components/AdminUi';
 import { usePermission } from './usePermission';
 
@@ -26,6 +27,7 @@ export function UserAdminPage() {
   const [status, setStatus] = useState<UserStatus | ''>('');
   const [access, setAccess] = useState<AccessState | ''>('');
   const [activity, setActivity] = useState<ActivityWindow | ''>('');
+  const [sort, setSort] = useState<UserSort>('CREATED_DESC');
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<AdminUser | null>(null);
   const [banner, setBanner] = useState<string | null>(null);
@@ -39,13 +41,14 @@ export function UserAdminPage() {
   }, [searchInput]);
 
   const usersQuery = useQuery({
-    queryKey: ['admin', 'users', query, status, access, activity, page],
+    queryKey: ['admin', 'users', query, status, access, activity, sort, page],
     queryFn: () =>
       adminUserApi.list({
         q: query || undefined,
         status: status || undefined,
         access: access || undefined,
         activity: activity || undefined,
+        sort,
         page,
         size: PAGE_SIZE,
       }),
@@ -62,7 +65,46 @@ export function UserAdminPage() {
     return (
       <>
         <p className="mb-2 text-xs text-slate-500">{data.totalElements} người dùng</p>
-        <DataTable headers={['Người dùng', 'Trạng thái', 'Vai trò', 'Quyền truy cập', 'Premium', 'Hoạt động gần nhất', 'Ngày tạo', '']} isEmpty={data.content.length === 0} empty="Không tìm thấy người dùng phù hợp.">
+        <DataTable
+          headers={[
+            'Người dùng',
+            'Trạng thái',
+            'Vai trò',
+            'Quyền truy cập',
+            'Premium',
+            {
+              key: 'activity',
+              label: (
+                <SortButton
+                  label="Hoạt động gần nhất"
+                  active={sort === 'ACTIVITY_DESC' || sort === 'ACTIVITY_ASC'}
+                  descending={sort === 'ACTIVITY_DESC'}
+                  onClick={() => {
+                    setSort((current) => (current === 'ACTIVITY_DESC' ? 'ACTIVITY_ASC' : 'ACTIVITY_DESC'));
+                    setPage(0);
+                  }}
+                />
+              ),
+            },
+            {
+              key: 'createdAt',
+              label: (
+                <SortButton
+                  label="Ngày tạo"
+                  active={sort === 'CREATED_DESC' || sort === 'CREATED_ASC'}
+                  descending={sort === 'CREATED_DESC'}
+                  onClick={() => {
+                    setSort((current) => (current === 'CREATED_DESC' ? 'CREATED_ASC' : 'CREATED_DESC'));
+                    setPage(0);
+                  }}
+                />
+              ),
+            },
+            '',
+          ]}
+          isEmpty={data.content.length === 0}
+          empty="Không tìm thấy người dùng phù hợp."
+        >
           {data.content.map((user) => (
             <tr key={user.id} className="transition-colors hover:bg-brand-50">
               <td className="px-4 py-3">
@@ -166,6 +208,38 @@ function UserPanel({ user, canWrite, canManagePremium, onClose, onSaved }: { use
         </div>
       </aside>
     </div>
+  );
+}
+
+/**
+ * Tiêu đề cột bấm được để đổi thứ tự.
+ *
+ * Mũi tên chỉ hiện ở cột đang sắp — hiện cả hai cột thì không biết cột nào
+ * đang có tác dụng.
+ */
+function SortButton({ label, active, descending, onClick }: {
+  label: string;
+  active: boolean;
+  descending: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      title={active
+        ? `Đang sắp ${descending ? 'mới nhất trước' : 'cũ nhất trước'} — bấm để đảo`
+        : `Sắp theo ${label.toLowerCase()}`}
+      className={clsx(
+        'inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide transition-colors',
+        active ? 'text-brand-800' : 'text-slate-500 hover:text-slate-800',
+      )}
+    >
+      {label}
+      <span aria-hidden="true" className={active ? 'text-brand-800' : 'text-slate-300'}>
+        {active ? (descending ? '↓' : '↑') : '↕'}
+      </span>
+    </button>
   );
 }
 

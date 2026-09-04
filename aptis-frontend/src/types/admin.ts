@@ -445,6 +445,9 @@ export type AccessState = 'PAID' | 'TRIAL' | 'EXPIRED';
  */
 export type ActivityWindow = 'TODAY' | 'LAST_7_DAYS' | 'LAST_30_DAYS' | 'INACTIVE' | 'NEVER';
 
+/** Cách sắp xếp danh sách tài khoản trong trang quản trị. */
+export type UserSort = 'CREATED_DESC' | 'CREATED_ASC' | 'ACTIVITY_DESC' | 'ACTIVITY_ASC';
+
 export interface AdminRole {
   code: string;
   name: string;
