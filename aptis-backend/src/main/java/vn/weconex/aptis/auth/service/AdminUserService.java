@@ -48,6 +48,7 @@ public class AdminUserService {
             String query,
             UserStatus status,
             AdminUserDtos.AccessState access,
+            AdminUserDtos.ActivityWindow activity,
             Pageable pageable) {
 
         String term = query == null ? "" : query.trim().toLowerCase(Locale.ROOT);
@@ -71,6 +72,9 @@ public class AdminUserService {
             if (access != null) {
                 predicate = cb.and(predicate, accessPredicate(root, ignored, cb, access, now, trialFrom));
             }
+            if (activity != null) {
+                predicate = cb.and(predicate, activityPredicate(root, ignored, cb, activity, now));
+            }
             return predicate;
         }, pageable);
 
@@ -80,6 +84,53 @@ public class AdminUserService {
                 page.getContent().stream().map(User::getId).toList());
 
         return page.map(user -> toResponse(user, lastActivity.get(user.getId())));
+    }
+
+    /**
+     * Điều kiện lọc theo lần cuối còn ở web.
+     *
+     * <p>Mốc hoạt động là thời điểm phát refresh token gần nhất — cùng cách tính
+     * với cột hiển thị (xem {@link #loadLastActivity}). Phải diễn đạt lại bằng
+     * subquery vì cột đó được tính SAU khi phân trang, nên không lọc được.
+     */
+    private Predicate activityPredicate(
+            jakarta.persistence.criteria.Root<User> root,
+            jakarta.persistence.criteria.CriteriaQuery<?> criteriaQuery,
+            jakarta.persistence.criteria.CriteriaBuilder cb,
+            AdminUserDtos.ActivityWindow activity,
+            Instant now) {
+
+        if (activity == AdminUserDtos.ActivityWindow.NEVER) {
+            return cb.not(cb.exists(tokenSubquery(root, criteriaQuery, cb, null, now)));
+        }
+
+        Instant from = switch (activity) {
+            case TODAY -> now.minus(java.time.Duration.ofDays(1));
+            case LAST_7_DAYS -> now.minus(java.time.Duration.ofDays(7));
+            case LAST_30_DAYS, INACTIVE -> now.minus(java.time.Duration.ofDays(30));
+            case NEVER -> throw new IllegalStateException();
+        };
+
+        Predicate active = cb.exists(tokenSubquery(root, criteriaQuery, cb, from, now));
+        // INACTIVE là phần bù: quá 30 ngày không vào, GỒM cả người chưa từng vào.
+        return activity == AdminUserDtos.ActivityWindow.INACTIVE ? cb.not(active) : active;
+    }
+
+    /** Tài khoản có phiên nào phát ra sau {@code from} (null = phiên bất kỳ)? */
+    private jakarta.persistence.criteria.Subquery<String> tokenSubquery(
+            jakarta.persistence.criteria.Root<User> root,
+            jakarta.persistence.criteria.CriteriaQuery<?> criteriaQuery,
+            jakarta.persistence.criteria.CriteriaBuilder cb,
+            Instant from,
+            Instant now) {
+
+        jakarta.persistence.criteria.Subquery<String> sub = criteriaQuery.subquery(String.class);
+        var token = sub.from(vn.weconex.aptis.auth.domain.RefreshToken.class);
+        Predicate where = cb.equal(token.get("userId"), root.get("id"));
+        if (from != null) {
+            where = cb.and(where, cb.greaterThanOrEqualTo(token.get("createdAt"), from));
+        }
+        return sub.select(token.get("userId")).where(where);
     }
 
     /**

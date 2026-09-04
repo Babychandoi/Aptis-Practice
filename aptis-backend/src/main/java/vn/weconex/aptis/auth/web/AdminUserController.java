@@ -34,10 +34,11 @@ public class AdminUserController {
             @RequestParam(required = false) String q,
             @RequestParam(required = false) UserStatus status,
             @RequestParam(required = false) AdminUserDtos.AccessState access,
+            @RequestParam(required = false) AdminUserDtos.ActivityWindow activity,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
 
-        return PageResponse.of(service.search(q, status, access,
+        return PageResponse.of(service.search(q, status, access, activity,
                 PageRequest.of(page, Math.min(size, 100), Sort.by(Sort.Direction.DESC, "createdAt"))));
     }
 

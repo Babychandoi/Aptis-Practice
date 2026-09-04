@@ -439,6 +439,12 @@ export interface AdminUser {
 
 export type AccessState = 'PAID' | 'TRIAL' | 'EXPIRED';
 
+/**
+ * Khoảng lọc theo lần cuối còn ở web. Lũy tiến: LAST_7_DAYS gồm cả người vào
+ * hôm nay. INACTIVE là phần bù của 30 ngày, gồm cả người chưa từng đăng nhập.
+ */
+export type ActivityWindow = 'TODAY' | 'LAST_7_DAYS' | 'LAST_30_DAYS' | 'INACTIVE' | 'NEVER';
+
 export interface AdminRole {
   code: string;
   name: string;

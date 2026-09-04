@@ -188,6 +188,9 @@ public class LlmEvaluationEngine implements EvaluationEngine {
                 - A score must never exceed the criterion's maximum.
                 - Judge only the language produced. Do not reward length alone.
                 - Feedback must be concrete and in Vietnamese, addressed to the learner.
+                - correctedVersion is the ONE exception: rewrite the learner's answer
+                  in ENGLISH, keeping their ideas. It is a model answer they copy from,
+                  so a Vietnamese translation is useless. Never translate it.
                 %s
 
                 Reply with raw JSON only — no markdown fence, no commentary:
@@ -198,7 +201,7 @@ public class LlmEvaluationEngine implements EvaluationEngine {
                  "strengths":["<Vietnamese>"],
                  "weaknesses":["<Vietnamese>"],
                  "suggestions":["<Vietnamese>"],
-                 "correctedVersion":"<improved version of the learner's answer, same language as the answer>"}
+                 "correctedVersion":"<the learner's answer rewritten in correct ENGLISH — never Vietnamese>"}
 
                 Your entire reply must be that JSON object and nothing else.
                 Start your reply with the character { and end it with }.

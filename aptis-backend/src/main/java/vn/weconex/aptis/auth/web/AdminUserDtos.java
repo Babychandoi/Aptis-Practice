@@ -45,6 +45,23 @@ public final class AdminUserDtos {
             Instant lastActivityAt) {
     }
 
+    /**
+     * Khoảng lọc theo lần cuối còn ở web.
+     *
+     * <p>Lũy tiến, không phải các khoảng rời nhau: LAST_7_DAYS gồm cả người vào
+     * hôm nay. Admin cần "ai còn hoạt động trong tuần", không phải "ai vào tuần
+     * trước mà không vào tuần này".
+     */
+    public enum ActivityWindow {
+        TODAY,
+        LAST_7_DAYS,
+        LAST_30_DAYS,
+        /** Quá 30 ngày không vào — gồm cả người chưa từng đăng nhập. */
+        INACTIVE,
+        /** Chưa từng có phiên nào: đăng ký rồi bỏ luôn. */
+        NEVER
+    }
+
     /** Nguồn quyền truy cập nội dung của một tài khoản. */
     public enum AccessState {
         PAID,

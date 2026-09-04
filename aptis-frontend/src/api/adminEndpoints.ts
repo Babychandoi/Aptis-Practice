@@ -28,6 +28,7 @@ import type {
   UpdateQuestionSetRequest,
   SaveBankAccountRequest,
   AccessState,
+  ActivityWindow,
   AdminRole,
   AdminUser,
   UserStatus,
@@ -226,6 +227,7 @@ export const adminUserApi = {
       q?: string;
       status?: UserStatus;
       access?: AccessState;
+      activity?: ActivityWindow;
       page?: number;
       size?: number;
     } = {},

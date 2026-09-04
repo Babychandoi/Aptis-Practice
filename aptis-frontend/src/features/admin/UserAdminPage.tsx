@@ -6,7 +6,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { confirmDialog } from '@/lib/dialog';
 import { formatDateTime, relativeTime } from '@/lib/format';
-import type { AccessState, AdminEntitlement, AdminSubscription, AdminUser, UserStatus } from '@/types/admin';
+import type { AccessState, ActivityWindow, AdminEntitlement, AdminSubscription, AdminUser, UserStatus } from '@/types/admin';
 import { DataTable, PageHeader, Pager, ResultBanner } from './components/AdminUi';
 import { usePermission } from './usePermission';
 
@@ -25,6 +25,7 @@ export function UserAdminPage() {
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState<UserStatus | ''>('');
   const [access, setAccess] = useState<AccessState | ''>('');
+  const [activity, setActivity] = useState<ActivityWindow | ''>('');
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<AdminUser | null>(null);
   const [banner, setBanner] = useState<string | null>(null);
@@ -38,12 +39,13 @@ export function UserAdminPage() {
   }, [searchInput]);
 
   const usersQuery = useQuery({
-    queryKey: ['admin', 'users', query, status, access, page],
+    queryKey: ['admin', 'users', query, status, access, activity, page],
     queryFn: () =>
       adminUserApi.list({
         q: query || undefined,
         status: status || undefined,
         access: access || undefined,
+        activity: activity || undefined,
         page,
         size: PAGE_SIZE,
       }),
@@ -95,7 +97,7 @@ export function UserAdminPage() {
     <div>
       <PageHeader title="Quản lý người dùng" description="Tìm tài khoản, quản lý trạng thái, vai trò và nâng cấp, gia hạn hoặc huỷ gói Premium." />
       {banner && <ResultBanner tone="success" message={banner} onDismiss={() => setBanner(null)} />}
-      <div className="mb-5 grid gap-3 rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(31,41,35,.07)] sm:grid-cols-[minmax(0,1fr)_200px_200px]">
+      <div className="mb-5 grid gap-3 rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(31,41,35,.07)] sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_180px_180px_190px]">
         <div><label htmlFor="user-search" className="label">Tìm người dùng</label><input id="user-search" className="input" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} placeholder="Email hoặc số điện thoại" /></div>
         <div><label htmlFor="user-status" className="label">Trạng thái</label><select id="user-status" className="input" value={status} onChange={(event) => { setStatus(event.target.value as UserStatus | ''); setPage(0); }}><option value="">Tất cả</option><option value="ACTIVE">Đang hoạt động</option><option value="SUSPENDED">Tạm khóa</option><option value="PENDING_VERIFICATION">Chờ xác minh</option><option value="LOCKED">Khóa tạm thời</option></select></div>
         <div>
@@ -110,6 +112,22 @@ export function UserAdminPage() {
             <option value="PAID">Đã mua gói</option>
             <option value="TRIAL">Đang dùng thử</option>
             <option value="EXPIRED">Hết hạn — phải trả phí</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="user-activity" className="label">Hoạt động gần nhất</label>
+          <select
+            id="user-activity"
+            className="input"
+            value={activity}
+            onChange={(event) => { setActivity(event.target.value as ActivityWindow | ''); setPage(0); }}
+          >
+            <option value="">Tất cả</option>
+            <option value="TODAY">Trong 24 giờ</option>
+            <option value="LAST_7_DAYS">Trong 7 ngày</option>
+            <option value="LAST_30_DAYS">Trong 30 ngày</option>
+            <option value="INACTIVE">Quá 30 ngày không vào</option>
+            <option value="NEVER">Chưa từng đăng nhập</option>
           </select>
         </div>
       </div>
