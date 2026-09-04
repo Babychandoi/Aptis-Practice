@@ -32,6 +32,9 @@ import type {
   UploadUrlResponse,
   HeadingChain,
   SpeakerCode,
+  NewsComment,
+  NewsPostDetail,
+  NewsPostSummary,
 } from '@/types/api';
 
 // ---------------------------------------------------------------------
@@ -340,4 +343,30 @@ export const adminExamPredictionApi = {
     api.put<AdminExamPrediction>(`/admin/exam-predictions/${id}`, body).then((r) => r.data),
 
   remove: (id: string) => api.delete<void>(`/admin/exam-predictions/${id}`).then(() => undefined),
+};
+
+/**
+ * Bảng tin. Đọc không cần đăng nhập (xem SecurityConfig), bình luận cần Premium.
+ */
+export const newsApi = {
+  feed: (params: { page?: number; size?: number } = {}) =>
+    api
+      .get<PageResponse<NewsPostSummary>>('/news', { params: { page: 0, size: 10, ...params } })
+      .then((r) => r.data),
+
+  detail: (slug: string) => api.get<NewsPostDetail>(`/news/${slug}`).then((r) => r.data),
+
+  comments: (postId: string, params: { page?: number; size?: number } = {}) =>
+    api
+      .get<PageResponse<NewsComment>>(`/news/${postId}/comments`, {
+        params: { page: 0, size: 20, ...params },
+      })
+      .then((r) => r.data),
+
+  addComment: (postId: string, body: string, parentId?: string) =>
+    api
+      .post<NewsComment>(`/news/${postId}/comments`, { body, parentId })
+      .then((r) => r.data),
+
+  deleteComment: (commentId: string) => api.delete(`/news/comments/${commentId}`),
 };

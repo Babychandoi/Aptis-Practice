@@ -1,5 +1,6 @@
 package vn.weconex.aptis.auth.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,4 +35,15 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
             WHERE u.id = :id
             """)
     Optional<User> findByIdWithAuthorities(@Param("id") String id);
+
+    /**
+     * Nhiều người kèm vai trò — một truy vấn cho cả trang bình luận thay vì một
+     * truy vấn mỗi tác giả. DISTINCT vì JOIN FETCH nhân dòng theo số vai trò.
+     */
+    @Query("""
+            SELECT DISTINCT u FROM User u
+            LEFT JOIN FETCH u.roles
+            WHERE u.id IN :ids
+            """)
+    List<User> findAllByIdInWithRoles(@Param("ids") List<String> ids);
 }

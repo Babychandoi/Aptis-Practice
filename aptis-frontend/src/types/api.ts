@@ -731,3 +731,56 @@ export interface SaveExamPredictionRequest {
   status?: 'DRAFT' | 'PUBLISHED';
   displayOrder?: number;
 }
+
+// ---------------------------------------------------------------------
+// Bảng tin
+// ---------------------------------------------------------------------
+
+export interface NewsPostSummary {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  /** Object key của ảnh bìa; xin URL có chữ ký qua Asset API. */
+  coverUrl: string | null;
+  pinned: boolean;
+  /** Có đề gắn kèm để bấm vào luyện ngay. */
+  hasPractice: boolean;
+  commentCount: number;
+  viewCount: number;
+  publishedAt: string | null;
+}
+
+export interface NewsPostDetail extends NewsPostSummary {
+  /** Markdown — render qua markdownToHtml rồi sanitizeHtml. */
+  body: string;
+  partId: string | null;
+  partLabel: string | null;
+  topicId: string | null;
+  topicName: string | null;
+  /** 0 thì ẩn nút luyện tập. */
+  practiceSetCount: number;
+  commentsEnabled: boolean;
+  /** Bình luận bài này phải chờ duyệt — báo trước cho học viên. */
+  commentsModerated: boolean;
+  /** false = phải mua gói mới bình luận được. */
+  canComment: boolean;
+  updatedAt: string | null;
+}
+
+export interface NewsComment {
+  id: string;
+  authorName: string;
+  mine: boolean;
+  /** Tác giả là quản trị viên — gắn nhãn để học viên tin nội dung. */
+  fromAdmin: boolean;
+  body: string;
+  status: 'VISIBLE' | 'PENDING' | 'HIDDEN';
+  /**
+   * Chú thích hiện dưới bình luận chờ duyệt hoặc bị ẩn. Chỉ người viết nhận
+   * được trường này, người khác không thấy cả bình luận.
+   */
+  statusNote: string | null;
+  createdAt: string;
+  replies: NewsComment[];
+}

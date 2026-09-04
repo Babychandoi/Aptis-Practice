@@ -15,6 +15,7 @@ const PRIMARY_NAV = [
   { to: '/mock-tests', label: 'Mô phỏng thi', shortLabel: 'Thi thử', icon: 'exam' },
   { to: '/cap-nhat-de', label: 'Cập nhật đề', shortLabel: 'Đề mới', icon: 'sparkle' },
   { to: '/du-doan-de', label: 'Dự đoán đề', shortLabel: 'Dự đoán', icon: 'predict' },
+  { to: '/bang-tin', label: 'Bảng tin', shortLabel: 'Bảng tin', icon: 'news' },
   { to: '/meo-hoc', label: 'Mẹo học', shortLabel: 'Mẹo học', icon: 'tips' },
   { to: '/history', label: 'Kết quả của tôi', shortLabel: 'Kết quả', icon: 'history' },
 ] as const;
@@ -353,14 +354,16 @@ export function AppLayout() {
       {/* Mobile Bottom Navigation */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-white/95 px-2 pb-[max(.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur md:hidden" aria-label="Điều hướng di động">
         {/* Số cột phải KHỚP số mục, nếu không mục cuối rơi xuống hàng hai và
-            thanh nav cao gấp đôi, che mất nội dung trang. Hiện 7 mục: 6 của
-            PRIMARY_NAV cộng Kỹ năng. */}
+            thanh nav cao gấp đôi, che mất nội dung trang. Hiện 7 mục: 6 mục của
+            PRIMARY_NAV còn lại sau khi bỏ Mẹo học, cộng Kỹ năng.
+            Bảy ô đã là giới hạn của màn hình hẹp — thêm nữa thì chữ bị cắt, nên
+            Mẹo học chỉ còn ở sidebar desktop. */}
         <div className="mx-auto grid max-w-md grid-cols-7">
           {/* Kỹ năng thay chỗ Premium: sidebar desktop liệt kê cả 5 kỹ năng,
               còn mobile không có sidebar nên cần một đường vào. Premium chuyển
               lên header, nơi nó hiện ở mọi kích thước màn hình. */}
           {[
-            ...PRIMARY_NAV,
+            ...PRIMARY_NAV.filter((item) => item.to !== '/meo-hoc'),
             { to: '/luyen-tap', label: 'Kỹ năng', shortLabel: 'Kỹ năng', icon: 'skills' as const },
           ].map((item) => (
             <NavLink
@@ -445,7 +448,7 @@ function Avatar({ name }: { name: string }) {
   );
 }
 
-type IconName = 'home' | 'sparkle' | 'predict' | 'skills' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout';
+type IconName = 'home' | 'sparkle' | 'predict' | 'news' | 'skills' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout';
 
 function NavIcon({ name }: { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
@@ -456,6 +459,8 @@ function NavIcon({ name }: { name: IconName }) {
     skills: <><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></>,
     // Đường đi lên kèm ngôi sao: gợi ý "xu hướng, khả năng ra thi cao"
     predict: <><path d="M3 17l6-6 4 4 7-7" /><path d="M17 8h4v4" /></>,
+    // Tờ tin có dòng chữ và gáy gập: gợi ý bài đọc, không trùng icon đề thi
+    news: <><path d="M4 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v14a2 2 0 0 0 2-2V8h1v9a3 3 0 0 1-3 3H5a1 1 0 0 1-1-1V5Z" /><path d="M7 8h7M7 12h7M7 16h4" /></>,
     exam: <><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></>,
     tips: <><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6M10 22h4" /></>,
     history: <><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5M12 7v5l3 2" /></>,

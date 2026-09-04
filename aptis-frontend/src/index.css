@@ -139,3 +139,43 @@
   }
 }
 
+
+/*
+ * Nội dung bài viết bảng tin (Markdown đã render).
+ *
+ * Tailwind reset bỏ hết style mặc định của h2, ul, strong… nên nếu không khai
+ * lại thì bài viết ra một khối chữ phẳng không phân cấp — mà bài dạy cách làm
+ * bài thì cấu trúc chính là thứ giúp đọc được.
+ */
+.news-body { color: theme('colors.slate.700'); line-height: 1.75; }
+.news-body > * + * { margin-top: 0.9rem; }
+.news-body h2 { font-size: 1.075rem; font-weight: 700; color: theme('colors.slate.900'); margin-top: 1.6rem; }
+.news-body h3 { font-size: 0.975rem; font-weight: 700; color: theme('colors.slate.900'); margin-top: 1.3rem; }
+.news-body h4, .news-body h5, .news-body h6 { font-weight: 600; color: theme('colors.slate.900'); }
+.news-body strong { font-weight: 600; color: theme('colors.slate.900'); }
+.news-body ul { list-style: disc; padding-left: 1.35rem; }
+.news-body ol { list-style: decimal; padding-left: 1.35rem; }
+.news-body li + li { margin-top: 0.3rem; }
+.news-body a { color: theme('colors.brand.800'); text-decoration: underline; }
+.news-body blockquote {
+  border-left: 3px solid theme('colors.brand.200');
+  background: theme('colors.brand.50');
+  padding: 0.7rem 0.9rem;
+  border-radius: 0 0.6rem 0.6rem 0;
+  font-size: 0.9rem;
+}
+.news-body code {
+  background: theme('colors.stone.100');
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+.news-body pre {
+  background: theme('colors.stone.100');
+  padding: 0.8rem;
+  border-radius: 0.6rem;
+  overflow-x: auto;
+}
+.news-body pre code { background: none; padding: 0; }
+.news-body img { border-radius: 0.75rem; margin: 1rem 0; }
+.news-body hr { border-color: theme('colors.border.DEFAULT'); margin: 1.5rem 0; }

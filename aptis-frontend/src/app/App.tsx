@@ -31,6 +31,9 @@ const AttemptResultPage = lazy(() => import('@/features/practice/AttemptResultPa
 const HistoryPage = lazy(() => import('@/features/practice/HistoryPage').then((m) => ({ default: m.HistoryPage })));
 const PlansPage = lazy(() => import('@/features/billing/PlansPage').then((m) => ({ default: m.PlansPage })));
 const CheckoutPage = lazy(() => import('@/features/billing/CheckoutPage').then((m) => ({ default: m.CheckoutPage })));
+const NewsAdminPage = lazy(() => import('@/features/admin/NewsAdminPage').then((m) => ({ default: m.NewsAdminPage })));
+const NewsFeedPage = lazy(() => import('@/features/learning/NewsFeedPage').then((m) => ({ default: m.NewsFeedPage })));
+const NewsPostPage = lazy(() => import('@/features/learning/NewsPostPage').then((m) => ({ default: m.NewsPostPage })));
 const StudyTipsHomePage = lazy(() => import('@/features/learning/StudyTipsHomePage').then((m) => ({ default: m.StudyTipsHomePage })));
 const StudyTipsListeningPart3Page = lazy(() => import('@/features/learning/StudyTipsListeningPart3Page').then((m) => ({ default: m.StudyTipsListeningPart3Page })));
 const StudyTipsReadingPage = lazy(() => import('@/features/learning/StudyTipsReadingPage').then((m) => ({ default: m.StudyTipsReadingPage })));
@@ -118,6 +121,10 @@ export function App() {
             chứa đáp án. Từng thẻ tự khóa và dẫn sang trang gói — cho học viên
             miễn phí thấy được sẽ mở ra những gì, thay vì một trang trắng.
             Các trang chi tiết bên dưới mới là nội dung Premium. */}
+        {/* Bảng tin đọc được khi chưa đăng nhập — xem SecurityConfig. Bình
+            luận thì cần Premium, chặn ở backend. */}
+        <Route path="/bang-tin" element={<NewsFeedPage />} />
+        <Route path="/bang-tin/:slug" element={<NewsPostPage />} />
         <Route path="/meo-hoc" element={<StudyTipsHomePage />} />
         <Route path="/meo-hoc/nghe-phan-3" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsListeningPart3Page /></PremiumRoute>} />
         <Route path="/meo-hoc/doc" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsReadingPage /></PremiumRoute>} />
@@ -151,6 +158,7 @@ export function App() {
         <Route path="scoring" element={<ScoringConfigPage />} />
         <Route path="skill-tests" element={<SkillTestAdminPage />} />
         <Route path="exam-predictions" element={<ExamPredictionAdminPage />} />
+        <Route path="news" element={<NewsAdminPage />} />
         <Route path="imports" element={<ImportAdminPage />} />
         <Route path="plans" element={<PlanAdminPage />} />
         <Route path="orders" element={<OrderAdminPage />} />

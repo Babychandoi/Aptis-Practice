@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { adminBankTransferApi } from '@/api/adminEndpoints';
+import { adminNewsApi } from '@/api/adminEndpoints';
 import { usePermission } from './usePermission';
 import { useAuthStore } from '@/features/auth/authStore';
 import { useAdminWebSocket } from './useAdminWebSocket';
@@ -12,6 +13,7 @@ const NAV_ITEMS = [
   { to: '/admin/imports', label: 'Import câu hỏi', permission: 'question_set:write', icon: 'import' },
   { to: '/admin/scoring', label: 'Cấu hình điểm', permission: 'question_set:write', icon: 'scoring' },
   { to: '/admin/exam-predictions', label: 'Dự đoán đề', permission: 'question_set:write', icon: 'scoring' },
+  { to: '/admin/news', label: 'Bảng tin', permission: 'news:write', icon: 'news', hasNewsBadge: true },
   { to: '/admin/plans', label: 'Gói Premium', permission: 'plan:write', icon: 'plans' },
   { to: '/admin/orders', label: 'Đơn hàng', permission: 'order:read', icon: 'orders' },
   { to: '/admin/bank-transfers', label: 'Đối soát chuyển khoản', permission: 'order:read', icon: 'transfers', hasBadge: true },
@@ -48,6 +50,16 @@ export function AdminLayout() {
   });
   const pendingCount = pendingClaimsQuery.data?.totalElements ?? 0;
 
+  // Badge của bảng tin đếm bình luận chờ duyệt — phải là biến riêng, dùng chung
+  // pendingCount thì số chuyển khoản hiện lên cả mục Bảng tin.
+  const pendingCommentsQuery = useQuery({
+    queryKey: ['admin', 'news', 'pending-count'],
+    queryFn: adminNewsApi.pendingCount,
+    enabled: has('news:moderate'),
+    refetchInterval: 60_000,
+  });
+  const pendingComments = pendingCommentsQuery.data ?? 0;
+
   const visible = NAV_ITEMS.filter((item) => has(item.permission));
   const displayName = user?.profile?.displayName || user?.profile?.fullName || user?.email || 'Quản trị viên';
 
@@ -69,15 +81,18 @@ export function AdminLayout() {
           <nav className="space-y-1" aria-label="Khu quản trị">
             {visible.map((item) => {
               const showBadge = 'hasBadge' in item && item.hasBadge && pendingCount > 0;
+              const showNewsBadge =
+                'hasNewsBadge' in item && item.hasNewsBadge && pendingComments > 0;
+              const badgeValue = showNewsBadge ? pendingComments : pendingCount;
               return (
                 <NavLink key={item.to} to={item.to} className={({ isActive }) => clsx('flex min-h-11 items-center justify-between gap-3 rounded-lg px-3 text-[13px] font-medium transition-colors', isActive ? 'bg-white text-brand-900 shadow-sm' : 'text-[#d6e7e1] hover:bg-white/10 hover:text-white')}>
                   <div className="flex items-center gap-3">
                     <AdminIcon name={item.icon} />
                     <span>{item.label}</span>
                   </div>
-                  {showBadge && (
+                  {(showBadge || showNewsBadge) && (
                     <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1.5 text-[11px] font-bold text-white shadow-sm">
-                      {pendingCount}
+                      {badgeValue}
                     </span>
                   )}
                 </NavLink>
@@ -123,6 +138,7 @@ function AdminIcon({ name }: { name: (typeof NAV_ITEMS)[number]['icon'] }) {
     questions: <><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h6M8 16h4"/></>,
     import: <><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 19h14"/></>,
     scoring: <><circle cx="12" cy="12" r="9"/><path d="M8 12.5 10.5 15 16 9"/></>,
+    news: <><path d="M4 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v14a2 2 0 0 0 2-2V8h1v9a3 3 0 0 1-3 3H5a1 1 0 0 1-1-1V5Z"/><path d="M7 8h7M7 12h7M7 16h4"/></>,
     plans: <><path d="m12 3 2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8L12 3Z"/></>,
     orders: <><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></>,
     transfers: <><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3M15 14l2 2 4-5"/></>,

@@ -1,5 +1,5 @@
 import { api } from './client';
-import type { PageResponse } from '@/types/api';
+import type { NewsPostDetail, PageResponse } from '@/types/api';
 import type {
   AdminEntitlement,
   AdminSubscription,
@@ -29,9 +29,14 @@ import type {
   SaveBankAccountRequest,
   AccessState,
   ActivityWindow,
+  AdminNewsCommentRow,
+  AdminNewsPostRow,
   AdminRole,
   AdminUser,
   UserSort,
+  NewsCommentStatus,
+  NewsPostStatus,
+  SaveNewsPostRequest,
   UserStatus,
   PartScoringRule,
   UpdatePartScoringRule,
@@ -291,4 +296,47 @@ export const adminExportApi = {
 
   create: (exportType: ExportType, params?: Record<string, unknown>) =>
     api.post<ExportJob>('/admin/export-jobs', { exportType, params }).then((r) => r.data),
+};
+
+/**
+ * Bảng tin — quản trị.
+ *
+ * Hai quyền tách nhau: news:write để soạn bài, news:moderate để kiểm duyệt
+ * bình luận. Nhờ đó giao được việc trả lời học viên mà không mở quyền sửa bài.
+ */
+export const adminNewsApi = {
+  posts: (params: { status?: NewsPostStatus; page?: number; size?: number } = {}) =>
+    api
+      .get<PageResponse<AdminNewsPostRow>>('/admin/news/posts', {
+        params: { page: 0, size: 20, ...params },
+      })
+      .then((r) => r.data),
+
+  post: (id: string) => api.get<NewsPostDetail>(`/admin/news/posts/${id}`).then((r) => r.data),
+
+  create: (payload: SaveNewsPostRequest) =>
+    api.post<AdminNewsPostRow>('/admin/news/posts', payload).then((r) => r.data),
+
+  update: (id: string, payload: SaveNewsPostRequest) =>
+    api.put<AdminNewsPostRow>(`/admin/news/posts/${id}`, payload).then((r) => r.data),
+
+  remove: (id: string) => api.delete(`/admin/news/posts/${id}`),
+
+  comments: (params: { status?: NewsCommentStatus; page?: number; size?: number } = {}) =>
+    api
+      .get<PageResponse<AdminNewsCommentRow>>('/admin/news/comments', {
+        params: { page: 0, size: 20, ...params },
+      })
+      .then((r) => r.data),
+
+  pendingCount: () => api.get<number>('/admin/news/comments/pending-count').then((r) => r.data),
+
+  approve: (id: string) => api.post(`/admin/news/comments/${id}/approve`),
+
+  /** Ẩn với mọi người trừ người viết — họ vẫn thấy bản mờ kèm lý do. */
+  hide: (id: string, reason?: string) =>
+    api.post(`/admin/news/comments/${id}/hide`, { reason }),
+
+  /** Xoá hẳn, chỉ dùng cho spam: người viết cũng không còn thấy. */
+  purge: (id: string) => api.delete(`/admin/news/comments/${id}`),
 };

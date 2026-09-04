@@ -171,6 +171,22 @@ public interface QuestionSetRepository
     long countByPartIdAndStatus(String partId, ContentStatus status);
 
     /**
+     * Số bộ đề khớp bài viết bảng tin. Tham số null nghĩa là không lọc theo
+     * chiều đó, nên bài chỉ gắn Part vẫn đếm được, và bài gắn cả Part + chủ đề
+     * thì đếm phần giao.
+     */
+    @Query("""
+            SELECT COUNT(qs) FROM QuestionSet qs
+            WHERE qs.status = :status
+              AND (:partId IS NULL OR qs.part.id = :partId)
+              AND (:topicId IS NULL OR qs.topic.id = :topicId)
+            """)
+    long countForNewsPractice(
+            @Param("partId") String partId,
+            @Param("topicId") String topicId,
+            @Param("status") ContentStatus status);
+
+    /**
      * Chỉ lấy topic_id, không nạp cả entity: dùng khi chọn nội dung theo vòng và
      * chỉ cần biết bộ vừa chọn thuộc chủ đề nào.
      */

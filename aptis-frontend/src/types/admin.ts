@@ -518,3 +518,53 @@ export interface ExportJob {
   /** Quá hạn là file bị xóa khỏi storage, không tải lại được */
   expiresAt: string | null;
 }
+
+// ---------------------------------------------------------------------
+// Bảng tin
+// ---------------------------------------------------------------------
+
+export type NewsPostStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+
+export interface AdminNewsPostRow {
+  id: string;
+  slug: string;
+  title: string;
+  status: NewsPostStatus;
+  pinned: boolean;
+  commentsEnabled: boolean;
+  commentsModerated: boolean;
+  commentCount: number;
+  /** Bình luận đang chờ duyệt của riêng bài này. */
+  pendingCommentCount: number;
+  viewCount: number;
+  publishedAt: string | null;
+  updatedAt: string | null;
+}
+
+export interface SaveNewsPostRequest {
+  title: string;
+  excerpt?: string | null;
+  /** Markdown. */
+  body: string;
+  coverAssetId?: string | null;
+  partId?: string | null;
+  topicId?: string | null;
+  pinned?: boolean;
+  commentsEnabled?: boolean;
+  commentsModerated?: boolean;
+  status?: NewsPostStatus;
+}
+
+export type NewsCommentStatus = 'VISIBLE' | 'PENDING' | 'HIDDEN' | 'DELETED';
+
+export interface AdminNewsCommentRow {
+  id: string;
+  postId: string;
+  postTitle: string;
+  authorName: string;
+  authorEmail: string;
+  body: string;
+  status: NewsCommentStatus;
+  hiddenReason: string | null;
+  createdAt: string;
+}

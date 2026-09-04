@@ -60,6 +60,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/payments/webhooks/**").permitAll()
                         // Danh sách gói để trang bán hàng hiển thị khi chưa đăng nhập
                         .requestMatchers(HttpMethod.GET, "/api/v1/plans").permitAll()
+                        // Bảng tin: ĐỌC tự do, kể cả khách chưa đăng nhập.
+                        //
+                        // Hai lý do: người đã hết hạn còn lý do quay lại và mua
+                        // gói, và Google đọc được nội dung — cả site nằm sau
+                        // đăng nhập nên hiện gần như không có gì để lập chỉ mục.
+                        //
+                        // Chỉ mở GET. Bình luận (POST/DELETE) vẫn cần đăng nhập
+                        // và cần Premium, chặn trong NewsService.
+                        .requestMatchers(HttpMethod.GET, "/api/v1/news", "/api/v1/news/**").permitAll()
                         .requestMatchers("/actuator/health/**", "/actuator/info").permitAll()
                         .requestMatchers("/api/docs/**", "/api/swagger/**", "/swagger-ui/**").permitAll()
                         // WebSocket Handshake tự xác thực token JWT qua HandshakeInterceptor

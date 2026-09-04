@@ -6,7 +6,7 @@ const ALLOWED_TAGS = new Set([
 const DROP_WITH_CONTENT = new Set([
   'EMBED', 'IFRAME', 'MATH', 'OBJECT', 'SCRIPT', 'STYLE', 'SVG', 'TEMPLATE',
 ]);
-const ALLOWED_ATTRIBUTES = new Set(['href', 'title', 'target']);
+const ALLOWED_ATTRIBUTES = new Set(['href', 'title', 'target', 'src', 'alt']);
 
 function safeHref(value: string): boolean {
   const trimmed = value.trim();
@@ -37,6 +37,18 @@ export function sanitizeHtml(html: string): string {
       if (!ALLOWED_ATTRIBUTES.has(attribute.name.toLowerCase())) {
         element.removeAttribute(attribute.name);
       }
+    }
+
+    // src của ảnh lọc như href: để nguyên thì javascript: và data: lọt qua.
+    // Ảnh ngoài domain cũng chặn — chỉ nhận ảnh đã tải lên hệ thống, tránh bài
+    // viết phụ thuộc vào host khác rồi một ngày mất ảnh.
+    if (element instanceof HTMLImageElement) {
+      const src = element.getAttribute('src') ?? '';
+      if (!src.startsWith('/') && !safeHref(src)) {
+        element.remove();
+        continue;
+      }
+      element.setAttribute('loading', 'lazy');
     }
 
     if (element instanceof HTMLAnchorElement) {
