@@ -36,6 +36,9 @@ public class AssetService {
     /** Chặn upload loại file không dùng đến (PHẦN VII §51). */
     private static final Map<AssetType, Set<String>> ALLOWED_MIME_TYPES = Map.of(
             AssetType.IMAGE, Set.of("image/jpeg", "image/png", "image/webp"),
+            // Ảnh bài viết: thêm gif cho ảnh minh hoạ nhiều bước, KHÔNG cho svg
+            // — svg là XML, chứa được script và đây là bucket đọc công khai.
+            AssetType.NEWS_IMAGE, Set.of("image/jpeg", "image/png", "image/webp", "image/gif"),
             AssetType.AUDIO, Set.of("audio/mpeg", "audio/mp4", "audio/ogg", "audio/wav"),
             AssetType.USER_RECORDING, Set.of("audio/webm", "audio/mp4", "audio/ogg", "audio/wav"),
             AssetType.AVATAR, Set.of("image/jpeg", "image/png", "image/webp"),
@@ -46,6 +49,7 @@ public class AssetService {
 
     private static final Map<AssetType, Long> MAX_SIZE_BYTES = Map.of(
             AssetType.IMAGE, 5L * 1024 * 1024,
+            AssetType.NEWS_IMAGE, 5L * 1024 * 1024,
             AssetType.AVATAR, 2L * 1024 * 1024,
             AssetType.AUDIO, 20L * 1024 * 1024,
             AssetType.USER_RECORDING, 10L * 1024 * 1024,
@@ -249,6 +253,15 @@ public class AssetService {
         if (userScoped) {
             return; // học viên tự upload ghi âm và avatar
         }
+        // Ảnh bảng tin vào bucket đọc công khai nên siết bằng quyền riêng: mở
+        // theo asset:write thì biên tập viên nội dung cũng đẩy được ảnh ra chỗ
+        // ai cũng xem được.
+        if (assetType == AssetType.NEWS_IMAGE) {
+            if (!principal.hasPermission("news:write")) {
+                throw ApiException.forbidden("Không có quyền tải ảnh bảng tin");
+            }
+            return;
+        }
         if (!principal.hasPermission("asset:write")) {
             throw ApiException.forbidden("Không có quyền tải file nội dung");
         }
@@ -285,12 +298,19 @@ public class AssetService {
             case AVATAR -> buckets.userUploads();
             case IMPORT_FILE -> buckets.imports();
             case EXPORT_FILE -> buckets.exports();
+            case NEWS_IMAGE -> buckets.publicBucket();
             case IMAGE, AUDIO, VIDEO, DOCUMENT -> buckets.content();
         };
     }
 
     private AccessScope resolveAccessScope(AssetType assetType) {
-        // Mọi asset nội dung và file người dùng đều qua signed URL,
+        // Ảnh bài viết bảng tin là ngoại lệ duy nhất: bài đọc tự do nên ảnh phải
+        // có URL ổn định, xem được khi chưa đăng nhập. Signed URL sống 10 phút,
+        // dùng cho ảnh trong bài thì hôm sau mở lại là ảnh hỏng.
+        if (assetType == AssetType.NEWS_IMAGE) {
+            return AccessScope.PUBLIC;
+        }
+        // Còn lại: mọi asset nội dung và file người dùng đều qua signed URL,
         // không có URL vĩnh viễn (PHẦN VII §51)
         return AccessScope.SIGNED_URL;
     }
@@ -314,6 +334,7 @@ public class AssetService {
                     assetId,
                     extension);
             case AVATAR -> "users/%s/avatars/%s%s".formatted(userId, assetId, extension);
+            case NEWS_IMAGE -> "news/%s%s".formatted(assetId, extension);
             case IMPORT_FILE -> "imports/%s/%s/%s%s".formatted(
                     userId, orDefault(request.jobId(), assetId), assetId, extension);
             case EXPORT_FILE -> "exports/%s/%s/%s%s".formatted(

@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ApiError } from '@/api/client';
 import { adminNewsApi } from '@/api/adminEndpoints';
+import { assetApi, uploadToPresignedUrl } from '@/api/endpoints';
 import { useComponents, useExamVersions, usePartsOfComponents, useTopics } from '@/features/catalog/catalogQueries';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
@@ -328,6 +329,33 @@ function PostEditor({
     status: 'DRAFT',
   });
   const [preview, setPreview] = useState(false);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
+
+  /**
+   * Chèn đoạn Markdown tại vị trí con trỏ.
+   *
+   * Nối vào cuối bài thì người viết phải tự cắt dán ảnh về đúng chỗ — với bài
+   * hướng dẫn nhiều bước, ảnh nằm sai chỗ là mất nghĩa.
+   */
+  const insertAtCursor = (snippet: string) => {
+    const el = bodyRef.current;
+    if (!el) {
+      setForm((f) => ({ ...f, body: `${f.body}
+
+${snippet}` }));
+      return;
+    }
+    const start = el.selectionStart ?? el.value.length;
+    const end = el.selectionEnd ?? start;
+    const next = `${el.value.slice(0, start)}${snippet}${el.value.slice(end)}`;
+    setForm((f) => ({ ...f, body: next }));
+    // Đặt lại con trỏ sau đoạn vừa chèn, để gõ tiếp được ngay
+    requestAnimationFrame(() => {
+      el.focus();
+      const caret = start + snippet.length;
+      el.setSelectionRange(caret, caret);
+    });
+  };
 
   useEffect(() => {
     const post = existingQuery.data;
@@ -440,11 +468,15 @@ function PostEditor({
               </div>
             ) : (
               <div>
-                <label htmlFor="post-body" className="label">
-                  Nội dung
-                </label>
+                <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2">
+                  <label htmlFor="post-body" className="label !mb-0">
+                    Nội dung
+                  </label>
+                  <ImageUploadButton onUploaded={insertAtCursor} />
+                </div>
                 <textarea
                   id="post-body"
+                  ref={bodyRef}
                   className="input min-h-[320px] font-mono text-[13px]"
                   value={form.body}
                   onChange={(event) => setForm((f) => ({ ...f, body: event.target.value }))}
@@ -551,6 +583,73 @@ function PostEditor({
           </button>
         </footer>
       </aside>
+    </div>
+  );
+}
+
+/**
+ * Tải ảnh lên rồi chèn Markdown vào bài.
+ *
+ * Ảnh dùng assetType NEWS_IMAGE, khác IMAGE của ngân hàng đề: ảnh bài viết vào
+ * bucket đọc công khai và phục vụ qua /api/v1/news/images/{id}, vì bài đọc tự do
+ * mà signed URL chỉ sống 10 phút và cần đăng nhập mới xin được.
+ */
+function ImageUploadButton({ onUploaded }: { onUploaded: (markdown: string) => void }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const upload = useMutation({
+    mutationFn: async (file: File) => {
+      if (!file.type.startsWith('image/')) {
+        throw new Error('Vui lòng chọn tệp ảnh.');
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error('Ảnh tối đa 5MB. Hãy giảm kích thước rồi thử lại.');
+      }
+
+      const request = await assetApi.createUploadUrl({
+        assetType: 'NEWS_IMAGE',
+        mimeType: file.type,
+        filename: file.name,
+        fileSize: file.size,
+      });
+      await uploadToPresignedUrl(request.uploadUrl, file, file.type);
+      await assetApi.complete(request.assetId);
+
+      // Chú thích ảnh lấy từ tên tệp, bỏ phần mở rộng — người viết sửa lại được
+      const alt = file.name.replace(/.[^.]+$/, '');
+      return `![${alt}](/api/v1/news/images/${request.assetId})`;
+    },
+    onSuccess: (markdown) => {
+      onUploaded(markdown);
+      if (inputRef.current) inputRef.current.value = '';
+    },
+  });
+
+  return (
+    <div className="flex items-center gap-2">
+      {upload.error && (
+        <span className="text-[11px] text-red-700">
+          {upload.error instanceof Error ? upload.error.message : 'Không tải được ảnh'}
+        </span>
+      )}
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/gif"
+        className="hidden"
+        onChange={(event) => {
+          const file = event.target.files?.[0];
+          if (file) upload.mutate(file);
+        }}
+      />
+      <button
+        type="button"
+        className="btn-secondary !px-3 !py-1.5 text-xs"
+        disabled={upload.isPending}
+        onClick={() => inputRef.current?.click()}
+      >
+        {upload.isPending ? 'Đang tải ảnh…' : '🖼 Chèn ảnh'}
+      </button>
     </div>
   );
 }

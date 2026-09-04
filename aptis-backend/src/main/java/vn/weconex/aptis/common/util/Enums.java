@@ -127,6 +127,14 @@ public final class Enums {
 
     public enum AssetType {
         IMAGE,
+        /**
+         * Ảnh trong bài viết bảng tin.
+         *
+         * <p>Tách khỏi IMAGE vì bài viết ĐỌC TỰ DO: ảnh phải xem được khi chưa
+         * đăng nhập, còn IMAGE là asset nội dung, đi qua kiểm tra entitlement
+         * (xem AssetService#requireContentAssetAccess) nên khách sẽ bị chặn.
+         */
+        NEWS_IMAGE,
         AUDIO,
         VIDEO,
         DOCUMENT,
