@@ -536,6 +536,8 @@ export interface AdminNewsPostRow {
   commentCount: number;
   /** Bình luận đang chờ duyệt của riêng bài này. */
   pendingCommentCount: number;
+  /** Số đề gắn đích danh. */
+  linkedSetCount: number;
   viewCount: number;
   publishedAt: string | null;
   updatedAt: string | null;
@@ -549,6 +551,11 @@ export interface SaveNewsPostRequest {
   coverAssetId?: string | null;
   partId?: string | null;
   topicId?: string | null;
+  /**
+   * Đề gắn đích danh, theo thứ tự muốn hiện. Mảng rỗng để gỡ hết; bỏ trống
+   * (undefined) thì giữ nguyên danh sách đang có.
+   */
+  questionSetIds?: string[];
   pinned?: boolean;
   commentsEnabled?: boolean;
   commentsModerated?: boolean;

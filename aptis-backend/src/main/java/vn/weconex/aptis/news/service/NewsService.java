@@ -27,7 +27,11 @@ import vn.weconex.aptis.content.repository.QuestionSetRepository;
 import vn.weconex.aptis.entitlement.service.EntitlementService;
 import vn.weconex.aptis.news.domain.NewsComment;
 import vn.weconex.aptis.news.domain.NewsPost;
+import vn.weconex.aptis.content.domain.QuestionSet;
+import vn.weconex.aptis.content.service.ContentAccessService;
+import vn.weconex.aptis.news.domain.NewsPostQuestionSet;
 import vn.weconex.aptis.news.repository.NewsCommentRepository;
+import vn.weconex.aptis.news.repository.NewsPostQuestionSetRepository;
 import vn.weconex.aptis.news.repository.NewsPostRepository;
 import vn.weconex.aptis.news.web.NewsDtos;
 
@@ -50,6 +54,8 @@ public class NewsService {
     private final UserRepository userRepository;
     private final UserProfileRepository profileRepository;
     private final QuestionSetRepository questionSetRepository;
+    private final NewsPostQuestionSetRepository linkRepository;
+    private final ContentAccessService contentAccessService;
     private final EntitlementService entitlementService;
 
     // -----------------------------------------------------------------
@@ -65,7 +71,7 @@ public class NewsService {
                 excerptOf(post),
                 post.getCoverAssetId(),
                 post.isPinned(),
-                hasPractice(post),
+                hasPractice(post) || !linkRepository.findByPostIdOrderByDisplayOrder(post.getId()).isEmpty(),
                 commentRepository.countVisible(post.getId()),
                 post.getViewCount(),
                 post.getPublishedAt()));
@@ -101,6 +107,8 @@ public class NewsService {
                 && viewerId != null
                 && (staff || entitlementService.hasPremiumAccess(viewerId));
 
+        List<NewsDtos.LinkedQuestionSet> linked = linkedSetsOf(post.getId(), viewerId);
+
         return new NewsDtos.PostDetail(
                 post.getId(),
                 post.getSlug(),
@@ -114,6 +122,7 @@ public class NewsService {
                 post.getTopicId(),
                 null,
                 practiceSets,
+                linked,
                 post.isCommentsEnabled(),
                 post.isCommentsModerated(),
                 canComment,
@@ -195,6 +204,58 @@ public class NewsService {
                 note,
                 comment.getCreatedAt(),
                 replies);
+    }
+
+    /**
+     * Đề gắn đích danh vào bài, theo thứ tự người soạn đặt.
+     *
+     * <p>Đề đã bị gỡ khỏi ngân hàng hoặc chuyển về nháp thì BỎ khỏi danh sách:
+     * hiện ra mà bấm vào lỗi thì tệ hơn là không hiện.
+     *
+     * <p>Đề bị khoá vẫn hiện kèm {@code unlocked = false} — học viên hết hạn cần
+     * thấy bài có bao nhiêu đề để biết mình đang bỏ lỡ gì.
+     */
+    @Transactional(readOnly = true)
+    public List<NewsDtos.LinkedQuestionSet> linkedSetsOf(String postId, String viewerId) {
+        List<NewsPostQuestionSet> links = linkRepository.findByPostIdOrderByDisplayOrder(postId);
+        if (links.isEmpty()) {
+            return List.of();
+        }
+
+        List<String> ids = links.stream().map(NewsPostQuestionSet::getQuestionSetId).toList();
+        Map<String, QuestionSet> sets = new LinkedHashMap<>();
+        for (QuestionSet set : questionSetRepository.findAllById(ids)) {
+            if (set.isPublished()) {
+                sets.put(set.getId(), set);
+            }
+        }
+
+        // Một truy vấn quyền cho cả danh sách thay vì một truy vấn mỗi đề
+        Map<String, ContentAccessService.AccessDecision> access = viewerId == null
+                ? Map.of()
+                : contentAccessService.evaluateAll(viewerId, List.copyOf(sets.values()));
+
+        List<NewsDtos.LinkedQuestionSet> result = new ArrayList<>();
+        for (NewsPostQuestionSet link : links) {
+            QuestionSet set = sets.get(link.getQuestionSetId());
+            if (set == null) {
+                continue;
+            }
+            boolean unlocked = viewerId != null
+                    && access.getOrDefault(set.getId(),
+                            ContentAccessService.AccessDecision.deny(
+                                    set.getAccessLevel(),
+                                    vn.weconex.aptis.common.exception.ErrorCode.PREMIUM_REQUIRED))
+                            .allowed();
+
+            result.add(new NewsDtos.LinkedQuestionSet(
+                    set.getId(),
+                    set.getTitle(),
+                    set.getPart() == null ? null : set.getPart().getId(),
+                    set.getPart() == null ? null : set.getPart().getCode(),
+                    unlocked));
+        }
+        return result;
     }
 
     // -----------------------------------------------------------------

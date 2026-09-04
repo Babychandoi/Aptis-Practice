@@ -11,7 +11,7 @@ import { useIsPremium } from '@/features/auth/authStore';
 import { useAuthStore } from '@/features/auth/authStore';
 import { formatDateTime, relativeTime } from '@/lib/format';
 import { markdownToHtml } from '@/lib/markdown';
-import type { NewsComment } from '@/types/api';
+import type { LinkedQuestionSet, NewsComment } from '@/types/api';
 
 /** Bài viết bảng tin kèm phần bình luận. */
 export function NewsPostPage() {
@@ -34,7 +34,25 @@ export function NewsPostPage() {
     [post],
   );
 
-  // Bấm vào luyện đề gắn kèm bài viết
+  /**
+   * Mở ĐÚNG một đề đã gắn.
+   *
+   * Dùng part-attempts với questionSetIds chứ không dùng custom-attempts: nhánh
+   * custom chỉ lọc theo Part/chủ đề nên ra đề bất kỳ trong nhóm — bài dạy cách
+   * làm một đề cụ thể thì phải mở đúng đề đó.
+   */
+  const openSetMutation = useMutation({
+    mutationFn: (set: LinkedQuestionSet) => {
+      if (!set.partId) throw new Error('Đề này thiếu thông tin Part');
+      return practiceApi.createPartAttempt({
+        partId: set.partId,
+        questionSetIds: [set.questionSetId],
+      });
+    },
+    onSuccess: (attempt) => navigate(`/attempts/${attempt.id}`),
+  });
+
+  /** Luyện theo nhóm Part/chủ đề — dùng khi bài không gắn đề đích danh. */
   const practiceMutation = useMutation({
     mutationFn: () => {
       if (!post) throw new Error('Chưa tải xong bài viết');
@@ -74,7 +92,37 @@ export function NewsPostPage() {
         <SafeHtml html={bodyHtml} className="news-body mt-5" />
       </article>
 
-      {post.practiceSetCount > 0 && (
+      {/* Đề gắn đích danh đi trước: bấm vào là mở đúng đề đó. Bài chỉ gắn
+          Part/chủ đề thì rơi xuống nhánh luyện theo nhóm bên dưới. */}
+      {post.questionSets.length > 0 ? (
+        <section className="mt-6 rounded-2xl border border-brand-200 bg-brand-50 p-5">
+          <h2 className="text-sm font-semibold text-brand-900">
+            Đề trong bài này ({post.questionSets.length})
+          </h2>
+          <p className="mt-1 text-xs text-brand-800">Bấm vào từng đề để làm đúng đề đó.</p>
+
+          <ul className="mt-3 space-y-2">
+            {post.questionSets.map((set, index) => (
+              <li key={set.questionSetId}>
+                <LinkedSetRow
+                  set={set}
+                  index={index + 1}
+                  pending={openSetMutation.isPending}
+                  onOpen={() => openSetMutation.mutate(set)}
+                />
+              </li>
+            ))}
+          </ul>
+
+          {openSetMutation.error && (
+            <p className="mt-2 text-xs text-red-700">
+              {openSetMutation.error instanceof ApiError
+                ? openSetMutation.error.message
+                : 'Không mở được đề'}
+            </p>
+          )}
+        </section>
+      ) : post.practiceSetCount > 0 ? (
         <section className="mt-6 rounded-2xl border border-brand-200 bg-brand-50 p-5">
           <h2 className="text-sm font-semibold text-brand-900">Luyện đề theo bài này</h2>
           <p className="mt-1 text-xs text-brand-800">
@@ -96,7 +144,7 @@ export function NewsPostPage() {
             </p>
           )}
         </section>
-      )}
+      ) : null}
 
       <CommentSection
         postId={post.id}
@@ -110,6 +158,67 @@ export function NewsPostPage() {
         }}
       />
     </div>
+  );
+}
+
+/**
+ * Một đề trong danh sách.
+ *
+ * Đề bị khoá vẫn hiện, chỉ đổi thành lời mời mua gói: học viên hết hạn cần thấy
+ * bài có bao nhiêu đề để biết mình đang bỏ lỡ gì.
+ */
+function LinkedSetRow({
+  set,
+  index,
+  pending,
+  onOpen,
+}: {
+  set: LinkedQuestionSet;
+  index: number;
+  pending: boolean;
+  onOpen: () => void;
+}) {
+  // Nhãn Part trong DB là PART_2; đọc ra cho học viên thì cần "Part 2".
+  const label = set.partLabel ? set.partLabel.replace("PART_", "Part ") : null;
+
+  if (!set.unlocked) {
+    return (
+      <div className="flex items-center gap-3 rounded-xl border border-brand-200 bg-white/60 px-3.5 py-3">
+        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-slate-100 text-xs font-bold text-slate-400">
+          {index}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm font-medium text-slate-500">{set.title}</span>
+          {label && <span className="block text-[11px] text-slate-400">{label}</span>}
+        </span>
+        <Link
+          to="/plans"
+          className="shrink-0 rounded-lg bg-dark px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-widest text-accent"
+        >
+          Mở khoá
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      disabled={pending}
+      onClick={onOpen}
+      className="flex w-full items-center gap-3 rounded-xl border border-brand-200 bg-white px-3.5 py-3 text-left transition-colors hover:border-brand-300 hover:bg-brand-50 disabled:opacity-60"
+    >
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-brand-100 text-xs font-bold text-brand-800">
+        {index}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-sm font-medium text-slate-900">{set.title}</span>
+        {label && <span className="block text-[11px] text-slate-500">{label}</span>}
+      </span>
+      <span aria-hidden="true" className="shrink-0 text-brand-800">
+        →
+      </span>
+    </button>
   );
 }
 

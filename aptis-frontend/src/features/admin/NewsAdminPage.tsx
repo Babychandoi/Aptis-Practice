@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ApiError } from '@/api/client';
-import { adminNewsApi } from '@/api/adminEndpoints';
+import { adminContentApi, adminNewsApi } from '@/api/adminEndpoints';
 import { assetApi, uploadToPresignedUrl } from '@/api/endpoints';
 import { useComponents, useExamVersions, usePartsOfComponents, useTopics } from '@/features/catalog/catalogQueries';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
@@ -11,8 +11,10 @@ import { SafeHtml } from '@/components/ui/SafeContent';
 import { confirmDialog } from '@/lib/dialog';
 import { formatDateTime, relativeTime } from '@/lib/format';
 import { markdownToHtml } from '@/lib/markdown';
+import type { PartSummary } from '@/types/api';
 import type {
   AdminNewsCommentRow,
+  AdminQuestionSet,
   AdminNewsPostRow,
   NewsCommentStatus,
   NewsPostStatus,
@@ -329,6 +331,9 @@ function PostEditor({
     status: 'DRAFT',
   });
   const [preview, setPreview] = useState(false);
+  // Giữ cả tên đề, không chỉ id: sửa bài cũ phải hiện được tên đề đã gắn mà
+  // không phải gọi thêm API tra từng id.
+  const [linkedSets, setLinkedSets] = useState<{ id: string; title: string; partLabel: string | null }[]>([]);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
 
   /**
@@ -360,6 +365,13 @@ ${snippet}` }));
   useEffect(() => {
     const post = existingQuery.data;
     if (!post) return;
+    setLinkedSets(
+      (post.questionSets ?? []).map((set) => ({
+        id: set.questionSetId,
+        title: set.title,
+        partLabel: set.partLabel,
+      })),
+    );
     setForm({
       title: post.title,
       excerpt: post.excerpt ?? '',
@@ -379,6 +391,7 @@ ${snippet}` }));
     mutationFn: (status: NewsPostStatus) => {
       const payload: SaveNewsPostRequest = {
         ...form,
+        questionSetIds: linkedSets.map((set) => set.id),
         title: form.title.trim(),
         excerpt: form.excerpt?.trim() || null,
         partId: form.partId || null,
@@ -494,12 +507,23 @@ ${snippet}` }));
               </div>
             )}
 
-            {/* Gắn đề luyện: học viên đọc xong bấm làm ngay. Để trống cả hai thì
-                bài chỉ để đọc. */}
+            {/* Hai cách gắn đề, dùng riêng hoặc cùng lúc. Đề chọn đích danh có
+                ưu tiên: có nó thì trang bài viết hiện danh sách đề, bỏ qua phần
+                lọc theo Part/chủ đề. */}
+            <QuestionSetPicker
+              selected={linkedSets}
+              onChange={setLinkedSets}
+              parts={partsQuery.data ?? []}
+              componentNames={componentNames}
+            />
+
             <div className="rounded-xl border border-slate-200 p-4">
-              <p className="mb-1 text-sm font-semibold text-slate-900">Đề luyện gắn kèm</p>
+              <p className="mb-1 text-sm font-semibold text-slate-900">
+                Hoặc lấy đề theo nhóm
+              </p>
               <p className="mb-3 text-xs text-slate-500">
-                Để trống cả hai nếu bài chỉ để đọc. Chọn cả hai thì lấy đề thoả cả Part và chủ đề.
+                Chỉ dùng khi KHÔNG chọn đề đích danh ở trên. Học viên bấm một nút và nhận đề
+                bất kỳ trong nhóm — phù hợp bài dự đoán đề theo chủ đề.
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
@@ -583,6 +607,184 @@ ${snippet}` }));
           </button>
         </footer>
       </aside>
+    </div>
+  );
+}
+
+/**
+ * Chọn đích danh từng đề gắn vào bài viết.
+ *
+ * Vì sao cần: gắn theo Part/chủ đề chỉ là LỌC NHÓM — học viên bấm vào nhận đề
+ * bất kỳ trong nhóm, mỗi người mỗi bộ khác nhau. Bài dạy cách làm một đề cụ thể
+ * thì phải mở đúng đề đó.
+ */
+function QuestionSetPicker({
+  selected,
+  onChange,
+  parts,
+  componentNames,
+}: {
+  selected: { id: string; title: string; partLabel: string | null }[];
+  onChange: (next: { id: string; title: string; partLabel: string | null }[]) => void;
+  parts: PartSummary[];
+  componentNames: Map<string, string>;
+}) {
+  const [partId, setPartId] = useState("");
+  const [term, setTerm] = useState("");
+  const [query, setQuery] = useState("");
+
+  // Chờ người dùng gõ xong mới tìm, khỏi gọi API mỗi ký tự
+  useEffect(() => {
+    const timer = window.setTimeout(() => setQuery(term.trim()), 300);
+    return () => window.clearTimeout(timer);
+  }, [term]);
+
+  const searchQuery = useQuery({
+    queryKey: ["admin", "news", "pick-sets", partId, query],
+    queryFn: () =>
+      adminContentApi.search({
+        partId: partId || undefined,
+        q: query || undefined,
+        status: "PUBLISHED",
+        size: 20,
+      }),
+    // Chưa chọn Part và chưa gõ gì thì đừng tải cả ngân hàng đề
+    enabled: partId.length > 0 || query.length > 0,
+  });
+
+  const add = (set: AdminQuestionSet) => {
+    if (selected.some((item) => item.id === set.id)) return;
+    onChange([...selected, { id: set.id, title: set.title, partLabel: set.partName }]);
+  };
+
+  const remove = (id: string) => onChange(selected.filter((item) => item.id !== id));
+
+  /** Đổi vị trí — thứ tự này là thứ tự học viên thấy. */
+  const move = (index: number, delta: number) => {
+    const target = index + delta;
+    if (target < 0 || target >= selected.length) return;
+    const next = [...selected];
+    const [item] = next.splice(index, 1);
+    if (item) next.splice(target, 0, item);
+    onChange(next);
+  };
+
+  return (
+    <div className="rounded-xl border border-brand-200 bg-brand-50/40 p-4">
+      <p className="mb-1 text-sm font-semibold text-slate-900">
+        Đề gắn vào bài <span className="font-normal text-slate-500">(chọn đích danh)</span>
+      </p>
+      <p className="mb-3 text-xs text-slate-500">
+        Học viên thấy danh sách và bấm vào từng đề để làm ĐÚNG đề đó. Kéo thứ tự bằng hai
+        mũi tên.
+      </p>
+
+      {selected.length > 0 && (
+        <ul className="mb-3 space-y-2">
+          {selected.map((item, index) => (
+            <li
+              key={item.id}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2"
+            >
+              <span className="grid h-6 w-6 shrink-0 place-items-center rounded bg-brand-100 text-[11px] font-bold text-brand-800">
+                {index + 1}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm text-slate-800">{item.title}</span>
+                {item.partLabel && (
+                  <span className="block text-[11px] text-slate-400">{item.partLabel}</span>
+                )}
+              </span>
+              <button
+                type="button"
+                className="px-1 text-slate-400 hover:text-slate-800 disabled:opacity-30"
+                disabled={index === 0}
+                onClick={() => move(index, -1)}
+                aria-label="Lên"
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                className="px-1 text-slate-400 hover:text-slate-800 disabled:opacity-30"
+                disabled={index === selected.length - 1}
+                onClick={() => move(index, 1)}
+                aria-label="Xuống"
+              >
+                ↓
+              </button>
+              <button
+                type="button"
+                className="px-1 text-[11px] font-semibold text-red-700 hover:underline"
+                onClick={() => remove(item.id)}
+              >
+                Gỡ
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div className="grid gap-2 sm:grid-cols-2">
+        <select
+          className="input"
+          value={partId}
+          onChange={(event) => setPartId(event.target.value)}
+          aria-label="Lọc theo Part"
+        >
+          <option value="">— Chọn Part để tìm đề —</option>
+          {parts.map((part) => (
+            <option key={part.id} value={part.id}>
+              {componentNames.get(part.componentId) ?? part.componentCode} · {part.name}
+            </option>
+          ))}
+        </select>
+        <input
+          className="input"
+          value={term}
+          onChange={(event) => setTerm(event.target.value)}
+          placeholder="Tìm theo tên đề hoặc mã"
+          aria-label="Tìm đề"
+        />
+      </div>
+
+      {searchQuery.isFetching && (
+        <p className="mt-2 text-xs text-slate-400">Đang tìm…</p>
+      )}
+
+      {searchQuery.data && (
+        <div className="mt-2 max-h-64 overflow-y-auto rounded-lg border border-slate-200 bg-white">
+          {searchQuery.data.content.length === 0 ? (
+            <p className="p-3 text-xs text-slate-400">Không tìm thấy đề phù hợp.</p>
+          ) : (
+            <ul className="divide-y divide-slate-100">
+              {searchQuery.data.content.map((set) => {
+                const already = selected.some((item) => item.id === set.id);
+                return (
+                  <li key={set.id}>
+                    <button
+                      type="button"
+                      disabled={already}
+                      onClick={() => add(set)}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-brand-50 disabled:bg-slate-50 disabled:opacity-60"
+                    >
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm text-slate-800">{set.title}</span>
+                        <span className="block font-mono text-[10px] text-slate-400">
+                          {set.code} · {set.partName}
+                        </span>
+                      </span>
+                      <span className="shrink-0 text-[11px] font-semibold text-brand-800">
+                        {already ? "Đã chọn" : "+ Thêm"}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      )}
     </div>
   );
 }

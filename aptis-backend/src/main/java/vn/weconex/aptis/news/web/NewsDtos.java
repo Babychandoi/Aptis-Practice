@@ -28,6 +28,21 @@ public final class NewsDtos {
             Instant publishedAt) {
     }
 
+    /**
+     * Một đề gắn đích danh vào bài viết.
+     *
+     * <p>Có {@code locked} thay vì bỏ khỏi danh sách: học viên hết hạn vẫn thấy
+     * bài viết có bao nhiêu đề để biết mình đang bỏ lỡ gì.
+     */
+    public record LinkedQuestionSet(
+            String questionSetId,
+            String title,
+            String partId,
+            String partLabel,
+            /** false = phải mua gói mới làm được. */
+            boolean unlocked) {
+    }
+
     public record PostDetail(
             String id,
             String slug,
@@ -42,6 +57,12 @@ public final class NewsDtos {
             String topicName,
             /** Số bộ đề khớp part/topic — 0 thì client ẩn nút luyện tập. */
             long practiceSetCount,
+            /**
+             * Đề gắn đích danh, theo thứ tự người soạn đặt. Rỗng nghĩa là bài
+             * dùng lối lọc theo Part/chủ đề (xem practiceSetCount) hoặc không
+             * gắn đề nào.
+             */
+            List<LinkedQuestionSet> questionSets,
             boolean commentsEnabled,
             /** Bình luận ở bài này phải chờ duyệt? Client báo trước cho học viên. */
             boolean commentsModerated,
@@ -60,6 +81,11 @@ public final class NewsDtos {
             @Size(max = 36) String coverAssetId,
             @Size(max = 36) String partId,
             @Size(max = 36) String topicId,
+            /**
+             * Đề gắn đích danh, theo thứ tự muốn hiện. Gửi mảng rỗng để gỡ hết.
+             * Bỏ trống (null) thì giữ nguyên danh sách đang có.
+             */
+            List<@Size(max = 36) String> questionSetIds,
             Boolean pinned,
             Boolean commentsEnabled,
             Boolean commentsModerated,
@@ -78,6 +104,8 @@ public final class NewsDtos {
             boolean commentsModerated,
             long commentCount,
             long pendingCommentCount,
+            /** Số đề gắn đích danh — để biết bài nào đã gắn, bài nào chưa. */
+            int linkedSetCount,
             int viewCount,
             Instant publishedAt,
             Instant updatedAt) {

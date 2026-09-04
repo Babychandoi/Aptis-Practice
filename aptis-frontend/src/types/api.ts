@@ -751,6 +751,16 @@ export interface NewsPostSummary {
   publishedAt: string | null;
 }
 
+/** Một đề gắn đích danh vào bài viết. */
+export interface LinkedQuestionSet {
+  questionSetId: string;
+  title: string;
+  partId: string | null;
+  partLabel: string | null;
+  /** false = phải mua gói mới làm được. */
+  unlocked: boolean;
+}
+
 export interface NewsPostDetail extends NewsPostSummary {
   /** Markdown — render qua markdownToHtml rồi sanitizeHtml. */
   body: string;
@@ -758,8 +768,13 @@ export interface NewsPostDetail extends NewsPostSummary {
   partLabel: string | null;
   topicId: string | null;
   topicName: string | null;
-  /** 0 thì ẩn nút luyện tập. */
+  /** 0 thì ẩn nút luyện tập theo nhóm. */
   practiceSetCount: number;
+  /**
+   * Đề gắn đích danh, theo thứ tự người soạn đặt. Rỗng nghĩa là bài dùng lối
+   * lọc theo Part/chủ đề, hoặc không gắn đề nào.
+   */
+  questionSets: LinkedQuestionSet[];
   commentsEnabled: boolean;
   /** Bình luận bài này phải chờ duyệt — báo trước cho học viên. */
   commentsModerated: boolean;

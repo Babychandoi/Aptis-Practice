@@ -14,9 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import vn.weconex.aptis.auth.repository.UserProfileRepository;
 import vn.weconex.aptis.auth.repository.UserRepository;
 import vn.weconex.aptis.common.exception.ApiException;
+import vn.weconex.aptis.common.exception.ErrorCode;
+import vn.weconex.aptis.content.repository.QuestionSetRepository;
 import vn.weconex.aptis.news.domain.NewsComment;
 import vn.weconex.aptis.news.domain.NewsPost;
+import vn.weconex.aptis.news.domain.NewsPostQuestionSet;
 import vn.weconex.aptis.news.repository.NewsCommentRepository;
+import vn.weconex.aptis.news.repository.NewsPostQuestionSetRepository;
 import vn.weconex.aptis.news.repository.NewsPostRepository;
 import vn.weconex.aptis.news.web.NewsDtos;
 import vn.weconex.aptis.platform.audit.AuditService;
@@ -34,6 +38,8 @@ public class AdminNewsService {
 
     private final NewsPostRepository postRepository;
     private final NewsCommentRepository commentRepository;
+    private final NewsPostQuestionSetRepository linkRepository;
+    private final QuestionSetRepository questionSetRepository;
     private final NewsService newsService;
     private final UserRepository userRepository;
     private final UserProfileRepository profileRepository;
@@ -67,6 +73,7 @@ public class AdminNewsService {
                 post.isCommentsModerated(),
                 commentRepository.countVisible(post.getId()),
                 commentRepository.countPendingOfPost(post.getId()),
+                linkRepository.findByPostIdOrderByDisplayOrder(post.getId()).size(),
                 post.getViewCount(),
                 post.getPublishedAt(),
                 post.getUpdatedAt()));
@@ -89,6 +96,9 @@ public class AdminNewsService {
                 post.getTopicId(),
                 null,
                 0,
+                // Trang soạn cần thấy đúng đề đã gắn, không phụ thuộc quyền của
+                // ai đang mở nên truyền viewerId null (mọi đề đều unlocked=false).
+                newsService.linkedSetsOf(post.getId(), null),
                 post.isCommentsEnabled(),
                 post.isCommentsModerated(),
                 false,
@@ -106,6 +116,7 @@ public class AdminNewsService {
         post.setSlug(newsService.uniqueSlug(request.title(), post.getId()));
 
         NewsPost saved = postRepository.save(post);
+        applyQuestionSets(saved.getId(), request.questionSetIds());
         auditService.record(actorId, "NEWS_POST_CREATE", "NEWS_POST", saved.getId(),
                 Map.of(), Map.of("title", saved.getTitle(), "status", saved.getStatus().name()));
         return row(saved);
@@ -126,6 +137,7 @@ public class AdminNewsService {
         }
 
         NewsPost saved = postRepository.save(post);
+        applyQuestionSets(saved.getId(), request.questionSetIds());
         auditService.record(actorId, "NEWS_POST_UPDATE", "NEWS_POST", saved.getId(),
                 Map.of("title", beforeTitle, "status", beforeStatus),
                 Map.of("title", saved.getTitle(), "status", saved.getStatus().name()));
@@ -137,7 +149,9 @@ public class AdminNewsService {
         NewsPost post = require(id);
         auditService.record(actorId, "NEWS_POST_DELETE", "NEWS_POST", id,
                 Map.of("title", post.getTitle()), Map.of());
-        // Bình luận xoá theo nhờ ON DELETE CASCADE
+        // Bình luận xoá theo nhờ ON DELETE CASCADE; liên kết đề cũng vậy, nhưng
+        // gỡ tường minh để không phụ thuộc thứ tự flush của Hibernate.
+        linkRepository.deleteByPostId(id);
         postRepository.delete(post);
     }
 
@@ -167,6 +181,52 @@ public class AdminNewsService {
                 post.setStatus(target);
             }
         }
+    }
+
+    /**
+     * Thay toàn bộ danh sách đề gắn vào bài.
+     *
+     * <p>{@code null} = giữ nguyên (client chỉ sửa nội dung, không gửi danh
+     * sách); mảng rỗng = gỡ hết.
+     *
+     * <p>Xoá rồi chèn lại thay vì so sánh từng dòng: danh sách chỉ vài đề, và
+     * thứ tự cũng là dữ liệu cần lưu nên gần như luôn phải ghi lại hết.
+     */
+    private void applyQuestionSets(String postId, List<String> questionSetIds) {
+        if (questionSetIds == null) {
+            return;
+        }
+
+        linkRepository.deleteByPostId(postId);
+        if (questionSetIds.isEmpty()) {
+            return;
+        }
+
+        // Bỏ trùng nhưng giữ thứ tự người soạn đặt
+        List<String> distinct = questionSetIds.stream()
+                .filter(id -> id != null && !id.isBlank())
+                .map(String::trim)
+                .distinct()
+                .toList();
+
+        // Chặn id không tồn tại ngay tại đây: để FK báo lỗi thì người soạn nhận
+        // "Lỗi hệ thống" mà không biết đề nào sai.
+        List<String> found = questionSetRepository.findAllById(distinct).stream()
+                .map(set -> set.getId())
+                .toList();
+        List<String> missing = distinct.stream().filter(id -> !found.contains(id)).toList();
+        if (!missing.isEmpty()) {
+            throw new ApiException(
+                    ErrorCode.VALIDATION_FAILED,
+                    "Có đề không tồn tại: " + String.join(", ", missing));
+        }
+
+        int order = 1;
+        List<NewsPostQuestionSet> links = new java.util.ArrayList<>();
+        for (String questionSetId : distinct) {
+            links.add(new NewsPostQuestionSet(postId, questionSetId, order++));
+        }
+        linkRepository.saveAll(links);
     }
 
     // -----------------------------------------------------------------
@@ -284,6 +344,7 @@ public class AdminNewsService {
                 post.isCommentsModerated(),
                 commentRepository.countVisible(post.getId()),
                 commentRepository.countPendingOfPost(post.getId()),
+                linkRepository.findByPostIdOrderByDisplayOrder(post.getId()).size(),
                 post.getViewCount(),
                 post.getPublishedAt(),
                 post.getUpdatedAt());
