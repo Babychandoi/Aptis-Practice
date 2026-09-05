@@ -132,6 +132,13 @@ export function ExamPredictionPage() {
               <CalendarIcon />
               {formatDate(feed.predictDate)}
             </span>
+            {/* Bản tin gốc cũ hơn ngày đang xem: nói rõ dự đoán lập từ hôm nào,
+                thay vì để học viên đoán mò. */}
+            {feed.sourceDate && feed.sourceDate !== feed.predictDate && (
+              <span className="text-[10px] text-slate-500">
+                Cập nhật {formatDate(feed.sourceDate)}
+              </span>
+            )}
             {feed.source && (
               <span className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-white px-3 py-2">
                 <BookIcon />

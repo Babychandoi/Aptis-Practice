@@ -48,11 +48,14 @@ public class ExamPredictionService {
     public ExamPredictionDtos.PredictionFeedResponse feedFor(LocalDate date) {
         LocalDate effective = predictionRepository.findLatestDateUpTo(date).orElse(null);
         if (effective == null) {
-            return new ExamPredictionDtos.PredictionFeedResponse(date, null, List.of());
+            return new ExamPredictionDtos.PredictionFeedResponse(date, null, null, List.of());
         }
 
+        // Hiện NGÀY ĐANG XEM chứ không phải ngày bản tin gốc: dự đoán còn nguyên
+        // giá trị cho tới khi admin đăng bản mới, mà đề ngày cũ trông như tin đã
+        // hết hạn nên học viên bỏ qua.
         List<ExamPrediction> items = predictionRepository.findPublishedByDate(effective);
-        return build(effective, items, Map.of());
+        return build(date, effective, items, Map.of());
     }
 
     /**
@@ -66,7 +69,7 @@ public class ExamPredictionService {
     public ExamPredictionDtos.PredictionFeedResponse hottestBetween(LocalDate from, LocalDate to) {
         List<ExamPrediction> all = predictionRepository.findPublishedBetween(from, to);
         if (all.isEmpty()) {
-            return new ExamPredictionDtos.PredictionFeedResponse(to, null, List.of());
+            return new ExamPredictionDtos.PredictionFeedResponse(to, to, null, List.of());
         }
 
         Map<String, Integer> repeats = new HashMap<>();
@@ -87,18 +90,26 @@ public class ExamPredictionService {
         for (ExamPrediction item : unique) {
             byId.put(item.getId(), repeats.getOrDefault(slotKey(item), 0));
         }
-        return build(to, unique, byId);
+        return build(to, to, unique, byId);
     }
 
     private static String slotKey(ExamPrediction item) {
         return item.getTopicId() + "|" + (item.getPartId() == null ? "" : item.getPartId());
     }
 
+    /**
+     * @param date       ngày hiển thị cho học viên
+     * @param sourceDate ngày của bản tin gốc; bằng {@code date} khi bản tin đúng
+     *                   ngày đang xem
+     */
     private ExamPredictionDtos.PredictionFeedResponse build(
-            LocalDate date, List<ExamPrediction> items, Map<String, Integer> repeatByPredictionId) {
+            LocalDate date,
+            LocalDate sourceDate,
+            List<ExamPrediction> items,
+            Map<String, Integer> repeatByPredictionId) {
 
         if (items.isEmpty()) {
-            return new ExamPredictionDtos.PredictionFeedResponse(date, null, List.of());
+            return new ExamPredictionDtos.PredictionFeedResponse(date, sourceDate, null, List.of());
         }
 
         Map<String, Topic> topics = byId(
@@ -178,7 +189,7 @@ public class ExamPredictionService {
                 .findFirst()
                 .orElse(null);
 
-        return new ExamPredictionDtos.PredictionFeedResponse(date, source, skills);
+        return new ExamPredictionDtos.PredictionFeedResponse(date, sourceDate, source, skills);
     }
 
     /**

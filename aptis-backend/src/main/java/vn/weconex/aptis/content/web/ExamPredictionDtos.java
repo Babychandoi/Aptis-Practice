@@ -20,8 +20,16 @@ public final class ExamPredictionDtos {
      *                    admin chưa cập nhật, client hiện đúng ngày này để học
      *                    viên biết tin cũ hay mới
      */
+    /**
+     * @param predictDate   ngày học viên đang xem — luôn là ngày họ mở trang.
+     *                      Bản tin chưa cập nhật thì vẫn hiện ngày hôm nay, vì
+     *                      dự đoán còn nguyên giá trị cho tới khi có bản mới.
+     * @param sourceDate    ngày của bản tin gốc. Khác predictDate khi admin chưa
+     *                      đăng bản mới; client dùng để ghi chú "cập nhật ngày…".
+     */
     public record PredictionFeedResponse(
             LocalDate predictDate,
+            LocalDate sourceDate,
             String source,
             List<PredictionSkillResponse> skills) {
     }

@@ -695,8 +695,16 @@ export interface ExamPredictionSkill {
 }
 
 export interface ExamPredictionFeed {
-  /** Có thể sớm hơn hôm nay khi admin chưa cập nhật. */
+  /**
+   * Ngày học viên đang xem — luôn là ngày mở trang. Bản tin chưa cập nhật thì
+   * vẫn hiện ngày hôm nay, vì dự đoán còn giá trị cho tới khi có bản mới.
+   */
   predictDate: string;
+  /**
+   * Ngày của bản tin gốc. Khác predictDate khi admin chưa đăng bản mới; dùng để
+   * ghi chú "Cập nhật ngày…" cho học viên biết dự đoán lập từ hôm nào.
+   */
+  sourceDate: string | null;
   source: string | null;
   skills: ExamPredictionSkill[];
 }
