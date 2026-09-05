@@ -43,6 +43,22 @@ public final class NewsDtos {
             boolean unlocked) {
     }
 
+    /**
+     * Đề thi thử đủ 4 phần gắn vào bài viết.
+     *
+     * <p>Bấm vào mở MỘT lượt đi hết Part 1 đến Part 4, khác LinkedQuestionSet
+     * (một bộ đề lẻ, chỉ làm một phần).
+     */
+    public record LinkedBlueprint(
+            String blueprintId,
+            String name,
+            String componentName,
+            int partCount,
+            int durationMinutes,
+            /** false = phải mua gói mới làm được. */
+            boolean unlocked) {
+    }
+
     public record PostDetail(
             String id,
             String slug,
@@ -63,6 +79,11 @@ public final class NewsDtos {
              * gắn đề nào.
              */
             List<LinkedQuestionSet> questionSets,
+            /**
+             * Đề thi thử đủ 4 phần. Ưu tiên hiện trước questionSets: bài hướng
+             * dẫn cả kỹ năng thì làm trọn đề mới đúng mạch.
+             */
+            List<LinkedBlueprint> blueprints,
             boolean commentsEnabled,
             /** Bình luận ở bài này phải chờ duyệt? Client báo trước cho học viên. */
             boolean commentsModerated,
@@ -86,6 +107,11 @@ public final class NewsDtos {
              * Bỏ trống (null) thì giữ nguyên danh sách đang có.
              */
             List<@Size(max = 36) String> questionSetIds,
+            /**
+             * Đề thi thử đủ 4 phần, theo thứ tự muốn hiện. Mảng rỗng để gỡ hết;
+             * bỏ trống (null) thì giữ nguyên.
+             */
+            List<@Size(max = 36) String> blueprintIds,
             Boolean pinned,
             Boolean commentsEnabled,
             Boolean commentsModerated,
@@ -106,6 +132,8 @@ public final class NewsDtos {
             long pendingCommentCount,
             /** Số đề gắn đích danh — để biết bài nào đã gắn, bài nào chưa. */
             int linkedSetCount,
+            /** Số đề thi thử đủ 4 phần gắn vào bài. */
+            int linkedBlueprintCount,
             int viewCount,
             Instant publishedAt,
             Instant updatedAt) {

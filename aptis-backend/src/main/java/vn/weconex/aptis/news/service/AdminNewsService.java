@@ -18,9 +18,12 @@ import vn.weconex.aptis.common.exception.ErrorCode;
 import vn.weconex.aptis.content.repository.QuestionSetRepository;
 import vn.weconex.aptis.news.domain.NewsComment;
 import vn.weconex.aptis.news.domain.NewsPost;
+import vn.weconex.aptis.news.domain.NewsPostBlueprint;
 import vn.weconex.aptis.news.domain.NewsPostQuestionSet;
 import vn.weconex.aptis.news.repository.NewsCommentRepository;
+import vn.weconex.aptis.news.repository.NewsPostBlueprintRepository;
 import vn.weconex.aptis.news.repository.NewsPostQuestionSetRepository;
+import vn.weconex.aptis.practice.repository.TestBlueprintRepository;
 import vn.weconex.aptis.news.repository.NewsPostRepository;
 import vn.weconex.aptis.news.web.NewsDtos;
 import vn.weconex.aptis.platform.audit.AuditService;
@@ -39,6 +42,8 @@ public class AdminNewsService {
     private final NewsPostRepository postRepository;
     private final NewsCommentRepository commentRepository;
     private final NewsPostQuestionSetRepository linkRepository;
+    private final NewsPostBlueprintRepository blueprintLinkRepository;
+    private final TestBlueprintRepository blueprintRepository;
     private final QuestionSetRepository questionSetRepository;
     private final NewsService newsService;
     private final UserRepository userRepository;
@@ -74,6 +79,7 @@ public class AdminNewsService {
                 commentRepository.countVisible(post.getId()),
                 commentRepository.countPendingOfPost(post.getId()),
                 linkRepository.findByPostIdOrderByDisplayOrder(post.getId()).size(),
+                blueprintLinkRepository.findByPostIdOrderByDisplayOrder(post.getId()).size(),
                 post.getViewCount(),
                 post.getPublishedAt(),
                 post.getUpdatedAt()));
@@ -99,6 +105,7 @@ public class AdminNewsService {
                 // Trang soạn cần thấy đúng đề đã gắn, không phụ thuộc quyền của
                 // ai đang mở nên truyền viewerId null (mọi đề đều unlocked=false).
                 newsService.linkedSetsOf(post.getId(), null),
+                newsService.linkedBlueprintsOf(post.getId(), null, true),
                 post.isCommentsEnabled(),
                 post.isCommentsModerated(),
                 false,
@@ -117,6 +124,7 @@ public class AdminNewsService {
 
         NewsPost saved = postRepository.save(post);
         applyQuestionSets(saved.getId(), request.questionSetIds());
+        applyBlueprints(saved.getId(), request.blueprintIds());
         auditService.record(actorId, "NEWS_POST_CREATE", "NEWS_POST", saved.getId(),
                 Map.of(), Map.of("title", saved.getTitle(), "status", saved.getStatus().name()));
         return row(saved);
@@ -138,6 +146,7 @@ public class AdminNewsService {
 
         NewsPost saved = postRepository.save(post);
         applyQuestionSets(saved.getId(), request.questionSetIds());
+        applyBlueprints(saved.getId(), request.blueprintIds());
         auditService.record(actorId, "NEWS_POST_UPDATE", "NEWS_POST", saved.getId(),
                 Map.of("title", beforeTitle, "status", beforeStatus),
                 Map.of("title", saved.getTitle(), "status", saved.getStatus().name()));
@@ -152,6 +161,7 @@ public class AdminNewsService {
         // Bình luận xoá theo nhờ ON DELETE CASCADE; liên kết đề cũng vậy, nhưng
         // gỡ tường minh để không phụ thuộc thứ tự flush của Hibernate.
         linkRepository.deleteByPostId(id);
+        blueprintLinkRepository.deleteByPostId(id);
         postRepository.delete(post);
     }
 
@@ -227,6 +237,46 @@ public class AdminNewsService {
             links.add(new NewsPostQuestionSet(postId, questionSetId, order++));
         }
         linkRepository.saveAll(links);
+    }
+
+    /**
+     * Thay toàn bộ danh sách đề thi thử gắn vào bài.
+     *
+     * <p>{@code null} = giữ nguyên; mảng rỗng = gỡ hết. Cùng quy ước với
+     * {@link #applyQuestionSets}.
+     */
+    private void applyBlueprints(String postId, List<String> blueprintIds) {
+        if (blueprintIds == null) {
+            return;
+        }
+
+        blueprintLinkRepository.deleteByPostId(postId);
+        if (blueprintIds.isEmpty()) {
+            return;
+        }
+
+        List<String> distinct = blueprintIds.stream()
+                .filter(id -> id != null && !id.isBlank())
+                .map(String::trim)
+                .distinct()
+                .toList();
+
+        List<String> found = blueprintRepository.findAllById(distinct).stream()
+                .map(item -> item.getId())
+                .toList();
+        List<String> missing = distinct.stream().filter(id -> !found.contains(id)).toList();
+        if (!missing.isEmpty()) {
+            throw new ApiException(
+                    ErrorCode.VALIDATION_FAILED,
+                    "Có đề thi thử không tồn tại: " + String.join(", ", missing));
+        }
+
+        int order = 1;
+        List<NewsPostBlueprint> links = new java.util.ArrayList<>();
+        for (String blueprintId : distinct) {
+            links.add(new NewsPostBlueprint(postId, blueprintId, null, order++));
+        }
+        blueprintLinkRepository.saveAll(links);
     }
 
     // -----------------------------------------------------------------
@@ -345,6 +395,7 @@ public class AdminNewsService {
                 commentRepository.countVisible(post.getId()),
                 commentRepository.countPendingOfPost(post.getId()),
                 linkRepository.findByPostIdOrderByDisplayOrder(post.getId()).size(),
+                blueprintLinkRepository.findByPostIdOrderByDisplayOrder(post.getId()).size(),
                 post.getViewCount(),
                 post.getPublishedAt(),
                 post.getUpdatedAt());

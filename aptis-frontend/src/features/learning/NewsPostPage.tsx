@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ApiError } from '@/api/client';
-import { newsApi, practiceApi } from '@/api/endpoints';
+import { mockTestApi, newsApi, practiceApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { SafeHtml } from '@/components/ui/SafeContent';
@@ -11,7 +11,7 @@ import { useIsPremium } from '@/features/auth/authStore';
 import { useAuthStore } from '@/features/auth/authStore';
 import { formatDateTime, relativeTime } from '@/lib/format';
 import { markdownToHtml } from '@/lib/markdown';
-import type { LinkedQuestionSet, NewsComment } from '@/types/api';
+import type { LinkedBlueprint, LinkedQuestionSet, NewsComment } from '@/types/api';
 
 /** Bài viết bảng tin kèm phần bình luận. */
 export function NewsPostPage() {
@@ -49,6 +49,17 @@ export function NewsPostPage() {
         questionSetIds: [set.questionSetId],
       });
     },
+    onSuccess: (attempt) => navigate(`/attempts/${attempt.id}`),
+  });
+
+  /**
+   * Mở đề thi thử đủ 4 phần.
+   *
+   * Một lượt đi hết Part 1 đến Part 4, khác openSetMutation (một bộ đề lẻ, chỉ
+   * làm một phần). Bài hướng dẫn cả kỹ năng thì làm trọn đề mới đúng mạch.
+   */
+  const openBlueprintMutation = useMutation({
+    mutationFn: (blueprintId: string) => mockTestApi.createAttempt(blueprintId),
     onSuccess: (attempt) => navigate(`/attempts/${attempt.id}`),
   });
 
@@ -92,8 +103,41 @@ export function NewsPostPage() {
         <SafeHtml html={bodyHtml} className="news-body mt-5" />
       </article>
 
-      {/* Đề gắn đích danh đi trước: bấm vào là mở đúng đề đó. Bài chỉ gắn
-          Part/chủ đề thì rơi xuống nhánh luyện theo nhóm bên dưới. */}
+      {/* Đề thi thử đủ 4 phần lên trước: bài hướng dẫn cả kỹ năng thì làm trọn
+          đề mới đúng mạch, đề lẻ chỉ để luyện thêm từng phần. */}
+      {post.blueprints.length > 0 && (
+        <section className="mt-6 rounded-2xl border border-brand-300 bg-brand-50 p-5">
+          <h2 className="text-sm font-semibold text-brand-900">
+            Làm trọn đề ({post.blueprints.length})
+          </h2>
+          <p className="mt-1 text-xs text-brand-800">
+            Mỗi đề đi hết cả bốn phần, đúng các câu hỏi trong bài viết.
+          </p>
+
+          <ul className="mt-3 space-y-2">
+            {post.blueprints.map((item, index) => (
+              <li key={item.blueprintId}>
+                <LinkedBlueprintRow
+                  blueprint={item}
+                  index={index + 1}
+                  pending={openBlueprintMutation.isPending}
+                  onOpen={() => openBlueprintMutation.mutate(item.blueprintId)}
+                />
+              </li>
+            ))}
+          </ul>
+
+          {openBlueprintMutation.error && (
+            <p className="mt-2 text-xs text-red-700">
+              {openBlueprintMutation.error instanceof ApiError
+                ? openBlueprintMutation.error.message
+                : 'Không mở được đề thi thử'}
+            </p>
+          )}
+        </section>
+      )}
+
+      {/* Đề lẻ: bấm vào mở đúng bộ đó, chỉ một phần. */}
       {post.questionSets.length > 0 ? (
         <section className="mt-6 rounded-2xl border border-brand-200 bg-brand-50 p-5">
           <h2 className="text-sm font-semibold text-brand-900">
@@ -158,6 +202,71 @@ export function NewsPostPage() {
         }}
       />
     </div>
+  );
+}
+
+/**
+ * Một đề thi thử trong danh sách.
+ *
+ * Đề bị khoá vẫn hiện kèm nút mua gói: học viên hết hạn cần thấy bài có gì để
+ * biết mình đang bỏ lỡ.
+ */
+function LinkedBlueprintRow({
+  blueprint,
+  index,
+  pending,
+  onOpen,
+}: {
+  blueprint: LinkedBlueprint;
+  index: number;
+  pending: boolean;
+  onOpen: () => void;
+}) {
+  const meta = [
+    blueprint.partCount > 0 ? `${blueprint.partCount} phần` : null,
+    blueprint.durationMinutes > 0 ? `${blueprint.durationMinutes} phút` : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  if (!blueprint.unlocked) {
+    return (
+      <div className="flex items-center gap-3 rounded-xl border border-brand-200 bg-white/60 px-3.5 py-3">
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-slate-100 text-xs font-bold text-slate-400">
+          {index}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm font-medium text-slate-500">{blueprint.name}</span>
+          {meta && <span className="block text-[11px] text-slate-400">{meta}</span>}
+        </span>
+        <Link
+          to="/plans"
+          className="shrink-0 rounded-lg bg-dark px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-widest text-accent"
+        >
+          Mở khoá
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      disabled={pending}
+      onClick={onOpen}
+      className="flex w-full items-center gap-3 rounded-xl border border-brand-300 bg-white px-3.5 py-3 text-left transition-colors hover:border-brand-400 hover:bg-brand-50 disabled:opacity-60"
+    >
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-brand-800 text-xs font-bold text-white">
+        {index}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-sm font-semibold text-slate-900">{blueprint.name}</span>
+        {meta && <span className="block text-[11px] text-slate-500">{meta}</span>}
+      </span>
+      <span aria-hidden="true" className="shrink-0 text-brand-800">
+        →
+      </span>
+    </button>
   );
 }
 

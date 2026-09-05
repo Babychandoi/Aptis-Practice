@@ -538,6 +538,8 @@ export interface AdminNewsPostRow {
   pendingCommentCount: number;
   /** Số đề gắn đích danh. */
   linkedSetCount: number;
+  /** Số đề thi thử đủ 4 phần. */
+  linkedBlueprintCount: number;
   viewCount: number;
   publishedAt: string | null;
   updatedAt: string | null;
@@ -556,6 +558,11 @@ export interface SaveNewsPostRequest {
    * (undefined) thì giữ nguyên danh sách đang có.
    */
   questionSetIds?: string[];
+  /**
+   * Đề thi thử đủ 4 phần, theo thứ tự muốn hiện. Mảng rỗng để gỡ hết; bỏ trống
+   * thì giữ nguyên.
+   */
+  blueprintIds?: string[];
   pinned?: boolean;
   commentsEnabled?: boolean;
   commentsModerated?: boolean;

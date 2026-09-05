@@ -761,6 +761,17 @@ export interface LinkedQuestionSet {
   unlocked: boolean;
 }
 
+/** Đề thi thử đủ 4 phần gắn vào bài viết. */
+export interface LinkedBlueprint {
+  blueprintId: string;
+  name: string;
+  componentName: string | null;
+  partCount: number;
+  durationMinutes: number;
+  /** false = phải mua gói mới làm được. */
+  unlocked: boolean;
+}
+
 export interface NewsPostDetail extends NewsPostSummary {
   /** Markdown — render qua markdownToHtml rồi sanitizeHtml. */
   body: string;
@@ -775,6 +786,11 @@ export interface NewsPostDetail extends NewsPostSummary {
    * lọc theo Part/chủ đề, hoặc không gắn đề nào.
    */
   questionSets: LinkedQuestionSet[];
+  /**
+   * Đề thi thử đủ 4 phần. Hiện TRƯỚC questionSets: bài hướng dẫn cả kỹ năng thì
+   * làm trọn đề mới đúng mạch.
+   */
+  blueprints: LinkedBlueprint[];
   commentsEnabled: boolean;
   /** Bình luận bài này phải chờ duyệt — báo trước cho học viên. */
   commentsModerated: boolean;

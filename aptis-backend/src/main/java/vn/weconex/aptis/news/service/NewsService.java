@@ -29,9 +29,14 @@ import vn.weconex.aptis.news.domain.NewsComment;
 import vn.weconex.aptis.news.domain.NewsPost;
 import vn.weconex.aptis.content.domain.QuestionSet;
 import vn.weconex.aptis.content.service.ContentAccessService;
+import vn.weconex.aptis.news.domain.NewsPostBlueprint;
 import vn.weconex.aptis.news.domain.NewsPostQuestionSet;
 import vn.weconex.aptis.news.repository.NewsCommentRepository;
+import vn.weconex.aptis.news.repository.NewsPostBlueprintRepository;
 import vn.weconex.aptis.news.repository.NewsPostQuestionSetRepository;
+import vn.weconex.aptis.practice.domain.TestBlueprint;
+import vn.weconex.aptis.practice.repository.BlueprintPartRuleRepository;
+import vn.weconex.aptis.practice.repository.TestBlueprintRepository;
 import vn.weconex.aptis.news.repository.NewsPostRepository;
 import vn.weconex.aptis.news.web.NewsDtos;
 
@@ -55,6 +60,9 @@ public class NewsService {
     private final UserProfileRepository profileRepository;
     private final QuestionSetRepository questionSetRepository;
     private final NewsPostQuestionSetRepository linkRepository;
+    private final NewsPostBlueprintRepository blueprintLinkRepository;
+    private final TestBlueprintRepository blueprintRepository;
+    private final BlueprintPartRuleRepository blueprintRuleRepository;
     private final ContentAccessService contentAccessService;
     private final EntitlementService entitlementService;
 
@@ -71,7 +79,9 @@ public class NewsService {
                 excerptOf(post),
                 post.getCoverAssetId(),
                 post.isPinned(),
-                hasPractice(post) || !linkRepository.findByPostIdOrderByDisplayOrder(post.getId()).isEmpty(),
+                hasPractice(post)
+                        || !linkRepository.findByPostIdOrderByDisplayOrder(post.getId()).isEmpty()
+                        || !blueprintLinkRepository.findByPostIdOrderByDisplayOrder(post.getId()).isEmpty(),
                 commentRepository.countVisible(post.getId()),
                 post.getViewCount(),
                 post.getPublishedAt()));
@@ -108,6 +118,7 @@ public class NewsService {
                 && (staff || entitlementService.hasPremiumAccess(viewerId));
 
         List<NewsDtos.LinkedQuestionSet> linked = linkedSetsOf(post.getId(), viewerId);
+        List<NewsDtos.LinkedBlueprint> blueprints = linkedBlueprintsOf(post.getId(), viewerId, staff);
 
         return new NewsDtos.PostDetail(
                 post.getId(),
@@ -123,6 +134,7 @@ public class NewsService {
                 null,
                 practiceSets,
                 linked,
+                blueprints,
                 post.isCommentsEnabled(),
                 post.isCommentsModerated(),
                 canComment,
@@ -254,6 +266,50 @@ public class NewsService {
                     set.getPart() == null ? null : set.getPart().getId(),
                     set.getPart() == null ? null : set.getPart().getCode(),
                     unlocked));
+        }
+        return result;
+    }
+
+    /**
+     * Đề thi thử gắn vào bài, theo thứ tự người soạn đặt.
+     *
+     * <p>Đề đã gỡ khỏi hệ thống hoặc chuyển về nháp thì BỎ khỏi danh sách: hiện
+     * ra mà bấm vào lỗi thì tệ hơn là không hiện.
+     */
+    @Transactional(readOnly = true)
+    public List<NewsDtos.LinkedBlueprint> linkedBlueprintsOf(
+            String postId, String viewerId, boolean staff) {
+
+        List<NewsPostBlueprint> links = blueprintLinkRepository.findByPostIdOrderByDisplayOrder(postId);
+        if (links.isEmpty()) {
+            return List.of();
+        }
+
+        boolean hasPremium = viewerId != null
+                && (staff || entitlementService.hasPremiumAccess(viewerId));
+
+        List<NewsDtos.LinkedBlueprint> result = new ArrayList<>();
+        for (NewsPostBlueprint link : links) {
+            TestBlueprint blueprint = blueprintRepository.findById(link.getBlueprintId()).orElse(null);
+            if (blueprint == null || !blueprint.isAvailable()) {
+                continue;
+            }
+
+            int parts = blueprintRuleRepository
+                    .findByBlueprintIdOrderByDisplayOrder(blueprint.getId()).size();
+
+            result.add(new NewsDtos.LinkedBlueprint(
+                    blueprint.getId(),
+                    link.getLabel() != null && !link.getLabel().isBlank()
+                            ? link.getLabel()
+                            : blueprint.getName(),
+                    null,
+                    parts,
+                    blueprint.getDurationSeconds() == null
+                            ? 0
+                            : blueprint.getDurationSeconds() / 60,
+                    // Đề FREE cũng cần trả phí khi đã bật paywall sau dùng thử
+                    (blueprint.isFree() && entitlementService.freeContentStillOpen()) || hasPremium));
         }
         return result;
     }
