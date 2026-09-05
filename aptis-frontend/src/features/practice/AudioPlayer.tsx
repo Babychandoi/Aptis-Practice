@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { assetApi } from '@/api/endpoints';
+import { claimPlayback, releasePlayback } from '@/features/practice/audioSession';
 import type { AssetRef } from '@/types/api';
 
 interface Props {
@@ -45,6 +46,31 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
     };
   }, [mainAudio]);
 
+  // Thuộc tính của phần tử audio KHÔNG tự đồng bộ với state React: audio là
+  // DOM có trạng thái riêng. Không áp lại thì sau khi src đổi (chuyển đề, xin
+  // lại signed URL) audio mới vẫn giữ muted của lần trước — người dùng thấy
+  // thanh thời gian chạy mà không ra tiếng.
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.muted = muted;
+    audio.playbackRate = playbackRate;
+  }, [muted, playbackRate, signedUrl]);
+
+  // Rời trang hoặc chuyển đề thì dừng hẳn, đừng để audio chạy tiếp ở nền.
+  //
+  // Phải bắt phần tử vào biến NGAY khi effect chạy: React gỡ ref về null trước
+  // khi gọi hàm dọn dẹp, nên đọc audioRef.current trong đó luôn được null và
+  // lệnh dừng không bao giờ chạy.
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    return () => {
+      audio.pause();
+      releasePlayback(audio);
+    };
+  }, [signedUrl]);
+
   if (!mainAudio) return null;
 
   const playsLeft = maxAudioPlays === null ? null : Math.max(0, maxAudioPlays - playCount);
@@ -54,8 +80,19 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
   const togglePlayback = async () => {
     const audio = audioRef.current;
     if (!audio || !canPlay) return;
-    if (audio.paused) await audio.play();
-    else audio.pause();
+    if (audio.paused) {
+      // Dừng bài khác TRƯỚC khi gọi play(): play() là promise, đợi tới onPlay
+      // thì đã có khoảng hở hai bài cùng kêu.
+      claimPlayback(audio);
+      try {
+        await audio.play();
+      } catch {
+        // Trình duyệt chặn tự phát hoặc file lỗi — nút trở lại trạng thái dừng
+        setPlaying(false);
+      }
+    } else {
+      audio.pause();
+    }
   };
 
   const cycleRate = () => {
@@ -67,7 +104,12 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
   };
 
   return (
-    <div className="rounded-2xl bg-dark text-white p-4 shadow-sm border border-slate-800">
+    <div
+      className={
+        'rounded-2xl bg-dark p-4 text-white shadow-sm transition-colors ' +
+        (playing ? 'border-2 border-accent' : 'border border-slate-800')
+      }
+    >
       {error ? (
         <p className="text-sm text-red-400">{error}</p>
       ) : !signedUrl ? (
@@ -80,16 +122,20 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
             preload="metadata"
             onLoadedMetadata={(event) => setDuration(Number.isFinite(event.currentTarget.duration) ? event.currentTarget.duration : 0)}
             onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
-            onPlay={() => {
+            onPlay={(event) => {
               if (exhausted || disabled) {
                 audioRef.current?.pause();
                 return;
               }
+              claimPlayback(event.currentTarget);
               setPlaying(true);
               setPlayCount((count) => count + 1);
             }}
             onPause={() => setPlaying(false)}
-            onEnded={() => setPlaying(false)}
+            onEnded={(event) => {
+              setPlaying(false);
+              releasePlayback(event.currentTarget);
+            }}
           />
 
           <div className="flex items-center gap-3">
@@ -107,6 +153,12 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
             <span className="font-mono text-xs text-slate-300 min-w-[70px]">
               {formatTime(currentTime)} / {formatTime(duration)}
             </span>
+
+            {playing && (
+              <span className="shrink-0 font-mono text-[10px] font-bold uppercase tracking-wider text-accent">
+                Đang phát
+              </span>
+            )}
           </div>
 
           <div className="flex flex-1 items-center gap-3">
@@ -138,13 +190,10 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
 
             <button
               type="button"
-              onClick={() => {
-                const next = !muted;
-                setMuted(next);
-                if (audioRef.current) audioRef.current.muted = next;
-              }}
-              className="text-slate-400 hover:text-white"
-              aria-label={muted ? 'Bật âm' : 'Tắt âm'}
+              onClick={() => setMuted((value) => !value)}
+              className={muted ? 'text-accent' : 'text-slate-400 hover:text-white'}
+              aria-label={muted ? 'Bật tiếng' : 'Tắt tiếng'}
+              title={muted ? 'Bật tiếng' : 'Tắt tiếng (bài vẫn chạy — bấm ⏸ để dừng)'}
             >
               {muted ? <MutedIcon /> : <VolumeIcon />}
             </button>
