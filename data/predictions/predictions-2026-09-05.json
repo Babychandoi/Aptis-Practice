@@ -1,0 +1,494 @@
+{
+  "predictDate": "2026-09-05",
+  "source": "Aptistest.edu.vn",
+  "skills": [
+    {
+      "component": "READING",
+      "sections": [
+        {
+          "sectionLabel": "Part 5",
+          "part": "Reading Part 4",
+          "items": [
+            {
+              "label": "Four-day work week",
+              "priority": "HOT"
+            },
+            {
+              "label": "Mountain summits",
+              "priority": "HOT"
+            },
+            {
+              "label": "Women mathematicians",
+              "priority": "HOT"
+            }
+          ]
+        },
+        {
+          "sectionLabel": "Part 4",
+          "part": "Reading Part 3",
+          "items": [
+            {
+              "label": "Music Festival",
+              "priority": "HOT"
+            },
+            {
+              "label": "Career",
+              "priority": "HOT"
+            },
+            {
+              "label": "Volunteering",
+              "priority": "HOT"
+            },
+            {
+              "label": "Childhood memories",
+              "priority": "HOT"
+            },
+            {
+              "label": "Extreme sports",
+              "priority": "HOT"
+            },
+            {
+              "label": "Technology in childhood",
+              "priority": "HOT"
+            },
+            {
+              "label": "Games from childhood",
+              "priority": "HOT"
+            }
+          ]
+        },
+        {
+          "sectionLabel": "Part 2+3",
+          "part": "Reading Part 2",
+          "items": [
+            {
+              "label": "Eating at restaurant",
+              "priority": "HOT"
+            },
+            {
+              "label": "Film",
+              "priority": "HOT"
+            },
+            {
+              "label": "College Welcoming Day",
+              "priority": "HOT"
+            },
+            {
+              "label": "Family sports day",
+              "priority": "HOT"
+            },
+            {
+              "label": "History of transportation",
+              "priority": "HOT"
+            },
+            {
+              "label": "End of term project",
+              "priority": "HOT"
+            },
+            {
+              "label": "Famous singer",
+              "priority": "HOT"
+            },
+            {
+              "label": "Weekend Activities",
+              "priority": "HOT"
+            },
+            {
+              "label": "New coffee shop",
+              "priority": "HOT"
+            },
+            {
+              "label": "The first America woman in space",
+              "priority": "HOT"
+            },
+            {
+              "label": "Movies now and then",
+              "priority": "HOT"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "component": "WRITING",
+      "sections": [
+        {
+          "sectionLabel": "Ưu tiên cao",
+          "part": null,
+          "items": [
+            {
+              "label": "Nature",
+              "priority": "HOT"
+            },
+            {
+              "label": "Debate",
+              "priority": "HOT"
+            },
+            {
+              "label": "Music",
+              "priority": "HOT"
+            },
+            {
+              "label": "Cooking",
+              "priority": "HOT"
+            },
+            {
+              "label": "Technology",
+              "priority": "HOT"
+            },
+            {
+              "label": "Photography",
+              "priority": "HOT"
+            },
+            {
+              "label": "Business",
+              "priority": "HOT"
+            },
+            {
+              "label": "Home Living",
+              "priority": "HOT"
+            },
+            {
+              "label": "Book",
+              "priority": "HOT"
+            },
+            {
+              "label": "Fitness",
+              "priority": "HOT"
+            },
+            {
+              "label": "Museum",
+              "priority": "HOT"
+            },
+            {
+              "label": "Science",
+              "priority": "HOT"
+            },
+            {
+              "label": "Film",
+              "priority": "HOT"
+            },
+            {
+              "label": "Car",
+              "priority": "HOT"
+            },
+            {
+              "label": "Computer",
+              "priority": "HOT"
+            },
+            {
+              "label": "Gardening",
+              "priority": "HOT"
+            },
+            {
+              "label": "Art",
+              "priority": "HOT"
+            },
+            {
+              "label": "Sports",
+              "priority": "HOT"
+            },
+            {
+              "label": "Social",
+              "priority": "HOT"
+            },
+            {
+              "label": "Language",
+              "priority": "HOT"
+            },
+            {
+              "label": "Travel",
+              "priority": "HOT"
+            },
+            {
+              "label": "Reading",
+              "priority": "HOT"
+            },
+            {
+              "label": "Walking",
+              "priority": "HOT"
+            },
+            {
+              "label": "Beautiful Home",
+              "priority": "HOT"
+            },
+            {
+              "label": "Food",
+              "priority": "HOT"
+            }
+          ]
+        },
+        {
+          "sectionLabel": "Ưu tiên vừa",
+          "part": null,
+          "items": [
+            {
+              "label": "Television",
+              "priority": "BACKUP"
+            },
+            {
+              "label": "English",
+              "priority": "BACKUP"
+            },
+            {
+              "label": "Home Living",
+              "priority": "BACKUP"
+            },
+            {
+              "label": "Community",
+              "priority": "BACKUP"
+            },
+            {
+              "label": "Fashion",
+              "priority": "BACKUP"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "component": "LISTENING",
+      "sections": [
+        {
+          "sectionLabel": "Q14",
+          "part": "Listening Part 2",
+          "items": [
+            {
+              "label": "Reading books",
+              "priority": "HOT"
+            },
+            {
+              "label": "Running",
+              "priority": "HOT"
+            },
+            {
+              "label": "Doing exercises",
+              "priority": "HOT"
+            },
+            {
+              "label": "Listen to music",
+              "priority": "HOT"
+            },
+            {
+              "label": "Outdoor activities",
+              "priority": "HOT"
+            },
+            {
+              "label": "Protect the environment",
+              "priority": "HOT"
+            },
+            {
+              "label": "Online shopping",
+              "priority": "HOT"
+            },
+            {
+              "label": "Their journey to work",
+              "priority": "HOT"
+            },
+            {
+              "label": "Restaurant Experience",
+              "priority": "HOT"
+            }
+          ]
+        },
+        {
+          "sectionLabel": "Q15",
+          "part": "Listening Part 3",
+          "items": [
+            {
+              "label": "Changes in the workplace",
+              "priority": "HOT"
+            },
+            {
+              "label": "University and Technology",
+              "priority": "HOT"
+            },
+            {
+              "label": "Homeschooling",
+              "priority": "HOT"
+            },
+            {
+              "label": "Children and Teenagers with Technology",
+              "priority": "HOT"
+            },
+            {
+              "label": "The art",
+              "priority": "HOT"
+            },
+            {
+              "label": "Politics",
+              "priority": "HOT"
+            },
+            {
+              "label": "Cultural differences",
+              "priority": "HOT"
+            },
+            {
+              "label": "Urban farming",
+              "priority": "HOT"
+            },
+            {
+              "label": "The Internet",
+              "priority": "HOT"
+            },
+            {
+              "label": "Singers and music",
+              "priority": "HOT"
+            },
+            {
+              "label": "Information Technology",
+              "priority": "HOT"
+            },
+            {
+              "label": "Actors",
+              "priority": "HOT"
+            },
+            {
+              "label": "Environmental volunteer program",
+              "priority": "HOT"
+            }
+          ]
+        },
+        {
+          "sectionLabel": "Q16-17",
+          "part": "Listening Part 4",
+          "items": [
+            {
+              "label": "Importance of sleep",
+              "priority": "HOT"
+            },
+            {
+              "label": "Security Camera",
+              "priority": "HOT"
+            },
+            {
+              "label": "Work from home",
+              "priority": "HOT"
+            },
+            {
+              "label": "Making plans",
+              "priority": "HOT"
+            },
+            {
+              "label": "Television series",
+              "priority": "HOT"
+            },
+            {
+              "label": "A book about a life of scientist",
+              "priority": "HOT"
+            },
+            {
+              "label": "Podcast",
+              "priority": "HOT"
+            },
+            {
+              "label": "A research into happiness",
+              "priority": "HOT"
+            },
+            {
+              "label": "The Sport",
+              "priority": "HOT"
+            },
+            {
+              "label": "Life after university",
+              "priority": "HOT"
+            },
+            {
+              "label": "Famous writers",
+              "priority": "HOT"
+            },
+            {
+              "label": "A musician's life",
+              "priority": "HOT"
+            },
+            {
+              "label": "Criticism of a new novel",
+              "priority": "HOT"
+            },
+            {
+              "label": "Managing financial spending",
+              "priority": "HOT"
+            },
+            {
+              "label": "Biography",
+              "priority": "HOT"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "component": "SPEAKING",
+      "sections": [
+        {
+          "sectionLabel": "Part 1",
+          "part": "Speaking Part 1",
+          "items": [
+            {
+              "label": "Nơi bạn sống",
+              "priority": "HOT"
+            },
+            {
+              "label": "Phòng của bạn",
+              "priority": "HOT"
+            },
+            {
+              "label": "Thành viên trong gia đình",
+              "priority": "HOT"
+            },
+            {
+              "label": "Your friend",
+              "priority": "HOT"
+            },
+            {
+              "label": "Sinh nhật của bạn",
+              "priority": "HOT"
+            },
+            {
+              "label": "Thích làm gì khi rảnh",
+              "priority": "HOT"
+            },
+            {
+              "label": "Làm gì khi ở với gia đình",
+              "priority": "HOT"
+            },
+            {
+              "label": "Bộ phim yêu thích / Lần cuối xem phim",
+              "priority": "HOT"
+            },
+            {
+              "label": "Địa điểm nổi tiếng",
+              "priority": "BACKUP"
+            },
+            {
+              "label": "Trường học đầu tiên",
+              "priority": "BACKUP"
+            }
+          ]
+        },
+        {
+          "sectionLabel": "Part 2",
+          "part": "Speaking Part 2",
+          "items": [
+            {
+              "label": "Mua sắm / mua quần áo",
+              "priority": "HOT"
+            },
+            {
+              "label": "Gia đình sinh hoạt cùng nhau (ăn uống, nấu ăn, xem TV)",
+              "priority": "HOT"
+            },
+            {
+              "label": "Đứa trẻ và người mẹ",
+              "priority": "HOT"
+            },
+            {
+              "label": "Backup: Xếp hàng",
+              "priority": "BACKUP"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
