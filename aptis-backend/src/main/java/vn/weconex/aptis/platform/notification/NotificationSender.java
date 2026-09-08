@@ -54,6 +54,49 @@ public class NotificationSender {
         send(email, "Premium đã được kích hoạt", mail);
     }
 
+    /**
+     * Nhắc trước khi hết dùng thử.
+     *
+     * <p>Không nhắc thì học viên chỉ biết mình hết hạn lúc bị chặn giữa bài —
+     * lúc đó cảm giác là bị mất quyền, không phải được mời mua.
+     */
+    public void sendTrialEndingSoon(String email, long hoursLeft) {
+        String remaining = hoursLeft <= 1
+                ? "còn dưới 1 giờ"
+                : "còn khoảng %d giờ".formatted(hoursLeft);
+
+        EmailTemplate.Rendered mail = EmailTemplate.builder("Sắp hết thời gian dùng thử")
+                .intro("Thời gian dùng thử của bạn " + remaining + ".")
+                .fact("Còn lại", remaining)
+                .paragraph("Hết dùng thử, các đề luyện tập và chấm Speaking/Writing "
+                        + "tự động sẽ tạm khoá. Tiến độ và lịch sử bài làm của bạn "
+                        + "vẫn được giữ nguyên.")
+                .action("Xem các gói Premium", frontendBaseUrl + "/plans")
+                .actionNote("Tranh thủ làm thêm vài đề trước khi hết hạn.")
+                .build();
+
+        send(email, "Sắp hết thời gian dùng thử", mail);
+    }
+
+    /**
+     * Mời mua gói sau khi hết dùng thử.
+     *
+     * <p>Gửi ngay sau khi hết hạn, lúc học viên còn nhớ mình đang ôn tới đâu —
+     * để cách vài ngày thì họ đã quên hẳn.
+     */
+    public void sendTrialExpired(String email) {
+        EmailTemplate.Rendered mail = EmailTemplate.builder("Thời gian dùng thử đã kết thúc")
+                .intro("Thời gian dùng thử của bạn vừa hết.")
+                .paragraph("Nâng cấp Premium để mở lại toàn bộ ngân hàng đề, "
+                        + "đề thi thử bốn kỹ năng và chấm Speaking/Writing tự động.")
+                .paragraph("Tiến độ và lịch sử bài làm của bạn vẫn còn nguyên — "
+                        + "nâng cấp là học tiếp được ngay.")
+                .action("Xem các gói Premium", frontendBaseUrl + "/plans")
+                .build();
+
+        send(email, "Thời gian dùng thử đã kết thúc", mail);
+    }
+
     public void sendEvaluationCompleted(String email, int questionSetCount) {
         EmailTemplate.Rendered mail = EmailTemplate.builder("Bài của bạn đã được chấm")
                 .intro("%d bài Speaking/Writing của bạn đã được chấm xong."

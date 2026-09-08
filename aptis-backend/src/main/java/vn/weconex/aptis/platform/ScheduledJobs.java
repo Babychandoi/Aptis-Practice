@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import vn.weconex.aptis.billing.service.BankTransferService;
 import vn.weconex.aptis.billing.service.OrderService;
 import vn.weconex.aptis.billing.service.SubscriptionActivationService;
+import vn.weconex.aptis.billing.service.TrialReminderService;
 import vn.weconex.aptis.billing.service.TrialService;
 import vn.weconex.aptis.evaluation.service.EvaluationDispatcher;
 import vn.weconex.aptis.platform.lock.SchedulerLock;
@@ -35,6 +36,7 @@ public class ScheduledJobs {
     private final OrderService orderService;
     private final BankTransferService bankTransferService;
     private final TrialService trialService;
+    private final TrialReminderService trialReminderService;
     private final MaintenanceTasks maintenanceTasks;
     private final EvaluationDispatcher evaluationDispatcher;
     private final OutboxDispatcher outboxDispatcher;
@@ -62,6 +64,22 @@ public class ScheduledJobs {
             int count = trialService.expireOverdueTrials();
             if (count > 0) {
                 log.info("Đã chuyển {} lượt dùng thử sang EXPIRED", count);
+            }
+        });
+    }
+
+    /**
+     * Nhắc học viên sắp hết và vừa hết dùng thử.
+     *
+     * <p>Quét mỗi 30 phút là đủ dày: cửa sổ nhắc rộng 12 giờ nên không ai bị bỏ
+     * sót, mà cũng không gọi SMTP quá thường xuyên.
+     */
+    @Scheduled(fixedDelay = 30 * 60 * 1000L, initialDelay = 120_000L)
+    public void sendTrialReminders() {
+        lock.runIfAcquired("trial-reminders", Duration.ofMinutes(20), () -> {
+            int sent = trialReminderService.sendDueReminders();
+            if (sent > 0) {
+                log.info("Đã gửi {} mail nhắc hạn dùng thử", sent);
             }
         });
     }
