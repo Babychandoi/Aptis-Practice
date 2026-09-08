@@ -230,10 +230,32 @@ export function AttemptResultPage() {
 
   const totalAwarded = attempt.questionSets.reduce((sum, s) => sum + (s.awardedScore ?? 0), 0);
   const totalMax = attempt.questionSets.reduce((sum, s) => sum + (s.maxScore ?? 0), 0);
-  const displayedAwarded = attempt.rawScore ?? totalAwarded;
-  const displayedMax = attempt.maxScore ?? totalMax;
-  const partPercentage = attempt.percentageScore
-    ?? (displayedMax > 0 ? (displayedAwarded / displayedMax) * 100 : null);
+
+  /**
+   * Luyện theo Part nạp CẢ NGÂN HÀNG đề rồi để học viên làm dần, nên
+   * attempt.maxScore là điểm tối đa của hàng trăm câu — không phải của phần
+   * học viên vừa làm. Chia cho nó thì làm 30/295 câu đúng hết vẫn ra 9%, và
+   * học viên tưởng mình làm sai gần hết.
+   *
+   * Chỉ tính trên những bộ ĐÃ LÀM: đúng 25/30 câu thì hiện 83%.
+   */
+  const attemptedSets = attempt.questionSets.filter(
+    (set) => set.status === 'SCORED' || set.status === 'ANSWERED',
+  );
+  const attemptedAwarded = attemptedSets.reduce((sum, s) => sum + (s.awardedScore ?? 0), 0);
+  const attemptedMax = attemptedSets.reduce((sum, s) => sum + (s.maxScore ?? 0), 0);
+
+  // Thi thử vẫn dùng điểm toàn đề: ở đó bỏ trống câu nào là mất điểm câu đó,
+  // đúng như thi thật.
+  const displayedAwarded = isPartPractice
+    ? attemptedAwarded
+    : (attempt.rawScore ?? totalAwarded);
+  const displayedMax = isPartPractice ? attemptedMax : (attempt.maxScore ?? totalMax);
+
+  const partPercentage = isPartPractice
+    ? (attemptedMax > 0 ? (attemptedAwarded / attemptedMax) * 100 : null)
+    : (attempt.percentageScore
+        ?? (displayedMax > 0 ? (displayedAwarded / displayedMax) * 100 : null));
 
   const getPerformanceBadge = (pct: number | null) => {
     if (pct === null) return null;
@@ -272,9 +294,13 @@ export function AttemptResultPage() {
           </div>
           <p className="mt-1.5 text-xs text-amber-800">
             {hasSpeaking
-              ? 'Hệ thống đang nhận diện âm thanh và đánh giá theo tiêu chí CEFR.'
-              : 'Giám khảo AI đang đánh giá bài viết của bạn theo tiêu chí CEFR.'}{' '}
-            Thường mất khoảng 5 giây và kết quả tự hiện, bạn không cần tải lại trang.
+              ? 'Hệ thống đang nhận diện âm thanh và đánh giá theo tiêu chí CEFR. Thường mất khoảng 1 phút.'
+              : 'Giám khảo AI đang đánh giá bài viết của bạn theo tiêu chí CEFR. Thường mất khoảng 15 giây.'}
+          </p>
+          <p className="mt-1 text-xs text-amber-800">
+            Kết quả tự hiện, bạn không cần tải lại trang.{' '}
+            <strong>Rời trang cũng không mất bài</strong> — hệ thống vẫn chấm và
+            gửi email cho bạn khi xong, kết quả luôn nằm trong Lịch sử làm bài.
           </p>
         </div>
       )}
@@ -296,7 +322,9 @@ export function AttemptResultPage() {
               <p className="text-sm text-slate-500">
                 {scoring
                   ? 'Bài làm đang được chuyển sang mô hình chấm tự động.'
-                  : `Đạt được ${displayedAwarded.toFixed(1)} / ${displayedMax.toFixed(1)} điểm`}
+                  : attemptedSets.length > 0
+                    ? `Đạt ${displayedAwarded.toFixed(1)} / ${displayedMax.toFixed(1)} điểm trên ${attemptedSets.length} đề đã làm`
+                    : 'Bạn chưa làm đề nào trong lượt này'}
               </p>
             </div>
 

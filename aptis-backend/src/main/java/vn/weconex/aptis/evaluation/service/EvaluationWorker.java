@@ -30,6 +30,8 @@ import vn.weconex.aptis.practice.domain.TestAttempt;
 import vn.weconex.aptis.practice.mongo.AttemptDocument;
 import vn.weconex.aptis.practice.mongo.AttemptDocumentRepository;
 import vn.weconex.aptis.practice.repository.AttemptQuestionSetRepository;
+import vn.weconex.aptis.auth.repository.UserRepository;
+import vn.weconex.aptis.platform.notification.NotificationSender;
 import vn.weconex.aptis.practice.repository.TestAttemptRepository;
 import vn.weconex.aptis.practice.service.AttemptScoreAggregator;
 
@@ -64,6 +66,8 @@ public class EvaluationWorker {
     private final TranscriptionService transcriptionService;
     private final List<EvaluationEngine> engines;
     private final TransactionTemplate transactionTemplate;
+    private final UserRepository userRepository;
+    private final NotificationSender notificationSender;
 
     /**
      * Xử lý một job.
@@ -513,7 +517,8 @@ public class EvaluationWorker {
                 .filter(java.util.Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        if (attempt.getStatus() == AttemptStatus.SCORING) {
+        boolean justCompleted = attempt.getStatus() == AttemptStatus.SCORING;
+        if (justCompleted) {
             attempt.complete(totalRaw, attempt.getMaxScore());
             attemptDocument.setStatus(AttemptStatus.COMPLETED.name());
             attemptRepository.save(attempt);
@@ -523,6 +528,36 @@ public class EvaluationWorker {
 
         attemptDocumentRepository.save(attemptDocument);
         scoreAggregator.aggregate(attemptId, attemptDocument);
+
+        if (justCompleted) {
+            notifyLearner(attempt);
+        }
+    }
+
+    /**
+     * Báo học viên bài đã chấm xong.
+     *
+     * <p>Speaking mất trung bình 41 giây, có bài tới 90 giây — nhiều người rời
+     * trang trước khi kết quả hiện ra và không biết bài đã xong. Không có mail
+     * thì họ phải tự nhớ quay lại kiểm tra.
+     *
+     * <p>Lỗi gửi mail KHÔNG được làm hỏng việc chấm: điểm đã lưu xong, mail chỉ
+     * là thông báo thêm.
+     */
+    private void notifyLearner(TestAttempt attempt) {
+        try {
+            int scoredSets = attemptQuestionSetRepository
+                    .findByAttemptIdOrderByDisplayOrder(attempt.getId()).size();
+
+            userRepository.findById(attempt.getUserId())
+                    .map(user -> user.getEmail())
+                    .filter(email -> email != null && !email.isBlank())
+                    .ifPresent(email ->
+                            notificationSender.sendEvaluationCompleted(email, scoredSets));
+        } catch (RuntimeException ex) {
+            log.warn("Không gửi được mail báo chấm xong cho attempt {}: {}",
+                    attempt.getId(), ex.getMessage());
+        }
     }
 
     @Transactional(readOnly = true)

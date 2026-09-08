@@ -57,7 +57,9 @@ class EvaluationWorkerTest {
                 mock(AttemptScoreAggregator.class),
                 mock(TranscriptionService.class),
                 List.of(),
-                transactions);
+                transactions,
+                mock(vn.weconex.aptis.auth.repository.UserRepository.class),
+                mock(vn.weconex.aptis.platform.notification.NotificationSender.class));
 
         assertThat(worker.processOne("job-1")).isFalse();
         verify(jobs, never()).findById("job-1");
@@ -155,7 +157,9 @@ class EvaluationWorkerTest {
                 mock(AttemptScoreAggregator.class),
                 mock(TranscriptionService.class),
                 engines,
-                mock(TransactionTemplate.class));
+                mock(TransactionTemplate.class),
+                mock(vn.weconex.aptis.auth.repository.UserRepository.class),
+                mock(vn.weconex.aptis.platform.notification.NotificationSender.class));
     }
 
     private static EvaluationJob writingJob(int retryCount) {
