@@ -673,6 +673,11 @@ export interface ExamPredictionItem {
   /** Số lần chủ đề xuất hiện trong khoảng đang xem; chỉ có ở tab "hot nhất". */
   repeatCount: number;
   /**
+   * Độ hot 1-5 sao, quy từ repeatCount so với chủ đề lặp nhiều nhất cùng bản
+   * tin. Tab "hôm nay" không xếp hạng nên trả 0.
+   */
+  heatLevel: number;
+  /**
    * Các part CÓ đề của chủ đề này. Writing Part 2/3/4 là cùng một club và đề
    * thi thật làm liền cả ba, nên client xin một bộ mỗi part.
    */

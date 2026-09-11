@@ -57,6 +57,9 @@ public final class ExamPredictionDtos {
      *                         và không cho bấm, vì bấm vào sẽ ra lượt rỗng
      * @param repeatCount      số lần chủ đề xuất hiện trong khoảng đang xem,
      *                         dùng cho tab "đề hot nhất"
+     * @param heatLevel        độ hot 1-5 sao, quy từ repeatCount so với chủ đề
+     *                         lặp nhiều nhất trong cùng bản tin. Tab "hôm nay"
+     *                         không xếp hạng nên luôn trả 0.
      * @param partIds          các part CÓ đề của chủ đề này. Cần đến vì Writing
      *                         Part 2/3/4 là cùng một club và đề thi thật làm
      *                         liền cả ba: client xin một bộ mỗi part để không
@@ -70,6 +73,7 @@ public final class ExamPredictionDtos {
             String priority,
             int questionSetCount,
             int repeatCount,
+            int heatLevel,
             List<String> partIds) {
     }
 

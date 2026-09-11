@@ -93,6 +93,33 @@ public class ExamPredictionService {
         return build(to, to, unique, byId);
     }
 
+    /**
+     * Quy số lần lặp thành 1-5 sao.
+     *
+     * <p>Chia theo tỉ lệ với chủ đề lặp nhiều nhất trong cùng bản tin, không
+     * theo ngưỡng cố định: bản tin mới chỉ gộp vài ngày thì chủ đề nào cũng lặp
+     * 1-3 lần, dùng ngưỡng cứng sẽ ra toàn 1 sao và bảng xếp hạng mất ý nghĩa.
+     *
+     * <p>Chủ đề lặp nhiều nhất luôn được 5 sao, ít nhất được 1 sao.
+     */
+    private static Map<String, Integer> heatLevels(Map<String, Integer> repeatByPredictionId) {
+        if (repeatByPredictionId.isEmpty()) {
+            return Map.of();
+        }
+
+        int max = repeatByPredictionId.values().stream().mapToInt(Integer::intValue).max().orElse(0);
+        if (max <= 0) {
+            return Map.of();
+        }
+
+        Map<String, Integer> result = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : repeatByPredictionId.entrySet()) {
+            int stars = (int) Math.ceil((double) entry.getValue() / max * 5);
+            result.put(entry.getKey(), Math.min(5, Math.max(1, stars)));
+        }
+        return result;
+    }
+
     private static String slotKey(ExamPrediction item) {
         return item.getTopicId() + "|" + (item.getPartId() == null ? "" : item.getPartId());
     }
@@ -107,6 +134,11 @@ public class ExamPredictionService {
             LocalDate sourceDate,
             List<ExamPrediction> items,
             Map<String, Integer> repeatByPredictionId) {
+
+        // Mức sao quy từ số lần lặp, so với chủ đề lặp nhiều nhất của CHÍNH bản
+        // tin này. Không dùng ngưỡng cố định: khi mới có vài bản tin thì mọi chủ
+        // đề đều lặp 1-3 lần, ngưỡng cứng sẽ cho tất cả cùng một sao.
+        Map<String, Integer> heatByPredictionId = heatLevels(repeatByPredictionId);
 
         if (items.isEmpty()) {
             return new ExamPredictionDtos.PredictionFeedResponse(date, sourceDate, null, List.of());
@@ -161,6 +193,7 @@ public class ExamPredictionService {
                             item.getPriority().name(),
                             stats.counts().getOrDefault(countKey(item), 0),
                             repeatByPredictionId.getOrDefault(item.getId(), 0),
+                            heatByPredictionId.getOrDefault(item.getId(), 0),
                             stats.partIds().getOrDefault(countKey(item), List.of())));
         }
 

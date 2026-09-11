@@ -230,6 +230,31 @@ export function ExamPredictionPage() {
         <p className="card text-center text-sm text-slate-500">
           Chưa có dự đoán nào cho khoảng thời gian này.
         </p>
+      ) : tab === 'hottest' ? (
+        <>
+          {error && (
+            <p role="alert" className="card text-sm text-red-700">
+              {error}
+            </p>
+          )}
+
+          {/* Bảng xếp hạng: cả bốn kỹ năng cạnh nhau. Tab này để so sánh chủ đề
+              nào hay ra nhất, nên phải thấy hết cùng lúc — ép chọn từng kỹ năng
+              như tab hôm nay thì mất đúng cái người dùng cần. */}
+          <div className="grid items-start gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {feed.skills.map((skill) => (
+              <HeatSkillColumn
+                key={skill.componentId}
+                skill={skill}
+                busy={startAttempt.isPending}
+                onStart={(item) => {
+                  setError(null);
+                  startAttempt.mutate({ item, componentId: skill.componentId });
+                }}
+              />
+            ))}
+          </div>
+        </>
       ) : (
         <>
           {/* Chọn kỹ năng */}
@@ -296,7 +321,6 @@ export function ExamPredictionPage() {
                         key={item.id}
                         item={item}
                         busy={startAttempt.isPending}
-                        showRepeat={tab === 'hottest'}
                         onStart={() => {
                           setError(null);
                           startAttempt.mutate({ item, componentId: activeSkill.componentId });
@@ -314,15 +338,159 @@ export function ExamPredictionPage() {
   );
 }
 
+/**
+ * Một cột kỹ năng trong bảng xếp hạng "hot nhất".
+ *
+ * Khác chip ở tab hôm nay: danh sách dọc có số thứ tự và sao, để đọc được
+ * thứ hạng ngay mà không phải so từng chip.
+ */
+function HeatSkillColumn({
+  skill,
+  busy,
+  onStart,
+}: {
+  skill: ExamPredictionSkill;
+  busy: boolean;
+  onStart: (item: ExamPredictionItem) => void;
+}) {
+  const meta = SKILL_META[skill.componentCode];
+
+  return (
+    <article className="overflow-hidden rounded-2xl border border-border bg-white shadow-[0_18px_40px_-34px_rgba(15,23,42,0.6)]">
+      <header
+        className={clsx(
+          "bg-gradient-to-r px-3.5 py-3 text-white",
+          meta?.accent ?? "from-slate-700 to-slate-600",
+        )}
+      >
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="truncate text-base font-bold uppercase tracking-wide">
+            {meta?.label ?? skill.componentName}
+          </h2>
+          <span className="shrink-0 rounded-full bg-white/25 px-2 py-0.5 font-mono text-[10px] font-bold">
+            {skill.topicCount} đề
+          </span>
+        </div>
+      </header>
+
+      <div className="space-y-2.5 p-2.5">
+        {skill.sections.map((section) => (
+          <section key={section.sectionLabel} className="overflow-hidden rounded-xl border border-border">
+            <header className="flex items-center justify-between gap-2 border-b border-border bg-surface px-2.5 py-2">
+              <h3 className="min-w-0 flex-1 truncate font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+                {section.sectionLabel}
+              </h3>
+              <span className="shrink-0 font-mono text-[9px] font-bold uppercase text-slate-400">Độ hot</span>
+            </header>
+
+            <ul className="divide-y divide-slate-100">
+              {section.items.map((item, index) => (
+                <li key={item.id}>
+                  <HeatRow
+                    item={item}
+                    rank={index + 1}
+                    busy={busy}
+                    onStart={() => onStart(item)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+/** Một dòng trong bảng xếp hạng. */
+function HeatRow({
+  item,
+  rank,
+  busy,
+  onStart,
+}: {
+  item: ExamPredictionItem;
+  rank: number;
+  busy: boolean;
+  onStart: () => void;
+}) {
+  // Chưa có đề thì không cho bấm: tạo lượt sẽ ra rỗng và học viên tưởng lỗi.
+  const empty = item.questionSetCount === 0;
+
+  return (
+    <button
+      type="button"
+      onClick={onStart}
+      disabled={busy || empty}
+      title={
+        empty
+          ? "Chủ đề này chưa có đề trong ngân hàng"
+          : `Luyện ngay: ${item.label} · xuất hiện ${item.repeatCount} lần`
+      }
+      className={clsx(
+        "grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-1.5 px-2 py-1.5 text-left transition-colors",
+        empty ? "cursor-not-allowed opacity-50" : "hover:bg-surface",
+      )}
+    >
+      <span className="grid h-4 w-4 shrink-0 place-items-center rounded bg-surface font-mono text-[8px] font-bold text-slate-500">
+        {rank}
+      </span>
+      <span className="min-w-0 break-words text-[11px] font-semibold leading-[1.35] text-slate-900">
+        {item.label}
+      </span>
+      <HeatStars level={item.heatLevel} repeatCount={item.repeatCount} />
+    </button>
+  );
+}
+
+/**
+ * Dải 5 sao thể hiện độ hot.
+ *
+ * Luôn vẽ đủ 5 ngôi: chỉ vẽ số sao đạt được thì các dòng lệch nhau và không
+ * so sánh được bằng mắt.
+ */
+function HeatStars({ level, repeatCount }: { level: number; repeatCount: number }) {
+  const filled = Math.min(5, Math.max(0, level));
+
+  return (
+    <span
+      className="inline-flex shrink-0 items-center gap-0.5"
+      aria-label={`Độ hot ${filled} trên 5`}
+      title={`Xuất hiện trong ${repeatCount} bản dự đoán`}
+    >
+      {[1, 2, 3, 4, 5].map((n) => (
+        <HeatStar key={n} filled={n <= filled} />
+      ))}
+    </span>
+  );
+}
+
+/**
+ * Ngôi sao độ hot. Component riêng chứ không thêm prop cho StarIcon: icon đó
+ * dùng ở nhãn tiêu đề, đổi chữ ký sẽ kéo theo chỗ không liên quan.
+ */
+function HeatStar({ filled }: { filled: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className={clsx(
+        "h-3 w-3",
+        filled ? "fill-amber-500 text-amber-500" : "fill-slate-100 text-slate-200",
+      )}
+    >
+      <path d="m12 3 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z" />
+    </svg>
+  );
+}
+
 function TopicChip({
   item,
   busy,
-  showRepeat,
   onStart,
 }: {
   item: ExamPredictionItem;
   busy: boolean;
-  showRepeat: boolean;
   onStart: () => void;
 }) {
   // Chưa có đề thì không cho bấm: tạo lượt sẽ ra rỗng và học viên tưởng lỗi.
@@ -355,12 +523,6 @@ function TopicChip({
       >
         {item.priority === 'HOT' ? 'Hot' : 'Backup'}
       </span>
-
-      {showRepeat && item.repeatCount > 1 && (
-        <span className="shrink-0 rounded-full bg-violet-50 px-1.5 py-0.5 font-mono text-[10px] font-bold text-violet-700">
-          ×{item.repeatCount}
-        </span>
-      )}
 
       {empty ? (
         <span className="shrink-0 font-mono text-[10px]">chưa có đề</span>
