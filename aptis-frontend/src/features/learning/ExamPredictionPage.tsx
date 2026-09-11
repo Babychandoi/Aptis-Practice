@@ -72,7 +72,10 @@ export function ExamPredictionPage() {
       setError(err instanceof ApiError ? err.message : 'Không mở được đề, thử lại sau'),
   });
 
-  const skills = query.data?.skills ?? [];
+  // `?? []` tạo mảng MỚI mỗi lần render, nên phải bọc useMemo — nếu không,
+  // mọi useMemo phụ thuộc `skills` đều tính lại dù dữ liệu không đổi.
+  const skills = useMemo(() => query.data?.skills ?? [], [query.data?.skills]);
+
   // Chọn kỹ năng đầu khi chưa chọn, và không giữ kỹ năng đã biến mất khi đổi tab.
   const activeSkill: ExamPredictionSkill | undefined = useMemo(() => {
     if (skills.length === 0) return undefined;

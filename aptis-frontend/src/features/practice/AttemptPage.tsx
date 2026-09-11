@@ -264,15 +264,17 @@ export function AttemptPage() {
    */
   const hasAutoResumedRef = useRef(false);
 
+  const openComponentId = openProgress?.componentId;
+
   useEffect(() => {
     if (partGroups.length === 0) return;
 
     // Chỉ tự động nhảy vị trí 1 lần lúc nạp bài (hoặc khi kỹ năng đang mở thay đổi)
     const hydratedResponses = hydrateAttempt(attempt?.questionSets ?? []);
 
-    if (isFullMock && openProgress) {
+    if (isFullMock && openComponentId) {
       const componentParts = partGroups.map((p, idx) => ({ part: p, idx }))
-        .filter(({ part }) => componentIdByPart.get(part.id) === openProgress.componentId);
+        .filter(({ part }) => componentIdByPart.get(part.id) === openComponentId);
 
       if (componentParts.length > 0) {
         const firstPart = componentParts[0]!;
@@ -314,7 +316,7 @@ export function AttemptPage() {
       }
       hasAutoResumedRef.current = true;
     }
-  }, [isFullMock, openProgress?.componentId, partGroups, componentIdByPart, attempt?.questionSets, currentPartIndex]);
+  }, [isFullMock, openComponentId, partGroups, componentIdByPart, attempt?.questionSets, currentPartIndex]);
 
 
   const answeredByPart = useMemo(
