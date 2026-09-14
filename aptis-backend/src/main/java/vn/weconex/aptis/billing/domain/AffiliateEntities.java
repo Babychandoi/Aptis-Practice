@@ -42,10 +42,10 @@ public final class AffiliateEntities {
         private Byte id = 1;
 
         @Column(name = "commission_percent", nullable = false)
-        private int commissionPercent = 20;
+        private int commissionPercent = 10;
 
         @Column(name = "discount_percent", nullable = false)
-        private int discountPercent = 10;
+        private int discountPercent = 5;
 
         /** true: ăn hoa hồng mọi đơn về sau. false: chỉ đơn đầu tiên. */
         @Column(name = "recurring", nullable = false)

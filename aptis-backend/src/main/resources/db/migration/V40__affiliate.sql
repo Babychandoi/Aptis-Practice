@@ -12,8 +12,8 @@
 -- con số thương mại, đổi thường xuyên mà không nên phải sửa code và deploy lại.
 CREATE TABLE affiliate_settings (
     id                      TINYINT      NOT NULL DEFAULT 1,
-    commission_percent      INT          NOT NULL DEFAULT 20,
-    discount_percent        INT          NOT NULL DEFAULT 10,
+    commission_percent      INT          NOT NULL DEFAULT 10,
+    discount_percent        INT          NOT NULL DEFAULT 5,
     -- true: chủ mã ăn hoa hồng mọi đơn về sau của người được giới thiệu.
     -- false: chỉ ăn đơn đầu tiên.
     recurring               TINYINT(1)   NOT NULL DEFAULT 1,

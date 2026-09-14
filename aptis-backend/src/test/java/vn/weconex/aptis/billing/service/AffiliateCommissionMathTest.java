@@ -19,34 +19,34 @@ class AffiliateCommissionMathTest {
     }
 
     @Test
-    @DisplayName("Hoa hồng 20% và giảm giá 10% trên gói 500k")
+    @DisplayName("Hoa hồng 10% và giảm giá 5% trên gói 500k")
     void commissionAndDiscountOnTypicalPlan() {
         long price = 500_000L;
 
-        long discount = percentOf(price, 10);
-        long commission = percentOf(price, 20);
+        long discount = percentOf(price, 5);
+        long commission = percentOf(price, 10);
 
-        assertThat(discount).isEqualTo(50_000L);
-        assertThat(commission).isEqualTo(100_000L);
-        // Tính trên giá gốc nên chủ shop thực thu 350k, không phải 360k —
+        assertThat(discount).isEqualTo(25_000L);
+        assertThat(commission).isEqualTo(50_000L);
+        // Tính trên giá gốc nên tổng chi là 15% giá gốc, thực thu 425k —
         // con số này là lựa chọn kinh doanh, ghi lại để không ai sửa nhầm.
-        assertThat(price - discount - commission).isEqualTo(350_000L);
+        assertThat(price - discount - commission).isEqualTo(425_000L);
     }
 
     @Test
     @DisplayName("Làm tròn xuống, không bao giờ chi vượt số tính được")
     void roundsDown() {
-        // 333.333đ x 20% = 66.666,6 -> 66.666
-        assertThat(percentOf(333_333L, 20)).isEqualTo(66_666L);
-        // 99đ x 20% = 19,8 -> 19
-        assertThat(percentOf(99L, 20)).isEqualTo(19L);
+        // 333.333đ x 10% = 33.333,3 -> 33.333
+        assertThat(percentOf(333_333L, 10)).isEqualTo(33_333L);
+        // 99đ x 10% = 9,9 -> 9
+        assertThat(percentOf(99L, 10)).isEqualTo(9L);
     }
 
     @Test
     @DisplayName("Đơn quá nhỏ thì hoa hồng bằng 0, không âm")
     void tinyOrderGivesNothing() {
-        assertThat(percentOf(4L, 20)).isZero();
-        assertThat(percentOf(0L, 20)).isZero();
+        assertThat(percentOf(9L, 10)).isZero();
+        assertThat(percentOf(0L, 10)).isZero();
     }
 
     @Test
@@ -54,7 +54,7 @@ class AffiliateCommissionMathTest {
     void combinedDiscountNeverExceedsSubtotal() {
         long subtotal = 100_000L;
         long promotion = 95_000L;
-        long referral = percentOf(subtotal, 10);
+        long referral = percentOf(subtotal, 5);
 
         // Giống công thức trong OrderService.
         long discount = Math.min(subtotal, promotion + referral);
