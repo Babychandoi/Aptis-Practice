@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
-import { billingApi } from '@/api/endpoints';
+import { affiliateApi, billingApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { SupportLinksCard } from '@/components/ui/SupportLinks';
 import { useAuthStore } from '@/features/auth/authStore';
 import { formatCurrency, formatDate, planDurationLabel } from '@/lib/format';
-import type { Plan } from '@/types/api';
+import type { CheckAffiliateResult, Plan } from '@/types/api';
 
 const DEFAULT_FEATURES = [
   'Toàn bộ ngân hàng đề Premium',
@@ -23,6 +23,10 @@ export function PlansPage() {
   const user = useAuthStore((state) => state.user);
   const sessionKey = useRef(crypto.randomUUID()).current;
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+  const [affiliateCode, setAffiliateCode] = useState('');
+  // Kết quả kiểm mã: chỉ kiểm khi người dùng bấm, không kiểm theo từng phím —
+  // gõ 8 ký tự sẽ thành 8 lượt gọi API mà 7 lượt đầu chắc chắn sai.
+  const [codeCheck, setCodeCheck] = useState<CheckAffiliateResult | null>(null);
 
   const plansQuery = useQuery({
     queryKey: ['plans'],
@@ -42,10 +46,19 @@ export function PlansPage() {
 
   const createOrder = useMutation({
     mutationFn: (planId: string) => billingApi.createOrder(
-      { planId },
+      {
+        planId,
+        // Chỉ gửi mã đã kiểm hợp lệ: gửi mã sai sẽ làm cả đơn hàng lỗi.
+        ...(codeCheck?.valid && codeCheck.code ? { affiliateCode: codeCheck.code } : {}),
+      },
       `order:${user?.id}:${planId}:${sessionKey}`,
     ),
     onSuccess: (order) => navigate(`/checkout/${order.id}`),
+  });
+
+  const checkCode = useMutation({
+    mutationFn: (code: string) => affiliateApi.check(code, selectedPlan?.id ?? ""),
+    onSuccess: setCodeCheck,
   });
 
   if (plansQuery.isLoading) return <LoadingBlock label="Đang tải gói Premium…" />;
@@ -133,11 +146,50 @@ export function PlansPage() {
                 <li className="flex gap-2"><CheckIcon /> Tiến độ học được giữ nguyên khi gia hạn</li>
               </ul>
 
+              <div className="mt-4 border-t border-stone-300 pt-4">
+                <label className="block text-xs font-semibold text-stone-600" htmlFor="affiliate-code">
+                  Mã giới thiệu (nếu có)
+                </label>
+                <div className="mt-1.5 flex gap-2">
+                  <input
+                    id="affiliate-code"
+                    type="text"
+                    value={affiliateCode}
+                    placeholder="VD: ABCD2345"
+                    onChange={(event) => {
+                      setAffiliateCode(event.target.value.toUpperCase());
+                      setCodeCheck(null);
+                    }}
+                    className="min-w-0 flex-1 rounded-xl border border-stone-300 px-3 py-2 font-mono text-sm uppercase tracking-wider outline-none focus:border-brand-500"
+                  />
+                  <button
+                    type="button"
+                    disabled={!affiliateCode.trim() || checkCode.isPending}
+                    onClick={() => checkCode.mutate(affiliateCode.trim())}
+                    className="shrink-0 rounded-xl border border-stone-300 px-3 py-2 text-sm font-semibold text-stone-700 transition-colors hover:bg-stone-100 disabled:opacity-50"
+                  >
+                    {checkCode.isPending ? '…' : 'Áp dụng'}
+                  </button>
+                </div>
+                {codeCheck && (
+                  <p
+                    className={clsx(
+                      'mt-1.5 text-xs leading-5',
+                      codeCheck.valid ? 'text-emerald-700' : 'text-red-600',
+                    )}
+                  >
+                    {codeCheck.valid
+                      ? `Được giảm ${formatCurrency(codeCheck.discountAmount, selectedPlan.currency)}`
+                      : (codeCheck.message ?? 'Mã không dùng được')}
+                  </p>
+                )}
+              </div>
+
               <button
                 type="button"
                 disabled={createOrder.isPending}
                 onClick={() => createOrder.mutate(selectedPlan.id)}
-                className="btn-primary mt-5 w-full"
+                className="btn-primary mt-4 w-full"
               >
                 {createOrder.isPending ? 'Đang tạo đơn…' : 'Tiếp tục thanh toán →'}
               </button>

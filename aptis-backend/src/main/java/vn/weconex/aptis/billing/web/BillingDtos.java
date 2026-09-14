@@ -26,7 +26,8 @@ public final class BillingDtos {
     }
 
     /** Giá không nằm trong request — backend lấy từ subscription_plans. */
-    public record CreateOrderRequest(@NotBlank String planId, String promotionCode) {
+    public record CreateOrderRequest(
+            @NotBlank String planId, String promotionCode, String affiliateCode) {
     }
 
     public record CheckPromotionRequest(

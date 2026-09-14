@@ -828,3 +828,118 @@ export interface NewsComment {
   createdAt: string;
   replies: NewsComment[];
 }
+
+// ---------------------------------------------------------------------
+// Giới thiệu (affiliate)
+// ---------------------------------------------------------------------
+
+export interface MyAffiliate {
+  /** null khi chưa đủ điều kiện nhận mã. */
+  code: string | null;
+  /** Đã mua ít nhất một đơn nên đã được cấp mã. */
+  eligible: boolean;
+  commissionPercent: number;
+  discountPercent: number;
+  minPayoutAmount: number;
+  totalEarned: number;
+  totalPaid: number;
+  /** Đang trong thời gian giữ, chưa rút được. */
+  pendingAmount: number;
+  availableAmount: number;
+  /** Đã nằm trong một yêu cầu rút đang chờ duyệt. */
+  lockedAmount: number;
+  referralCount: number;
+  hasOpenPayout: boolean;
+}
+
+export interface AffiliateReferral {
+  id: string;
+  referredName: string;
+  /** Đã che bớt: người giới thiệu không cần thấy đủ email người khác. */
+  referredEmail: string;
+  joinedAt: string;
+  totalCommission: number;
+}
+
+export type AffiliateCommissionStatus =
+  | 'PENDING'
+  | 'AVAILABLE'
+  | 'LOCKED'
+  | 'PAID'
+  | 'CANCELLED';
+
+export interface AffiliateCommission {
+  id: string;
+  orderCode: string;
+  referredEmail: string;
+  baseAmount: number;
+  amount: number;
+  commissionPercent: number;
+  status: AffiliateCommissionStatus;
+  availableAt: string | null;
+  createdAt: string;
+}
+
+export type AffiliatePayoutStatus = 'REQUESTED' | 'APPROVED' | 'REJECTED' | 'PAID';
+
+export interface AffiliatePayout {
+  id: string;
+  amount: number;
+  status: AffiliatePayoutStatus;
+  bankName: string;
+  bankAccountNumber: string;
+  bankAccountName: string;
+  note: string | null;
+  adminNote: string | null;
+  createdAt: string;
+  reviewedAt: string | null;
+  paidAt: string | null;
+}
+
+export interface CheckAffiliateResult {
+  valid: boolean;
+  code: string | null;
+  discountAmount: number;
+  /** Lý do mã không dùng được, để hiện ngay dưới ô nhập. */
+  message: string | null;
+}
+
+export interface AdminAffiliatePayout extends AffiliatePayout {
+  userId: string;
+  userName: string;
+  userEmail: string;
+  commissionCount: number;
+}
+
+export interface AdminAffiliateRow {
+  userId: string;
+  userName: string;
+  userEmail: string;
+  code: string;
+  referralCount: number;
+  paidOrderCount: number;
+  totalEarned: number;
+  totalPaid: number;
+  availableAmount: number;
+  status: string;
+}
+
+export interface AdminAffiliateOverview {
+  totalAffiliates: number;
+  totalReferrals: number;
+  totalCommission: number;
+  totalPaid: number;
+  pendingPayoutCount: number;
+  pendingPayoutAmount: number;
+  topAffiliates: AdminAffiliateRow[];
+}
+
+export interface AffiliateSettings {
+  commissionPercent: number;
+  discountPercent: number;
+  recurring: boolean;
+  commissionOnGross: boolean;
+  minPayoutAmount: number;
+  holdDays: number;
+  enabled: boolean;
+}

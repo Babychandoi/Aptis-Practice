@@ -215,6 +215,16 @@ public final class BillingEntities {
         @Column(name = "promotion_code_id", columnDefinition = "CHAR(36)")
         private String promotionCodeId;
 
+        /**
+         * Mã giới thiệu đã dùng. Lưu cả mã lẫn chủ mã: mã để hiện lại cho người
+         * mua, chủ mã để tính hoa hồng mà không phải tra ngược khi mã đã đổi.
+         */
+        @Column(name = "affiliate_code", length = 32)
+        private String affiliateCode;
+
+        @Column(name = "affiliate_user_id", columnDefinition = "CHAR(36)")
+        private String affiliateUserId;
+
         @Column(name = "idempotency_key", length = 255, nullable = false)
         private String idempotencyKey;
 

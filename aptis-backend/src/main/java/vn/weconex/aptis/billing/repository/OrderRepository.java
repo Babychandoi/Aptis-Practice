@@ -16,6 +16,9 @@ import vn.weconex.aptis.common.util.Enums.OrderStatus;
 
 public interface OrderRepository extends JpaRepository<Order, String> {
 
+    /** Dùng cho affiliate: chỉ người đã mua thành công mới được cấp mã. */
+    boolean existsByUserIdAndStatus(String userId, OrderStatus status);
+
     Optional<Order> findByOrderCode(String orderCode);
 
     Optional<Order> findByIdempotencyKey(String idempotencyKey);

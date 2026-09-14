@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import vn.weconex.aptis.billing.service.AffiliateService;
 import vn.weconex.aptis.billing.service.BankTransferService;
 import vn.weconex.aptis.billing.service.OrderService;
 import vn.weconex.aptis.billing.service.SubscriptionActivationService;
@@ -34,6 +35,7 @@ public class ScheduledJobs {
 
     private final SubscriptionActivationService activationService;
     private final OrderService orderService;
+    private final AffiliateService affiliateService;
     private final BankTransferService bankTransferService;
     private final TrialService trialService;
     private final TrialReminderService trialReminderService;
@@ -80,6 +82,23 @@ public class ScheduledJobs {
             int sent = trialReminderService.sendDueReminders();
             if (sent > 0) {
                 log.info("Đã gửi {} mail nhắc hạn dùng thử", sent);
+            }
+        });
+    }
+
+    /**
+     * Mở khóa hoa hồng đã hết thời gian giữ.
+     *
+     * <p>Chạy thưa vì mốc tính bằng ngày; trễ vài chục phút không ảnh hưởng ai.
+     * Khi cấu hình hold_days = 0 thì hoa hồng AVAILABLE ngay và job này không
+     * có việc gì để làm.
+     */
+    @Scheduled(fixedDelay = 30 * 60 * 1000L, initialDelay = 150_000L)
+    public void releaseAffiliateCommissions() {
+        lock.runIfAcquired("affiliate-release", Duration.ofMinutes(20), () -> {
+            int count = affiliateService.releaseDueCommissions();
+            if (count > 0) {
+                log.info("Đã mở {} khoản hoa hồng cho rút", count);
             }
         });
     }

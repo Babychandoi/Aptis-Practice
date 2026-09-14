@@ -1,5 +1,14 @@
 import { api } from './client';
 import type {
+  AdminAffiliateOverview,
+  AdminAffiliatePayout,
+  AdminAffiliateRow,
+  AffiliateCommission,
+  AffiliatePayout,
+  AffiliateReferral,
+  AffiliateSettings,
+  CheckAffiliateResult,
+  MyAffiliate,
   Attempt,
   AttemptSummary,
   AssetResponse,
@@ -206,7 +215,10 @@ export const billingApi = {
   entitlements: () => api.get<Entitlement[]>('/entitlements').then((r) => r.data),
 
   /** Idempotency-Key bắt buộc: bấm hai lần không tạo hai đơn. */
-  createOrder: (body: { planId: string }, idempotencyKey: string) =>
+  createOrder: (
+    body: { planId: string; promotionCode?: string; affiliateCode?: string },
+    idempotencyKey: string,
+  ) =>
     api
       .post<Order>('/orders', body, { headers: { 'Idempotency-Key': idempotencyKey } })
       .then((r) => r.data),
@@ -369,4 +381,78 @@ export const newsApi = {
       .then((r) => r.data),
 
   deleteComment: (commentId: string) => api.delete(`/news/comments/${commentId}`),
+};
+
+// ---------------------------------------------------------------------
+// Giới thiệu (affiliate)
+// ---------------------------------------------------------------------
+
+export const affiliateApi = {
+  me: () => api.get<MyAffiliate>('/affiliate/me').then((r) => r.data),
+
+  /** Trả 200 kèm valid=false khi mã sai, không ném lỗi. */
+  check: (code: string, planId: string) =>
+    api
+      .get<CheckAffiliateResult>('/affiliate/check', { params: { code, planId } })
+      .then((r) => r.data),
+
+  referrals: (page = 0, size = 20) =>
+    api
+      .get<PageResponse<AffiliateReferral>>('/affiliate/referrals', { params: { page, size } })
+      .then((r) => r.data),
+
+  commissions: (page = 0, size = 20) =>
+    api
+      .get<PageResponse<AffiliateCommission>>('/affiliate/commissions', { params: { page, size } })
+      .then((r) => r.data),
+
+  payouts: (page = 0, size = 20) =>
+    api
+      .get<PageResponse<AffiliatePayout>>('/affiliate/payouts', { params: { page, size } })
+      .then((r) => r.data),
+
+  requestPayout: (body: {
+    bankName: string;
+    bankAccountNumber: string;
+    bankAccountName: string;
+    note?: string;
+  }) => api.post<AffiliatePayout>('/affiliate/payouts', body).then((r) => r.data),
+};
+
+export const adminAffiliateApi = {
+  overview: () =>
+    api.get<AdminAffiliateOverview>('/admin/affiliate/overview').then((r) => r.data),
+
+  accounts: (page = 0, size = 20) =>
+    api
+      .get<PageResponse<AdminAffiliateRow>>('/admin/affiliate/accounts', {
+        params: { page, size },
+      })
+      .then((r) => r.data),
+
+  payouts: (params: { status?: string; page?: number; size?: number } = {}) =>
+    api
+      .get<PageResponse<AdminAffiliatePayout>>('/admin/affiliate/payouts', { params })
+      .then((r) => r.data),
+
+  approve: (payoutId: string, adminNote?: string) =>
+    api
+      .post<AffiliatePayout>(`/admin/affiliate/payouts/${payoutId}/approve`, { adminNote })
+      .then((r) => r.data),
+
+  reject: (payoutId: string, adminNote?: string) =>
+    api
+      .post<AffiliatePayout>(`/admin/affiliate/payouts/${payoutId}/reject`, { adminNote })
+      .then((r) => r.data),
+
+  markPaid: (payoutId: string, adminNote?: string) =>
+    api
+      .post<AffiliatePayout>(`/admin/affiliate/payouts/${payoutId}/paid`, { adminNote })
+      .then((r) => r.data),
+
+  settings: () =>
+    api.get<AffiliateSettings>('/admin/affiliate/settings').then((r) => r.data),
+
+  updateSettings: (body: AffiliateSettings) =>
+    api.put<AffiliateSettings>('/admin/affiliate/settings', body).then((r) => r.data),
 };

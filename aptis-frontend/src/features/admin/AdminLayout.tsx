@@ -18,6 +18,7 @@ const NAV_ITEMS = [
   { to: '/admin/orders', label: 'Đơn hàng', permission: 'order:read', icon: 'orders' },
   { to: '/admin/bank-transfers', label: 'Đối soát chuyển khoản', permission: 'order:read', icon: 'transfers', hasBadge: true },
   { to: '/admin/refunds', label: 'Hoàn tiền', permission: 'refund:write', icon: 'refunds' },
+  { to: '/admin/affiliate', label: 'Giới thiệu & hoa hồng', permission: 'affiliate:read', icon: 'gift' },
   { to: '/admin/users', label: 'Quản lý người dùng', permission: 'user:read', icon: 'users' },
   { to: '/admin/reports', label: 'Báo cáo', permission: 'report:read', icon: 'reports' },
 ] as const;
@@ -143,6 +144,7 @@ function AdminIcon({ name }: { name: (typeof NAV_ITEMS)[number]['icon'] }) {
     orders: <><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></>,
     transfers: <><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3M15 14l2 2 4-5"/></>,
     refunds: <><path d="M4 8h12a4 4 0 0 1 0 8H9"/><path d="m8 4-4 4 4 4"/></>,
+    gift: <><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8S9 3 6.5 4.5 8 8 12 8zM12 8s3-5 5.5-3.5S16 8 12 8z"/></>,
     users: <><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 4a3 3 0 0 1 0 6M17 14a5 5 0 0 1 4 5"/></>,
     reports: <><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></>,
   };

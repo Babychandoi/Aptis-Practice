@@ -36,6 +36,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final SubscriptionPlanRepository planRepository;
     private final PromotionService promotionService;
+    private final AffiliateService affiliateService;
 
     /**
      * Idempotent theo {@code Idempotency-Key}: gọi lại cùng key trả về đơn cũ
@@ -70,7 +71,12 @@ public class OrderService {
         PromotionService.AppliedDiscount applied =
                 promotionService.apply(userId, request.promotionCode(), subtotal);
 
-        long discount = applied.discountAmount();
+        // Mã giới thiệu tính trên giá gốc như mã khuyến mãi, rồi cộng hai khoản
+        // giảm lại. Chặn ở subtotal để đơn không bao giờ âm khi dùng cả hai mã.
+        AffiliateService.AppliedReferral referral =
+                affiliateService.apply(userId, request.affiliateCode(), subtotal);
+
+        long discount = Math.min(subtotal, applied.discountAmount() + referral.discountAmount());
         long total = subtotal - discount;
 
         Order order = new Order();
@@ -84,6 +90,10 @@ public class OrderService {
         order.setCurrency(plan.getCurrency());
         if (applied.isApplied()) {
             order.setPromotionCodeId(applied.code().getId());
+        }
+        if (referral.isApplied()) {
+            order.setAffiliateCode(referral.code());
+            order.setAffiliateUserId(referral.affiliateUserId());
         }
         order.setIdempotencyKey(idempotencyKey);
         order.setExpiresAt(Instant.now().plus(ORDER_EXPIRY_MINUTES, ChronoUnit.MINUTES));
@@ -99,6 +109,12 @@ public class OrderService {
         item.setDiscountAmount(discount);
         item.setTotalAmount(total);
         orderItemRepository.save(item);
+
+        // Gắn quan hệ giới thiệu ngay, không chờ thanh toán: đơn có thể hết hạn
+        // rồi mua lại, mà quan hệ thì vẫn nên giữ nguyên.
+        if (referral.isApplied()) {
+            affiliateService.recordReferral(userId, referral.affiliateUserId(), order.getId());
+        }
 
         log.info("Đã tạo order {} cho user {} gói {}", order.getOrderCode(), userId, plan.getCode());
         return order;

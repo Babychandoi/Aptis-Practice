@@ -51,6 +51,7 @@ public class SubscriptionActivationService {
     private final OrderItemRepository orderItemRepository;
     private final UserEntitlementRepository entitlementRepository;
     private final PromotionService promotionService;
+    private final AffiliateService affiliateService;
     private final OutboxService outboxService;
     private final EntitlementChangePublisher entitlementChangePublisher;
     private final AptisProperties properties;
@@ -104,6 +105,10 @@ public class SubscriptionActivationService {
                     order.getId(),
                     order.getDiscountAmount());
         }
+
+        // Hoa hồng chốt ở đây chứ không ở lúc tạo đơn: mọi đường thanh toán đều
+        // đi qua hàm này, và hàm đã idempotent theo sourceOrderId.
+        affiliateService.onOrderPaid(order);
 
         outboxService.publish(
                 "USER_SUBSCRIPTION",

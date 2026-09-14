@@ -30,6 +30,7 @@ export function usePermission(): {
       'refund:write',
       'entitlement:grant',
       'report:read',
+      'affiliate:read',
     ),
   };
 }
