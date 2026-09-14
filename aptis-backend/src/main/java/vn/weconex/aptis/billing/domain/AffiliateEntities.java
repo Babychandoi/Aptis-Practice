@@ -30,7 +30,7 @@ public final class AffiliateEntities {
      * <p>Để trong DB chứ không trong application.yml: đây là con số thương mại,
      * đổi được ngay từ trang admin mà không phải deploy lại.
      */
-    @Entity
+    @Entity(name = "AffiliateSettings")
     @Table(name = "affiliate_settings")
     @Getter
     @Setter
@@ -70,7 +70,7 @@ public final class AffiliateEntities {
     }
 
     /** Mã giới thiệu của một người dùng. */
-    @Entity
+    @Entity(name = "AffiliateAccount")
     @Table(name = "affiliate_accounts")
     @Getter
     @Setter
@@ -82,7 +82,7 @@ public final class AffiliateEntities {
             SUSPENDED
         }
 
-        @Column(name = "user_id", length = 36, nullable = false)
+        @Column(name = "user_id", columnDefinition = "CHAR(36)", nullable = false)
         private String userId;
 
         @Column(name = "code", length = 32, nullable = false)
@@ -106,25 +106,25 @@ public final class AffiliateEntities {
      * <p>Ghi ngay lúc đặt đơn có mã và giữ vĩnh viễn, vì hoa hồng còn tính cho
      * các đơn gia hạn về sau của người được giới thiệu.
      */
-    @Entity
+    @Entity(name = "AffiliateReferral")
     @Table(name = "affiliate_referrals")
     @Getter
     @Setter
     @NoArgsConstructor
     public static class AffiliateReferral extends BaseEntity {
 
-        @Column(name = "affiliate_user_id", length = 36, nullable = false)
+        @Column(name = "affiliate_user_id", columnDefinition = "CHAR(36)", nullable = false)
         private String affiliateUserId;
 
-        @Column(name = "referred_user_id", length = 36, nullable = false)
+        @Column(name = "referred_user_id", columnDefinition = "CHAR(36)", nullable = false)
         private String referredUserId;
 
-        @Column(name = "first_order_id", length = 36)
+        @Column(name = "first_order_id", columnDefinition = "CHAR(36)")
         private String firstOrderId;
     }
 
     /** Hoa hồng của một đơn. */
-    @Entity
+    @Entity(name = "AffiliateCommission")
     @Table(name = "affiliate_commissions")
     @Getter
     @Setter
@@ -143,13 +143,13 @@ public final class AffiliateEntities {
             CANCELLED
         }
 
-        @Column(name = "affiliate_user_id", length = 36, nullable = false)
+        @Column(name = "affiliate_user_id", columnDefinition = "CHAR(36)", nullable = false)
         private String affiliateUserId;
 
-        @Column(name = "referred_user_id", length = 36, nullable = false)
+        @Column(name = "referred_user_id", columnDefinition = "CHAR(36)", nullable = false)
         private String referredUserId;
 
-        @Column(name = "order_id", length = 36, nullable = false)
+        @Column(name = "order_id", columnDefinition = "CHAR(36)", nullable = false)
         private String orderId;
 
         /** Chụp lại lúc phát sinh: đổi cấu hình sau không đổi tiền đã ghi nhận. */
@@ -166,7 +166,7 @@ public final class AffiliateEntities {
         @Column(name = "status", length = 16, nullable = false)
         private CommissionStatus status = CommissionStatus.PENDING;
 
-        @Column(name = "payout_id", length = 36)
+        @Column(name = "payout_id", columnDefinition = "CHAR(36)")
         private String payoutId;
 
         @Column(name = "available_at")
@@ -174,7 +174,7 @@ public final class AffiliateEntities {
     }
 
     /** Yêu cầu rút tiền, admin duyệt rồi chuyển khoản thủ công. */
-    @Entity
+    @Entity(name = "AffiliatePayout")
     @Table(name = "affiliate_payouts")
     @Getter
     @Setter
@@ -188,7 +188,7 @@ public final class AffiliateEntities {
             PAID
         }
 
-        @Column(name = "affiliate_user_id", length = 36, nullable = false)
+        @Column(name = "affiliate_user_id", columnDefinition = "CHAR(36)", nullable = false)
         private String affiliateUserId;
 
         @Column(name = "amount", nullable = false)
@@ -213,7 +213,7 @@ public final class AffiliateEntities {
         @Column(name = "admin_note", length = 500)
         private String adminNote;
 
-        @Column(name = "reviewed_by", length = 36)
+        @Column(name = "reviewed_by", columnDefinition = "CHAR(36)")
         private String reviewedBy;
 
         @Column(name = "reviewed_at")
