@@ -224,7 +224,7 @@ function AssignmentCard({
         </div>
       </div>
 
-      {assignment.teacherScore !== null && (
+      {assignment.teacherScore != null && (
         <div className="mt-3 rounded-xl bg-brand-50 px-3.5 py-2.5">
           <p className="text-sm font-bold text-brand-800">
             Điểm giáo viên: {assignment.teacherScore}

@@ -6,6 +6,7 @@ import { adminClassroomApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatCurrency } from '@/lib/format';
+import { useEscapeKey } from '@/lib/useEscapeKey';
 import { usePermission } from '@/features/admin/usePermission';
 import type { AdminTeacher, CreateTeacherResult, TeacherSettings } from '@/types/api';
 
@@ -312,6 +313,8 @@ function EditTeacherDialog({
           onChange={setNewPassword}
           placeholder="Để trống nếu không đổi"
           required={false}
+          // Hiện rõ như ô mật khẩu ban đầu: admin phải chép được để gửi giáo viên.
+          type="text"
           hint="Nhập vào là đặt lại mật khẩu cho giáo viên; nhớ báo lại cho họ."
         />
 
@@ -549,6 +552,8 @@ function SettingsForm({ canManage }: { canManage: boolean }) {
 }
 
 function Overlay({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+  useEscapeKey(onClose);
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-dark/45 px-4"

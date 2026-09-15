@@ -6,6 +6,7 @@ import { teacherContentApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate, formatDateTime } from '@/lib/format';
+import { useEscapeKey } from '@/lib/useEscapeKey';
 import type { Assignment, AssignmentSubmission, Classroom } from '@/types/api';
 
 /** Bài giao và chấm bài. */
@@ -151,6 +152,7 @@ function CreateAssignmentDialog({
   classroom: Classroom;
   onClose: () => void;
 }) {
+  useEscapeKey(onClose);
   const queryClient = useQueryClient();
   const [title, setTitle] = useState('');
   const [instructions, setInstructions] = useState('');
@@ -327,6 +329,7 @@ function GradingPanel({
   assignmentId: string;
   onClose: () => void;
 }) {
+  useEscapeKey(onClose);
   const [active, setActive] = useState<AssignmentSubmission | null>(null);
 
   const query = useQuery({
@@ -392,7 +395,7 @@ function GradingPanel({
                     {submission.teacherScore ?? submission.aiScore ?? '—'}
                   </span>
                   <span className="block text-[10px] text-slate-500">
-                    {submission.teacherScore !== null ? 'GV chấm' : 'điểm AI'}
+                    {submission.teacherScore != null ? 'GV chấm' : 'điểm AI'}
                   </span>
                 </span>
               </button>
@@ -413,7 +416,7 @@ function GradeForm({
 }) {
   const queryClient = useQueryClient();
   const [score, setScore] = useState(
-    submission.teacherScore === null ? '' : String(submission.teacherScore),
+    submission.teacherScore != null ? String(submission.teacherScore) : '',
   );
   const [comment, setComment] = useState(submission.teacherComment ?? '');
   const [error, setError] = useState<string | null>(null);

@@ -183,7 +183,10 @@ export function QuestionSetDetailPage() {
           <Field label="Kỹ năng" value={questionSet.componentCode} />
           <Field label="Dạng bài" value={questionSet.taskTypeCode} />
           <Field label="Chủ đề" value={questionSet.topicName ?? '—'} />
-          <Field label="Độ hot" value={questionSet.hotness === null ? '—' : `${questionSet.hotness}/5`} />
+          <Field
+            label="Độ hot"
+            value={questionSet.hotness != null ? `${questionSet.hotness}/5` : '—'}
+          />
           <Field label="Mức truy cập" value={ACCESS_LABELS[questionSet.accessLevel]} />
           <Field label="Số câu" value={String(questionSet.itemCount)} />
           <Field label="Điểm tối đa" value={String(questionSet.maxScore)} />

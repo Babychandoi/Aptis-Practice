@@ -8,6 +8,7 @@ import { teacherClassroomApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatCurrency, formatDateTime } from '@/lib/format';
+import { useEscapeKey } from '@/lib/useEscapeKey';
 import { TeacherAssignmentsTab } from '@/features/classroom/TeacherAssignmentsTab';
 import { ContentKindTabs, TeacherContentTab } from '@/features/classroom/TeacherContentTab';
 import type { Classroom } from '@/types/api';
@@ -91,7 +92,8 @@ export function TeacherClassroomPage() {
         </button>
       </header>
 
-      <div role="tablist" className="flex w-fit gap-1.5 rounded-2xl bg-surface-muted p-1">
+      {/* flex-wrap: 5 tab tiếng Việt rộng hơn màn điện thoại, không xuống dòng sẽ tràn ngang cả trang. */}
+      <div role="tablist" className="flex w-fit flex-wrap gap-1.5 rounded-2xl bg-surface-muted p-1">
         {(
           [
             ['students', 'Học viên'],
@@ -208,7 +210,7 @@ function StudentTable() {
                 </td>
                 <td className="px-4 py-3 text-slate-600">{student.attemptsDone}</td>
                 <td className="px-4 py-3 font-bold text-slate-900">
-                  {student.averageScore === null ? '—' : student.averageScore.toFixed(1)}
+                  {student.averageScore != null ? student.averageScore.toFixed(1) : '—'}
                 </td>
                 <td className="px-4 py-3 text-[11px] text-slate-500">
                   {student.lastActiveAt ? formatDateTime(student.lastActiveAt) : 'Chưa làm bài'}
@@ -472,6 +474,7 @@ function SettingsPanel({ classroom }: { classroom: Classroom }) {
 
 /** Overlay mời vào lớp: mã cỡ lớn + QR để học viên quét. */
 function InviteDialog({ classroom, onClose }: { classroom: Classroom; onClose: () => void }) {
+  useEscapeKey(onClose);
   const [copied, setCopied] = useState(false);
   const joinUrl = `${window.location.origin}/lop/tham-gia?ma=${classroom.joinCode}`;
 

@@ -1033,9 +1033,15 @@ export interface ClassroomStudent {
   /** Chữ cái đầu để vẽ avatar. */
   initial: string;
   attemptsDone: number;
-  /** Thang 10; null khi chưa làm bài nào. */
-  averageScore: number | null;
-  lastActiveAt: string | null;
+  /**
+   * Thang 10; vắng mặt khi học viên chưa làm bài nào.
+   *
+   * Backend đặt default-property-inclusion: non_null nên trường null bị bỏ
+   * hẳn khỏi JSON — nhận về là undefined chứ không phải null. Khai cả hai để
+   * chỗ dùng buộc phải kiểm tra bằng != null.
+   */
+  averageScore?: number | null;
+  lastActiveAt?: string | null;
   paymentStatus: 'NOT_REQUIRED' | 'PENDING' | 'PAID';
   joinedAt: string;
 }
