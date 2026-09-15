@@ -151,6 +151,128 @@ public final class ClassroomDtos {
             String status) {
     }
 
+    // ---------------- Nội dung lớp ----------------
+
+    public record MaterialResponse(
+            String id,
+            String title,
+            String materialType,
+            String assetId,
+            String linkUrl,
+            Instant createdAt) {
+    }
+
+    public record CreateMaterialRequest(
+            @NotBlank @Size(max = 255) String title,
+            @NotBlank String materialType,
+            @Size(max = 36) String assetId,
+            @Size(max = 1000) String linkUrl) {
+    }
+
+    public record ClassroomPostResponse(
+            String id,
+            String title,
+            String content,
+            String status,
+            Instant createdAt) {
+    }
+
+    public record CreatePostRequest(
+            @NotBlank @Size(max = 255) String title,
+            String content) {
+    }
+
+    public record ClassroomPredictionResponse(
+            String id,
+            String componentId,
+            String componentName,
+            String title,
+            String content,
+            Instant createdAt) {
+    }
+
+    public record CreatePredictionRequest(
+            @Size(max = 36) String componentId,
+            @NotBlank @Size(max = 255) String title,
+            String content) {
+    }
+
+    // ---------------- Bài giao ----------------
+
+    public record AssignmentResponse(
+            String id,
+            String title,
+            String instructions,
+            String sourceType,
+            String blueprintId,
+            Instant dueAt,
+            String status,
+            /** Số đề trong bài giao. */
+            int questionSetCount,
+            long submittedCount,
+            long totalStudents,
+            boolean overdue,
+            Instant createdAt) {
+    }
+
+    public record CreateAssignmentRequest(
+            @NotBlank @Size(max = 255) String title,
+            @Size(max = 2000) String instructions,
+            List<String> questionSetIds,
+            @Size(max = 36) String blueprintId,
+            /** ISO-8601; null = không hạn nộp. */
+            String dueAt) {
+    }
+
+    /** Một bài nộp, nhìn từ phía giáo viên khi chấm. */
+    public record SubmissionResponse(
+            String id,
+            String userId,
+            String fullName,
+            String email,
+            String initial,
+            String attemptId,
+            String status,
+            Instant submittedAt,
+            /** Điểm AI thang 10; null khi chưa chấm. */
+            Double aiScore,
+            Double teacherScore,
+            String teacherComment,
+            Instant gradedAt) {
+    }
+
+    public record GradeSubmissionRequest(
+            /** Để trống = giữ điểm AI. */
+            Double teacherScore,
+            @Size(max = 4000) String comment) {
+    }
+
+    /** Bài giao nhìn từ phía học viên. */
+    public record StudentAssignmentResponse(
+            String id,
+            String classroomId,
+            String classroomName,
+            String title,
+            String instructions,
+            Instant dueAt,
+            boolean overdue,
+            /** NOT_STARTED | IN_PROGRESS | SUBMITTED | LATE | GRADED */
+            String status,
+            String attemptId,
+            Double teacherScore,
+            String teacherComment) {
+    }
+
+    /** Đề giáo viên tự soạn. */
+    public record TeacherQuestionSetResponse(
+            String id,
+            String title,
+            String partName,
+            String componentName,
+            String status,
+            Instant createdAt) {
+    }
+
     public record AdminOverviewResponse(
             long totalClassrooms,
             long totalTeachers,

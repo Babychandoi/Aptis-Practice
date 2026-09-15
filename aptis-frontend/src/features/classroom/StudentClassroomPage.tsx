@@ -131,7 +131,10 @@ function ClassroomCard({ classroom }: { classroom: StudentClassroom }) {
   const paid = classroom.pricingType === 'PAID' && classroom.priceAmount > 0;
 
   return (
-    <article className="rounded-2xl border border-border bg-white px-5 py-4">
+    <Link
+      to={`/lop-hoc/${classroom.classroomId}`}
+      className="block rounded-2xl border border-border bg-white px-5 py-4 transition-colors hover:border-brand-300 hover:bg-surface-paper"
+    >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h2 className="text-base font-bold text-slate-900">{classroom.name}</h2>
@@ -173,7 +176,9 @@ function ClassroomCard({ classroom }: { classroom: StudentClassroom }) {
           chung vẫn theo gói Premium của riêng bạn.
         </p>
       )}
-    </article>
+
+      <p className="mt-3 text-xs font-semibold text-brand-700">Vào lớp →</p>
+    </Link>
   );
 }
 

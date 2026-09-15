@@ -15,6 +15,9 @@ import vn.weconex.aptis.content.domain.QuestionSet;
 public interface QuestionSetRepository
         extends JpaRepository<QuestionSet, String>, JpaSpecificationExecutor<QuestionSet> {
 
+    /** Đề một giáo viên tự soạn — chỉ lớp của họ thấy. */
+    List<QuestionSet> findByOwnerTeacherIdOrderByCreatedAtDesc(String ownerTeacherId);
+
     Optional<QuestionSet> findByCode(String code);
 
     boolean existsByCode(String code);

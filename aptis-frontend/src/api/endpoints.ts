@@ -1,5 +1,12 @@
 import { api } from './client';
 import type {
+  Assignment,
+  AssignmentSubmission,
+  ClassroomMaterial,
+  ClassroomPost,
+  ClassroomPrediction,
+  StudentAssignment,
+  TeacherQuestionSet,
   AdminClassroom,
   AdminTeacher,
   ClassProgress,
@@ -520,6 +527,84 @@ export const teacherClassroomApi = {
 
   removeStudent: (studentUserId: string) =>
     api.delete(`/teacher/classroom/students/${studentUserId}`).then((r) => r.data),
+};
+
+export const teacherContentApi = {
+  materials: () =>
+    api.get<ClassroomMaterial[]>('/teacher/classroom/materials').then((r) => r.data),
+
+  addMaterial: (body: {
+    title: string;
+    materialType: 'FILE' | 'LINK';
+    assetId?: string;
+    linkUrl?: string;
+  }) => api.post<ClassroomMaterial>('/teacher/classroom/materials', body).then((r) => r.data),
+
+  deleteMaterial: (id: string) =>
+    api.delete(`/teacher/classroom/materials/${id}`).then((r) => r.data),
+
+  posts: () => api.get<ClassroomPost[]>('/teacher/classroom/posts').then((r) => r.data),
+
+  addPost: (body: { title: string; content: string }) =>
+    api.post<ClassroomPost>('/teacher/classroom/posts', body).then((r) => r.data),
+
+  deletePost: (id: string) => api.delete(`/teacher/classroom/posts/${id}`).then((r) => r.data),
+
+  predictions: () =>
+    api.get<ClassroomPrediction[]>('/teacher/classroom/predictions').then((r) => r.data),
+
+  addPrediction: (body: { componentId?: string; title: string; content?: string }) =>
+    api.post<ClassroomPrediction>('/teacher/classroom/predictions', body).then((r) => r.data),
+
+  deletePrediction: (id: string) =>
+    api.delete(`/teacher/classroom/predictions/${id}`).then((r) => r.data),
+
+  assignments: () =>
+    api.get<Assignment[]>('/teacher/classroom/assignments').then((r) => r.data),
+
+  createAssignment: (body: {
+    title: string;
+    instructions?: string;
+    questionSetIds?: string[];
+    blueprintId?: string;
+    dueAt?: string;
+  }) => api.post<Assignment>('/teacher/classroom/assignments', body).then((r) => r.data),
+
+  closeAssignment: (id: string) =>
+    api.post(`/teacher/classroom/assignments/${id}/close`).then((r) => r.data),
+
+  deleteAssignment: (id: string) =>
+    api.delete(`/teacher/classroom/assignments/${id}`).then((r) => r.data),
+
+  submissions: (assignmentId: string) =>
+    api
+      .get<AssignmentSubmission[]>(`/teacher/classroom/assignments/${assignmentId}/submissions`)
+      .then((r) => r.data),
+
+  grade: (submissionId: string, body: { teacherScore?: number | null; comment?: string }) =>
+    api.post(`/teacher/classroom/submissions/${submissionId}/grade`, body).then((r) => r.data),
+
+  myQuestionSets: () =>
+    api.get<TeacherQuestionSet[]>('/teacher/classroom/question-sets').then((r) => r.data),
+};
+
+export const studentWorkspaceApi = {
+  assignments: (classroomId: string) =>
+    api.get<StudentAssignment[]>(`/classrooms/${classroomId}/assignments`).then((r) => r.data),
+
+  start: (classroomId: string, assignmentId: string) =>
+    api
+      .post<{ attemptId: string }>(`/classrooms/${classroomId}/assignments/${assignmentId}/start`)
+      .then((r) => r.data),
+
+  materials: (classroomId: string) =>
+    api.get<ClassroomMaterial[]>(`/classrooms/${classroomId}/materials`).then((r) => r.data),
+
+  posts: (classroomId: string) =>
+    api.get<ClassroomPost[]>(`/classrooms/${classroomId}/posts`).then((r) => r.data),
+
+  predictions: (classroomId: string) =>
+    api.get<ClassroomPrediction[]>(`/classrooms/${classroomId}/predictions`).then((r) => r.data),
 };
 
 export const studentClassroomApi = {

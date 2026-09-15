@@ -56,6 +56,11 @@ import vn.weconex.aptis.practice.web.PracticeDtos;
 @RequiredArgsConstructor
 public class AttemptService {
 
+    /** Một lượt làm bài vừa được nộp. */
+    public record AttemptSubmittedEvent(String attemptId) {
+    }
+
+
     private static final List<AttemptStatus> OPEN_STATUSES =
             List.of(AttemptStatus.CREATED, AttemptStatus.IN_PROGRESS);
 
@@ -65,6 +70,7 @@ public class AttemptService {
     private final QuestionSetRepository questionSetRepository;
     private final QuestionSetSelector questionSetSelector;
     private final AttemptSnapshotFactory snapshotFactory;
+    private final org.springframework.context.ApplicationEventPublisher eventPublisher;
     private final ContentAccessService contentAccessService;
     private final EntitlementService entitlementService;
     private final QuestionSetSanitizer sanitizer;
@@ -262,6 +268,41 @@ public class AttemptService {
 
         Integer duration = request.timed() ? estimateDuration(allowed) : null;
         return persistAttempt(attempt, allowed, duration);
+    }
+
+    /**
+     * Tạo lượt làm bài cho một bài giáo viên giao.
+     *
+     * <p>Khác {@link #createCustomAttempt}: đề do giáo viên chọn đích danh nên
+     * không lọc ngẫu nhiên, và KHÔNG kiểm Premium — giáo viên đã trả gói cho
+     * nền tảng, học viên trong lớp làm bài được giao mà không phải mua thêm.
+     *
+     * <p>Quyền vào lớp và quyền làm bài do phía gọi kiểm trước; hàm này chỉ
+     * dựng lượt làm bài.
+     */
+    @Transactional
+    public TestAttempt createAssignmentAttempt(
+            String userId, List<QuestionSet> questionSets, boolean timed) {
+
+        if (questionSets.isEmpty()) {
+            throw new ApiException(
+                    ErrorCode.NOT_ENOUGH_QUESTION_SETS, "Bài giao chưa có đề nào");
+        }
+
+        TestAttempt attempt = new TestAttempt();
+        attempt.setUserId(userId);
+        attempt.setMode(PracticeMode.CUSTOM_PRACTICE);
+        // Bài giao luôn tính là PREMIUM: nội dung mở theo lớp chứ không theo
+        // gói cá nhân của học viên.
+        attempt.setAccessLevelUsed(AccessLevel.PREMIUM);
+
+        String componentId = questionSets.get(0).getPart().getComponent().getId();
+        if (questionSets.stream()
+                .allMatch(qs -> componentId.equals(qs.getPart().getComponent().getId()))) {
+            attempt.setComponentId(componentId);
+        }
+
+        return persistAttempt(attempt, questionSets, timed ? estimateDuration(questionSets) : null);
     }
 
     /**
@@ -803,6 +844,11 @@ public class AttemptService {
                 .mapToInt(e -> e.getResponse().getTimeSpentSeconds())
                 .sum();
         attempt.submit(reportedSeconds);
+
+        // Báo cho lớp học biết nếu lượt này thuộc một bài giao. Dùng event chứ
+        // không gọi thẳng AssignmentService: service đó đã phụ thuộc vào
+        // AttemptService để tạo lượt, gọi ngược lại sẽ thành vòng phụ thuộc.
+        eventPublisher.publishEvent(new AttemptSubmittedEvent(attemptId));
 
         Map<String, AttemptQuestionSet> rows =
                 attemptQuestionSetRepository.findByAttemptIdOrderByDisplayOrder(attemptId).stream()

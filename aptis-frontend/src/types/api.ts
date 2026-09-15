@@ -1099,3 +1099,92 @@ export interface TeacherSettings {
   platformFeePercent: number;
   defaultMaxStudents: number;
 }
+
+export interface ClassroomMaterial {
+  id: string;
+  title: string;
+  materialType: 'FILE' | 'LINK';
+  assetId: string | null;
+  linkUrl: string | null;
+  createdAt: string;
+}
+
+export interface ClassroomPost {
+  id: string;
+  title: string;
+  content: string;
+  status: 'PUBLISHED' | 'HIDDEN';
+  createdAt: string;
+}
+
+export interface ClassroomPrediction {
+  id: string;
+  componentId: string | null;
+  componentName: string;
+  title: string;
+  content: string | null;
+  createdAt: string;
+}
+
+export type AssignmentStatus = 'DRAFT' | 'PUBLISHED' | 'CLOSED';
+
+export interface Assignment {
+  id: string;
+  title: string;
+  instructions: string | null;
+  sourceType: 'QUESTION_SETS' | 'BLUEPRINT';
+  blueprintId: string | null;
+  dueAt: string | null;
+  status: AssignmentStatus;
+  questionSetCount: number;
+  submittedCount: number;
+  totalStudents: number;
+  overdue: boolean;
+  createdAt: string;
+}
+
+export type SubmissionStatus =
+  | 'NOT_STARTED'
+  | 'IN_PROGRESS'
+  | 'SUBMITTED'
+  | 'LATE'
+  | 'GRADED';
+
+export interface AssignmentSubmission {
+  id: string;
+  userId: string;
+  fullName: string;
+  email: string;
+  initial: string;
+  attemptId: string | null;
+  status: SubmissionStatus;
+  submittedAt: string | null;
+  /** Thang 10; null khi chưa chấm. */
+  aiScore: number | null;
+  teacherScore: number | null;
+  teacherComment: string | null;
+  gradedAt: string | null;
+}
+
+export interface StudentAssignment {
+  id: string;
+  classroomId: string;
+  classroomName: string;
+  title: string;
+  instructions: string | null;
+  dueAt: string | null;
+  overdue: boolean;
+  status: SubmissionStatus;
+  attemptId: string | null;
+  teacherScore: number | null;
+  teacherComment: string | null;
+}
+
+export interface TeacherQuestionSet {
+  id: string;
+  title: string;
+  partName: string;
+  componentName: string;
+  status: string;
+  createdAt: string;
+}

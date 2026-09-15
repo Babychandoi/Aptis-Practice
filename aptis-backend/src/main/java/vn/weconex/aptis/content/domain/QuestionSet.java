@@ -48,6 +48,15 @@ public class QuestionSet extends BaseEntity {
     @JoinColumn(name = "topic_id", columnDefinition = "CHAR(36)")
     private Topic topic;
 
+    /**
+     * Giáo viên sở hữu đề này.
+     *
+     * <p>NULL = đề của hệ thống, dùng chung. Có giá trị = đề giáo viên tự soạn,
+     * chỉ lớp của họ thấy và chỉ họ giao được.
+     */
+    @Column(name = "owner_teacher_id", columnDefinition = "CHAR(36)")
+    private String ownerTeacherId;
+
     @Column(name = "code", length = 100, nullable = false)
     private String code;
 

@@ -8,9 +8,12 @@ import { teacherClassroomApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatCurrency, formatDateTime } from '@/lib/format';
+import { TeacherAssignmentsTab } from '@/features/classroom/TeacherAssignmentsTab';
+import { ContentKindTabs, TeacherContentTab } from '@/features/classroom/TeacherContentTab';
 import type { Classroom } from '@/types/api';
 
-type Tab = 'students' | 'progress' | 'settings';
+type Tab = 'students' | 'assignments' | 'content' | 'progress' | 'settings';
+type ContentKind = 'materials' | 'posts' | 'predictions';
 
 /** Ngưỡng màu cho thanh tiến độ — khớp wireframe. */
 function scoreTone(score: number): string {
@@ -33,6 +36,7 @@ function scoreText(score: number): string {
  */
 export function TeacherClassroomPage() {
   const [tab, setTab] = useState<Tab>('students');
+  const [contentKind, setContentKind] = useState<ContentKind>('materials');
   const [inviteOpen, setInviteOpen] = useState(false);
 
   const query = useQuery({
@@ -91,6 +95,8 @@ export function TeacherClassroomPage() {
         {(
           [
             ['students', 'Học viên'],
+            ['assignments', 'Bài giao'],
+            ['content', 'Nội dung lớp'],
             ['progress', 'Tiến độ'],
             ['settings', 'Cài đặt lớp'],
           ] as const
@@ -114,6 +120,13 @@ export function TeacherClassroomPage() {
       </div>
 
       {tab === 'students' && <StudentTable />}
+      {tab === 'assignments' && <TeacherAssignmentsTab classroom={classroom} />}
+      {tab === 'content' && (
+        <div className="space-y-3">
+          <ContentKindTabs value={contentKind} onChange={setContentKind} />
+          <TeacherContentTab kind={contentKind} />
+        </div>
+      )}
       {tab === 'progress' && <ProgressPanel studentCount={classroom.studentCount} />}
       {tab === 'settings' && <SettingsPanel classroom={classroom} />}
 

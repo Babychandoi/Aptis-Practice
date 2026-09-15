@@ -34,6 +34,7 @@ const CheckoutPage = lazy(() => import('@/features/billing/CheckoutPage').then((
 const AffiliatePage = lazy(() => import('@/features/billing/AffiliatePage').then((m) => ({ default: m.AffiliatePage })));
 const StudentClassroomPage = lazy(() => import('@/features/classroom/StudentClassroomPage').then((m) => ({ default: m.StudentClassroomPage })));
 const TeacherClassroomPage = lazy(() => import('@/features/classroom/TeacherClassroomPage').then((m) => ({ default: m.TeacherClassroomPage })));
+const ClassroomWorkspacePage = lazy(() => import('@/features/classroom/ClassroomWorkspacePage').then((m) => ({ default: m.ClassroomWorkspacePage })));
 const NewsAdminPage = lazy(() => import('@/features/admin/NewsAdminPage').then((m) => ({ default: m.NewsAdminPage })));
 const NewsFeedPage = lazy(() => import('@/features/learning/NewsFeedPage').then((m) => ({ default: m.NewsFeedPage })));
 const NewsPostPage = lazy(() => import('@/features/learning/NewsPostPage').then((m) => ({ default: m.NewsPostPage })));
@@ -140,6 +141,7 @@ export function App() {
         <Route path="/lop-hoc" element={<StudentClassroomPage />} />
         <Route path="/lop/tham-gia" element={<StudentClassroomPage />} />
         <Route path="/giang-day" element={<TeacherClassroomPage />} />
+        <Route path="/lop-hoc/:classroomId" element={<ClassroomWorkspacePage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/checkout/:orderId" element={<CheckoutPage />} />
