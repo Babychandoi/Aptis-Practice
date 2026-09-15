@@ -36,6 +36,7 @@ import vn.weconex.aptis.platform.realtime.EntitlementChangePublisher;
 public class AdminBillingService {
 
     private final SubscriptionPlanRepository planRepository;
+    private final AffiliateService affiliateService;
     private final UserSubscriptionRepository subscriptionRepository;
     private final UserEntitlementRepository entitlementRepository;
     private final TrialCampaignRepository campaignRepository;
@@ -141,6 +142,12 @@ public class AdminBillingService {
                 null,
                 now,
                 endsAt));
+
+        // Premium cấp tay cũng được mã giới thiệu, giống người mua — chỉ tài
+        // khoản dùng thử là không.
+        if (UserEntitlement.PREMIUM_CONTENT_ACCESS.equals(request.entitlementCode())) {
+            affiliateService.grantAccount(userId);
+        }
 
         entitlementChangePublisher.publishAfterCommit(userId, "ADMIN_GRANT");
 

@@ -110,6 +110,10 @@ public class SubscriptionActivationService {
         // đi qua hàm này, và hàm đã idempotent theo sourceOrderId.
         affiliateService.onOrderPaid(order);
 
+        // Cấp mã cho chính người vừa mua, ngay lúc này chứ không đợi họ mở
+        // trang giới thiệu: mua xong là đi khoe được ngay.
+        affiliateService.grantAccount(order.getUserId());
+
         outboxService.publish(
                 "USER_SUBSCRIPTION",
                 subscription.getId(),

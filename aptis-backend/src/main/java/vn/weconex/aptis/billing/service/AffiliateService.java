@@ -159,6 +159,26 @@ public class AffiliateService {
         return created;
     }
 
+    /**
+     * Cấp mã mà không kiểm điều kiện.
+     *
+     * <p>Dùng khi caller đã biết chắc người này vừa mua xong. Không đi qua
+     * {@link #isEligible} vì lúc đó order mới chỉ PAID trong bộ nhớ Hibernate,
+     * truy vấn đếm đơn chưa chắc thấy — dựa vào thứ tự flush ngầm là mong manh.
+     */
+    @Transactional
+    public AffiliateAccount grantAccount(String userId) {
+        return accountRepository.findByUserId(userId).orElseGet(() -> {
+            AffiliateAccount account = new AffiliateAccount();
+            account.setId(UUID.randomUUID().toString());
+            account.setUserId(userId);
+            account.setCode(generateUniqueCode());
+            accountRepository.save(account);
+            log.info("Cấp mã giới thiệu {} cho user {}", account.getCode(), userId);
+            return account;
+        });
+    }
+
     private boolean hasPaidOrder(String userId) {
         return orderRepository.existsByUserIdAndStatus(userId, OrderStatus.PAID);
     }
