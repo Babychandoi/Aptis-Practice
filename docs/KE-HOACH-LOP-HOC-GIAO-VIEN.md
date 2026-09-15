@@ -1,147 +1,86 @@
 # Kế hoạch: Không gian lớp học cho giáo viên
 
-Trạng thái: **chờ duyệt** · Ước lượng: 6–8 ngày làm · Người viết: Claude
+Trạng thái: **chờ duyệt** · Ước lượng: 9–12 ngày làm · Người viết: Claude
+
+Bản này bám theo thiết kế `Teacher Classroom Wireframes.dc.html` khách gửi.
 
 ---
 
-## 1. Mục tiêu và mô hình kinh doanh
+## 1. Mô hình kinh doanh
 
-Mở thêm một dòng doanh thu mới: **bán gói hàng tháng cho giáo viên**, bên cạnh
-việc bán Premium cho học viên như hiện nay.
+Hai dòng doanh thu mới, độc lập với Premium học viên hiện có:
 
-Giáo viên trả tiền để có không gian lớp riêng: mở lớp, giao bài, chấm, theo dõi
-học viên sai ở đâu.
-
-### Hai dòng doanh thu độc lập
-
-| | Ai trả | Được gì |
+| Dòng tiền | Ai trả | Cho ai |
 |---|---|---|
-| **Premium học viên** (đã có) | Học viên | Tự luyện: dự đoán đề, thi thử, AI chấm — phần chung của hệ thống, giữ nguyên như hiện tại |
-| **Gói giáo viên** (làm mới) | Giáo viên | Mở lớp, giao bài, chấm tay, theo dõi tiến độ học viên |
+| **Gói giáo viên** (`TEACHER_30/90/180/365`) | Giáo viên | Trả cho nền tảng |
+| **Học phí lớp** | Học viên | Trả cho giáo viên, **nền tảng thu hộ rồi chia** |
 
-Hai thứ không thay thế nhau. Học viên trong lớp vẫn có thể tự mua Premium để
-luyện thêm ngoài giờ lớp.
+Premium học viên giữ nguyên: học viên muốn tự luyện ngoài lớp thì vẫn mua như
+hiện nay.
 
-### Công tắc "dùng đề hệ thống"
+### Cách vận hành
 
-Gói giáo viên chia hai mức:
+- **Admin tạo tài khoản giáo viên**, giáo viên không tự đăng ký
+- Hệ thống **tự sinh đúng một lớp** gắn với tài khoản đó
+- Admin gán gói ban đầu và **bật/tắt quyền dùng ngân hàng đề hệ thống theo từng lớp**
+- Giáo viên đặt lớp **Miễn phí** hoặc **Có phí** kèm giá
 
-- **Không bật**: giáo viên dùng đủ công cụ lớp học, nhưng chỉ giao được **đề họ
-  tự soạn**
-- **Bật**: giao được thêm toàn bộ **ngân hàng đề của hệ thống** (137 đề full 4
-  part + kho đề theo Part)
+### Công tắc "đề hệ thống" — đòn bẩy giá
 
-Admin bật/tắt theo từng lớp trong trang quản trị. Đây là đòn bẩy giá: giáo viên
-muốn dùng kho đề sẵn thì trả thêm.
+| Trạng thái | Giáo viên | Học viên trong lớp |
+|---|---|---|
+| **Tắt** | Chỉ giao được đề tự soạn | Chỉ làm bài được giao; các mục luyện tập khác hiện khoá 🔒 |
+| **Bật** | Giao thêm được toàn bộ kho đề hệ thống | Mở khoá cả khu luyện tập trong không gian lớp |
 
 ---
 
-## 2. Nền tảng đã có — tận dụng được gì
+## 2. Nền tảng đã có
 
-Khảo sát code hiện tại cho thấy phần lớn thứ khó đã sẵn:
-
-| Đã có | Dùng cho việc gì |
+| Đã có | Dùng cho |
 |---|---|
-| Vai `TEACHER` với 4 quyền (`question_set:read`, `user:read`, `evaluation:review`, `report:read`) | Không phải dựng lại phân quyền |
-| `subscription_plans` + `orders` + `user_entitlements` | **Gói giáo viên dùng lại nguyên luồng bán hàng**, chỉ thêm mã gói và entitlement mới |
-| `AttemptService.createPartAttempt` / `createCustomAttempt` / `createMockTestAttempt` | Giao bài chỉ cần gọi lại |
-| 137 blueprint đề full 4 part | Phần "đề full kỹ năng" không phải làm gì thêm |
-| `AdminContentService.create` + `PublishValidator` | Giáo viên tự soạn đề dùng lại luồng và bộ kiểm tra này |
-| `evaluation_summaries` | Nhận xét AI chi tiết Writing/Speaking — đúng thứ giáo viên cần để thấy lỗi học viên |
-| `user_part_progress`, `user_component_progress` | Điểm mạnh/yếu theo Part |
-| `attempt_recordings` | Ghi âm Speaking để giáo viên nghe lại |
-| `EntitlementService.hasPremiumAccess` | Một chỗ duy nhất kiểm quyền — thêm quyền giáo viên vào đây |
-| `NotificationSender` | Email nhắc bài |
-| `BankTransferService` | Giáo viên mua gói qua chuyển khoản như học viên |
-
-**Thiếu hẳn:** lớp học, thành viên lớp, bài giao, bài nộp, gói giáo viên, và ranh
-giới dữ liệu giữa các giáo viên.
+| Vai `TEACHER` + 4 quyền | Không phải dựng lại phân quyền |
+| `subscription_plans`, `orders`, `user_entitlements` | Gói giáo viên dùng lại nguyên luồng bán hàng |
+| `evaluation_summaries.evaluator_type` đã có `TEACHER` | **Chấm tay dùng lại được ngay** |
+| `AttemptService` (3 đường tạo lượt làm bài) | Giao bài chỉ cần gọi lại |
+| 137 blueprint đề full 4 part | Giao đề full không phải làm gì thêm |
+| `AdminContentService` + `PublishValidator` | Giáo viên tự soạn đề |
+| `evaluation_documents` (Mongo) | Tiêu chí, nhận xét, bản sửa của AI |
+| `user_part_progress` | Điểm mạnh/yếu theo Part |
+| `attempt_recordings` | Ghi âm Speaking |
+| MinIO + `assets` | Tài liệu lớp (file) |
+| `news_posts` | Mẫu sẵn cho bảng tin lớp |
+| `exam_predictions` | Mẫu sẵn cho dự đoán riêng |
+| `affiliate_payouts` | **Mẫu sẵn cho chia tiền học phí** |
 
 ---
 
-## 3. Quyết định thiết kế
+## 3. Điểm cần biết trước: highlight lỗi sai
 
-### 3.1. Gói giáo viên — dùng lại hạ tầng bán hàng sẵn có
+Thiết kế yêu cầu gạch chân từng từ sai trong bài viết kèm giải thích:
 
-Thêm 2 entitlement mới:
+> I think shopping online ~~are~~ convenient because you ~~dont~~ need to…
+> ● **"are"** — Chia sai: chủ ngữ số ít "shopping" cần "is"
 
-```
-TEACHER_CLASSROOM       -- mở lớp, giao bài, chấm, theo dõi
-TEACHER_SYSTEM_CONTENT  -- được giao đề từ ngân hàng hệ thống
-```
+**Dữ liệu AI hiện tại KHÔNG có thông tin này.** Kiểm tra `evaluation_documents`
+cho thấy chỉ có:
 
-Thêm gói vào `subscription_plans` (giá anh quyết):
+- `criteria[]` — điểm và nhận xét theo tiêu chí
+- `feedback.summary / strengths / weaknesses / suggestions`
+- `feedback.correctedVersion` — bản sửa toàn bài
 
-```
-TEACHER_30    Gói giáo viên 30 ngày
-TEACHER_90    Gói giáo viên 90 ngày
-TEACHER_365   Gói giáo viên 365 ngày
-```
+Không có vị trí lỗi trong câu.
 
-Lý do dùng lại thay vì làm riêng: `SubscriptionActivationService` đã xử lý gia
-hạn, cộng dồn thời hạn, hết hạn tự động, thông báo real-time. Làm bảng riêng là
-viết lại toàn bộ những thứ đó.
+**Để làm được cần:** sửa prompt LLM trả thêm mảng `errors[{ text, start, end,
+type, explanation }]`, thêm trường vào `EvaluationDocument`, và hiển thị.
 
-**Điểm khác với gói học viên:** `TEACHER_*` cấp entitlement giáo viên chứ không
-cấp `PREMIUM_CONTENT_ACCESS`. Danh sách quyền theo gói lấy từ bảng
-`plan_features` đã có.
+**Rủi ro:** prompt chấm bài đang chạy ổn định trên production. Sửa prompt là
+đụng vào chỗ nhạy cảm — tháng trước đã có lần prompt trả sai ngôn ngữ cho
+`correctedVersion` và phải sửa gấp. Nếu làm, phải chạy thử trên bài thật trước
+khi bật cho học viên.
 
-### 3.2. Công tắc "dùng đề hệ thống" đặt ở đâu
-
-Đặt ở **từng lớp**, không phải ở giáo viên:
-
-```
-classrooms.system_content_enabled  TINYINT(1) NOT NULL DEFAULT 0
-```
-
-Lý do: giáo viên có thể có lớp trả tiền cao (dùng kho đề) và lớp thường. Đặt ở
-giáo viên thì không tách được.
-
-Khi giáo viên mua gói có `TEACHER_SYSTEM_CONTENT`, hệ thống tự bật cho các lớp
-của họ; admin vẫn chỉnh tay được từng lớp.
-
-### 3.3. Đề giáo viên tự soạn nằm ở đâu
-
-**Dùng lại bảng `question_sets`, thêm cột `owner_teacher_id`.**
-
-- `NULL` → đề hệ thống, dùng chung (như hiện nay)
-- `<id>` → đề riêng của giáo viên, chỉ lớp họ thấy
-
-Không tách bảng riêng vì đề giáo viên vẫn cần AI chấm, vẫn cần lưu snapshot khi
-học viên làm, vẫn cần hiện trong trang làm bài — tách bảng là nhân đôi toàn bộ
-luồng đó.
-
-Đề giáo viên bỏ qua bước duyệt (`submitForReview` → `publish`) vì không ai duyệt
-cho họ; đặt thẳng `PUBLISHED` nhưng giới hạn phạm vi bằng `owner_teacher_id`.
-Vẫn chạy qua `PublishValidator` để đề sai định dạng không lọt xuống học viên.
-
-### 3.4. Học viên trong lớp
-
-**Không cần mua gì để làm bài được giao.** Giáo viên đã trả tiền.
-
-Cụ thể: `EntitlementService` thêm một nhánh — nếu lượt làm bài sinh ra từ một
-`assignment` thuộc lớp đang hoạt động, thì bỏ qua kiểm tra Premium.
-
-Phần chung của hệ thống (dự đoán đề, thi thử tự do, mẹo học) **giữ nguyên** —
-vẫn cần Premium như hiện tại. Học viên muốn luyện thêm ngoài lớp thì tự mua.
-
-### 3.5. Ranh giới dữ liệu giữa giáo viên
-
-Chỗ nguy hiểm nhất: giáo viên A xem được học viên của giáo viên B.
-
-**Nguyên tắc:** mọi truy vấn của giáo viên đều đi qua `classroom_id` mà họ sở
-hữu. Không có endpoint nào cho phép truy cập học viên theo `userId` trực tiếp.
-
-Sẽ viết test riêng khoá điều này.
-
-### 3.6. Học viên vào lớp
-
-Mã lớp 6 ký tự + QR chứa `/lop/tham-gia?ma=ABC123`.
-
-QR sinh ở **frontend** bằng thư viện, không lưu ảnh — mã lớp đã đủ, QR chỉ là
-cách hiển thị. Học viên chưa đăng nhập quét QR → đăng ký xong tự vào lớp.
-
-Giáo viên bật/tắt được việc nhận học viên mới.
+**Đề xuất:** để mục này vào **đợt cuối**, làm riêng và kiểm kỹ. Ba đợt trước
+không phụ thuộc vào nó — giáo viên vẫn xem được nhận xét AI theo tiêu chí và
+bản sửa toàn bài, vốn đã hữu ích.
 
 ---
 
@@ -151,10 +90,13 @@ Giáo viên bật/tắt được việc nhận học viên mới.
 
 ```
 classrooms
-  id, teacher_user_id, name, description
+  id, teacher_user_id (UNIQUE — mỗi giáo viên đúng 1 lớp)
+  name, description
   join_code (6 ký tự, UNIQUE)
-  join_enabled            -- nhận học viên mới hay không
-  system_content_enabled  -- được giao đề hệ thống hay không (admin bật)
+  join_enabled
+  system_content_enabled     -- admin bật/tắt kho đề hệ thống
+  pricing_type: FREE | PAID
+  price_amount               -- học phí, VND
   status: ACTIVE | ARCHIVED
   created_at, updated_at
 
@@ -162,6 +104,7 @@ classroom_members
   id, classroom_id, user_id
   role: STUDENT | ASSISTANT
   status: ACTIVE | REMOVED
+  payment_status: NOT_REQUIRED | PENDING | PAID   -- lớp có phí
   joined_at
   UNIQUE(classroom_id, user_id)
 ```
@@ -173,8 +116,8 @@ assignments
   id, classroom_id, created_by
   title, instructions
   source_type: QUESTION_SETS | BLUEPRINT
-  blueprint_id            -- khi giao đề full 4 part
-  due_at                  -- NULL = không hạn
+  blueprint_id
+  due_at
   status: DRAFT | PUBLISHED | CLOSED
   created_at, updated_at
 
@@ -182,118 +125,184 @@ assignment_question_sets
   assignment_id, question_set_id, display_order
 
 assignment_submissions
-  id, assignment_id, user_id
-  attempt_id              -- trỏ sang lượt làm bài đã có
+  id, assignment_id, user_id, attempt_id
   status: NOT_STARTED | IN_PROGRESS | SUBMITTED | LATE | GRADED
   submitted_at
-  teacher_score           -- NULL = giữ điểm AI
+  teacher_score            -- NULL = giữ điểm AI
   teacher_comment
   graded_by, graded_at
   UNIQUE(assignment_id, user_id)
 ```
 
-### V45 — Đề riêng và gói giáo viên
+### V45 — Nội dung riêng của lớp
 
 ```
-ALTER TABLE question_sets
-  ADD COLUMN owner_teacher_id CHAR(36) NULL,
-  ADD KEY idx_question_sets_owner (owner_teacher_id);
+ALTER TABLE question_sets ADD COLUMN owner_teacher_id CHAR(36) NULL;
 
-INSERT INTO subscription_plans (TEACHER_30, TEACHER_90, TEACHER_365);
-INSERT INTO plan_features (quyền của từng gói);
+classroom_materials              -- tài liệu lớp
+  id, classroom_id, created_by
+  title
+  material_type: FILE | LINK
+  asset_id                       -- khi FILE, trỏ sang assets/MinIO
+  link_url                       -- khi LINK
+  created_at
+
+classroom_posts                  -- bảng tin riêng của lớp
+  id, classroom_id, created_by
+  title, content
+  status: PUBLISHED | HIDDEN
+  created_at, updated_at
+
+classroom_predictions            -- dự đoán riêng của giáo viên
+  id, classroom_id, created_by
+  part_id, title, content
+  created_at, updated_at
 ```
 
-Quyền mới: `classroom:write` (mở lớp, giao bài), `classroom:read` (trợ giảng).
+### V46 — Gói giáo viên và chia tiền học phí
+
+```
+INSERT INTO subscription_plans (TEACHER_30, TEACHER_90, TEACHER_180, TEACHER_365);
+INSERT INTO plan_features (giới hạn theo gói: số học viên tối đa…);
+
+teacher_settings                 -- cấu hình gói, admin chỉnh
+  id = 1 (một dòng)
+  platform_fee_percent           -- % nền tảng giữ lại từ học phí
+  default_max_students           -- giới hạn mặc định
+  updated_at
+
+classroom_payments               -- học viên trả học phí
+  id, classroom_id, user_id, order_id
+  amount, platform_fee, teacher_amount
+  status: PENDING | PAID | REFUNDED
+  created_at, paid_at
+
+teacher_payouts                  -- giáo viên rút tiền học phí
+  (cấu trúc giống affiliate_payouts đã có)
+```
+
+Quyền mới: `classroom:write`, `classroom:read`, `classroom:admin`.
+
+### V47 — Highlight lỗi (đợt cuối)
+
+Thêm `errors[]` vào `EvaluationDocument` (Mongo — không cần migration SQL) và
+sửa prompt LLM.
 
 ---
 
-## 5. Màn hình
+## 5. Màn hình (theo thiết kế)
 
-### Phía giáo viên — `/giang-day`
+### Giáo viên — `/giang-day`
 
-| Màn hình | Nội dung |
-|---|---|
-| Danh sách lớp | Mỗi lớp: số học viên, bài đang giao, bài chờ chấm. Nhãn "Đề hệ thống: bật/tắt" |
-| Chi tiết lớp | Tab: Học viên · Bài giao · Tiến độ |
-| — Học viên | Tên, số bài đã làm, điểm trung bình, hoạt động gần nhất → bấm vào xem chi tiết |
-| — Bài giao | "12/20 đã nộp", bấm vào xem ai nộp ai chưa |
-| — Tiến độ | Điểm mạnh/yếu theo Part của cả lớp — thấy ngay lớp yếu phần nào |
-| Mời vào lớp | Mã lớp cỡ lớn + QR + nút sao chép link + nút tải QR để in |
-| Tạo bài giao | Chọn nguồn: ngân hàng đề (nếu lớp được bật) / đề tự soạn / đề full. Đặt hạn nộp |
-| Soạn đề mới | Form theo Part, dùng lại editor của admin |
-| Chấm bài | Bài làm + nhận xét AI, sửa điểm, viết nhận xét riêng, nghe ghi âm Speaking |
-| Tiến độ học viên | Lịch sử, điểm theo thời gian, lỗi hay gặp |
-
-Khi lớp **không** được bật đề hệ thống: mục "ngân hàng đề" hiện nhưng khoá, kèm
-dòng "Liên hệ quản trị để mở kho đề hệ thống" — để giáo viên biết mà nâng gói.
-
-### Phía học viên
+Sidebar: Lớp học của tôi · Bài giao · Chấm bài *(badge số bài chờ)* · Đề của
+tôi · Tài liệu · Bảng tin lớp · Dự đoán đề · Cài đặt lớp · Gói giáo viên
+*(thẻ đen cuối sidebar hiện gói và số ngày còn lại)*
 
 | Màn hình | Nội dung |
 |---|---|
-| `/lop-hoc` | Lớp đang tham gia, bài được giao, hạn nộp, bài quá hạn nổi đỏ |
-| `/lop/tham-gia?ma=` | Nhập mã hoặc quét QR |
-| Trang chủ | Thêm ô "Bài được giao" khi có bài chưa làm |
+| Chi tiết lớp | 3 tab: Học viên · Bài giao · Tiến độ. Header có nhãn giá lớp, mã lớp, nút "Mời vào lớp" và "+ Giao bài mới" |
+| Tab Học viên | Bảng: avatar chữ cái, tên, bài đã làm, điểm TB, hoạt động gần nhất |
+| Tab Bài giao | Thẻ từng bài: tiêu đề, nguồn đề, hạn nộp, "14/18 đã nộp", nhãn trạng thái, nút Chấm bài |
+| Tab Tiến độ | Thanh ngang 5 kỹ năng, màu theo điểm: ≥70 xanh, ≥55 cam, dưới đỏ |
+| Mời vào lớp | Overlay: QR, mã lớp cỡ lớn, nút sao chép link và tải QR để in |
+| Giao bài mới | Chọn nguồn (radio 3 lựa chọn, "Ngân hàng đề" mờ đi khi lớp chưa bật), tiêu đề, hạn nộp |
+| Soạn đề mới | Chọn Part, tiêu đề, nội dung + cột phải liệt kê đề đã soạn |
+| Tài liệu | Chọn loại (file/link), tiêu đề, vùng kéo thả + cột phải liệt kê đã thêm |
+| Bảng tin lớp | Tiêu đề, nội dung + cột phải liệt kê đã đăng |
+| Dự đoán đề | Chọn Part, tiêu đề, chi tiết + cột phải liệt kê đã đăng |
+| Chấm bài | Danh sách bài nộp → bấm mở panel trượt phải |
+| Panel chấm | Ghi âm *(nếu Speaking)*, bài làm có highlight lỗi, danh sách lỗi, nhận xét AI theo tiêu chí, ô điểm giáo viên, ô nhận xét riêng |
+| Cài đặt lớp | Miễn phí / Có phí + ô nhập giá |
 
-### Phía admin
+### Học viên
 
 | Màn hình | Nội dung |
 |---|---|
-| Quản lý lớp | Danh sách mọi lớp, giáo viên nào, bao nhiêu học viên, **công tắc bật/tắt đề hệ thống** |
-| Gói giáo viên | Thêm vào trang gói đã có, không cần màn hình mới |
+| Lớp học của tôi | Thẻ từng lớp: tên, giáo viên, nhãn giá, nhãn "Đề hệ thống: Bật/Tắt", danh sách bài kèm hạn |
+| Tham gia lớp | Ô nhập mã cỡ lớn + vùng quét QR |
+| **Không gian lớp** | Sidebar riêng thay sidebar chính: Bài được giao · Tài liệu · *(Khu luyện tập)* Bảng tin · Dự đoán đề · Thi thử · 5 kỹ năng — **hiện 🔒 khi lớp chưa bật đề hệ thống** |
+
+Điểm quan trọng: khi vào không gian lớp, **sidebar chính bị thay hoàn toàn** —
+học viên ở trong "thế giới của lớp", có nút ← để thoát ra.
+
+### Admin
+
+| Màn hình | Nội dung |
+|---|---|
+| Quản lý lớp học | Bảng mọi lớp + **công tắc bật/tắt đề hệ thống** từng lớp |
+| Tài khoản giáo viên | Bảng giáo viên + nút "+ Tạo tài khoản giáo viên" (họ tên, email, gói ban đầu) |
+| Cấu hình gói | % nền tảng giữ lại, giới hạn học viên theo gói |
 
 ---
 
-## 6. Thứ tự làm
+## 6. Ngôn ngữ thiết kế
 
-Chia 4 đợt, mỗi đợt xong là dùng được ngay.
+Thiết kế dùng bảng màu khác hệ thống hiện tại:
 
-### Đợt 1 — Gói giáo viên và lớp học (2 ngày)
-- V43 + V45 phần gói
-- Giáo viên mua gói (dùng luồng bán hàng sẵn có)
-- Mở lớp, sinh mã + QR
-- Học viên vào lớp bằng mã/QR
-- Admin bật/tắt đề hệ thống theo lớp
+| Vai trò | Màu |
+|---|---|
+| Chính | `#5b52e8` (tím) |
+| Nền | `#f5f5f2` |
+| Viền | `#e8e7e1` |
+| Chữ phụ | `#73716b` |
+| Nhấn tối | `#15161a` |
+| Điểm tốt / xấu | `#16a34a` / `#d97706` / `#dc2626` |
 
-### Đợt 2 — Theo dõi học viên (1–2 ngày)
-- Tab Học viên và Tiến độ
-- Trang tiến độ một học viên: lịch sử, điểm, lỗi hay gặp
+Bo góc 12–16px, font `Be Vietnam Pro` + `JetBrains Mono` cho số liệu và nhãn.
 
-Dùng dữ liệu đã có sẵn nên không cần đợi giao bài. Đây là giá trị lớn nhất, đến
-sớm.
+**Cần chốt:** dùng đúng bảng màu này cho khu giáo viên *(tách biệt rõ với khu
+học viên)*, hay đổi sang màu nâu/cam của hệ thống hiện tại cho đồng bộ?
 
-### Đợt 3 — Giao bài (2–3 ngày)
-- V44, giao đề từ ngân hàng và đề full
+---
+
+## 7. Thứ tự làm
+
+### Đợt 1 — Tài khoản giáo viên, lớp, gói (2–3 ngày)
+- V43 + V46 phần gói
+- Admin tạo tài khoản giáo viên → tự sinh lớp
+- Admin bật/tắt đề hệ thống, cấu hình gói
+- Giáo viên xem lớp, mời học viên bằng mã + QR
+- Học viên vào lớp
+
+### Đợt 2 — Theo dõi và nội dung lớp (2–3 ngày)
+- Tab Học viên, Tiến độ
+- Tài liệu lớp (file + link)
+- Bảng tin lớp
+- Dự đoán đề riêng
+- Không gian lớp phía học viên, kèm khoá 🔒
+
+### Đợt 3 — Giao bài và chấm (3 ngày)
+- V44, giao đề từ ngân hàng / tự soạn / đề full
 - Hạn nộp, theo dõi ai nộp ai chưa
-- Học viên free làm được bài giao
-- Email nhắc khi được giao và trước hạn
+- Học viên làm bài được giao không cần Premium
+- Panel chấm tay đè điểm AI + nhận xét riêng
+- Email nhắc
 
-### Đợt 4 — Đề riêng và chấm tay (2 ngày)
-- Giáo viên tự soạn đề
-- Chấm tay đè lên điểm AI, nhận xét riêng
-- Học viên xem nhận xét giáo viên
+### Đợt 4 — Học phí và highlight lỗi (2–3 ngày)
+- Học viên trả học phí lớp, nền tảng giữ %, giáo viên rút tiền
+- Sửa prompt AI trả vị trí lỗi + hiển thị highlight
+- **Chạy thử trên bài thật trước khi bật**
 
 ---
 
-## 7. Rủi ro
+## 8. Rủi ro
 
 | Rủi ro | Cách xử lý |
 |---|---|
 | **Giáo viên A xem được học viên của B** | Mọi truy vấn qua `classroom_id` sở hữu; test khoá riêng |
-| **Học viên free làm được cả đề hệ thống ngoài lớp** | Chỉ mở quyền cho lượt làm bài sinh từ `assignment`; test khoá riêng |
-| Giáo viên hết hạn gói nhưng lớp vẫn chạy | Job kiểm hạn: hết gói thì lớp chuyển chỉ-đọc, học viên vẫn xem được bài cũ |
-| Mã lớp bị đoán | 6 ký tự từ bộ 31 = 887 triệu tổ hợp; thêm nút tắt nhận học viên |
-| Đề giáo viên sai định dạng, AI chấm sai | Dùng lại `PublishValidator` của admin |
-| Giáo viên soạn đề bậy bạ | Đề chỉ hiện trong lớp họ; admin xem được qua trang quản lý lớp |
+| **Học viên free dùng được đề hệ thống ngoài lớp** | Chỉ mở quyền cho lượt làm bài sinh từ `assignment`; test khoá riêng |
+| **Sửa prompt AI làm hỏng chấm bài đang chạy** | Để đợt cuối, chạy thử trên bài thật, giữ nguyên các trường cũ |
+| Tiền học phí chia sai | Dùng lại mẫu của affiliate: chụp % tại thời điểm giao dịch, không tính lại |
+| Giáo viên hết hạn gói | Lớp chuyển chỉ-đọc: học viên xem bài cũ, giáo viên không giao bài mới |
+| Giới hạn học viên theo gói | Kiểm lúc vào lớp, báo rõ "Lớp đã đủ học viên theo gói hiện tại" |
 
 ---
 
-## 8. Cần anh quyết trước khi bắt đầu
+## 9. Còn cần anh chốt
 
-1. **Giá gói giáo viên** — 30/90/365 ngày bao nhiêu? Có phân biệt giá "có đề hệ
-   thống" và "không" không, hay chỉ một giá rồi admin bật tay?
-2. **Giới hạn số lớp / số học viên mỗi lớp** theo gói không? (mặc định: không giới hạn)
-3. Học viên vào được **nhiều lớp** cùng lúc chứ? (mặc định: có)
-4. Trợ giảng có cần không? (mặc định: có, chỉ xem)
-5. Giáo viên hết hạn gói thì lớp xử lý sao — đóng băng hay vẫn xem được bài cũ?
-   (đề xuất: chỉ-đọc, không giao bài mới)
+1. **Bảng màu**: giữ tím `#5b52e8` như thiết kế, hay đổi theo màu hệ thống hiện tại?
+2. **% nền tảng giữ lại** từ học phí lớp là bao nhiêu?
+3. **Giá gói giáo viên** 30/90/180/365 ngày?
+4. **Giới hạn học viên** theo từng gói là bao nhiêu?
+5. Học viên **chưa trả học phí** lớp có phí thì vào lớp được không, hay chặn ở
+   cửa? (đề xuất: vào được, nhưng chỉ xem, phải trả mới làm bài)
