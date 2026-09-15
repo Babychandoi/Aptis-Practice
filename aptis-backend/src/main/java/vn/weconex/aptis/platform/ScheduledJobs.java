@@ -87,11 +87,16 @@ public class ScheduledJobs {
     }
 
     /**
-     * Mở khóa hoa hồng đã hết thời gian giữ.
+     * Mở khóa hoa hồng đã hết thời gian giữ, và cấp mã cho người mới đủ điều
+     * kiện.
      *
      * <p>Chạy thưa vì mốc tính bằng ngày; trễ vài chục phút không ảnh hưởng ai.
-     * Khi cấu hình hold_days = 0 thì hoa hồng AVAILABLE ngay và job này không
-     * có việc gì để làm.
+     * Khi cấu hình hold_days = 0 thì hoa hồng AVAILABLE ngay và phần mở khóa
+     * không có việc gì để làm.
+     *
+     * <p>Cấp mã ở đây chứ không chỉ lúc người dùng mở trang: người mua xong
+     * đóng máy vẫn có mã sẵn, và những người đã mua từ trước khi có tính năng
+     * cũng được cấp mà không phải làm gì.
      */
     @Scheduled(fixedDelay = 30 * 60 * 1000L, initialDelay = 150_000L)
     public void releaseAffiliateCommissions() {
@@ -99,6 +104,11 @@ public class ScheduledJobs {
             int count = affiliateService.releaseDueCommissions();
             if (count > 0) {
                 log.info("Đã mở {} khoản hoa hồng cho rút", count);
+            }
+
+            int granted = affiliateService.backfillAccounts();
+            if (granted > 0) {
+                log.info("Đã cấp {} mã giới thiệu cho người đủ điều kiện", granted);
             }
         });
     }

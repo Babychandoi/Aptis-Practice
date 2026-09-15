@@ -450,6 +450,11 @@ export const adminAffiliateApi = {
       .post<AffiliatePayout>(`/admin/affiliate/payouts/${payoutId}/paid`, { adminNote })
       .then((r) => r.data),
 
+  backfill: () =>
+    api
+      .post<{ granted: number }>('/admin/affiliate/backfill')
+      .then((r) => r.data),
+
   settings: () =>
     api.get<AffiliateSettings>('/admin/affiliate/settings').then((r) => r.data),
 

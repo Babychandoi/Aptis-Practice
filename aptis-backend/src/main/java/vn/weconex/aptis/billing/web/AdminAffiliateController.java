@@ -193,6 +193,18 @@ public class AdminAffiliateController {
                 currentUser.requireUserId(), payoutId, request.adminNote()));
     }
 
+    /**
+     * Cấp mã cho mọi người đã đủ điều kiện nhưng chưa có.
+     *
+     * <p>Job định kỳ cũng làm việc này, nhưng có nút bấm để không phải chờ khi
+     * vừa bật tính năng hoặc vừa cấp Premium tay cho ai đó.
+     */
+    @PostMapping("/backfill")
+    @PreAuthorize("hasAuthority('affiliate:manage')")
+    public Map<String, Integer> backfill() {
+        return Map.of("granted", affiliateService.backfillAccounts());
+    }
+
     @GetMapping("/settings")
     @PreAuthorize("hasAuthority('affiliate:read')")
     @Transactional(readOnly = true)

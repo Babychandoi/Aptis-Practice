@@ -39,6 +39,34 @@ public interface UserEntitlementRepository extends JpaRepository<UserEntitlement
             """)
     List<UserEntitlement> findAllActive(@Param("userId") String userId, @Param("at") Instant at);
 
+    /**
+     * Đang có Premium thật, không tính dùng thử.
+     *
+     * <p>Dùng cho affiliate: người mua gói và người được admin cấp tay đều được
+     * cấp mã giới thiệu, còn tài khoản dùng thử thì không.
+     */
+    @Query("""
+            SELECT COUNT(e) > 0 FROM UserEntitlement e
+            WHERE e.userId = :userId
+              AND e.entitlementCode = :code
+              AND e.sourceType <> vn.weconex.aptis.common.util.Enums.EntitlementSourceType.TRIAL
+              AND e.revokedAt IS NULL
+              AND e.startsAt <= CURRENT_TIMESTAMP
+              AND (e.endsAt IS NULL OR e.endsAt > CURRENT_TIMESTAMP)
+            """)
+    boolean hasNonTrialEntitlement(@Param("userId") String userId, @Param("code") String code);
+
+    /** Mọi người đang có Premium thật — dùng để cấp mã giới thiệu hàng loạt. */
+    @Query("""
+            SELECT DISTINCT e.userId FROM UserEntitlement e
+            WHERE e.entitlementCode = :code
+              AND e.sourceType <> vn.weconex.aptis.common.util.Enums.EntitlementSourceType.TRIAL
+              AND e.revokedAt IS NULL
+              AND e.startsAt <= CURRENT_TIMESTAMP
+              AND (e.endsAt IS NULL OR e.endsAt > CURRENT_TIMESTAMP)
+            """)
+    List<String> findUserIdsWithNonTrialEntitlement(@Param("code") String code);
+
     @Query("""
             SELECT e FROM UserEntitlement e
             WHERE e.sourceType = :sourceType

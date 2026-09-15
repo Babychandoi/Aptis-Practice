@@ -302,20 +302,64 @@ function ActionButton({
 }
 
 function AccountTable() {
+  const queryClient = useQueryClient();
+  const [message, setMessage] = useState<string | null>(null);
+
   const query = useQuery({
     queryKey: ['admin', 'affiliate', 'accounts'],
     queryFn: () => adminAffiliateApi.accounts(),
   });
+
+  // Job định kỳ cũng cấp mã, nhưng có nút để không phải chờ 30 phút sau khi
+  // vừa cấp Premium tay cho ai đó.
+  const backfill = useMutation({
+    mutationFn: adminAffiliateApi.backfill,
+    onSuccess: (result) => {
+      setMessage(
+        result.granted > 0
+          ? `Đã cấp ${result.granted} mã mới`
+          : 'Mọi người đủ điều kiện đều đã có mã',
+      );
+      void queryClient.invalidateQueries({ queryKey: ['admin', 'affiliate'] });
+    },
+    onError: () => setMessage('Không cấp được mã, thử lại sau'),
+  });
+
+  const toolbar = (
+    <div className="flex flex-wrap items-center justify-between gap-2">
+      <p className="text-xs text-slate-500">
+        Người đã mua hoặc được cấp Premium tay đều được cấp mã; tài khoản dùng thử thì không.
+      </p>
+      <div className="flex items-center gap-2">
+        {message && <span className="text-xs font-semibold text-emerald-700">{message}</span>}
+        <button
+          type="button"
+          disabled={backfill.isPending}
+          onClick={() => backfill.mutate()}
+          className="rounded-xl border border-border bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-surface disabled:opacity-60"
+        >
+          {backfill.isPending ? 'Đang cấp…' : 'Cấp mã cho người đủ điều kiện'}
+        </button>
+      </div>
+    </div>
+  );
 
   if (query.isPending) return <LoadingBlock label="Đang tải…" />;
   if (query.error) {
     return <ErrorBlock message="Không tải được danh sách" onRetry={() => void query.refetch()} />;
   }
   if (query.data.content.length === 0) {
-    return <p className="card text-center text-sm text-slate-500">Chưa có ai được cấp mã.</p>;
+    return (
+      <div className="space-y-3">
+        {toolbar}
+        <p className="card text-center text-sm text-slate-500">Chưa có ai được cấp mã.</p>
+      </div>
+    );
   }
 
   return (
+    <div className="space-y-3">
+    {toolbar}
     <div className="overflow-x-auto rounded-2xl border border-border bg-white">
       <table className="w-full min-w-[720px] text-sm">
         <thead>
@@ -355,6 +399,7 @@ function AccountTable() {
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }

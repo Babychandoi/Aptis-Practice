@@ -4,9 +4,11 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,8 @@ import vn.weconex.aptis.billing.repository.AffiliatePayoutRepository;
 import vn.weconex.aptis.billing.repository.AffiliateReferralRepository;
 import vn.weconex.aptis.billing.repository.AffiliateSettingsRepository;
 import vn.weconex.aptis.billing.repository.OrderRepository;
+import vn.weconex.aptis.entitlement.domain.UserEntitlement;
+import vn.weconex.aptis.entitlement.repository.UserEntitlementRepository;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.exception.ErrorCode;
 
@@ -60,6 +64,7 @@ public class AffiliateService {
     private final AffiliateCommissionRepository commissionRepository;
     private final AffiliatePayoutRepository payoutRepository;
     private final OrderRepository orderRepository;
+    private final UserEntitlementRepository entitlementRepository;
 
     /** Kết quả áp mã giới thiệu lúc tạo đơn. */
     public record AppliedReferral(String code, String affiliateUserId, long discountAmount) {
@@ -96,7 +101,7 @@ public class AffiliateService {
             return existing;
         }
 
-        if (!hasPaidOrder(userId)) {
+        if (!isEligible(userId)) {
             return Optional.empty();
         }
 
@@ -108,6 +113,50 @@ public class AffiliateService {
 
         log.info("Cấp mã giới thiệu {} cho user {}", account.getCode(), userId);
         return Optional.of(account);
+    }
+
+    /**
+     * Đủ điều kiện nhận mã giới thiệu.
+     *
+     * <p>Người đã mua, HOẶC đang có Premium do admin cấp tay. Tài khoản dùng
+     * thử thì không: mã phải là thứ đổi được bằng việc thật sự dùng sản phẩm,
+     * nếu ai đăng ký cũng có thì mã mất giá trị và dễ bị lạm dụng.
+     */
+    private boolean isEligible(String userId) {
+        return hasPaidOrder(userId)
+                || entitlementRepository.hasNonTrialEntitlement(
+                        userId, UserEntitlement.PREMIUM_CONTENT_ACCESS);
+    }
+
+    /**
+     * Cấp mã cho mọi người đã đủ điều kiện nhưng chưa có.
+     *
+     * <p>Cần vì {@link #ensureAccount} chỉ chạy khi người dùng tự mở trang giới
+     * thiệu — người mua từ trước sẽ không bao giờ có mã nếu không ai gọi. Chạy
+     * một lần lúc khởi động, bỏ qua ai đã có nên gọi lại nhiều lần vô hại.
+     *
+     * @return số mã vừa cấp thêm
+     */
+    @Transactional
+    public int backfillAccounts() {
+        Set<String> eligible = new LinkedHashSet<>(
+                orderRepository.findUserIdsWithStatus(OrderStatus.PAID));
+        eligible.addAll(entitlementRepository.findUserIdsWithNonTrialEntitlement(
+                UserEntitlement.PREMIUM_CONTENT_ACCESS));
+
+        int created = 0;
+        for (String userId : eligible) {
+            if (accountRepository.findByUserId(userId).isPresent()) {
+                continue;
+            }
+            AffiliateAccount account = new AffiliateAccount();
+            account.setId(UUID.randomUUID().toString());
+            account.setUserId(userId);
+            account.setCode(generateUniqueCode());
+            accountRepository.save(account);
+            created++;
+        }
+        return created;
     }
 
     private boolean hasPaidOrder(String userId) {

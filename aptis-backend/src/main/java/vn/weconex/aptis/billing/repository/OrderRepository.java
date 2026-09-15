@@ -19,6 +19,10 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     /** Dùng cho affiliate: chỉ người đã mua thành công mới được cấp mã. */
     boolean existsByUserIdAndStatus(String userId, OrderStatus status);
 
+    /** Mọi người từng mua thành công — dùng để cấp mã hàng loạt. */
+    @Query("SELECT DISTINCT o.userId FROM PurchaseOrder o WHERE o.status = :status")
+    List<String> findUserIdsWithStatus(@Param("status") OrderStatus status);
+
     Optional<Order> findByOrderCode(String orderCode);
 
     Optional<Order> findByIdempotencyKey(String idempotencyKey);
