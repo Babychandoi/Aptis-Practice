@@ -152,6 +152,22 @@ export function AppLayout() {
           {/* Nhãn nhóm biến mất khi thu gọn: chữ "Menu chính" không vừa 4.5rem,
               để lại chỉ thành một vệt bị cắt. Ranh giới nhóm vẫn nhận ra được
               nhờ khoảng cách giữa các nav. */}
+          {/* Lớp dạy lên đầu: với giáo viên đây là chỗ họ vào mỗi ngày, để lẫn
+              dưới mục Tài khoản thì phải cuộn qua hết phần luyện tập mới thấy. */}
+          {isTeacher && (
+            <>
+              {!collapsed && <NavSectionLabel>Giảng dạy</NavSectionLabel>}
+              <nav className="mb-6 space-y-1" aria-label="Giảng dạy">
+                <SidebarLink
+                  to="/giang-day"
+                  label="Lớp tôi dạy"
+                  icon="school"
+                  collapsed={collapsed}
+                />
+              </nav>
+            </>
+          )}
+
           {!collapsed && <NavSectionLabel>Menu chính</NavSectionLabel>}
           <nav className="space-y-1" aria-label="Điều hướng chính">
             {PRIMARY_NAV.map((item) => (
@@ -170,9 +186,7 @@ export function AppLayout() {
           <nav className={clsx('space-y-1', collapsed && 'mt-4 border-t border-border pt-4')} aria-label="Tài khoản">
             <SidebarLink to="/plans" label="Gói Premium" icon="premium" collapsed={collapsed} />
             <SidebarLink to="/gioi-thieu" label="Giới thiệu nhận thưởng" icon="gift" collapsed={collapsed} />
-            {isTeacher ? (
-              <SidebarLink to="/giang-day" label="Lớp tôi dạy" icon="school" collapsed={collapsed} />
-            ) : (
+            {!isTeacher && (
               <SidebarLink to="/lop-hoc" label="Lớp học của tôi" icon="school" collapsed={collapsed} />
             )}
             {isAdmin && <SidebarLink to="/admin" label="Quản trị hệ thống" icon="admin" collapsed={collapsed} />}
@@ -252,6 +266,14 @@ export function AppLayout() {
                   ? `Hết hạn ${formatDate(user.premiumEndsAt)}`
                   : 'Gói kích hoạt đầy đủ'}
               </p>
+
+              {/* Giáo viên dễ tưởng hết hạn là mất lớp. Lớp học không phụ thuộc
+                  gói Premium — gói này chỉ cho phần tự luyện của chính họ. */}
+              {isTeacher && (
+                <p className="mt-1 text-[11px] leading-4 text-slate-500">
+                  Gói cho phần tự luyện của bạn, không ảnh hưởng tới lớp đang dạy.
+                </p>
+              )}
 
               {/* Nút gia hạn chỉ hiện khi sắp hết: gói còn dài mà cứ mời gia hạn
                   thì thành quảng cáo, học viên bỏ qua và đến lúc cần thật cũng
@@ -390,7 +412,22 @@ export function AppLayout() {
               còn mobile không có sidebar nên cần một đường vào. Premium chuyển
               lên header, nơi nó hiện ở mọi kích thước màn hình. */}
           {[
-            ...PRIMARY_NAV.filter((item) => item.to !== '/meo-hoc'),
+            // Giáo viên: lớp dạy thay chỗ "Đề mới". Bảy ô đã kịch trần nên phải
+            // đổi chứ không thêm, và giáo viên cần vào lớp nhiều hơn xem đề mới.
+            ...PRIMARY_NAV.filter(
+              (item) =>
+                item.to !== '/meo-hoc' && !(isTeacher && item.to === '/cap-nhat-de'),
+            ),
+            ...(isTeacher
+              ? [
+                  {
+                    to: '/giang-day',
+                    label: 'Lớp tôi dạy',
+                    shortLabel: 'Lớp dạy',
+                    icon: 'school' as const,
+                  },
+                ]
+              : []),
             { to: '/luyen-tap', label: 'Kỹ năng', shortLabel: 'Kỹ năng', icon: 'skills' as const },
           ].map((item) => (
             <NavLink

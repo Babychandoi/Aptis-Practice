@@ -176,7 +176,72 @@ function StudentTable() {
         </p>
       )}
 
-      <div className="overflow-x-auto rounded-2xl border border-border bg-white">
+      {/* Điện thoại: bảng 5 cột phải cuộn ngang mới thấy điểm và nút Gỡ, mà
+          không có gì báo là còn cột bên phải. Dạng thẻ hiện đủ mọi thông tin
+          trong một màn. Từ md trở lên vẫn dùng bảng cho dễ so sánh giữa các em. */}
+      <ul className="space-y-2 md:hidden">
+        {query.data.map((student) => (
+          <li
+            key={student.userId}
+            className="rounded-2xl border border-border bg-white px-4 py-3.5"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-2.5">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-600 font-mono text-[11px] font-bold text-white">
+                  {student.initial}
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate font-semibold text-slate-900">
+                    {student.fullName || 'Học viên'}
+                  </span>
+                  <span className="block truncate font-mono text-[11px] text-slate-500">
+                    {student.email}
+                  </span>
+                </span>
+              </div>
+              <button
+                type="button"
+                disabled={remove.isPending}
+                onClick={() => {
+                  if (window.confirm(`Gỡ ${student.fullName || student.email} khỏi lớp?`)) {
+                    remove.mutate(student.userId);
+                  }
+                }}
+                className="shrink-0 text-xs font-semibold text-red-600 transition-colors hover:text-red-700 disabled:opacity-50"
+              >
+                Gỡ
+              </button>
+            </div>
+
+            <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-border-subtle pt-2.5">
+              <div>
+                <dt className="font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">
+                  Bài đã làm
+                </dt>
+                <dd className="mt-0.5 text-sm text-slate-700">{student.attemptsDone}</dd>
+              </div>
+              <div>
+                <dt className="font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">
+                  Điểm TB
+                </dt>
+                <dd className="mt-0.5 text-sm font-bold text-slate-900">
+                  {student.averageScore != null ? student.averageScore.toFixed(1) : '—'}
+                </dd>
+              </div>
+              <div>
+                <dt className="font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">
+                  Gần nhất
+                </dt>
+                <dd className="mt-0.5 text-[11px] leading-4 text-slate-500">
+                  {student.lastActiveAt ? formatDateTime(student.lastActiveAt) : 'Chưa làm bài'}
+                </dd>
+              </div>
+            </dl>
+          </li>
+        ))}
+      </ul>
+
+      <div className="hidden overflow-x-auto rounded-2xl border border-border bg-white md:block">
         <table className="w-full min-w-[680px] text-sm">
           <thead>
             <tr className="bg-surface-paper">

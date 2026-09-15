@@ -18,21 +18,32 @@ export function usePermission(): {
   const has = (permission: string) => (permissions ?? []).includes(permission);
   const hasAny = (...list: string[]) => list.some(has);
 
+  // Giáo viên khách hàng có question_set:read (để xem đề mà giao bài) và
+  // classroom:read (để xem lớp của mình) — hai quyền cũng nằm trong danh sách
+  // quản trị bên dưới. Không loại trừ thì họ thấy cả khu quản trị, trong khi
+  // đó là khu của nhân viên công ty.
+  //
+  // Dấu hiệu phân biệt: giáo viên có classroom:write nhưng không bao giờ có
+  // classroom:admin; nhân viên nội dung thì ngược lại, không có classroom:write.
+  const laGiaoVienNgoai = has('classroom:write') && !has('classroom:admin');
+
   return {
     has,
     hasAny,
     // Vào được khu quản trị khi có bất kỳ quyền quản trị nào
-    isAdmin: hasAny(
-      'question_set:read',
-      'question_set:write',
-      'plan:write',
-      'order:read',
-      'refund:write',
-      'entitlement:grant',
-      'report:read',
-      'affiliate:read',
-      'analytics:read',
-      'classroom:read',
-    ),
+    isAdmin:
+      !laGiaoVienNgoai &&
+      hasAny(
+        'question_set:read',
+        'question_set:write',
+        'plan:write',
+        'order:read',
+        'refund:write',
+        'entitlement:grant',
+        'report:read',
+        'affiliate:read',
+        'analytics:read',
+        'classroom:read',
+      ),
   };
 }

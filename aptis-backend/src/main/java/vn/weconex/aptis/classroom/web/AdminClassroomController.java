@@ -32,7 +32,14 @@ import vn.weconex.aptis.classroom.service.ClassroomService;
 import vn.weconex.aptis.classroom.service.TeacherAccountService;
 import vn.weconex.aptis.common.util.PageResponse;
 
-/** Quản trị lớp học và tài khoản giáo viên. */
+/**
+ * Quản trị lớp học và tài khoản giáo viên.
+ *
+ * <p>Mọi endpoint ở đây đòi {@code classroom:admin}, không phải
+ * {@code classroom:read}. Giáo viên có {@code classroom:read} để xem lớp của
+ * chính mình, nên nếu dùng quyền đó ở đây thì mỗi giáo viên sẽ đọc được danh
+ * sách toàn bộ lớp và email của giáo viên khác.
+ */
 @RestController
 @RequestMapping("/api/v1/admin/classrooms")
 @RequiredArgsConstructor
@@ -47,7 +54,7 @@ public class AdminClassroomController {
 
     /** Toàn bộ lớp trong hệ thống. */
     @GetMapping
-    @PreAuthorize("hasAuthority('classroom:read')")
+    @PreAuthorize("hasAuthority('classroom:admin')")
     @Transactional(readOnly = true)
     public PageResponse<ClassroomDtos.AdminClassroomResponse> list(
             @RequestParam(defaultValue = "0") int page,
@@ -66,7 +73,7 @@ public class AdminClassroomController {
 
     /** Bảng tài khoản giáo viên. */
     @GetMapping("/teachers")
-    @PreAuthorize("hasAuthority('classroom:read')")
+    @PreAuthorize("hasAuthority('classroom:admin')")
     @Transactional(readOnly = true)
     public List<ClassroomDtos.AdminTeacherResponse> teachers() {
         List<Classroom> classrooms = classroomRepository.findAll();
@@ -160,7 +167,7 @@ public class AdminClassroomController {
     }
 
     @GetMapping("/settings")
-    @PreAuthorize("hasAuthority('classroom:read')")
+    @PreAuthorize("hasAuthority('classroom:admin')")
     @Transactional(readOnly = true)
     public ClassroomDtos.TeacherSettingsResponse settings() {
         TeacherSettings config = classroomService.settings();
