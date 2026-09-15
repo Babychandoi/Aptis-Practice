@@ -7,7 +7,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatCurrency } from '@/lib/format';
 import { usePermission } from '@/features/admin/usePermission';
-import type { CreateTeacherResult, TeacherSettings } from '@/types/api';
+import type { AdminTeacher, CreateTeacherResult, TeacherSettings } from '@/types/api';
 
 type Tab = 'classrooms' | 'teachers' | 'settings';
 
@@ -177,6 +177,7 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
 
 function TeacherTable({ canManage }: { canManage: boolean }) {
   const [createOpen, setCreateOpen] = useState(false);
+  const [editing, setEditing] = useState<AdminTeacher | null>(null);
 
   const query = useQuery({
     queryKey: ['admin', 'classrooms', 'teachers'],
@@ -211,7 +212,7 @@ function TeacherTable({ canManage }: { canManage: boolean }) {
           <table className="w-full min-w-[680px] text-sm">
             <thead>
               <tr className="bg-surface-paper">
-                {['Giáo viên', 'Email', 'Lớp', 'Mã lớp', 'Học viên'].map((header) => (
+                {['Giáo viên', 'Email', 'Lớp', 'Mã lớp', 'Học viên', ''].map((header) => (
                   <th
                     key={header}
                     className="px-4 py-2.5 text-left font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500"
@@ -235,6 +236,17 @@ function TeacherTable({ canManage }: { canManage: boolean }) {
                     {teacher.joinCode}
                   </td>
                   <td className="px-4 py-3 text-slate-700">{teacher.studentCount}</td>
+                  <td className="px-4 py-3 text-right">
+                    {canManage && (
+                      <button
+                        type="button"
+                        onClick={() => setEditing(teacher)}
+                        className="text-xs font-semibold text-brand-700 hover:text-brand-800"
+                      >
+                        Sửa
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -243,7 +255,94 @@ function TeacherTable({ canManage }: { canManage: boolean }) {
       )}
 
       {createOpen && <CreateTeacherDialog onClose={() => setCreateOpen(false)} />}
+      {editing && (
+        <EditTeacherDialog teacher={editing} onClose={() => setEditing(null)} />
+      )}
     </div>
+  );
+}
+
+/** Sửa tên giáo viên, tên lớp và đặt lại mật khẩu. */
+function EditTeacherDialog({
+  teacher,
+  onClose,
+}: {
+  teacher: AdminTeacher;
+  onClose: () => void;
+}) {
+  const queryClient = useQueryClient();
+  const [fullName, setFullName] = useState(teacher.fullName);
+  const [classroomName, setClassroomName] = useState(teacher.classroomName);
+  const [newPassword, setNewPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  const submit = useMutation({
+    mutationFn: () =>
+      adminClassroomApi.updateTeacher(teacher.userId, {
+        fullName: fullName.trim() || undefined,
+        classroomName: classroomName.trim() || undefined,
+        // Để trống = giữ mật khẩu cũ, không phải xoá mật khẩu.
+        newPassword: newPassword.trim() || undefined,
+      }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['admin', 'classrooms'] });
+      onClose();
+    },
+    onError: (err) => setError(err instanceof ApiError ? err.message : 'Không lưu được'),
+  });
+
+  return (
+    <Overlay onClose={onClose}>
+      <h2 className="text-base font-bold text-slate-900">Sửa tài khoản giáo viên</h2>
+      <p className="mt-0.5 font-mono text-xs text-slate-500">{teacher.email}</p>
+
+      <form
+        className="mt-4 space-y-3"
+        onSubmit={(event) => {
+          event.preventDefault();
+          setError(null);
+          submit.mutate();
+        }}
+      >
+        <Field label="Họ tên giáo viên" value={fullName} onChange={setFullName} />
+        <Field label="Tên lớp" value={classroomName} onChange={setClassroomName} />
+        <Field
+          label="Mật khẩu mới"
+          value={newPassword}
+          onChange={setNewPassword}
+          placeholder="Để trống nếu không đổi"
+          required={false}
+          hint="Nhập vào là đặt lại mật khẩu cho giáo viên; nhớ báo lại cho họ."
+        />
+
+        <p className="rounded-xl bg-surface-paper px-3 py-2 text-[11px] leading-5 text-slate-600">
+          Email không đổi được — đó là thứ giáo viên dùng để đăng nhập.
+        </p>
+
+        {error && (
+          <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+            {error}
+          </p>
+        )}
+
+        <div className="flex gap-2 pt-1">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 rounded-xl border border-border py-2.5 text-sm font-semibold text-slate-700 hover:bg-surface"
+          >
+            Hủy
+          </button>
+          <button
+            type="submit"
+            disabled={submit.isPending}
+            className="flex-1 rounded-xl bg-brand-600 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+          >
+            {submit.isPending ? 'Đang lưu…' : 'Lưu thay đổi'}
+          </button>
+        </div>
+      </form>
+    </Overlay>
   );
 }
 

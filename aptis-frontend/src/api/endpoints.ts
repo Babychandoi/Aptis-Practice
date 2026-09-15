@@ -630,6 +630,11 @@ export const adminClassroomApi = {
     planCode?: string;
   }) => api.post<CreateTeacherResult>('/admin/classrooms/teachers', body).then((r) => r.data),
 
+  updateTeacher: (
+    teacherUserId: string,
+    body: { fullName?: string; classroomName?: string; newPassword?: string },
+  ) => api.put(`/admin/classrooms/teachers/${teacherUserId}`, body).then((r) => r.data),
+
   toggleSystemContent: (classroomId: string, enabled: boolean) =>
     api
       .put<AdminClassroom>(`/admin/classrooms/${classroomId}/system-content`, { enabled })

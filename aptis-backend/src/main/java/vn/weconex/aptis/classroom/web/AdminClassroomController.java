@@ -120,6 +120,22 @@ public class AdminClassroomController {
                 created.classroom().getJoinCode());
     }
 
+    /**
+     * Sửa thông tin giáo viên và tên lớp của họ.
+     *
+     * <p>Không đổi email: đó là thứ giáo viên dùng đăng nhập, đổi ngầm sẽ khiến
+     * họ mất quyền vào mà không hiểu vì sao.
+     */
+    @PutMapping("/teachers/{teacherUserId}")
+    @PreAuthorize("hasAuthority('classroom:admin')")
+    public void updateTeacher(
+            @PathVariable String teacherUserId,
+            @Valid @RequestBody ClassroomDtos.UpdateTeacherRequest request) {
+
+        teacherAccountService.update(
+                teacherUserId, request.fullName(), request.classroomName(), request.newPassword());
+    }
+
     /** Bật/tắt quyền dùng ngân hàng đề hệ thống cho một lớp. */
     @PutMapping("/{classroomId}/system-content")
     @PreAuthorize("hasAuthority('classroom:admin')")

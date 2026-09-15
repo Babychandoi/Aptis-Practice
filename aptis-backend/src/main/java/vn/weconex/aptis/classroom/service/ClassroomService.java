@@ -272,6 +272,18 @@ public class ClassroomService {
     // Phía admin
     // ---------------------------------------------------------------
 
+    /**
+     * Admin đổi tên lớp của một giáo viên.
+     *
+     * <p>Tách khỏi {@link #updateProfile}: hàm kia nhận id của chính giáo viên
+     * đang đăng nhập, còn hàm này admin gọi cho người khác.
+     */
+    @Transactional
+    public void renameClassroom(String teacherUserId, String name) {
+        classroomRepository.findByTeacherUserId(teacherUserId)
+                .ifPresent(classroom -> classroom.setName(name));
+    }
+
     /** Admin bật/tắt quyền dùng ngân hàng đề hệ thống cho một lớp. */
     @Transactional
     public Classroom setSystemContentEnabled(String classroomId, boolean enabled) {

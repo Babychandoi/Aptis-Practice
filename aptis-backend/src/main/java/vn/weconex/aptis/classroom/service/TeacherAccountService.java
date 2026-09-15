@@ -95,6 +95,40 @@ public class TeacherAccountService {
     }
 
     /**
+     * Admin sửa thông tin giáo viên.
+     *
+     * <p>Đổi được tên, tên lớp và đặt lại mật khẩu. Không đổi email: email là
+     * thứ giáo viên dùng đăng nhập và đang gắn với phiên hiện tại, đổi ngầm sẽ
+     * khiến họ mất quyền vào mà không hiểu vì sao.
+     */
+    @Transactional
+    public void update(String teacherUserId, String fullName, String classroomName,
+            String newPassword) {
+
+        User user = userRepository.findById(teacherUserId)
+                .orElseThrow(() -> ApiException.notFound("User", teacherUserId));
+
+        if (fullName != null && !fullName.isBlank()) {
+            UserProfile profile = profileRepository.findById(teacherUserId)
+                    .orElseGet(() -> {
+                        UserProfile created = UserProfile.forUser(teacherUserId);
+                        return profileRepository.save(created);
+                    });
+            profile.setFullName(fullName.strip());
+        }
+
+        if (newPassword != null && !newPassword.isBlank()) {
+            user.setPasswordHash(passwordEncoder.encode(newPassword));
+        }
+
+        if (classroomName != null && !classroomName.isBlank()) {
+            classroomService.renameClassroom(teacherUserId, classroomName.strip());
+        }
+
+        log.info("Admin cập nhật tài khoản giáo viên {}", user.getEmail());
+    }
+
+    /**
      * Cấp quyền giáo viên theo gói.
      *
      * <p>Dùng ADMIN_GRANT chứ không tạo đơn hàng giả: admin cấp tay là một việc

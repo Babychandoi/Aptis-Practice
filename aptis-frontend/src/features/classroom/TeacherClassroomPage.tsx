@@ -283,6 +283,8 @@ function ProgressPanel({ studentCount }: { studentCount: number }) {
 
 function SettingsPanel({ classroom }: { classroom: Classroom }) {
   const queryClient = useQueryClient();
+  const [name, setName] = useState(classroom.name);
+  const [description, setDescription] = useState(classroom.description ?? '');
   const [pricingType, setPricingType] = useState(classroom.pricingType);
   const [price, setPrice] = useState(String(classroom.priceAmount));
   const [saved, setSaved] = useState(false);
@@ -294,6 +296,13 @@ function SettingsPanel({ classroom }: { classroom: Classroom }) {
     window.setTimeout(() => setSaved(false), 2500);
     void queryClient.invalidateQueries({ queryKey: ['teacher', 'classroom'] });
   };
+
+  const saveProfile = useMutation({
+    mutationFn: () =>
+      teacherClassroomApi.update({ name: name.trim(), description: description.trim() }),
+    onSuccess: invalidate,
+    onError: (err) => setError(err instanceof ApiError ? err.message : 'Không lưu được'),
+  });
 
   const savePricing = useMutation({
     mutationFn: () =>
@@ -313,6 +322,53 @@ function SettingsPanel({ classroom }: { classroom: Classroom }) {
 
   return (
     <div className="max-w-xl space-y-4">
+      <form
+        className="space-y-3 rounded-2xl border border-border bg-white px-5 py-5"
+        onSubmit={(event) => {
+          event.preventDefault();
+          setError(null);
+          saveProfile.mutate();
+        }}
+      >
+        <h2 className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+          Thông tin lớp
+        </h2>
+
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-semibold text-slate-600">Tên lớp</span>
+          <input
+            value={name}
+            required
+            maxLength={255}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="Ví dụ: Aptis Cấp tốc T9 – Sáng thứ 7"
+            className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+          />
+        </label>
+
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-semibold text-slate-600">
+            Mô tả (không bắt buộc)
+          </span>
+          <textarea
+            value={description}
+            rows={2}
+            maxLength={2000}
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Lịch học, yêu cầu, ghi chú cho học viên…"
+            className="w-full resize-y rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+          />
+        </label>
+
+        <button
+          type="submit"
+          disabled={saveProfile.isPending}
+          className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+        >
+          {saveProfile.isPending ? 'Đang lưu…' : 'Lưu thông tin lớp'}
+        </button>
+      </form>
+
       <section className="space-y-4 rounded-2xl border border-border bg-white px-5 py-5">
         <div>
           <h2 className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">

@@ -121,6 +121,14 @@ public final class ClassroomDtos {
             String joinCode) {
     }
 
+    /** Admin sửa thông tin giáo viên và lớp của họ. */
+    public record UpdateTeacherRequest(
+            @Size(max = 255) String fullName,
+            @Size(max = 255) String classroomName,
+            /** Để trống = giữ mật khẩu cũ. */
+            @Size(min = 8, max = 128) String newPassword) {
+    }
+
     public record ToggleSystemContentRequest(boolean enabled) {
     }
 
