@@ -37,7 +37,9 @@ export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuthStore();
-  const { isAdmin } = usePermission();
+  const { isAdmin, has } = usePermission();
+  // Giáo viên vào thẳng trang lớp mình dạy; học viên vào trang lớp đang học.
+  const isTeacher = has('classroom:write');
   const { collapsed, toggle: toggleSidebar } = useSidebarCollapsed();
   const expiry = describePremiumExpiry(user?.premiumEndsAt);
   // Dùng thử và gói đã mua cùng dùng premiumEndsAt, chỉ khác chữ hiển thị.
@@ -168,6 +170,11 @@ export function AppLayout() {
           <nav className={clsx('space-y-1', collapsed && 'mt-4 border-t border-border pt-4')} aria-label="Tài khoản">
             <SidebarLink to="/plans" label="Gói Premium" icon="premium" collapsed={collapsed} />
             <SidebarLink to="/gioi-thieu" label="Giới thiệu nhận thưởng" icon="gift" collapsed={collapsed} />
+            {isTeacher ? (
+              <SidebarLink to="/giang-day" label="Lớp tôi dạy" icon="school" collapsed={collapsed} />
+            ) : (
+              <SidebarLink to="/lop-hoc" label="Lớp học của tôi" icon="school" collapsed={collapsed} />
+            )}
             {isAdmin && <SidebarLink to="/admin" label="Quản trị hệ thống" icon="admin" collapsed={collapsed} />}
           </nav>
 
@@ -468,7 +475,7 @@ function Avatar({ name }: { name: string }) {
   );
 }
 
-type IconName = 'home' | 'sparkle' | 'predict' | 'news' | 'skills' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout' | 'gift';
+type IconName = 'home' | 'sparkle' | 'predict' | 'news' | 'skills' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout' | 'gift' | 'school';
 
 function NavIcon({ name }: { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
@@ -486,6 +493,7 @@ function NavIcon({ name }: { name: IconName }) {
     history: <><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5M12 7v5l3 2" /></>,
     premium: <path d="m12 3 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8L12 3Z" />,
     gift: <><rect x="3" y="8" width="18" height="13" rx="2" /><path d="M12 8v13M3 12h18M12 8S9 3 6.5 4.5 8 8 12 8zM12 8s3-5 5.5-3.5S16 8 12 8z" /></>,
+    school: <><path d="m12 3 10 5-10 5L2 8l10-5Z" /><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" /></>,
     grammar: <><path d="M5 4h14v16H5z" /><path d="M8 8h8M8 12h5M8 16h7" /></>,
     reading: <><path d="M4 5a3 3 0 0 1 3-3h4v17H7a3 3 0 0 0-3 3V5ZM20 5a3 3 0 0 0-3-3h-4v17h4a3 3 0 0 1 3 3V5Z" /></>,
     listening: <><path d="M4 14v-2a8 8 0 0 1 16 0v2" /><path d="M4 14h3v6H5a1 1 0 0 1-1-1v-5ZM20 14h-3v6h2a1 1 0 0 0 1-1v-5Z" /></>,

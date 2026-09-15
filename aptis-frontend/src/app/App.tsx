@@ -32,6 +32,8 @@ const HistoryPage = lazy(() => import('@/features/practice/HistoryPage').then((m
 const PlansPage = lazy(() => import('@/features/billing/PlansPage').then((m) => ({ default: m.PlansPage })));
 const CheckoutPage = lazy(() => import('@/features/billing/CheckoutPage').then((m) => ({ default: m.CheckoutPage })));
 const AffiliatePage = lazy(() => import('@/features/billing/AffiliatePage').then((m) => ({ default: m.AffiliatePage })));
+const StudentClassroomPage = lazy(() => import('@/features/classroom/StudentClassroomPage').then((m) => ({ default: m.StudentClassroomPage })));
+const TeacherClassroomPage = lazy(() => import('@/features/classroom/TeacherClassroomPage').then((m) => ({ default: m.TeacherClassroomPage })));
 const NewsAdminPage = lazy(() => import('@/features/admin/NewsAdminPage').then((m) => ({ default: m.NewsAdminPage })));
 const NewsFeedPage = lazy(() => import('@/features/learning/NewsFeedPage').then((m) => ({ default: m.NewsFeedPage })));
 const NewsPostPage = lazy(() => import('@/features/learning/NewsPostPage').then((m) => ({ default: m.NewsPostPage })));
@@ -57,6 +59,7 @@ const SkillTestAdminPage = lazy(() => import('@/features/admin/SkillTestAdminPag
 const ExamPredictionAdminPage = lazy(() => import('@/features/admin/ExamPredictionAdminPage').then((m) => ({ default: m.ExamPredictionAdminPage })));
 const AffiliateAdminPage = lazy(() => import('@/features/admin/AffiliateAdminPage').then((m) => ({ default: m.AffiliateAdminPage })));
 const AnalyticsAdminPage = lazy(() => import('@/features/admin/AnalyticsAdminPage').then((m) => ({ default: m.AnalyticsAdminPage })));
+const ClassroomAdminPage = lazy(() => import('@/features/admin/ClassroomAdminPage').then((m) => ({ default: m.ClassroomAdminPage })));
 
 export function App() {
   const navigate = useNavigate();
@@ -134,6 +137,9 @@ export function App() {
         <Route path="/meo-hoc/viet" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsWritingPage /></PremiumRoute>} />
         <Route path="/meo-hoc/noi" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsSpeakingPage /></PremiumRoute>} />
         <Route path="/gioi-thieu" element={<AffiliatePage />} />
+        <Route path="/lop-hoc" element={<StudentClassroomPage />} />
+        <Route path="/lop/tham-gia" element={<StudentClassroomPage />} />
+        <Route path="/giang-day" element={<TeacherClassroomPage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/checkout/:orderId" element={<CheckoutPage />} />
@@ -170,6 +176,7 @@ export function App() {
         <Route path="refunds" element={<RefundAdminPage />} />
         <Route path="affiliate" element={<AffiliateAdminPage />} />
         <Route path="analytics" element={<AnalyticsAdminPage />} />
+        <Route path="classrooms" element={<ClassroomAdminPage />} />
         <Route path="users" element={<UserAdminPage />} />
         <Route path="reports" element={<ReportAdminPage />} />
       </Route>

@@ -1005,3 +1005,97 @@ export interface ConversionFunnel {
   /** Người xem trang giá nhưng chưa từng mua. */
   viewedButNotPaid: PageViewer[];
 }
+
+// ---------------------------------------------------------------------
+// Lớp học
+// ---------------------------------------------------------------------
+
+export interface Classroom {
+  id: string;
+  name: string;
+  description: string | null;
+  /** Mã 6 ký tự học viên nhập hoặc quét QR. */
+  joinCode: string;
+  joinEnabled: boolean;
+  /** Lớp có được giao đề từ ngân hàng hệ thống không — admin bật. */
+  systemContentEnabled: boolean;
+  pricingType: 'FREE' | 'PAID';
+  priceAmount: number;
+  maxStudents: number;
+  studentCount: number;
+  status: string;
+}
+
+export interface ClassroomStudent {
+  userId: string;
+  fullName: string;
+  email: string;
+  /** Chữ cái đầu để vẽ avatar. */
+  initial: string;
+  attemptsDone: number;
+  /** Thang 10; null khi chưa làm bài nào. */
+  averageScore: number | null;
+  lastActiveAt: string | null;
+  paymentStatus: 'NOT_REQUIRED' | 'PENDING' | 'PAID';
+  joinedAt: string;
+}
+
+export interface ClassProgress {
+  componentCode: string;
+  componentName: string;
+  /** Phần trăm 0-100. */
+  score: number;
+}
+
+export interface StudentClassroom {
+  classroomId: string;
+  name: string;
+  teacherName: string;
+  systemContentEnabled: boolean;
+  pricingType: 'FREE' | 'PAID';
+  priceAmount: number;
+  paymentStatus: 'NOT_REQUIRED' | 'PENDING' | 'PAID';
+  /** Đã trả tiền hoặc lớp miễn phí — được làm bài. */
+  canPractice: boolean;
+  joinedAt: string;
+}
+
+export interface AdminClassroom {
+  id: string;
+  name: string;
+  teacherUserId: string;
+  teacherName: string;
+  teacherEmail: string;
+  joinCode: string;
+  studentCount: number;
+  maxStudents: number;
+  systemContentEnabled: boolean;
+  pricingType: 'FREE' | 'PAID';
+  priceAmount: number;
+  status: string;
+  createdAt: string;
+}
+
+export interface AdminTeacher {
+  userId: string;
+  fullName: string;
+  email: string;
+  classroomName: string;
+  joinCode: string;
+  studentCount: number;
+  planCode: string | null;
+  planEndsAt: string | null;
+  status: string;
+}
+
+export interface CreateTeacherResult {
+  userId: string;
+  email: string;
+  classroomId: string;
+  joinCode: string;
+}
+
+export interface TeacherSettings {
+  platformFeePercent: number;
+  defaultMaxStudents: number;
+}

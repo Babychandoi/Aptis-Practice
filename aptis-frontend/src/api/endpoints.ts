@@ -1,5 +1,13 @@
 import { api } from './client';
 import type {
+  AdminClassroom,
+  AdminTeacher,
+  ClassProgress,
+  Classroom,
+  ClassroomStudent,
+  CreateTeacherResult,
+  StudentClassroom,
+  TeacherSettings,
   AnalyticsOverview,
   ConversionFunnel,
   PageDetail,
@@ -486,4 +494,69 @@ export const adminAnalyticsApi = {
     api
       .get<PageRank[]>(`/admin/analytics/users/${userId}`, { params: { days } })
       .then((r) => r.data),
+};
+
+// ---------------------------------------------------------------------
+// Lớp học
+// ---------------------------------------------------------------------
+
+export const teacherClassroomApi = {
+  myClassroom: () => api.get<Classroom>('/teacher/classroom').then((r) => r.data),
+
+  students: () =>
+    api.get<ClassroomStudent[]>('/teacher/classroom/students').then((r) => r.data),
+
+  progress: () =>
+    api.get<ClassProgress[]>('/teacher/classroom/progress').then((r) => r.data),
+
+  update: (body: { name?: string; description?: string }) =>
+    api.put<Classroom>('/teacher/classroom', body).then((r) => r.data),
+
+  updatePricing: (body: { pricingType: 'FREE' | 'PAID'; priceAmount: number }) =>
+    api.put<Classroom>('/teacher/classroom/pricing', body).then((r) => r.data),
+
+  setJoinEnabled: (joinEnabled: boolean) =>
+    api.put<Classroom>('/teacher/classroom/join-enabled', { joinEnabled }).then((r) => r.data),
+
+  removeStudent: (studentUserId: string) =>
+    api.delete(`/teacher/classroom/students/${studentUserId}`).then((r) => r.data),
+};
+
+export const studentClassroomApi = {
+  mine: () => api.get<StudentClassroom[]>('/classrooms/mine').then((r) => r.data),
+
+  join: (joinCode: string) =>
+    api.post<StudentClassroom>('/classrooms/join', { joinCode }).then((r) => r.data),
+};
+
+export const adminClassroomApi = {
+  list: (page = 0, size = 20) =>
+    api
+      .get<PageResponse<AdminClassroom>>('/admin/classrooms', { params: { page, size } })
+      .then((r) => r.data),
+
+  teachers: () => api.get<AdminTeacher[]>('/admin/classrooms/teachers').then((r) => r.data),
+
+  createTeacher: (body: {
+    fullName: string;
+    email: string;
+    password: string;
+    classroomName?: string;
+    planCode?: string;
+  }) => api.post<CreateTeacherResult>('/admin/classrooms/teachers', body).then((r) => r.data),
+
+  toggleSystemContent: (classroomId: string, enabled: boolean) =>
+    api
+      .put<AdminClassroom>(`/admin/classrooms/${classroomId}/system-content`, { enabled })
+      .then((r) => r.data),
+
+  setMaxStudents: (classroomId: string, maxStudents: number | null) =>
+    api
+      .put<AdminClassroom>(`/admin/classrooms/${classroomId}/max-students`, { maxStudents })
+      .then((r) => r.data),
+
+  settings: () => api.get<TeacherSettings>('/admin/classrooms/settings').then((r) => r.data),
+
+  updateSettings: (body: TeacherSettings) =>
+    api.put<TeacherSettings>('/admin/classrooms/settings', body).then((r) => r.data),
 };

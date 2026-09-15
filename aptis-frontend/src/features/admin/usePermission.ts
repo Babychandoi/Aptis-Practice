@@ -32,6 +32,7 @@ export function usePermission(): {
       'report:read',
       'affiliate:read',
       'analytics:read',
+      'classroom:read',
     ),
   };
 }
