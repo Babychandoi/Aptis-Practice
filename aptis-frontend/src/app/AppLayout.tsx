@@ -283,7 +283,21 @@ export function AppLayout() {
           </span>
         </div>
 
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex items-center gap-2 sm:gap-3">
+          {/* Giới thiệu nhận thưởng: để ở header vì thanh nav dưới đã kín 7 ô
+              và sidebar thì mobile không có. Màu xanh lá tách khỏi nhóm nút
+              Premium màu nâu — đây là "kiếm tiền", không phải "mua thêm".
+              Máy hẹp chỉ còn icon quà: đủ gợi ý, mà không đẩy nút Premium ra
+              khỏi header. */}
+          <Link
+            to="/gioi-thieu"
+            className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-2.5 text-xs font-semibold text-emerald-800 transition-colors hover:border-emerald-300 hover:bg-emerald-100 sm:px-3"
+            title="Giới thiệu bạn bè — bạn nhận hoa hồng, bạn bè được giảm giá"
+          >
+            <NavIcon name="gift" />
+            <span className="hidden sm:inline">Giới thiệu</span>
+          </Link>
+
           {/* Hiện cả trên điện thoại: Premium đã rời khỏi thanh nav dưới để
               nhường chỗ cho Kỹ năng, nên đây là đường vào duy nhất trên mobile.
               Nhãn rút ngắn ở máy hẹp cho vừa header. */}
