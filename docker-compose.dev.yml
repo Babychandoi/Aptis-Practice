@@ -1,0 +1,185 @@
+# Stack DEV — tách hoàn toàn khỏi production đang chạy.
+#
+#   docker compose -f docker-compose.dev.yml up -d --build
+#   docker compose -f docker-compose.dev.yml down -v      # xoá sạch cả dữ liệu
+#
+# Vì sao tách: production chạy trên chính máy này qua Cloudflare Tunnel và có
+# học viên dùng thật. Stack dev dùng project name, container name, volume và
+# port riêng — không có đường nào đụng vào production.
+#
+#   Giao diện   http://localhost:8090
+#   API         http://localhost:8091
+#   Hộp thư     http://localhost:8025
+#   MySQL       127.0.0.1:3308
+#
+# Dữ liệu trống hoàn toàn: DB mới, không có học viên thật, không có đơn hàng
+# thật. Tài khoản admin tạo sẵn ở cuối file này.
+
+name: aptis-dev
+
+services:
+  # -------------------------------------------------------------------
+  # Hạ tầng — volume riêng, không dùng chung với production
+  # -------------------------------------------------------------------
+  mysql:
+    image: mysql:8.4
+    container_name: aptis-dev-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: aptis
+      MYSQL_USER: aptis
+      MYSQL_PASSWORD: aptis
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --default-time-zone=+00:00
+    ports:
+      # 3308: production giữ 3307, MySQL cài native giữ 3306.
+      - "3308:3306"
+    volumes:
+      - dev-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+
+  mongo:
+    image: mongo:7
+    container_name: aptis-dev-mongo
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    volumes:
+      - dev-mongo-data:/data/db
+      - ./aptis-backend/src/main/resources/db/mongo:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+
+  minio:
+    image: minio/minio:latest
+    container_name: aptis-dev-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9002:9000"
+      - "9003:9001"
+    volumes:
+      - dev-minio-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "mc ready local || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    container_name: aptis-dev-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  # Hộp thư giả — chạy mặc định ở dev để thư xác thực không gửi ra ngoài.
+  # Mở http://localhost:8025 để đọc thư đăng ký, đặt lại mật khẩu.
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: aptis-dev-mailpit
+    restart: unless-stopped
+    ports:
+      - "1026:1025"
+      - "8025:8025"
+
+  # -------------------------------------------------------------------
+  # Ứng dụng
+  # -------------------------------------------------------------------
+  backend:
+    build:
+      context: ./aptis-backend
+    container_name: aptis-dev-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DB: aptis
+      MYSQL_USER: aptis
+      MYSQL_PASSWORD: aptis
+
+      MONGO_URI: mongodb://mongo:27017/aptis
+      REDIS_HOST: redis
+
+      APTIS_SCHEDULER_LOCK_ENABLED: "false"
+
+      # Chấm AI tắt ở dev: bật lên là mỗi lần thử một bài Writing lại tốn tiền
+      # thật của nhà cung cấp. Muốn thử chấm AI thì đặt AI_EVAL_* trong .env.dev.
+      AI_EVAL_ENABLED: "${DEV_AI_EVAL_ENABLED:-false}"
+      AI_EVAL_BASE_URL: "${AI_EVAL_BASE_URL:-}"
+      AI_EVAL_API_KEY: "${AI_EVAL_API_KEY:-}"
+      AI_EVAL_MODEL: "${AI_EVAL_MODEL:-AI-PRO}"
+      AI_EVAL_PROVIDERS: "${DEV_AI_EVAL_PROVIDERS:-}"
+
+      # Speaking analyzer không chạy ở dev (tải model Whisper mất vài GB).
+      LOCAL_SPEAKING_ENABLED: "false"
+      LOCAL_SPEAKING_FALLBACK_REMOTE: "false"
+
+      MINIO_ENDPOINT: http://minio:9000
+      # Trình duyệt truy cập MinIO qua port dev, không phải port production.
+      MINIO_PUBLIC_ENDPOINT: http://localhost:9002
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+
+      # Luôn dùng hộp thư giả ở dev — không gửi thư thật cho ai.
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_FROM: no-reply@aptis.dev
+      MAIL_SMTP_AUTH: "false"
+      MAIL_SMTP_STARTTLS: "false"
+
+      CORS_ORIGINS: http://localhost:8090,http://localhost:5173
+
+      JWT_SECRET: "ZGV2LW9ubHktc2VjcmV0LWRvLW5vdC11c2UtaW4tcHJvZHVjdGlvbi0xMjM0NTY3ODkw"
+      REFRESH_COOKIE_SECURE: "false"
+      REFRESH_COOKIE_SAME_SITE: "Lax"
+    ports:
+      - "8091:8080"
+
+  frontend:
+    build:
+      context: ./aptis-frontend
+    container_name: aptis-dev-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "8090:80"
+
+volumes:
+  dev-mysql-data:
+  dev-mongo-data:
+  dev-minio-data:
