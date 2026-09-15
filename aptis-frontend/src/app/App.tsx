@@ -56,6 +56,7 @@ const ScoringConfigPage = lazy(() => import('@/features/admin/ScoringConfigPage'
 const SkillTestAdminPage = lazy(() => import('@/features/admin/SkillTestAdminPage').then((m) => ({ default: m.SkillTestAdminPage })));
 const ExamPredictionAdminPage = lazy(() => import('@/features/admin/ExamPredictionAdminPage').then((m) => ({ default: m.ExamPredictionAdminPage })));
 const AffiliateAdminPage = lazy(() => import('@/features/admin/AffiliateAdminPage').then((m) => ({ default: m.AffiliateAdminPage })));
+const AnalyticsAdminPage = lazy(() => import('@/features/admin/AnalyticsAdminPage').then((m) => ({ default: m.AnalyticsAdminPage })));
 
 export function App() {
   const navigate = useNavigate();
@@ -168,6 +169,7 @@ export function App() {
         <Route path="bank-transfers" element={<BankTransferAdminPage />} />
         <Route path="refunds" element={<RefundAdminPage />} />
         <Route path="affiliate" element={<AffiliateAdminPage />} />
+        <Route path="analytics" element={<AnalyticsAdminPage />} />
         <Route path="users" element={<UserAdminPage />} />
         <Route path="reports" element={<ReportAdminPage />} />
       </Route>

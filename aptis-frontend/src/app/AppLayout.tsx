@@ -6,6 +6,7 @@ import { formatDate } from '@/lib/format';
 import { SupportLinksCompact } from '@/components/ui/SupportLinks';
 import { useSidebarCollapsed } from '@/app/useSidebarCollapsed';
 import { describePremiumExpiry } from '@/features/billing/premiumExpiry';
+import { usePageTracking } from '@/app/usePageTracking';
 
 // shortLabel dùng cho thanh nav dưới trên điện thoại: 5 mục trên máy hẹp
 // (~360px) chỉ còn ~64px mỗi ô, nhãn đầy đủ tràn ra ngoài vùng bấm. Sidebar
@@ -29,6 +30,10 @@ const SKILL_NAV = [
 ] as const;
 
 export function AppLayout() {
+  // Ghi lượt xem trang để biết học viên quan tâm gì; đặt ở layout nên trang mới
+  // tự có thống kê.
+  usePageTracking();
+
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuthStore();

@@ -943,3 +943,65 @@ export interface AffiliateSettings {
   holdDays: number;
   enabled: boolean;
 }
+
+// ---------------------------------------------------------------------
+// Thống kê hành vi
+// ---------------------------------------------------------------------
+
+export interface PageRank {
+  pageKey: string;
+  label: string;
+  views: number;
+  uniqueUsers: number;
+  /** Giây ở lại trung bình. */
+  avgSeconds: number;
+}
+
+export interface AnalyticsOverview {
+  days: number;
+  totalViews: number;
+  uniqueVisitors: number;
+  pages: PageRank[];
+}
+
+export interface PageViewer {
+  userId: string;
+  email: string;
+  fullName: string;
+  views: number;
+  lastViewedAt: string;
+  hasPaid: boolean;
+  premiumActive: boolean;
+}
+
+export interface DailyPoint {
+  date: string;
+  views: number;
+  uniqueUsers: number;
+}
+
+export interface EntryPoint {
+  pageKey: string;
+  label: string;
+  views: number;
+}
+
+export interface PageDetail {
+  pageKey: string;
+  label: string;
+  views: number;
+  uniqueUsers: number;
+  daily: DailyPoint[];
+  entryPoints: EntryPoint[];
+  topViewers: PageViewer[];
+}
+
+export interface ConversionFunnel {
+  days: number;
+  viewedPlans: number;
+  viewedCheckout: number;
+  placedOrder: number;
+  paidOrder: number;
+  /** Người xem trang giá nhưng chưa từng mua. */
+  viewedButNotPaid: PageViewer[];
+}

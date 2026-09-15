@@ -23,6 +23,17 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("SELECT DISTINCT o.userId FROM PurchaseOrder o WHERE o.status = :status")
     List<String> findUserIdsWithStatus(@Param("status") OrderStatus status);
 
+    /** Số đơn được tạo từ mốc thời gian — dùng cho phễu chuyển đổi. */
+    @Query("SELECT COUNT(o) FROM PurchaseOrder o WHERE o.createdAt >= :from")
+    long countCreatedSince(@Param("from") Instant from);
+
+    /** Số đơn thanh toán thành công từ mốc thời gian. */
+    @Query("""
+            SELECT COUNT(o) FROM PurchaseOrder o
+            WHERE o.paidAt >= :from AND o.status = vn.weconex.aptis.common.util.Enums.OrderStatus.PAID
+            """)
+    long countPaidSince(@Param("from") Instant from);
+
     Optional<Order> findByOrderCode(String orderCode);
 
     Optional<Order> findByIdempotencyKey(String idempotencyKey);

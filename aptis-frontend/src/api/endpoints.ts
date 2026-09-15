@@ -1,5 +1,9 @@
 import { api } from './client';
 import type {
+  AnalyticsOverview,
+  ConversionFunnel,
+  PageDetail,
+  PageRank,
   AdminAffiliateOverview,
   AdminAffiliatePayout,
   AdminAffiliateRow,
@@ -460,4 +464,26 @@ export const adminAffiliateApi = {
 
   updateSettings: (body: AffiliateSettings) =>
     api.put<AffiliateSettings>('/admin/affiliate/settings', body).then((r) => r.data),
+};
+
+export const adminAnalyticsApi = {
+  overview: (days = 30) =>
+    api
+      .get<AnalyticsOverview>('/admin/analytics/overview', { params: { days } })
+      .then((r) => r.data),
+
+  pageDetail: (pageKey: string, days = 30) =>
+    api
+      .get<PageDetail>(`/admin/analytics/pages/${pageKey}`, { params: { days } })
+      .then((r) => r.data),
+
+  conversion: (days = 30) =>
+    api
+      .get<ConversionFunnel>('/admin/analytics/conversion', { params: { days } })
+      .then((r) => r.data),
+
+  userInterests: (userId: string, days = 90) =>
+    api
+      .get<PageRank[]>(`/admin/analytics/users/${userId}`, { params: { days } })
+      .then((r) => r.data),
 };

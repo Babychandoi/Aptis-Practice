@@ -31,6 +31,7 @@ export function usePermission(): {
       'entitlement:grant',
       'report:read',
       'affiliate:read',
+      'analytics:read',
     ),
   };
 }

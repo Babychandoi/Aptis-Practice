@@ -69,6 +69,11 @@ public class SecurityConfig {
                         // Chỉ mở GET. Bình luận (POST/DELETE) vẫn cần đăng nhập
                         // và cần Premium, chặn trong NewsService.
                         .requestMatchers(HttpMethod.GET, "/api/v1/news", "/api/v1/news/**").permitAll()
+                        // Ghi lượt xem trang: mở cho cả khách chưa đăng nhập vì
+                        // người xem trang giá rồi bỏ đi chính là nhóm cần đo.
+                        // Chỉ ghi, không đọc được gì; khóa trang lọc qua danh
+                        // sách trắng nên không bơm rác vào báo cáo được.
+                        .requestMatchers(HttpMethod.POST, "/api/v1/analytics/page-views").permitAll()
                         .requestMatchers("/actuator/health/**", "/actuator/info").permitAll()
                         .requestMatchers("/api/docs/**", "/api/swagger/**", "/swagger-ui/**").permitAll()
                         // WebSocket Handshake tự xác thực token JWT qua HandshakeInterceptor

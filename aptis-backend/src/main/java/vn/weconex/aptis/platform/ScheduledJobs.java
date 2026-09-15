@@ -13,6 +13,7 @@ import vn.weconex.aptis.billing.service.SubscriptionActivationService;
 import vn.weconex.aptis.billing.service.TrialReminderService;
 import vn.weconex.aptis.billing.service.TrialService;
 import vn.weconex.aptis.evaluation.service.EvaluationDispatcher;
+import vn.weconex.aptis.platform.analytics.PageViewService;
 import vn.weconex.aptis.platform.lock.SchedulerLock;
 import vn.weconex.aptis.platform.importexport.ExportWorker;
 import vn.weconex.aptis.platform.importexport.ImportWorker;
@@ -36,6 +37,7 @@ public class ScheduledJobs {
     private final SubscriptionActivationService activationService;
     private final OrderService orderService;
     private final AffiliateService affiliateService;
+    private final PageViewService pageViewService;
     private final BankTransferService bankTransferService;
     private final TrialService trialService;
     private final TrialReminderService trialReminderService;
@@ -109,6 +111,22 @@ public class ScheduledJobs {
             int granted = affiliateService.backfillAccounts();
             if (granted > 0) {
                 log.info("Đã cấp {} mã giới thiệu cho người đủ điều kiện", granted);
+            }
+        });
+    }
+
+    /**
+     * Dọn lượt xem trang quá hạn giữ.
+     *
+     * <p>Chạy mỗi 6 tiếng: bảng chỉ lớn dần theo ngày nên không cần gấp, mà
+     * xoá hàng loạt thì nên thưa để khỏi giữ khoá lâu.
+     */
+    @Scheduled(fixedDelay = 6 * 60 * 60 * 1000L, initialDelay = 300_000L)
+    public void purgePageViews() {
+        lock.runIfAcquired("page-view-purge", Duration.ofMinutes(30), () -> {
+            int removed = pageViewService.purgeOld();
+            if (removed > 0) {
+                log.info("Đã xoá {} lượt xem trang quá hạn giữ", removed);
             }
         });
     }
