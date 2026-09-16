@@ -413,7 +413,9 @@ export function QuestionSetEditorPage({ mode = 'admin' }: { mode?: 'admin' | 'te
       const generatedCode = `${selectedComponent.code.replace('GRAMMAR_VOCABULARY', 'CORE').slice(0, 8)}_${selectedPart.code}_${Date.now().toString(36).slice(-6)}`.toUpperCase();
       return {
         ...current,
-        code: current.code || generatedCode,
+        // Giáo viên đổi Part giữa chừng thì sinh lại mã: giữ mã cũ là đề
+        // Reading mang mã SPEAKING_PART_1, nhìn vào không biết đề gì.
+        code: laGiaoVien || !current.code ? generatedCode : current.code,
         taskTypeId: task.id,
         instructions: current.instructions || partTemplate.instructions,
         maxAudioPlays: selectedComponent.code === 'LISTENING' ? 2 : current.maxAudioPlays,
@@ -424,7 +426,7 @@ export function QuestionSetEditorPage({ mode = 'admin' }: { mode?: 'admin' | 'te
           : current.items,
       };
     });
-  }, [editing, partTemplate, selectedComponent, selectedPart]);
+  }, [editing, laGiaoVien, partTemplate, selectedComponent, selectedPart]);
 
   useEffect(() => {
     if (!editing || hydrated.current || !detail.data || !components.data || !taskTypes.data) return;
@@ -570,16 +572,61 @@ export function QuestionSetEditorPage({ mode = 'admin' }: { mode?: 'admin' | 'te
       <WizardProgress currentStep={step} onSelect={(target) => target < step && changeStep(target)} />
 
       {step === 1 && <section className="card mb-5">
-        <SectionTitle number="1" title="Thông tin đề" subtitle="Chỉ nhập thông tin riêng của đề; cấu trúc bài đã lấy tự động theo Part." />
+        <SectionTitle
+          number="1"
+          title="Thông tin đề"
+          subtitle={
+            laGiaoVien
+              ? 'Chọn kỹ năng và Part trước; cấu trúc bài sẽ tự dựng theo đúng dạng của Part đó.'
+              : 'Chỉ nhập thông tin riêng của đề; cấu trúc bài đã lấy tự động theo Part.'
+          }
+        />
 
         <div className="mb-5 rounded-2xl border border-brand-200 bg-brand-50 p-4">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <div><p className="text-xs font-semibold uppercase tracking-wide text-brand-700">Phân loại tự động</p><p className="mt-1 text-sm text-brand-950">Không cần chọn lại, tránh tạo sai cấu trúc Aptis.</p></div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
+                {laGiaoVien ? 'Chọn kỹ năng và Part' : 'Phân loại tự động'}
+              </p>
+              <p className="mt-1 text-sm text-brand-950">
+                {laGiaoVien
+                  ? 'Mỗi Part có cấu trúc riêng — chọn xong hệ thống tự dựng đúng số câu và dạng bài.'
+                  : 'Không cần chọn lại, tránh tạo sai cấu trúc Aptis.'}
+              </p>
+            </div>
             <span className="rounded-full bg-white px-3 py-1 font-mono text-[11px] font-semibold text-brand-800">{form.code || 'Đang tạo mã…'}</span>
           </div>
+          {/* Giáo viên vào thẳng trình soạn nên phải tự chọn kỹ năng và Part.
+              Admin thì đã chọn ở màn danh sách trước đó, đổi lại ở đây dễ tạo
+              nhầm chỗ nên giữ nguyên dạng chỉ đọc. */}
           <div className="grid gap-3 sm:grid-cols-3">
-            <ReadOnlyClassification label="Kỹ năng" value={selectedComponent?.name ?? 'Đang tải…'} />
-            <ReadOnlyClassification label="Part" value={selectedPart?.name ?? 'Đang tải…'} />
+            {laGiaoVien ? (
+              <>
+                <Select
+                  label="Kỹ năng"
+                  value={form.componentId}
+                  options={(components.data ?? []).map((c) => ({ value: c.id, label: c.name }))}
+                  onChange={(componentId) =>
+                    // Đổi kỹ năng thì Part cũ không còn thuộc kỹ năng mới nữa;
+                    // xoá đi để effect bên dưới chọn lại Part đầu tiên hợp lệ.
+                    setForm((current) => ({ ...current, componentId, partId: '', taskTypeId: '' }))
+                  }
+                />
+                <Select
+                  label="Part"
+                  value={form.partId}
+                  options={(parts.data ?? []).map((part) => ({ value: part.id, label: part.name }))}
+                  onChange={(partId) =>
+                    setForm((current) => ({ ...current, partId, taskTypeId: '' }))
+                  }
+                />
+              </>
+            ) : (
+              <>
+                <ReadOnlyClassification label="Kỹ năng" value={selectedComponent?.name ?? 'Đang tải…'} />
+                <ReadOnlyClassification label="Part" value={selectedPart?.name ?? 'Đang tải…'} />
+              </>
+            )}
             <ReadOnlyClassification label="Dạng câu hỏi chuẩn" value={partTemplate?.name ?? selectedTask?.name ?? 'Đang xác định…'} />
           </div>
           {partTemplate && <p className="mt-3 text-xs leading-5 text-brand-800">{partTemplate.note}</p>}

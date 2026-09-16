@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import vn.weconex.aptis.classroom.domain.QuestionSetContribution;
+import vn.weconex.aptis.classroom.service.AssignmentService;
+import vn.weconex.aptis.classroom.service.ClassroomService;
 import vn.weconex.aptis.classroom.service.TeacherContentAuthoringService;
+import vn.weconex.aptis.common.exception.ApiException;
+import vn.weconex.aptis.content.repository.QuestionSetRepository;
 import vn.weconex.aptis.common.security.CurrentUser;
 import vn.weconex.aptis.content.domain.QuestionSet;
 import vn.weconex.aptis.content.service.AdminContentService;
@@ -39,6 +43,9 @@ public class TeacherAuthoringController {
 
     private final TeacherContentAuthoringService authoringService;
     private final AdminContentService adminContentService;
+    private final AssignmentService assignmentService;
+    private final ClassroomService classroomService;
+    private final QuestionSetRepository questionSetRepository;
     private final CurrentUser currentUser;
 
     /** Đề giáo viên đã soạn, kèm trạng thái đề xuất vào kho chung. */
@@ -78,6 +85,28 @@ public class TeacherAuthoringController {
     public AdminContentDtos.AdminQuestionSetResponse detail(@PathVariable String id) {
         QuestionSet set = authoringService.requireOwned(currentUser.requireUserId(), id);
         return AdminContentController.toResponse(set, adminContentService.loadContent(set));
+    }
+
+    /**
+     * Xem trước nội dung một đề trước khi chọn giao hoặc ghép.
+     *
+     * <p>Khác {@code /{id}} ở chỗ đề hệ thống cũng xem được — miễn lớp đã được
+     * bật kho đề. Không có đường này thì giáo viên chọn đề bằng mỗi cái tên,
+     * mà tên các đề trong cùng một part gần như giống nhau.
+     */
+    @GetMapping("/{id}/preview")
+    @PreAuthorize("hasAuthority('classroom:content')")
+    @Transactional(readOnly = true)
+    public AdminContentDtos.PreviewResponse preview(@PathVariable String id) {
+        String teacherId = currentUser.requireUserId();
+        // Cùng ranh giới với giao bài: đề hệ thống chỉ khi lớp được bật kho đề,
+        // đề tự soạn thì phải của chính giáo viên này.
+        assignmentService.requireUsableQuestionSets(
+                classroomService.requireOwnedClassroom(teacherId), teacherId, List.of(id));
+
+        // revealAnswers = true: giáo viên cần thấy đáp án để biết đề có đúng ý
+        // mình không, khác học viên đang làm bài.
+        return adminContentService.preview(id, true);
     }
 
     @PostMapping

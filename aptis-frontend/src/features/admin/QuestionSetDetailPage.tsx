@@ -388,7 +388,7 @@ export function QuestionSetDetailPage() {
   );
 }
 
-function QuestionSetPreview({ content, revision, showAnswers }: {
+export function QuestionSetPreview({ content, revision, showAnswers }: {
   content: QuestionSetContent;
   revision: number;
   showAnswers: boolean;

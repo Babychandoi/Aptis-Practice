@@ -7,6 +7,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate, formatDateTime } from '@/lib/format';
 import { useEscapeKey } from '@/lib/useEscapeKey';
+import { QuestionSetPreviewDialog } from '@/features/classroom/QuestionSetPreviewDialog';
 import type { Assignment, AssignmentSubmission, Classroom } from '@/types/api';
 
 /** Bài giao và chấm bài. */
@@ -154,6 +155,7 @@ function CreateAssignmentDialog({
 }) {
   useEscapeKey(onClose);
   const queryClient = useQueryClient();
+  const [previewing, setPreviewing] = useState<{ id: string; title: string } | null>(null);
   const [title, setTitle] = useState('');
   const [instructions, setInstructions] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -279,7 +281,7 @@ function CreateAssignmentDialog({
                       }
                       className="mt-0.5 h-4 w-4 shrink-0 rounded border-border"
                     />
-                    <span className="min-w-0">
+                    <span className="min-w-0 flex-1">
                       <span className="block text-sm font-semibold text-slate-800">
                         {set.title}
                       </span>
@@ -287,6 +289,18 @@ function CreateAssignmentDialog({
                         {set.componentName} · {set.partName}
                       </span>
                     </span>
+                    {/* Tên đề trong cùng một part gần như giống nhau, không xem
+                        nội dung thì chọn như chọn mù. */}
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setPreviewing({ id: set.id, title: set.title });
+                      }}
+                      className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-slate-600 hover:bg-surface"
+                    >
+                      Xem
+                    </button>
                   </label>
                 ))}
               </div>
@@ -317,6 +331,14 @@ function CreateAssignmentDialog({
           </div>
         </form>
       </div>
+
+      {previewing && (
+        <QuestionSetPreviewDialog
+          questionSetId={previewing.id}
+          title={previewing.title}
+          onClose={() => setPreviewing(null)}
+        />
+      )}
     </div>
   );
 }

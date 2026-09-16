@@ -8,6 +8,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate } from '@/lib/format';
 import { useEscapeKey } from '@/lib/useEscapeKey';
+import { QuestionSetPreviewDialog } from '@/features/classroom/QuestionSetPreviewDialog';
 import type { ContributionStatus, TeacherAuthoredSet } from '@/types/api';
 
 const CONTRIBUTION: Record<ContributionStatus, { label: string; tone: string }> = {
@@ -25,6 +26,7 @@ const CONTRIBUTION: Record<ContributionStatus, { label: string; tone: string }> 
 export function TeacherQuestionSetsTab() {
   const queryClient = useQueryClient();
   const [contributing, setContributing] = useState<TeacherAuthoredSet | null>(null);
+  const [previewing, setPreviewing] = useState<TeacherAuthoredSet | null>(null);
 
   const query = useQuery({
     queryKey: ['teacher', 'question-sets'],
@@ -113,6 +115,13 @@ export function TeacherQuestionSetsTab() {
                         Đề xuất vào kho chung
                       </button>
                     )}
+                    <button
+                      type="button"
+                      onClick={() => setPreviewing(set)}
+                      className="text-xs font-semibold text-slate-600 hover:text-slate-900"
+                    >
+                      Xem
+                    </button>
                     <Link
                       to={`/giang-day/de/${set.id}`}
                       className="text-xs font-semibold text-brand-700 hover:text-brand-800"
@@ -139,6 +148,14 @@ export function TeacherQuestionSetsTab() {
 
       {contributing && (
         <ContributeDialog set={contributing} onClose={() => setContributing(null)} />
+      )}
+
+      {previewing && (
+        <QuestionSetPreviewDialog
+          questionSetId={previewing.id}
+          title={previewing.title}
+          onClose={() => setPreviewing(null)}
+        />
       )}
     </div>
   );

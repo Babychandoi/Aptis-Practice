@@ -76,6 +76,7 @@ import type {
 import type {
   AdminQuestionSet,
   CreateQuestionSetRequest,
+  PreviewResult,
   UpdateQuestionSetRequest,
 } from '@/types/admin';
 
@@ -713,6 +714,14 @@ export const teacherAuthoringApi = {
 
   detail: (id: string) =>
     api.get<AdminQuestionSet>(`/teacher/question-sets/${id}`).then((r) => r.data),
+
+  /**
+   * Xem trước nội dung một đề trước khi chọn giao hoặc ghép.
+   *
+   * Khác `detail` ở chỗ đề hệ thống cũng xem được, miễn lớp đã bật kho đề.
+   */
+  preview: (id: string) =>
+    api.get<PreviewResult>(`/teacher/question-sets/${id}/preview`).then((r) => r.data),
 
   create: (body: CreateQuestionSetRequest) =>
     api.post<AdminQuestionSet>('/teacher/question-sets', body).then((r) => r.data),

@@ -7,6 +7,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate } from '@/lib/format';
 import { useEscapeKey } from '@/lib/useEscapeKey';
+import { QuestionSetPreviewDialog } from '@/features/classroom/QuestionSetPreviewDialog';
 import type {
   Classroom,
   ClassroomPrediction,
@@ -175,6 +176,7 @@ function PredictionDialog({
   const [source, setSource] = useState(prediction?.source ?? '');
   const [title, setTitle] = useState(prediction?.title ?? '');
   const [content, setContent] = useState(prediction?.content ?? '');
+  const [previewing, setPreviewing] = useState<{ id: string; title: string } | null>(null);
   const [selectedSets, setSelectedSets] = useState<string[]>(
     prediction?.questionSets.map((s) => s.id) ?? [],
   );
@@ -473,10 +475,20 @@ function PredictionDialog({
                       }
                       className="mt-0.5 h-4 w-4 shrink-0 rounded border-border"
                     />
-                    <span className="min-w-0">
+                    <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm text-slate-800">{set.title}</span>
                       <span className="block text-[11px] text-slate-500">{set.hint}</span>
                     </span>
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setPreviewing({ id: set.id, title: set.title || 'Đề' });
+                      }}
+                      className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-slate-600 hover:bg-surface"
+                    >
+                      Xem
+                    </button>
                   </label>
                 ))}
               </div>
@@ -516,6 +528,14 @@ function PredictionDialog({
           </div>
         </div>
       </div>
+
+      {previewing && (
+        <QuestionSetPreviewDialog
+          questionSetId={previewing.id}
+          title={previewing.title}
+          onClose={() => setPreviewing(null)}
+        />
+      )}
     </div>
   );
 }
