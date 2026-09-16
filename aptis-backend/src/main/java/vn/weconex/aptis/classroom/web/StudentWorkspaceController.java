@@ -18,10 +18,12 @@ import vn.weconex.aptis.classroom.domain.ClassroomContentEntities.ClassroomMater
 import vn.weconex.aptis.classroom.domain.ClassroomContentEntities.ClassroomPost;
 import vn.weconex.aptis.classroom.domain.ClassroomContentEntities.ClassroomPrediction;
 import vn.weconex.aptis.classroom.domain.ClassroomEntities.Classroom;
+import vn.weconex.aptis.practice.domain.TestAttempt;
 import vn.weconex.aptis.classroom.repository.ClassroomMemberRepository;
 import vn.weconex.aptis.classroom.repository.ClassroomRepository;
 import vn.weconex.aptis.classroom.service.AssignmentService;
 import vn.weconex.aptis.classroom.service.ClassroomContentService;
+import vn.weconex.aptis.classroom.service.PredictionPracticeService;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.security.CurrentUser;
 
@@ -39,6 +41,8 @@ public class StudentWorkspaceController {
     private final ClassroomRepository classroomRepository;
     private final ClassroomMemberRepository memberRepository;
     private final ClassroomContentService contentService;
+    private final ClassroomPredictionMapper predictionMapper;
+    private final PredictionPracticeService predictionPracticeService;
     private final AssignmentService assignmentService;
     private final ComponentRepository componentRepository;
     private final CurrentUser currentUser;
@@ -94,6 +98,29 @@ public class StudentWorkspaceController {
         return Map.of("attemptId", submission.getAttemptId());
     }
 
+    /**
+     * Mở đề từ một mục dự đoán của lớp.
+     *
+     * <p>Đi qua đây chứ không dùng /practice/custom-attempts vì hai lý do: học
+     * viên trong lớp làm được đề của lớp kể cả khi chưa mua Premium, và phải
+     * chặn việc đoán id để mở dự đoán của lớp khác.
+     */
+    @PostMapping("/predictions/{predictionId}/practice")
+    public Map<String, String> practicePrediction(
+            @PathVariable String classroomId, @PathVariable String predictionId) {
+
+        requireMembership(classroomId);
+        String userId = currentUser.requireUserId();
+
+        ClassroomPrediction prediction = contentService.prediction(classroomId, predictionId);
+        if (!prediction.isVisibleToStudent()) {
+            throw ApiException.forbidden("Dự đoán này chưa được đăng");
+        }
+
+        TestAttempt attempt = predictionPracticeService.start(userId, prediction);
+        return Map.of("attemptId", attempt.getId());
+    }
+
     @GetMapping("/materials")
     @Transactional(readOnly = true)
     public List<ClassroomDtos.MaterialResponse> materials(@PathVariable String classroomId) {
@@ -109,7 +136,7 @@ public class StudentWorkspaceController {
     public List<ClassroomDtos.ClassroomPostResponse> posts(@PathVariable String classroomId) {
         requireMembership(classroomId);
         return contentService.posts(classroomId, true).stream()
-                .map(StudentWorkspaceController::toDto)
+                .map(TeacherContentController::toDto)
                 .toList();
     }
 
@@ -119,27 +146,10 @@ public class StudentWorkspaceController {
             @PathVariable String classroomId) {
 
         requireMembership(classroomId);
-        List<ClassroomPrediction> rows = contentService.predictions(classroomId);
-
-        List<String> componentIds = rows.stream()
-                .map(ClassroomPrediction::getComponentId)
-                .filter(java.util.Objects::nonNull)
-                .distinct()
-                .toList();
-        Map<String, String> names = componentIds.isEmpty()
-                ? Map.of()
-                : componentRepository.findAllById(componentIds).stream()
-                        .collect(Collectors.toMap(c -> c.getId(), c -> c.getName()));
-
-        return rows.stream()
-                .map(row -> new ClassroomDtos.ClassroomPredictionResponse(
-                        row.getId(),
-                        row.getComponentId(),
-                        componentName(names, row.getComponentId()),
-                        row.getTitle(),
-                        row.getContent(),
-                        row.getCreatedAt()))
-                .toList();
+        // publishedOnly: học viên không thấy mục giáo viên còn để nháp.
+        // teacherUserId null vì học viên không cần biết đề nào do thầy tự soạn.
+        return predictionMapper.toDtos(
+                contentService.predictions(classroomId, true), null);
     }
 
     /**
@@ -156,16 +166,6 @@ public class StudentWorkspaceController {
                 .orElseThrow(() -> ApiException.notFound("Classroom", classroomId));
     }
 
-    /**
-     * Tên kỹ năng của một dự đoán.
-     *
-     * <p>componentId có thể null khi giáo viên không gán kỹ năng, mà Map.of()
-     * ném NullPointerException nếu tra bằng key null.
-     */
-    private static String componentName(Map<String, String> names, String componentId) {
-        return componentId == null ? "" : names.getOrDefault(componentId, "");
-    }
-
     private static ClassroomDtos.MaterialResponse toDto(ClassroomMaterial material) {
         return new ClassroomDtos.MaterialResponse(
                 material.getId(),
@@ -176,12 +176,4 @@ public class StudentWorkspaceController {
                 material.getCreatedAt());
     }
 
-    private static ClassroomDtos.ClassroomPostResponse toDto(ClassroomPost post) {
-        return new ClassroomDtos.ClassroomPostResponse(
-                post.getId(),
-                post.getTitle(),
-                post.getContent(),
-                post.getStatus().name(),
-                post.getCreatedAt());
-    }
 }

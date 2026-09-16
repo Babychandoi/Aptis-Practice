@@ -111,6 +111,24 @@ public class AssignmentService {
      * <p>Đề của chính họ thì luôn được; đề hệ thống chỉ khi lớp đã bật. Nếu
      * không kiểm, giáo viên chưa trả tiền vẫn giao được cả kho đề.
      */
+    /**
+     * Kiểm đề mà lớp được phép dùng, nhận trực tiếp danh sách id.
+     *
+     * <p>Dự đoán đề của lớp cũng gắn đề nên cần đúng ranh giới thương mại này:
+     * đề hệ thống chỉ khi admin đã bật kho đề cho lớp, đề tự soạn thì phải của
+     * chính giáo viên đó.
+     */
+    @Transactional(readOnly = true)
+    public void requireUsableQuestionSets(
+            Classroom classroom, String teacherUserId, List<String> questionSetIds) {
+
+        List<QuestionSet> sets = questionSetRepository.findAllById(questionSetIds);
+        if (sets.size() != questionSetIds.size()) {
+            throw new ApiException(ErrorCode.VALIDATION_FAILED, "Có đề không tồn tại");
+        }
+        requireUsable(classroom, teacherUserId, sets);
+    }
+
     private void requireUsable(Classroom classroom, String teacherUserId, List<QuestionSet> sets) {
         boolean hasSystemSet = sets.stream()
                 .anyMatch(qs -> qs.getOwnerTeacherId() == null);

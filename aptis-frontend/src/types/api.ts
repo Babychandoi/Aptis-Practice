@@ -1132,21 +1132,83 @@ export interface ClassroomMaterial {
   createdAt: string;
 }
 
+export type ClassroomPostStatus = 'DRAFT' | 'PUBLISHED' | 'HIDDEN';
+
 export interface ClassroomPost {
   id: string;
   title: string;
+  excerpt?: string | null;
+  /** Markdown. */
   content: string;
-  status: 'PUBLISHED' | 'HIDDEN';
+  /** Lấy link xem qua assetApi.signedUrl(). */
+  coverAssetId?: string | null;
+  pinned: boolean;
+  status: ClassroomPostStatus;
+  publishedAt?: string | null;
   createdAt: string;
+}
+
+export interface SaveClassroomPostBody {
+  title: string;
+  excerpt?: string | null;
+  content?: string;
+  coverAssetId?: string | null;
+  pinned?: boolean;
+  status?: ClassroomPostStatus;
+}
+
+export type ClassroomPredictionStatus = 'DRAFT' | 'PUBLISHED';
+export type PredictionPriority = 'HOT' | 'BACKUP';
+
+/** Một đề gắn đích danh vào mục dự đoán của lớp. */
+export interface PredictionQuestionSet {
+  id: string;
+  title: string;
+  partName: string;
+  componentName: string;
+  /** Đề do chính giáo viên soạn, không phải đề hệ thống. */
+  own: boolean;
 }
 
 export interface ClassroomPrediction {
   id: string;
-  componentId: string | null;
-  componentName: string;
+  componentId?: string | null;
+  componentName?: string | null;
+  /** Có chủ đề thì học viên bấm vào là mở được đề để luyện. */
+  topicId?: string | null;
+  topicName?: string | null;
+  partId?: string | null;
+  partName?: string | null;
+  predictDate?: string | null;
+  priority: PredictionPriority;
+  label?: string | null;
+  sectionLabel?: string | null;
+  source?: string | null;
+  status: ClassroomPredictionStatus;
+  displayOrder: number;
   title: string;
-  content: string | null;
+  content?: string | null;
+  questionSets: PredictionQuestionSet[];
+  /** Số đề mở được: đề chỉ đích danh cộng đề cùng chủ đề. */
+  openableCount: number;
   createdAt: string;
+}
+
+export interface SaveClassroomPredictionBody {
+  componentId?: string | null;
+  topicId?: string | null;
+  partId?: string | null;
+  predictDate?: string | null;
+  priority?: PredictionPriority;
+  label?: string | null;
+  sectionLabel?: string | null;
+  source?: string | null;
+  status?: ClassroomPredictionStatus;
+  displayOrder?: number;
+  title: string;
+  content?: string | null;
+  /** Bỏ trống = giữ nguyên danh sách đề đang gắn. */
+  questionSetIds?: string[];
 }
 
 export type AssignmentStatus = 'DRAFT' | 'PUBLISHED' | 'CLOSED';

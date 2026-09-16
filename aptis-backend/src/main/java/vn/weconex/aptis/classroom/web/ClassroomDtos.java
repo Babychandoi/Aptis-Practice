@@ -1,6 +1,7 @@
 package vn.weconex.aptis.classroom.web;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
@@ -180,29 +181,80 @@ public final class ClassroomDtos {
     public record ClassroomPostResponse(
             String id,
             String title,
+            String excerpt,
+            /** Markdown. */
             String content,
+            /** Client tự lấy link xem qua /assets/{id}/signed-url. */
+            String coverAssetId,
+            boolean pinned,
             String status,
+            Instant publishedAt,
             Instant createdAt) {
     }
 
-    public record CreatePostRequest(
+    /**
+     * Tạo hoặc sửa một bài trong bảng tin lớp.
+     *
+     * @param status DRAFT khi còn soạn, PUBLISHED khi cho lớp xem
+     */
+    public record SavePostRequest(
             @NotBlank @Size(max = 255) String title,
-            String content) {
+            @Size(max = 500) String excerpt,
+            String content,
+            @Size(max = 36) String coverAssetId,
+            Boolean pinned,
+            @Size(max = 16) String status) {
     }
 
     public record ClassroomPredictionResponse(
             String id,
             String componentId,
             String componentName,
+            String topicId,
+            String topicName,
+            String partId,
+            String partName,
+            LocalDate predictDate,
+            String priority,
+            String label,
+            String sectionLabel,
+            String source,
+            String status,
+            int displayOrder,
             String title,
             String content,
+            /** Đề giáo viên chỉ đích danh, ngoài phần lọc theo chủ đề. */
+            List<PredictionQuestionSetResponse> questionSets,
+            /** Số đề học viên mở được: đề chỉ đích danh cộng đề cùng chủ đề. */
+            int openableCount,
             Instant createdAt) {
     }
 
-    public record CreatePredictionRequest(
+    /** Một đề gắn vào mục dự đoán của lớp. */
+    public record PredictionQuestionSetResponse(
+            String id,
+            String title,
+            String partName,
+            String componentName,
+            /** true = đề do chính giáo viên soạn, không phải đề hệ thống. */
+            boolean own) {
+    }
+
+    public record SavePredictionRequest(
             @Size(max = 36) String componentId,
+            @Size(max = 36) String topicId,
+            @Size(max = 36) String partId,
+            LocalDate predictDate,
+            @Size(max = 16) String priority,
+            @Size(max = 255) String label,
+            @Size(max = 64) String sectionLabel,
+            @Size(max = 255) String source,
+            @Size(max = 16) String status,
+            Integer displayOrder,
             @NotBlank @Size(max = 255) String title,
-            String content) {
+            String content,
+            /** Để trống = giữ nguyên danh sách đề đang gắn. */
+            List<String> questionSetIds) {
     }
 
     // ---------------- Bài giao ----------------

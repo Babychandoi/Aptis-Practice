@@ -2,6 +2,7 @@ package vn.weconex.aptis.classroom.domain;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -62,6 +63,8 @@ public final class ClassroomContentEntities {
     public static class ClassroomPost extends BaseEntity {
 
         public enum PostStatus {
+            /** Đang soạn, chỉ giáo viên thấy. */
+            DRAFT,
             PUBLISHED,
             HIDDEN
         }
@@ -75,12 +78,32 @@ public final class ClassroomContentEntities {
         @Column(name = "title", length = 255, nullable = false)
         private String title;
 
+        /** Tóm tắt ở danh sách; để trống thì giao diện tự cắt từ nội dung. */
+        @Column(name = "excerpt", length = 500)
+        private String excerpt;
+
+        /** Markdown, hiển thị qua cùng bộ lọc an toàn với bài viết hệ thống. */
         @Column(name = "content", columnDefinition = "MEDIUMTEXT", nullable = false)
         private String content;
+
+        @Column(name = "cover_asset_id", columnDefinition = "CHAR(36)")
+        private String coverAssetId;
+
+        @Column(name = "pinned", nullable = false)
+        private boolean pinned;
+
+        /** Lúc bài được đăng; null khi còn là nháp. */
+        @Column(name = "published_at")
+        private Instant publishedAt;
 
         @Enumerated(EnumType.STRING)
         @Column(name = "status", length = 16, nullable = false)
         private PostStatus status = PostStatus.PUBLISHED;
+
+        /** Học viên chỉ thấy bài đã đăng. */
+        public boolean isVisibleToStudent() {
+            return status == PostStatus.PUBLISHED;
+        }
     }
 
     /** Nhận định riêng của giáo viên cho lớp. */
@@ -91,6 +114,18 @@ public final class ClassroomContentEntities {
     @NoArgsConstructor
     public static class ClassroomPrediction extends BaseEntity {
 
+        public enum Priority {
+            /** Khả năng ra cao. */
+            HOT,
+            /** Đề dự phòng. */
+            BACKUP
+        }
+
+        public enum PredictionStatus {
+            DRAFT,
+            PUBLISHED
+        }
+
         @Column(name = "classroom_id", columnDefinition = "CHAR(36)", nullable = false)
         private String classroomId;
 
@@ -100,12 +135,54 @@ public final class ClassroomContentEntities {
         @Column(name = "component_id", columnDefinition = "CHAR(36)")
         private String componentId;
 
+        /**
+         * Chủ đề hệ thống — có thì học viên bấm vào là mở được đề để luyện.
+         *
+         * <p>Null vẫn hợp lệ: giáo viên có thể chỉ ghi một nhận định bằng chữ,
+         * hoặc gắn đề đích danh qua {@code classroom_prediction_question_sets}.
+         */
+        @Column(name = "topic_id", columnDefinition = "CHAR(36)")
+        private String topicId;
+
+        /** Part cụ thể; null = lọc theo cả kỹ năng. */
+        @Column(name = "part_id", columnDefinition = "CHAR(36)")
+        private String partId;
+
+        @Column(name = "predict_date")
+        private LocalDate predictDate;
+
+        @Enumerated(EnumType.STRING)
+        @Column(name = "priority", length = 16, nullable = false)
+        private Priority priority = Priority.HOT;
+
+        /** Nhãn hiển thị; để trống thì giao diện lấy tên chủ đề. */
+        @Column(name = "label", length = 255)
+        private String label;
+
+        @Column(name = "section_label", length = 64)
+        private String sectionLabel;
+
+        @Column(name = "source", length = 255)
+        private String source;
+
+        @Enumerated(EnumType.STRING)
+        @Column(name = "status", length = 16, nullable = false)
+        private PredictionStatus status = PredictionStatus.PUBLISHED;
+
+        @Column(name = "display_order", nullable = false)
+        private int displayOrder;
+
         @Column(name = "title", length = 255, nullable = false)
         private String title;
 
         @Column(name = "content", columnDefinition = "MEDIUMTEXT")
         private String content;
+
+        public boolean isVisibleToStudent() {
+            return status == PredictionStatus.PUBLISHED;
+        }
     }
+
 
     /** Bài giáo viên giao cho lớp. */
     @Entity(name = "Assignment")

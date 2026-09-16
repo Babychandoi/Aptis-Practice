@@ -8,7 +8,13 @@ import { studentClassroomApi, studentWorkspaceApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate } from '@/lib/format';
-import type { StudentAssignment, StudentClassroom, SubmissionStatus } from '@/types/api';
+import { ClassroomSidebar } from '@/features/classroom/ClassroomSidebar';
+import type {
+  ClassroomPrediction,
+  StudentAssignment,
+  StudentClassroom,
+  SubmissionStatus,
+} from '@/types/api';
 
 type Tab = 'assignments' | 'materials' | 'posts' | 'predictions';
 
@@ -68,39 +74,31 @@ export function ClassroomWorkspacePage() {
         </p>
       )}
 
-      <div role="tablist" className="flex w-fit flex-wrap gap-1.5 rounded-2xl bg-surface-muted p-1">
-        {(
-          [
-            ['assignments', 'Bài được giao'],
-            ['materials', 'Tài liệu'],
-            ['posts', 'Bảng tin'],
-            ['predictions', 'Dự đoán đề'],
-          ] as const
-        ).map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            role="tab"
-            aria-selected={tab === key}
-            onClick={() => setTab(key)}
-            className={clsx(
-              'rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors',
-              tab === key
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-500 hover:text-slate-800',
-            )}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <div className="flex flex-col gap-5 lg:flex-row">
+        <ClassroomSidebar
+          title={classroom.name}
+          subtitle={`Giáo viên: ${classroom.teacherName}`}
+          backTo="/lop-hoc"
+          backLabel="Lớp học của tôi"
+          value={tab}
+          onChange={setTab}
+          items={[
+            { key: 'assignments', label: 'Bài được giao' },
+            { key: 'materials', label: 'Tài liệu' },
+            { key: 'posts', label: 'Bảng tin' },
+            { key: 'predictions', label: 'Dự đoán đề' },
+          ]}
+        />
 
-      {tab === 'assignments' && (
-        <AssignmentList classroomId={classroomId} classroom={classroom} />
-      )}
-      {tab === 'materials' && <MaterialList classroomId={classroomId} />}
-      {tab === 'posts' && <PostList classroomId={classroomId} />}
-      {tab === 'predictions' && <PredictionList classroomId={classroomId} />}
+        <div className="min-w-0 flex-1 space-y-4">
+          {tab === 'assignments' && (
+            <AssignmentList classroomId={classroomId} classroom={classroom} />
+          )}
+          {tab === 'materials' && <MaterialList classroomId={classroomId} />}
+          {tab === 'posts' && <PostList classroomId={classroomId} />}
+          {tab === 'predictions' && <PredictionList classroomId={classroomId} />}
+        </div>
+      </div>
     </div>
   );
 }
@@ -326,25 +324,11 @@ function PredictionList({ classroomId }: { classroomId: string }) {
   return (
     <div className="space-y-2.5">
       {query.data.map((prediction) => (
-        <article
+        <PredictionCard
           key={prediction.id}
-          className="rounded-2xl border border-border bg-white px-4 py-3.5"
-        >
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-bold text-slate-900">{prediction.title}</h3>
-            {prediction.componentName && (
-              <span className="rounded-full bg-brand-50 px-2 py-0.5 font-mono text-[9px] font-bold uppercase text-brand-800">
-                {prediction.componentName}
-              </span>
-            )}
-          </div>
-          <p className="mt-0.5 text-[11px] text-slate-500">{formatDate(prediction.createdAt)}</p>
-          {prediction.content && (
-            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">
-              {prediction.content}
-            </p>
-          )}
-        </article>
+          classroomId={classroomId}
+          prediction={prediction}
+        />
       ))}
     </div>
   );
@@ -367,5 +351,93 @@ function Breadcrumb(): ReactNode {
       <span aria-hidden="true">›</span>
       <span className="font-semibold text-stone-800">Không gian lớp</span>
     </nav>
+  );
+}
+
+/**
+ * Một mục dự đoán của lớp.
+ *
+ * <p>Bấm vào là mở luôn đề để luyện — đó là điểm khác với bản cũ vốn chỉ hiện
+ * chữ. Đề lấy từ hai nguồn: đề giáo viên chỉ đích danh, và đề cùng chủ đề.
+ */
+function PredictionCard({
+  classroomId,
+  prediction,
+}: {
+  classroomId: string;
+  prediction: ClassroomPrediction;
+}) {
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+
+  const open = useMutation({
+    mutationFn: () => studentWorkspaceApi.practicePrediction(classroomId, prediction.id),
+    onSuccess: (result) => navigate(`/attempts/${result.attemptId}`),
+    onError: (err) =>
+      setError(err instanceof ApiError ? err.message : 'Không mở được đề, thử lại sau'),
+  });
+
+  const moDuoc = prediction.openableCount > 0;
+
+  return (
+    <article className="rounded-2xl border border-border bg-white px-4 py-3.5">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="font-bold text-slate-900">{prediction.label || prediction.title}</h3>
+            {prediction.priority === 'HOT' && (
+              <span className="rounded-full bg-red-50 px-2 py-0.5 font-mono text-[9px] font-bold uppercase text-red-700">
+                Khả năng cao
+              </span>
+            )}
+            {prediction.componentName && (
+              <span className="rounded-full bg-brand-50 px-2 py-0.5 font-mono text-[9px] font-bold uppercase text-brand-800">
+                {prediction.componentName}
+              </span>
+            )}
+          </div>
+
+          <p className="mt-1 text-[11px] text-slate-500">
+            {[
+              prediction.partName,
+              prediction.topicName && `Chủ đề: ${prediction.topicName}`,
+              prediction.predictDate && `Ngày thi ${formatDate(prediction.predictDate)}`,
+              prediction.source && `Nguồn: ${prediction.source}`,
+            ]
+              .filter(Boolean)
+              .join(' · ')}
+          </p>
+
+          {prediction.content && (
+            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">
+              {prediction.content}
+            </p>
+          )}
+
+          {error && (
+            <p role="alert" className="mt-2 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+              {error}
+            </p>
+          )}
+        </div>
+
+        <div className="shrink-0 text-right">
+          <button
+            type="button"
+            disabled={!moDuoc || open.isPending}
+            onClick={() => {
+              setError(null);
+              open.mutate();
+            }}
+            className="rounded-xl bg-brand-600 px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+          >
+            {open.isPending ? 'Đang mở…' : 'Luyện ngay'}
+          </button>
+          <p className="mt-1 text-[10px] text-slate-500">
+            {moDuoc ? `${prediction.openableCount} đề` : 'Chưa có đề'}
+          </p>
+        </div>
+      </div>
+    </article>
   );
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +57,7 @@ public class TeacherContentController {
 
     private final ClassroomService classroomService;
     private final ClassroomContentService contentService;
+    private final ClassroomPredictionMapper predictionMapper;
     private final AssignmentService assignmentService;
     private final AssignmentQuestionSetRepository assignmentQuestionSetRepository;
     private final ClassroomMemberRepository memberRepository;
@@ -110,14 +112,30 @@ public class TeacherContentController {
                 .toList();
     }
 
+    @GetMapping("/posts/{postId}")
+    @PreAuthorize("hasAuthority('classroom:read')")
+    @Transactional(readOnly = true)
+    public ClassroomDtos.ClassroomPostResponse post(@PathVariable String postId) {
+        return toDto(contentService.post(myClassroom().getId(), postId));
+    }
+
     @PostMapping("/posts")
     @PreAuthorize("hasAuthority('classroom:write')")
     public ClassroomDtos.ClassroomPostResponse addPost(
-            @Valid @RequestBody ClassroomDtos.CreatePostRequest request) {
+            @Valid @RequestBody ClassroomDtos.SavePostRequest request) {
 
-        return toDto(contentService.addPost(
-                myClassroom().getId(), currentUser.requireUserId(),
-                request.title(), request.content()));
+        return toDto(contentService.savePost(
+                myClassroom().getId(), currentUser.requireUserId(), null, toContent(request)));
+    }
+
+    @PutMapping("/posts/{postId}")
+    @PreAuthorize("hasAuthority('classroom:write')")
+    public ClassroomDtos.ClassroomPostResponse updatePost(
+            @PathVariable String postId,
+            @Valid @RequestBody ClassroomDtos.SavePostRequest request) {
+
+        return toDto(contentService.savePost(
+                myClassroom().getId(), currentUser.requireUserId(), postId, toContent(request)));
     }
 
     @DeleteMapping("/posts/{postId}")
@@ -132,33 +150,63 @@ public class TeacherContentController {
     @PreAuthorize("hasAuthority('classroom:read')")
     @Transactional(readOnly = true)
     public List<ClassroomDtos.ClassroomPredictionResponse> predictions() {
-        List<ClassroomPrediction> rows = contentService.predictions(myClassroom().getId());
-        Map<String, String> componentNames = componentNames(rows);
-
-        return rows.stream()
-                .map(row -> new ClassroomDtos.ClassroomPredictionResponse(
-                        row.getId(),
-                        row.getComponentId(),
-                        componentName(componentNames, row.getComponentId()),
-                        row.getTitle(),
-                        row.getContent(),
-                        row.getCreatedAt()))
-                .toList();
+        String teacherId = currentUser.requireUserId();
+        return predictionMapper.toDtos(
+                contentService.predictions(myClassroom().getId(), false), teacherId);
     }
 
     @PostMapping("/predictions")
     @PreAuthorize("hasAuthority('classroom:write')")
     public ClassroomDtos.ClassroomPredictionResponse addPrediction(
-            @Valid @RequestBody ClassroomDtos.CreatePredictionRequest request) {
+            @Valid @RequestBody ClassroomDtos.SavePredictionRequest request) {
 
-        ClassroomPrediction saved = contentService.addPrediction(
-                myClassroom().getId(), currentUser.requireUserId(),
-                request.componentId(), request.title(), request.content());
+        return savePrediction(null, request);
+    }
 
-        return new ClassroomDtos.ClassroomPredictionResponse(
-                saved.getId(), saved.getComponentId(),
-                componentName(componentNames(List.of(saved)), saved.getComponentId()),
-                saved.getTitle(), saved.getContent(), saved.getCreatedAt());
+    @PutMapping("/predictions/{predictionId}")
+    @PreAuthorize("hasAuthority('classroom:write')")
+    public ClassroomDtos.ClassroomPredictionResponse updatePrediction(
+            @PathVariable String predictionId,
+            @Valid @RequestBody ClassroomDtos.SavePredictionRequest request) {
+
+        return savePrediction(predictionId, request);
+    }
+
+    /**
+     * Đường chung cho tạo mới và sửa.
+     *
+     * <p>Đề gắn đích danh phải là đề lớp được dùng: đề hệ thống chỉ khi lớp
+     * được admin bật kho đề, còn đề tự soạn thì phải của chính giáo viên này.
+     */
+    private ClassroomDtos.ClassroomPredictionResponse savePrediction(
+            String predictionId, ClassroomDtos.SavePredictionRequest request) {
+
+        String teacherId = currentUser.requireUserId();
+        Classroom classroom = myClassroom();
+
+        if (request.questionSetIds() != null && !request.questionSetIds().isEmpty()) {
+            assignmentService.requireUsableQuestionSets(
+                    classroom, teacherId, request.questionSetIds());
+        }
+
+        ClassroomPrediction saved = contentService.savePrediction(
+                classroom.getId(), teacherId, predictionId,
+                new ClassroomContentService.PredictionContent(
+                        request.componentId(),
+                        request.topicId(),
+                        request.partId(),
+                        request.predictDate(),
+                        parsePriority(request.priority()),
+                        request.label(),
+                        request.sectionLabel(),
+                        request.source(),
+                        parsePredictionStatus(request.status()),
+                        request.displayOrder(),
+                        request.title(),
+                        request.content(),
+                        request.questionSetIds()));
+
+        return predictionMapper.toDtos(List.of(saved), teacherId).get(0);
     }
 
     @DeleteMapping("/predictions/{predictionId}")
@@ -400,12 +448,69 @@ public class TeacherContentController {
                 material.getCreatedAt());
     }
 
-    private static ClassroomDtos.ClassroomPostResponse toDto(ClassroomPost post) {
+    static ClassroomDtos.ClassroomPostResponse toDto(ClassroomPost post) {
         return new ClassroomDtos.ClassroomPostResponse(
                 post.getId(),
                 post.getTitle(),
+                post.getExcerpt(),
                 post.getContent(),
+                post.getCoverAssetId(),
+                post.isPinned(),
                 post.getStatus().name(),
+                post.getPublishedAt(),
                 post.getCreatedAt());
+    }
+
+    private static ClassroomContentService.PostContent toContent(
+            ClassroomDtos.SavePostRequest request) {
+
+        return new ClassroomContentService.PostContent(
+                request.title(),
+                request.excerpt(),
+                request.content(),
+                request.coverAssetId(),
+                request.pinned(),
+                parsePostStatus(request.status()));
+    }
+
+    /**
+     * Đọc trạng thái từ chuỗi client gửi.
+     *
+     * <p>Trả null khi không truyền để service giữ nguyên trạng thái cũ — sửa
+     * tiêu đề một bài đã đăng không được vô tình hạ nó xuống nháp.
+     */
+    private static ClassroomPost.PostStatus parsePostStatus(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        try {
+            return ClassroomPost.PostStatus.valueOf(raw.trim().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            throw new ApiException(
+                    ErrorCode.VALIDATION_FAILED, "Trạng thái bài đăng không hợp lệ");
+        }
+    }
+
+    private static ClassroomPrediction.PredictionStatus parsePredictionStatus(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        try {
+            return ClassroomPrediction.PredictionStatus.valueOf(raw.trim().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            throw new ApiException(
+                    ErrorCode.VALIDATION_FAILED, "Trạng thái dự đoán không hợp lệ");
+        }
+    }
+
+    private static ClassroomPrediction.Priority parsePriority(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        try {
+            return ClassroomPrediction.Priority.valueOf(raw.trim().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            throw new ApiException(ErrorCode.VALIDATION_FAILED, "Mức ưu tiên không hợp lệ");
+        }
     }
 }

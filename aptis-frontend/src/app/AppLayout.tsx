@@ -40,6 +40,12 @@ export function AppLayout() {
   const { isAdmin, has } = usePermission();
   // Giáo viên vào thẳng trang lớp mình dạy; học viên vào trang lớp đang học.
   const isTeacher = has('classroom:write');
+
+  // Trong một lớp thì lớp có thanh bên riêng, thay hẳn thanh bên hệ thống.
+  // Để cả hai thì màn hình mất gần nửa chiều ngang cho hai cột điều hướng, mà
+  // các mục luyện tập chung cũng chỉ gây nhiễu khi đang làm việc với lớp.
+  const trongLopHoc =
+    location.pathname === '/giang-day' || location.pathname.startsWith('/lop-hoc/');
   const { collapsed, toggle: toggleSidebar } = useSidebarCollapsed();
   const expiry = describePremiumExpiry(user?.premiumEndsAt);
   // Dùng thử và gói đã mua cùng dùng premiumEndsAt, chỉ khác chữ hiển thị.
@@ -89,7 +95,8 @@ export function AppLayout() {
       {/* Desktop Sidebar */}
       <aside
         className={clsx(
-          'fixed inset-y-0 left-0 z-40 hidden flex-col border-r border-border bg-white md:flex',
+          'fixed inset-y-0 left-0 z-40 hidden flex-col border-r border-border bg-white',
+          trongLopHoc ? 'md:hidden' : 'md:flex',
           // Chuyển động chỉ trên chiều rộng: animate cả layout làm nội dung
           // chính giật theo mỗi lần bấm.
           'transition-[width] duration-200 ease-out',
@@ -296,7 +303,8 @@ export function AppLayout() {
         className={clsx(
           'fixed inset-x-0 top-0 z-30 flex h-16 items-center border-b border-border bg-white/95 px-4 backdrop-blur md:px-8',
           'transition-[left] duration-200 ease-out',
-          collapsed ? 'md:left-[4.5rem]' : 'md:left-64',
+          // Trong lớp không có thanh bên hệ thống nên header trải hết chiều ngang.
+          trongLopHoc ? '' : collapsed ? 'md:left-[4.5rem]' : 'md:left-64',
         )}
       >
         <Link to="/" className="flex items-center gap-2 md:hidden">
@@ -394,7 +402,12 @@ export function AppLayout() {
       </header>
 
       {/* Main Content Area */}
-      <div className={clsx('pt-16 transition-[padding] duration-200 ease-out', collapsed ? 'md:pl-[4.5rem]' : 'md:pl-64')}>
+      <div
+        className={clsx(
+          'pt-16 transition-[padding] duration-200 ease-out',
+          trongLopHoc ? '' : collapsed ? 'md:pl-[4.5rem]' : 'md:pl-64',
+        )}
+      >
         <main className="mx-auto max-w-[1240px] px-4 py-6 pb-24 sm:px-6 lg:px-8 lg:py-8">
           <Outlet />
         </main>

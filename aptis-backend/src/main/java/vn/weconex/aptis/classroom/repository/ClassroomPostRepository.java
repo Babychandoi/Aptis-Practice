@@ -9,9 +9,16 @@ import vn.weconex.aptis.classroom.domain.ClassroomContentEntities.ClassroomPost.
 /** Bảng tin riêng của lớp. */
 public interface ClassroomPostRepository extends JpaRepository<ClassroomPost, String> {
 
-    List<ClassroomPost> findByClassroomIdOrderByCreatedAtDesc(String classroomId);
+    /** Giáo viên thấy hết, kể cả nháp và bài đã ẩn. */
+    List<ClassroomPost> findByClassroomIdOrderByPinnedDescCreatedAtDesc(String classroomId);
 
-    /** Học viên chỉ thấy bài đã đăng, không thấy bài bị ẩn. */
-    List<ClassroomPost> findByClassroomIdAndStatusOrderByCreatedAtDesc(
+    /**
+     * Bảng tin học viên thấy: bài ghim lên đầu, còn lại mới trước.
+     *
+     * <p>Sắp theo published_at chứ không phải created_at — bài soạn nháp từ
+     * tuần trước mà hôm nay mới đăng thì phải nằm trên cùng, không bị chìm
+     * xuống dưới những bài đăng sau nó.
+     */
+    List<ClassroomPost> findByClassroomIdAndStatusOrderByPinnedDescPublishedAtDesc(
             String classroomId, PostStatus status);
 }

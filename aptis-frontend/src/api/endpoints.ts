@@ -5,6 +5,8 @@ import type {
   ClassroomMaterial,
   ClassroomPost,
   ClassroomPrediction,
+  SaveClassroomPostBody,
+  SaveClassroomPredictionBody,
   StudentAssignment,
   TeacherQuestionSet,
   AdminClassroom,
@@ -550,18 +552,30 @@ export const teacherContentApi = {
   deleteMaterial: (id: string) =>
     api.delete(`/teacher/classroom/materials/${id}`).then((r) => r.data),
 
+  /** Giáo viên thấy cả bài nháp và bài đã ẩn. */
   posts: () => api.get<ClassroomPost[]>('/teacher/classroom/posts').then((r) => r.data),
 
-  addPost: (body: { title: string; content: string }) =>
+  post: (id: string) =>
+    api.get<ClassroomPost>(`/teacher/classroom/posts/${id}`).then((r) => r.data),
+
+  addPost: (body: SaveClassroomPostBody) =>
     api.post<ClassroomPost>('/teacher/classroom/posts', body).then((r) => r.data),
+
+  updatePost: (id: string, body: SaveClassroomPostBody) =>
+    api.put<ClassroomPost>(`/teacher/classroom/posts/${id}`, body).then((r) => r.data),
 
   deletePost: (id: string) => api.delete(`/teacher/classroom/posts/${id}`).then((r) => r.data),
 
   predictions: () =>
     api.get<ClassroomPrediction[]>('/teacher/classroom/predictions').then((r) => r.data),
 
-  addPrediction: (body: { componentId?: string; title: string; content?: string }) =>
+  addPrediction: (body: SaveClassroomPredictionBody) =>
     api.post<ClassroomPrediction>('/teacher/classroom/predictions', body).then((r) => r.data),
+
+  updatePrediction: (id: string, body: SaveClassroomPredictionBody) =>
+    api
+      .put<ClassroomPrediction>(`/teacher/classroom/predictions/${id}`, body)
+      .then((r) => r.data),
 
   deletePrediction: (id: string) =>
     api.delete(`/teacher/classroom/predictions/${id}`).then((r) => r.data),
@@ -612,6 +626,19 @@ export const studentWorkspaceApi = {
 
   predictions: (classroomId: string) =>
     api.get<ClassroomPrediction[]>(`/classrooms/${classroomId}/predictions`).then((r) => r.data),
+
+  /**
+   * Mở lượt luyện từ một mục dự đoán của lớp.
+   *
+   * <p>Đi đường riêng chứ không dùng /practice/custom-attempts: học viên trong
+   * lớp làm được đề của lớp kể cả khi chưa mua Premium.
+   */
+  practicePrediction: (classroomId: string, predictionId: string) =>
+    api
+      .post<{ attemptId: string }>(
+        `/classrooms/${classroomId}/predictions/${predictionId}/practice`,
+      )
+      .then((r) => r.data),
 };
 
 export const studentClassroomApi = {

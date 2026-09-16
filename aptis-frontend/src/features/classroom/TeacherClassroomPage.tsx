@@ -10,11 +10,13 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatCurrency, formatDateTime } from '@/lib/format';
 import { useEscapeKey } from '@/lib/useEscapeKey';
 import { TeacherAssignmentsTab } from '@/features/classroom/TeacherAssignmentsTab';
-import { ContentKindTabs, TeacherContentTab } from '@/features/classroom/TeacherContentTab';
+import { TeacherContentTab } from '@/features/classroom/TeacherContentTab';
+import { TeacherPostsTab } from '@/features/classroom/TeacherPostsTab';
+import { TeacherPredictionsTab } from '@/features/classroom/TeacherPredictionsTab';
+import { ClassroomSidebar } from '@/features/classroom/ClassroomSidebar';
 import type { Classroom } from '@/types/api';
 
-type Tab = 'students' | 'assignments' | 'content' | 'progress' | 'settings';
-type ContentKind = 'materials' | 'posts' | 'predictions';
+type Tab = 'students' | 'assignments' | 'materials' | 'posts' | 'predictions' | 'progress' | 'settings';
 
 /** Ngưỡng màu cho thanh tiến độ — khớp wireframe. */
 function scoreTone(score: number): string {
@@ -37,7 +39,6 @@ function scoreText(score: number): string {
  */
 export function TeacherClassroomPage() {
   const [tab, setTab] = useState<Tab>('students');
-  const [contentKind, setContentKind] = useState<ContentKind>('materials');
   const [inviteOpen, setInviteOpen] = useState(false);
 
   const query = useQuery({
@@ -92,45 +93,35 @@ export function TeacherClassroomPage() {
         </button>
       </header>
 
-      {/* flex-wrap: 5 tab tiếng Việt rộng hơn màn điện thoại, không xuống dòng sẽ tràn ngang cả trang. */}
-      <div role="tablist" className="flex w-fit flex-wrap gap-1.5 rounded-2xl bg-surface-muted p-1">
-        {(
-          [
-            ['students', 'Học viên'],
-            ['assignments', 'Bài giao'],
-            ['content', 'Nội dung lớp'],
-            ['progress', 'Tiến độ'],
-            ['settings', 'Cài đặt lớp'],
-          ] as const
-        ).map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            role="tab"
-            aria-selected={tab === key}
-            onClick={() => setTab(key)}
-            className={clsx(
-              'rounded-xl px-4 py-2 text-sm font-semibold transition-colors',
-              tab === key
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-500 hover:text-slate-800',
-            )}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <div className="flex flex-col gap-5 lg:flex-row">
+        <ClassroomSidebar
+          title={classroom.name}
+          subtitle={`${classroom.studentCount}/${classroom.maxStudents} học viên · Mã ${classroom.joinCode}`}
+          backTo="/"
+          backLabel="Rời lớp"
+          value={tab}
+          onChange={setTab}
+          items={[
+            { key: 'students', label: 'Học viên', badge: classroom.studentCount },
+            { key: 'assignments', label: 'Bài giao' },
+            { key: 'materials', label: 'Tài liệu' },
+            { key: 'posts', label: 'Bảng tin lớp' },
+            { key: 'predictions', label: 'Dự đoán đề' },
+            { key: 'progress', label: 'Tiến độ' },
+            { key: 'settings', label: 'Cài đặt lớp' },
+          ]}
+        />
 
-      {tab === 'students' && <StudentTable />}
-      {tab === 'assignments' && <TeacherAssignmentsTab classroom={classroom} />}
-      {tab === 'content' && (
-        <div className="space-y-3">
-          <ContentKindTabs value={contentKind} onChange={setContentKind} />
-          <TeacherContentTab kind={contentKind} />
+        <div className="min-w-0 flex-1 space-y-4">
+          {tab === 'students' && <StudentTable />}
+          {tab === 'assignments' && <TeacherAssignmentsTab classroom={classroom} />}
+          {tab === 'materials' && <TeacherContentTab kind="materials" />}
+          {tab === 'posts' && <TeacherPostsTab />}
+          {tab === 'predictions' && <TeacherPredictionsTab classroom={classroom} />}
+          {tab === 'progress' && <ProgressPanel studentCount={classroom.studentCount} />}
+          {tab === 'settings' && <SettingsPanel classroom={classroom} />}
         </div>
-      )}
-      {tab === 'progress' && <ProgressPanel studentCount={classroom.studentCount} />}
-      {tab === 'settings' && <SettingsPanel classroom={classroom} />}
+      </div>
 
       {inviteOpen && <InviteDialog classroom={classroom} onClose={() => setInviteOpen(false)} />}
     </div>

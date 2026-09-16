@@ -190,6 +190,26 @@ public interface QuestionSetRepository
             @Param("status") ContentStatus status);
 
     /**
+     * Đề đã publish của một chủ đề, để mở lượt luyện từ mục dự đoán.
+     *
+     * <p>Phải giới hạn phạm vi bằng part hoặc kỹ năng: chỉ lọc theo chủ đề thì
+     * một chủ đề trùng tên ở kỹ năng khác sẽ kéo ra đề sai hẳn — nhãn của
+     * Writing từng ra đề Listening vì cùng trỏ vào một chủ đề.
+     */
+    @Query("""
+            SELECT qs FROM QuestionSet qs
+            WHERE qs.status = vn.weconex.aptis.common.util.Enums.ContentStatus.PUBLISHED
+              AND qs.topic.id = :topicId
+              AND (:partId IS NULL OR qs.part.id = :partId)
+              AND (:componentId IS NULL OR qs.part.component.id = :componentId)
+            ORDER BY qs.hotness DESC, qs.createdAt DESC
+            """)
+    List<QuestionSet> findPublishedForPrediction(
+            @Param("topicId") String topicId,
+            @Param("partId") String partId,
+            @Param("componentId") String componentId);
+
+    /**
      * Chỉ lấy topic_id, không nạp cả entity: dùng khi chọn nội dung theo vòng và
      * chỉ cần biết bộ vừa chọn thuộc chủ đề nào.
      */
