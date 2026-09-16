@@ -66,7 +66,18 @@ import type {
   NewsComment,
   NewsPostDetail,
   NewsPostSummary,
+  TeacherAuthoredSet,
+  TeacherBlueprint,
+  BlueprintFixedSet,
+  BlueprintRule,
+  SaveBlueprintBody,
+  QuestionSetContribution,
 } from '@/types/api';
+import type {
+  AdminQuestionSet,
+  CreateQuestionSetRequest,
+  UpdateQuestionSetRequest,
+} from '@/types/admin';
 
 // ---------------------------------------------------------------------
 // Auth
@@ -683,4 +694,85 @@ export const adminClassroomApi = {
 
   updateSettings: (body: TeacherSettings) =>
     api.put<TeacherSettings>('/admin/classrooms/settings', body).then((r) => r.data),
+};
+
+// ---------------------------------------------------------------------
+// Giáo viên tự soạn đề và ghép bài thi
+// ---------------------------------------------------------------------
+
+/**
+ * Soạn đề của giáo viên.
+ *
+ * <p>Cùng hình dạng với adminContentApi để trình soạn dùng chung được cho cả
+ * hai bên — chỉ khác đường dẫn và việc đề gắn chủ sở hữu.
+ */
+export const teacherAuthoringApi = {
+  /** Đề giáo viên đã soạn, kèm trạng thái đề xuất vào kho chung. */
+  list: () =>
+    api.get<TeacherAuthoredSet[]>('/teacher/question-sets').then((r) => r.data),
+
+  detail: (id: string) =>
+    api.get<AdminQuestionSet>(`/teacher/question-sets/${id}`).then((r) => r.data),
+
+  create: (body: CreateQuestionSetRequest) =>
+    api.post<AdminQuestionSet>('/teacher/question-sets', body).then((r) => r.data),
+
+  update: (id: string, body: UpdateQuestionSetRequest) =>
+    api.patch<AdminQuestionSet>(`/teacher/question-sets/${id}`, body).then((r) => r.data),
+
+  remove: (id: string) =>
+    api.delete(`/teacher/question-sets/${id}`).then((r) => r.data),
+
+  /** Gửi đề cho quản trị viên xem xét đưa vào ngân hàng chung. */
+  contribute: (id: string, note?: string) =>
+    api
+      .post<{ status: string }>(`/teacher/question-sets/${id}/contribute`, { note })
+      .then((r) => r.data),
+};
+
+/** Bài thi giáo viên tự ghép: full một kỹ năng hoặc đủ 5 kỹ năng. */
+export const teacherBlueprintApi = {
+  list: () => api.get<TeacherBlueprint[]>('/teacher/blueprints').then((r) => r.data),
+
+  questionSets: (id: string) =>
+    api
+      .get<BlueprintFixedSet[]>(`/teacher/blueprints/${id}/question-sets`)
+      .then((r) => r.data),
+
+  rules: (id: string) =>
+    api.get<BlueprintRule[]>(`/teacher/blueprints/${id}/rules`).then((r) => r.data),
+
+  create: (body: SaveBlueprintBody) =>
+    api.post<TeacherBlueprint>('/teacher/blueprints', body).then((r) => r.data),
+
+  update: (id: string, body: SaveBlueprintBody) =>
+    api.put<TeacherBlueprint>(`/teacher/blueprints/${id}`, body).then((r) => r.data),
+
+  remove: (id: string) => api.delete(`/teacher/blueprints/${id}`).then((r) => r.data),
+};
+
+/** Admin duyệt đề giáo viên đề xuất vào ngân hàng chung. */
+export const adminContributionApi = {
+  list: (params: { status?: string; page?: number; size?: number } = {}) =>
+    api
+      .get<PageResponse<QuestionSetContribution>>('/admin/question-set-contributions', {
+        params: { page: 0, size: 20, ...params },
+      })
+      .then((r) => r.data),
+
+  accept: (id: string, adminNote?: string) =>
+    api
+      .post<QuestionSetContribution>(
+        `/admin/question-set-contributions/${id}/accept`,
+        { adminNote },
+      )
+      .then((r) => r.data),
+
+  reject: (id: string, adminNote?: string) =>
+    api
+      .post<QuestionSetContribution>(
+        `/admin/question-set-contributions/${id}/reject`,
+        { adminNote },
+      )
+      .then((r) => r.data),
 };

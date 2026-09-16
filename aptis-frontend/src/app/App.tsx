@@ -47,6 +47,7 @@ const NotFoundPage = lazy(() => import('@/app/NotFoundPage').then((m) => ({ defa
 const AdminLayout = lazy(() => import('@/features/admin/AdminLayout').then((m) => ({ default: m.AdminLayout })));
 const QuestionSetListPage = lazy(() => import('@/features/admin/QuestionSetListPage').then((m) => ({ default: m.QuestionSetListPage })));
 const QuestionSetDetailPage = lazy(() => import('@/features/admin/QuestionSetDetailPage').then((m) => ({ default: m.QuestionSetDetailPage })));
+const ContributionAdminPage = lazy(() => import('@/features/admin/ContributionAdminPage').then((m) => ({ default: m.ContributionAdminPage })));
 const QuestionSetEditorPage = lazy(() => import('@/features/admin/QuestionSetEditorPage').then((m) => ({ default: m.QuestionSetEditorPage })));
 const ImportAdminPage = lazy(() => import('@/features/admin/ImportAdminPage').then((m) => ({ default: m.ImportAdminPage })));
 const PlanAdminPage = lazy(() => import('@/features/admin/PlanAdminPage').then((m) => ({ default: m.PlanAdminPage })));
@@ -141,6 +142,9 @@ export function App() {
         <Route path="/lop-hoc" element={<StudentClassroomPage />} />
         <Route path="/lop/tham-gia" element={<StudentClassroomPage />} />
         <Route path="/giang-day" element={<TeacherClassroomPage />} />
+        {/* Trình soạn đề dùng chung với admin, chỉ khác mode. */}
+        <Route path="/giang-day/de/moi" element={<QuestionSetEditorPage mode="teacher" />} />
+        <Route path="/giang-day/de/:id" element={<QuestionSetEditorPage mode="teacher" />} />
         <Route path="/lop-hoc/:classroomId" element={<ClassroomWorkspacePage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/plans" element={<PlansPage />} />
@@ -172,6 +176,7 @@ export function App() {
         <Route path="exam-predictions" element={<ExamPredictionAdminPage />} />
         <Route path="news" element={<NewsAdminPage />} />
         <Route path="imports" element={<ImportAdminPage />} />
+        <Route path="contributions" element={<ContributionAdminPage />} />
         <Route path="plans" element={<PlanAdminPage />} />
         <Route path="orders" element={<OrderAdminPage />} />
         <Route path="bank-transfers" element={<BankTransferAdminPage />} />

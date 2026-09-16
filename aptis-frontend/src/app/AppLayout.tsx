@@ -44,6 +44,9 @@ export function AppLayout() {
   // Trong một lớp thì lớp có thanh bên riêng, thay hẳn thanh bên hệ thống.
   // Để cả hai thì màn hình mất gần nửa chiều ngang cho hai cột điều hướng, mà
   // các mục luyện tập chung cũng chỉ gây nhiễu khi đang làm việc với lớp.
+  // Chỉ những trang tự dựng ClassroomSidebar mới ẩn thanh bên hệ thống. Trang
+  // soạn đề nằm dưới /giang-day nhưng là màn toàn trang, không có thanh bên
+  // riêng — ẩn luôn thì bên trái trống hoác.
   const trongLopHoc =
     location.pathname === '/giang-day' || location.pathname.startsWith('/lop-hoc/');
   const { collapsed, toggle: toggleSidebar } = useSidebarCollapsed();

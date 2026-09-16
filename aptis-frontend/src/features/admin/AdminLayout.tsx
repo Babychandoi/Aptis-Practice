@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { to: '/admin/skill-tests', label: 'Bài test kỹ năng', permission: 'blueprint:write', icon: 'tests' },
   { to: '/admin/question-sets', label: 'Ngân hàng câu hỏi', permission: 'question_set:read', icon: 'questions' },
   { to: '/admin/imports', label: 'Import câu hỏi', permission: 'question_set:write', icon: 'import' },
+  { to: '/admin/contributions', label: 'Đề giáo viên gửi', permission: 'question_set:review', icon: 'questions' },
   { to: '/admin/scoring', label: 'Cấu hình điểm', permission: 'question_set:write', icon: 'scoring' },
   { to: '/admin/exam-predictions', label: 'Dự đoán đề', permission: 'question_set:write', icon: 'scoring' },
   { to: '/admin/news', label: 'Bảng tin', permission: 'news:write', icon: 'news', hasNewsBadge: true },

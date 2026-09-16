@@ -14,9 +14,20 @@ import { TeacherContentTab } from '@/features/classroom/TeacherContentTab';
 import { TeacherPostsTab } from '@/features/classroom/TeacherPostsTab';
 import { TeacherPredictionsTab } from '@/features/classroom/TeacherPredictionsTab';
 import { ClassroomSidebar } from '@/features/classroom/ClassroomSidebar';
+import { TeacherQuestionSetsTab } from '@/features/classroom/TeacherQuestionSetsTab';
+import { TeacherBlueprintsTab } from '@/features/classroom/TeacherBlueprintsTab';
 import type { Classroom } from '@/types/api';
 
-type Tab = 'students' | 'assignments' | 'materials' | 'posts' | 'predictions' | 'progress' | 'settings';
+type Tab =
+  | 'students'
+  | 'assignments'
+  | 'my-sets'
+  | 'blueprints'
+  | 'materials'
+  | 'posts'
+  | 'predictions'
+  | 'progress'
+  | 'settings';
 
 /** Ngưỡng màu cho thanh tiến độ — khớp wireframe. */
 function scoreTone(score: number): string {
@@ -103,6 +114,8 @@ export function TeacherClassroomPage() {
           items={[
             { key: 'students', label: 'Học viên', badge: classroom.studentCount },
             { key: 'assignments', label: 'Bài giao' },
+            { key: 'my-sets', label: 'Đề của tôi' },
+            { key: 'blueprints', label: 'Bài thi ghép' },
             { key: 'materials', label: 'Tài liệu' },
             { key: 'posts', label: 'Bảng tin lớp' },
             { key: 'predictions', label: 'Dự đoán đề' },
@@ -114,6 +127,8 @@ export function TeacherClassroomPage() {
       <div className="space-y-4">
         {tab === 'students' && <StudentTable />}
         {tab === 'assignments' && <TeacherAssignmentsTab classroom={classroom} />}
+        {tab === 'my-sets' && <TeacherQuestionSetsTab />}
+        {tab === 'blueprints' && <TeacherBlueprintsTab classroom={classroom} />}
         {tab === 'materials' && <TeacherContentTab kind="materials" />}
         {tab === 'posts' && <TeacherPostsTab />}
         {tab === 'predictions' && <TeacherPredictionsTab classroom={classroom} />}

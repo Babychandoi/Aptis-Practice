@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/api/client';
 import { adminContentApi, adminScoringApi } from '@/api/adminEndpoints';
+import { teacherAuthoringApi } from '@/api/endpoints';
 import { assetApi, catalogApi, uploadToPresignedUrl } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
@@ -330,17 +331,30 @@ const initialForm: EditorForm = {
   shuffleItems: false, maxAudioPlays: 3, allowReview: true, partialCredit: false,
 };
 
-export function QuestionSetEditorPage() {
+/**
+ * Trình soạn đề dùng chung cho admin và giáo viên.
+ *
+ * <p>Giáo viên soạn cùng 12 dạng bài, cùng preset theo part, cùng cách tải
+ * audio/ảnh — chỉ khác ở API lưu và đường quay lại. Tách thành hai trình soạn
+ * riêng sẽ thành một bản rút gọn thiếu dạng này dạng kia, rồi phải sửa hai nơi
+ * mỗi lần đổi.
+ */
+export function QuestionSetEditorPage({ mode = 'admin' }: { mode?: 'admin' | 'teacher' } = {}) {
   const { id } = useParams<{ id: string }>();
   const editing = Boolean(id);
   const navigate = useNavigate();
+  const laGiaoVien = mode === 'teacher';
+  // Giáo viên lưu qua API riêng: đề gắn chủ sở hữu và dùng được ngay.
+  const contentApi = laGiaoVien ? teacherAuthoringApi : adminContentApi;
   const [searchParams] = useSearchParams();
   const hierarchyQuery = searchParams.toString();
   const hierarchyComponentId = searchParams.get('componentId');
   const hierarchyPartId = searchParams.get('partId');
-  const hierarchyListUrl = hierarchyComponentId && hierarchyPartId
-    ? `/admin/question-sets/skills/${hierarchyComponentId}/parts/${hierarchyPartId}`
-    : '/admin/question-sets';
+  const hierarchyListUrl = laGiaoVien
+    ? '/giang-day'
+    : hierarchyComponentId && hierarchyPartId
+      ? `/admin/question-sets/skills/${hierarchyComponentId}/parts/${hierarchyPartId}`
+      : '/admin/question-sets';
   const queryClient = useQueryClient();
   const { has } = usePermission();
   const hydrated = useRef(false);
@@ -358,7 +372,7 @@ export function QuestionSetEditorPage() {
   });
   const taskTypes = { data: TASK_TYPES, isPending: false, error: null };
   const detail = useQuery({
-    queryKey: ['admin', 'question-set', id], queryFn: () => adminContentApi.detail(id ?? ''), enabled: editing,
+    queryKey: [mode, 'question-set', id], queryFn: () => contentApi.detail(id ?? ''), enabled: editing,
   });
   const scoringRules = useQuery({
     queryKey: ['admin', 'scoring-rules'], queryFn: adminScoringApi.list,
@@ -473,7 +487,7 @@ export function QuestionSetEditorPage() {
           examYear: form.examYear === '' ? null : Number(form.examYear),
           accessLevel: form.accessLevel, content,
         };
-        return adminContentApi.update(id, body);
+        return contentApi.update(id, body);
       }
       const baseCode = form.code.trim().toUpperCase().replace(/\s+/g, '_');
 
@@ -481,12 +495,12 @@ export function QuestionSetEditorPage() {
       // số câu của đề. Lưu tuần tự vì code phải duy nhất, chạy song song dễ
       // đụng nhau ở ràng buộc unique.
       if (partTemplate?.bulkSingleItem && form.items.length > 1) {
-        let created: Awaited<ReturnType<typeof adminContentApi.create>> | undefined;
+        let created: Awaited<ReturnType<typeof contentApi.create>> | undefined;
         for (const [index, singleItem] of form.items.entries()) {
           const singleContent = toContent(
             { ...form, items: [singleItem] }, partTemplate, partScoringRule);
           const suffix = String(index + 1).padStart(2, '0');
-          created = await adminContentApi.create({
+          created = await contentApi.create({
             partId: form.partId, taskTypeId: form.taskTypeId, topicName: form.topicName.trim(),
             code: `${baseCode}_${suffix}`,
             title: singleItem.prompt?.value?.trim() || `${form.title.trim()} ${suffix}`,
@@ -505,9 +519,16 @@ export function QuestionSetEditorPage() {
         examYear: form.examYear === '' ? null : Number(form.examYear),
         accessLevel: form.accessLevel, content,
       };
-      return adminContentApi.create(body);
+      return contentApi.create(body);
     },
     onSuccess: (question) => {
+      if (laGiaoVien) {
+        void queryClient.invalidateQueries({ queryKey: ['teacher', 'question-sets'] });
+        // Về thẳng danh sách đề của lớp: giáo viên không có màn chi tiết đề
+        // như admin, và thứ họ cần thấy là đề vừa soạn đã nằm trong danh sách.
+        navigate('/giang-day?tab=my-sets', { replace: true });
+        return;
+      }
       void queryClient.invalidateQueries({ queryKey: ['admin', 'question-sets'] });
       navigate(`/admin/question-sets/${question.id}${hierarchyQuery ? `?${hierarchyQuery}` : ''}`, { replace: true });
     },
@@ -516,7 +537,8 @@ export function QuestionSetEditorPage() {
 
   const loading = versions.isPending || components.isPending || taskTypes.isPending || scoringRules.isPending || (editing && detail.isPending);
   const loadError = versions.error || components.error || taskTypes.error || scoringRules.error || detail.error;
-  if (!has('question_set:write')) return <ErrorBlock message="Bạn không có quyền soạn câu hỏi." />;
+  const quyenCanCo = laGiaoVien ? 'classroom:content' : 'question_set:write';
+  if (!has(quyenCanCo)) return <ErrorBlock message="Bạn không có quyền soạn câu hỏi." />;
   if (loading) return <LoadingBlock label="Đang chuẩn bị trình soạn…" />;
   if (loadError) return <ErrorBlock message={loadError instanceof Error ? loadError.message : 'Không tải được dữ liệu trình soạn'} />;
 
@@ -541,7 +563,7 @@ export function QuestionSetEditorPage() {
       <PageHeader
         title={editing ? 'Chỉnh sửa đề' : 'Tạo đề mới'}
         description="Kỹ năng, Part và dạng câu hỏi đã được xác định tự động từ vị trí bạn chọn."
-        actions={<Link to={editing && id ? `/admin/question-sets/${id}${hierarchyQuery ? `?${hierarchyQuery}` : ''}` : hierarchyListUrl} className="btn-secondary">Hủy</Link>}
+        actions={<Link to={laGiaoVien ? hierarchyListUrl : editing && id ? `/admin/question-sets/${id}${hierarchyQuery ? `?${hierarchyQuery}` : ''}` : hierarchyListUrl} className="btn-secondary">Hủy</Link>}
       />
       {error && <ResultBanner tone="danger" message={error} onDismiss={() => setError(null)} />}
 

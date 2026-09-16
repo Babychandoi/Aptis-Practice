@@ -1273,3 +1273,91 @@ export interface TeacherQuestionSet {
   status: string;
   createdAt: string;
 }
+
+// ---------------------------------------------------------------------
+// Giáo viên tự soạn đề và ghép bài thi
+// ---------------------------------------------------------------------
+
+export type ContributionStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED';
+
+/** Một đề giáo viên tự soạn. */
+export interface TeacherAuthoredSet {
+  id: string;
+  code: string;
+  title: string;
+  partId?: string | null;
+  partName: string;
+  componentName: string;
+  taskTypeCode?: string | null;
+  itemCount: number;
+  status: string;
+  /** Vắng mặt = chưa từng đề xuất vào ngân hàng chung. */
+  contributionStatus?: ContributionStatus | null;
+  /** Lý do admin từ chối. */
+  contributionNote?: string | null;
+  createdAt: string;
+}
+
+/** FIXED = giáo viên chọn tay từng đề, RULES = hệ thống bốc theo luật. */
+export type BlueprintSelectionMode = 'FIXED' | 'RULES';
+
+export interface TeacherBlueprint {
+  id: string;
+  code: string;
+  name: string;
+  description?: string | null;
+  /** Rỗng = bài đủ 5 kỹ năng. */
+  componentId?: string | null;
+  componentName: string;
+  selectionMode: BlueprintSelectionMode;
+  durationSeconds?: number | null;
+  status: string;
+  questionSetCount: number;
+  ruleCount: number;
+  createdAt: string;
+}
+
+export interface BlueprintFixedSet {
+  questionSetId: string;
+  title: string;
+  partId?: string | null;
+  partName: string;
+  componentName: string;
+  displayOrder: number;
+}
+
+export interface BlueprintRule {
+  partId: string;
+  questionSetCount: number;
+  difficultyMin?: number | null;
+  difficultyMax?: number | null;
+}
+
+export interface SaveBlueprintBody {
+  name: string;
+  description?: string | null;
+  /** Bỏ trống = bài đủ 5 kỹ năng. */
+  componentId?: string | null;
+  selectionMode: BlueprintSelectionMode;
+  durationSeconds?: number | null;
+  questionSetIds?: string[];
+  rules?: BlueprintRule[];
+}
+
+/** Đề giáo viên đề xuất vào ngân hàng chung, phía admin. */
+export interface QuestionSetContribution {
+  id: string;
+  questionSetId: string;
+  questionSetTitle: string;
+  questionSetCode: string;
+  partName: string;
+  componentName: string;
+  teacherUserId: string;
+  teacherName: string;
+  teacherEmail: string;
+  status: ContributionStatus;
+  note?: string | null;
+  adminNote?: string | null;
+  reviewedAt?: string | null;
+  createdAt: string;
+}
