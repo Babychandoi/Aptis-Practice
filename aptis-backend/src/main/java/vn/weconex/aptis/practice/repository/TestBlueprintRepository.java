@@ -20,7 +20,16 @@ public interface TestBlueprintRepository extends JpaRepository<TestBlueprint, St
 
     List<TestBlueprint> findByComponentIdOrderByCreatedAtDesc(String componentId);
 
-    List<TestBlueprint> findByStatusAndModeOrderByAccessLevelAscNameAsc(
+    /** Bài thi do một giáo viên tự ghép. */
+    List<TestBlueprint> findByOwnerTeacherIdOrderByCreatedAtDesc(String ownerTeacherId);
+
+    /**
+     * Đề thi thử chung cho học viên.
+     *
+     * <p>{@code ownerTeacherIdIsNull}: bài giáo viên tự ghép chỉ dành cho lớp
+     * họ, lọt vào đây là mọi học viên đều thấy.
+     */
+    List<TestBlueprint> findByStatusAndModeAndOwnerTeacherIdIsNullOrderByAccessLevelAscNameAsc(
             PublishStatus status, PracticeMode mode);
 
     /**
@@ -35,6 +44,9 @@ public interface TestBlueprintRepository extends JpaRepository<TestBlueprint, St
      */
     @Query("select b from TestBlueprint b"
             + " where b.status = :status and b.mode = :mode"
+            // Bài giáo viên tự ghép chỉ dành cho lớp họ; lọt vào đây là mọi
+            // học viên đều thấy trong danh sách thi thử chung.
+            + " and b.ownerTeacherId is null"
             + " and ((:componentId is null and b.componentId is null)"
             + "      or b.componentId = :componentId)"
             + " order by b.accessLevel asc, b.name asc")

@@ -33,6 +33,14 @@ public class TestBlueprint extends BaseEntity {
     @Column(name = "component_id", columnDefinition = "CHAR(36)")
     private String componentId;
 
+    /**
+     * Giáo viên tự ghép bài này; null = bài của hệ thống.
+     *
+     * <p>Bài của giáo viên chỉ lớp họ thấy, không lọt vào danh sách thi thử chung.
+     */
+    @Column(name = "owner_teacher_id", columnDefinition = "CHAR(36)")
+    private String ownerTeacherId;
+
     @Column(name = "code", length = 100, nullable = false)
     private String code;
 

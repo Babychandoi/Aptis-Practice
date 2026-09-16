@@ -11,5 +11,9 @@ public interface BlueprintFixedQuestionSetRepository
     List<BlueprintFixedQuestionSet> findByKeyBlueprintRuleIdOrderByDisplayOrder(
             String blueprintRuleId);
 
+    /** Nạp một lượt cho nhiều luật — gọi lẻ từng luật sẽ thành N+1. */
+    List<BlueprintFixedQuestionSet> findByKeyBlueprintRuleIdInOrderByDisplayOrder(
+            List<String> blueprintRuleIds);
+
     void deleteByKeyBlueprintRuleId(String blueprintRuleId);
 }

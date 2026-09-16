@@ -181,7 +181,8 @@ public class AdminContentController {
         return request == null ? null : request.note();
     }
 
-    private static AdminContentDtos.AdminQuestionSetResponse toResponse(
+    /** Dùng chung với controller soạn đề của giáo viên — cùng một dạng phản hồi. */
+    public static AdminContentDtos.AdminQuestionSetResponse toResponse(
             QuestionSet questionSet, AdminContentDtos.ContentPayload content) {
 
         return new AdminContentDtos.AdminQuestionSetResponse(

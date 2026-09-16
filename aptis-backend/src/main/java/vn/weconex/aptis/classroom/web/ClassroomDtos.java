@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -331,6 +333,109 @@ public final class ClassroomDtos {
             String componentName,
             String status,
             Instant createdAt) {
+    }
+
+    /**
+     * Một đề giáo viên tự soạn, trong màn quản lý đề của họ.
+     *
+     * @param contributionStatus null = chưa từng đề xuất vào ngân hàng chung
+     * @param contributionNote lý do admin từ chối, để giáo viên biết đường sửa
+     */
+    public record TeacherAuthoredSetResponse(
+            String id,
+            String code,
+            String title,
+            String partId,
+            String partName,
+            String componentName,
+            String taskTypeCode,
+            int itemCount,
+            String status,
+            String contributionStatus,
+            String contributionNote,
+            Instant createdAt) {
+    }
+
+    public record ContributeRequest(@Size(max = 1000) String note) {
+    }
+
+    /** Một đề giáo viên đề xuất, trong màn duyệt của admin. */
+    public record ContributionResponse(
+            String id,
+            String questionSetId,
+            String questionSetTitle,
+            String questionSetCode,
+            String partName,
+            String componentName,
+            String teacherUserId,
+            String teacherName,
+            String teacherEmail,
+            String status,
+            /** Lời nhắn của giáo viên khi gửi. */
+            String note,
+            /** Lý do admin từ chối. */
+            String adminNote,
+            Instant reviewedAt,
+            Instant createdAt) {
+    }
+
+    public record ReviewContributionRequest(@Size(max = 1000) String adminNote) {
+    }
+
+    // ---------------- Bài thi giáo viên tự ghép ----------------
+
+    /**
+     * Bài thi ghép của giáo viên: full một kỹ năng hoặc đủ 5 kỹ năng.
+     *
+     * @param componentId null = bài đủ 5 kỹ năng
+     * @param selectionMode FIXED = chọn tay từng đề, RULES = hệ thống bốc
+     */
+    public record TeacherBlueprintResponse(
+            String id,
+            String code,
+            String name,
+            String description,
+            String componentId,
+            String componentName,
+            /** FIXED = giáo viên chọn tay từng đề, RULES = hệ thống bốc. */
+            String selectionMode,
+            Integer durationSeconds,
+            String status,
+            int questionSetCount,
+            int ruleCount,
+            Instant createdAt) {
+    }
+
+    /** Một đề được chọn đích danh vào bài thi ghép. */
+    public record BlueprintFixedSetResponse(
+            String questionSetId,
+            String title,
+            String partId,
+            String partName,
+            String componentName,
+            int displayOrder) {
+    }
+
+    /** Luật bốc đề cho một part, khi giáo viên không chọn tay. */
+    public record BlueprintRuleRequest(
+            @NotBlank @Size(max = 36) String partId,
+            @Min(1) @Max(50) int questionSetCount,
+            @Min(1) @Max(5) Integer difficultyMin,
+            @Min(1) @Max(5) Integer difficultyMax) {
+    }
+
+    public record SaveBlueprintRequest(
+            @NotBlank @Size(max = 255) String name,
+            @Size(max = 2000) String description,
+            /** Để trống = bài đủ 5 kỹ năng. */
+            @Size(max = 36) String componentId,
+            /** FIXED hoặc RULES. */
+            @NotBlank @Size(max = 16) String selectionMode,
+            @Min(60) @Max(36000) Integer durationSeconds,
+            /** Khi FIXED: đề chọn đích danh, theo thứ tự muốn hiện. */
+            List<String> questionSetIds,
+            /** Khi RULES: luật bốc đề theo từng part. */
+            List<BlueprintRuleRequest> rules) {
     }
 
     public record AdminOverviewResponse(
