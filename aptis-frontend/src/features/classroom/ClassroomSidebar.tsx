@@ -1,19 +1,22 @@
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import { SupportLinksCompact } from '@/components/ui/SupportLinks';
 
 /**
- * Điều hướng trong một lớp học.
+ * Thanh bên khi đang ở trong một lớp học.
  *
- * <p>Khi đang ở trong lớp, cái này thay hẳn thanh bên của hệ thống: người dùng
- * đang làm việc với lớp thì các mục luyện tập chung chỉ gây nhiễu, mà 4-5 tab
- * xếp ngang thì hết chỗ ngay trên màn hẹp.
+ * <p>Dựng đúng khung của thanh bên hệ thống — cột cố định bám mép trái, cao hết
+ * màn hình, cùng logo và cùng kiểu mục — vì nó THAY CHỖ thanh bên đó chứ không
+ * phải một khối phụ nằm trong nội dung. Làm khác khung thì người dùng thấy giao
+ * diện lệch hẳn khi bước vào lớp.
  *
- * <p>Trên điện thoại vẫn là hàng nút cuộn ngang — thanh bên không đủ chỗ.
+ * <p>Trên điện thoại vẫn là hàng nút cuộn ngang: không có thanh bên nào ở kích
+ * thước đó, còn 7 mục xuống dòng thì đẩy nội dung xuống quá sâu.
  */
 export interface ClassroomNavItem<T extends string> {
   key: T;
   label: string;
-  /** Số hiện bên phải, ví dụ số bài chưa làm. Bỏ trống thì không hiện. */
+  /** Số hiện bên phải, ví dụ sĩ số lớp. Bỏ trống thì không hiện. */
   badge?: number;
 }
 
@@ -36,21 +39,45 @@ export function ClassroomSidebar<T extends string>({
 }) {
   return (
     <>
-      {/* Thanh bên cho màn rộng */}
-      <aside className="hidden w-60 shrink-0 lg:block">
-        <div className="sticky top-24 space-y-4">
+      {/* Cột cố định cho màn rộng — cùng vị trí và cùng bề ngang với thanh bên
+          hệ thống, để chuyển vào lớp không thấy giao diện nhảy. */}
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-white md:flex">
+        <div className="flex h-18 items-center gap-3 border-b border-border px-3.5 py-4">
+          <Link to={backTo} className="flex min-w-0 items-center gap-3">
+            <img
+              src="/images/logo-mark-sm.png"
+              alt=""
+              width="36"
+              height="36"
+              className="h-9 w-9 shrink-0 object-contain"
+            />
+            <span className="min-w-0">
+              <span className="block truncate text-sm font-bold leading-tight text-slate-900">
+                Aptis Practice
+              </span>
+              <span className="block font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                Lớp học
+              </span>
+            </span>
+          </Link>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-3.5 py-5">
           <Link
             to={backTo}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-slate-800"
+            className="mb-4 flex min-h-[38px] items-center gap-2 rounded-xl px-3.5 text-xs font-semibold text-slate-500 transition-colors hover:bg-surface-paper hover:text-slate-900"
           >
             ← {backLabel}
           </Link>
 
-          <div className="rounded-2xl border border-border bg-white px-4 py-3.5">
+          <div className="mb-4 rounded-2xl bg-surface-paper px-3.5 py-3">
             <p className="text-sm font-bold leading-5 text-slate-900">{title}</p>
-            {subtitle && <p className="mt-0.5 text-[11px] text-slate-500">{subtitle}</p>}
+            {subtitle && <p className="mt-0.5 text-[11px] leading-4 text-slate-500">{subtitle}</p>}
           </div>
 
+          <p className="mb-2 px-3.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+            Trong lớp
+          </p>
           <nav className="space-y-1" aria-label="Mục trong lớp">
             {items.map((item) => (
               <button
@@ -59,7 +86,7 @@ export function ClassroomSidebar<T extends string>({
                 aria-current={value === item.key ? 'page' : undefined}
                 onClick={() => onChange(item.key)}
                 className={clsx(
-                  'flex min-h-[42px] w-full items-center gap-3 rounded-xl px-3.5 text-sm font-medium transition-colors',
+                  'flex min-h-[42px] w-full items-center gap-3 rounded-xl px-3.5 text-sm font-medium transition-all duration-150',
                   value === item.key
                     ? 'bg-brand-100 font-semibold text-brand-800'
                     : 'text-slate-600 hover:bg-surface-paper hover:text-slate-900',
@@ -81,19 +108,21 @@ export function ClassroomSidebar<T extends string>({
               </button>
             ))}
           </nav>
+
+          <SupportLinksCompact />
         </div>
       </aside>
 
-      {/* Hàng nút cho điện thoại và máy tính bảng */}
-      <div className="lg:hidden">
+      {/* Điện thoại và máy tính bảng */}
+      <div className="md:hidden">
         <Link
           to={backTo}
           className="mb-2.5 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-slate-800"
         >
           ← {backLabel}
         </Link>
-        {/* Cuộn ngang thay vì xuống dòng: 5 mục xuống dòng đẩy nội dung
-            xuống quá sâu trên màn hẹp. */}
+        {/* Cuộn ngang thay vì xuống dòng: 7 mục xuống dòng đẩy nội dung xuống
+            quá sâu trên màn hẹp. */}
         <div className="-mx-4 overflow-x-auto px-4 pb-1">
           <div className="flex w-max gap-1.5 rounded-2xl bg-surface-muted p-1">
             {items.map((item) => (

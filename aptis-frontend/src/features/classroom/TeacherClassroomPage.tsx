@@ -93,8 +93,7 @@ export function TeacherClassroomPage() {
         </button>
       </header>
 
-      <div className="flex flex-col gap-5 lg:flex-row">
-        <ClassroomSidebar
+      <ClassroomSidebar
           title={classroom.name}
           subtitle={`${classroom.studentCount}/${classroom.maxStudents} học viên · Mã ${classroom.joinCode}`}
           backTo="/"
@@ -110,17 +109,16 @@ export function TeacherClassroomPage() {
             { key: 'progress', label: 'Tiến độ' },
             { key: 'settings', label: 'Cài đặt lớp' },
           ]}
-        />
+      />
 
-        <div className="min-w-0 flex-1 space-y-4">
-          {tab === 'students' && <StudentTable />}
-          {tab === 'assignments' && <TeacherAssignmentsTab classroom={classroom} />}
-          {tab === 'materials' && <TeacherContentTab kind="materials" />}
-          {tab === 'posts' && <TeacherPostsTab />}
-          {tab === 'predictions' && <TeacherPredictionsTab classroom={classroom} />}
-          {tab === 'progress' && <ProgressPanel studentCount={classroom.studentCount} />}
-          {tab === 'settings' && <SettingsPanel classroom={classroom} />}
-        </div>
+      <div className="space-y-4">
+        {tab === 'students' && <StudentTable />}
+        {tab === 'assignments' && <TeacherAssignmentsTab classroom={classroom} />}
+        {tab === 'materials' && <TeacherContentTab kind="materials" />}
+        {tab === 'posts' && <TeacherPostsTab />}
+        {tab === 'predictions' && <TeacherPredictionsTab classroom={classroom} />}
+        {tab === 'progress' && <ProgressPanel studentCount={classroom.studentCount} />}
+        {tab === 'settings' && <SettingsPanel classroom={classroom} />}
       </div>
 
       {inviteOpen && <InviteDialog classroom={classroom} onClose={() => setInviteOpen(false)} />}

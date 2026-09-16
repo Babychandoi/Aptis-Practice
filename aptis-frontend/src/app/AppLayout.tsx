@@ -303,8 +303,9 @@ export function AppLayout() {
         className={clsx(
           'fixed inset-x-0 top-0 z-30 flex h-16 items-center border-b border-border bg-white/95 px-4 backdrop-blur md:px-8',
           'transition-[left] duration-200 ease-out',
-          // Trong lớp không có thanh bên hệ thống nên header trải hết chiều ngang.
-          trongLopHoc ? '' : collapsed ? 'md:left-[4.5rem]' : 'md:left-64',
+          // Trong lớp: thanh bên của lớp cũng rộng w-64 nhưng không thu gọn được,
+          // nên luôn chừa đúng bề ngang đó.
+          trongLopHoc ? 'md:left-64' : collapsed ? 'md:left-[4.5rem]' : 'md:left-64',
         )}
       >
         <Link to="/" className="flex items-center gap-2 md:hidden">
@@ -405,7 +406,8 @@ export function AppLayout() {
       <div
         className={clsx(
           'pt-16 transition-[padding] duration-200 ease-out',
-          trongLopHoc ? '' : collapsed ? 'md:pl-[4.5rem]' : 'md:pl-64',
+          // Thanh bên của lớp cũng rộng w-64 và không thu gọn được.
+          trongLopHoc ? 'md:pl-64' : collapsed ? 'md:pl-[4.5rem]' : 'md:pl-64',
         )}
       >
         <main className="mx-auto max-w-[1240px] px-4 py-6 pb-24 sm:px-6 lg:px-8 lg:py-8">

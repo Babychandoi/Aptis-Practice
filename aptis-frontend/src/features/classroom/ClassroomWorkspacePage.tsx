@@ -74,8 +74,7 @@ export function ClassroomWorkspacePage() {
         </p>
       )}
 
-      <div className="flex flex-col gap-5 lg:flex-row">
-        <ClassroomSidebar
+      <ClassroomSidebar
           title={classroom.name}
           subtitle={`Giáo viên: ${classroom.teacherName}`}
           backTo="/lop-hoc"
@@ -88,16 +87,15 @@ export function ClassroomWorkspacePage() {
             { key: 'posts', label: 'Bảng tin' },
             { key: 'predictions', label: 'Dự đoán đề' },
           ]}
-        />
+      />
 
-        <div className="min-w-0 flex-1 space-y-4">
-          {tab === 'assignments' && (
-            <AssignmentList classroomId={classroomId} classroom={classroom} />
-          )}
-          {tab === 'materials' && <MaterialList classroomId={classroomId} />}
-          {tab === 'posts' && <PostList classroomId={classroomId} />}
-          {tab === 'predictions' && <PredictionList classroomId={classroomId} />}
-        </div>
+      <div className="space-y-4">
+        {tab === 'assignments' && (
+          <AssignmentList classroomId={classroomId} classroom={classroom} />
+        )}
+        {tab === 'materials' && <MaterialList classroomId={classroomId} />}
+        {tab === 'posts' && <PostList classroomId={classroomId} />}
+        {tab === 'predictions' && <PredictionList classroomId={classroomId} />}
       </div>
     </div>
   );
