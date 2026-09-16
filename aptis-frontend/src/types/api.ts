@@ -922,6 +922,23 @@ export interface AdminAffiliateRow {
   totalPaid: number;
   availableAmount: number;
   status: string;
+  /**
+   * Mức riêng của người này; vắng mặt hoặc null = đang theo tỉ lệ chung.
+   *
+   * Backend bỏ trường null khỏi JSON nên phải kiểm tra bằng `!= null`.
+   */
+  commissionPercent?: number | null;
+  discountPercent?: number | null;
+  rateNote?: string | null;
+  /** Mức thực tế đang áp, đã tính cả việc rơi về tỉ lệ chung. */
+  effectiveCommissionPercent: number;
+  effectiveDiscountPercent: number;
+}
+
+export interface SetAffiliateRatesBody {
+  commissionPercent?: number | null;
+  discountPercent?: number | null;
+  rateNote?: string | null;
 }
 
 export interface AdminAffiliateOverview {

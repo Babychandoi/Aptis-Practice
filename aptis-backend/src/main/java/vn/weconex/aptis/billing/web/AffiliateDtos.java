@@ -3,6 +3,8 @@ package vn.weconex.aptis.billing.web;
 import java.time.Instant;
 import java.util.List;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -118,7 +120,25 @@ public final class AffiliateDtos {
             long totalEarned,
             long totalPaid,
             long availableAmount,
-            String status) {
+            String status,
+            /** Mức riêng của người này; null = đang theo tỉ lệ chung. */
+            Integer commissionPercent,
+            Integer discountPercent,
+            String rateNote,
+            /** Mức thực tế đang áp — đã tính cả việc rơi về tỉ lệ chung. */
+            int effectiveCommissionPercent,
+            int effectiveDiscountPercent) {
+    }
+
+    /**
+     * Đặt mức hoa hồng / giảm giá riêng cho một người giới thiệu.
+     *
+     * <p>Để trống một trường = xoá mức riêng, trả người đó về tỉ lệ chung.
+     */
+    public record SetAffiliateRatesRequest(
+            @Min(0) @Max(100) Integer commissionPercent,
+            @Min(0) @Max(100) Integer discountPercent,
+            @Size(max = 255) String rateNote) {
     }
 
     public record AdminAffiliateOverviewResponse(

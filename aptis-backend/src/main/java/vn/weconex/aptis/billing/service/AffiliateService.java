@@ -84,6 +84,55 @@ public class AffiliateService {
                 .orElseThrow(() -> new IllegalStateException("Thiếu dòng cấu hình affiliate"));
     }
 
+    /**
+     * Đặt mức hoa hồng / giảm giá riêng cho một người giới thiệu.
+     *
+     * <p>Truyền {@code null} cho một tỉ lệ = xoá mức riêng, trả người đó về tỉ
+     * lệ chung. Mức mới chỉ áp cho đơn phát sinh về sau: hoa hồng đã ghi nhận
+     * đều chụp sẵn tỉ lệ của nó nên không bị đổi theo.
+     *
+     * <p>Người chưa có mã thì được cấp luôn — admin thường đặt mức riêng ngay
+     * lúc ký thoả thuận, trước khi người đó mua đơn nào.
+     */
+    @Transactional
+    public AffiliateAccount setRates(
+            String userId, Integer commissionPercent, Integer discountPercent, String note) {
+
+        requireValidPercent(commissionPercent, "Hoa hồng");
+        requireValidPercent(discountPercent, "Giảm giá");
+
+        AffiliateAccount account = accountRepository.findByUserIdForUpdate(userId)
+                .orElseGet(() -> grantAccount(userId));
+
+        account.setCommissionPercent(commissionPercent);
+        account.setDiscountPercent(discountPercent);
+        account.setRateNote(note == null || note.isBlank() ? null : note.strip());
+
+        log.info("Đặt mức riêng cho user {}: hoa hồng {}%, giảm {}% ({})",
+                userId,
+                commissionPercent == null ? "chung" : commissionPercent,
+                discountPercent == null ? "chung" : discountPercent,
+                account.getRateNote() == null ? "không ghi chú" : account.getRateNote());
+
+        return account;
+    }
+
+    /**
+     * Chặn tỉ lệ vô lý ngay tại service.
+     *
+     * <p>DTO đã có {@code @Min}/{@code @Max}, nhưng service còn được gọi từ chỗ
+     * khác (script, test) nên kiểm lại ở đây — tiền tính sai thì lúc phát hiện
+     * đã muộn.
+     */
+    private static void requireValidPercent(Integer percent, String ten) {
+        if (percent != null && (percent < 0 || percent > 100)) {
+            throw new ApiException(
+                    ErrorCode.VALIDATION_FAILED,
+                    ten + " phải trong khoảng 0-100%",
+                    Map.of("value", percent));
+        }
+    }
+
     // ---------------------------------------------------------------
     // Cấp mã
     // ---------------------------------------------------------------
@@ -257,7 +306,10 @@ public class AffiliateService {
                     "Mã giới thiệu chỉ áp dụng cho đơn đầu tiên");
         }
 
-        long discount = Math.min(subtotal, percentOf(subtotal, config.getDiscountPercent()));
+        // Mức riêng của chủ mã (nếu có) thắng mức chung: đây là thoả thuận đã
+        // ký với từng người, không phải con số mặc định của chương trình.
+        int discountPercent = account.effectiveDiscountPercent(config.getDiscountPercent());
+        long discount = Math.min(subtotal, percentOf(subtotal, discountPercent));
         return new AppliedReferral(code, account.getUserId(), discount);
     }
 
@@ -312,10 +364,25 @@ public class AffiliateService {
             return;
         }
 
+        // Lấy tài khoản trước khi tính tiền: tỉ lệ riêng của người này nằm ở
+        // đây, và khoá hàng luôn để hai đơn cùng lúc không cộng đè total_earned.
+        AffiliateAccount account = accountRepository
+                .findByUserIdForUpdate(order.getAffiliateUserId())
+                .orElseGet(() -> {
+                    // Được gắn từ đơn cũ rồi mã bị xoá — vẫn cộng tiền, nhưng
+                    // tạo lại bản ghi để trang cá nhân hiển thị được.
+                    AffiliateAccount created = new AffiliateAccount();
+                    created.setId(UUID.randomUUID().toString());
+                    created.setUserId(order.getAffiliateUserId());
+                    created.setCode(generateUniqueCode());
+                    return accountRepository.save(created);
+                });
+
         long base = config.isCommissionOnGross()
                 ? order.getSubtotalAmount()
                 : order.getTotalAmount();
-        long amount = percentOf(base, config.getCommissionPercent());
+        int commissionPercent = account.effectiveCommissionPercent(config.getCommissionPercent());
+        long amount = percentOf(base, commissionPercent);
         if (amount <= 0) {
             return;
         }
@@ -330,24 +397,15 @@ public class AffiliateService {
         commission.setAffiliateUserId(order.getAffiliateUserId());
         commission.setReferredUserId(order.getUserId());
         commission.setOrderId(order.getId());
-        commission.setCommissionPercent(config.getCommissionPercent());
+        commission.setCommissionPercent(commissionPercent);
+        commission.setDiscountPercent(
+                account.effectiveDiscountPercent(config.getDiscountPercent()));
         commission.setBaseAmount(base);
         commission.setAmount(amount);
         commission.setStatus(holds ? CommissionStatus.PENDING : CommissionStatus.AVAILABLE);
         commission.setAvailableAt(availableAt);
         commissionRepository.save(commission);
 
-        // Người giới thiệu có thể chưa có mã (được gắn từ đơn cũ rồi mã bị xóa)
-        // — vẫn cộng tiền, nhưng tạo lại bản ghi để trang cá nhân hiển thị được.
-        AffiliateAccount account = accountRepository
-                .findByUserIdForUpdate(order.getAffiliateUserId())
-                .orElseGet(() -> {
-                    AffiliateAccount created = new AffiliateAccount();
-                    created.setId(UUID.randomUUID().toString());
-                    created.setUserId(order.getAffiliateUserId());
-                    created.setCode(generateUniqueCode());
-                    return accountRepository.save(created);
-                });
         account.setTotalEarned(account.getTotalEarned() + amount);
 
         log.info("Ghi nhận hoa hồng {}đ cho user {} từ đơn {}",

@@ -7,8 +7,13 @@ import { adminAffiliateApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatCurrency, formatDateTime } from '@/lib/format';
+import { useEscapeKey } from '@/lib/useEscapeKey';
 import { usePermission } from '@/features/admin/usePermission';
-import type { AffiliatePayoutStatus, AffiliateSettings } from '@/types/api';
+import type {
+  AdminAffiliateRow,
+  AffiliatePayoutStatus,
+  AffiliateSettings,
+} from '@/types/api';
 
 type Tab = 'payouts' | 'accounts' | 'settings';
 
@@ -93,7 +98,7 @@ export function AffiliateAdminPage() {
       </div>
 
       {tab === 'payouts' && <PayoutQueue canManage={canManage} />}
-      {tab === 'accounts' && <AccountTable />}
+      {tab === 'accounts' && <AccountTable canManage={canManage} />}
       {tab === 'settings' && <SettingsForm canManage={canManage} />}
     </div>
   );
@@ -301,9 +306,10 @@ function ActionButton({
   );
 }
 
-function AccountTable() {
+function AccountTable({ canManage }: { canManage: boolean }) {
   const queryClient = useQueryClient();
   const [message, setMessage] = useState<string | null>(null);
+  const [editing, setEditing] = useState<AdminAffiliateRow | null>(null);
 
   const query = useQuery({
     queryKey: ['admin', 'affiliate', 'accounts'],
@@ -364,7 +370,7 @@ function AccountTable() {
       <table className="w-full min-w-[720px] text-sm">
         <thead>
           <tr className="bg-surface">
-            {['Người giới thiệu', 'Mã', 'Đã giới thiệu', 'Đơn thành công', 'Tổng hoa hồng', 'Đã trả', 'Còn lại'].map(
+            {['Người giới thiệu', 'Mã', 'Hoa hồng / Giảm', 'Đã giới thiệu', 'Đơn thành công', 'Tổng hoa hồng', 'Đã trả', 'Còn lại', ''].map(
               (header) => (
                 <th
                   key={header}
@@ -386,6 +392,21 @@ function AccountTable() {
               <td className="px-3 py-2.5 font-mono text-xs font-bold tracking-wider text-slate-800">
                 {row.code}
               </td>
+              <td className="px-3 py-2.5">
+                <span className="font-semibold text-slate-900">
+                  {row.effectiveCommissionPercent}% / {row.effectiveDiscountPercent}%
+                </span>
+                {/* Chỉ đánh dấu dòng có thoả thuận riêng — dòng theo mức chung
+                    để trống cho bảng đỡ nhiễu. */}
+                {(row.commissionPercent != null || row.discountPercent != null) && (
+                  <span
+                    className="ml-1.5 rounded-full bg-amber-50 px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase text-amber-800"
+                    title={row.rateNote || 'Có mức riêng, khác tỉ lệ chung'}
+                  >
+                    riêng
+                  </span>
+                )}
+              </td>
               <td className="px-3 py-2.5 text-slate-700">{row.referralCount}</td>
               <td className="px-3 py-2.5 text-slate-700">{row.paidOrderCount}</td>
               <td className="px-3 py-2.5 font-semibold text-slate-900">
@@ -395,11 +416,163 @@ function AccountTable() {
               <td className="px-3 py-2.5 font-bold text-emerald-700">
                 {formatCurrency(row.availableAmount)}
               </td>
+              <td className="px-3 py-2.5 text-right">
+                {canManage && (
+                  <button
+                    type="button"
+                    onClick={() => setEditing(row)}
+                    className="text-xs font-semibold text-brand-700 hover:text-brand-800"
+                  >
+                    Đặt mức
+                  </button>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
+
+    {editing && <RateDialog row={editing} onClose={() => setEditing(null)} />}
+    </div>
+  );
+}
+
+/**
+ * Đặt mức hoa hồng / giảm giá riêng cho một người giới thiệu.
+ *
+ * <p>Để trống ô nào là người đó theo tỉ lệ chung ở ô đó — khác hẳn với điền 0,
+ * nên form dùng chuỗi rỗng chứ không quy về số.
+ */
+function RateDialog({ row, onClose }: { row: AdminAffiliateRow; onClose: () => void }) {
+  useEscapeKey(onClose);
+  const queryClient = useQueryClient();
+  const [commission, setCommission] = useState(
+    row.commissionPercent != null ? String(row.commissionPercent) : '',
+  );
+  const [discount, setDiscount] = useState(
+    row.discountPercent != null ? String(row.discountPercent) : '',
+  );
+  const [note, setNote] = useState(row.rateNote ?? '');
+  const [error, setError] = useState<string | null>(null);
+
+  const save = useMutation({
+    mutationFn: () =>
+      adminAffiliateApi.setRates(row.userId, {
+        commissionPercent: commission.trim() === '' ? null : Number(commission),
+        discountPercent: discount.trim() === '' ? null : Number(discount),
+        rateNote: note.trim() || null,
+      }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['admin', 'affiliate'] });
+      onClose();
+    },
+    onError: (err) => setError(err instanceof ApiError ? err.message : 'Không lưu được'),
+  });
+
+  const hopLe = (giaTri: string) => {
+    if (giaTri.trim() === '') return true;
+    const so = Number(giaTri);
+    return Number.isInteger(so) && so >= 0 && so <= 100;
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-dark/45 px-4"
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        className="w-full max-w-md rounded-3xl bg-white p-6"
+        onClick={(event) => event.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
+        <h2 className="text-base font-bold text-slate-900">Mức riêng cho người này</h2>
+        <p className="mt-0.5 text-xs text-slate-500">
+          {row.userName || 'Học viên'} · <span className="font-mono">{row.userEmail}</span>
+        </p>
+
+        <form
+          className="mt-4 space-y-3"
+          onSubmit={(event) => {
+            event.preventDefault();
+            setError(null);
+            if (!hopLe(commission) || !hopLe(discount)) {
+              setError('Tỉ lệ phải là số nguyên từ 0 đến 100');
+              return;
+            }
+            save.mutate();
+          }}
+        >
+          <label className="block">
+            <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+              Hoa hồng người này nhận (%)
+            </span>
+            <input
+              value={commission}
+              inputMode="numeric"
+              onChange={(event) => setCommission(event.target.value)}
+              placeholder="Để trống = theo mức chung"
+              className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+              Giảm giá cho người nhập mã (%)
+            </span>
+            <input
+              value={discount}
+              inputMode="numeric"
+              onChange={(event) => setDiscount(event.target.value)}
+              placeholder="Để trống = theo mức chung"
+              className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+              Ghi chú
+            </span>
+            <input
+              value={note}
+              onChange={(event) => setNote(event.target.value)}
+              placeholder="Vì sao đặt mức này — ví dụ: giáo viên liên kết"
+              className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+            />
+          </label>
+
+          <p className="rounded-xl bg-surface-paper px-3 py-2 text-[11px] leading-5 text-slate-600">
+            Để trống một ô là người này theo tỉ lệ chung ở ô đó. Điền 0 thì đúng là 0% — khác với
+            để trống. Mức mới chỉ áp cho đơn phát sinh sau khi lưu; hoa hồng đã ghi nhận giữ
+            nguyên tỉ lệ cũ.
+          </p>
+
+          {error && (
+            <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+              {error}
+            </p>
+          )}
+
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 rounded-xl border border-border py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-surface"
+            >
+              Hủy
+            </button>
+            <button
+              type="submit"
+              disabled={save.isPending}
+              className="flex-1 rounded-xl bg-brand-600 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+            >
+              {save.isPending ? 'Đang lưu…' : 'Lưu mức'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

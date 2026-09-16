@@ -246,6 +246,24 @@ public class AdminAffiliateController {
         return settings();
     }
 
+    /**
+     * Đặt mức hoa hồng / giảm giá riêng cho một người giới thiệu.
+     *
+     * <p>Để trống một tỉ lệ = trả người đó về mức chung. Mức mới chỉ áp cho đơn
+     * phát sinh về sau; hoa hồng đã ghi nhận giữ nguyên tỉ lệ lúc phát sinh.
+     */
+    @PutMapping("/accounts/{userId}/rates")
+    @PreAuthorize("hasAuthority('affiliate:manage')")
+    public AffiliateDtos.AdminAffiliateRowResponse setRates(
+            @PathVariable String userId,
+            @Valid @RequestBody AffiliateDtos.SetAffiliateRatesRequest request) {
+
+        AffiliateAccount account = affiliateService.setRates(
+                userId, request.commissionPercent(), request.discountPercent(), request.rateNote());
+
+        return toRows(List.of(account)).get(0);
+    }
+
     private List<AffiliateDtos.AdminAffiliateRowResponse> toRows(List<AffiliateAccount> accounts) {
         if (accounts.isEmpty()) {
             return List.of();
@@ -254,6 +272,10 @@ public class AdminAffiliateController {
         List<String> userIds = accounts.stream().map(AffiliateAccount::getUserId).toList();
         Map<String, User> users = usersById(userIds);
         Map<String, String> names = namesById(userIds);
+
+        // Đọc một lần cho cả trang: mức chung là số dùng để tính "mức thực tế"
+        // của mọi dòng chưa có cấu hình riêng.
+        var chung = affiliateService.settings();
 
         return accounts.stream().map(account -> {
             User user = users.get(account.getUserId());
@@ -278,7 +300,12 @@ public class AdminAffiliateController {
                     account.getTotalEarned(),
                     account.getTotalPaid(),
                     balance.available(),
-                    account.getStatus().name());
+                    account.getStatus().name(),
+                    account.getCommissionPercent(),
+                    account.getDiscountPercent(),
+                    account.getRateNote(),
+                    account.effectiveCommissionPercent(chung.getCommissionPercent()),
+                    account.effectiveDiscountPercent(chung.getDiscountPercent()));
         }).toList();
     }
 

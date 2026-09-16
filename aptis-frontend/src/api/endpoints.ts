@@ -22,6 +22,7 @@ import type {
   AdminAffiliateOverview,
   AdminAffiliatePayout,
   AdminAffiliateRow,
+  SetAffiliateRatesBody,
   AffiliateCommission,
   AffiliatePayout,
   AffiliateReferral,
@@ -447,6 +448,12 @@ export const adminAffiliateApi = {
       .get<PageResponse<AdminAffiliateRow>>('/admin/affiliate/accounts', {
         params: { page, size },
       })
+      .then((r) => r.data),
+
+  /** Đặt mức hoa hồng/giảm giá riêng; null một trường = trả về mức chung. */
+  setRates: (userId: string, body: SetAffiliateRatesBody) =>
+    api
+      .put<AdminAffiliateRow>(`/admin/affiliate/accounts/${userId}/rates`, body)
       .then((r) => r.data),
 
   payouts: (params: { status?: string; page?: number; size?: number } = {}) =>

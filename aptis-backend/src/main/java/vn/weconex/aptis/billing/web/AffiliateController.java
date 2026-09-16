@@ -72,8 +72,12 @@ public class AffiliateController {
         return new AffiliateDtos.MyAffiliateResponse(
                 account.map(AffiliateAccount::getCode).orElse(null),
                 account.isPresent(),
-                config.getCommissionPercent(),
-                config.getDiscountPercent(),
+                // Mức riêng của chính người này, không phải mức chung: người
+                // được thoả thuận 25% mà trang báo 10% thì họ tưởng bị tính sai.
+                account.map(a -> a.effectiveCommissionPercent(config.getCommissionPercent()))
+                        .orElseGet(config::getCommissionPercent),
+                account.map(a -> a.effectiveDiscountPercent(config.getDiscountPercent()))
+                        .orElseGet(config::getDiscountPercent),
                 config.getMinPayoutAmount(),
                 account.map(AffiliateAccount::getTotalEarned).orElse(0L),
                 account.map(AffiliateAccount::getTotalPaid).orElse(0L),

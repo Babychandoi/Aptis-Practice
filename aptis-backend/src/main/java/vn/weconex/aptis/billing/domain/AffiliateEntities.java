@@ -92,6 +92,34 @@ public final class AffiliateEntities {
         @Column(name = "status", length = 16, nullable = false)
         private AccountStatus status = AccountStatus.ACTIVE;
 
+        /**
+         * Hoa hồng riêng của người này, {@code null} = theo tỉ lệ chung.
+         *
+         * <p>Dùng Integer chứ không phải int: 0% là một thoả thuận hợp lệ (chỉ
+         * cho giảm giá, không trả hoa hồng), nên phải phân biệt được với
+         * "chưa cấu hình riêng".
+         */
+        @Column(name = "commission_percent")
+        private Integer commissionPercent;
+
+        /** Giảm giá riêng cho người nhập mã này, {@code null} = theo tỉ lệ chung. */
+        @Column(name = "discount_percent")
+        private Integer discountPercent;
+
+        /** Lý do đặt mức riêng, để người sau biết vì sao. */
+        @Column(name = "rate_note", length = 255)
+        private String rateNote;
+
+        /** Hoa hồng thực tế áp cho người này. */
+        public int effectiveCommissionPercent(int mucChung) {
+            return commissionPercent != null ? commissionPercent : mucChung;
+        }
+
+        /** Giảm giá thực tế cho người nhập mã của người này. */
+        public int effectiveDiscountPercent(int mucChung) {
+            return discountPercent != null ? discountPercent : mucChung;
+        }
+
         /** Cộng dồn để trang cá nhân không phải SUM cả bảng hoa hồng. */
         @Column(name = "total_earned", nullable = false)
         private long totalEarned;
@@ -155,6 +183,15 @@ public final class AffiliateEntities {
         /** Chụp lại lúc phát sinh: đổi cấu hình sau không đổi tiền đã ghi nhận. */
         @Column(name = "commission_percent", nullable = false)
         private int commissionPercent;
+
+        /**
+         * Mức giảm đã áp cho người mua ở đơn này.
+         *
+         * <p>Null với các hoa hồng ghi trước V46 — hồi đó chưa lưu lại con số
+         * này nên không thể suy ngược ra được.
+         */
+        @Column(name = "discount_percent")
+        private Integer discountPercent;
 
         @Column(name = "base_amount", nullable = false)
         private long baseAmount;
