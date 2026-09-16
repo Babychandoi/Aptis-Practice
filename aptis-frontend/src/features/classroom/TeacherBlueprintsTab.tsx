@@ -291,7 +291,7 @@ function BlueprintDialog({
       role="presentation"
     >
       <div
-        className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6"
+        className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-3xl bg-white p-6"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -490,7 +490,12 @@ function SlotPicker({
   tongDaChon: number;
   tongCanChon: number;
 }) {
-  const [moRong, setMoRong] = useState<string | null>(null);
+  // Mở popup riêng thay vì bung trong danh sách: danh sách đề dài, bung tại chỗ
+  // thì ô cuộn chỉ cao hơn trăm pixel, nhìn được vài đề một lúc.
+  const [dangChon, setDangChon] = useState<Slot | null>(null);
+  const slotDangChon = dangChon
+    ? slots.find((s) => s.partId === dangChon.partId) ?? null
+    : null;
 
   return (
     <div>
@@ -515,82 +520,43 @@ function SlotPicker({
           Đang dựng cấu trúc…
         </p>
       ) : (
-        <ul className="max-h-64 space-y-1.5 overflow-y-auto rounded-xl border border-border p-2">
+        <ul className="max-h-[42vh] space-y-1.5 overflow-y-auto rounded-xl border border-border p-2">
           {slots.map((slot) => (
             <SlotRow
               key={slot.partId}
-              classroom={classroom}
               slot={slot}
-              expanded={moRong === slot.partId}
-              onToggle={() => setMoRong(moRong === slot.partId ? null : slot.partId)}
-              onChange={(chosen) =>
-                onChange(slots.map((s) => (s.partId === slot.partId ? { ...s, chosen } : s)))
-              }
+              onOpen={() => setDangChon(slot)}
             />
           ))}
         </ul>
+      )}
+
+      {slotDangChon && (
+        <SlotPickerDialog
+          classroom={classroom}
+          slot={slotDangChon}
+          onChange={(chosen) =>
+            onChange(
+              slots.map((s) => (s.partId === slotDangChon.partId ? { ...s, chosen } : s)),
+            )
+          }
+          onClose={() => setDangChon(null)}
+        />
       )}
     </div>
   );
 }
 
-function SlotRow({
-  classroom,
-  slot,
-  expanded,
-  onToggle,
-  onChange,
-}: {
-  classroom: Classroom;
-  slot: Slot;
-  expanded: boolean;
-  onToggle: () => void;
-  onChange: (chosen: string[]) => void;
-}) {
-  const [previewing, setPreviewing] = useState<{ id: string; title: string } | null>(null);
-
-  const ownSets = useQuery({
-    queryKey: ['teacher', 'question-sets'],
-    queryFn: teacherAuthoringApi.list,
-  });
-
-  const systemSets = useQuery({
-    queryKey: ['parts', slot.partId, 'question-sets'],
-    queryFn: () => catalogApi.questionSets(slot.partId, 0, 50),
-    enabled: expanded && classroom.systemContentEnabled,
-  });
-
-  const danhSach = useMemo(() => {
-    const own = (ownSets.data ?? [])
-      .filter((s) => s.partId === slot.partId)
-      .map((s) => ({ id: s.id, title: s.title, hint: 'đề của bạn' }));
-    const sys = (systemSets.data ?? []).map((s) => ({
-      id: s.id,
-      title: s.title ?? s.code,
-      hint: 'đề hệ thống',
-    }));
-    return [...own, ...sys];
-  }, [ownSets.data, systemSets.data, slot.partId]);
-
+/** Một dòng trong danh sách cấu trúc: tóm tắt và nút mở popup chọn đề. */
+function SlotRow({ slot, onOpen }: { slot: Slot; onOpen: () => void }) {
   const du = slot.chosen.length >= slot.required;
 
-  const toggle = (id: string, checked: boolean) => {
-    if (checked) {
-      // Chọn quá số cấu trúc cho phép thì thay cái cũ nhất, không cộng dồn —
-      // bài thi ra sai cấu trúc là học viên luyện sai.
-      const next = [...slot.chosen, id];
-      onChange(next.slice(-slot.required));
-    } else {
-      onChange(slot.chosen.filter((x) => x !== id));
-    }
-  };
-
   return (
-    <li className="rounded-lg border border-border-subtle">
+    <li>
       <button
         type="button"
-        onClick={onToggle}
-        className="flex w-full items-center gap-2.5 px-2.5 py-2 text-left hover:bg-surface"
+        onClick={onOpen}
+        className="flex w-full items-center gap-2.5 rounded-lg border border-border-subtle px-2.5 py-2 text-left transition-colors hover:border-brand-300 hover:bg-surface"
       >
         <span
           className={clsx(
@@ -608,87 +574,214 @@ function SlotRow({
             cần {slot.required} đề · đã chọn {slot.chosen.length}
           </span>
         </span>
-        <span className="shrink-0 text-[11px] font-semibold text-brand-700">
-          {expanded ? 'Thu gọn' : 'Chọn đề'}
+        <span className="shrink-0 rounded-lg bg-brand-100 px-2.5 py-1.5 text-[11px] font-bold text-brand-800">
+          Chọn đề
         </span>
       </button>
+    </li>
+  );
+}
 
-      {expanded && (
-        <div className="border-t border-border-subtle px-2.5 py-2">
+/**
+ * Popup chọn đề cho một part.
+ *
+ * <p>Để riêng một popup rộng thay vì bung trong danh sách: có part cần chọn 25
+ * đề, bung tại chỗ thì ô cuộn chỉ cao hơn trăm pixel, nhìn được vài đề một lúc.
+ */
+function SlotPickerDialog({
+  classroom,
+  slot,
+  onChange,
+  onClose,
+}: {
+  classroom: Classroom;
+  slot: Slot;
+  onChange: (chosen: string[]) => void;
+  onClose: () => void;
+}) {
+  useEscapeKey(onClose);
+  const [previewing, setPreviewing] = useState<{ id: string; title: string } | null>(null);
+  const [tuKhoa, setTuKhoa] = useState('');
+
+  const ownSets = useQuery({
+    queryKey: ['teacher', 'question-sets'],
+    queryFn: teacherAuthoringApi.list,
+  });
+
+  const systemSets = useQuery({
+    queryKey: ['parts', slot.partId, 'question-sets'],
+    queryFn: () => catalogApi.questionSets(slot.partId, 0, 200),
+    enabled: classroom.systemContentEnabled,
+  });
+
+  const danhSach = useMemo(() => {
+    const own = (ownSets.data ?? [])
+      .filter((s) => s.partId === slot.partId)
+      .map((s) => ({ id: s.id, title: s.title, hint: 'đề của bạn' }));
+    const sys = (systemSets.data ?? []).map((s) => ({
+      id: s.id,
+      title: s.title ?? s.code,
+      hint: 'đề hệ thống',
+    }));
+    return [...own, ...sys];
+  }, [ownSets.data, systemSets.data, slot.partId]);
+
+  const hienThi = useMemo(() => {
+    const q = tuKhoa.trim().toLowerCase();
+    if (!q) return danhSach;
+    return danhSach.filter((s) => s.title.toLowerCase().includes(q));
+  }, [danhSach, tuKhoa]);
+
+  const du = slot.chosen.length >= slot.required;
+  const dangTai = ownSets.isPending || (classroom.systemContentEnabled && systemSets.isPending);
+
+  const toggle = (id: string, checked: boolean) => {
+    if (checked) {
+      // Chọn quá số cấu trúc cho phép thì thay cái cũ nhất, không cộng dồn —
+      // bài thi ra sai cấu trúc là học viên luyện sai.
+      onChange([...slot.chosen, id].slice(-slot.required));
+    } else {
+      onChange(slot.chosen.filter((x) => x !== id));
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-dark/50 px-4"
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        className="flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl bg-white"
+        onClick={(event) => event.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex items-start justify-between gap-3 border-b border-border px-6 py-4">
+          <div className="min-w-0">
+            <h3 className="text-base font-bold text-slate-900">{slot.partName}</h3>
+            <p className="mt-0.5 text-xs text-slate-500">
+              {slot.componentName} · cần {slot.required} đề
+            </p>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <span
+              className={clsx(
+                'rounded-full px-2.5 py-1 font-mono text-[11px] font-bold',
+                du ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800',
+              )}
+            >
+              {slot.chosen.length}/{slot.required}
+            </span>
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-xl border border-border px-3 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:bg-surface"
+            >
+              Xong
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-2.5 border-b border-border px-6 py-3">
           {!classroom.systemContentEnabled && (
-            <p className="mb-1.5 rounded-lg bg-surface-paper px-2.5 py-1.5 text-[11px] leading-5 text-slate-600">
+            <p className="rounded-xl bg-surface-paper px-3 py-2 text-xs leading-5 text-slate-600">
               Lớp chưa mở kho đề hệ thống nên chỉ chọn được đề bạn tự soạn.
             </p>
           )}
 
-          {/* Grammar cần 25 đề, Listening Part 1 cần 13 — tick tay từng cái thì
-              không ai ngồi làm nổi, nên cho bốc nhanh rồi sửa lại nếu muốn. */}
-          {slot.required > 3 && danhSach.length > 0 && (
-            <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              value={tuKhoa}
+              onChange={(event) => setTuKhoa(event.target.value)}
+              placeholder="Tìm theo tên đề…"
+              className="min-w-[200px] flex-1 rounded-xl border border-border px-3.5 py-2 text-sm outline-none focus:border-brand-400"
+            />
+            {/* Grammar cần 25 đề, Listening Part 1 cần 13 — tick tay từng cái
+                thì không ai ngồi làm nổi, nên cho bốc nhanh rồi sửa lại. */}
+            {slot.required > 3 && danhSach.length > 0 && (
               <button
                 type="button"
                 onClick={() => {
                   const tron = [...danhSach].sort(() => Math.random() - 0.5);
                   onChange(tron.slice(0, slot.required).map((s) => s.id));
                 }}
-                className="rounded-lg bg-brand-100 px-2.5 py-1.5 text-[11px] font-bold text-brand-800 hover:bg-brand-200"
+                className="rounded-xl bg-brand-100 px-3 py-2 text-xs font-bold text-brand-800 transition-colors hover:bg-brand-200"
               >
                 Bốc {slot.required} đề bất kỳ
               </button>
-              {slot.chosen.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => onChange([])}
-                  className="rounded-lg border border-border px-2.5 py-1.5 text-[11px] font-semibold text-slate-600 hover:bg-surface"
-                >
-                  Bỏ chọn hết
-                </button>
-              )}
-              {danhSach.length < slot.required && (
-                <span className="text-[11px] text-amber-700">
-                  Kho chỉ có {danhSach.length} đề, chưa đủ {slot.required}
-                </span>
-              )}
-            </div>
-          )}
+            )}
+            {slot.chosen.length > 0 && (
+              <button
+                type="button"
+                onClick={() => onChange([])}
+                className="rounded-xl border border-border px-3 py-2 text-xs font-semibold text-slate-600 transition-colors hover:bg-surface"
+              >
+                Bỏ chọn hết
+              </button>
+            )}
+          </div>
 
-          {danhSach.length === 0 ? (
-            <p className="rounded-lg bg-surface-paper px-2.5 py-2 text-[11px] text-slate-600">
-              Chưa có đề nào ở part này. Soạn đề ở tab “Đề của tôi” trước.
+          {danhSach.length < slot.required && danhSach.length > 0 && (
+            <p className="text-xs text-amber-700">
+              Kho chỉ có {danhSach.length} đề ở part này, chưa đủ {slot.required}.
             </p>
-          ) : (
-            <div className="max-h-40 space-y-1 overflow-y-auto">
-              {danhSach.map((set) => (
-                <label
-                  key={set.id}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg px-1.5 py-1.5 hover:bg-surface"
-                >
-                  <input
-                    type="checkbox"
-                    checked={slot.chosen.includes(set.id)}
-                    onChange={(event) => toggle(set.id, event.target.checked)}
-                    className="h-4 w-4 shrink-0 rounded border-border"
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[13px] text-slate-800">{set.title}</span>
-                    <span className="block text-[10px] text-slate-500">{set.hint}</span>
-                  </span>
-                  <button
-                    type="button"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      setPreviewing({ id: set.id, title: set.title });
-                    }}
-                    className="shrink-0 rounded-lg border border-border px-2 py-1 text-[10px] font-semibold text-slate-600 hover:bg-surface"
-                  >
-                    Xem
-                  </button>
-                </label>
-              ))}
-            </div>
           )}
         </div>
-      )}
+
+        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-3">
+          {dangTai ? (
+            <LoadingBlock label="Đang tải đề…" />
+          ) : danhSach.length === 0 ? (
+            <p className="rounded-xl bg-surface-paper px-3 py-3 text-sm leading-6 text-slate-600">
+              Chưa có đề nào ở part này. Soạn đề ở tab <strong>Đề của tôi</strong> trước.
+            </p>
+          ) : hienThi.length === 0 ? (
+            <p className="rounded-xl bg-surface-paper px-3 py-3 text-sm text-slate-600">
+              Không có đề nào khớp “{tuKhoa.trim()}”.
+            </p>
+          ) : (
+            <ul className="space-y-1.5">
+              {hienThi.map((set) => {
+                const daChon = slot.chosen.includes(set.id);
+                return (
+                  <li key={set.id}>
+                    <label
+                      className={clsx(
+                        'flex cursor-pointer items-center gap-3 rounded-xl border px-3 py-2.5 transition-colors',
+                        daChon
+                          ? 'border-brand-500 bg-brand-50'
+                          : 'border-border-subtle hover:bg-surface',
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={daChon}
+                        onChange={(event) => toggle(set.id, event.target.checked)}
+                        className="h-4 w-4 shrink-0 rounded border-border"
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm text-slate-800">{set.title}</span>
+                        <span className="block text-[11px] text-slate-500">{set.hint}</span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setPreviewing({ id: set.id, title: set.title });
+                        }}
+                        className="shrink-0 rounded-lg border border-border px-2.5 py-1.5 text-[11px] font-semibold text-slate-600 transition-colors hover:bg-surface"
+                      >
+                        Xem
+                      </button>
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      </div>
 
       {previewing && (
         <QuestionSetPreviewDialog
@@ -697,7 +790,7 @@ function SlotRow({
           onClose={() => setPreviewing(null)}
         />
       )}
-    </li>
+    </div>
   );
 }
 

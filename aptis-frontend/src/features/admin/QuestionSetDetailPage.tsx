@@ -388,32 +388,48 @@ export function QuestionSetDetailPage() {
   );
 }
 
-export function QuestionSetPreview({ content, revision, showAnswers }: {
+export function QuestionSetPreview({ content, revision, showAnswers, hideHeader }: {
   content: QuestionSetContent;
   revision: number;
   showAnswers: boolean;
+  /** Ẩn dải tiêu đề khi nơi gọi đã hiển thị tên đề ở thanh trên. */
+  hideHeader?: boolean;
 }) {
   const commonAudio = content.assets.filter((asset) => asset.role === 'MAIN_AUDIO');
   const images = content.assets.filter((asset) => asset.role.includes('IMAGE'));
 
   return (
     <div className="overflow-hidden rounded-2xl border border-stone-200 bg-stone-50">
-      <header className="bg-gradient-to-r from-brand-900 to-brand-700 px-5 py-5 text-white sm:px-7">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-100">
-              Bản xem trước · Phiên bản {revision}
-            </p>
-            <h3 className="mt-2 text-2xl font-semibold">{content.title || 'Bộ câu hỏi chưa đặt tiêu đề'}</h3>
-            <p className="mt-1 text-sm text-emerald-100">
-              {content.items.length} câu hỏi · {content.taskTypeCode.replaceAll('_', ' ')}
-            </p>
-          </div>
-          <span className="rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold ring-1 ring-white/25">
+      {hideHeader ? (
+        // Chỉ giữ một dải mỏng: tiêu đề đã nằm ở thanh trên popup, lặp lại thì
+        // riêng phần đầu đã chiếm hết màn hình, phải cuộn mới thấy câu hỏi.
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-200 bg-white px-4 py-2 sm:px-6">
+          <p className="text-xs text-stone-500">
+            Phiên bản {revision} · {content.items.length} câu hỏi ·{' '}
+            {content.taskTypeCode.replaceAll('_', ' ')}
+          </p>
+          <span className="rounded-full bg-stone-100 px-2.5 py-1 text-[11px] font-semibold text-stone-600">
             {showAnswers ? 'Đang hiện đáp án' : 'Giao diện học viên'}
           </span>
         </div>
-      </header>
+      ) : (
+        <header className="bg-gradient-to-r from-brand-900 to-brand-700 px-5 py-5 text-white sm:px-7">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-100">
+                Bản xem trước · Phiên bản {revision}
+              </p>
+              <h3 className="mt-2 text-2xl font-semibold">{content.title || 'Bộ câu hỏi chưa đặt tiêu đề'}</h3>
+              <p className="mt-1 text-sm text-emerald-100">
+                {content.items.length} câu hỏi · {content.taskTypeCode.replaceAll('_', ' ')}
+              </p>
+            </div>
+            <span className="rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold ring-1 ring-white/25">
+              {showAnswers ? 'Đang hiện đáp án' : 'Giao diện học viên'}
+            </span>
+          </div>
+        </header>
+      )}
 
       <div className="space-y-5 p-4 sm:p-6">
         {content.instructions && (

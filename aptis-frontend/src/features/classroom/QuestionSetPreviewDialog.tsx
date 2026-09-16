@@ -38,7 +38,7 @@ export function QuestionSetPreviewDialog({
       role="presentation"
     >
       <div
-        className="flex max-h-[90vh] w-full max-w-3xl flex-col rounded-3xl bg-white"
+        className="flex max-h-[92vh] w-full max-w-5xl flex-col rounded-3xl bg-white"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -69,6 +69,7 @@ export function QuestionSetPreviewDialog({
               content={query.data.content}
               revision={query.data.revision}
               showAnswers={!query.data.answersHidden}
+              hideHeader
             />
           ) : (
             <p className="card text-center text-sm text-slate-500">Đề này chưa có nội dung.</p>
