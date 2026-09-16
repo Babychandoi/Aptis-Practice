@@ -126,12 +126,12 @@ export function TeacherPostsTab() {
                   </p>
                 </div>
 
-                <div className="flex shrink-0 items-center gap-2.5">
+                <div className="flex shrink-0 flex-wrap items-center gap-1.5">
                   <button
                     type="button"
                     disabled={togglePin.isPending}
                     onClick={() => togglePin.mutate(post)}
-                    className="text-xs font-semibold text-slate-600 hover:text-slate-900 disabled:opacity-50"
+                    className="rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-surface disabled:opacity-50"
                   >
                     {post.pinned ? 'Bỏ ghim' : 'Ghim'}
                   </button>
@@ -140,7 +140,7 @@ export function TeacherPostsTab() {
                       type="button"
                       disabled={toggleVisible.isPending}
                       onClick={() => toggleVisible.mutate(post)}
-                      className="text-xs font-semibold text-slate-600 hover:text-slate-900 disabled:opacity-50"
+                      className="rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-surface disabled:opacity-50"
                     >
                       {post.status === 'PUBLISHED' ? 'Ẩn đi' : 'Hiện lại'}
                     </button>
@@ -148,7 +148,7 @@ export function TeacherPostsTab() {
                   <button
                     type="button"
                     onClick={() => setEditing(post)}
-                    className="text-xs font-semibold text-brand-700 hover:text-brand-800"
+                    className="rounded-lg bg-brand-100 px-2.5 py-1.5 text-xs font-bold text-brand-800 transition-colors hover:bg-brand-200"
                   >
                     Sửa
                   </button>
@@ -158,7 +158,7 @@ export function TeacherPostsTab() {
                     onClick={() => {
                       if (window.confirm(`Xoá bài “${post.title}”?`)) remove.mutate(post.id);
                     }}
-                    className="text-xs font-semibold text-red-600 hover:text-red-700 disabled:opacity-50"
+                    className="ml-1 rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
                   >
                     Xoá
                   </button>

@@ -137,7 +137,7 @@ function AssignmentCard({
               remove.mutate();
             }
           }}
-          className="text-xs font-semibold text-red-600 hover:text-red-700 disabled:opacity-50"
+          className="ml-1 rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
         >
           Xoá
         </button>
