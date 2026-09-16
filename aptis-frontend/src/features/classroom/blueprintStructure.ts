@@ -3,7 +3,7 @@
  *
  * <p>Số đề mỗi part không phải muốn chọn bao nhiêu cũng được — bài thi thật có
  * cấu trúc cố định. Lấy đúng theo đề thi thử của hệ thống: mỗi part một đề, trừ
- * Listening Part 4 và Reading Part 2 là hai đề.
+ * Speaking Part 1 là ba đề, Listening Part 4 và Reading Part 2 là hai đề.
  *
  * <p>Ép đúng cấu trúc ngay trên giao diện thay vì để giáo viên tự đếm: chọn
  * thừa hay thiếu thì bài thi ra không giống đề thật, mà học viên luyện để thi
@@ -19,21 +19,26 @@ export interface PartSlot {
 /** Cấu trúc từng kỹ năng, khoá theo mã kỹ năng. */
 export const SKILL_STRUCTURE: Record<string, PartSlot[]> = {
   SPEAKING: [
-    { partCode: 'PART_1', questionSetCount: 1 },
+    // Part 1 hỏi ba câu cá nhân riêng, mỗi câu 30 giây.
+    { partCode: 'PART_1', questionSetCount: 3 },
     { partCode: 'PART_2', questionSetCount: 1 },
     { partCode: 'PART_3', questionSetCount: 1 },
     { partCode: 'PART_4', questionSetCount: 1 },
   ],
   LISTENING: [
-    { partCode: 'PART_1', questionSetCount: 1 },
+    // Part 1 nghe 13 đoạn ngắn, mỗi đoạn một đề riêng trong kho.
+    { partCode: 'PART_1', questionSetCount: 13 },
+    // Part 2 và 3 mỗi đề đã gồm sẵn 4 câu.
     { partCode: 'PART_2', questionSetCount: 1 },
     { partCode: 'PART_3', questionSetCount: 1 },
-    // Part 4 gồm hai bài độc thoại riêng.
+    // Part 4 gồm hai bài độc thoại riêng, mỗi bài 2 câu.
     { partCode: 'PART_4', questionSetCount: 2 },
   ],
   GRAMMAR_VOCABULARY: [
-    { partCode: 'GRAMMAR', questionSetCount: 1 },
-    { partCode: 'VOCABULARY', questionSetCount: 1 },
+    // Mỗi câu là một đề riêng. Đề thật 25 câu ngữ pháp và 25 câu từ vựng, nhưng
+    // kho mới có 5 đề từ vựng nên tạm lấy 5 — thêm đề thì sửa số này lên.
+    { partCode: 'GRAMMAR', questionSetCount: 25 },
+    { partCode: 'VOCABULARY', questionSetCount: 5 },
   ],
   READING: [
     { partCode: 'PART_1', questionSetCount: 1 },
@@ -43,7 +48,8 @@ export const SKILL_STRUCTURE: Record<string, PartSlot[]> = {
     { partCode: 'PART_4', questionSetCount: 1 },
   ],
   WRITING: [
-    { partCode: 'PART_1', questionSetCount: 1 },
+    // Part 1 trả lời năm câu ngắn, mỗi câu là một đề riêng trong kho.
+    { partCode: 'PART_1', questionSetCount: 5 },
     { partCode: 'PART_2', questionSetCount: 1 },
     { partCode: 'PART_3', questionSetCount: 1 },
     { partCode: 'PART_4', questionSetCount: 1 },
@@ -66,15 +72,19 @@ export const FULL_TEST_ORDER = [
  * thời gian hơn.
  */
 export const SUGGESTED_MINUTES: Record<string, number> = {
-  SPEAKING: 12,
+  // Bài Speaking của hệ thống để 30 phút, gồm cả thời gian đọc đề và chuẩn bị.
+  SPEAKING: 30,
   LISTENING: 40,
   GRAMMAR_VOCABULARY: 25,
   READING: 35,
   WRITING: 50,
 };
 
-/** Tổng thời lượng bài đủ 5 kỹ năng. */
-export const FULL_TEST_MINUTES = FULL_TEST_ORDER.reduce(
-  (total, code) => total + (SUGGESTED_MINUTES[code] ?? 0),
-  0,
-);
+/**
+ * Thời lượng bài đủ 5 kỹ năng.
+ *
+ * <p>Lấy thẳng con số bài thi thử đầy đủ của hệ thống (162 phút) chứ không cộng
+ * dồn từng kỹ năng — cộng dồn ra 180 phút vì mỗi kỹ năng đều cộng thêm phần đọc
+ * đề, mà thi liền mạch thì chỉ đọc một lần.
+ */
+export const FULL_TEST_MINUTES = 162;

@@ -621,6 +621,37 @@ function SlotRow({
             </p>
           )}
 
+          {/* Grammar cần 25 đề, Listening Part 1 cần 13 — tick tay từng cái thì
+              không ai ngồi làm nổi, nên cho bốc nhanh rồi sửa lại nếu muốn. */}
+          {slot.required > 3 && danhSach.length > 0 && (
+            <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => {
+                  const tron = [...danhSach].sort(() => Math.random() - 0.5);
+                  onChange(tron.slice(0, slot.required).map((s) => s.id));
+                }}
+                className="rounded-lg bg-brand-100 px-2.5 py-1.5 text-[11px] font-bold text-brand-800 hover:bg-brand-200"
+              >
+                Bốc {slot.required} đề bất kỳ
+              </button>
+              {slot.chosen.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => onChange([])}
+                  className="rounded-lg border border-border px-2.5 py-1.5 text-[11px] font-semibold text-slate-600 hover:bg-surface"
+                >
+                  Bỏ chọn hết
+                </button>
+              )}
+              {danhSach.length < slot.required && (
+                <span className="text-[11px] text-amber-700">
+                  Kho chỉ có {danhSach.length} đề, chưa đủ {slot.required}
+                </span>
+              )}
+            </div>
+          )}
+
           {danhSach.length === 0 ? (
             <p className="rounded-lg bg-surface-paper px-2.5 py-2 text-[11px] text-slate-600">
               Chưa có đề nào ở part này. Soạn đề ở tab “Đề của tôi” trước.
