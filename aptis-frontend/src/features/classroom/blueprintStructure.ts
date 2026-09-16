@@ -35,8 +35,8 @@ export const SKILL_STRUCTURE: Record<string, PartSlot[]> = {
     { partCode: 'PART_4', questionSetCount: 2 },
   ],
   GRAMMAR_VOCABULARY: [
-    // Mỗi câu là một đề riêng. Đề thật 25 câu ngữ pháp và 25 câu từ vựng, nhưng
-    // kho mới có 5 đề từ vựng nên tạm lấy 5 — thêm đề thì sửa số này lên.
+    // Cùng 25 câu mỗi phần nhưng kho đóng gói khác nhau: ngữ pháp mỗi câu một
+    // đề, từ vựng mỗi đề là một bài nối 5 cặp.
     { partCode: 'GRAMMAR', questionSetCount: 25 },
     { partCode: 'VOCABULARY', questionSetCount: 5 },
   ],

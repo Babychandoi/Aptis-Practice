@@ -2,7 +2,8 @@
 -- một đề riêng: học viên chỉ được hỏi 1 câu ngữ pháp thay vì 25, 1 đoạn nghe
 -- thay vì 13. Các part còn lại đã gói sẵn đủ câu trong một đề nên giữ nguyên.
 --
--- Từ vựng để 5 vì kho mới có 5 đề; thêm đề thì chỉnh số này lên 25.
+-- Ngữ pháp và từ vựng đều 25 câu nhưng kho đóng gói khác nhau: ngữ pháp mỗi câu
+-- một đề nên cần 25, từ vựng mỗi đề là một bài nối 5 cặp nên 5 đề là đủ.
 -- Chỉ động vào bài của hệ thống, bài giáo viên tự ghép do họ tự chịu trách nhiệm.
 UPDATE blueprint_part_rules bpr
 JOIN test_blueprints b ON b.id = bpr.blueprint_id
