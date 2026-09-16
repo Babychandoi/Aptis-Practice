@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
@@ -8,19 +8,27 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate } from '@/lib/format';
 import { useEscapeKey } from '@/lib/useEscapeKey';
 import { QuestionSetPreviewDialog } from '@/features/classroom/QuestionSetPreviewDialog';
+import {
+  FULL_TEST_MINUTES,
+  FULL_TEST_ORDER,
+  SKILL_STRUCTURE,
+  SUGGESTED_MINUTES,
+} from '@/features/classroom/blueprintStructure';
 import type {
   BlueprintRule,
   BlueprintSelectionMode,
   Classroom,
+  ComponentSummary,
+  PartSummary,
   TeacherBlueprint,
 } from '@/types/api';
 
 /**
  * Bài thi giáo viên tự ghép cho lớp.
  *
- * <p>Hai mức: full một kỹ năng, hoặc đủ 5 kỹ năng. Và hai cách chọn đề — chọn
- * tay từng đề để cả lớp làm cùng một bộ, hoặc đặt luật cho hệ thống bốc, mỗi
- * học viên ra đề khác nhau.
+ * <p>Hai mức: full một kỹ năng, hoặc đủ 5 kỹ năng. Cấu trúc bám đúng đề thi
+ * thật — mỗi part cần bao nhiêu đề là cố định, không cho chọn tuỳ ý, vì học
+ * viên luyện để thi thật.
  */
 export function TeacherBlueprintsTab({ classroom }: { classroom: Classroom }) {
   const queryClient = useQueryClient();
@@ -45,7 +53,8 @@ export function TeacherBlueprintsTab({ classroom }: { classroom: Classroom }) {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-slate-500">
-          Ghép bài thi cho lớp: full một kỹ năng hoặc đủ 5 kỹ năng. Giao qua tab Bài giao.
+          Ghép bài thi đúng cấu trúc Aptis: full một kỹ năng hoặc đủ 5 kỹ năng. Giao qua tab
+          Bài giao.
         </p>
         <button
           type="button"
@@ -129,6 +138,16 @@ export function TeacherBlueprintsTab({ classroom }: { classroom: Classroom }) {
   );
 }
 
+/** Một ô cần điền: part nào, cần mấy đề, đã chọn những đề nào. */
+interface Slot {
+  partId: string;
+  partName: string;
+  componentCode: string;
+  componentName: string;
+  required: number;
+  chosen: string[];
+}
+
 function BlueprintDialog({
   classroom,
   blueprint,
@@ -148,8 +167,7 @@ function BlueprintDialog({
   const [minutes, setMinutes] = useState(
     blueprint?.durationSeconds ? String(Math.round(blueprint.durationSeconds / 60)) : '',
   );
-  const [selectedSets, setSelectedSets] = useState<string[]>([]);
-  const [rules, setRules] = useState<BlueprintRule[]>([]);
+  const [slots, setSlots] = useState<Slot[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const versions = useQuery({ queryKey: ['exam-versions'], queryFn: () => catalogApi.examVersions() });
@@ -175,12 +193,6 @@ function BlueprintDialog({
     enabled: componentIds.length > 0,
   });
 
-  const ownSets = useQuery({
-    queryKey: ['teacher', 'question-sets'],
-    queryFn: teacherAuthoringApi.list,
-  });
-
-  // Nạp lại lựa chọn cũ khi mở bài đã có.
   const daLuu = useQuery({
     queryKey: ['teacher', 'blueprints', blueprint?.id, 'detail'],
     queryFn: async () => {
@@ -188,12 +200,28 @@ function BlueprintDialog({
         teacherBlueprintApi.questionSets(blueprint!.id),
         teacherBlueprintApi.rules(blueprint!.id),
       ]);
-      setSelectedSets(sets.map((s) => s.questionSetId));
-      setRules(savedRules);
       return { sets, rules: savedRules };
     },
     enabled: Boolean(blueprint?.id),
   });
+
+  // Dựng lại các ô mỗi khi đổi phạm vi, và nạp lại lựa chọn cũ nếu đang sửa.
+  useEffect(() => {
+    if (!components.data || !parts.data) return;
+    const next = buildSlots(components.data, parts.data, componentId);
+    if (next.length === 0) return;
+
+    const daChon = daLuu.data?.sets ?? [];
+    setSlots(
+      next.map((slot) => ({
+        ...slot,
+        chosen: daChon
+          .filter((s) => s.partId === slot.partId)
+          .slice(0, slot.required)
+          .map((s) => s.questionSetId),
+      })),
+    );
+  }, [components.data, parts.data, componentId, daLuu.data]);
 
   const save = useMutation({
     mutationFn: () => {
@@ -203,7 +231,16 @@ function BlueprintDialog({
         componentId: componentId || null,
         selectionMode: mode,
         durationSeconds: minutes.trim() === '' ? null : Number(minutes) * 60,
-        ...(mode === 'FIXED' ? { questionSetIds: selectedSets } : { rules }),
+        ...(mode === 'FIXED'
+          ? { questionSetIds: slots.flatMap((s) => s.chosen) }
+          : {
+              rules: slots.map<BlueprintRule>((s) => ({
+                partId: s.partId,
+                questionSetCount: s.required,
+                difficultyMin: null,
+                difficultyMax: null,
+              })),
+            }),
       };
       return blueprint
         ? teacherBlueprintApi.update(blueprint.id, body)
@@ -216,25 +253,36 @@ function BlueprintDialog({
     onError: (err) => setError(err instanceof ApiError ? err.message : 'Không lưu được'),
   });
 
+  const conThieu = slots.filter((s) => s.chosen.length < s.required);
+  const tongCanChon = slots.reduce((sum, s) => sum + s.required, 0);
+  const tongDaChon = slots.reduce((sum, s) => sum + s.chosen.length, 0);
+
   const submit = () => {
     setError(null);
     if (!name.trim()) {
       setError('Đặt tên cho bài thi trước khi lưu');
       return;
     }
-    if (mode === 'FIXED' && selectedSets.length === 0) {
-      setError('Chọn ít nhất một đề cho bài thi');
-      return;
-    }
-    if (mode === 'RULES' && rules.length === 0) {
-      setError('Thêm ít nhất một part vào luật bốc đề');
+    if (mode === 'FIXED' && conThieu.length > 0) {
+      setError(
+        `Còn thiếu đề ở: ${conThieu
+          .map((s) => `${s.partName} (${s.chosen.length}/${s.required})`)
+          .join(', ')}`,
+      );
       return;
     }
     save.mutate();
   };
 
-  const dangTai = versions.isPending || components.isPending
+  const dangTai = versions.isPending || components.isPending || parts.isPending
     || (Boolean(blueprint?.id) && daLuu.isPending);
+
+  // Gợi ý thời lượng theo đề thật, giáo viên sửa được.
+  const phutGoiY = componentId
+    ? SUGGESTED_MINUTES[
+        components.data?.find((c) => c.id === componentId)?.code ?? ''
+      ] ?? null
+    : FULL_TEST_MINUTES;
 
   return (
     <div
@@ -251,6 +299,9 @@ function BlueprintDialog({
         <h2 className="text-base font-bold text-slate-900">
           {blueprint ? 'Sửa bài thi' : 'Ghép bài thi cho lớp'}
         </h2>
+        <p className="mt-0.5 text-xs text-slate-500">
+          Số đề mỗi part cố định theo cấu trúc đề thật — chọn đủ là lưu được.
+        </p>
 
         {dangTai ? (
           <LoadingBlock label="Đang tải…" />
@@ -287,11 +338,7 @@ function BlueprintDialog({
                 </span>
                 <select
                   value={componentId}
-                  onChange={(event) => {
-                    setComponentId(event.target.value);
-                    setSelectedSets([]);
-                    setRules([]);
-                  }}
+                  onChange={(event) => setComponentId(event.target.value)}
                   className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
                 >
                   <option value="">Đủ 5 kỹ năng</option>
@@ -311,7 +358,7 @@ function BlueprintDialog({
                   value={minutes}
                   inputMode="numeric"
                   onChange={(event) => setMinutes(event.target.value)}
-                  placeholder="Để trống = không giới hạn"
+                  placeholder={phutGoiY ? `Đề thật: ${phutGoiY} phút` : 'Để trống = không giới hạn'}
                   className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
                 />
               </label>
@@ -354,20 +401,15 @@ function BlueprintDialog({
             </div>
 
             {mode === 'FIXED' ? (
-              <FixedPicker
+              <SlotPicker
                 classroom={classroom}
-                parts={parts.data ?? []}
-                ownSets={(ownSets.data ?? []).map((s) => ({
-                  id: s.id,
-                  title: s.title,
-                  partId: s.partId ?? null,
-                  hint: `${s.componentName} · ${s.partName} · đề của bạn`,
-                }))}
-                selected={selectedSets}
-                onChange={setSelectedSets}
+                slots={slots}
+                onChange={setSlots}
+                tongDaChon={tongDaChon}
+                tongCanChon={tongCanChon}
               />
             ) : (
-              <RulesEditor parts={parts.data ?? []} rules={rules} onChange={setRules} />
+              <RulesSummary slots={slots} />
             )}
 
             {error && (
@@ -400,105 +442,220 @@ function BlueprintDialog({
   );
 }
 
-/** Chọn tay từng đề, gom theo part cho dễ nhìn. */
-function FixedPicker({
+/**
+ * Dựng danh sách ô cần điền theo cấu trúc chuẩn.
+ *
+ * <p>Part nào hệ thống chưa có thì bỏ qua thay vì dựng ô trống không chọn được.
+ */
+function buildSlots(
+  components: ComponentSummary[],
+  parts: PartSummary[],
+  componentId: string,
+): Omit<Slot, 'chosen'>[] {
+  const codes = componentId
+    ? [components.find((c) => c.id === componentId)?.code].filter(Boolean)
+    : FULL_TEST_ORDER.filter((code) => components.some((c) => c.code === code));
+
+  return (codes as string[]).flatMap((code) => {
+    const component = components.find((c) => c.code === code);
+    if (!component) return [];
+
+    return (SKILL_STRUCTURE[code] ?? []).flatMap((slot) => {
+      const part = parts.find(
+        (p) => p.componentId === component.id && p.code === slot.partCode,
+      );
+      if (!part) return [];
+      return [{
+        partId: part.id,
+        partName: part.name,
+        componentCode: component.code,
+        componentName: component.name,
+        required: slot.questionSetCount,
+      }];
+    });
+  });
+}
+
+/** Chọn đề cho từng ô, mỗi ô đúng số lượng cấu trúc yêu cầu. */
+function SlotPicker({
   classroom,
-  parts,
-  ownSets,
-  selected,
+  slots,
+  onChange,
+  tongDaChon,
+  tongCanChon,
+}: {
+  classroom: Classroom;
+  slots: Slot[];
+  onChange: (slots: Slot[]) => void;
+  tongDaChon: number;
+  tongCanChon: number;
+}) {
+  const [moRong, setMoRong] = useState<string | null>(null);
+
+  return (
+    <div>
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+          Chọn đề theo cấu trúc
+        </span>
+        <span
+          className={clsx(
+            'rounded-full px-2 py-0.5 font-mono text-[10px] font-bold',
+            tongDaChon === tongCanChon
+              ? 'bg-emerald-50 text-emerald-700'
+              : 'bg-amber-50 text-amber-800',
+          )}
+        >
+          {tongDaChon}/{tongCanChon} đề
+        </span>
+      </div>
+
+      {slots.length === 0 ? (
+        <p className="rounded-xl bg-surface-paper px-3 py-2.5 text-xs text-slate-600">
+          Đang dựng cấu trúc…
+        </p>
+      ) : (
+        <ul className="max-h-64 space-y-1.5 overflow-y-auto rounded-xl border border-border p-2">
+          {slots.map((slot) => (
+            <SlotRow
+              key={slot.partId}
+              classroom={classroom}
+              slot={slot}
+              expanded={moRong === slot.partId}
+              onToggle={() => setMoRong(moRong === slot.partId ? null : slot.partId)}
+              onChange={(chosen) =>
+                onChange(slots.map((s) => (s.partId === slot.partId ? { ...s, chosen } : s)))
+              }
+            />
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function SlotRow({
+  classroom,
+  slot,
+  expanded,
+  onToggle,
   onChange,
 }: {
   classroom: Classroom;
-  parts: { id: string; name: string; componentCode: string }[];
-  ownSets: { id: string; title: string; partId: string | null; hint: string }[];
-  selected: string[];
-  onChange: (ids: string[]) => void;
+  slot: Slot;
+  expanded: boolean;
+  onToggle: () => void;
+  onChange: (chosen: string[]) => void;
 }) {
-  const [partId, setPartId] = useState('');
   const [previewing, setPreviewing] = useState<{ id: string; title: string } | null>(null);
 
+  const ownSets = useQuery({
+    queryKey: ['teacher', 'question-sets'],
+    queryFn: teacherAuthoringApi.list,
+  });
+
   const systemSets = useQuery({
-    queryKey: ['parts', partId, 'question-sets'],
-    queryFn: () => catalogApi.questionSets(partId, 0, 50),
-    enabled: Boolean(partId) && classroom.systemContentEnabled,
+    queryKey: ['parts', slot.partId, 'question-sets'],
+    queryFn: () => catalogApi.questionSets(slot.partId, 0, 50),
+    enabled: expanded && classroom.systemContentEnabled,
   });
 
   const danhSach = useMemo(() => {
-    const own = ownSets
-      .filter((s) => !partId || s.partId === partId)
-      .map((s) => ({ id: s.id, title: s.title, hint: s.hint }));
+    const own = (ownSets.data ?? [])
+      .filter((s) => s.partId === slot.partId)
+      .map((s) => ({ id: s.id, title: s.title, hint: 'đề của bạn' }));
     const sys = (systemSets.data ?? []).map((s) => ({
       id: s.id,
       title: s.title ?? s.code,
       hint: 'đề hệ thống',
     }));
     return [...own, ...sys];
-  }, [ownSets, partId, systemSets.data]);
+  }, [ownSets.data, systemSets.data, slot.partId]);
 
-  const toggle = (id: string, checked: boolean) =>
-    onChange(checked ? [...selected, id] : selected.filter((x) => x !== id));
+  const du = slot.chosen.length >= slot.required;
+
+  const toggle = (id: string, checked: boolean) => {
+    if (checked) {
+      // Chọn quá số cấu trúc cho phép thì thay cái cũ nhất, không cộng dồn —
+      // bài thi ra sai cấu trúc là học viên luyện sai.
+      const next = [...slot.chosen, id];
+      onChange(next.slice(-slot.required));
+    } else {
+      onChange(slot.chosen.filter((x) => x !== id));
+    }
+  };
 
   return (
-    <div>
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
-          Chọn đề ({selected.length} đã chọn)
-        </span>
-        <select
-          value={partId}
-          onChange={(event) => setPartId(event.target.value)}
-          className="rounded-lg border border-border px-2.5 py-1.5 text-xs outline-none focus:border-brand-400"
+    <li className="rounded-lg border border-border-subtle">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex w-full items-center gap-2.5 px-2.5 py-2 text-left hover:bg-surface"
+      >
+        <span
+          className={clsx(
+            'grid h-5 w-5 shrink-0 place-items-center rounded-full font-mono text-[10px] font-bold',
+            du ? 'bg-emerald-600 text-white' : 'bg-surface-muted text-slate-600',
+          )}
         >
-          <option value="">— Lọc theo part —</option>
-          {parts.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name}
-            </option>
-          ))}
-        </select>
-      </div>
+          {du ? '✓' : slot.chosen.length}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm font-semibold text-slate-800">
+            {slot.partName}
+          </span>
+          <span className="block text-[11px] text-slate-500">
+            cần {slot.required} đề · đã chọn {slot.chosen.length}
+          </span>
+        </span>
+        <span className="shrink-0 text-[11px] font-semibold text-brand-700">
+          {expanded ? 'Thu gọn' : 'Chọn đề'}
+        </span>
+      </button>
 
-      {!classroom.systemContentEnabled && (
-        <p className="mb-1.5 rounded-xl bg-surface-paper px-3 py-2 text-[11px] leading-5 text-slate-600">
-          Lớp chưa mở kho đề hệ thống nên chỉ chọn được đề bạn tự soạn.
-        </p>
-      )}
+      {expanded && (
+        <div className="border-t border-border-subtle px-2.5 py-2">
+          {!classroom.systemContentEnabled && (
+            <p className="mb-1.5 rounded-lg bg-surface-paper px-2.5 py-1.5 text-[11px] leading-5 text-slate-600">
+              Lớp chưa mở kho đề hệ thống nên chỉ chọn được đề bạn tự soạn.
+            </p>
+          )}
 
-      {danhSach.length === 0 ? (
-        <p className="rounded-xl bg-surface-paper px-3 py-2.5 text-xs text-slate-600">
-          {partId
-            ? 'Không có đề nào ở part này.'
-            : 'Chọn part ở trên để thấy đề, hoặc soạn đề riêng ở tab Đề của tôi.'}
-        </p>
-      ) : (
-        <div className="max-h-52 space-y-1 overflow-y-auto rounded-xl border border-border p-2">
-          {danhSach.map((set) => (
-            <label
-              key={set.id}
-              className="flex cursor-pointer items-start gap-2.5 rounded-lg px-2 py-1.5 hover:bg-surface"
-            >
-              <input
-                type="checkbox"
-                checked={selected.includes(set.id)}
-                onChange={(event) => toggle(set.id, event.target.checked)}
-                className="mt-0.5 h-4 w-4 shrink-0 rounded border-border"
-              />
-              <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm text-slate-800">{set.title}</span>
-                <span className="block text-[11px] text-slate-500">{set.hint}</span>
-              </span>
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.preventDefault();
-                  setPreviewing({ id: set.id, title: set.title });
-                }}
-                className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-slate-600 hover:bg-surface"
-              >
-                Xem
-              </button>
-            </label>
-          ))}
+          {danhSach.length === 0 ? (
+            <p className="rounded-lg bg-surface-paper px-2.5 py-2 text-[11px] text-slate-600">
+              Chưa có đề nào ở part này. Soạn đề ở tab “Đề của tôi” trước.
+            </p>
+          ) : (
+            <div className="max-h-40 space-y-1 overflow-y-auto">
+              {danhSach.map((set) => (
+                <label
+                  key={set.id}
+                  className="flex cursor-pointer items-center gap-2 rounded-lg px-1.5 py-1.5 hover:bg-surface"
+                >
+                  <input
+                    type="checkbox"
+                    checked={slot.chosen.includes(set.id)}
+                    onChange={(event) => toggle(set.id, event.target.checked)}
+                    className="h-4 w-4 shrink-0 rounded border-border"
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[13px] text-slate-800">{set.title}</span>
+                    <span className="block text-[10px] text-slate-500">{set.hint}</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setPreviewing({ id: set.id, title: set.title });
+                    }}
+                    className="shrink-0 rounded-lg border border-border px-2 py-1 text-[10px] font-semibold text-slate-600 hover:bg-surface"
+                  >
+                    Xem
+                  </button>
+                </label>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -509,84 +666,37 @@ function FixedPicker({
           onClose={() => setPreviewing(null)}
         />
       )}
-    </div>
+    </li>
   );
 }
 
-/** Đặt luật cho hệ thống bốc đề: mỗi part một dòng. */
-function RulesEditor({
-  parts,
-  rules,
-  onChange,
-}: {
-  parts: { id: string; name: string }[];
-  rules: BlueprintRule[];
-  onChange: (rules: BlueprintRule[]) => void;
-}) {
-  const themPart = (partId: string) => {
-    if (!partId || rules.some((r) => r.partId === partId)) return;
-    onChange([...rules, { partId, questionSetCount: 1, difficultyMin: null, difficultyMax: null }]);
-  };
-
-  const sua = (partId: string, patch: Partial<BlueprintRule>) =>
-    onChange(rules.map((r) => (r.partId === partId ? { ...r, ...patch } : r)));
-
-  const ten = (partId: string) => parts.find((p) => p.id === partId)?.name ?? partId;
-
+/** Chế độ hệ thống bốc: chỉ cho xem cấu trúc, không cần chọn gì. */
+function RulesSummary({ slots }: { slots: Slot[] }) {
   return (
     <div>
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
-          Luật bốc đề ({rules.length} part)
-        </span>
-        <select
-          value=""
-          onChange={(event) => themPart(event.target.value)}
-          className="rounded-lg border border-border px-2.5 py-1.5 text-xs outline-none focus:border-brand-400"
-        >
-          <option value="">+ Thêm part</option>
-          {parts
-            .filter((p) => !rules.some((r) => r.partId === p.id))
-            .map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-        </select>
-      </div>
+      <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+        Cấu trúc bài thi
+      </span>
+      <p className="mb-2 rounded-xl bg-surface-paper px-3 py-2 text-[11px] leading-5 text-slate-600">
+        Hệ thống tự bốc đề theo đúng cấu trúc dưới đây, mỗi học viên một bộ khác nhau. Bạn
+        không phải chọn gì thêm.
+      </p>
 
-      {rules.length === 0 ? (
+      {slots.length === 0 ? (
         <p className="rounded-xl bg-surface-paper px-3 py-2.5 text-xs text-slate-600">
-          Chưa có part nào. Thêm part rồi đặt số đề cần bốc cho mỗi part.
+          Đang dựng cấu trúc…
         </p>
       ) : (
-        <ul className="space-y-1.5">
-          {rules.map((rule) => (
+        <ul className="max-h-48 space-y-1 overflow-y-auto rounded-xl border border-border p-2">
+          {slots.map((slot) => (
             <li
-              key={rule.partId}
-              className="flex flex-wrap items-center gap-2 rounded-xl border border-border px-3 py-2"
+              key={slot.partId}
+              className="flex items-center justify-between gap-2 px-1.5 py-1"
             >
-              <span className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-800">
-                {ten(rule.partId)}
+              <span className="min-w-0 truncate text-[13px] text-slate-800">{slot.partName}</span>
+              <span className="shrink-0 font-mono text-[11px] font-semibold text-slate-600">
+                {slot.required} đề
               </span>
-              <label className="flex items-center gap-1.5">
-                <span className="text-[11px] text-slate-500">Số đề</span>
-                <input
-                  value={rule.questionSetCount}
-                  inputMode="numeric"
-                  onChange={(event) =>
-                    sua(rule.partId, { questionSetCount: Number(event.target.value) || 1 })
-                  }
-                  className="w-14 rounded-lg border border-border px-2 py-1 text-sm outline-none focus:border-brand-400"
-                />
-              </label>
-              <button
-                type="button"
-                onClick={() => onChange(rules.filter((r) => r.partId !== rule.partId))}
-                className="ml-1 rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
-              >
-                Bỏ
-              </button>
             </li>
           ))}
         </ul>

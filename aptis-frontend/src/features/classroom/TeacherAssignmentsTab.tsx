@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
-import { teacherContentApi } from '@/api/endpoints';
+import { teacherBlueprintApi, teacherContentApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate, formatDateTime } from '@/lib/format';
 import { useEscapeKey } from '@/lib/useEscapeKey';
-import { QuestionSetPreviewDialog } from '@/features/classroom/QuestionSetPreviewDialog';
 import type { Assignment, AssignmentSubmission, Classroom } from '@/types/api';
 
 /** Bài giao và chấm bài. */
@@ -29,9 +28,10 @@ export function TeacherAssignmentsTab({ classroom }: { classroom: Classroom }) {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-slate-500">
+          Giao bài thi đã ghép ở tab <strong>Bài thi ghép</strong>.
           {classroom.systemContentEnabled
-            ? 'Giao đề từ ngân hàng hệ thống hoặc đề bạn tự soạn.'
-            : 'Lớp chưa mở kho đề hệ thống — hiện chỉ giao được đề bạn tự soạn.'}
+            ? ' Lớp đã mở kho đề hệ thống.'
+            : ' Lớp chưa mở kho đề hệ thống — chỉ ghép được từ đề bạn tự soạn.'}
         </p>
         <button
           type="button"
@@ -155,16 +155,17 @@ function CreateAssignmentDialog({
 }) {
   useEscapeKey(onClose);
   const queryClient = useQueryClient();
-  const [previewing, setPreviewing] = useState<{ id: string; title: string } | null>(null);
   const [title, setTitle] = useState('');
   const [instructions, setInstructions] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const ownSets = useQuery({
-    queryKey: ['teacher', 'classroom', 'question-sets'],
-    queryFn: teacherContentApi.myQuestionSets,
+  // Giao bài luôn là một bài thi hoàn chỉnh đã ghép sẵn, không giao đề lẻ nữa —
+  // đề lẻ không đủ cấu trúc nên học viên làm xong không biết mình đứng ở đâu.
+  const blueprints = useQuery({
+    queryKey: ['teacher', 'blueprints'],
+    queryFn: teacherBlueprintApi.list,
   });
 
   const submit = useMutation({
@@ -172,7 +173,7 @@ function CreateAssignmentDialog({
       teacherContentApi.createAssignment({
         title: title.trim(),
         instructions: instructions.trim() || undefined,
-        questionSetIds: selected,
+        blueprintId: selected ?? undefined,
         // Input date cho ngày; quy về cuối ngày để học viên có trọn ngày đó.
         dueAt: dueDate ? new Date(`${dueDate}T23:59:59`).toISOString() : undefined,
       }),
@@ -197,7 +198,7 @@ function CreateAssignmentDialog({
       >
         <h2 className="text-base font-bold text-slate-900">Giao bài mới</h2>
         <p className="mt-0.5 text-xs text-slate-500">
-          Chọn đề và đặt hạn nộp cho lớp {classroom.name}.
+          Chọn một bài thi đã ghép và đặt hạn nộp cho lớp {classroom.name}.
         </p>
 
         <form
@@ -205,8 +206,8 @@ function CreateAssignmentDialog({
           onSubmit={(event) => {
             event.preventDefault();
             setError(null);
-            if (selected.length === 0) {
-              setError('Chọn ít nhất một đề để giao');
+            if (!selected) {
+              setError('Chọn một bài thi để giao');
               return;
             }
             submit.mutate();
@@ -252,55 +253,51 @@ function CreateAssignmentDialog({
 
           <div>
             <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
-              Chọn đề ({selected.length} đã chọn)
+              Chọn bài thi
             </span>
 
-            {ownSets.isPending ? (
-              <LoadingBlock label="Đang tải đề…" />
-            ) : !ownSets.data || ownSets.data.length === 0 ? (
+            {blueprints.isPending ? (
+              <LoadingBlock label="Đang tải bài thi…" />
+            ) : !blueprints.data || blueprints.data.length === 0 ? (
               <p className="rounded-xl bg-surface-paper px-3 py-3 text-xs leading-5 text-slate-600">
-                Bạn chưa soạn đề nào. Vào tab <strong>Đề của tôi</strong> để tạo đề trước, hoặc
-                liên hệ quản trị mở kho đề hệ thống cho lớp.
+                Bạn chưa ghép bài thi nào. Soạn đề ở tab <strong>Đề của tôi</strong>, rồi sang
+                tab <strong>Bài thi ghép</strong> để ghép thành bài hoàn chỉnh trước khi giao.
               </p>
             ) : (
               <div className="max-h-52 space-y-1.5 overflow-y-auto rounded-xl border border-border p-2">
-                {ownSets.data.map((set) => (
+                {blueprints.data.map((bp) => (
                   <label
-                    key={set.id}
-                    className="flex cursor-pointer items-start gap-2.5 rounded-lg px-2 py-1.5 hover:bg-surface"
+                    key={bp.id}
+                    className={clsx(
+                      'flex cursor-pointer items-start gap-2.5 rounded-lg border px-2.5 py-2 transition-colors',
+                      selected === bp.id
+                        ? 'border-brand-600 bg-brand-50'
+                        : 'border-transparent hover:bg-surface',
+                    )}
                   >
                     <input
-                      type="checkbox"
-                      checked={selected.includes(set.id)}
-                      onChange={(event) =>
-                        setSelected((prev) =>
-                          event.target.checked
-                            ? [...prev, set.id]
-                            : prev.filter((id) => id !== set.id),
-                        )
-                      }
-                      className="mt-0.5 h-4 w-4 shrink-0 rounded border-border"
+                      type="radio"
+                      name="blueprint"
+                      checked={selected === bp.id}
+                      onChange={() => {
+                        setSelected(bp.id);
+                        // Đỡ giáo viên phải gõ lại tên bài thi.
+                        if (!title.trim()) setTitle(bp.name);
+                      }}
+                      className="mt-0.5 h-4 w-4 shrink-0 border-border"
                     />
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-semibold text-slate-800">
-                        {set.title}
-                      </span>
+                      <span className="block text-sm font-semibold text-slate-800">{bp.name}</span>
                       <span className="block text-[11px] text-slate-500">
-                        {set.componentName} · {set.partName}
+                        {bp.componentName} ·{' '}
+                        {bp.selectionMode === 'FIXED'
+                          ? `${bp.questionSetCount} đề cố định`
+                          : `hệ thống bốc ${bp.questionSetCount} đề`}
+                        {bp.durationSeconds
+                          ? ` · ${Math.round(bp.durationSeconds / 60)} phút`
+                          : ''}
                       </span>
                     </span>
-                    {/* Tên đề trong cùng một part gần như giống nhau, không xem
-                        nội dung thì chọn như chọn mù. */}
-                    <button
-                      type="button"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setPreviewing({ id: set.id, title: set.title });
-                      }}
-                      className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-slate-600 hover:bg-surface"
-                    >
-                      Xem
-                    </button>
                   </label>
                 ))}
               </div>
@@ -332,13 +329,6 @@ function CreateAssignmentDialog({
         </form>
       </div>
 
-      {previewing && (
-        <QuestionSetPreviewDialog
-          questionSetId={previewing.id}
-          title={previewing.title}
-          onClose={() => setPreviewing(null)}
-        />
-      )}
     </div>
   );
 }

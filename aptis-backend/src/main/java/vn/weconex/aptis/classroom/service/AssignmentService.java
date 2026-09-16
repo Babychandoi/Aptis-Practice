@@ -31,6 +31,7 @@ import vn.weconex.aptis.common.exception.ErrorCode;
 import vn.weconex.aptis.content.domain.QuestionSet;
 import vn.weconex.aptis.content.repository.QuestionSetRepository;
 import vn.weconex.aptis.practice.domain.TestAttempt;
+import vn.weconex.aptis.practice.repository.TestBlueprintRepository;
 import vn.weconex.aptis.practice.service.AttemptService;
 
 /**
@@ -48,6 +49,7 @@ public class AssignmentService {
     private final AssignmentRepository assignmentRepository;
     private final AssignmentQuestionSetRepository assignmentQuestionSetRepository;
     private final AssignmentSubmissionRepository submissionRepository;
+    private final TestBlueprintRepository blueprintRepository;
     private final ClassroomMemberRepository memberRepository;
     private final QuestionSetRepository questionSetRepository;
     private final AttemptService attemptService;
@@ -76,7 +78,16 @@ public class AssignmentService {
         assignment.setDueAt(dueAt);
 
         if (blueprintId != null && !blueprintId.isBlank()) {
-            requireSystemContent(classroom, "đề thi thử của hệ thống");
+            // Bài giáo viên tự ghép chỉ chứa đề họ được phép dùng (đã kiểm lúc
+            // ghép) nên luôn giao được. Chỉ bài thi thử của hệ thống mới đòi lớp
+            // đã bật kho đề.
+            boolean cuaGiaoVien = blueprintRepository.findById(blueprintId)
+                    .map(b -> teacherUserId.equals(b.getOwnerTeacherId()))
+                    .orElseThrow(() -> new ApiException(
+                            ErrorCode.VALIDATION_FAILED, "Bài thi không tồn tại"));
+            if (!cuaGiaoVien) {
+                requireSystemContent(classroom, "đề thi thử của hệ thống");
+            }
             assignment.setSourceType(Assignment.SourceType.BLUEPRINT);
             assignment.setBlueprintId(blueprintId);
             assignmentRepository.save(assignment);
