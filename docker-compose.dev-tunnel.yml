@@ -1,0 +1,53 @@
+# Đưa stack DEV ra subdomain thật để test từ xa.
+#
+#   docker compose -f docker-compose.dev.yml -f docker-compose.dev-tunnel.yml up -d
+#
+# Dùng TUNNEL RIÊNG, không dùng chung với production. Production và dev là hai
+# tunnel độc lập: restart dev, sập dev, hay gỡ dev đi đều không đụng tới trang
+# thật đang có học viên dùng.
+#
+# Chuẩn bị (một lần): xem docs/DEPLOY-DEV-SUBDOMAIN.md
+
+# Biến của dev để riêng .env.dev, không lẫn vào .env của production — hai file
+# cùng tên biến khác giá trị là cách nhanh nhất để deploy nhầm.
+#
+# Compose vẫn nạp .env trước, nên gọi lệnh kèm --env-file .env.dev:
+#   docker compose --env-file .env.dev -f docker-compose.dev.yml \
+#       -f docker-compose.dev-tunnel.yml up -d
+
+services:
+  cloudflared-dev:
+    image: cloudflare/cloudflared:latest
+    container_name: aptis-dev-cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: "${DEV_TUNNEL_TOKEN:?Thiếu DEV_TUNNEL_TOKEN trong .env.dev}"
+    depends_on:
+      frontend:
+        condition: service_started
+      minio:
+        condition: service_healthy
+
+  # Chạy sau HTTPS thì ba thứ dưới đây phải đổi, nếu không trang mở được nhưng
+  # đăng nhập rớt liên tục và ảnh/audio chết.
+  backend:
+    environment:
+      # Không có domain dev trong CORS thì trình duyệt chặn mọi lời gọi API.
+      CORS_ORIGINS: "${DEV_PUBLIC_ORIGIN:?Thiếu DEV_PUBLIC_ORIGIN trong .env.dev}"
+
+      # Presigned URL phải ký bằng host mà TRÌNH DUYỆT dùng. Giữ localhost:9002
+      # thì ảnh và audio chết ngay khi anh mở từ máy khác.
+      MINIO_PUBLIC_ENDPOINT: "${DEV_MINIO_PUBLIC_ORIGIN:?Thiếu DEV_MINIO_PUBLIC_ORIGIN trong .env.dev}"
+
+      # Qua HTTPS trình duyệt chỉ gửi cookie refresh khi có cờ Secure. Để false
+      # như bản local thì cứ tải lại trang là văng ra màn đăng nhập.
+      REFRESH_COOKIE_SECURE: "true"
+      REFRESH_COOKIE_SAME_SITE: "Lax"
+
+  frontend:
+    environment:
+      # Bản dev không được vào kết quả tìm kiếm: học viên gõ Google ra trang dev
+      # sẽ tưởng là trang thật, trong khi ở đây có tính năng chưa xong và dữ
+      # liệu giả.
+      NGINX_ROBOTS_TAG: "noindex, nofollow"

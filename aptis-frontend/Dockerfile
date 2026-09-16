@@ -22,7 +22,18 @@ RUN npm run build
 FROM nginx:1.27-alpine
 
 COPY --from=build /build/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Đặt trong templates/ để entrypoint của image nginx thay biến môi trường rồi
+# ghi ra conf.d/default.conf lúc khởi động — nhờ đó một image dùng được cho cả
+# production lẫn dev, chỉ khác giá trị biến.
+COPY nginx.conf /etc/nginx/templates/default.conf.template
+
+# Production không chặn lập chỉ mục; bản dev đặt NGINX_ROBOTS_TAG=noindex, nofollow.
+ENV NGINX_ROBOTS_TAG=""
+
+# Chỉ cho envsubst thay đúng biến này. Không giới hạn thì nó nuốt luôn $host,
+# $scheme, $uri… của nginx và file cấu hình hỏng hoàn toàn.
+ENV NGINX_ENVSUBST_FILTER="NGINX_ROBOTS_TAG"
 
 EXPOSE 80
 
