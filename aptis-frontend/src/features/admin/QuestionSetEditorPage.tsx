@@ -89,14 +89,20 @@ const PART_TEMPLATES: Record<string, PartTemplate> = {
   'GRAMMAR_VOCABULARY:GRAMMAR': {
     taskTypeCode: 'SINGLE_CHOICE', name: 'Hoàn thành câu · 3 lựa chọn',
     instructions: 'Chọn từ hoặc cụm từ đúng nhất để hoàn thành câu.',
-    note: 'Grammar gồm câu hỏi trắc nghiệm 3 lựa chọn.',
+    // Kho lưu mỗi câu một đề riêng, bài thi lấy 25 đề. Nhập liền 25 câu ở đây
+    // rồi hệ thống tách thành 25 đề, không gộp thành một đề 25 câu.
+    note: 'Grammar là câu trắc nghiệm 3 lựa chọn, mỗi câu lưu thành một đề riêng. Nhập bao nhiêu câu cũng được; bài thi đầy đủ lấy 25 câu.',
     initialItemTypes: repeatType('SINGLE_CHOICE', 25),
+    bulkSingleItem: true,
   },
   'GRAMMAR_VOCABULARY:VOCABULARY': {
-    taskTypeCode: 'MATCHING', name: 'Từ vựng tổng hợp · Ghép và hoàn thành câu',
-    instructions: 'Ghép từ với nghĩa phù hợp hoặc chọn từ phù hợp với ngữ cảnh.',
-    note: 'Vocabulary gồm ghép từ đồng nghĩa, ghép định nghĩa, dùng từ trong câu và kết hợp từ.',
-    initialItemTypes: ['MATCHING', 'MATCHING', 'SINGLE_CHOICE', 'MATCHING'],
+    taskTypeCode: 'MATCHING', name: 'Từ vựng · Ghép 5 cặp',
+    instructions: 'Ghép mỗi từ với nghĩa hoặc từ đi kèm phù hợp.',
+    // Mỗi đề là một bài nối 5 cặp, giống kho hệ thống; bài thi lấy 5 đề thành
+    // đủ 25 câu. Trộn nhiều kiểu trong một đề thì ghép bài thi ra sai cấu trúc.
+    note: 'Mỗi đề là một bài nối 5 cặp (đồng nghĩa, định nghĩa, từ đi kèm…). Bài thi đầy đủ lấy 5 đề thành 25 câu.',
+    initialItemTypes: ['MATCHING'],
+    matchingCounts: { left: 5, right: 10 },
   },
   'READING:PART_1': {
     taskTypeCode: 'GAP_FILL_CHOICE', name: 'Hoàn thành câu · Danh sách lựa chọn',
@@ -110,12 +116,13 @@ const PART_TEMPLATES: Record<string, PartTemplate> = {
   'READING:PART_2': {
     taskTypeCode: 'SENTENCE_ORDERING', name: 'Sắp xếp câu thành đoạn văn',
     instructions: 'Sắp xếp các câu theo đúng thứ tự để tạo thành một đoạn văn hoàn chỉnh.',
-    note: 'Reading Part 2 gồm các câu bị xáo trộn và yêu cầu sắp xếp lại. Đề thi thử lấy hai bộ từ Part này, mỗi bộ 5 điểm.',
+    // Kho hệ thống để 5 câu cần sắp, câu mở đầu nằm trong phần bối cảnh chứ
+    // không phải một lựa chọn cố định.
+    note: 'Reading Part 2 gồm 5 câu bị xáo trộn cần sắp xếp lại. Bài thi đầy đủ lấy hai đề từ Part này, mỗi đề 5 điểm.',
     initialItemTypes: repeatType('SENTENCE_ORDERING', 1),
     itemPromptLabel: 'Tiêu đề / bối cảnh của đoạn',
-    optionCount: 6,
+    optionCount: 5,
     itemMaxScore: 5,
-    fixedFirstOption: true,
   },
   'READING:PART_3': {
     taskTypeCode: 'SPEAKER_MATCHING', name: 'Ghép ý kiến với người nói',
@@ -132,17 +139,20 @@ const PART_TEMPLATES: Record<string, PartTemplate> = {
     instructions: 'Đọc bài văn và ghép tiêu đề phù hợp với từng đoạn.',
     note: 'Reading Part 4 ghép tiêu đề với các đoạn trong một bài đọc dài.',
     initialItemTypes: ['MATCHING'],
-    stimulus: { label: 'Bài đọc dài — 8 đoạn', placeholder: 'Nhập bài đọc khoảng 750 từ và đánh dấu rõ các đoạn A–H…', required: true, rows: 16 },
+    stimulus: { label: 'Bài đọc dài — 7 đoạn', placeholder: 'Nhập bài đọc khoảng 750 từ và đánh dấu rõ các đoạn A–G…', required: true, rows: 16 },
     itemPromptLabel: 'Yêu cầu ghép 7 đoạn với tiêu đề',
-    matchingCounts: { left: 7, right: 8 },
+    // Đúng 7 tiêu đề cho 7 đoạn như kho hệ thống, không có tiêu đề thừa.
+    matchingCounts: { left: 7, right: 7 },
     matchingScoring: { pointsPerCorrect: 2, perfectBonus: 0 },
   },
   'LISTENING:PART_1': {
     taskTypeCode: 'SINGLE_CHOICE', name: 'Nhận biết thông tin · 3 lựa chọn',
     instructions: 'Nghe đoạn ghi âm ngắn và chọn đáp án đúng. Mỗi đoạn được nghe tối đa hai lần.',
-    note: 'Mỗi câu sử dụng một audio riêng để nhận biết số, thời gian, địa điểm hoặc thông tin cụ thể.',
+    // Kho lưu mỗi câu một đề riêng, bài thi lấy 13 đề.
+    note: 'Mỗi câu có audio riêng và lưu thành một đề riêng. Nhập bao nhiêu câu cũng được; bài thi đầy đủ lấy 13 câu.',
     initialItemTypes: repeatType('SINGLE_CHOICE', 13),
     audioGroups: repeatType('SINGLE_CHOICE', 13).map(() => 1),
+    bulkSingleItem: true,
   },
   'LISTENING:PART_2': {
     taskTypeCode: 'SPEAKER_MATCHING', name: 'Ghép người nói với thông tin',
@@ -169,9 +179,11 @@ const PART_TEMPLATES: Record<string, PartTemplate> = {
   'LISTENING:PART_4': {
     taskTypeCode: 'SINGLE_CHOICE', name: 'Suy luận từ bài độc thoại · 3 lựa chọn',
     instructions: 'Nghe bài độc thoại và chọn đáp án thể hiện đúng thái độ, ý định hoặc quan điểm của người nói.',
-    note: 'Listening Part 4 là trắc nghiệm suy luận từ các bài độc thoại dài.',
-    initialItemTypes: repeatType('SINGLE_CHOICE', 4),
-    audioGroups: [2, 2],
+    // Mỗi đề là MỘT bài độc thoại 2 câu, giống kho hệ thống; bài thi lấy 2 đề
+    // thành 2 bài. Gộp cả 2 bài vào một đề thì ghép bài thi ra sai cấu trúc.
+    note: 'Listening Part 4 là trắc nghiệm suy luận từ bài độc thoại dài. Mỗi đề là một bài độc thoại kèm 2 câu hỏi.',
+    initialItemTypes: repeatType('SINGLE_CHOICE', 2),
+    audioGroups: [2],
   },
   'SPEAKING:PART_1': {
     taskTypeCode: 'AUDIO_RECORDING', name: 'Trả lời thông tin cá nhân · Ghi âm',
