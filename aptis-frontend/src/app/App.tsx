@@ -145,6 +145,12 @@ export function App() {
         {/* Trình soạn đề dùng chung với admin, chỉ khác mode. */}
         <Route path="/giang-day/de/moi" element={<QuestionSetEditorPage mode="teacher" />} />
         <Route path="/giang-day/de/:id" element={<QuestionSetEditorPage mode="teacher" />} />
+        {/* Giáo viên xem bài học viên lớp mình đã làm — cùng trang kết quả, chỉ
+            khác chỗ lấy dữ liệu qua API phía giáo viên. */}
+        <Route
+          path="/giang-day/hoc-vien/:studentUserId/bai-lam/:attemptId"
+          element={<AttemptResultPage />}
+        />
         <Route path="/lop-hoc/:classroomId" element={<ClassroomWorkspacePage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/plans" element={<PlansPage />} />

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { practiceApi } from '@/api/endpoints';
+import { practiceApi, teacherClassroomApi } from '@/api/endpoints';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { EvaluationFeedbackCard } from '@/features/practice/EvaluationFeedbackCard';
@@ -72,13 +72,26 @@ function getStandardPartTitle(componentCode: string, partNumber: number, fallbac
   return fallbackName ?? `Phần ${partNumber}`;
 }
 
+/**
+ * Kết quả một lượt làm bài.
+ *
+ * <p>Giáo viên xem bài của học viên lớp mình dùng đúng trang này, chỉ khác chỗ
+ * lấy dữ liệu: route có studentUserId thì gọi API phía giáo viên, vốn kiểm em
+ * đó có nằm trong lớp mình không.
+ */
 export function AttemptResultPage() {
-  const { attemptId } = useParams<{ attemptId: string }>();
+  const { attemptId, studentUserId } = useParams<{
+    attemptId: string;
+    studentUserId?: string;
+  }>();
   const navigate = useNavigate();
 
   const attemptQuery = useQuery({
-    queryKey: ['attempt', attemptId],
-    queryFn: () => practiceApi.getAttempt(attemptId!),
+    queryKey: ['attempt', attemptId, studentUserId],
+    queryFn: () =>
+      studentUserId
+        ? teacherClassroomApi.studentAttemptDetail(studentUserId, attemptId!)
+        : practiceApi.getAttempt(attemptId!),
     enabled: Boolean(attemptId),
     staleTime: 0,
     refetchOnMount: 'always',
@@ -91,8 +104,11 @@ export function AttemptResultPage() {
   const isScoring = attemptStatus === 'SCORING';
 
   const evaluationsQuery = useQuery({
-    queryKey: ['attempt-evaluations', attemptId],
-    queryFn: () => practiceApi.evaluations(attemptId!),
+    queryKey: ['attempt-evaluations', attemptId, studentUserId],
+    queryFn: () =>
+      studentUserId
+        ? teacherClassroomApi.studentAttemptEvaluations(studentUserId, attemptId!)
+        : practiceApi.evaluations(attemptId!),
     enabled: Boolean(attemptId) && (attemptStatus === 'COMPLETED' || isScoring),
     refetchInterval: isScoring ? 1000 : false,
   });

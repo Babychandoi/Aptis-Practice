@@ -16,7 +16,8 @@ import { TeacherPredictionsTab } from '@/features/classroom/TeacherPredictionsTa
 import { ClassroomSidebar } from '@/features/classroom/ClassroomSidebar';
 import { TeacherQuestionSetsTab } from '@/features/classroom/TeacherQuestionSetsTab';
 import { TeacherBlueprintsTab } from '@/features/classroom/TeacherBlueprintsTab';
-import type { Classroom } from '@/types/api';
+import { StudentAttemptsPanel } from '@/features/classroom/StudentAttemptsPanel';
+import type { Classroom, ClassroomStudent } from '@/types/api';
 
 type Tab =
   | 'students'
@@ -145,6 +146,8 @@ export function TeacherClassroomPage() {
 function StudentTable() {
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null);
+  // Xem em ấy đã luyện những gì, kể cả bài tự làm với đề hệ thống.
+  const [dangXem, setDangXem] = useState<ClassroomStudent | null>(null);
 
   const query = useQuery({
     queryKey: ['teacher', 'classroom', 'students'],
@@ -204,6 +207,14 @@ function StudentTable() {
                   </span>
                 </span>
               </div>
+              <button
+                type="button"
+                onClick={() => setDangXem(student)}
+                className="shrink-0 rounded-lg bg-brand-100 px-2.5 py-1.5 text-xs font-bold text-brand-800 transition-colors hover:bg-brand-200"
+              >
+                Bài làm
+              </button>
+
               <button
                 type="button"
                 disabled={remove.isPending}
@@ -288,6 +299,14 @@ function StudentTable() {
                 <td className="px-4 py-3 text-right">
                   <button
                     type="button"
+                    onClick={() => setDangXem(student)}
+                    className="rounded-lg bg-brand-100 px-2.5 py-1.5 text-xs font-bold text-brand-800 transition-colors hover:bg-brand-200"
+                  >
+                    Bài làm
+                  </button>
+
+                  <button
+                    type="button"
                     disabled={remove.isPending}
                     onClick={() => {
                       if (window.confirm(`Gỡ ${student.fullName || student.email} khỏi lớp?`)) {
@@ -304,6 +323,10 @@ function StudentTable() {
           </tbody>
         </table>
       </div>
+
+      {dangXem && (
+        <StudentAttemptsPanel student={dangXem} onClose={() => setDangXem(null)} />
+      )}
     </div>
   );
 }

@@ -555,6 +555,29 @@ export const teacherClassroomApi = {
 
   removeStudent: (studentUserId: string) =>
     api.delete(`/teacher/classroom/students/${studentUserId}`).then((r) => r.data),
+
+  /** Lịch sử luyện tập của một học viên, kể cả bài em tự làm với đề hệ thống. */
+  studentAttempts: (studentUserId: string, page = 0, size = 20) =>
+    api
+      .get<PageResponse<AttemptSummary>>(
+        `/teacher/classroom/students/${studentUserId}/attempts`,
+        { params: { page, size } },
+      )
+      .then((r) => r.data),
+
+  /** Chi tiết một lượt: em chọn đáp án nào, đúng sai ra sao. */
+  studentAttemptDetail: (studentUserId: string, attemptId: string) =>
+    api
+      .get<Attempt>(`/teacher/classroom/students/${studentUserId}/attempts/${attemptId}`)
+      .then((r) => r.data),
+
+  /** Nhận xét AI của bài Speaking/Writing em đã làm. */
+  studentAttemptEvaluations: (studentUserId: string, attemptId: string) =>
+    api
+      .get<EvaluationResult[]>(
+        `/teacher/classroom/students/${studentUserId}/attempts/${attemptId}/evaluations`,
+      )
+      .then((r) => r.data),
 };
 
 export const teacherContentApi = {
