@@ -57,7 +57,12 @@ export function RecordingRenderer({
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [attemptCount, setAttemptCount] = useState(draft.recordingAssetId ? 1 : 0);
   const [error, setError] = useState<string | null>(null);
+  // URL của blob vừa ghi, chỉ sống trong phiên này.
   const [playbackUrl, setPlaybackUrl] = useState<string | null>(null);
+  // Link tải từ server, để mở lại bài cũ vẫn nghe được — và để giáo viên nghe
+  // bài của học viên mà chấm. Tách riêng vì không được revokeObjectURL cái này.
+  const [savedUrl, setSavedUrl] = useState<string | null>(null);
+  const [loadingSaved, setLoadingSaved] = useState(false);
 
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
@@ -73,6 +78,42 @@ export function RecordingRenderer({
     },
     [playbackUrl],
   );
+
+  // Draft nạp bất đồng bộ nên lúc mount thường chưa có gì; state khởi tạo ở trên
+  // sẽ kẹt ở 'idle' và hiện nút ghi âm đè lên bài cũ. Bắt kịp khi draft về.
+  useEffect(() => {
+    if (draft.recordingAssetId) {
+      setPhase((truoc) => (truoc === 'idle' ? 'done' : truoc));
+      setAttemptCount((truoc) => (truoc === 0 ? 1 : truoc));
+    }
+  }, [draft.recordingAssetId]);
+
+  // Bài đã ghi từ trước: xin link nghe từ server. Không có bước này thì mở lại
+  // bài cũ chỉ thấy "đã ghi" mà không nghe được gì.
+  useEffect(() => {
+    const assetId = draft.recordingAssetId;
+    if (!assetId || playbackUrl) {
+      return;
+    }
+
+    let huy = false;
+    setLoadingSaved(true);
+    assetApi
+      .signedUrl(assetId)
+      .then((asset) => {
+        if (!huy) setSavedUrl(asset.signedUrl ?? null);
+      })
+      .catch(() => {
+        if (!huy) setSavedUrl(null);
+      })
+      .finally(() => {
+        if (!huy) setLoadingSaved(false);
+      });
+
+    return () => {
+      huy = true;
+    };
+  }, [draft.recordingAssetId, playbackUrl]);
 
   const countdown = (seconds: number, onFinish: () => void) => {
     setSecondsLeft(seconds);
@@ -187,7 +228,13 @@ export function RecordingRenderer({
 
   return (
     <div className="rounded-xl border border-[#e5dcc8] bg-[#fdf6e3]/60 p-3">
-      {(phase === 'idle' || phase === 'recording' || phase === 'prep') && (
+      {/* Bài chỉ đọc mà chưa ghi gì: nói rõ em bỏ trống, chứ hiện nút ghi âm thì
+          giáo viên bấm nhầm là ghi đè vào bài của học viên. */}
+      {disabled && phase === 'idle' && (
+        <p className="text-sm text-amber-700">Em chưa ghi âm câu này</p>
+      )}
+
+      {!disabled && (phase === 'idle' || phase === 'recording' || phase === 'prep') && (
         <>
           <div className="flex items-center gap-3">
             {/* Chế độ thi không có nút bấm: máy tự chạy, chỉ báo đang ở nhịp nào. */}
@@ -256,9 +303,24 @@ export function RecordingRenderer({
       {phase === 'done' && (
         <div className="space-y-3">
           <p className="text-sm font-medium text-emerald-700">✓ Đã lưu bản ghi âm</p>
-          {/* Đề thật không cho nghe lại — nghe lại chỉ có ở chế độ luyện tập. */}
-          {playbackUrl && !examMode && (
-            <audio controls src={playbackUrl} className="w-full" />
+
+          {/* Đang thi thì không cho nghe lại, giống phòng thi thật. Nhưng khi
+              xem lại bài đã nộp (disabled/showAnswer) thì phải nghe được —
+              giáo viên chấm Speaking mà không nghe được thì chấm bằng gì. */}
+          {(!examMode || disabled) && (
+            <>
+              {playbackUrl ? (
+                <audio controls src={playbackUrl} className="w-full" />
+              ) : loadingSaved ? (
+                <p className="text-xs text-slate-500">Đang tải bản ghi…</p>
+              ) : savedUrl ? (
+                <audio controls src={savedUrl} className="w-full" />
+              ) : (
+                <p className="text-xs text-amber-700">
+                  Không tải được bản ghi. Thử tải lại trang.
+                </p>
+              )}
+            </>
           )}
           {canRecordAgain && !disabled && (
             <button
