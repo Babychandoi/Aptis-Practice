@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
-import { practiceApi } from '@/api/endpoints';
+import { practiceApi, teacherClassroomApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
@@ -69,7 +69,11 @@ const LISTENING_PARTS = [
 ] as const;
 
 export function AttemptPage() {
-  const { attemptId } = useParams<{ attemptId: string }>();
+  // Có studentUserId nghĩa là giáo viên đang xem bài của học viên lớp mình.
+  const { attemptId, studentUserId } = useParams<{
+    attemptId: string;
+    studentUserId?: string;
+  }>();
   const navigate = useNavigate();
   const [currentPartIndex, setCurrentPartIndex] = useState(0);
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
@@ -79,8 +83,11 @@ export function AttemptPage() {
   const [startedAtMs] = useState(() => Date.now());
 
   const attemptQuery = useQuery({
-    queryKey: ['attempt', attemptId],
-    queryFn: () => practiceApi.getAttempt(attemptId!),
+    queryKey: ['attempt', attemptId, studentUserId],
+    queryFn: () =>
+      studentUserId
+        ? teacherClassroomApi.studentAttemptDetail(studentUserId, attemptId!)
+        : practiceApi.getAttempt(attemptId!),
     enabled: Boolean(attemptId),
     staleTime: Infinity,
   });
@@ -101,7 +108,9 @@ export function AttemptPage() {
   const parts = attempt?.componentId ? partsQuery.data : allPartsQuery.data;
 
   const isSubmitted = Boolean(attempt && ['SUBMITTED', 'SCORING', 'COMPLETED'].includes(attempt.status));
-  const readOnly = isSubmitted || attempt?.status === 'EXPIRED';
+  // Giáo viên xem thì luôn chỉ đọc — mọi thao tác ghi trên trang này đều ghi
+  // thẳng vào bài của học viên.
+  const readOnly = Boolean(studentUserId) || isSubmitted || attempt?.status === 'EXPIRED';
   const autosave = useAutosave(attemptId ?? '', !readOnly);
 
   const partGroups = useMemo(
@@ -532,6 +541,12 @@ export function AttemptPage() {
 
   const exitAttempt = async () => {
     await autosave.flush();
+    // Giáo viên thoát thì về trang kết quả của chính bài đang xem, không rơi
+    // vào trang luyện tập của họ.
+    if (studentUserId) {
+      navigate(`/giang-day/hoc-vien/${studentUserId}/bai-lam/${attemptId}`);
+      return;
+    }
     navigate(component ? `${componentPath(component.code)}/bai-test` : '/');
   };
 
@@ -1001,7 +1016,13 @@ export function AttemptPage() {
             {readOnly ? (
               <button
                 type="button"
-                onClick={() => navigate(`/attempts/${attempt.id}/result`)}
+                onClick={() =>
+                  navigate(
+                    studentUserId
+                      ? `/giang-day/hoc-vien/${studentUserId}/bai-lam/${attempt.id}`
+                      : `/attempts/${attempt.id}/result`,
+                  )
+                }
                 className="rounded-xl bg-brand-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-brand-700 transition-colors"
               >
                 Xem kết quả →

@@ -84,9 +84,10 @@ export function StudentAttemptsPanel({
         ) : (
           <div className="space-y-2">
             {query.data.content.map((attempt) => {
-              // Bài làm dở cũng xem được — đó chính là lúc cần biết em vướng ở
-              // đâu mà bỏ. Chỉ lượt chưa động tới thì không có gì để mở.
-              const xemDuoc = attempt.status !== 'CREATED';
+              // Chỉ xem bài em đã nộp. Bài đang làm dở là việc riêng của em,
+              // giáo viên nhìn vào lúc chưa xong thì không công bằng.
+              const xemDuoc = ['COMPLETED', 'SCORING', 'SUBMITTED', 'EXPIRED']
+                .includes(attempt.status);
 
               const noiDung = (
                 <>
@@ -97,7 +98,7 @@ export function StudentAttemptsPanel({
                     <span className="block text-[11px] text-slate-500">
                       {formatDateTime(attempt.createdAt)} · {attempt.totalItems} câu
                       {attempt.correctItems > 0 && ` · đúng ${attempt.correctItems}`}
-                      {!xemDuoc && ' · em chưa mở bài'}
+                      {!xemDuoc && ' · em chưa nộp nên chưa xem được'}
                     </span>
                   </span>
 

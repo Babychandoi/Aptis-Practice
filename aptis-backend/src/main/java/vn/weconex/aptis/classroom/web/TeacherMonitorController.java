@@ -75,10 +75,31 @@ public class TeacherMonitorController {
             @PathVariable String studentUserId, @PathVariable String attemptId) {
 
         requireStudentInMyClassroom(studentUserId);
+        requireSubmitted(attemptId);
 
         // Truyền studentUserId chứ không phải id giáo viên: hàm này kiểm lượt có
         // đúng của người đó không, nên id bài của học viên lớp khác sẽ bị chặn.
         return attemptService.getAttempt(studentUserId, attemptId);
+    }
+
+    /**
+     * Chỉ xem được bài em đã nộp.
+     *
+     * <p>Bài đang làm dở là việc riêng của học viên — nhìn vào lúc em chưa xong
+     * thì không công bằng. Chặn ở đây chứ không chỉ ẩn nút, vì đoán ra id bài là
+     * vào xem được.
+     */
+    private void requireSubmitted(String attemptId) {
+        TestAttempt attempt = attemptRepository.findById(attemptId)
+                .orElseThrow(() -> ApiException.notFound("TestAttempt", attemptId));
+
+        boolean daNop = switch (attempt.getStatus()) {
+            case SUBMITTED, SCORING, COMPLETED, EXPIRED -> true;
+            default -> false;
+        };
+        if (!daNop) {
+            throw ApiException.forbidden("Học viên chưa nộp bài này");
+        }
     }
 
     /** Nhận xét AI của bài Speaking/Writing — phần đáng xem nhất khi kèm em. */
@@ -89,6 +110,7 @@ public class TeacherMonitorController {
             @PathVariable String studentUserId, @PathVariable String attemptId) {
 
         requireStudentInMyClassroom(studentUserId);
+        requireSubmitted(attemptId);
         return attemptService.evaluationResults(studentUserId, attemptId);
     }
 

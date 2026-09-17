@@ -151,6 +151,11 @@ export function App() {
           path="/giang-day/hoc-vien/:studentUserId/bai-lam/:attemptId"
           element={<AttemptResultPage />}
         />
+        {/* Chi tiết từng câu: cùng trang làm bài nhưng chỉ đọc. */}
+        <Route
+          path="/giang-day/hoc-vien/:studentUserId/bai-lam/:attemptId/chi-tiet"
+          element={<AttemptPage />}
+        />
         <Route path="/lop-hoc/:classroomId" element={<ClassroomWorkspacePage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/plans" element={<PlansPage />} />

@@ -284,18 +284,12 @@ export function AttemptResultPage() {
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto px-3 sm:px-4 py-4">
-      {/* Đang xem bài của học viên: nói rõ, và nếu em chưa nộp thì báo luôn —
-          không thì giáo viên tưởng em làm sai gần hết. */}
+      {/* Nói rõ đang xem bài người khác, để khỏi tưởng là bài của chính mình. */}
       {studentUserId && (
         <div className="rounded-2xl border border-amber-200 bg-amber-50/70 px-4 py-3">
           <p className="text-sm font-semibold text-amber-900">
             Bạn đang xem bài làm của học viên
           </p>
-          {rawAttempt && !['COMPLETED', 'SCORING', 'SUBMITTED'].includes(rawAttempt.status) && (
-            <p className="mt-1 text-xs leading-5 text-amber-800">
-              Bài này em chưa nộp — chỉ hiện những câu em đã trả lời, chưa có điểm.
-            </p>
-          )}
         </div>
       )}
 
@@ -579,14 +573,20 @@ export function AttemptResultPage() {
 
       {/* Khối hành động cuối trang.
 
-          Giáo viên xem bài học viên thì giấu hết: "Xem lại bài làm" trỏ vào
-          trang LÀM BÀI của em ấy, còn "Luyện tiếp" tạo lượt của chính giáo
+          Giáo viên xem bài học viên thì thay hết: "Xem lại bài làm" của học
+          viên trỏ vào trang LÀM BÀI, còn "Luyện tiếp" tạo lượt của chính giáo
           viên — bấm nhầm là hỏng dữ liệu của em. */}
       {studentUserId ? (
-        <div className="pt-6 border-t border-slate-200">
+        <div className="flex flex-col gap-3 pt-6 sm:flex-row border-t border-slate-200">
+          <Link
+            to={`/giang-day/hoc-vien/${studentUserId}/bai-lam/${attempt.id}/chi-tiet`}
+            className="flex-1 rounded-xl bg-brand-600 px-5 py-3 text-center text-sm font-bold text-white shadow-sm hover:bg-brand-700 transition-colors"
+          >
+            Xem chi tiết từng câu →
+          </Link>
           <Link
             to="/giang-day"
-            className="inline-flex rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+            className="flex-1 rounded-xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
           >
             ← Về lớp học của tôi
           </Link>

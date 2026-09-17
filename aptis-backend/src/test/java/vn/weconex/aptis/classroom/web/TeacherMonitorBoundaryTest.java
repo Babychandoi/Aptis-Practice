@@ -24,6 +24,8 @@ import vn.weconex.aptis.classroom.repository.ClassroomMemberRepository;
 import vn.weconex.aptis.classroom.service.ClassroomService;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.security.CurrentUser;
+import vn.weconex.aptis.practice.domain.TestAttempt;
+import vn.weconex.aptis.common.util.Enums.AttemptStatus;
 import vn.weconex.aptis.practice.repository.TestAttemptRepository;
 import vn.weconex.aptis.practice.service.AttemptService;
 
@@ -105,6 +107,33 @@ class TeacherMonitorBoundaryTest {
 
         assertThatThrownBy(() -> controller.attempts(hocVienLopKhac, 0, 20))
                 .isInstanceOf(ApiException.class);
+    }
+
+    @Test
+    @DisplayName("Không xem được bài học viên đang làm dở")
+    void cannotOpenUnsubmittedAttempt() {
+        String hocVien = UUID.randomUUID().toString();
+        String attemptId = UUID.randomUUID().toString();
+        lopCuaToi();
+
+        ClassroomMember dangHoc = new ClassroomMember();
+        dangHoc.setClassroomId(classroomId);
+        dangHoc.setUserId(hocVien);
+        dangHoc.setStatus(MemberStatus.ACTIVE);
+        when(memberRepository.findByClassroomIdAndUserId(classroomId, hocVien))
+                .thenReturn(Optional.of(dangHoc));
+
+        TestAttempt dangLam = new TestAttempt();
+        dangLam.setId(attemptId);
+        dangLam.setUserId(hocVien);
+        dangLam.setStatus(AttemptStatus.IN_PROGRESS);
+        when(attemptRepository.findById(attemptId)).thenReturn(Optional.of(dangLam));
+
+        assertThatThrownBy(() -> controller.attemptDetail(hocVien, attemptId))
+                .isInstanceOf(ApiException.class)
+                .hasMessageContaining("chưa nộp bài này");
+
+        verify(attemptService, never()).getAttempt(anyString(), anyString());
     }
 
     private static org.springframework.data.domain.Pageable any() {
