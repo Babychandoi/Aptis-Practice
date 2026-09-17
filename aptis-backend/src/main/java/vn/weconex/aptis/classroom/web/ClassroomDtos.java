@@ -290,7 +290,10 @@ public final class ClassroomDtos {
             /** Số đề trong bài giao. */
             int questionSetCount,
             long submittedCount,
+            /** Số em được giao: cả lớp, hoặc chỉ những em được chỉ định. */
             long totalStudents,
+            /** Id học viên được chỉ định; rỗng nghĩa là giao cho cả lớp. */
+            List<String> recipientUserIds,
             boolean overdue,
             Instant createdAt) {
     }
@@ -301,7 +304,9 @@ public final class ClassroomDtos {
             List<String> questionSetIds,
             @Size(max = 36) String blueprintId,
             /** ISO-8601; null = không hạn nộp. */
-            String dueAt) {
+            String dueAt,
+            /** Để trống = giao cả lớp; có id = chỉ giao cho những em đó. */
+            List<String> recipientUserIds) {
     }
 
     /** Một bài nộp, nhìn từ phía giáo viên khi chấm. */

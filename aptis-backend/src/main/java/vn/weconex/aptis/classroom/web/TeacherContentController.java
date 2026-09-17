@@ -236,6 +236,9 @@ public class TeacherContentController {
                 Function.identity(),
                 id -> assignmentQuestionSetRepository.findByAssignmentIdOrderByDisplayOrder(id).size()));
 
+        Map<String, List<String>> recipients = ids.stream().collect(Collectors.toMap(
+                Function.identity(), assignmentService::recipientsOf));
+
         return rows.stream().map(assignment -> new ClassroomDtos.AssignmentResponse(
                 assignment.getId(),
                 assignment.getTitle(),
@@ -246,7 +249,11 @@ public class TeacherContentController {
                 assignment.getStatus().name(),
                 setCounts.getOrDefault(assignment.getId(), 0),
                 submitted.getOrDefault(assignment.getId(), 0L),
-                totalStudents,
+                // Bài chỉ giao vài em thì mẫu số là số em đó, không phải cả lớp.
+                recipients.getOrDefault(assignment.getId(), List.of()).isEmpty()
+                        ? totalStudents
+                        : recipients.get(assignment.getId()).size(),
+                recipients.getOrDefault(assignment.getId(), List.of()),
                 assignment.isOverdue(),
                 assignment.getCreatedAt())).toList();
     }
@@ -264,10 +271,13 @@ public class TeacherContentController {
                 request.instructions(),
                 request.questionSetIds(),
                 request.blueprintId(),
-                parseInstant(request.dueAt()));
+                parseInstant(request.dueAt()),
+                request.recipientUserIds());
 
-        long totalStudents = memberRepository.countByClassroomIdAndStatus(
-                classroom.getId(), MemberStatus.ACTIVE);
+        List<String> recipients = assignmentService.recipientsOf(assignment.getId());
+        long totalStudents = recipients.isEmpty()
+                ? memberRepository.countByClassroomIdAndStatus(classroom.getId(), MemberStatus.ACTIVE)
+                : recipients.size();
 
         return new ClassroomDtos.AssignmentResponse(
                 assignment.getId(),
@@ -280,6 +290,7 @@ public class TeacherContentController {
                 request.questionSetIds() == null ? 0 : request.questionSetIds().size(),
                 0L,
                 totalStudents,
+                recipients,
                 false,
                 assignment.getCreatedAt());
     }

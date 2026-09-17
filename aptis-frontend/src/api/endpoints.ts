@@ -608,6 +608,8 @@ export const teacherContentApi = {
     questionSetIds?: string[];
     blueprintId?: string;
     dueAt?: string;
+    /** Để trống = giao cả lớp; có id = chỉ giao cho những em đó. */
+    recipientUserIds?: string[];
   }) => api.post<Assignment>('/teacher/classroom/assignments', body).then((r) => r.data),
 
   closeAssignment: (id: string) =>

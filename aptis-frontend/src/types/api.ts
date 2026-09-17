@@ -1233,7 +1233,10 @@ export interface Assignment {
   status: AssignmentStatus;
   questionSetCount: number;
   submittedCount: number;
+  /** Số em được giao: cả lớp, hoặc chỉ những em được chỉ định. */
   totalStudents: number;
+  /** Id học viên được chỉ định; rỗng nghĩa là giao cho cả lớp. */
+  recipientUserIds?: string[] | null;
   overdue: boolean;
   createdAt: string;
 }

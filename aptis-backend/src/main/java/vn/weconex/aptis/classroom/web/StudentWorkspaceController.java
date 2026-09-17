@@ -56,7 +56,7 @@ public class StudentWorkspaceController {
         Classroom classroom = requireMembership(classroomId);
         String userId = currentUser.requireUserId();
 
-        List<Assignment> rows = assignmentService.listForStudent(classroomId);
+        List<Assignment> rows = assignmentService.listForStudent(classroomId, userId);
         if (rows.isEmpty()) {
             return List.of();
         }

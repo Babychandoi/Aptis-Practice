@@ -3,9 +3,11 @@ package vn.weconex.aptis.classroom.service;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.weconex.aptis.classroom.domain.AssignmentQuestionSet;
+import vn.weconex.aptis.classroom.domain.AssignmentRecipient;
 import vn.weconex.aptis.classroom.domain.ClassroomContentEntities.Assignment;
 import vn.weconex.aptis.classroom.domain.ClassroomContentEntities.Assignment.AssignmentStatus;
 import vn.weconex.aptis.classroom.domain.ClassroomContentEntities.AssignmentSubmission;
@@ -23,6 +26,7 @@ import vn.weconex.aptis.classroom.domain.ClassroomEntities.Classroom;
 import vn.weconex.aptis.classroom.domain.ClassroomEntities.ClassroomMember;
 import vn.weconex.aptis.classroom.domain.ClassroomEntities.ClassroomMember.MemberStatus;
 import vn.weconex.aptis.classroom.repository.AssignmentQuestionSetRepository;
+import vn.weconex.aptis.classroom.repository.AssignmentRecipientRepository;
 import vn.weconex.aptis.classroom.repository.AssignmentRepository;
 import vn.weconex.aptis.classroom.repository.AssignmentSubmissionRepository;
 import vn.weconex.aptis.classroom.repository.ClassroomMemberRepository;
@@ -49,6 +53,7 @@ public class AssignmentService {
     private final AssignmentRepository assignmentRepository;
     private final AssignmentQuestionSetRepository assignmentQuestionSetRepository;
     private final AssignmentSubmissionRepository submissionRepository;
+    private final AssignmentRecipientRepository recipientRepository;
     private final TestBlueprintRepository blueprintRepository;
     private final ClassroomMemberRepository memberRepository;
     private final QuestionSetRepository questionSetRepository;
@@ -67,7 +72,8 @@ public class AssignmentService {
     @Transactional
     public Assignment create(
             Classroom classroom, String teacherUserId, String title, String instructions,
-            List<String> questionSetIds, String blueprintId, Instant dueAt) {
+            List<String> questionSetIds, String blueprintId, Instant dueAt,
+            List<String> recipientUserIds) {
 
         Assignment assignment = new Assignment();
         assignment.setId(UUID.randomUUID().toString());
@@ -112,7 +118,11 @@ public class AssignmentService {
             assignmentQuestionSetRepository.saveAll(rows);
         }
 
-        log.info("Lớp {} giao bài \"{}\"", classroom.getJoinCode(), assignment.getTitle());
+        saveRecipients(classroom, assignment.getId(), recipientUserIds);
+
+        log.info("Lớp {} giao bài \"{}\" cho {}", classroom.getJoinCode(), assignment.getTitle(),
+                recipientUserIds == null || recipientUserIds.isEmpty()
+                        ? "cả lớp" : recipientUserIds.size() + " học viên");
         return assignment;
     }
 
@@ -170,10 +180,75 @@ public class AssignmentService {
         return assignmentRepository.findByClassroomIdOrderByCreatedAtDesc(classroomId);
     }
 
+    /**
+     * Bài học viên này thấy.
+     *
+     * <p>Bài không chỉ định ai là của cả lớp; bài có chỉ định thì chỉ những em
+     * được nêu tên mới thấy.
+     */
     @Transactional(readOnly = true)
-    public List<Assignment> listForStudent(String classroomId) {
-        return assignmentRepository.findByClassroomIdAndStatusOrderByCreatedAtDesc(
-                classroomId, AssignmentStatus.PUBLISHED);
+    public List<Assignment> listForStudent(String classroomId, String userId) {
+        List<Assignment> all = assignmentRepository
+                .findByClassroomIdAndStatusOrderByCreatedAtDesc(classroomId, AssignmentStatus.PUBLISHED);
+        if (all.isEmpty()) {
+            return all;
+        }
+
+        List<String> ids = all.stream().map(Assignment::getId).toList();
+        Set<String> coChiDinh = new HashSet<>(recipientRepository.findAssignmentIdsWithRecipients(ids));
+        if (coChiDinh.isEmpty()) {
+            return all;
+        }
+
+        Set<String> cuaEmNay = new HashSet<>(recipientRepository.findAssignmentIdsByUserId(userId));
+        return all.stream()
+                .filter(a -> !coChiDinh.contains(a.getId()) || cuaEmNay.contains(a.getId()))
+                .toList();
+    }
+
+    /** Số học viên được giao: cả lớp, hoặc chỉ những em được chỉ định. */
+    @Transactional(readOnly = true)
+    public long recipientCount(String assignmentId, long siSoLop) {
+        long chiDinh = recipientRepository.countByAssignmentId(assignmentId);
+        return chiDinh > 0 ? chiDinh : siSoLop;
+    }
+
+    /** Người nhận riêng của một bài giao; rỗng nghĩa là cả lớp. */
+    @Transactional(readOnly = true)
+    public List<String> recipientsOf(String assignmentId) {
+        return recipientRepository.findByAssignmentId(assignmentId).stream()
+                .map(AssignmentRecipient::getUserId)
+                .toList();
+    }
+
+    /**
+     * Ghi lại người nhận.
+     *
+     * <p>Chỉ nhận học viên đang hoạt động trong lớp — giao cho người ngoài lớp
+     * thì bài đó treo mãi không ai làm được.
+     */
+    private void saveRecipients(Classroom classroom, String assignmentId, List<String> userIds) {
+        recipientRepository.deleteByAssignmentId(assignmentId);
+        if (userIds == null || userIds.isEmpty()) {
+            return;
+        }
+
+        Set<String> trongLop = memberRepository
+                .findByClassroomIdAndStatusOrderByJoinedAtDesc(classroom.getId(), MemberStatus.ACTIVE).stream()
+                .map(ClassroomMember::getUserId)
+                .collect(Collectors.toSet());
+
+        List<AssignmentRecipient> rows = userIds.stream()
+                .distinct()
+                .filter(trongLop::contains)
+                .map(id -> new AssignmentRecipient(assignmentId, id))
+                .toList();
+
+        if (rows.isEmpty()) {
+            throw new ApiException(
+                    ErrorCode.VALIDATION_FAILED, "Không có học viên nào hợp lệ trong danh sách");
+        }
+        recipientRepository.saveAll(rows);
     }
 
     /** Số bài đã nộp của từng bài giao, gom một lần. */
@@ -206,6 +281,7 @@ public class AssignmentService {
 
     @Transactional
     public void delete(String classroomId, String assignmentId) {
+        recipientRepository.deleteByAssignmentId(assignmentId);
         Assignment assignment = requireInClassroom(classroomId, assignmentId);
         assignmentQuestionSetRepository.deleteByAssignmentId(assignmentId);
         submissionRepository.deleteAll(
@@ -258,6 +334,13 @@ public class AssignmentService {
             throw new ApiException(
                     ErrorCode.VALIDATION_FAILED,
                     "Bạn chưa hoàn tất học phí lớp nên chưa làm được bài");
+        }
+
+        // Bài chỉ giao cho một số em: người ngoài danh sách không được vào làm,
+        // kể cả khi đoán ra id bài.
+        if (recipientRepository.countByAssignmentId(assignmentId) > 0
+                && !recipientRepository.existsByAssignmentIdAndUserId(assignmentId, userId)) {
+            throw ApiException.forbidden("Bài này không giao cho bạn");
         }
 
         Optional<AssignmentSubmission> existing =

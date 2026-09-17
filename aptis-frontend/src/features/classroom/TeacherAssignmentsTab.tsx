@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
-import { teacherBlueprintApi, teacherContentApi } from '@/api/endpoints';
+import { teacherBlueprintApi, teacherClassroomApi, teacherContentApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate, formatDateTime } from '@/lib/format';
@@ -86,7 +86,15 @@ function AssignmentCard({
   return (
     <article className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-white px-4 py-3.5">
       <div className="min-w-0">
-        <h3 className="font-bold text-slate-900">{assignment.title}</h3>
+        <div className="flex flex-wrap items-center gap-2">
+          <h3 className="font-bold text-slate-900">{assignment.title}</h3>
+          {/* Bài giao riêng vài em: đánh dấu để khỏi tưởng cả lớp chưa ai nộp. */}
+          {(assignment.recipientUserIds?.length ?? 0) > 0 && (
+            <span className="rounded-full bg-amber-50 px-2 py-0.5 font-mono text-[9px] font-bold uppercase text-amber-800">
+              Giao riêng {assignment.recipientUserIds?.length} em
+            </span>
+          )}
+        </div>
         <p className="mt-0.5 text-xs text-slate-500">
           {assignment.sourceType === 'BLUEPRINT'
             ? 'Đề thi thử full'
@@ -159,6 +167,8 @@ function CreateAssignmentDialog({
   const [instructions, setInstructions] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
+  // Rỗng = cả lớp. Em nào yếu Writing thì giao riêng, không bắt cả lớp làm.
+  const [nguoiNhan, setNguoiNhan] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   // Giao bài luôn là một bài thi hoàn chỉnh đã ghép sẵn, không giao đề lẻ nữa —
@@ -168,12 +178,18 @@ function CreateAssignmentDialog({
     queryFn: teacherBlueprintApi.list,
   });
 
+  const students = useQuery({
+    queryKey: ['teacher', 'classroom', 'students'],
+    queryFn: teacherClassroomApi.students,
+  });
+
   const submit = useMutation({
     mutationFn: () =>
       teacherContentApi.createAssignment({
         title: title.trim(),
         instructions: instructions.trim() || undefined,
         blueprintId: selected ?? undefined,
+        recipientUserIds: nguoiNhan.length > 0 ? nguoiNhan : undefined,
         // Input date cho ngày; quy về cuối ngày để học viên có trọn ngày đó.
         dueAt: dueDate ? new Date(`${dueDate}T23:59:59`).toISOString() : undefined,
       }),
@@ -304,6 +320,71 @@ function CreateAssignmentDialog({
             )}
           </div>
 
+          <div>
+            <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+                Giao cho
+              </span>
+              {nguoiNhan.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setNguoiNhan([])}
+                  className="text-[11px] font-semibold text-brand-700 hover:text-brand-800"
+                >
+                  Giao lại cho cả lớp
+                </button>
+              )}
+            </div>
+
+            {students.isPending ? (
+              <LoadingBlock label="Đang tải học viên…" />
+            ) : !students.data || students.data.length === 0 ? (
+              <p className="rounded-xl bg-surface-paper px-3 py-2.5 text-xs text-slate-600">
+                Lớp chưa có học viên nào.
+              </p>
+            ) : (
+              <div className="max-h-40 space-y-1 overflow-y-auto rounded-xl border border-border p-2">
+                {students.data.map((student) => (
+                  <label
+                    key={student.userId}
+                    className="flex cursor-pointer items-center gap-2.5 rounded-lg px-1.5 py-1.5 hover:bg-surface"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={nguoiNhan.includes(student.userId)}
+                      onChange={(event) =>
+                        setNguoiNhan((truoc) =>
+                          event.target.checked
+                            ? [...truoc, student.userId]
+                            : truoc.filter((id) => id !== student.userId),
+                        )
+                      }
+                      className="h-4 w-4 shrink-0 rounded border-border"
+                    />
+                    <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-600 font-mono text-[10px] font-bold text-white">
+                      {student.initial}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[13px] text-slate-800">
+                        {student.fullName || student.email}
+                      </span>
+                      <span className="block text-[10px] text-slate-500">
+                        {student.attemptsDone} bài đã làm
+                        {student.averageScore != null && ` · TB ${student.averageScore.toFixed(1)}`}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            )}
+
+            <p className="mt-1.5 text-[11px] text-slate-500">
+              {nguoiNhan.length === 0
+                ? 'Không tick ai = giao cho cả lớp.'
+                : `Chỉ ${nguoiNhan.length} em được tick mới thấy bài này.`}
+            </p>
+          </div>
+
           {error && (
             <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
               {error}
@@ -323,7 +404,11 @@ function CreateAssignmentDialog({
               disabled={submit.isPending}
               className="flex-1 rounded-xl bg-brand-600 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
             >
-              {submit.isPending ? 'Đang giao…' : 'Giao cho lớp'}
+              {submit.isPending
+                ? 'Đang giao…'
+                : nguoiNhan.length > 0
+                  ? `Giao cho ${nguoiNhan.length} em`
+                  : 'Giao cho cả lớp'}
             </button>
           </div>
         </form>
