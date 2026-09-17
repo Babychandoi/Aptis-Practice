@@ -26,9 +26,10 @@ import type {
 /**
  * Bài thi giáo viên tự ghép cho lớp.
  *
- * <p>Hai mức: full một kỹ năng, hoặc đủ 5 kỹ năng. Cấu trúc bám đúng đề thi
- * thật — mỗi part cần bao nhiêu đề là cố định, không cho chọn tuỳ ý, vì học
- * viên luyện để thi thật.
+ * <p>Bài đủ 5 kỹ năng và bài một kỹ năng bám đúng cấu trúc đề thật — mỗi part
+ * cần bao nhiêu đề là cố định, vì học viên luyện để thi thật. Riêng bài luyện
+ * một part thì giáo viên tự quyết số đề: đó là bài tập về nhà, không phải bài
+ * thi thử.
  */
 export function TeacherBlueprintsTab({ classroom }: { classroom: Classroom }) {
   const queryClient = useQueryClient();
@@ -53,7 +54,7 @@ export function TeacherBlueprintsTab({ classroom }: { classroom: Classroom }) {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-slate-500">
-          Ghép bài thi đúng cấu trúc Aptis: full một kỹ năng hoặc đủ 5 kỹ năng. Giao qua tab
+          Ghép bài thi theo cấu trúc Aptis: đủ 5 kỹ năng, một kỹ năng, hoặc riêng một part. Giao qua tab
           Bài giao.
         </p>
         <button
@@ -231,10 +232,11 @@ function BlueprintDialog({
     setSlots(
       next.map((slot) => ({
         ...slot,
-        chosen: daChon
-          .filter((s) => s.partId === slot.partId)
-          .slice(0, slot.required)
-          .map((s) => s.questionSetId),
+        chosen: (() => {
+          const cua = daChon.filter((s) => s.partId === slot.partId);
+          // Bài luyện một part cho chọn tự do nên giữ nguyên, không cắt bớt.
+          return (partId ? cua : cua.slice(0, slot.required)).map((s) => s.questionSetId);
+        })(),
       })),
     );
   }, [components.data, parts.data, componentId, partId, daLuu.data]);
@@ -252,7 +254,8 @@ function BlueprintDialog({
           : {
               rules: slots.map<BlueprintRule>((s) => ({
                 partId: s.partId,
-                questionSetCount: s.required,
+                // Bài một part: bốc đúng số giáo viên đặt, không theo cấu trúc.
+                questionSetCount: partId ? Math.max(1, s.chosen.length || s.required) : s.required,
                 difficultyMin: null,
                 difficultyMax: null,
               })),
@@ -269,7 +272,10 @@ function BlueprintDialog({
     onError: (err) => setError(err instanceof ApiError ? err.message : 'Không lưu được'),
   });
 
-  const conThieu = slots.filter((s) => s.chosen.length < s.required);
+  // Luyện riêng một part thì giáo viên tự quyết số đề — cho lớp làm 5 đoạn
+  // Reading Part 2 liền cũng được, đây không phải bài thi thử nguyên cấu trúc.
+  const tuDo = Boolean(partId);
+  const conThieu = tuDo ? [] : slots.filter((s) => s.chosen.length < s.required);
   const tongCanChon = slots.reduce((sum, s) => sum + s.required, 0);
   const tongDaChon = slots.reduce((sum, s) => sum + s.chosen.length, 0);
 
@@ -277,6 +283,10 @@ function BlueprintDialog({
     setError(null);
     if (!name.trim()) {
       setError('Đặt tên cho bài thi trước khi lưu');
+      return;
+    }
+    if (mode === 'FIXED' && tuDo && slots.every((s) => s.chosen.length === 0)) {
+      setError('Chọn ít nhất một đề để giao');
       return;
     }
     if (mode === 'FIXED' && conThieu.length > 0) {
@@ -300,14 +310,9 @@ function BlueprintDialog({
     const code = components.data?.find((c) => c.id === componentId)?.code ?? '';
     const caKyNang = SUGGESTED_MINUTES[code];
     if (!caKyNang) return null;
-    if (!partId) return caKyNang;
-
-    const cauTruc = SKILL_STRUCTURE[code] ?? [];
-    const tongDe = cauTruc.reduce((sum, s) => sum + s.questionSetCount, 0);
-    const deCuaPart = slots.reduce((sum, s) => sum + s.required, 0);
-    if (!tongDe || !deCuaPart) return null;
-    return Math.max(5, Math.round((caKyNang * deCuaPart) / tongDe));
-  }, [componentId, partId, components.data, slots]);
+    // Bài một part không cố định số đề nên không suy ra được thời lượng chuẩn.
+    return partId ? null : caKyNang;
+  }, [componentId, partId, components.data]);
 
   return (
     <div
@@ -373,7 +378,7 @@ function BlueprintDialog({
                   <option value="">Đủ 5 kỹ năng</option>
                   {(components.data ?? []).map((c) => (
                     <option key={c.id} value={c.id}>
-                      Full {c.name}
+                      {c.name}
                     </option>
                   ))}
                 </select>
@@ -398,7 +403,7 @@ function BlueprintDialog({
                     .filter((p) => p.componentId === componentId)
                     .map((p) => (
                       <option key={p.id} value={p.id}>
-                        Chỉ {p.name}
+                        {p.name}
                       </option>
                     ))}
                 </select>
@@ -463,6 +468,7 @@ function BlueprintDialog({
                 onChange={setSlots}
                 tongDaChon={tongDaChon}
                 tongCanChon={tongCanChon}
+                tuDo={tuDo}
               />
             ) : (
               <RulesSummary slots={slots} />
@@ -543,12 +549,15 @@ function SlotPicker({
   onChange,
   tongDaChon,
   tongCanChon,
+  tuDo,
 }: {
   classroom: Classroom;
   slots: Slot[];
   onChange: (slots: Slot[]) => void;
   tongDaChon: number;
   tongCanChon: number;
+  /** Bài luyện một part: giáo viên tự quyết số đề, không ép theo cấu trúc. */
+  tuDo: boolean;
 }) {
   // Mở popup riêng thay vì bung trong danh sách: danh sách đề dài, bung tại chỗ
   // thì ô cuộn chỉ cao hơn trăm pixel, nhìn được vài đề một lúc.
@@ -561,17 +570,17 @@ function SlotPicker({
     <div>
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
         <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
-          Chọn đề theo cấu trúc
+          {tuDo ? 'Chọn đề' : 'Chọn đề theo cấu trúc'}
         </span>
         <span
           className={clsx(
             'rounded-full px-2 py-0.5 font-mono text-[10px] font-bold',
-            tongDaChon === tongCanChon
+            tuDo || tongDaChon === tongCanChon
               ? 'bg-emerald-50 text-emerald-700'
               : 'bg-amber-50 text-amber-800',
           )}
         >
-          {tongDaChon}/{tongCanChon} đề
+          {tuDo ? tongDaChon + ' đề' : tongDaChon + '/' + tongCanChon + ' đề'}
         </span>
       </div>
 
@@ -585,6 +594,7 @@ function SlotPicker({
             <SlotRow
               key={slot.partId}
               slot={slot}
+              tuDo={tuDo}
               onOpen={() => setDangChon(slot)}
             />
           ))}
@@ -595,6 +605,7 @@ function SlotPicker({
         <SlotPickerDialog
           classroom={classroom}
           slot={slotDangChon}
+          tuDo={tuDo}
           onChange={(chosen) =>
             onChange(
               slots.map((s) => (s.partId === slotDangChon.partId ? { ...s, chosen } : s)),
@@ -608,8 +619,16 @@ function SlotPicker({
 }
 
 /** Một dòng trong danh sách cấu trúc: tóm tắt và nút mở popup chọn đề. */
-function SlotRow({ slot, onOpen }: { slot: Slot; onOpen: () => void }) {
-  const du = slot.chosen.length >= slot.required;
+function SlotRow({
+  slot,
+  tuDo,
+  onOpen,
+}: {
+  slot: Slot;
+  tuDo: boolean;
+  onOpen: () => void;
+}) {
+  const du = tuDo ? slot.chosen.length > 0 : slot.chosen.length >= slot.required;
 
   return (
     <li>
@@ -631,7 +650,9 @@ function SlotRow({ slot, onOpen }: { slot: Slot; onOpen: () => void }) {
             {slot.partName}
           </span>
           <span className="block text-[11px] text-slate-500">
-            cần {slot.required} đề · đã chọn {slot.chosen.length}
+            {tuDo
+              ? `đã chọn ${slot.chosen.length} đề · đề thật ${slot.required}`
+              : `cần ${slot.required} đề · đã chọn ${slot.chosen.length}`}
           </span>
         </span>
         <span className="shrink-0 rounded-lg bg-brand-100 px-2.5 py-1.5 text-[11px] font-bold text-brand-800">
@@ -651,11 +672,14 @@ function SlotRow({ slot, onOpen }: { slot: Slot; onOpen: () => void }) {
 function SlotPickerDialog({
   classroom,
   slot,
+  tuDo,
   onChange,
   onClose,
 }: {
   classroom: Classroom;
   slot: Slot;
+  /** Bài luyện một part: chọn bao nhiêu đề cũng được. */
+  tuDo: boolean;
   onChange: (chosen: string[]) => void;
   onClose: () => void;
 }) {
@@ -692,14 +716,16 @@ function SlotPickerDialog({
     return danhSach.filter((s) => s.title.toLowerCase().includes(q));
   }, [danhSach, tuKhoa]);
 
-  const du = slot.chosen.length >= slot.required;
+  const du = tuDo ? slot.chosen.length > 0 : slot.chosen.length >= slot.required;
   const dangTai = ownSets.isPending || (classroom.systemContentEnabled && systemSets.isPending);
 
   const toggle = (id: string, checked: boolean) => {
     if (checked) {
-      // Chọn quá số cấu trúc cho phép thì thay cái cũ nhất, không cộng dồn —
-      // bài thi ra sai cấu trúc là học viên luyện sai.
-      onChange([...slot.chosen, id].slice(-slot.required));
+      const them = [...slot.chosen, id];
+      // Bài thi theo cấu trúc: chọn quá số cho phép thì thay cái cũ nhất, chứ
+      // cộng dồn là bài ra sai cấu trúc, học viên luyện sai. Bài luyện một part
+      // thì giáo viên tự quyết nên cộng dồn thoải mái.
+      onChange(tuDo ? them : them.slice(-slot.required));
     } else {
       onChange(slot.chosen.filter((x) => x !== id));
     }
@@ -721,7 +747,10 @@ function SlotPickerDialog({
           <div className="min-w-0">
             <h3 className="text-base font-bold text-slate-900">{slot.partName}</h3>
             <p className="mt-0.5 text-xs text-slate-500">
-              {slot.componentName} · cần {slot.required} đề
+              {slot.componentName}
+              {tuDo
+                ? ` · chọn bao nhiêu tuỳ bạn (đề thật ${slot.required})`
+                : ` · cần ${slot.required} đề`}
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-2">
@@ -731,7 +760,7 @@ function SlotPickerDialog({
                 du ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800',
               )}
             >
-              {slot.chosen.length}/{slot.required}
+              {tuDo ? slot.chosen.length + ' đề' : slot.chosen.length + '/' + slot.required}
             </span>
             <button
               type="button"
@@ -759,7 +788,7 @@ function SlotPickerDialog({
             />
             {/* Grammar cần 25 đề, Listening Part 1 cần 13 — tick tay từng cái
                 thì không ai ngồi làm nổi, nên cho bốc nhanh rồi sửa lại. */}
-            {slot.required > 3 && danhSach.length > 0 && (
+            {(tuDo || slot.required > 3) && danhSach.length > 0 && (
               <button
                 type="button"
                 onClick={() => {
@@ -782,7 +811,7 @@ function SlotPickerDialog({
             )}
           </div>
 
-          {danhSach.length < slot.required && danhSach.length > 0 && (
+          {!tuDo && danhSach.length < slot.required && danhSach.length > 0 && (
             <p className="text-xs text-amber-700">
               Kho chỉ có {danhSach.length} đề ở part này, chưa đủ {slot.required}.
             </p>
