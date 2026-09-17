@@ -94,6 +94,30 @@ services:
       timeout: 3s
       retries: 10
 
+  # Chấm Speaking bằng Whisper chạy tại chỗ, giống production. Không dùng STT
+  # qua API: model ngoài tính tiền theo lượt, còn đây chạy CPU không mất phí.
+  #
+  # Dùng chung cache model với production (chỉ đọc model đã tải, không ghi đè
+  # dữ liệu gì) nên không phải tải lại 464MB.
+  speaking-analyzer:
+    build:
+      context: ./speaking-analyzer
+    container_name: aptis-dev-speaking-analyzer
+    restart: unless-stopped
+    environment:
+      WHISPER_MODEL: "${LOCAL_WHISPER_MODEL:-small.en}"
+      WHISPER_DEVICE: "${LOCAL_WHISPER_DEVICE:-cpu}"
+      WHISPER_COMPUTE_TYPE: "${LOCAL_WHISPER_COMPUTE_TYPE:-int8}"
+      WHISPER_CPU_THREADS: "${LOCAL_WHISPER_CPU_THREADS:-4}"
+    volumes:
+      - aptis_whisper-cache:/root/.cache/huggingface
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 120s
+
   # Hộp thư giả — chạy mặc định ở dev để thư xác thực không gửi ra ngoài.
   # Mở http://localhost:8025 để đọc thư đăng ký, đặt lại mật khẩu.
   mailpit:
@@ -120,6 +144,10 @@ services:
       minio:
         condition: service_healthy
       redis:
+        condition: service_started
+      # Không chờ healthy: nạp model Whisper mất hơn một phút, backend lên
+      # trước vẫn được vì chỉ gọi analyzer khi có bài Speaking cần chấm.
+      speaking-analyzer:
         condition: service_started
     environment:
       SPRING_PROFILES_ACTIVE: docker
@@ -158,8 +186,12 @@ services:
       AI_STT_API_KEY: "${AI_STT_API_KEY:-${AI_EVAL_API_KEY:-}}"
       AI_STT_MODEL: "${AI_STT_MODEL:-ag/gemini-3-flash}"
 
-      # Speaking analyzer không chạy ở dev (tải model Whisper mất vài GB).
-      LOCAL_SPEAKING_ENABLED: "false"
+      # Chấm Speaking bằng Whisper tại chỗ, giống production.
+      LOCAL_SPEAKING_ENABLED: "${DEV_LOCAL_SPEAKING_ENABLED:-true}"
+      LOCAL_SPEAKING_URL: "http://speaking-analyzer:8000"
+      LOCAL_SPEAKING_TIMEOUT: "${LOCAL_SPEAKING_TIMEOUT:-300}"
+      # Không rơi sang STT trả phí khi analyzer lỗi: dev hỏng thì sửa dev,
+      # đừng âm thầm tiêu tiền API.
       LOCAL_SPEAKING_FALLBACK_REMOTE: "false"
 
       MINIO_ENDPOINT: http://minio:9000
@@ -195,6 +227,10 @@ services:
       - "8090:80"
 
 volumes:
+  # Cache model Whisper của production. Khai external để dùng lại model đã tải
+  # thay vì kéo về lần nữa.
+  aptis_whisper-cache:
+    external: true
   dev-mysql-data:
   dev-mongo-data:
   dev-minio-data:
