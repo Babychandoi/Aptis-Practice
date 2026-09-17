@@ -323,7 +323,13 @@ public final class ClassroomDtos {
             Double aiScore,
             Double teacherScore,
             String teacherComment,
-            Instant gradedAt) {
+            Instant gradedAt,
+            /** Số liệu làm bài, để giáo viên chấm mà không phải mở từng bài. */
+            Integer totalItems,
+            Integer answeredItems,
+            Integer correctItems,
+            Double rawScore,
+            Double maxScore) {
     }
 
     public record GradeSubmissionRequest(

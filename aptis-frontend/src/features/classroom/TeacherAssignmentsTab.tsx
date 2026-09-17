@@ -483,6 +483,8 @@ function GradingPanel({
                       {submission.submittedAt
                         ? formatDateTime(submission.submittedAt)
                         : 'Đang làm'}
+                      {submission.totalItems != null &&
+                        ` · ${submission.answeredItems ?? 0}/${submission.totalItems} câu · đúng ${submission.correctItems ?? 0}`}
                     </span>
                   </span>
                 </span>
@@ -541,7 +543,7 @@ function GradeForm({
         save.mutate();
       }}
     >
-      <div className="rounded-2xl bg-brand-50 px-4 py-3.5">
+      <div className="space-y-2.5 rounded-2xl bg-brand-50 px-4 py-3.5">
         <div className="flex items-center justify-between">
           <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-brand-800">
             Điểm AI
@@ -550,14 +552,42 @@ function GradeForm({
             {submission.aiScore ?? '—'}
           </span>
         </div>
+
+        {/* Chấm mà chỉ thấy mỗi điểm AI thì không biết dựa vào đâu. Hiện luôn em
+            làm được bao nhiêu câu, bỏ mấy câu, đúng mấy trong số đã làm. */}
+        {submission.totalItems != null && (
+          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px]">
+            <span className="text-slate-600">
+              Làm <strong className="text-slate-900">{submission.answeredItems ?? 0}</strong>/
+              {submission.totalItems} câu
+            </span>
+            {submission.totalItems - (submission.answeredItems ?? 0) > 0 && (
+              <span className="rounded-md bg-amber-100 px-1.5 py-0.5 font-semibold text-amber-800">
+                bỏ trống {submission.totalItems - (submission.answeredItems ?? 0)}
+              </span>
+            )}
+            <span className="rounded-md bg-emerald-100 px-1.5 py-0.5 font-semibold text-emerald-800">
+              đúng {submission.correctItems ?? 0}
+              {(submission.answeredItems ?? 0) > 0 && `/${submission.answeredItems}`}
+            </span>
+            {submission.rawScore != null && submission.maxScore != null && (
+              <span className="font-mono text-slate-600">
+                {submission.rawScore}/{submission.maxScore} điểm
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Route của giáo viên: link cũ trỏ /attempts/... là trang của học viên,
+            giáo viên bấm vào bị chặn. */}
         {submission.attemptId && (
           <a
-            href={`/attempts/${submission.attemptId}/result`}
+            href={`/giang-day/hoc-vien/${submission.userId}/bai-lam/${submission.attemptId}/chi-tiet`}
             target="_blank"
             rel="noreferrer"
-            className="mt-1.5 inline-block text-xs font-semibold text-brand-700 hover:text-brand-800"
+            className="inline-block rounded-xl bg-brand-600 px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-brand-700"
           >
-            Xem bài làm và nhận xét chi tiết →
+            Xem bài làm từng câu →
           </a>
         )}
       </div>

@@ -324,14 +324,20 @@ public class TeacherContentController {
         Map<String, User> users = usersById(userIds);
         Map<String, String> names = namesById(userIds);
 
-        // Điểm AI lấy từ lượt làm bài; percentage_score thang 100 nên chia 10.
-        Map<String, Double> aiScores = rows.stream()
+        // Nạp lượt làm bài một lần: vừa lấy điểm AI, vừa lấy số câu để giáo viên
+        // biết em làm được bao nhiêu mà chấm, khỏi phải mở từng bài.
+        Map<String, vn.weconex.aptis.practice.domain.TestAttempt> attempts = rows.stream()
                 .filter(row -> row.getAttemptId() != null)
                 .map(row -> attemptRepository.findById(row.getAttemptId()).orElse(null))
-                .filter(attempt -> attempt != null && attempt.getPercentageScore() != null)
+                .filter(java.util.Objects::nonNull)
+                .collect(Collectors.toMap(a -> a.getId(), Function.identity(), (a, b) -> a));
+
+        // percentage_score thang 100 nên chia 10 để ra thang 10.
+        Map<String, Double> aiScores = attempts.values().stream()
+                .filter(a -> a.getPercentageScore() != null)
                 .collect(Collectors.toMap(
-                        attempt -> attempt.getId(),
-                        attempt -> attempt.getPercentageScore()
+                        a -> a.getId(),
+                        a -> a.getPercentageScore()
                                 .divide(BigDecimal.TEN, 2, java.math.RoundingMode.HALF_UP)
                                 .doubleValue(),
                         (a, b) -> a));
@@ -353,8 +359,37 @@ public class TeacherContentController {
                     row.getAttemptId() == null ? null : aiScores.get(row.getAttemptId()),
                     row.getTeacherScore() == null ? null : row.getTeacherScore().doubleValue(),
                     row.getTeacherComment(),
-                    row.getGradedAt());
+                    row.getGradedAt(),
+                    attemptOf(attempts, row, a -> a.getTotalItems()),
+                    attemptOf(attempts, row, a -> a.getAnsweredItems()),
+                    attemptOf(attempts, row, a -> a.getCorrectItems()),
+                    attemptDouble(attempts, row, a -> a.getRawScore()),
+                    attemptDouble(attempts, row, a -> a.getMaxScore()));
         }).toList();
+    }
+
+    /** Lấy một số từ lượt làm bài; null khi em chưa bắt đầu. */
+    private static Integer attemptOf(
+            Map<String, vn.weconex.aptis.practice.domain.TestAttempt> attempts,
+            AssignmentSubmission row,
+            Function<vn.weconex.aptis.practice.domain.TestAttempt, Integer> lay) {
+
+        if (row.getAttemptId() == null) return null;
+        var attempt = attempts.get(row.getAttemptId());
+        return attempt == null ? null : lay.apply(attempt);
+    }
+
+    /** Như trên nhưng cho điểm, vốn là BigDecimal và có thể null. */
+    private static Double attemptDouble(
+            Map<String, vn.weconex.aptis.practice.domain.TestAttempt> attempts,
+            AssignmentSubmission row,
+            Function<vn.weconex.aptis.practice.domain.TestAttempt, BigDecimal> lay) {
+
+        if (row.getAttemptId() == null) return null;
+        var attempt = attempts.get(row.getAttemptId());
+        if (attempt == null) return null;
+        BigDecimal value = lay.apply(attempt);
+        return value == null ? null : value.doubleValue();
     }
 
     /** Chấm tay đè lên điểm AI. */

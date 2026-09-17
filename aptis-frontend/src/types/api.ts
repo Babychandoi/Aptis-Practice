@@ -1267,6 +1267,12 @@ export interface AssignmentSubmission {
   teacherScore: number | null;
   teacherComment: string | null;
   gradedAt: string | null;
+  /** Số liệu làm bài, để chấm mà không phải mở từng bài. */
+  totalItems?: number | null;
+  answeredItems?: number | null;
+  correctItems?: number | null;
+  rawScore?: number | null;
+  maxScore?: number | null;
 }
 
 export interface StudentAssignment {
