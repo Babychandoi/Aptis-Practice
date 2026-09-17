@@ -47,14 +47,14 @@ export function TeacherBlueprintsTab({ classroom }: { classroom: Classroom }) {
 
   if (query.isPending) return <LoadingBlock label="Đang tải…" />;
   if (query.error) {
-    return <ErrorBlock message="Không tải được bài thi" onRetry={() => void query.refetch()} />;
+    return <ErrorBlock message="Không tải được đề thi" onRetry={() => void query.refetch()} />;
   }
 
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-slate-500">
-          Ghép bài thi theo cấu trúc Aptis: đủ 5 kỹ năng, một kỹ năng, hoặc riêng một part. Giao qua tab
+          Ghép đề theo cấu trúc Aptis: đủ 5 kỹ năng, một kỹ năng, hoặc riêng một part. Giao qua tab
           Bài giao.
         </p>
         <button
@@ -62,13 +62,13 @@ export function TeacherBlueprintsTab({ classroom }: { classroom: Classroom }) {
           onClick={() => setEditing('new')}
           className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-brand-700"
         >
-          + Ghép bài thi
+          + Ghép đề mới
         </button>
       </div>
 
       {query.data.length === 0 ? (
         <div className="card space-y-2 text-center">
-          <p className="text-sm text-slate-600">Chưa có bài thi nào.</p>
+          <p className="text-sm text-slate-600">Chưa có đề nào.</p>
           <p className="text-xs leading-5 text-slate-500">
             Ghép đề lẻ thành một bài hoàn chỉnh để lớp làm thử như thi thật.
           </p>
@@ -115,7 +115,7 @@ export function TeacherBlueprintsTab({ classroom }: { classroom: Classroom }) {
                     type="button"
                     disabled={remove.isPending}
                     onClick={() => {
-                      if (window.confirm(`Xoá bài thi “${row.name}”?`)) remove.mutate(row.id);
+                      if (window.confirm(`Xoá đề “${row.name}”?`)) remove.mutate(row.id);
                     }}
                     className="ml-1 rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
                   >
@@ -282,7 +282,7 @@ function BlueprintDialog({
   const submit = () => {
     setError(null);
     if (!name.trim()) {
-      setError('Đặt tên cho bài thi trước khi lưu');
+      setError('Đặt tên cho đề trước khi lưu');
       return;
     }
     if (mode === 'FIXED' && tuDo && slots.every((s) => s.chosen.length === 0)) {
@@ -327,7 +327,7 @@ function BlueprintDialog({
         aria-modal="true"
       >
         <h2 className="text-base font-bold text-slate-900">
-          {blueprint ? 'Sửa bài thi' : 'Ghép bài thi cho lớp'}
+          {blueprint ? 'Sửa đề thi' : 'Ghép đề thi cho lớp'}
         </h2>
         <p className="mt-0.5 text-xs text-slate-500">
           Số đề mỗi part cố định theo cấu trúc đề thật — chọn đủ là lưu được.
@@ -339,7 +339,7 @@ function BlueprintDialog({
           <div className="mt-4 space-y-3">
             <label className="block">
               <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
-                Tên bài thi
+                Tên đề thi
               </span>
               <input
                 value={name}
@@ -494,7 +494,7 @@ function BlueprintDialog({
                 onClick={submit}
                 className="flex-1 rounded-xl bg-brand-600 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
               >
-                {save.isPending ? 'Đang lưu…' : 'Lưu bài thi'}
+                {save.isPending ? 'Đang lưu…' : 'Lưu đề thi'}
               </button>
             </div>
           </div>
@@ -888,7 +888,7 @@ function RulesSummary({ slots }: { slots: Slot[] }) {
   return (
     <div>
       <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
-        Cấu trúc bài thi
+        Cấu trúc đề thi
       </span>
       <p className="mb-2 rounded-xl bg-surface-paper px-3 py-2 text-[11px] leading-5 text-slate-600">
         Hệ thống tự bốc đề theo đúng cấu trúc dưới đây, mỗi học viên một bộ khác nhau. Bạn

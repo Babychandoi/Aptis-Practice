@@ -86,12 +86,28 @@ public class MockTestService {
      */
     @Transactional(readOnly = true)
     public SelectedContent selectContent(String userId, String blueprintId) {
-        TestBlueprint blueprint = requireAvailable(blueprintId);
-        boolean hasPremium = entitlementService.hasPremiumAccess(userId);
+        return selectContent(userId, blueprintId, true);
+    }
 
-        // Đề FREE cũng bị khoá khi đã bật paywall sau dùng thử.
-        if (!(blueprint.isFree() && entitlementService.freeContentStillOpen()) && !hasPremium) {
-            throw ApiException.premiumRequired();
+    /**
+     * Bản không kiểm quyền, dành cho bài giáo viên giao cho lớp.
+     *
+     * <p>Học viên trong lớp làm bài được giao thì không cần Premium riêng —
+     * giáo viên đã trả gói. Quyền vào lớp đã kiểm ở tầng trên.
+     */
+    @Transactional(readOnly = true)
+    public SelectedContent selectContent(String userId, String blueprintId, boolean kiemQuyen) {
+        TestBlueprint blueprint = requireAvailable(blueprintId);
+
+        // Không kiểm quyền thì cũng mở luôn bộ đề PREMIUM: quyền đã xét ở tầng
+        // lớp học, chặn tiếp ở đây thì bài giao ra thiếu đề.
+        boolean hasPremium = !kiemQuyen || entitlementService.hasPremiumAccess(userId);
+
+        if (kiemQuyen) {
+            // Đề FREE cũng bị khoá khi đã bật paywall sau dùng thử.
+            if (!(blueprint.isFree() && entitlementService.freeContentStillOpen()) && !hasPremium) {
+                throw ApiException.premiumRequired();
+            }
         }
 
         List<BlueprintPartRule> rules =

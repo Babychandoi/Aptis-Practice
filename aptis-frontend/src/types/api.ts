@@ -382,7 +382,12 @@ export interface AttemptSummary {
   createdAt: string;
   completedAt: string | null;
   percentageScore: number | null;
+  /** Điểm thô và điểm tối đa; chỉ API phía giáo viên trả về. */
+  rawScore?: number | null;
+  maxScore?: number | null;
   totalItems: number;
+  /** Số câu có trả lời; totalItems trừ đi đây là số câu bỏ trống. */
+  answeredItems?: number | null;
   correctItems: number;
 }
 

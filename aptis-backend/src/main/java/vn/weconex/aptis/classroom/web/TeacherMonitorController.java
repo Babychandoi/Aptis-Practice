@@ -137,7 +137,12 @@ public class TeacherMonitorController {
             Instant createdAt,
             Instant completedAt,
             Double percentageScore,
+            /** Điểm thô và điểm tối đa, để giáo viên thấy cả điểm chứ không chỉ phần trăm. */
+            Double rawScore,
+            Double maxScore,
             int totalItems,
+            /** Số câu em có trả lời; totalItems trừ đi đây là số câu bỏ trống. */
+            int answeredItems,
             int correctItems) {
 
         static AttemptRow from(TestAttempt attempt) {
@@ -151,7 +156,10 @@ public class TeacherMonitorController {
                     attempt.getCompletedAt(),
                     attempt.getPercentageScore() == null
                             ? null : attempt.getPercentageScore().doubleValue(),
+                    attempt.getRawScore() == null ? null : attempt.getRawScore().doubleValue(),
+                    attempt.getMaxScore() == null ? null : attempt.getMaxScore().doubleValue(),
                     attempt.getTotalItems(),
+                    attempt.getAnsweredItems(),
                     attempt.getCorrectItems());
         }
     }

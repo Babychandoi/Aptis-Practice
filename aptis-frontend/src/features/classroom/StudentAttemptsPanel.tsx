@@ -89,6 +89,11 @@ export function StudentAttemptsPanel({
               const xemDuoc = ['COMPLETED', 'SCORING', 'SUBMITTED', 'EXPIRED']
                 .includes(attempt.status);
 
+              // Làm được bao nhiêu, bỏ bao nhiêu, và trong số làm thì đúng mấy
+              // câu — ba con số này mới nói được em yếu hay chỉ là bỏ dở.
+              const daLam = attempt.answeredItems ?? 0;
+              const boTrong = Math.max(0, attempt.totalItems - daLam);
+
               const noiDung = (
                 <>
                   <span className="min-w-0">
@@ -96,15 +101,36 @@ export function StudentAttemptsPanel({
                       {NHAN_KIEU[attempt.mode] ?? attempt.mode}
                     </span>
                     <span className="block text-[11px] text-slate-500">
-                      {formatDateTime(attempt.createdAt)} · {attempt.totalItems} câu
-                      {attempt.correctItems > 0 && ` · đúng ${attempt.correctItems}`}
+                      {formatDateTime(attempt.createdAt)}
                       {!xemDuoc && ' · em chưa nộp nên chưa xem được'}
                     </span>
+                    {xemDuoc && (
+                      <span className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px]">
+                        <span className="text-slate-600">
+                          Làm <strong className="text-slate-900">{daLam}</strong>/
+                          {attempt.totalItems} câu
+                        </span>
+                        {boTrong > 0 && (
+                          <span className="rounded-md bg-amber-50 px-1.5 py-0.5 font-semibold text-amber-800">
+                            bỏ trống {boTrong}
+                          </span>
+                        )}
+                        <span className="rounded-md bg-emerald-50 px-1.5 py-0.5 font-semibold text-emerald-700">
+                          đúng {attempt.correctItems}
+                          {daLam > 0 && `/${daLam}`}
+                        </span>
+                      </span>
+                    )}
                   </span>
 
-                  <span className="flex shrink-0 items-center gap-2.5">
-                    {attempt.percentageScore != null && (
+                  <span className="flex shrink-0 flex-col items-end gap-0.5">
+                    {attempt.rawScore != null && attempt.maxScore != null && (
                       <span className="font-mono text-sm font-bold text-slate-900">
+                        {attempt.rawScore}/{attempt.maxScore} điểm
+                      </span>
+                    )}
+                    {attempt.percentageScore != null && (
+                      <span className="font-mono text-[11px] text-slate-500">
                         {formatPercent(attempt.percentageScore)}
                       </span>
                     )}

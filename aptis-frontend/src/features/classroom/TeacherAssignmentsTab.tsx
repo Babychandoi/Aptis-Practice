@@ -28,7 +28,7 @@ export function TeacherAssignmentsTab({ classroom }: { classroom: Classroom }) {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-slate-500">
-          Giao bài thi đã ghép ở tab <strong>Bài thi ghép</strong>.
+          Giao đề đã ghép ở tab <strong>Đề thi</strong>.
           {classroom.systemContentEnabled
             ? ' Lớp đã mở kho đề hệ thống.'
             : ' Lớp chưa mở kho đề hệ thống — chỉ ghép được từ đề bạn tự soạn.'}
@@ -277,7 +277,7 @@ function CreateAssignmentDialog({
             ) : !blueprints.data || blueprints.data.length === 0 ? (
               <p className="rounded-xl bg-surface-paper px-3 py-3 text-xs leading-5 text-slate-600">
                 Bạn chưa ghép bài thi nào. Soạn đề ở tab <strong>Đề của tôi</strong>, rồi sang
-                tab <strong>Bài thi ghép</strong> để ghép thành bài hoàn chỉnh trước khi giao.
+                tab <strong>Đề thi</strong> để ghép thành đề hoàn chỉnh trước khi giao.
               </p>
             ) : (
               <div className="max-h-52 space-y-1.5 overflow-y-auto rounded-xl border border-border p-2">

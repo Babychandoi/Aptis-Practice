@@ -117,7 +117,7 @@ export function TeacherClassroomPage() {
             { key: 'students', label: 'Học viên', badge: classroom.studentCount },
             { key: 'assignments', label: 'Bài giao' },
             { key: 'my-sets', label: 'Đề của tôi' },
-            { key: 'blueprints', label: 'Bài thi ghép' },
+            { key: 'blueprints', label: 'Đề thi' },
             { key: 'materials', label: 'Tài liệu' },
             { key: 'posts', label: 'Bảng tin lớp' },
             { key: 'predictions', label: 'Dự đoán đề' },
@@ -238,14 +238,6 @@ function StudentTable() {
               </div>
               <div>
                 <dt className="font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                  Điểm TB
-                </dt>
-                <dd className="mt-0.5 text-sm font-bold text-slate-900">
-                  {student.averageScore != null ? student.averageScore.toFixed(1) : '—'}
-                </dd>
-              </div>
-              <div>
-                <dt className="font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">
                   Gần nhất
                 </dt>
                 <dd className="mt-0.5 text-[11px] leading-4 text-slate-500">
@@ -261,7 +253,7 @@ function StudentTable() {
         <table className="w-full min-w-[680px] text-sm">
           <thead>
             <tr className="bg-surface-paper">
-              {['Học viên', 'Bài có điểm', 'Điểm TB', 'Hoạt động gần nhất', ''].map((header) => (
+              {['Học viên', 'Bài có điểm', 'Hoạt động gần nhất', ''].map((header) => (
                 <th
                   key={header}
                   className="px-4 py-2.5 text-left font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500"
@@ -290,9 +282,6 @@ function StudentTable() {
                   </div>
                 </td>
                 <td className="px-4 py-3 text-slate-600">{student.attemptsDone}</td>
-                <td className="px-4 py-3 font-bold text-slate-900">
-                  {student.averageScore != null ? student.averageScore.toFixed(1) : '—'}
-                </td>
                 <td className="px-4 py-3 text-[11px] text-slate-500">
                   {student.lastActiveAt ? formatDateTime(student.lastActiveAt) : 'Chưa làm bài'}
                 </td>

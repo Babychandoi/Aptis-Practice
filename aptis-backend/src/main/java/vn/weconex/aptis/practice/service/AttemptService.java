@@ -281,6 +281,29 @@ public class AttemptService {
      * dựng lượt làm bài.
      */
     @Transactional
+    /**
+     * Lượt cho bài giao theo đề đã ghép.
+     *
+     * <p>Bốc đề theo đúng cấu trúc của đề ghép, và không kiểm Premium — học viên
+     * trong lớp làm bài giáo viên giao thì giáo viên đã trả gói.
+     */
+    public TestAttempt createAssignmentBlueprintAttempt(String userId, String blueprintId) {
+        MockTestService.SelectedContent selected =
+                mockTestService.selectContent(userId, blueprintId, false);
+
+        TestBlueprint blueprint = selected.blueprint();
+
+        TestAttempt attempt = new TestAttempt();
+        attempt.setUserId(userId);
+        attempt.setBlueprintId(blueprint.getId());
+        attempt.setComponentId(blueprint.getComponentId());
+        attempt.setMode(PracticeMode.MOCK_TEST);
+        // Nội dung mở theo lớp chứ không theo gói cá nhân của học viên.
+        attempt.setAccessLevelUsed(AccessLevel.PREMIUM);
+
+        return persistAttempt(attempt, selected.questionSets(), blueprint.getDurationSeconds());
+    }
+
     public TestAttempt createAssignmentAttempt(
             String userId, List<QuestionSet> questionSets, boolean timed) {
 

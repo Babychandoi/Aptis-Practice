@@ -350,8 +350,16 @@ public class AssignmentService {
             return existing.get();
         }
 
-        List<QuestionSet> sets = questionSetsOf(assignment);
-        TestAttempt attempt = attemptService.createAssignmentAttempt(userId, sets, false);
+        // Bài giao theo đề đã ghép thì bốc nội dung từ đề đó, không đọc bảng
+        // assignment_question_sets — bảng đó chỉ dùng cho kiểu giao đề lẻ.
+        TestAttempt attempt;
+        if (assignment.getSourceType() == Assignment.SourceType.BLUEPRINT) {
+            attempt = attemptService.createAssignmentBlueprintAttempt(
+                    userId, assignment.getBlueprintId());
+        } else {
+            attempt = attemptService.createAssignmentAttempt(
+                    userId, questionSetsOf(assignment), false);
+        }
 
         AssignmentSubmission submission = existing.orElseGet(() -> {
             AssignmentSubmission created = new AssignmentSubmission();
