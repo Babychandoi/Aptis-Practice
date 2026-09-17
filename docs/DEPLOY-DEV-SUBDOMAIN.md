@@ -102,6 +102,17 @@ docker compose --env-file .env.dev \
   -f docker-compose.dev.yml -f docker-compose.dev-tunnel.yml up -d --build
 ```
 
+> **Luôn dùng đủ cả hai file `-f`, kể cả khi chỉ build lại một service.** Chạy
+> mỗi `-f docker-compose.dev.yml` thì container lên bình thường nhưng mất hết
+> biến ghi đè cho HTTPS: link ảnh và ghi âm quay về `localhost:9002` nên máy ở
+> xa không tải lên được, và cookie refresh mất cờ Secure nên đăng nhập rớt.
+> Kiểm nhanh sau khi deploy:
+>
+> ```bash
+> docker inspect aptis-dev-backend --format '{{range .Config.Env}}{{println .}}{{end}}' | grep MINIO_PUBLIC
+> # phải ra https://cdn-dev.aptispractices.io.vn, không phải localhost
+> ```
+
 Kiểm tra tunnel đã kết nối:
 
 ```bash
@@ -127,6 +138,12 @@ mọi trường hợp.
 Qua HTTPS trình duyệt chỉ gửi cookie refresh khi cookie có cờ Secure. File
 `docker-compose.dev-tunnel.yml` đã đặt sẵn; kiểm tra xem có chạy kèm file đó
 không.
+
+**Ghi âm Speaking báo lỗi tải file lên** — cùng một nguyên nhân: deploy thiếu
+`-f docker-compose.dev-tunnel.yml` nên `MINIO_PUBLIC_ENDPOINT` vẫn là
+`http://localhost:9002`. Link tải lên ký theo địa chỉ đó, máy ở xa không tới
+được nên trình duyệt báo lỗi mạng. Deploy lại đủ hai file là hết; không cần sửa
+code.
 
 **Trang trắng, console báo lỗi CORS** — `DEV_PUBLIC_ORIGIN` chưa đúng hoặc thiếu
 trong `.env.dev`. Giá trị phải khớp chính xác địa chỉ trên thanh URL, kể cả
