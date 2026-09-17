@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import { SupportLinksCompact } from '@/components/ui/SupportLinks';
+import { SupportLinksCompact, type SupportContacts } from '@/components/ui/SupportLinks';
 
 /**
  * Thanh bên khi đang ở trong một lớp học.
@@ -28,6 +28,7 @@ export function ClassroomSidebar<T extends string>({
   items,
   value,
   onChange,
+  contacts,
 }: {
   title: string;
   subtitle?: string;
@@ -36,6 +37,8 @@ export function ClassroomSidebar<T extends string>({
   items: ClassroomNavItem<T>[];
   value: T;
   onChange: (key: T) => void;
+  /** Kênh liên hệ của giáo viên dạy lớp này; thiếu thì không hiện khối hỗ trợ. */
+  contacts?: SupportContacts;
 }) {
   return (
     <>
@@ -109,7 +112,7 @@ export function ClassroomSidebar<T extends string>({
             ))}
           </nav>
 
-          <SupportLinksCompact />
+          <SupportLinksCompact contacts={contacts ?? {}} />
         </div>
       </aside>
 

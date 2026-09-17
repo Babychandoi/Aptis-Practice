@@ -59,7 +59,11 @@ public class StudentClassroomController {
                     classroom.getPriceAmount(),
                     member.getPaymentStatus().name(),
                     member.canPractice(),
-                    member.getJoinedAt());
+                    member.getJoinedAt(),
+                    classroom.getSupportZalo(),
+                    classroom.getSupportFacebook(),
+                    classroom.getSupportGroup(),
+                    classroom.getSupportNote());
         }).toList();
     }
 
@@ -93,7 +97,11 @@ public class StudentClassroomController {
                 classroom.getPriceAmount(),
                 member.getPaymentStatus().name(),
                 member.canPractice(),
-                member.getJoinedAt());
+                member.getJoinedAt(),
+                classroom.getSupportZalo(),
+                classroom.getSupportFacebook(),
+                classroom.getSupportGroup(),
+                classroom.getSupportNote());
     }
 
     private Map<String, String> namesById(List<String> ids) {

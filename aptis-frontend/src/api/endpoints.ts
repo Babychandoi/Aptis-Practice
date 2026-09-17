@@ -543,6 +543,13 @@ export const teacherClassroomApi = {
   updatePricing: (body: { pricingType: 'FREE' | 'PAID'; priceAmount: number }) =>
     api.put<Classroom>('/teacher/classroom/pricing', body).then((r) => r.data),
 
+  updateSupport: (body: {
+    supportZalo?: string;
+    supportFacebook?: string;
+    supportGroup?: string;
+    supportNote?: string;
+  }) => api.put<Classroom>('/teacher/classroom/support', body).then((r) => r.data),
+
   setJoinEnabled: (joinEnabled: boolean) =>
     api.put<Classroom>('/teacher/classroom/join-enabled', { joinEnabled }).then((r) => r.data),
 

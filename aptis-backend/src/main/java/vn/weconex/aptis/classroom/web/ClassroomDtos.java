@@ -30,7 +30,12 @@ public final class ClassroomDtos {
             long priceAmount,
             int maxStudents,
             long studentCount,
-            String status) {
+            String status,
+            /** Kênh liên hệ riêng của giáo viên; null thì lớp không hiện khối hỗ trợ. */
+            String supportZalo,
+            String supportFacebook,
+            String supportGroup,
+            String supportNote) {
     }
 
     /** Một học viên trong lớp, kèm tiến độ tóm tắt. */
@@ -61,6 +66,14 @@ public final class ClassroomDtos {
             @Size(max = 2000) String description) {
     }
 
+    /** Kênh liên hệ giáo viên tự khai; để trống trường nào thì bỏ trường đó. */
+    public record UpdateSupportRequest(
+            @Size(max = 255) String supportZalo,
+            @Size(max = 500) String supportFacebook,
+            @Size(max = 500) String supportGroup,
+            @Size(max = 500) String supportNote) {
+    }
+
     public record UpdatePricingRequest(
             @NotBlank String pricingType,
             long priceAmount) {
@@ -82,7 +95,12 @@ public final class ClassroomDtos {
             String paymentStatus,
             /** Đã trả tiền hoặc lớp miễn phí — được làm bài. */
             boolean canPractice,
-            Instant joinedAt) {
+            Instant joinedAt,
+            /** Kênh liên hệ của giáo viên dạy lớp này, không phải của nền tảng. */
+            String supportZalo,
+            String supportFacebook,
+            String supportGroup,
+            String supportNote) {
     }
 
     public record JoinClassroomRequest(

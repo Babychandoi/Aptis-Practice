@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import {
   COMMUNITY_FACEBOOK_GROUP_URL,
   SUPPORT_FACEBOOK_URL,
@@ -47,18 +48,66 @@ function UsersIcon() {
   );
 }
 
-/** Bản gọn cho sidebar: chỉ icon + nhãn, không mô tả. */
-export function SupportLinksCompact() {
-  const items = [
-    { href: SUPPORT_ZALO_URL, label: `Zalo ${SUPPORT_ZALO_PHONE_DISPLAY}`, icon: <ZaloIcon /> },
-    { href: SUPPORT_FACEBOOK_URL, label: 'Trang hỗ trợ', icon: <FacebookIcon /> },
-    { href: COMMUNITY_FACEBOOK_GROUP_URL, label: 'Nhóm học tập', icon: <UsersIcon /> },
-  ];
+/** Kênh liên hệ riêng của một lớp, do giáo viên tự khai trong cài đặt lớp. */
+export interface SupportContacts {
+  supportZalo?: string | null;
+  supportFacebook?: string | null;
+  supportGroup?: string | null;
+  supportNote?: string | null;
+}
+
+/** Số Zalo trần thì mở app chat, còn lại coi như link. */
+function zaloHref(value: string) {
+  const so = value.replace(/[^\d+]/g, '');
+  return /^\+?\d{8,15}$/.test(so) ? `https://zalo.me/${so.replace('+', '')}` : value;
+}
+
+/**
+ * Bản gọn cho sidebar: chỉ icon + nhãn, không mô tả.
+ *
+ * <p>Truyền {@code contacts} khi đang ở trong một lớp — học viên cần hỏi giáo
+ * viên dạy mình chứ không phải hỏi nền tảng. Giáo viên chưa khai kênh nào thì
+ * ẩn hẳn khối, chỉ đường về kênh nền tảng là gửi nhầm người.
+ */
+export function SupportLinksCompact({ contacts }: { contacts?: SupportContacts }) {
+  const cuaGiaoVien = Boolean(
+    contacts && (contacts.supportZalo || contacts.supportFacebook || contacts.supportGroup),
+  );
+
+  const items: { href: string; label: string; icon: ReactNode }[] = [];
+  if (cuaGiaoVien) {
+    if (contacts?.supportZalo) {
+      items.push({
+        href: zaloHref(contacts.supportZalo),
+        label: `Zalo ${contacts.supportZalo.replace(/^https?:\/\/\S*?\/?/, '')}`.trim(),
+        icon: <ZaloIcon />,
+      });
+    }
+    if (contacts?.supportFacebook) {
+      items.push({
+        href: contacts.supportFacebook,
+        label: 'Nhắn cho giáo viên',
+        icon: <FacebookIcon />,
+      });
+    }
+    if (contacts?.supportGroup) {
+      items.push({ href: contacts.supportGroup, label: 'Nhóm của lớp', icon: <UsersIcon /> });
+    }
+  } else {
+    items.push(
+      { href: SUPPORT_ZALO_URL, label: `Zalo ${SUPPORT_ZALO_PHONE_DISPLAY}`, icon: <ZaloIcon /> },
+      { href: SUPPORT_FACEBOOK_URL, label: 'Trang hỗ trợ', icon: <FacebookIcon /> },
+      { href: COMMUNITY_FACEBOOK_GROUP_URL, label: 'Nhóm học tập', icon: <UsersIcon /> },
+    );
+  }
+
+  // Đang trong lớp mà giáo viên chưa khai gì: ẩn hẳn thay vì chỉ về nền tảng.
+  if (contacts && !cuaGiaoVien) return null;
 
   return (
     <div className="mt-3 space-y-0.5">
       <p className="px-2 pb-1 font-mono text-[10px] font-bold uppercase tracking-widest text-slate-400">
-        Hỗ trợ
+        {cuaGiaoVien ? 'Liên hệ giáo viên' : 'Hỗ trợ'}
       </p>
       {items.map((item) => (
         <a
@@ -72,6 +121,10 @@ export function SupportLinksCompact() {
           <span className="truncate">{item.label}</span>
         </a>
       ))}
+
+      {cuaGiaoVien && contacts?.supportNote && (
+        <p className="px-2 pt-1 text-[11px] leading-4 text-slate-500">{contacts.supportNote}</p>
+      )}
     </div>
   );
 }

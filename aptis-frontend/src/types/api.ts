@@ -1041,6 +1041,11 @@ export interface Classroom {
   maxStudents: number;
   studentCount: number;
   status: string;
+  /** Kênh liên hệ của giáo viên dạy lớp; thiếu thì khối hỗ trợ ẩn mục đó. */
+  supportZalo?: string | null;
+  supportFacebook?: string | null;
+  supportGroup?: string | null;
+  supportNote?: string | null;
 }
 
 export interface ClassroomStudent {
@@ -1081,6 +1086,11 @@ export interface StudentClassroom {
   /** Đã trả tiền hoặc lớp miễn phí — được làm bài. */
   canPractice: boolean;
   joinedAt: string;
+  /** Kênh liên hệ của giáo viên dạy lớp; thiếu thì khối hỗ trợ ẩn mục đó. */
+  supportZalo?: string | null;
+  supportFacebook?: string | null;
+  supportGroup?: string | null;
+  supportNote?: string | null;
 }
 
 export interface AdminClassroom {

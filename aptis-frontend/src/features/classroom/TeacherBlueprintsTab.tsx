@@ -163,6 +163,9 @@ function BlueprintDialog({
   const [name, setName] = useState(blueprint?.name ?? '');
   const [description, setDescription] = useState(blueprint?.description ?? '');
   const [componentId, setComponentId] = useState(blueprint?.componentId ?? '');
+  // Luyện một part cũng phải ghép thành bài thi, vì giao bài chỉ chọn bài ghép.
+  // Nạp lại từ dữ liệu đã lưu ở useEffect bên dưới, không có cột riêng trong DB.
+  const [partId, setPartId] = useState('');
   const [mode, setMode] = useState<BlueprintSelectionMode>(blueprint?.selectionMode ?? 'FIXED');
   const [minutes, setMinutes] = useState(
     blueprint?.durationSeconds ? String(Math.round(blueprint.durationSeconds / 60)) : '',
@@ -205,10 +208,23 @@ function BlueprintDialog({
     enabled: Boolean(blueprint?.id),
   });
 
+  // Bài đang sửa chỉ có một part thì đó là bài luyện theo part; khôi phục lại
+  // lựa chọn để giáo viên mở ra thấy đúng cái mình đã chọn.
+  const [daNapPart, setDaNapPart] = useState(false);
+  useEffect(() => {
+    if (daNapPart || !blueprint || !daLuu.data) return;
+    const cacPart = new Set(daLuu.data.rules.map((r) => r.partId));
+    if (cacPart.size === 1 && blueprint.componentId) {
+      const [dau] = [...cacPart];
+      if (dau) setPartId(dau);
+    }
+    setDaNapPart(true);
+  }, [blueprint, daLuu.data, daNapPart]);
+
   // Dựng lại các ô mỗi khi đổi phạm vi, và nạp lại lựa chọn cũ nếu đang sửa.
   useEffect(() => {
     if (!components.data || !parts.data) return;
-    const next = buildSlots(components.data, parts.data, componentId);
+    const next = buildSlots(components.data, parts.data, componentId, partId);
     if (next.length === 0) return;
 
     const daChon = daLuu.data?.sets ?? [];
@@ -221,7 +237,7 @@ function BlueprintDialog({
           .map((s) => s.questionSetId),
       })),
     );
-  }, [components.data, parts.data, componentId, daLuu.data]);
+  }, [components.data, parts.data, componentId, partId, daLuu.data]);
 
   const save = useMutation({
     mutationFn: () => {
@@ -277,12 +293,21 @@ function BlueprintDialog({
   const dangTai = versions.isPending || components.isPending || parts.isPending
     || (Boolean(blueprint?.id) && daLuu.isPending);
 
-  // Gợi ý thời lượng theo đề thật, giáo viên sửa được.
-  const phutGoiY = componentId
-    ? SUGGESTED_MINUTES[
-        components.data?.find((c) => c.id === componentId)?.code ?? ''
-      ] ?? null
-    : FULL_TEST_MINUTES;
+  // Gợi ý thời lượng theo đề thật, giáo viên sửa được. Bài một part chia theo
+  // tỷ lệ số đề trong kỹ năng, không lấy nguyên thời gian cả kỹ năng.
+  const phutGoiY = useMemo(() => {
+    if (!componentId) return FULL_TEST_MINUTES;
+    const code = components.data?.find((c) => c.id === componentId)?.code ?? '';
+    const caKyNang = SUGGESTED_MINUTES[code];
+    if (!caKyNang) return null;
+    if (!partId) return caKyNang;
+
+    const cauTruc = SKILL_STRUCTURE[code] ?? [];
+    const tongDe = cauTruc.reduce((sum, s) => sum + s.questionSetCount, 0);
+    const deCuaPart = slots.reduce((sum, s) => sum + s.required, 0);
+    if (!tongDe || !deCuaPart) return null;
+    return Math.max(5, Math.round((caKyNang * deCuaPart) / tongDe));
+  }, [componentId, partId, components.data, slots]);
 
   return (
     <div
@@ -338,7 +363,11 @@ function BlueprintDialog({
                 </span>
                 <select
                   value={componentId}
-                  onChange={(event) => setComponentId(event.target.value)}
+                  onChange={(event) => {
+                    setComponentId(event.target.value);
+                    // Đổi kỹ năng thì part cũ không còn thuộc kỹ năng mới nữa.
+                    setPartId('');
+                  }}
                   className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
                 >
                   <option value="">Đủ 5 kỹ năng</option>
@@ -350,6 +379,33 @@ function BlueprintDialog({
                 </select>
               </label>
 
+              {/* Luyện lẻ một part: giao bài chỉ chọn bài đã ghép nên muốn cho
+                  lớp làm riêng một part cũng phải ghép ở đây. */}
+              <label className={clsx('block', !componentId && 'opacity-50')}>
+                <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+                  Part
+                </span>
+                <select
+                  value={partId}
+                  disabled={!componentId}
+                  onChange={(event) => setPartId(event.target.value)}
+                  className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400 disabled:cursor-not-allowed disabled:bg-surface-muted"
+                >
+                  <option value="">
+                    {componentId ? 'Đủ các part' : 'Chọn một kỹ năng trước'}
+                  </option>
+                  {(parts.data ?? [])
+                    .filter((p) => p.componentId === componentId)
+                    .map((p) => (
+                      <option key={p.id} value={p.id}>
+                        Chỉ {p.name}
+                      </option>
+                    ))}
+                </select>
+              </label>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
               <label className="block">
                 <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
                   Thời gian (phút)
@@ -451,12 +507,13 @@ function buildSlots(
   components: ComponentSummary[],
   parts: PartSummary[],
   componentId: string,
+  partId?: string,
 ): Omit<Slot, 'chosen'>[] {
   const codes = componentId
     ? [components.find((c) => c.id === componentId)?.code].filter(Boolean)
     : FULL_TEST_ORDER.filter((code) => components.some((c) => c.code === code));
 
-  return (codes as string[]).flatMap((code) => {
+  const tatCa = (codes as string[]).flatMap((code) => {
     const component = components.find((c) => c.code === code);
     if (!component) return [];
 
@@ -474,6 +531,9 @@ function buildSlots(
       }];
     });
   });
+
+  // Luyện một part thì chỉ giữ đúng ô của part đó, số đề vẫn theo cấu trúc.
+  return partId ? tatCa.filter((s) => s.partId === partId) : tatCa;
 }
 
 /** Chọn đề cho từng ô, mỗi ô đúng số lượng cấu trúc yêu cầu. */

@@ -111,6 +111,7 @@ export function TeacherClassroomPage() {
           backLabel="Rời lớp"
           value={tab}
           onChange={setTab}
+          contacts={classroom}
           items={[
             { key: 'students', label: 'Học viên', badge: classroom.studentCount },
             { key: 'assignments', label: 'Bài giao' },
@@ -358,6 +359,10 @@ function SettingsPanel({ classroom }: { classroom: Classroom }) {
   const [description, setDescription] = useState(classroom.description ?? '');
   const [pricingType, setPricingType] = useState(classroom.pricingType);
   const [price, setPrice] = useState(String(classroom.priceAmount));
+  const [zalo, setZalo] = useState(classroom.supportZalo ?? '');
+  const [facebook, setFacebook] = useState(classroom.supportFacebook ?? '');
+  const [group, setGroup] = useState(classroom.supportGroup ?? '');
+  const [note, setNote] = useState(classroom.supportNote ?? '');
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -380,6 +385,18 @@ function SettingsPanel({ classroom }: { classroom: Classroom }) {
       teacherClassroomApi.updatePricing({
         pricingType,
         priceAmount: pricingType === 'PAID' ? Number(price) || 0 : 0,
+      }),
+    onSuccess: invalidate,
+    onError: (err) => setError(err instanceof ApiError ? err.message : 'Không lưu được'),
+  });
+
+  const saveSupport = useMutation({
+    mutationFn: () =>
+      teacherClassroomApi.updateSupport({
+        supportZalo: zalo.trim(),
+        supportFacebook: facebook.trim(),
+        supportGroup: group.trim(),
+        supportNote: note.trim(),
       }),
     onSuccess: invalidate,
     onError: (err) => setError(err instanceof ApiError ? err.message : 'Không lưu được'),
@@ -437,6 +454,84 @@ function SettingsPanel({ classroom }: { classroom: Classroom }) {
           className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
         >
           {saveProfile.isPending ? 'Đang lưu…' : 'Lưu thông tin lớp'}
+        </button>
+      </form>
+
+      {/* Khối "Liên hệ giáo viên" trong thanh bên lớp. Trước đây chỗ đó chỉ về
+          kênh của nền tảng, học viên hỏi bài lại nhắn nhầm chúng ta. */}
+      <form
+        className="space-y-3 rounded-2xl border border-border bg-white px-5 py-5"
+        onSubmit={(event) => {
+          event.preventDefault();
+          setError(null);
+          saveSupport.mutate();
+        }}
+      >
+        <div>
+          <h2 className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+            Liên hệ của bạn
+          </h2>
+          <p className="mt-1 text-xs leading-5 text-slate-500">
+            Hiện ở cuối thanh bên cho học viên trong lớp. Để trống hết thì khối đó không hiện.
+          </p>
+        </div>
+
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-semibold text-slate-600">Zalo</span>
+          <input
+            value={zalo}
+            maxLength={255}
+            onChange={(event) => setZalo(event.target.value)}
+            placeholder="0912345678 hoặc link zalo.me"
+            className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+          />
+        </label>
+
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-semibold text-slate-600">
+            Trang Facebook (không bắt buộc)
+          </span>
+          <input
+            value={facebook}
+            maxLength={500}
+            onChange={(event) => setFacebook(event.target.value)}
+            placeholder="https://facebook.com/trang-cua-ban"
+            className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+          />
+        </label>
+
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-semibold text-slate-600">
+            Nhóm của lớp (không bắt buộc)
+          </span>
+          <input
+            value={group}
+            maxLength={500}
+            onChange={(event) => setGroup(event.target.value)}
+            placeholder="Link nhóm Facebook hoặc Zalo của lớp"
+            className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+          />
+        </label>
+
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-semibold text-slate-600">
+            Dòng nhắn kèm (không bắt buộc)
+          </span>
+          <input
+            value={note}
+            maxLength={500}
+            onChange={(event) => setNote(event.target.value)}
+            placeholder="Ví dụ: Cô trả lời tin từ 19h–22h các ngày trong tuần"
+            className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+          />
+        </label>
+
+        <button
+          type="submit"
+          disabled={saveSupport.isPending}
+          className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+        >
+          {saveSupport.isPending ? 'Đang lưu…' : 'Lưu liên hệ'}
         </button>
       </form>
 

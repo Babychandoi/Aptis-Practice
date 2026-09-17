@@ -261,6 +261,28 @@ public class ClassroomService {
         return classroom;
     }
 
+    /**
+     * Kênh liên hệ hiện trong lớp.
+     *
+     * <p>Chuỗi rỗng quy về null để khối hỗ trợ biết đường ẩn link đó đi, thay vì
+     * hiện một link trỏ tới trang trắng.
+     */
+    @Transactional
+    public Classroom updateSupport(
+            String teacherUserId, String zalo, String facebook, String group, String note) {
+
+        Classroom classroom = requireOwnedClassroom(teacherUserId);
+        classroom.setSupportZalo(rongThanhNull(zalo));
+        classroom.setSupportFacebook(rongThanhNull(facebook));
+        classroom.setSupportGroup(rongThanhNull(group));
+        classroom.setSupportNote(rongThanhNull(note));
+        return classroom;
+    }
+
+    private static String rongThanhNull(String value) {
+        return value == null || value.isBlank() ? null : value.trim();
+    }
+
     @Transactional
     public Classroom setJoinEnabled(String teacherUserId, boolean enabled) {
         Classroom classroom = requireOwnedClassroom(teacherUserId);

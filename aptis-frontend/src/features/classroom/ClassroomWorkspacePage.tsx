@@ -81,6 +81,7 @@ export function ClassroomWorkspacePage() {
           backLabel="Lớp học của tôi"
           value={tab}
           onChange={setTab}
+          contacts={classroom}
           items={[
             { key: 'assignments', label: 'Bài được giao' },
             { key: 'materials', label: 'Tài liệu' },

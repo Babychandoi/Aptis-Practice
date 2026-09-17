@@ -56,6 +56,19 @@ public final class ClassroomEntities {
         @Column(name = "description", columnDefinition = "TEXT")
         private String description;
 
+        /** Kênh liên hệ của chính giáo viên; để trống thì lớp không hiện khối hỗ trợ. */
+        @Column(name = "support_zalo", length = 255)
+        private String supportZalo;
+
+        @Column(name = "support_facebook", length = 500)
+        private String supportFacebook;
+
+        @Column(name = "support_group", length = 500)
+        private String supportGroup;
+
+        @Column(name = "support_note", length = 500)
+        private String supportNote;
+
         /** Mã 6 ký tự để học viên nhập tay hoặc quét QR. */
         @Column(name = "join_code", length = 6, nullable = false)
         private String joinCode;

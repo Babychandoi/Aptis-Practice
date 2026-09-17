@@ -130,6 +130,17 @@ public class TeacherClassroomController {
                 currentUser.requireUserId(), request.name(), request.description()));
     }
 
+    /** Kênh liên hệ hiện trong lớp — của chính giáo viên, không phải của nền tảng. */
+    @PutMapping("/support")
+    @PreAuthorize("hasAuthority('classroom:write')")
+    public ClassroomDtos.ClassroomResponse updateSupport(
+            @Valid @RequestBody ClassroomDtos.UpdateSupportRequest request) {
+
+        return toDto(classroomService.updateSupport(
+                currentUser.requireUserId(), request.supportZalo(), request.supportFacebook(),
+                request.supportGroup(), request.supportNote()));
+    }
+
     /** Đặt lớp miễn phí hay có phí. */
     @PutMapping("/pricing")
     @PreAuthorize("hasAuthority('classroom:write')")
@@ -177,7 +188,11 @@ public class TeacherClassroomController {
                 classroom.getPriceAmount(),
                 limit,
                 students,
-                classroom.getStatus().name());
+                classroom.getStatus().name(),
+                classroom.getSupportZalo(),
+                classroom.getSupportFacebook(),
+                classroom.getSupportGroup(),
+                classroom.getSupportNote());
     }
 
     private Map<String, User> usersById(List<String> ids) {
