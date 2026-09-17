@@ -155,7 +155,7 @@ public class LlmTranscriptionClient {
      * <p>Router trả JSON thường HOẶC chuỗi SSE ({@code data: {...}}) tuỳ model,
      * dù đã gửi {@code stream:false} — nên phải xử lý cả hai.
      */
-    private static String extractContent(String raw) {
+    static String extractContent(String raw) {
         if (raw == null || raw.isBlank()) {
             return "";
         }
@@ -168,7 +168,8 @@ public class LlmTranscriptionClient {
                     log.warn("STT bị từ chối: {}", json.path("error").path("message").asText());
                     return "";
                 }
-                return json.path("choices").path(0).path("message").path("content").asText("").trim();
+                return boLopBoc(
+                        json.path("choices").path(0).path("message").path("content").asText("").trim());
             } catch (Exception ex) {
                 log.warn("STT trả JSON không đọc được: {}", abbreviate(trimmed));
                 return "";
@@ -176,6 +177,7 @@ public class LlmTranscriptionClient {
         }
 
         StringBuilder text = new StringBuilder();
+        String loiCuoi = null;
         for (String line : trimmed.split("\n")) {
             String value = line.trim();
             if (!value.startsWith("data:")) {
@@ -186,18 +188,70 @@ public class LlmTranscriptionClient {
                 continue;
             }
             try {
-                JsonNode choice = MAPPER.readTree(payload).path("choices").path(0);
+                JsonNode chunk = MAPPER.readTree(payload);
+                // Router báo lỗi giữa chừng stream: giữ lại để log, nếu không
+                // hàm trả chuỗi rỗng mà không ai biết vì sao.
+                if (chunk.has("error")) {
+                    loiCuoi = chunk.path("error").path("message").asText();
+                    continue;
+                }
+                JsonNode choice = chunk.path("choices").path(0);
                 JsonNode content = choice.path("delta").path("content");
                 if (content.isMissingNode() || content.isNull()) {
                     content = choice.path("message").path("content");
                 }
                 text.append(content.asText(""));
-            } catch (Exception ignored) {
+            } catch (Exception ex) {
                 // Bỏ qua chunk lỗi, giữ phần đọc được
+                loiCuoi = "chunk không đọc được: " + abbreviate(payload);
             }
         }
-        return text.toString().trim();
+
+        String ketQua = boLopBoc(text.toString().trim());
+        if (ketQua.isEmpty()) {
+            // Không nghe ra chữ nào là chuyện đáng biết: có thể model từ chối,
+            // file hỏng, hoặc router trả định dạng lạ.
+            log.warn("STT không ra chữ nào. {}",
+                    loiCuoi != null ? "Lỗi: " + loiCuoi : "Phản hồi: " + abbreviate(trimmed));
+        }
+        return ketQua;
     }
+
+    /**
+     * Bóc lớp bọc model hay thêm quanh transcript.
+     *
+     * <p>Prompt đã dặn "chỉ trả transcript" nhưng gemini-3-flash vẫn gói trong
+     * ```xml &lt;transcript&gt;…&lt;/transcript&gt;```. Không bóc thì bản ghi câm
+     * ra chuỗi chứa nguyên cái khung, code tưởng là có lời nói rồi đem đi chấm.
+     */
+    private static String boLopBoc(String value) {
+        if (value == null || value.isBlank()) {
+            return "";
+        }
+        String s = value.trim();
+
+        // Hàng rào markdown: ```xml … ``` hoặc ``` … ```
+        if (s.startsWith("```")) {
+            int dau = s.indexOf('\n');
+            int cuoi = s.lastIndexOf("```");
+            if (dau > 0 && cuoi > dau) {
+                s = s.substring(dau + 1, cuoi).trim();
+            }
+        }
+
+        // Thẻ <transcript>…</transcript>, kể cả khi rỗng hoặc tự đóng.
+        java.util.regex.Matcher m = THE_TRANSCRIPT.matcher(s);
+        if (m.find()) {
+            s = m.group(1) == null ? "" : m.group(1).trim();
+        } else if (s.matches("(?is)<transcript\\s*/>")) {
+            s = "";
+        }
+
+        return s.trim();
+    }
+
+    private static final java.util.regex.Pattern THE_TRANSCRIPT =
+            java.util.regex.Pattern.compile("(?is)<transcript>(.*?)</transcript>");
 
     private static String abbreviate(String value) {
         return value.length() <= 300 ? value : value.substring(0, 300) + "…";
