@@ -45,6 +45,15 @@ public class LlmTranscriptionClient {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    /**
+     * Mã model trả về khi bản ghi không có tiếng nói nghe được.
+     *
+     * <p>Phải là chuỗi không ai nói ra được, vì transcript trùng mã này sẽ bị
+     * coi là im lặng. Dặn "trả chuỗi rỗng" thì model lại diễn giải chính câu
+     * lệnh đó thành văn bản.
+     */
+    private static final String NO_SPEECH = "[[NO_SPEECH]]";
+
     /** Định dạng router nhận; MediaRecorder của trình duyệt ghi ra webm/opus. */
     private static final Map<String, String> FORMAT_BY_MIME = Map.of(
             "audio/webm", "webm",
@@ -104,11 +113,17 @@ public class LlmTranscriptionClient {
         body.put("messages", List.of(Map.of(
                 "role", "user",
                 "content", List.of(
+                        // Không dặn "reply with an empty string": model không nghe
+                        // được gì thì diễn giải luôn câu lệnh đó thành transcript
+                        // ("An empty string controls output."). Dùng mã canh riêng
+                        // để phân biệt "im lặng" với "nghe ra chữ".
                         Map.of("type", "text", "text",
-                                "Transcribe this English speaking-test recording word for word. "
+                                "Transcribe this speaking-test recording word for word. "
                                 + "Keep the speaker's actual words, including grammar mistakes and "
-                                + "repetitions — do not correct them. If there is no speech, reply "
-                                + "with an empty string. Reply with the transcript only."),
+                                + "repetitions — do not correct them. Output only the transcript, "
+                                + "with no commentary, no quotes and no markup. "
+                                + "If the recording has no intelligible speech, output exactly "
+                                + NO_SPEECH + " and nothing else."),
                         Map.of("type", "input_audio", "input_audio", Map.of(
                                 "data", encoded,
                                 "format", format))))));
@@ -210,9 +225,11 @@ public class LlmTranscriptionClient {
         String ketQua = boLopBoc(text.toString().trim());
         if (ketQua.isEmpty()) {
             // Không nghe ra chữ nào là chuyện đáng biết: có thể model từ chối,
-            // file hỏng, hoặc router trả định dạng lạ.
-            log.warn("STT không ra chữ nào. {}",
-                    loiCuoi != null ? "Lỗi: " + loiCuoi : "Phản hồi: " + abbreviate(trimmed));
+            // file hỏng, hoặc router trả định dạng lạ. In cả phản hồi thô vì
+            // thiếu nó thì không lần ra được nguyên nhân.
+            log.warn("STT không ra chữ nào. {} | Thô: {}",
+                    loiCuoi != null ? "Lỗi: " + loiCuoi : "không có lỗi báo về",
+                    abbreviate(trimmed));
         }
         return ketQua;
     }
@@ -229,6 +246,11 @@ public class LlmTranscriptionClient {
             return "";
         }
         String s = value.trim();
+
+        // Mã canh: model báo không nghe được gì.
+        if (s.contains(NO_SPEECH)) {
+            return "";
+        }
 
         // Hàng rào markdown: ```xml … ``` hoặc ``` … ```
         if (s.startsWith("```")) {

@@ -66,6 +66,17 @@ class LlmTranscriptionClientTest {
     }
 
     @Test
+    @DisplayName("Mã canh không nghe được gì phải ra rỗng, không thành transcript")
+    void noSpeechMarkerBecomesEmpty() {
+        assertThat(LlmTranscriptionClient.extractContent(sse("[[NO_SPEECH]]"))).isEmpty();
+        // Model hay bọc thêm khung quanh mã canh.
+        assertThat(LlmTranscriptionClient.extractContent(
+                sse("```\n[[NO_SPEECH]]\n```"))).isEmpty();
+        assertThat(LlmTranscriptionClient.extractContent(
+                sse("<transcript>[[NO_SPEECH]]</transcript>"))).isEmpty();
+    }
+
+    @Test
     @DisplayName("Phản hồi rỗng hoặc null không làm vỡ")
     void handlesEmptyInput() {
         assertThat(LlmTranscriptionClient.extractContent(null)).isEmpty();
