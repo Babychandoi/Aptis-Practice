@@ -3,6 +3,16 @@ export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      keyframes: {
+        // Nội dung được nhân đôi, dịch đúng một nửa nên vòng lặp liền mạch.
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 28s linear infinite',
+      },
       fontFamily: {
         sans: ['"Be Vietnam Pro"', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],

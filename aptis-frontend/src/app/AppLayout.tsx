@@ -4,6 +4,7 @@ import { useAuthStore } from '@/features/auth/authStore';
 import { usePermission } from '@/features/admin/usePermission';
 import { formatDate } from '@/lib/format';
 import { SupportLinksCompact } from '@/components/ui/SupportLinks';
+import { MarqueeBanner } from '@/components/ui/MarqueeBanner';
 import { useSidebarCollapsed } from '@/app/useSidebarCollapsed';
 import { describePremiumExpiry } from '@/features/billing/premiumExpiry';
 import { usePageTracking } from '@/app/usePageTracking';
@@ -196,9 +197,6 @@ export function AppLayout() {
           <nav className={clsx('space-y-1', collapsed && 'mt-4 border-t border-border pt-4')} aria-label="Tài khoản">
             <SidebarLink to="/plans" label="Gói Premium" icon="premium" collapsed={collapsed} />
             <SidebarLink to="/gioi-thieu" label="Giới thiệu nhận thưởng" icon="gift" collapsed={collapsed} />
-            {!isTeacher && (
-              <SidebarLink to="/lop-hoc" label="Lớp học của tôi" icon="school" collapsed={collapsed} />
-            )}
             {isAdmin && <SidebarLink to="/admin" label="Quản trị hệ thống" icon="admin" collapsed={collapsed} />}
           </nav>
 
@@ -330,6 +328,20 @@ export function AppLayout() {
         </div>
 
         <div className="ml-auto flex items-center gap-2 sm:gap-3">
+          {/* Lớp học đưa lên header để người dùng nhận ra giao diện đã đổi —
+              nằm trong sidebar thì lẫn giữa các mục cũ, ít ai để ý. Giáo viên
+              không cần vì họ đã có mục "Lớp tôi dạy" riêng. */}
+          {!isTeacher && (
+            <Link
+              to="/lop-hoc"
+              className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-xl border border-brand-200 bg-brand-50 px-2.5 text-xs font-semibold text-brand-800 transition-colors hover:border-brand-300 hover:bg-brand-100 sm:px-3"
+              title="Lớp học của tôi"
+            >
+              <NavIcon name="school" />
+              <span className="hidden sm:inline">Lớp học</span>
+            </Link>
+          )}
+
           {/* Giới thiệu nhận thưởng: để ở header vì thanh nav dưới đã kín 7 ô
               và sidebar thì mobile không có. Màu xanh lá tách khỏi nhóm nút
               Premium màu nâu — đây là "kiếm tiền", không phải "mua thêm".
@@ -405,10 +417,29 @@ export function AppLayout() {
         </div>
       </header>
 
+      {/* Loan tin tính năng lớp học. Đặt dưới header cố định nên luôn thấy,
+          không phải cuộn lên. Giáo viên đã dùng rồi thì không hiện nữa. */}
+      {!isTeacher && (
+        <div
+          className={clsx(
+            'fixed inset-x-0 top-16 z-20 transition-[left] duration-200 ease-out',
+            trongLopHoc ? 'md:left-64' : collapsed ? 'md:left-[4.5rem]' : 'md:left-64',
+          )}
+        >
+          <MarqueeBanner
+            text="Hệ thống vừa có tính năng Lớp học dành cho giáo viên — quản lý học viên, giao đề và chấm bài ngay trên Aptis Practice. Giáo viên muốn mở lớp, liên hệ quản trị viên để đăng ký."
+            to="/lop-hoc"
+            ctaLabel="Xem thêm"
+          />
+        </div>
+      )}
+
       {/* Main Content Area */}
       <div
         className={clsx(
-          'pt-16 transition-[padding] duration-200 ease-out',
+          'transition-[padding] duration-200 ease-out',
+          // Chừa chỗ cho dải chữ chạy khi nó hiện.
+          isTeacher ? 'pt-16' : 'pt-[4.75rem]',
           // Thanh bên của lớp cũng rộng w-64 và không thu gọn được.
           trongLopHoc ? 'md:pl-64' : collapsed ? 'md:pl-[4.5rem]' : 'md:pl-64',
         )}
