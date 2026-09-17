@@ -232,7 +232,7 @@ function StudentTable() {
             <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-border-subtle pt-2.5">
               <div>
                 <dt className="font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                  Bài đã làm
+                  Bài có điểm
                 </dt>
                 <dd className="mt-0.5 text-sm text-slate-700">{student.attemptsDone}</dd>
               </div>
@@ -261,7 +261,7 @@ function StudentTable() {
         <table className="w-full min-w-[680px] text-sm">
           <thead>
             <tr className="bg-surface-paper">
-              {['Học viên', 'Bài đã làm', 'Điểm TB', 'Hoạt động gần nhất', ''].map((header) => (
+              {['Học viên', 'Bài có điểm', 'Điểm TB', 'Hoạt động gần nhất', ''].map((header) => (
                 <th
                   key={header}
                   className="px-4 py-2.5 text-left font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500"

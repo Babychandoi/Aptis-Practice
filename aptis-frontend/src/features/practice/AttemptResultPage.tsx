@@ -284,14 +284,29 @@ export function AttemptResultPage() {
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto px-3 sm:px-4 py-4">
+      {/* Đang xem bài của học viên: nói rõ, và nếu em chưa nộp thì báo luôn —
+          không thì giáo viên tưởng em làm sai gần hết. */}
+      {studentUserId && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50/70 px-4 py-3">
+          <p className="text-sm font-semibold text-amber-900">
+            Bạn đang xem bài làm của học viên
+          </p>
+          {rawAttempt && !['COMPLETED', 'SCORING', 'SUBMITTED'].includes(rawAttempt.status) && (
+            <p className="mt-1 text-xs leading-5 text-amber-800">
+              Bài này em chưa nộp — chỉ hiện những câu em đã trả lời, chưa có điểm.
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Navigation Header */}
       <div className="flex items-center justify-between">
         <button
           type="button"
-          onClick={() => navigate('/history')}
+          onClick={() => navigate(studentUserId ? '/giang-day' : '/history')}
           className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-brand-600 transition-colors"
         >
-          ← Lịch sử làm bài
+          ← {studentUserId ? 'Lớp học của tôi' : 'Lịch sử làm bài'}
         </button>
         <Link
           to="/"
@@ -340,7 +355,9 @@ export function AttemptResultPage() {
                   ? 'Bài làm đang được chuyển sang mô hình chấm tự động.'
                   : attemptedSets.length > 0
                     ? `Đạt ${displayedAwarded.toFixed(1)} / ${displayedMax.toFixed(1)} điểm trên ${attemptedSets.length} đề đã làm`
-                    : 'Bạn chưa làm đề nào trong lượt này'}
+                    : studentUserId
+                      ? 'Em chưa làm đề nào trong lượt này'
+                      : 'Bạn chưa làm đề nào trong lượt này'}
               </p>
             </div>
 
@@ -560,40 +577,55 @@ export function AttemptResultPage() {
         </section>
       )}
 
-      {/* Bottom Action Footer */}
-      <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-200">
-        <Link
-          to={`/attempts/${attempt.id}`}
-          className="flex-1 rounded-xl bg-brand-600 px-5 py-3 text-center text-sm font-bold text-white shadow-sm hover:bg-brand-700 transition-colors"
-        >
-          Xem lại bài làm và đáp án chi tiết →
-        </Link>
-        {attempt.partId ? (
-          <>
-            <Link
-              to={`/parts/${attempt.partId}`}
-              className="flex-1 rounded-xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
-            >
-              Luyện tiếp Part này
-            </Link>
-            {currentPart?.componentId && (
+      {/* Khối hành động cuối trang.
+
+          Giáo viên xem bài học viên thì giấu hết: "Xem lại bài làm" trỏ vào
+          trang LÀM BÀI của em ấy, còn "Luyện tiếp" tạo lượt của chính giáo
+          viên — bấm nhầm là hỏng dữ liệu của em. */}
+      {studentUserId ? (
+        <div className="pt-6 border-t border-slate-200">
+          <Link
+            to="/giang-day"
+            className="inline-flex rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            ← Về lớp học của tôi
+          </Link>
+        </div>
+      ) : (
+        <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-200">
+          <Link
+            to={`/attempts/${attempt.id}`}
+            className="flex-1 rounded-xl bg-brand-600 px-5 py-3 text-center text-sm font-bold text-white shadow-sm hover:bg-brand-700 transition-colors"
+          >
+            Xem lại bài làm và đáp án chi tiết →
+          </Link>
+          {attempt.partId ? (
+            <>
               <Link
-                to={`/components/${currentPart.componentId}/parts`}
+                to={`/parts/${attempt.partId}`}
                 className="flex-1 rounded-xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
               >
-                Chọn Part khác
+                Luyện tiếp Part này
               </Link>
-            )}
-          </>
-        ) : (
-          <Link
-            to="/mock-tests"
-            className="flex-1 rounded-xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
-          >
-            Làm bài thi thử khác
-          </Link>
-        )}
-      </div>
+              {currentPart?.componentId && (
+                <Link
+                  to={`/components/${currentPart.componentId}/parts`}
+                  className="flex-1 rounded-xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                >
+                  Chọn Part khác
+                </Link>
+              )}
+            </>
+          ) : (
+            <Link
+              to="/mock-tests"
+              className="flex-1 rounded-xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+            >
+              Làm bài thi thử khác
+            </Link>
+          )}
+        </div>
+      )}
     </div>
   );
 }
