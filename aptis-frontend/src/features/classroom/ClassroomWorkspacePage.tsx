@@ -58,6 +58,25 @@ export function ClassroomWorkspacePage() {
     );
   }
 
+  // Lớp khoá: dừng ngay ở đây. Cho vào thì mọi tab đều báo "không tải được bài
+  // giao", học viên tưởng hệ thống lỗi chứ không biết lớp đã hết hạn.
+  if (classroom.locked) {
+    return (
+      <div className="space-y-4">
+        <Breadcrumb />
+        <div className="mx-auto max-w-lg rounded-2xl border border-amber-200 bg-amber-50 px-6 py-8 text-center">
+          <p className="text-base font-bold text-amber-900">
+            Lớp đang bị khoá, không thể truy cập
+          </p>
+          <p className="mt-2 text-sm leading-6 text-amber-800">
+            Lớp <strong>{classroom.name}</strong> đã hết hạn sử dụng. Liên hệ giáo viên{' '}
+            {classroom.teacherName} để được mở lại.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-5">
       <Breadcrumb />

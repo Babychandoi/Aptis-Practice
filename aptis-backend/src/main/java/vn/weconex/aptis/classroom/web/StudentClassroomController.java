@@ -63,7 +63,8 @@ public class StudentClassroomController {
                     classroom.getSupportZalo(),
                     classroom.getSupportFacebook(),
                     classroom.getSupportGroup(),
-                    classroom.getSupportNote());
+                    classroom.getSupportNote(),
+                    !classroom.isUsable());
         }).toList();
     }
 
@@ -101,7 +102,8 @@ public class StudentClassroomController {
                 classroom.getSupportZalo(),
                 classroom.getSupportFacebook(),
                 classroom.getSupportGroup(),
-                classroom.getSupportNote());
+                classroom.getSupportNote(),
+                !classroom.isUsable());
     }
 
     private Map<String, String> namesById(List<String> ids) {

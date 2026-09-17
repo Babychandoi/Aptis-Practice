@@ -1100,6 +1100,8 @@ export interface StudentClassroom {
   supportFacebook?: string | null;
   supportGroup?: string | null;
   supportNote?: string | null;
+  /** Lớp hết hạn hoặc đã đóng: chỉ xem được thông báo, không vào được. */
+  locked?: boolean;
 }
 
 export interface AdminClassroom {

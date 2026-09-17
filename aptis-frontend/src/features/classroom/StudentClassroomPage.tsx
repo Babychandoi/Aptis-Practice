@@ -142,6 +142,9 @@ function ClassroomCard({ classroom }: { classroom: StudentClassroom }) {
         </div>
 
         <div className="flex shrink-0 flex-col items-end gap-1.5">
+          {classroom.locked && (
+            <Badge tone="border-amber-300 bg-amber-100 text-amber-900">Đã khoá</Badge>
+          )}
           <Badge
             tone={
               paid
@@ -177,7 +180,14 @@ function ClassroomCard({ classroom }: { classroom: StudentClassroom }) {
         </p>
       )}
 
-      <p className="mt-3 text-xs font-semibold text-brand-700">Vào lớp →</p>
+      {classroom.locked ? (
+        <p className="mt-3 rounded-xl bg-amber-50 px-3 py-2.5 text-xs leading-5 text-amber-900">
+          <strong>Lớp đang bị khoá, không thể truy cập.</strong> Lớp đã hết hạn sử dụng — liên hệ
+          giáo viên {classroom.teacherName} để được mở lại.
+        </p>
+      ) : (
+        <p className="mt-3 text-xs font-semibold text-brand-700">Vào lớp →</p>
+      )}
     </Link>
   );
 }

@@ -104,7 +104,9 @@ public final class ClassroomDtos {
             String supportZalo,
             String supportFacebook,
             String supportGroup,
-            String supportNote) {
+            String supportNote,
+            /** Lớp hết hạn hoặc đã đóng: học viên chỉ thấy thông báo, không vào được. */
+            boolean locked) {
     }
 
     public record JoinClassroomRequest(
