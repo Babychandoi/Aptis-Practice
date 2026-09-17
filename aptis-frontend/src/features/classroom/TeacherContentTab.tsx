@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
 import { teacherContentApi } from '@/api/endpoints';
+import { confirmDialog } from '@/lib/dialog';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate } from '@/lib/format';
@@ -186,8 +187,14 @@ export function TeacherContentTab({ kind }: { kind: ContentKind }) {
                   <button
                     type="button"
                     disabled={remove.isPending}
-                    onClick={() => {
-                      if (window.confirm(`Xoá "${item.title}"?`)) remove.mutate(item.id);
+                    onClick={async () => {
+                      const ok = await confirmDialog({
+                        title: 'Xoá tài liệu?',
+                        text: `"${item.title}" sẽ không còn hiện với học viên.`,
+                        confirmText: 'Xoá',
+                        danger: true,
+                      });
+                      if (ok) remove.mutate(item.id);
                     }}
                     className="shrink-0 text-[11px] font-semibold text-red-600 hover:text-red-700 disabled:opacity-50"
                   >

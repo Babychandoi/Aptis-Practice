@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
 import { teacherBlueprintApi, teacherClassroomApi, teacherContentApi } from '@/api/endpoints';
+import { confirmDialog } from '@/lib/dialog';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate, formatDateTime } from '@/lib/format';
@@ -140,10 +141,14 @@ function AssignmentCard({
         <button
           type="button"
           disabled={remove.isPending}
-          onClick={() => {
-            if (window.confirm(`Xoá bài giao "${assignment.title}"? Bài đã nộp cũng bị xoá.`)) {
-              remove.mutate();
-            }
+          onClick={async () => {
+            const ok = await confirmDialog({
+              title: 'Xoá bài giao?',
+              text: `"${assignment.title}" — bài học viên đã nộp cũng bị xoá theo.`,
+              confirmText: 'Xoá bài giao',
+              danger: true,
+            });
+            if (ok) remove.mutate();
           }}
           className="ml-1 rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
         >

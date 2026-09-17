@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
 import { teacherContentApi } from '@/api/endpoints';
+import { confirmDialog } from '@/lib/dialog';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { SafeHtml } from '@/components/ui/SafeContent';
@@ -155,8 +156,14 @@ export function TeacherPostsTab() {
                   <button
                     type="button"
                     disabled={remove.isPending}
-                    onClick={() => {
-                      if (window.confirm(`Xoá bài “${post.title}”?`)) remove.mutate(post.id);
+                    onClick={async () => {
+                      const ok = await confirmDialog({
+                        title: 'Xoá bài viết?',
+                        text: `“${post.title}” sẽ bị gỡ khỏi bảng tin lớp.`,
+                        confirmText: 'Xoá bài',
+                        danger: true,
+                      });
+                      if (ok) remove.mutate(post.id);
                     }}
                     className="ml-1 rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
                   >

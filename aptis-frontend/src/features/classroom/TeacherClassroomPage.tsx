@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
 import { teacherClassroomApi } from '@/api/endpoints';
+import { confirmDialog } from '@/lib/dialog';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatCurrency, formatDate, formatDateTime } from '@/lib/format';
@@ -244,10 +245,14 @@ function StudentTable() {
               <button
                 type="button"
                 disabled={remove.isPending}
-                onClick={() => {
-                  if (window.confirm(`Gỡ ${student.fullName || student.email} khỏi lớp?`)) {
-                    remove.mutate(student.userId);
-                  }
+                onClick={async () => {
+                  const ok = await confirmDialog({
+                    title: 'Gỡ học viên khỏi lớp?',
+                    text: `${student.fullName || student.email} sẽ không xem được bài giao nữa. Em ấy vẫn vào lại được bằng mã lớp.`,
+                    confirmText: 'Gỡ khỏi lớp',
+                    danger: true,
+                  });
+                  if (ok) remove.mutate(student.userId);
                 }}
                 className="shrink-0 ml-1 rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
               >
@@ -323,10 +328,14 @@ function StudentTable() {
                   <button
                     type="button"
                     disabled={remove.isPending}
-                    onClick={() => {
-                      if (window.confirm(`Gỡ ${student.fullName || student.email} khỏi lớp?`)) {
-                        remove.mutate(student.userId);
-                      }
+                    onClick={async () => {
+                      const ok = await confirmDialog({
+                        title: 'Gỡ học viên khỏi lớp?',
+                        text: `${student.fullName || student.email} sẽ không xem được bài giao nữa. Em ấy vẫn vào lại được bằng mã lớp.`,
+                        confirmText: 'Gỡ khỏi lớp',
+                        danger: true,
+                      });
+                      if (ok) remove.mutate(student.userId);
                     }}
                     className="ml-1 rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
                   >

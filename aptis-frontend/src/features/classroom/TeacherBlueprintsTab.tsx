@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
 import { catalogApi, teacherAuthoringApi, teacherBlueprintApi } from '@/api/endpoints';
+import { confirmDialog } from '@/lib/dialog';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate } from '@/lib/format';
@@ -114,8 +115,14 @@ export function TeacherBlueprintsTab({ classroom }: { classroom: Classroom }) {
                   <button
                     type="button"
                     disabled={remove.isPending}
-                    onClick={() => {
-                      if (window.confirm(`Xoá đề “${row.name}”?`)) remove.mutate(row.id);
+                    onClick={async () => {
+                      const ok = await confirmDialog({
+                        title: 'Xoá đề thi?',
+                        text: `“${row.name}” sẽ bị xoá khỏi danh sách đề ghép.`,
+                        confirmText: 'Xoá đề',
+                        danger: true,
+                      });
+                      if (ok) remove.mutate(row.id);
                     }}
                     className="ml-1 rounded-lg border border-border bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
                   >
