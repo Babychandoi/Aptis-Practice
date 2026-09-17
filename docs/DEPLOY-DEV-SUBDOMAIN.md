@@ -139,6 +139,21 @@ Qua HTTPS trình duyệt chỉ gửi cookie refresh khi cookie có cờ Secure. 
 `docker-compose.dev-tunnel.yml` đã đặt sẵn; kiểm tra xem có chạy kèm file đó
 không.
 
+**Muốn test chấm AI thật trên dev** — thêm vào `.env.dev`: `DEV_AI_EVAL_ENABLED=true`,
+`DEV_AI_STT_ENABLED=true` (Speaking cần STT mới có transcript), rồi copy
+`AI_EVAL_BASE_URL` / `AI_EVAL_API_KEY` / `AI_EVAL_MODEL` từ `.env` sang. Giữ
+`DEV_AI_EVAL_MAX_CONCURRENT=1` khi dùng chung key với production, nếu không dev
+chấm ồ ạt sẽ đẩy học viên thật bên prod vào lỗi 429. **Test xong nhớ đổi hai
+dòng `ENABLED` về `false`** — để bật là mỗi lần thử một bài lại tốn tiền thật.
+
+Dev còn phải có đủ thang chấm, nếu không job báo "Không tìm thấy rubric …":
+
+```bash
+docker exec -i aptis-dev-mongo mongosh aptis --quiet < scripts/out/integer-rubrics.mongo.js
+# xong phải đủ 8 rubric (4 Speaking + 4 Writing)
+docker exec aptis-dev-mongo mongosh aptis --quiet --eval "db.rubric_definitions.countDocuments()"
+```
+
 **Ghi âm Speaking báo lỗi tải file lên** — cùng một nguyên nhân: deploy thiếu
 `-f docker-compose.dev-tunnel.yml` nên `MINIO_PUBLIC_ENDPOINT` vẫn là
 `http://localhost:9002`. Link tải lên ký theo địa chỉ đó, máy ở xa không tới

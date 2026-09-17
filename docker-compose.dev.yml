@@ -142,6 +142,21 @@ services:
       AI_EVAL_API_KEY: "${AI_EVAL_API_KEY:-}"
       AI_EVAL_MODEL: "${AI_EVAL_MODEL:-AI-PRO}"
       AI_EVAL_PROVIDERS: "${DEV_AI_EVAL_PROVIDERS:-}"
+      # Dùng chung key với production thì phải giới hạn số luồng: dev chấm ồ ạt
+      # là nhà cung cấp trả 429 cho cả học viên thật bên prod.
+      AI_EVAL_MAX_CONCURRENT: "${DEV_AI_EVAL_MAX_CONCURRENT:-1}"
+      AI_EVAL_WORKER_THREADS: "${DEV_AI_EVAL_WORKER_THREADS:-1}"
+      AI_EVAL_BATCH_SIZE: "${DEV_AI_EVAL_BATCH_SIZE:-1}"
+
+      # Speaking phải có transcript mới chấm được. Mặc định tắt; bật thì lấy
+      # base-url và key của AI_EVAL_* nếu không khai riêng.
+      AI_STT_ENABLED: "${DEV_AI_STT_ENABLED:-false}"
+      # Mặc định dùng chung endpoint với chấm bài. Không để rỗng: truyền biến
+      # rỗng thì fallback trong application.yml không kích hoạt, STT tưởng là
+      # thiếu cấu hình và bỏ qua.
+      AI_STT_BASE_URL: "${AI_STT_BASE_URL:-${AI_EVAL_BASE_URL:-}}"
+      AI_STT_API_KEY: "${AI_STT_API_KEY:-${AI_EVAL_API_KEY:-}}"
+      AI_STT_MODEL: "${AI_STT_MODEL:-ag/gemini-3-flash}"
 
       # Speaking analyzer không chạy ở dev (tải model Whisper mất vài GB).
       LOCAL_SPEAKING_ENABLED: "false"
