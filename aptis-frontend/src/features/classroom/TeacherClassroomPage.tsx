@@ -408,230 +408,239 @@ function SettingsPanel({ classroom }: { classroom: Classroom }) {
     onError: (err) => setError(err instanceof ApiError ? err.message : 'Không lưu được'),
   });
 
+  // Hai cột trên màn rộng: năm khối xếp dọc một cột hẹp thì phải cuộn tới cuối
+  // mới thấy hết, trong khi nửa màn hình bên phải bỏ trống. Dùng CSS columns
+  // chứ không phải grid — các khối cao thấp khác nhau, grid căn theo hàng nên
+  // khối thấp để lại lỗ hổng bên dưới.
   return (
-    <div className="max-w-xl space-y-4">
-      <form
-        className="space-y-3 rounded-2xl border border-border bg-white px-5 py-5"
-        onSubmit={(event) => {
-          event.preventDefault();
-          setError(null);
-          saveProfile.mutate();
-        }}
-      >
-        <h2 className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
-          Thông tin lớp
-        </h2>
-
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-semibold text-slate-600">Tên lớp</span>
-          <input
-            value={name}
-            required
-            maxLength={255}
-            onChange={(event) => setName(event.target.value)}
-            placeholder="Ví dụ: Aptis Cấp tốc T9 – Sáng thứ 7"
-            className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
-          />
-        </label>
-
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-semibold text-slate-600">
-            Mô tả (không bắt buộc)
-          </span>
-          <textarea
-            value={description}
-            rows={2}
-            maxLength={2000}
-            onChange={(event) => setDescription(event.target.value)}
-            placeholder="Lịch học, yêu cầu, ghi chú cho học viên…"
-            className="w-full resize-y rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
-          />
-        </label>
-
-        <button
-          type="submit"
-          disabled={saveProfile.isPending}
-          className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+    <div className="grid max-w-5xl items-start gap-4 lg:grid-cols-2">
+      {/* Cột trái: những thứ sửa thường xuyên. */}
+      <div className="space-y-4">
+        <form
+          className="space-y-3 rounded-2xl border border-border bg-white px-5 py-5"
+          onSubmit={(event) => {
+            event.preventDefault();
+            setError(null);
+            saveProfile.mutate();
+          }}
         >
-          {saveProfile.isPending ? 'Đang lưu…' : 'Lưu thông tin lớp'}
-        </button>
-      </form>
-
-      {/* Khối "Liên hệ giáo viên" trong thanh bên lớp. Trước đây chỗ đó chỉ về
-          kênh của nền tảng, học viên hỏi bài lại nhắn nhầm chúng ta. */}
-      <form
-        className="space-y-3 rounded-2xl border border-border bg-white px-5 py-5"
-        onSubmit={(event) => {
-          event.preventDefault();
-          setError(null);
-          saveSupport.mutate();
-        }}
-      >
-        <div>
           <h2 className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
-            Liên hệ của bạn
+            Thông tin lớp
           </h2>
-          <p className="mt-1 text-xs leading-5 text-slate-500">
-            Hiện ở cuối thanh bên cho học viên trong lớp. Để trống hết thì khối đó không hiện.
-          </p>
-        </div>
 
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-semibold text-slate-600">Zalo</span>
-          <input
-            value={zalo}
-            maxLength={255}
-            onChange={(event) => setZalo(event.target.value)}
-            placeholder="0912345678 hoặc link zalo.me"
-            className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
-          />
-        </label>
-
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-semibold text-slate-600">
-            Trang Facebook (không bắt buộc)
-          </span>
-          <input
-            value={facebook}
-            maxLength={500}
-            onChange={(event) => setFacebook(event.target.value)}
-            placeholder="https://facebook.com/trang-cua-ban"
-            className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
-          />
-        </label>
-
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-semibold text-slate-600">
-            Nhóm của lớp (không bắt buộc)
-          </span>
-          <input
-            value={group}
-            maxLength={500}
-            onChange={(event) => setGroup(event.target.value)}
-            placeholder="Link nhóm Facebook hoặc Zalo của lớp"
-            className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
-          />
-        </label>
-
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-semibold text-slate-600">
-            Dòng nhắn kèm (không bắt buộc)
-          </span>
-          <input
-            value={note}
-            maxLength={500}
-            onChange={(event) => setNote(event.target.value)}
-            placeholder="Ví dụ: Cô trả lời tin từ 19h–22h các ngày trong tuần"
-            className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
-          />
-        </label>
-
-        <button
-          type="submit"
-          disabled={saveSupport.isPending}
-          className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
-        >
-          {saveSupport.isPending ? 'Đang lưu…' : 'Lưu liên hệ'}
-        </button>
-      </form>
-
-      <section className="space-y-4 rounded-2xl border border-border bg-white px-5 py-5">
-        <div>
-          <h2 className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
-            Học phí lớp học
-          </h2>
-          <div className="mt-2 flex gap-2">
-            {(
-              [
-                ['FREE', 'Miễn phí'],
-                ['PAID', 'Có phí'],
-              ] as const
-            ).map(([value, label]) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setPricingType(value)}
-                className={clsx(
-                  'rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors',
-                  pricingType === value
-                    ? 'bg-brand-600 text-white'
-                    : 'bg-surface-muted text-slate-600 hover:bg-surface',
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {pricingType === 'PAID' && (
           <label className="block">
-            <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
-              Giá (VND)
-            </span>
+            <span className="mb-1.5 block text-xs font-semibold text-slate-600">Tên lớp</span>
             <input
-              type="number"
-              min={0}
-              step={10000}
-              value={price}
-              onChange={(event) => setPrice(event.target.value)}
-              placeholder="Ví dụ: 300000"
+              value={name}
+              required
+              maxLength={255}
+              onChange={(event) => setName(event.target.value)}
+              placeholder="Ví dụ: Aptis Cấp tốc T9 – Sáng thứ 7"
               className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
             />
-            <span className="mt-1.5 block text-[11px] leading-4 text-slate-500">
-              Học viên trả khoản này khi tham gia lớp — tách với gói giáo viên bạn trả cho nền tảng.
-            </span>
           </label>
-        )}
 
-        {error && (
-          <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
-            {error}
-          </p>
-        )}
+          <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold text-slate-600">
+              Mô tả (không bắt buộc)
+            </span>
+            <textarea
+              value={description}
+              rows={2}
+              maxLength={2000}
+              onChange={(event) => setDescription(event.target.value)}
+              placeholder="Lịch học, yêu cầu, ghi chú cho học viên…"
+              className="w-full resize-y rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+            />
+          </label>
 
-        <div className="flex items-center gap-3">
           <button
-            type="button"
-            disabled={savePricing.isPending}
-            onClick={() => savePricing.mutate()}
+            type="submit"
+            disabled={saveProfile.isPending}
             className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
           >
-            {savePricing.isPending ? 'Đang lưu…' : 'Lưu học phí'}
+            {saveProfile.isPending ? 'Đang lưu…' : 'Lưu thông tin lớp'}
           </button>
-          {saved && <span className="text-sm font-semibold text-emerald-700">Đã lưu</span>}
-        </div>
-      </section>
+        </form>
 
-      <section className="rounded-2xl border border-border bg-white px-5 py-4">
-        <label className="flex cursor-pointer items-start gap-3">
-          <input
-            type="checkbox"
-            checked={classroom.joinEnabled}
-            disabled={toggleJoin.isPending}
-            onChange={(event) => toggleJoin.mutate(event.target.checked)}
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-border"
-          />
-          <span>
-            <span className="block text-sm font-semibold text-slate-800">
-              Nhận học viên mới
-            </span>
-            <span className="block text-[11px] leading-4 text-slate-500">
-              Tắt khi lớp đã đủ người — mã lớp tạm ngừng hoạt động, học viên cũ không bị ảnh hưởng.
-            </span>
-          </span>
-        </label>
-      </section>
+        <section className="space-y-4 rounded-2xl border border-border bg-white px-5 py-5">
+          <div>
+            <h2 className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+              Học phí lớp học
+            </h2>
+            <div className="mt-2 flex gap-2">
+              {(
+                [
+                  ['FREE', 'Miễn phí'],
+                  ['PAID', 'Có phí'],
+                ] as const
+              ).map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setPricingType(value)}
+                  className={clsx(
+                    'rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors',
+                    pricingType === value
+                      ? 'bg-brand-600 text-white'
+                      : 'bg-surface-muted text-slate-600 hover:bg-surface',
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
 
-      {!classroom.systemContentEnabled && (
-        <section className="rounded-2xl border border-amber-200 bg-amber-50/70 px-5 py-4">
-          <p className="text-sm font-semibold text-amber-900">Lớp chưa mở kho đề hệ thống</p>
-          <p className="mt-1 text-xs leading-5 text-amber-800">
-            Hiện bạn chỉ giao được đề tự soạn. Liên hệ quản trị để mở toàn bộ ngân hàng đề của
-            hệ thống cho lớp này.
-          </p>
+          {pricingType === 'PAID' && (
+            <label className="block">
+              <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+                Giá (VND)
+              </span>
+              <input
+                type="number"
+                min={0}
+                step={10000}
+                value={price}
+                onChange={(event) => setPrice(event.target.value)}
+                placeholder="Ví dụ: 300000"
+                className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+              />
+              <span className="mt-1.5 block text-[11px] leading-4 text-slate-500">
+                Học viên trả khoản này khi tham gia lớp — tách với gói giáo viên bạn trả cho nền tảng.
+              </span>
+            </label>
+          )}
+
+          {error && (
+            <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+              {error}
+            </p>
+          )}
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              disabled={savePricing.isPending}
+              onClick={() => savePricing.mutate()}
+              className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+            >
+              {savePricing.isPending ? 'Đang lưu…' : 'Lưu học phí'}
+            </button>
+            {saved && <span className="text-sm font-semibold text-emerald-700">Đã lưu</span>}
+          </div>
         </section>
-      )}
+
+        <section className="rounded-2xl border border-border bg-white px-5 py-4">
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              checked={classroom.joinEnabled}
+              disabled={toggleJoin.isPending}
+              onChange={(event) => toggleJoin.mutate(event.target.checked)}
+              className="mt-0.5 h-4 w-4 shrink-0 rounded border-border"
+            />
+            <span>
+              <span className="block text-sm font-semibold text-slate-800">
+                Nhận học viên mới
+              </span>
+              <span className="block text-[11px] leading-4 text-slate-500">
+                Tắt khi lớp đã đủ người — mã lớp tạm ngừng hoạt động, học viên cũ không bị ảnh hưởng.
+              </span>
+            </span>
+          </label>
+        </section>
+
+        {!classroom.systemContentEnabled && (
+          <section className="rounded-2xl border border-amber-200 bg-amber-50/70 px-5 py-4">
+            <p className="text-sm font-semibold text-amber-900">Lớp chưa mở kho đề hệ thống</p>
+            <p className="mt-1 text-xs leading-5 text-amber-800">
+              Hiện bạn chỉ giao được đề tự soạn. Liên hệ quản trị để mở toàn bộ ngân hàng đề của
+              hệ thống cho lớp này.
+            </p>
+          </section>
+        )}
+      </div>
+
+      <div className="space-y-4">
+        {/* Khối "Liên hệ giáo viên" trong thanh bên lớp. Trước đây chỗ đó chỉ về
+            kênh của nền tảng, học viên hỏi bài lại nhắn nhầm chúng ta. */}
+        <form
+          className="space-y-3 rounded-2xl border border-border bg-white px-5 py-5"
+          onSubmit={(event) => {
+            event.preventDefault();
+            setError(null);
+            saveSupport.mutate();
+          }}
+        >
+          <div>
+            <h2 className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+              Liên hệ của bạn
+            </h2>
+            <p className="mt-1 text-xs leading-5 text-slate-500">
+              Hiện ở cuối thanh bên cho học viên trong lớp. Để trống hết thì khối đó không hiện.
+            </p>
+          </div>
+
+          <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold text-slate-600">Zalo</span>
+            <input
+              value={zalo}
+              maxLength={255}
+              onChange={(event) => setZalo(event.target.value)}
+              placeholder="0912345678 hoặc link zalo.me"
+              className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold text-slate-600">
+              Trang Facebook (không bắt buộc)
+            </span>
+            <input
+              value={facebook}
+              maxLength={500}
+              onChange={(event) => setFacebook(event.target.value)}
+              placeholder="https://facebook.com/trang-cua-ban"
+              className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold text-slate-600">
+              Nhóm của lớp (không bắt buộc)
+            </span>
+            <input
+              value={group}
+              maxLength={500}
+              onChange={(event) => setGroup(event.target.value)}
+              placeholder="Link nhóm Facebook hoặc Zalo của lớp"
+              className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold text-slate-600">
+              Dòng nhắn kèm (không bắt buộc)
+            </span>
+            <input
+              value={note}
+              maxLength={500}
+              onChange={(event) => setNote(event.target.value)}
+              placeholder="Ví dụ: Cô trả lời tin từ 19h–22h các ngày trong tuần"
+              className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
+            />
+          </label>
+
+          <button
+            type="submit"
+            disabled={saveSupport.isPending}
+            className="rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+          >
+            {saveSupport.isPending ? 'Đang lưu…' : 'Lưu liên hệ'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
