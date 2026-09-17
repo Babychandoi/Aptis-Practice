@@ -723,6 +723,12 @@ export const adminClassroomApi = {
       .put<AdminClassroom>(`/admin/classrooms/${classroomId}/max-students`, { maxStudents })
       .then((r) => r.data),
 
+  /** Gia hạn lớp: số ngày tính từ hôm nay; null = bỏ hạn. */
+  setExpiry: (classroomId: string, days: number | null) =>
+    api
+      .put<AdminClassroom>(`/admin/classrooms/${classroomId}/expiry`, { days })
+      .then((r) => r.data),
+
   settings: () => api.get<TeacherSettings>('/admin/classrooms/settings').then((r) => r.data),
 
   updateSettings: (body: TeacherSettings) =>

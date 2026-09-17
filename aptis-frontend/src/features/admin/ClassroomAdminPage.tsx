@@ -5,7 +5,7 @@ import { ApiError } from '@/api/client';
 import { adminClassroomApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
-import { formatCurrency } from '@/lib/format';
+import { formatCurrency, formatDate } from '@/lib/format';
 import { useEscapeKey } from '@/lib/useEscapeKey';
 import { usePermission } from '@/features/admin/usePermission';
 import type { AdminTeacher, CreateTeacherResult, TeacherSettings } from '@/types/api';
@@ -78,6 +78,16 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
     onError: (err) => setError(err instanceof ApiError ? err.message : 'Không đổi được'),
   });
 
+  const giaHan = useMutation({
+    mutationFn: ({ id, days }: { id: string; days: number | null }) =>
+      adminClassroomApi.setExpiry(id, days),
+    onSuccess: () => {
+      setError(null);
+      void queryClient.invalidateQueries({ queryKey: ['admin', 'classrooms'] });
+    },
+    onError: (err) => setError(err instanceof ApiError ? err.message : 'Không gia hạn được'),
+  });
+
   if (query.isPending) return <LoadingBlock label="Đang tải…" />;
   if (query.error) {
     return <ErrorBlock message="Không tải được danh sách lớp" onRetry={() => void query.refetch()} />;
@@ -102,7 +112,7 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
         <table className="w-full min-w-[780px] text-sm">
           <thead>
             <tr className="bg-surface-paper">
-              {['Lớp', 'Giáo viên', 'Học viên', 'Học phí', 'Đề hệ thống'].map((header) => (
+              {['Lớp', 'Giáo viên', 'Học viên', 'Học phí', 'Đề hệ thống', 'Hạn dùng'].map((header) => (
                 <th
                   key={header}
                   className="px-4 py-2.5 text-left font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500"
@@ -166,6 +176,54 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
                       {classroom.systemContentEnabled ? 'Bật' : 'Tắt'}
                     </span>
                   </button>
+                </td>
+
+                {/* Gia hạn: admin thu tiền ngoài rồi bấm số ngày tương ứng. */}
+                <td className="px-4 py-3">
+                  <p
+                    className={clsx(
+                      'text-xs font-semibold',
+                      classroom.expired
+                        ? 'text-red-600'
+                        : classroom.expiresAt
+                          ? 'text-slate-700'
+                          : 'text-slate-400',
+                    )}
+                  >
+                    {classroom.expired
+                      ? 'Đã hết hạn'
+                      : classroom.expiresAt
+                        ? `Đến ${formatDate(classroom.expiresAt)}`
+                        : 'Vô thời hạn'}
+                  </p>
+
+                  {canManage && (
+                    <div className="mt-1 flex flex-wrap items-center gap-1">
+                      {[7, 30, 90, 180, 365].map((days) => (
+                        <button
+                          key={days}
+                          type="button"
+                          disabled={giaHan.isPending}
+                          onClick={() => giaHan.mutate({ id: classroom.id, days })}
+                          className="rounded-md border border-border px-1.5 py-0.5 font-mono text-[10px] font-semibold text-slate-600 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-800 disabled:opacity-50"
+                          title={`Gia hạn ${days} ngày kể từ hôm nay`}
+                        >
+                          {days}n
+                        </button>
+                      ))}
+                      {classroom.expiresAt && (
+                        <button
+                          type="button"
+                          disabled={giaHan.isPending}
+                          onClick={() => giaHan.mutate({ id: classroom.id, days: null })}
+                          className="rounded-md px-1.5 py-0.5 text-[10px] font-semibold text-slate-500 hover:text-slate-800 disabled:opacity-50"
+                          title="Bỏ hạn, lớp dùng vô thời hạn"
+                        >
+                          bỏ hạn
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}

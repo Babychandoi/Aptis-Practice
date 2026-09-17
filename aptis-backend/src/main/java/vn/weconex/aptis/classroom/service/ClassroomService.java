@@ -112,10 +112,55 @@ public class ClassroomService {
      */
     @Transactional(readOnly = true)
     public Classroom requireOwnedClassroom(String teacherUserId) {
+        Classroom classroom = ownedClassroom(teacherUserId);
+        requireNotExpired(classroom);
+        return classroom;
+    }
+
+    /**
+     * Lớp của giáo viên, KHÔNG kiểm hạn.
+     *
+     * <p>Chỉ dùng cho màn hình lớp học: hết hạn thì giáo viên vẫn phải mở được
+     * trang để đọc thông báo và biết đường liên hệ gia hạn. Mọi thao tác khác
+     * đi qua {@link #requireOwnedClassroom}.
+     */
+    @Transactional(readOnly = true)
+    public Classroom ownedClassroom(String teacherUserId) {
         return classroomRepository.findByTeacherUserId(teacherUserId)
                 .orElseThrow(() -> new ApiException(
                         ErrorCode.RESOURCE_NOT_FOUND,
                         "Tài khoản chưa được gắn lớp học nào"));
+    }
+
+    /**
+     * Admin gia hạn lớp.
+     *
+     * <p>Cộng từ hôm nay chứ không từ hạn cũ: gia hạn cho lớp đã hết hạn từ lâu
+     * mà cộng dồn thì khách trả tiền hôm nay lại mất luôn phần đã quá.
+     *
+     * @param days null = bỏ hạn, lớp dùng vô thời hạn
+     */
+    @Transactional
+    public Classroom setExpiry(String classroomId, Integer days) {
+        Classroom classroom = classroomRepository.findById(classroomId)
+                .orElseThrow(() -> ApiException.notFound("Classroom", classroomId));
+
+        classroom.setExpiresAt(days == null
+                ? null
+                : Instant.now().plus(java.time.Duration.ofDays(days)));
+
+        log.info("Lớp {} đặt hạn: {}", classroom.getJoinCode(),
+                days == null ? "vô thời hạn" : days + " ngày");
+        return classroom;
+    }
+
+    /** Lớp hết hạn thì dừng mọi thao tác, chờ admin gia hạn. */
+    private static void requireNotExpired(Classroom classroom) {
+        if (classroom.isExpired()) {
+            throw new ApiException(
+                    ErrorCode.VALIDATION_FAILED,
+                    "Lớp của bạn đã hết hạn sử dụng. Liên hệ quản trị viên để gia hạn lớp");
+        }
     }
 
     /**
@@ -139,6 +184,25 @@ public class ClassroomService {
                 .map(ClassroomMember::getClassroomId)
                 .toList();
         return ids.isEmpty() ? List.of() : classroomRepository.findByIdIn(ids);
+    }
+
+    /**
+     * Lớp học viên đang học, chặn nếu lớp bị khoá.
+     *
+     * <p>Dùng ở mọi lối vào dữ liệu lớp phía học viên. Lớp hết hạn thì không
+     * xem được gì nữa, kể cả bài đã giao.
+     */
+    @Transactional(readOnly = true)
+    public Classroom requireUsableClassroom(String classroomId) {
+        Classroom classroom = classroomRepository.findById(classroomId)
+                .orElseThrow(() -> ApiException.notFound("Classroom", classroomId));
+
+        if (!classroom.isUsable()) {
+            throw new ApiException(
+                    ErrorCode.VALIDATION_FAILED,
+                    "Lớp đang bị khoá, không thể truy cập");
+        }
+        return classroom;
     }
 
     // ---------------------------------------------------------------
@@ -168,6 +232,11 @@ public class ClassroomService {
         if (classroom.getStatus() != Classroom.ClassroomStatus.ACTIVE) {
             throw new ApiException(ErrorCode.VALIDATION_FAILED, "Lớp đã đóng");
         }
+        if (classroom.isExpired()) {
+            throw new ApiException(
+                    ErrorCode.VALIDATION_FAILED,
+                    "Lớp đang bị khoá, không thể truy cập");
+        }
         if (!classroom.isJoinEnabled()) {
             throw new ApiException(ErrorCode.VALIDATION_FAILED, "Lớp tạm ngừng nhận học viên mới");
         }
@@ -182,7 +251,9 @@ public class ClassroomService {
                 throw new ApiException(ErrorCode.CONFLICT, "Bạn đã ở trong lớp này");
             }
             // Từng bị xoá rồi vào lại: bật lại bản ghi cũ thay vì tạo bản mới,
-            // vì UNIQUE(classroom_id, user_id) không cho hai dòng.
+            // vì UNIQUE(classroom_id, user_id) không cho hai dòng. Vẫn phải đếm
+            // sĩ số — người cũ quay lại cũng chiếm một chỗ như người mới.
+            requireRoom(classroom);
             member.setStatus(MemberStatus.ACTIVE);
             member.setJoinedAt(Instant.now());
             member.setPaymentStatus(initialPaymentStatus(classroom));
@@ -218,7 +289,7 @@ public class ClassroomService {
         if (current >= limit) {
             throw new ApiException(
                     ErrorCode.VALIDATION_FAILED,
-                    "Lớp đã đủ học viên theo gói hiện tại",
+                    "Lớp học đã đầy",
                     Map.of("limit", limit));
         }
     }

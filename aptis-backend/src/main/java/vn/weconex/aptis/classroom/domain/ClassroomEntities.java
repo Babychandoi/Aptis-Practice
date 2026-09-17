@@ -100,8 +100,27 @@ public final class ClassroomEntities {
         @Column(name = "status", length = 16, nullable = false)
         private ClassroomStatus status = ClassroomStatus.ACTIVE;
 
+        /** Hết hạn thì khoá lớp; null = không giới hạn. */
+        @Column(name = "expires_at")
+        private Instant expiresAt;
+
         public boolean isPaid() {
             return pricingType == PricingType.PAID && priceAmount > 0;
+        }
+
+        /**
+         * Lớp đã quá hạn sử dụng chưa.
+         *
+         * <p>Quá hạn thì cả giáo viên lẫn học viên đều không vào được, chờ admin
+         * gia hạn. Dữ liệu vẫn giữ nguyên.
+         */
+        public boolean isExpired() {
+            return expiresAt != null && expiresAt.isBefore(Instant.now());
+        }
+
+        /** Lớp dùng được: đang hoạt động và còn hạn. */
+        public boolean isUsable() {
+            return status == ClassroomStatus.ACTIVE && !isExpired();
         }
     }
 

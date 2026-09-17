@@ -1051,6 +1051,10 @@ export interface Classroom {
   supportFacebook?: string | null;
   supportGroup?: string | null;
   supportNote?: string | null;
+  /** Hạn dùng lớp; null = vô thời hạn. */
+  expiresAt?: string | null;
+  /** Quá hạn thì lớp bị khoá, chờ admin gia hạn. */
+  expired?: boolean;
 }
 
 export interface ClassroomStudent {
@@ -1111,6 +1115,9 @@ export interface AdminClassroom {
   pricingType: 'FREE' | 'PAID';
   priceAmount: number;
   status: string;
+  /** Hạn dùng lớp; null = vô thời hạn. */
+  expiresAt: string | null;
+  expired: boolean;
   createdAt: string;
 }
 
@@ -1122,7 +1129,9 @@ export interface AdminTeacher {
   joinCode: string;
   studentCount: number;
   planCode: string | null;
-  planEndsAt: string | null;
+  /** Hạn dùng lớp; null = vô thời hạn. */
+  expiresAt: string | null;
+  expired: boolean;
   status: string;
 }
 

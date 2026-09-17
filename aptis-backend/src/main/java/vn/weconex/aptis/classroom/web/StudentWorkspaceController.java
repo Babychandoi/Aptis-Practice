@@ -23,6 +23,7 @@ import vn.weconex.aptis.classroom.repository.ClassroomMemberRepository;
 import vn.weconex.aptis.classroom.repository.ClassroomRepository;
 import vn.weconex.aptis.classroom.service.AssignmentService;
 import vn.weconex.aptis.classroom.service.ClassroomContentService;
+import vn.weconex.aptis.classroom.service.ClassroomService;
 import vn.weconex.aptis.classroom.service.PredictionPracticeService;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.security.CurrentUser;
@@ -40,6 +41,7 @@ public class StudentWorkspaceController {
 
     private final ClassroomRepository classroomRepository;
     private final ClassroomMemberRepository memberRepository;
+    private final ClassroomService classroomService;
     private final ClassroomContentService contentService;
     private final ClassroomPredictionMapper predictionMapper;
     private final PredictionPracticeService predictionPracticeService;
@@ -162,8 +164,8 @@ public class StudentWorkspaceController {
         if (!memberRepository.isActiveMember(classroomId, currentUser.requireUserId())) {
             throw ApiException.forbidden("Bạn không ở trong lớp này");
         }
-        return classroomRepository.findById(classroomId)
-                .orElseThrow(() -> ApiException.notFound("Classroom", classroomId));
+        // Lớp hết hạn thì học viên cũng không vào được, chờ giáo viên gia hạn.
+        return classroomService.requireUsableClassroom(classroomId);
     }
 
     private static ClassroomDtos.MaterialResponse toDto(ClassroomMaterial material) {

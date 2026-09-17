@@ -35,7 +35,11 @@ public final class ClassroomDtos {
             String supportZalo,
             String supportFacebook,
             String supportGroup,
-            String supportNote) {
+            String supportNote,
+            /** Hạn sử dụng lớp; null = không giới hạn. */
+            Instant expiresAt,
+            /** Quá hạn thì giáo viên chỉ xem được thông báo, không thao tác gì. */
+            boolean expired) {
     }
 
     /** Một học viên trong lớp, kèm tiến độ tóm tắt. */
@@ -122,6 +126,9 @@ public final class ClassroomDtos {
             String pricingType,
             long priceAmount,
             String status,
+            /** Hạn dùng lớp; null = vô thời hạn. */
+            Instant expiresAt,
+            boolean expired,
             Instant createdAt) {
     }
 
@@ -156,6 +163,15 @@ public final class ClassroomDtos {
     public record SetMaxStudentsRequest(Integer maxStudents) {
     }
 
+    /**
+     * Gia hạn lớp.
+     *
+     * @param days số ngày tính từ hôm nay (7/30/90/180/365); null = bỏ hạn
+     */
+    public record SetClassroomExpiryRequest(
+            @Min(1) @Max(3650) Integer days) {
+    }
+
     public record TeacherSettingsResponse(
             int platformFeePercent,
             int defaultMaxStudents) {
@@ -174,9 +190,11 @@ public final class ClassroomDtos {
             String classroomName,
             String joinCode,
             long studentCount,
-            /** Gói đang hiệu lực, vd TEACHER_90; null khi chưa có. */
+            /** Gói đang hiệu lực, vd TEACHER_90; null khi chưa bán gói. */
             String planCode,
-            Instant planEndsAt,
+            /** Hạn dùng lớp; null = vô thời hạn. */
+            Instant expiresAt,
+            boolean expired,
             String status) {
     }
 

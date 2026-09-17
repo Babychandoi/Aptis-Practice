@@ -7,7 +7,8 @@ import { ApiError } from '@/api/client';
 import { teacherClassroomApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
-import { formatCurrency, formatDateTime } from '@/lib/format';
+import { formatCurrency, formatDate, formatDateTime } from '@/lib/format';
+import { SupportLinksCard } from '@/components/ui/SupportLinks';
 import { useEscapeKey } from '@/lib/useEscapeKey';
 import { TeacherAssignmentsTab } from '@/features/classroom/TeacherAssignmentsTab';
 import { TeacherContentTab } from '@/features/classroom/TeacherContentTab';
@@ -78,6 +79,31 @@ export function TeacherClassroomPage() {
   }
 
   const classroom = query.data;
+
+  // Lớp hết hạn: dừng ở đây. Cho vào rồi mọi thao tác đều báo lỗi thì khó chịu
+  // hơn là nói thẳng một lần.
+  if (classroom.expired) {
+    return (
+      <div className="space-y-5">
+        <Breadcrumb />
+        <div className="mx-auto max-w-xl rounded-2xl border border-amber-200 bg-amber-50 px-6 py-8 text-center">
+          <p className="text-base font-bold text-amber-900">
+            Lớp của bạn đã hết hạn sử dụng
+          </p>
+          <p className="mt-2 text-sm leading-6 text-amber-800">
+            Liên hệ quản trị viên để gia hạn lớp. Học viên, bài giao và đề bạn đã soạn vẫn
+            được giữ nguyên.
+          </p>
+          {classroom.expiresAt && (
+            <p className="mt-3 font-mono text-xs text-amber-700">
+              Hết hạn ngày {formatDate(classroom.expiresAt)}
+            </p>
+          )}
+          <SupportLinksCard />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-5">

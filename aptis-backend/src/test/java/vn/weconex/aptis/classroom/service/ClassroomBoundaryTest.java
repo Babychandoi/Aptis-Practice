@@ -146,7 +146,7 @@ class ClassroomBoundaryTest {
 
         assertThatThrownBy(() -> service.join(studentOfB, "AAA111"))
                 .isInstanceOf(ApiException.class)
-                .hasMessageContaining("đã đủ học viên");
+                .hasMessageContaining("Lớp học đã đầy");
 
         verify(memberRepository, never()).save(any());
     }

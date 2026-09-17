@@ -53,7 +53,9 @@ public class TeacherClassroomController {
     @PreAuthorize("hasAuthority('classroom:read')")
     @Transactional(readOnly = true)
     public ClassroomDtos.ClassroomResponse myClassroom() {
-        Classroom classroom = classroomService.requireOwnedClassroom(currentUser.requireUserId());
+        // ownedClassroom chứ không requireOwnedClassroom: lớp hết hạn thì giáo
+        // viên vẫn phải mở được trang để đọc thông báo và biết đường gia hạn.
+        Classroom classroom = classroomService.ownedClassroom(currentUser.requireUserId());
         return toDto(classroom);
     }
 
@@ -192,7 +194,9 @@ public class TeacherClassroomController {
                 classroom.getSupportZalo(),
                 classroom.getSupportFacebook(),
                 classroom.getSupportGroup(),
-                classroom.getSupportNote());
+                classroom.getSupportNote(),
+                classroom.getExpiresAt(),
+                classroom.isExpired());
     }
 
     private Map<String, User> usersById(List<String> ids) {

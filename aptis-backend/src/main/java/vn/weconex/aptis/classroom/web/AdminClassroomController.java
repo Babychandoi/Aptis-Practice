@@ -96,8 +96,10 @@ public class AdminClassroomController {
                     classroom.getName(),
                     classroom.getJoinCode(),
                     counts.getOrDefault(classroom.getId(), 0L),
+                    // Chưa bán gói: hạn đặt tay ở cột bên cạnh.
                     null,
-                    null,
+                    classroom.getExpiresAt(),
+                    classroom.isExpired(),
                     classroom.getStatus().name());
         }).toList();
     }
@@ -166,6 +168,22 @@ public class AdminClassroomController {
         return toRows(List.of(classroom)).get(0);
     }
 
+    /**
+     * Đặt hạn sử dụng lớp.
+     *
+     * <p>Admin thu tiền ngoài rồi vào đây gia hạn. Truyền số ngày (7/30/90/180/
+     * 365) thì cộng từ hôm nay; để trống là bỏ hạn, lớp dùng vô thời hạn.
+     */
+    @PutMapping("/{classroomId}/expiry")
+    @PreAuthorize("hasAuthority('classroom:admin')")
+    public ClassroomDtos.AdminClassroomResponse setExpiry(
+            @PathVariable String classroomId,
+            @Valid @RequestBody ClassroomDtos.SetClassroomExpiryRequest request) {
+
+        Classroom classroom = classroomService.setExpiry(classroomId, request.days());
+        return toRows(List.of(classroom)).get(0);
+    }
+
     @GetMapping("/settings")
     @PreAuthorize("hasAuthority('classroom:admin')")
     @Transactional(readOnly = true)
@@ -218,6 +236,8 @@ public class AdminClassroomController {
                     classroom.getPricingType().name(),
                     classroom.getPriceAmount(),
                     classroom.getStatus().name(),
+                    classroom.getExpiresAt(),
+                    classroom.isExpired(),
                     classroom.getCreatedAt());
         }).toList();
     }
