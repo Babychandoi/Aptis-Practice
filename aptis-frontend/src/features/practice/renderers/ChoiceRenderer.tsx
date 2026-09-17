@@ -23,7 +23,11 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
     )}>
       {item.options.map((option) => {
         const selected = draft.selectedOptionId === option.id;
-        const isCorrect = showAnswer && correctId === option.id;
+        // Ba trạng thái phải nhìn ra khác nhau: chọn đúng, đáp án đúng mà bỏ
+        // trống, và chọn sai. Trước đây đáp án đúng luôn tô xanh dù em có chọn
+        // hay không, nên câu làm đúng và câu bỏ trống trông y hệt.
+        const chonDung = showAnswer && selected && correctId === option.id;
+        const dungNhungBoTrong = showAnswer && !selected && correctId === option.id;
         const isWrongPick = showAnswer && selected && correctId !== option.id;
 
         return (
@@ -31,8 +35,10 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
             key={option.id}
             className={clsx(
               'flex min-h-10 cursor-pointer items-center gap-2 rounded-lg border px-2.5 py-2 text-left transition-colors',
-              isCorrect && 'border-emerald-400 bg-emerald-50',
-              isWrongPick && 'border-red-400 bg-red-50',
+              chonDung && 'border-2 border-emerald-500 bg-emerald-50',
+              dungNhungBoTrong && 'border border-dashed border-emerald-400 bg-emerald-50/40',
+              isWrongPick && 'border-2 border-red-400 bg-red-50',
+              showAnswer && !selected && correctId !== option.id && 'border-slate-200',
               !showAnswer && selected && 'border-brand-500 bg-brand-50',
               !showAnswer && !selected && 'border-slate-200 hover:bg-slate-50',
               disabled && 'cursor-default',
@@ -47,10 +53,40 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
               onChange={() => onChange({ selectedOptionId: option.id })}
               className="sr-only"
             />
-            {option.code && <span className={clsx('grid h-6 min-w-6 shrink-0 place-items-center rounded-md px-1 text-[11px] font-semibold', selected ? 'bg-brand-800 text-white' : 'bg-[#fde7b8] text-[#a76b12]')}>{option.code}</span>}
-            <span className="text-xs leading-5 sm:text-[13px]">
+            {option.code && (
+              <span
+                className={clsx(
+                  'grid h-6 min-w-6 shrink-0 place-items-center rounded-md px-1 text-[11px] font-semibold',
+                  chonDung && 'bg-emerald-600 text-white',
+                  isWrongPick && 'bg-red-500 text-white',
+                  dungNhungBoTrong && 'bg-emerald-100 text-emerald-800',
+                  !showAnswer && selected && 'bg-brand-800 text-white',
+                  !chonDung && !isWrongPick && !dungNhungBoTrong
+                    && !(!showAnswer && selected) && 'bg-[#fde7b8] text-[#a76b12]',
+                )}
+              >
+                {option.code}
+              </span>
+            )}
+            <span className="flex-1 text-xs leading-5 sm:text-[13px]">
               {option.content}
             </span>
+            {/* Đánh dấu bằng hình chứ không chỉ bằng màu. */}
+            {chonDung && (
+              <span className="shrink-0 text-sm font-bold text-emerald-700" title="Chọn đúng">
+                ✓
+              </span>
+            )}
+            {isWrongPick && (
+              <span className="shrink-0 text-sm font-bold text-red-600" title="Chọn sai">
+                ✗
+              </span>
+            )}
+            {dungNhungBoTrong && (
+              <span className="shrink-0 text-[10px] font-semibold uppercase text-emerald-700">
+                Đáp án
+              </span>
+            )}
           </label>
         );
       })}

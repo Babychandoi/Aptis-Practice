@@ -17,6 +17,7 @@ import { ImageViewer } from '@/features/practice/ImageViewer';
 import { ItemRenderer } from '@/features/practice/renderers/ItemRenderer';
 import {
   countAnswered,
+  ketQuaCauHoi,
   hydrateResponses,
   toPayload,
   type ResponseDraft,
@@ -1616,6 +1617,9 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
 }) {
   // Bộ đã nộp riêng giữa lượt cũng phải hiện đáp án, không chỉ khi nộp cả lượt.
   const revealed = isSubmitted || set.status === 'SCORED';
+  // Câu bỏ trống trông giống hệt câu làm đúng nếu chỉ tô đáp án đúng màu xanh,
+  // nên gắn nhãn ngay cạnh số câu.
+  const ketQua = revealed ? ketQuaCauHoi(item, draft) : null;
 
   return (
     <article className={clsx('rounded-2xl border bg-white p-4 shadow-sm transition-all', flagged ? 'border-amber-400 ring-2 ring-amber-200' : 'border-border')}>
@@ -1623,6 +1627,18 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
         <span className="grid min-h-7 min-w-7 shrink-0 place-items-center rounded-xl bg-brand-100 px-2 font-mono text-xs font-bold text-brand-700 shadow-sm">
           {numberLabel}
         </span>
+        {ketQua && (
+          <span
+            className={clsx(
+              'shrink-0 rounded-lg px-2 py-1 text-[10px] font-bold uppercase',
+              ketQua === 'dung' && 'bg-emerald-100 text-emerald-800',
+              ketQua === 'sai' && 'bg-red-100 text-red-700',
+              ketQua === 'bo-trong' && 'bg-amber-100 text-amber-800',
+            )}
+          >
+            {ketQua === 'dung' ? '✓ Đúng' : ketQua === 'sai' ? '✗ Sai' : 'Bỏ trống'}
+          </span>
+        )}
         <ItemMetaBadge item={item} />
         {item.prompt?.value ? <SafeContent content={item.prompt} className="question-content min-w-0 flex-1 pt-1 text-sm font-semibold text-slate-900" /> : <span className="flex-1" />}
         <button type="button" onClick={onToggleFlag} className={clsx('inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-xl border px-3 text-xs font-semibold transition-colors', flagged ? 'border-amber-400 bg-amber-50 text-amber-800' : 'border-border bg-white text-slate-600 hover:bg-surface')} aria-pressed={flagged}><FlagIcon /> {flagged ? 'Đã đánh dấu' : 'Đánh dấu'}</button>
