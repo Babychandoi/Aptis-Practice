@@ -20,6 +20,35 @@ dùng ở máy khác bấm vào là lỗi.
 Đó là lý do `MINIO_PUBLIC_ENDPOINT` phải bằng `https://cdn.aptispractices.io.vn`,
 trong khi backend vẫn gọi `http://minio:9000` qua network nội bộ.
 
+## Deploy code mới (việc hằng ngày)
+
+Dùng script, đừng gõ `docker compose` tay:
+
+```bash
+./scripts/deploy-prod.sh              # build + đẩy backend và frontend
+./scripts/deploy-prod.sh backend      # chỉ một dịch vụ
+./scripts/deploy-prod.sh --no-build   # chỉ nạp lại cấu hình
+```
+
+Script chặn deploy khi đang có người dùng, và sau khi khởi động thì kiểm lại
+`MINIO_PUBLIC_ENDPOINT` / `CORS_ORIGINS` / `REFRESH_COOKIE_SECURE` trong
+container, sai thì báo lỗi ngay.
+
+⚠️ **Gõ tay thì phải đủ hai file compose:**
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.tunnel.yml up -d backend
+```
+
+Thiếu `-f docker-compose.tunnel.yml`, backend **im lặng** rơi về
+`MINIO_PUBLIC_ENDPOINT: http://localhost:9000` trong `docker-compose.yml`.
+Container vẫn healthy, log vẫn sạch, nhưng presigned URL trỏ về máy người dùng
+nên ghi âm Speaking và phát lại audio đều hỏng. Đã xảy ra hai lần — lần trên
+prod ngày 18/09/2026 hỏng suốt 28 tiếng mới có người báo.
+
+`deploy-tunnel.sh` là việc khác: dựng lại hạ tầng từ đầu, cần `TUNNEL_TOKEN` và
+ghi đè `.env`. Không dùng để đẩy code.
+
 ## ⚠️ Chọn đúng tài khoản Cloudflare
 
 Máy này có nhiều tài khoản Cloudflare. `cloudflared` đã đăng nhập bằng
