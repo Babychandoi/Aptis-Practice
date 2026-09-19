@@ -187,10 +187,17 @@ public class LlmEvaluationEngine implements EvaluationEngine {
                 - Every score MUST be a whole number (0, 1, 2, ...). Never use decimals.
                 - A score must never exceed the criterion's maximum.
                 - Judge only the language produced. Do not reward length alone.
-                - Feedback must be concrete and in Vietnamese, addressed to the learner.
+                - Feedback must be concrete and in Vietnamese, addressed to the learner:
+                  quote the exact wrong word/phrase from their answer and give the
+                  correction, not a vague remark like "còn vài lỗi ngữ pháp".
                 - correctedVersion is the ONE exception: rewrite the learner's answer
                   in ENGLISH, keeping their ideas. It is a model answer they copy from,
                   so a Vietnamese translation is useless. Never translate it.
+                - If the learner's answer contains multiple "Answer N:" sections
+                  (e.g. two emails in one Writing task), keep correctedVersion split
+                  the same way: put "\\n\\n" (a blank line) between each rewritten
+                  answer and no other separator, so they read as distinct pieces
+                  of text instead of running together.
                 %s
 
                 Reply with raw JSON only — no markdown fence, no commentary:

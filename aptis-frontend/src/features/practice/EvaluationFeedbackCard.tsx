@@ -37,8 +37,11 @@ export function EvaluationFeedbackCard({
             </span>
           </p>
           {result.cefrLevel && (
-            <span className="rounded bg-brand-100 px-2 py-0.5 text-xs font-semibold text-brand-700">
-              {result.cefrLevel}
+            <span
+              className="rounded bg-brand-100 px-2 py-0.5 text-xs font-semibold text-brand-700"
+              title="Ước tính riêng cho phần này, không phải trình độ CEFR tổng thể — cần làm đủ 4 phần của kỹ năng mới có kết quả chung."
+            >
+              {result.cefrLevel} (phần này)
             </span>
           )}
         </div>
@@ -145,7 +148,10 @@ export function EvaluationFeedbackCard({
           <p className="mb-1 text-xs font-semibold uppercase text-slate-500">
             Bản sửa tham khảo
           </p>
-          <p className="question-content rounded-lg bg-emerald-50 p-3 text-sm">
+          {/* Plain text từ model, không phải HTML — dùng whitespace-pre-line để
+              giữ xuống dòng giữa "Answer 1"/"Answer 2" khi Writing có nhiều câu,
+              thay vì để trình duyệt gộp thành một dòng dài. */}
+          <p className="whitespace-pre-line rounded-lg bg-emerald-50 p-3 text-sm">
             {result.feedback.correctedVersion}
           </p>
         </div>
