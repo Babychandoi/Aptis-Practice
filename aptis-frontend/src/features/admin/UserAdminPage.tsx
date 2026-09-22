@@ -72,6 +72,7 @@ export function UserAdminPage() {
             'Vai trò',
             'Quyền truy cập',
             'Premium',
+            'AI Voice',
             {
               key: 'activity',
               label: (
@@ -115,6 +116,7 @@ export function UserAdminPage() {
               <td className="px-4 py-3"><div className="flex max-w-72 flex-wrap gap-1">{user.roles.map((role) => <span key={role} className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700">{role}</span>)}</div></td>
               <td className="px-4 py-3"><AccessStateBadge user={user} /></td>
               <td className="px-4 py-3"><PremiumSummary user={user} canManage={canManagePremium} /></td>
+              <td className="px-4 py-3"><AiVoiceSummary user={user} canManage={canManagePremium} /></td>
               {/* Hoạt động là mốc "lần cuối còn ở web" — chính xác hơn đăng
                   nhập, vì refresh token sống 30 ngày nên người vào lại hằng
                   ngày không phải đăng nhập và lastLoginAt đứng im. Vẫn hiện
@@ -137,7 +139,7 @@ export function UserAdminPage() {
 
   return (
     <div>
-      <PageHeader title="Quản lý người dùng" description="Tìm tài khoản, quản lý trạng thái, vai trò và nâng cấp, gia hạn hoặc huỷ gói Premium." />
+      <PageHeader title="Quản lý người dùng" description="Tìm tài khoản, quản lý trạng thái, vai trò, gói Premium và AI Voice." />
       {banner && <ResultBanner tone="success" message={banner} onDismiss={() => setBanner(null)} />}
       <div className="mb-5 grid gap-3 rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(31,41,35,.07)] sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_180px_180px_190px]">
         <div><label htmlFor="user-search" className="label">Tìm người dùng</label><input id="user-search" className="input" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} placeholder="Email hoặc số điện thoại" /></div>
@@ -204,6 +206,7 @@ function UserPanel({ user, canWrite, canManagePremium, onClose, onSaved }: { use
           {mutationError && <ResultBanner tone="danger" message={errorMessage(mutationError, 'Không thể cập nhật người dùng')} />}
           <section className="rounded-xl border border-slate-200 p-4"><div className="flex items-center justify-between gap-3"><div><h3 className="font-semibold text-slate-900">Trạng thái tài khoản</h3><p className="mt-1 text-sm text-slate-500">Tạm khóa sẽ chặn đăng nhập nhưng không xóa dữ liệu.</p></div><UserStatusBadge status={user.status} /></div>{canWrite && (user.status === 'ACTIVE' || user.status === 'SUSPENDED') && <button type="button" className={user.status === 'ACTIVE' ? 'btn-secondary mt-4 w-full !border-red-200 !text-red-700' : 'btn-primary mt-4 w-full'} disabled={statusMutation.isPending} onClick={() => statusMutation.mutate()}>{user.status === 'ACTIVE' ? 'Tạm khóa tài khoản' : 'Mở lại tài khoản'}</button>}</section>
           <PremiumSection user={user} canManage={canManagePremium} onSaved={onSaved} />
+          <AiVoiceSection user={user} canManage={canManagePremium} onSaved={onSaved} />
           <section><h3 className="font-semibold text-slate-900">Vai trò</h3><p className="mt-1 text-sm text-slate-500">Vai trò quyết định các khu vực và thao tác tài khoản được phép sử dụng.</p>{rolesQuery.isPending && <LoadingBlock label="Đang tải vai trò…" />}{rolesQuery.data && <div className="mt-3 space-y-2">{rolesQuery.data.map((role) => <label key={role.code} className="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-3 hover:bg-slate-50"><input type="checkbox" className="mt-1 h-4 w-4 accent-brand-800" checked={roles.includes(role.code)} disabled={!canWrite} onChange={(event) => setRoles((current) => event.target.checked ? [...current, role.code] : current.filter((code) => code !== role.code))} /><span><span className="block text-sm font-semibold text-slate-900">{role.name}</span><span className="block text-xs text-slate-500">{role.description || role.code}</span></span></label>)}</div>}{canWrite && <button type="button" className="btn-primary mt-4 w-full" disabled={roles.length === 0 || rolesMutation.isPending || roles.slice().sort().join('|') === user.roles.slice().sort().join('|')} onClick={() => rolesMutation.mutate()}>Lưu vai trò</button>}</section>
         </div>
       </aside>
@@ -281,7 +284,7 @@ function AccessStateBadge({ user }: { user: AdminUser }) {
   );
 }
 
-/** Đếm bằng giờ, không bằng ngày: dùng thử chỉ dài 2 ngày. */
+/** Đếm bằng giờ, không bằng ngày: dùng thử chỉ dài 1 ngày. */
 function describeTrialLeft(endsAt: string) {
   const hours = Math.ceil((new Date(endsAt).getTime() - Date.now()) / 3_600_000);
   if (hours <= 0) return 'Vừa hết hạn';
@@ -290,6 +293,64 @@ function describeTrialLeft(endsAt: string) {
 }
 
 const PREMIUM_CODE = 'PREMIUM_CONTENT_ACCESS';
+const AI_VOICE_CODE = 'AI_CONVERSATION_ACCESS';
+
+function AiVoiceSection({ user, canManage, onSaved }: {
+  user: AdminUser;
+  canManage: boolean;
+  onSaved: (user: AdminUser, message: string) => void;
+}) {
+  const queryClient = useQueryClient();
+  const [durationDays, setDurationDays] = useState(30);
+  const entitlementsQuery = useQuery({
+    queryKey: ['admin', 'users', user.id, 'entitlements'],
+    queryFn: () => adminEntitlementApi.ofUser(user.id),
+    enabled: canManage,
+  });
+  const voiceEntitlements = (entitlementsQuery.data ?? []).filter((item) => item.entitlementCode === AI_VOICE_CODE);
+  const period = getEntitlementPeriod(voiceEntitlements, AI_VOICE_CODE);
+
+  const grantMutation = useMutation({
+    mutationFn: () => {
+      const remainingDays = period?.endsAt
+        ? Math.max(0, Math.ceil((new Date(period.endsAt).getTime() - Date.now()) / 86_400_000))
+        : 0;
+      return adminEntitlementApi.grant(user.id, {
+        entitlementCode: AI_VOICE_CODE,
+        durationDays: remainingDays + durationDays,
+        reason: period ? `Gia hạn AI Voice ${durationDays} ngày` : `Cấp AI Voice ${durationDays} ngày`,
+      });
+    },
+    onSuccess: () => {
+      void refreshPremiumQueries(queryClient, user.id);
+      onSaved(user, period ? `Đã gia hạn AI Voice ${durationDays} ngày.` : `Đã cấp AI Voice ${durationDays} ngày.`);
+    },
+  });
+  const revokeMutation = useMutation({
+    mutationFn: () => Promise.all(voiceEntitlements.map((item) =>
+      adminEntitlementApi.revoke(item.id, 'Admin thu hồi AI Voice tại Quản lý người dùng'))),
+    onSuccess: () => {
+      void refreshPremiumQueries(queryClient, user.id);
+      onSaved(user, 'Đã thu hồi quyền AI Voice của người dùng.');
+    },
+  });
+  const pending = grantMutation.isPending || revokeMutation.isPending;
+  const mutationError = grantMutation.error || revokeMutation.error;
+
+  return (
+    <section className="rounded-xl border border-violet-200 bg-violet-50/40 p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div><h3 className="font-semibold text-slate-900">AI Voice · English Lounge</h3><p className="mt-1 text-sm text-slate-500">Quyền riêng, không đi kèm Premium luyện đề. Tối đa 120 phút mỗi ngày.</p></div>
+        <span className={period ? 'rounded-full bg-violet-100 px-2.5 py-1 text-xs font-semibold text-violet-800' : 'rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600'}>{period ? 'Đã có quyền' : 'Chưa có quyền'}</span>
+      </div>
+      {period && <p className="mt-3 text-xs text-slate-600">Hiệu lực: {formatDateTime(period.startsAt)} — {period.endsAt ? formatDateTime(period.endsAt) : 'Trọn đời'}</p>}
+      {entitlementsQuery.isPending && <p className="mt-3 text-xs text-slate-500">Đang tải quyền AI Voice…</p>}
+      {(entitlementsQuery.error || mutationError) && <div className="mt-3"><ResultBanner tone="danger" message={errorMessage(mutationError ?? entitlementsQuery.error, 'Không thể cập nhật AI Voice')} /></div>}
+      {canManage && <div className="mt-4 grid grid-cols-[1fr_auto] gap-2"><select className="input" value={durationDays} onChange={(event) => setDurationDays(Number(event.target.value))} disabled={pending}><option value={7}>7 ngày</option><option value={14}>14 ngày</option><option value={30}>30 ngày</option><option value={90}>90 ngày</option><option value={180}>180 ngày</option><option value={365}>365 ngày</option></select><button type="button" className="btn-primary whitespace-nowrap" disabled={pending} onClick={() => grantMutation.mutate()}>{period ? 'Gia hạn AI Voice' : 'Cấp AI Voice'}</button></div>}
+      {canManage && period && <button type="button" className="btn-secondary mt-3 w-full !border-red-200 !text-red-700" disabled={pending} onClick={async () => { const ok = await confirmDialog({ title: 'Thu hồi AI Voice?', text: 'Người dùng sẽ mất quyền AI English Lounge ngay lập tức.', confirmText: 'Thu hồi quyền', danger: true }); if (ok) revokeMutation.mutate(); }}>Thu hồi AI Voice</button>}
+    </section>
+  );
+}
 
 function PremiumSummary({ user, canManage }: { user: AdminUser; canManage: boolean }) {
   const entitlementsQuery = useQuery({
@@ -310,6 +371,27 @@ function PremiumSummary({ user, canManage }: { user: AdminUser; canManage: boole
       <span className="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 font-semibold text-amber-800">Premium</span>
       <p className="mt-1 text-slate-600">Từ: {startsAt ? formatDateTime(startsAt) : '—'}</p>
       <p className="text-slate-600">Đến: {endsAt ? formatDateTime(endsAt) : 'Trọn đời'}</p>
+    </div>
+  );
+}
+
+function AiVoiceSummary({ user, canManage }: { user: AdminUser; canManage: boolean }) {
+  const entitlementsQuery = useQuery({
+    queryKey: ['admin', 'users', user.id, 'entitlements'],
+    queryFn: () => adminEntitlementApi.ofUser(user.id),
+    enabled: canManage,
+  });
+  const period = getEntitlementPeriod(entitlementsQuery.data ?? [], AI_VOICE_CODE);
+
+  if (!canManage) return <span className="text-xs text-slate-400">Không có quyền xem</span>;
+  if (entitlementsQuery.isPending) return <span className="text-xs text-slate-400">Đang tải gói…</span>;
+  if (!period) return <span className="text-xs text-slate-400">Chưa có gói</span>;
+
+  return (
+    <div className="min-w-44 text-xs">
+      <span className="inline-block rounded-full bg-violet-100 px-2.5 py-0.5 font-semibold text-violet-800">AI Voice</span>
+      <p className="mt-1 text-slate-600">Từ: {formatDateTime(period.startsAt)}</p>
+      <p className="text-slate-600">Đến: {period.endsAt ? formatDateTime(period.endsAt) : 'Trọn đời'}</p>
     </div>
   );
 }
@@ -471,7 +553,11 @@ function isActiveSubscription(subscription: AdminSubscription) {
 }
 
 function getPremiumPeriod(entitlements: AdminEntitlement[]) {
-  const premium = entitlements.filter((item) => item.entitlementCode === PREMIUM_CODE);
+  return getEntitlementPeriod(entitlements, PREMIUM_CODE);
+}
+
+function getEntitlementPeriod(entitlements: AdminEntitlement[], code: string) {
+  const premium = entitlements.filter((item) => item.entitlementCode === code);
   if (premium.length === 0) return null;
 
   const startsAt = premium

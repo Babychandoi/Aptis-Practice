@@ -7,6 +7,30 @@
 
 import type { ResponseType } from './api';
 
+export interface GeminiProvider {
+  id: string;
+  name: string;
+  projectId: string | null;
+  maskedKey: string;
+  enabled: boolean;
+  priority: number;
+  maxConcurrent: number;
+  activeSessions: number;
+  consecutiveFailures: number;
+  lastSuccessAt: string | null;
+  lastErrorAt: string | null;
+  lastError: string | null;
+}
+
+export interface SaveGeminiProviderRequest {
+  name: string;
+  projectId?: string;
+  apiKey?: string;
+  enabled: boolean;
+  priority: number;
+  maxConcurrent: number;
+}
+
 export type ContentStatus =
   | 'DRAFT'
   | 'IN_REVIEW'

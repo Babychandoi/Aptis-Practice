@@ -1,4 +1,5 @@
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import clsx from 'clsx';
 import { useAuthStore } from '@/features/auth/authStore';
 import { usePermission } from '@/features/admin/usePermission';
@@ -20,6 +21,7 @@ const PRIMARY_NAV = [
   { to: '/bang-tin', label: 'Bảng tin', shortLabel: 'Bảng tin', icon: 'news' },
   { to: '/meo-hoc', label: 'Mẹo học', shortLabel: 'Mẹo học', icon: 'tips' },
   { to: '/history', label: 'Kết quả của tôi', shortLabel: 'Kết quả', icon: 'history' },
+  { to: '/ai-english-lounge', label: 'AI English Lounge', shortLabel: 'AI Voice', icon: 'chat' },
 ] as const;
 
 const SKILL_NAV = [
@@ -38,6 +40,8 @@ export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuthStore();
+  const primaryNav = PRIMARY_NAV;
+  const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
   const { isAdmin, has } = usePermission();
   // Giáo viên vào thẳng trang lớp mình dạy; học viên vào trang lớp đang học.
   const isTeacher = has('classroom:write');
@@ -84,6 +88,8 @@ export function AppLayout() {
     if (path.startsWith('/du-doan-de')) return 'DỰ ĐOÁN ĐỀ / PREDICTIONS';
     if (path.startsWith('/meo-hoc')) return 'MẸO HỌC / STUDY TIPS';
     if (path.startsWith('/history')) return 'LỊCH SỬ / KẾT QUẢ';
+    if (path.startsWith('/ai-english-lounge')) return 'AI ENGLISH LOUNGE';
+    if (path.startsWith('/ai-voice/plans')) return 'GÓI AI VOICE';
     if (path.startsWith('/plans')) return 'GÓI PREMIUM';
     if (path.startsWith('/profile')) return 'HỒ SƠ / TÀI KHOẢN';
     if (path.includes('ngu-phap-tu-vung')) return 'LUYỆN TẬP / NGỮ PHÁP & TỪ VỰNG';
@@ -181,7 +187,7 @@ export function AppLayout() {
 
           {!collapsed && <NavSectionLabel>Menu chính</NavSectionLabel>}
           <nav className="space-y-1" aria-label="Điều hướng chính">
-            {PRIMARY_NAV.map((item) => (
+            {primaryNav.map((item) => (
               <SidebarLink key={item.to} {...item} collapsed={collapsed} />
             ))}
           </nav>
@@ -417,9 +423,8 @@ export function AppLayout() {
         </div>
       </header>
 
-      {/* Loan tin tính năng lớp học. Đặt dưới header cố định nên luôn thấy,
-          không phải cuộn lên. Giáo viên đã dùng rồi thì không hiện nữa. */}
-      {!isTeacher && (
+      {/* Loan tin tính năng mới. Đặt dưới header cố định nên luôn thấy. */}
+      {(
         <div
           className={clsx(
             'fixed inset-x-0 top-16 z-20 transition-[left] duration-200 ease-out',
@@ -427,9 +432,9 @@ export function AppLayout() {
           )}
         >
           <MarqueeBanner
-            text="Hệ thống vừa có tính năng Lớp học dành cho giáo viên — quản lý học viên, giao đề và chấm bài ngay trên Aptis Practice. Giáo viên muốn mở lớp, liên hệ quản trị viên để đăng ký."
-            to="/lop-hoc"
-            ctaLabel="Xem thêm"
+            text="Mới: AI English Lounge — luyện phản xạ giao tiếp tiếng Anh bằng giọng nói với AI, chọn giọng nam hoặc nữ, tối đa 120 phút mỗi ngày."
+            to="/ai-english-lounge"
+            ctaLabel="Khám phá ngay"
           />
         </div>
       )}
@@ -439,7 +444,7 @@ export function AppLayout() {
         className={clsx(
           'transition-[padding] duration-200 ease-out',
           // Chừa chỗ cho dải chữ chạy khi nó hiện.
-          isTeacher ? 'pt-16' : 'pt-[4.75rem]',
+          'pt-[4.75rem]',
           // Thanh bên của lớp cũng rộng w-64 và không thu gọn được.
           trongLopHoc ? 'md:pl-64' : collapsed ? 'md:pl-[4.5rem]' : 'md:pl-64',
         )}
@@ -451,32 +456,22 @@ export function AppLayout() {
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-white/95 px-2 pb-[max(.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur md:hidden" aria-label="Điều hướng di động">
-        {/* Số cột phải KHỚP số mục, nếu không mục cuối rơi xuống hàng hai và
-            thanh nav cao gấp đôi, che mất nội dung trang. Hiện 7 mục: 6 mục của
-            PRIMARY_NAV còn lại sau khi bỏ Mẹo học, cộng Kỹ năng.
-            Bảy ô đã là giới hạn của màn hình hẹp — thêm nữa thì chữ bị cắt, nên
-            Mẹo học chỉ còn ở sidebar desktop. */}
-        <div className="mx-auto grid max-w-md grid-cols-7">
-          {/* Kỹ năng thay chỗ Premium: sidebar desktop liệt kê cả 5 kỹ năng,
-              còn mobile không có sidebar nên cần một đường vào. Premium chuyển
-              lên header, nơi nó hiện ở mọi kích thước màn hình. */}
+        {mobileMoreOpen && <button type="button" className="fixed inset-0 z-0 cursor-default bg-slate-950/15" aria-label="Đóng menu" onClick={() => setMobileMoreOpen(false)} />}
+        {mobileMoreOpen && <div className="absolute inset-x-3 bottom-full z-20 mb-2 grid grid-cols-3 gap-2 rounded-2xl border border-border bg-white p-3 shadow-2xl">
           {[
-            // Giáo viên: lớp dạy thay chỗ "Đề mới". Bảy ô đã kịch trần nên phải
-            // đổi chứ không thêm, và giáo viên cần vào lớp nhiều hơn xem đề mới.
-            ...PRIMARY_NAV.filter(
-              (item) =>
-                item.to !== '/meo-hoc' && !(isTeacher && item.to === '/cap-nhat-de'),
-            ),
-            ...(isTeacher
-              ? [
-                  {
-                    to: '/giang-day',
-                    label: 'Lớp tôi dạy',
-                    shortLabel: 'Lớp dạy',
-                    icon: 'school' as const,
-                  },
-                ]
-              : []),
+            { to: '/cap-nhat-de', label: 'Đề mới', icon: 'sparkle' as const },
+            { to: '/du-doan-de', label: 'Dự đoán', icon: 'predict' as const },
+            { to: '/bang-tin', label: 'Bảng tin', icon: 'news' as const },
+            { to: '/history', label: 'Kết quả', icon: 'history' as const },
+            { to: '/meo-hoc', label: 'Mẹo học', icon: 'tips' as const },
+            ...(isTeacher ? [{ to: '/giang-day', label: 'Lớp dạy', icon: 'school' as const }] : []),
+          ].map((item) => <NavLink key={item.to} to={item.to} onClick={() => setMobileMoreOpen(false)} className={({ isActive }) => clsx('flex min-h-16 flex-col items-center justify-center gap-1 rounded-xl text-xs font-medium', isActive ? 'bg-brand-100 text-brand-800' : 'bg-slate-50 text-slate-600')}><NavIcon name={item.icon} /><span>{item.label}</span></NavLink>)}
+        </div>}
+        <div className="relative z-20 mx-auto grid max-w-md grid-cols-5">
+          {[
+            primaryNav.find((item) => item.to === '/')!,
+            primaryNav.find((item) => item.to === '/mock-tests')!,
+            primaryNav.find((item) => item.to === '/ai-english-lounge')!,
             { to: '/luyen-tap', label: 'Kỹ năng', shortLabel: 'Kỹ năng', icon: 'skills' as const },
           ].map((item) => (
             <NavLink
@@ -496,6 +491,7 @@ export function AppLayout() {
               </span>
             </NavLink>
           ))}
+          <button type="button" onClick={() => setMobileMoreOpen((open) => !open)} className={clsx('flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl px-0 text-[9px] font-medium transition-colors', mobileMoreOpen ? 'bg-brand-100 text-brand-800 font-semibold' : 'text-slate-500')} aria-expanded={mobileMoreOpen} aria-label="Mở thêm mục"><NavIcon name="more" /><span>Thêm</span></button>
         </div>
       </nav>
     </div>
@@ -561,7 +557,7 @@ function Avatar({ name }: { name: string }) {
   );
 }
 
-type IconName = 'home' | 'sparkle' | 'predict' | 'news' | 'skills' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout' | 'gift' | 'school';
+type IconName = 'home' | 'sparkle' | 'predict' | 'news' | 'skills' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout' | 'gift' | 'school' | 'chat' | 'more';
 
 function NavIcon({ name }: { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
@@ -577,6 +573,8 @@ function NavIcon({ name }: { name: IconName }) {
     exam: <><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></>,
     tips: <><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6M10 22h4" /></>,
     history: <><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5M12 7v5l3 2" /></>,
+    chat: <><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.7 8.7 0 0 1-3.7-.9L4 20l1.2-3.4A7.1 7.1 0 0 1 4.5 13a7.5 7.5 0 0 1 8-7.5 7.5 7.5 0 0 1 7.5 6Z" /><path d="M8 12h.01M12 12h.01M16 12h.01" /></>,
+    more: <><circle cx="5" cy="12" r="1" fill="currentColor" stroke="none" /><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" /><circle cx="19" cy="12" r="1" fill="currentColor" stroke="none" /></>,
     premium: <path d="m12 3 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8L12 3Z" />,
     gift: <><rect x="3" y="8" width="18" height="13" rx="2" /><path d="M12 8v13M3 12h18M12 8S9 3 6.5 4.5 8 8 12 8zM12 8s3-5 5.5-3.5S16 8 12 8z" /></>,
     school: <><path d="m12 3 10 5-10 5L2 8l10-5Z" /><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" /></>,
@@ -590,4 +588,3 @@ function NavIcon({ name }: { name: IconName }) {
   };
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-[18px] w-[18px]" aria-hidden="true">{paths[name]}</svg>;
 }
-

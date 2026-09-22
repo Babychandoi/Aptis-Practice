@@ -37,6 +37,8 @@ import vn.weconex.aptis.platform.realtime.EntitlementChangePublisher;
 @RequiredArgsConstructor
 public class SubscriptionActivationService {
 
+    private static final String AI_LOUNGE_PLAN_PREFIX = "AI_LOUNGE_";
+
     /** Các quyền được mở khi mua Premium. */
     private static final List<String> PREMIUM_ENTITLEMENTS = List.of(
             UserEntitlement.PREMIUM_CONTENT_ACCESS,
@@ -81,8 +83,8 @@ public class SubscriptionActivationService {
         Instant now = Instant.now();
         RenewalPolicy policy = properties.entitlement().renewalPolicy();
 
-        List<UserSubscription> activeSubscriptions = subscriptionRepository.findActive(
-                order.getUserId(), SubscriptionStatus.ACTIVE, now);
+        List<UserSubscription> activeSubscriptions = subscriptionRepository.findActiveByPlanCodePrefix(
+                order.getUserId(), productPrefix(plan.getCode()), SubscriptionStatus.ACTIVE, now);
 
         UserSubscription subscription;
         if (!activeSubscriptions.isEmpty() && policy == RenewalPolicy.EXTEND_CURRENT) {
@@ -169,7 +171,7 @@ public class SubscriptionActivationService {
      * mua trước thì gia hạn thay vì tạo bản ghi trùng.
      */
     private void syncEntitlements(String userId, UserSubscription subscription) {
-        for (String code : PREMIUM_ENTITLEMENTS) {
+        for (String code : entitlementCodesFor(subscription)) {
             var existing = entitlementRepository.findBySource(
                     EntitlementSourceType.SUBSCRIPTION, subscription.getId(), code);
 
@@ -191,6 +193,18 @@ public class SubscriptionActivationService {
                     subscription.getStartsAt(),
                     subscription.getEndsAt()));
         }
+    }
+
+    private List<String> entitlementCodesFor(UserSubscription subscription) {
+        SubscriptionPlan plan = planRepository.findById(subscription.getPlanId())
+                .orElseThrow(() -> ApiException.notFound("SubscriptionPlan", subscription.getPlanId()));
+        return plan.getCode().startsWith(AI_LOUNGE_PLAN_PREFIX)
+                ? List.of(UserEntitlement.AI_CONVERSATION_ACCESS)
+                : PREMIUM_ENTITLEMENTS;
+    }
+
+    private static String productPrefix(String planCode) {
+        return planCode.startsWith(AI_LOUNGE_PLAN_PREFIX) ? AI_LOUNGE_PLAN_PREFIX : "PREMIUM_";
     }
 
     /**

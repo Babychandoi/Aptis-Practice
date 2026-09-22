@@ -101,6 +101,9 @@ export function CheckoutPage() {
     return <ErrorBlock message="Không tải được đơn hàng" onRetry={() => void orderQuery.refetch()} />;
   }
 
+  const aiVoiceOrder = order.items.some((item) => item.itemName.toLowerCase().includes('ai english lounge'));
+  const plansPath = aiVoiceOrder ? '/ai-voice/plans' : '/plans';
+
   if (order.status === 'PAID') {
     return (
       <div className="mx-auto max-w-md">
@@ -108,9 +111,9 @@ export function CheckoutPage() {
           <p className="text-4xl">🎉</p>
           <h1 className="mt-2 text-xl font-semibold">Thanh toán đã được xác nhận</h1>
           <p className="mt-2 text-sm text-slate-600">
-            Đơn <strong>{order.orderCode}</strong> đã được duyệt. Quyền Premium đã được kích hoạt.
+            Đơn <strong>{order.orderCode}</strong> đã được duyệt. {aiVoiceOrder ? 'Gói AI Voice đã được kích hoạt.' : 'Quyền Premium đã được kích hoạt.'}
           </p>
-          <Link to="/" className="btn-primary mt-4 w-full">Bắt đầu luyện với Premium</Link>
+          <Link to={aiVoiceOrder ? '/ai-english-lounge' : '/'} className="btn-primary mt-4 w-full">{aiVoiceOrder ? 'Bắt đầu trò chuyện với AI' : 'Bắt đầu luyện với Premium'}</Link>
         </div>
       </div>
     );
@@ -122,7 +125,7 @@ export function CheckoutPage() {
         <div className="card text-center">
           <h1 className="text-lg font-semibold">Đơn hàng không còn hiệu lực</h1>
           <p className="mt-2 text-sm text-slate-600">Đơn <strong>{order.orderCode}</strong> đã hết hạn hoặc bị hủy.</p>
-          <Link to="/plans" className="btn-primary mt-4 w-full">Chọn gói khác</Link>
+          <Link to={plansPath} className="btn-primary mt-4 w-full">Chọn gói khác</Link>
         </div>
       </div>
     );
@@ -131,7 +134,7 @@ export function CheckoutPage() {
   return (
     <div className="space-y-5">
       <nav className="flex items-center gap-2 text-xs text-stone-500" aria-label="Các bước thanh toán">
-        <Link to="/plans" className="font-medium hover:text-brand-800">1. Chọn gói</Link>
+        <Link to={plansPath} className="font-medium hover:text-brand-800">1. Chọn gói</Link>
         <span aria-hidden="true">›</span>
         <span className="font-semibold text-brand-800">2. Chuyển khoản</span>
         <span aria-hidden="true">›</span>
@@ -266,7 +269,7 @@ export function CheckoutPage() {
 
               {transfer.status === 'CLAIMED' && (
                 <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm leading-6 text-amber-900">
-                  <strong>Đã báo admin kiểm tra.</strong><br />Premium sẽ được mở sau khi tiền được đối soát.
+                  <strong>Đã báo admin kiểm tra.</strong><br />{aiVoiceOrder ? 'AI Voice' : 'Premium'} sẽ được mở sau khi tiền được đối soát.
                 </div>
               )}
 

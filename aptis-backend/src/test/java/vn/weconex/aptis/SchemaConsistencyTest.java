@@ -170,6 +170,9 @@ class SchemaConsistencyTest {
                 vn.weconex.aptis.billing.domain.BillingEntities.SubscriptionPlan.PlanStatus.ACTIVE);
 
         assertThat(plans).hasSize(5);
+        assertThat(plans)
+                .extracting(vn.weconex.aptis.billing.domain.BillingEntities.SubscriptionPlan::getCode)
+                .doesNotContain("AI_LOUNGE_30", "AI_LOUNGE_90");
         // Gói trọn đời có duration_days NULL
         assertThat(plans).anySatisfy(plan -> assertThat(plan.isLifetime()).isTrue());
     }

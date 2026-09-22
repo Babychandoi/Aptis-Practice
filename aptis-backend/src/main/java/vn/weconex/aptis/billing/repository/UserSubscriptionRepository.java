@@ -29,6 +29,26 @@ public interface UserSubscriptionRepository extends JpaRepository<UserSubscripti
             @Param("status") SubscriptionStatus status,
             @Param("at") Instant at);
 
+    /**
+     * Gia hạn chỉ trong cùng một dòng sản phẩm. Nếu không tách điều này, mua
+     * AI Lounge có thể vô tình kéo dài Premium luyện đề (và ngược lại).
+     */
+    @Query("""
+            SELECT s FROM UserSubscription s, SubscriptionPlan p
+            WHERE s.userId = :userId
+              AND s.planId = p.id
+              AND p.code LIKE CONCAT(:planCodePrefix, '%')
+              AND s.status = :status
+              AND s.startsAt <= :at
+              AND (s.endsAt IS NULL OR s.endsAt > :at)
+            ORDER BY CASE WHEN s.endsAt IS NULL THEN 1 ELSE 0 END DESC, s.endsAt DESC
+            """)
+    List<UserSubscription> findActiveByPlanCodePrefix(
+            @Param("userId") String userId,
+            @Param("planCodePrefix") String planCodePrefix,
+            @Param("status") SubscriptionStatus status,
+            @Param("at") Instant at);
+
     List<UserSubscription> findByUserIdOrderByCreatedAtDesc(String userId);
 
     Optional<UserSubscription> findBySourceOrderId(String orderId);

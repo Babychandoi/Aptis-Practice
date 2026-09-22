@@ -46,6 +46,12 @@ public class EntitlementService {
         return withinSignupTrial(userId);
     }
 
+    /** Gói AI English Lounge được bán và hết hạn độc lập với Premium luyện đề. */
+    @Transactional(readOnly = true)
+    public boolean hasAiConversationAccess(String userId) {
+        return hasEntitlement(userId, UserEntitlement.AI_CONVERSATION_ACCESS);
+    }
+
     /** Còn trong hạn dùng thử kể từ lúc tạo tài khoản? */
     @Transactional(readOnly = true)
     public boolean withinSignupTrial(String userId) {

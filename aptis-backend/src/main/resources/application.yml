@@ -206,12 +206,21 @@ aptis:
     # khoản. Đổi số này là đổi hạn của cả những người đã đăng ký.
     #
     # 0 = tắt, quay về mô hình có nội dung miễn phí vĩnh viễn.
-    signup-trial-days: ${SIGNUP_TRIAL_DAYS:2}
+    signup-trial-days: ${SIGNUP_TRIAL_DAYS:1}
     # true = hết dùng thử thì KỂ CẢ nội dung gắn nhãn FREE cũng cần trả phí.
     # Nhãn FREE trên question_sets/test_blueprints vẫn giữ nguyên trong DB, chỉ
     # mất tác dụng với học viên — tắt cờ này là mở lại ngay, không phải sửa dữ
     # liệu.
     paywall-after-trial: ${PAYWALL_AFTER_TRIAL:true}
+
+  ai-conversation:
+    enabled: ${GEMINI_LIVE_ENABLED:false}
+    released: ${GEMINI_LIVE_RELEASED:true}
+    api-key: ${GEMINI_API_KEY:}
+    model: ${GEMINI_LIVE_MODEL:gemini-2.5-flash-native-audio-preview-12-2025}
+    session-minutes: ${GEMINI_LIVE_SESSION_MINUTES:60}
+    daily-minutes: ${GEMINI_LIVE_DAILY_MINUTES:120}
+    handoff-seconds-before-expiry: ${GEMINI_LIVE_HANDOFF_SECONDS:90}
 
   billing:
     # Hộp thư nhận báo khi học viên khai đã chuyển khoản, để đối soát sao kê.

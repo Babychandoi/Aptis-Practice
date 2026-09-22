@@ -30,8 +30,10 @@ const AttemptPage = lazy(() => import('@/features/practice/AttemptPage').then((m
 const AttemptResultPage = lazy(() => import('@/features/practice/AttemptResultPage').then((m) => ({ default: m.AttemptResultPage })));
 const HistoryPage = lazy(() => import('@/features/practice/HistoryPage').then((m) => ({ default: m.HistoryPage })));
 const PlansPage = lazy(() => import('@/features/billing/PlansPage').then((m) => ({ default: m.PlansPage })));
+const AiVoicePlansPage = lazy(() => import('@/features/billing/PlansPage').then((m) => ({ default: m.AiVoicePlansPage })));
 const CheckoutPage = lazy(() => import('@/features/billing/CheckoutPage').then((m) => ({ default: m.CheckoutPage })));
 const AffiliatePage = lazy(() => import('@/features/billing/AffiliatePage').then((m) => ({ default: m.AffiliatePage })));
+const AiEnglishLoungePage = lazy(() => import('@/features/conversation/AiEnglishLoungePage').then((m) => ({ default: m.AiEnglishLoungePage })));
 const StudentClassroomPage = lazy(() => import('@/features/classroom/StudentClassroomPage').then((m) => ({ default: m.StudentClassroomPage })));
 const TeacherClassroomPage = lazy(() => import('@/features/classroom/TeacherClassroomPage').then((m) => ({ default: m.TeacherClassroomPage })));
 const ClassroomWorkspacePage = lazy(() => import('@/features/classroom/ClassroomWorkspacePage').then((m) => ({ default: m.ClassroomWorkspacePage })));
@@ -51,6 +53,7 @@ const ContributionAdminPage = lazy(() => import('@/features/admin/ContributionAd
 const QuestionSetEditorPage = lazy(() => import('@/features/admin/QuestionSetEditorPage').then((m) => ({ default: m.QuestionSetEditorPage })));
 const ImportAdminPage = lazy(() => import('@/features/admin/ImportAdminPage').then((m) => ({ default: m.ImportAdminPage })));
 const PlanAdminPage = lazy(() => import('@/features/admin/PlanAdminPage').then((m) => ({ default: m.PlanAdminPage })));
+const GeminiProviderAdminPage = lazy(() => import('@/features/admin/GeminiProviderAdminPage').then((m) => ({ default: m.GeminiProviderAdminPage })));
 const OrderAdminPage = lazy(() => import('@/features/admin/OrderAdminPage').then((m) => ({ default: m.OrderAdminPage })));
 const RefundAdminPage = lazy(() => import('@/features/admin/RefundAdminPage').then((m) => ({ default: m.RefundAdminPage })));
 const ReportAdminPage = lazy(() => import('@/features/admin/ReportAdminPage').then((m) => ({ default: m.ReportAdminPage })));
@@ -158,7 +161,9 @@ export function App() {
         />
         <Route path="/lop-hoc/:classroomId" element={<ClassroomWorkspacePage />} />
         <Route path="/history" element={<HistoryPage />} />
+        <Route path="/ai-english-lounge" element={<AiEnglishLoungePage />} />
         <Route path="/plans" element={<PlansPage />} />
+        <Route path="/ai-voice/plans" element={<AiVoicePlansPage />} />
         <Route path="/checkout/:orderId" element={<CheckoutPage />} />
         <Route path="/profile" element={<ProfilePage />} />
 
@@ -189,6 +194,7 @@ export function App() {
         <Route path="imports" element={<ImportAdminPage />} />
         <Route path="contributions" element={<ContributionAdminPage />} />
         <Route path="plans" element={<PlanAdminPage />} />
+        <Route path="gemini" element={<GeminiProviderAdminPage />} />
         <Route path="orders" element={<OrderAdminPage />} />
         <Route path="bank-transfers" element={<BankTransferAdminPage />} />
         <Route path="refunds" element={<RefundAdminPage />} />

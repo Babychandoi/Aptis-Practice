@@ -43,7 +43,19 @@ import type {
   AdminSkillTest,
   CreateSkillTestRequest,
   BatchCreateSkillTestRequest,
+  GeminiProvider,
+  SaveGeminiProviderRequest,
 } from '@/types/admin';
+
+export const adminGeminiApi = {
+  list: () => api.get<GeminiProvider[]>('/admin/gemini-providers').then((r) => r.data),
+  create: (body: SaveGeminiProviderRequest) =>
+    api.post<GeminiProvider>('/admin/gemini-providers', body).then((r) => r.data),
+  update: (id: string, body: SaveGeminiProviderRequest) =>
+    api.patch<GeminiProvider>(`/admin/gemini-providers/${id}`, body).then((r) => r.data),
+  test: (id: string) =>
+    api.post<{ success: boolean; message: string }>(`/admin/gemini-providers/${id}/test`).then((r) => r.data),
+};
 
 // ---------------------------------------------------------------------
 // Ngân hàng câu hỏi

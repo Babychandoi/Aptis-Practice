@@ -292,6 +292,33 @@ export const billingApi = {
 };
 
 // ---------------------------------------------------------------------
+// AI English Lounge
+// ---------------------------------------------------------------------
+
+export const aiConversationApi = {
+  access: () => api.get<{ allowed: boolean; configured: boolean; dailyLimitSeconds: number; dailyRemainingSeconds: number }>('/ai-conversation/access').then((r) => r.data),
+  createSession: (body: { topic: string; level: string; voice: string; previousSessionId?: string; resumptionHandle?: string }) =>
+    api.post<AiConversationSession>('/ai-conversation/sessions', body).then((r) => r.data),
+  saveSummary: (sessionId: string, body: { summary: string; inputTokens: number; outputTokens: number; connectLatencyMs?: number; reconnectCount?: number; disconnectCount?: number; rateLimitCount?: number }) =>
+    api.put<void>(`/ai-conversation/sessions/${sessionId}/summary`, body),
+  closeSession: (sessionId: string, error?: string) =>
+    api.post<void>(`/ai-conversation/sessions/${sessionId}/close`, error ? { error } : {}),
+  /** Gửi lượt vừa nói ngay trong lúc hội thoại, để mất tab không mất ngữ cảnh. */
+  saveTurns: (sessionId: string, turns: { role: string; content: string; seq: number }[]) =>
+    api.post<void>(`/ai-conversation/sessions/${sessionId}/turns`, { turns }),
+};
+
+export interface AiConversationSession {
+  sessionId: string;
+  ephemeralToken: string;
+  model: string;
+  startedAt: string;
+  expiresAt: string;
+  tokenStartExpiresAt: string;
+  handoffSecondsBeforeExpiry: number;
+}
+
+// ---------------------------------------------------------------------
 // Asset
 // ---------------------------------------------------------------------
 

@@ -19,6 +19,15 @@ const DEFAULT_FEATURES = [
 ];
 
 export function PlansPage() {
+  return <ProductPlansPage product="premium" />;
+}
+
+export function AiVoicePlansPage() {
+  return <ProductPlansPage product="ai-voice" />;
+}
+
+function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
+  const aiVoice = product === 'ai-voice';
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const sessionKey = useRef(crypto.randomUUID()).current;
@@ -35,12 +44,14 @@ export function PlansPage() {
   });
 
   const plans = useMemo(
-    () => [...(plansQuery.data ?? [])].sort((a, b) => {
+    () => [...(plansQuery.data ?? [])].filter((plan) => aiVoice
+      ? plan.code.startsWith('AI_LOUNGE_')
+      : !plan.code.startsWith('AI_LOUNGE_')).sort((a, b) => {
       if (a.durationDays == null) return 1;
       if (b.durationDays == null) return -1;
       return a.durationDays - b.durationDays;
     }),
-    [plansQuery.data],
+    [aiVoice, plansQuery.data],
   );
   const selectedPlan = plans.find((plan) => plan.id === selectedPlanId) ?? plans[0];
 
@@ -61,7 +72,7 @@ export function PlansPage() {
     onSuccess: setCodeCheck,
   });
 
-  if (plansQuery.isLoading) return <LoadingBlock label="Đang tải gói Premium…" />;
+  if (plansQuery.isLoading) return <LoadingBlock label={aiVoice ? 'Đang tải gói AI Voice…' : 'Đang tải gói Premium…'} />;
 
   if (plansQuery.error || plans.length === 0) {
     return <ErrorBlock message="Không tải được danh sách gói" onRetry={() => void plansQuery.refetch()} />;
@@ -71,17 +82,13 @@ export function PlansPage() {
     <div className="space-y-6">
       <header className="relative overflow-hidden rounded-2xl bg-dark px-6 py-8 text-white sm:px-8 shadow-sm">
         <div className="relative max-w-2xl space-y-2">
-          <span className="inline-flex rounded-full bg-accent px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-dark">
-            Aptis Practice Premium
-          </span>
-          <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">Học trọn bộ, tiến bộ rõ ràng</h1>
-          <p className="text-sm leading-relaxed text-slate-300">
-            Mở toàn bộ 600+ câu hỏi luyện thi, thi thử 4 kỹ năng và nhận đánh giá Writing & Speaking bằng AI.
-          </p>
+          <span className="inline-flex rounded-full bg-accent px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-dark">{aiVoice ? 'AI Voice Premium' : 'Aptis Practice Premium'}</span>
+          <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">{aiVoice ? 'Luyện nói mỗi ngày cùng AI' : 'Học trọn bộ, tiến bộ rõ ràng'}</h1>
+          <p className="text-sm leading-relaxed text-slate-300">{aiVoice ? 'Trò chuyện tiếng Anh bằng giọng nói tự nhiên, chọn giọng nam hoặc nữ và sử dụng tối đa 120 phút mỗi ngày.' : 'Mở toàn bộ 600+ câu hỏi luyện thi, thi thử 4 kỹ năng và nhận đánh giá Writing & Speaking bằng AI.'}</p>
         </div>
       </header>
 
-      {user?.premiumActive && (
+      {!aiVoice && user?.premiumActive && (
         <div className="rounded-2xl border border-brand-200 bg-brand-50 px-5 py-4 text-sm text-brand-900 font-medium">
           Bạn đang có gói Premium{user.premiumEndsAt ? ` đến ${formatDate(user.premiumEndsAt)}` : ' trọn đời'}.
           Mua thêm sẽ tự động cộng nối tiếp thời hạn.
@@ -96,8 +103,8 @@ export function PlansPage() {
         <section className="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
           <div className="flex items-center justify-between border-b border-border-subtle px-6 py-4">
             <div>
-              <h2 className="font-bold text-slate-900">Chọn gói thời hạn phù hợp</h2>
-              <p className="mt-0.5 text-xs text-slate-500">Mọi gói đều có trọn vẹn toàn bộ tính năng và ngân hàng đề</p>
+              <h2 className="font-bold text-slate-900">{aiVoice ? 'Chọn thời hạn AI Voice' : 'Chọn gói luyện đề'}</h2>
+              <p className="mt-0.5 text-xs text-slate-500">{aiVoice ? 'AI English Lounge là gói riêng, không đi kèm Premium luyện đề' : 'Các gói này dành riêng cho kho đề và tính năng luyện thi'}</p>
             </div>
             <span className="rounded-full bg-brand-100 px-3 py-1 font-mono text-xs font-bold text-brand-800">
               {plans.length} gói

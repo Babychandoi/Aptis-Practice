@@ -31,6 +31,8 @@ public class UserEntitlement extends BaseEntity {
     public static final String FULL_MOCK_TEST = "FULL_MOCK_TEST";
     public static final String DETAILED_ANALYTICS = "DETAILED_ANALYTICS";
     public static final String DOWNLOAD_REPORT = "DOWNLOAD_REPORT";
+    /** Quyền độc lập với Premium luyện đề: vào phòng hội thoại tiếng Anh với AI. */
+    public static final String AI_CONVERSATION_ACCESS = "AI_CONVERSATION_ACCESS";
 
     @Column(name = "user_id", columnDefinition = "CHAR(36)", nullable = false)
     private String userId;

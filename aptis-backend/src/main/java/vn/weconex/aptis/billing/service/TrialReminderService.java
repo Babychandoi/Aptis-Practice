@@ -31,7 +31,7 @@ public class TrialReminderService {
     /**
      * Cửa sổ nhắc trước: hạn rơi vào 12 giờ tới.
      *
-     * <p>Với dùng thử 2 ngày thì nhắc sớm hơn là vô nghĩa (vừa đăng ký đã nhắc),
+     * <p>Với dùng thử 1 ngày thì nhắc sớm hơn là vô nghĩa (vừa đăng ký đã nhắc),
      * còn muộn hơn thì học viên không còn thời gian làm gì.
      */
     private static final Duration BEFORE_WINDOW = Duration.ofHours(12);

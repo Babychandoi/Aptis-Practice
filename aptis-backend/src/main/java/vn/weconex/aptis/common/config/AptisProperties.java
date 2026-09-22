@@ -17,6 +17,7 @@ public record AptisProperties(
         Minio minio,
         Practice practice,
         Entitlement entitlement,
+        AiConversation aiConversation,
         Outbox outbox) {
 
     public record Jwt(
@@ -43,6 +44,16 @@ public record AptisProperties(
     }
 
     public record Cors(List<String> allowedOrigins) {
+    }
+
+    public record AiConversation(
+            boolean enabled,
+            boolean released,
+            String apiKey,
+            String model,
+            int sessionMinutes,
+            int dailyMinutes,
+            int handoffSecondsBeforeExpiry) {
     }
 
     public record Minio(
