@@ -1,6 +1,7 @@
 package vn.weconex.aptis.conversation.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -21,6 +22,7 @@ import vn.weconex.aptis.conversation.domain.AiConversationProfile;
 import vn.weconex.aptis.conversation.domain.AiConversationTurn;
 import vn.weconex.aptis.conversation.repository.AiConversationProfileRepository;
 import vn.weconex.aptis.conversation.repository.AiConversationTurnRepository;
+import vn.weconex.aptis.common.exception.ApiException;
 
 /** Bộ nhớ AI Voice: đánh số lượt và dựng ngữ cảnh cho phiên mới. */
 class AiConversationMemoryServiceTest {
@@ -54,27 +56,21 @@ class AiConversationMemoryServiceTest {
     }
 
     @Test
-    void danhSoTiepTuLuotDaCoTrongPhien() {
-        // Phiên đã có 5 lượt: lô mới phải nối tiếp, không ghi đè.
-        when(turns.countBySessionId(SESSION)).thenReturn(5L);
+    void giuNguyenSoThuTuClientDeGuiLaiKhongTaoBanSao() {
+        when(turns.findBySessionIdOrderBySeqAsc(SESSION)).thenReturn(List.of(turn("user", "Earlier", 4)));
 
         service.appendTurns(USER, SESSION, List.of(
                 new AiConversationMemoryService.TurnInput("user", "More", 99)));
 
-        assertThat(savedSeqs()).containsExactly(5);
+        assertThat(savedSeqs()).containsExactly(99);
     }
 
     @Test
-    void boQuaLuotRong() {
-        when(turns.countBySessionId(SESSION)).thenReturn(0L);
-
-        int saved = service.appendTurns(USER, SESSION, List.of(
-                new AiConversationMemoryService.TurnInput("user", "  ", 0),
-                new AiConversationMemoryService.TurnInput("ai", null, 1),
-                new AiConversationMemoryService.TurnInput("user", "Thật sự có nội dung", 2)));
-
-        assertThat(saved).isEqualTo(1);
-        assertThat(savedContents()).containsExactly("Thật sự có nội dung");
+    void tuChoiLuotRongThayViAmThamBoMatNoiDung() {
+        assertThatThrownBy(() -> service.appendTurns(USER, SESSION, List.of(
+                new AiConversationMemoryService.TurnInput("user", "  ", 0))))
+                .isInstanceOf(ApiException.class);
+        verify(turns, never()).saveAll(any());
     }
 
     @Test
@@ -86,14 +82,46 @@ class AiConversationMemoryServiceTest {
 
     @Test
     void vaiTroChiNhanUserHoacAi() {
-        when(turns.countBySessionId(SESSION)).thenReturn(0L);
+        assertThatThrownBy(() -> service.appendTurns(USER, SESSION, List.of(
+                new AiConversationMemoryService.TurnInput("system", "B", 1))))
+                .isInstanceOf(ApiException.class);
+        verify(turns, never()).saveAll(any());
+    }
 
+    @Test
+    void guiLaiCungLuotKhongNhanDoiVaKhongGhiDeBanMoiHon() {
+        AiConversationTurn existing = turn("user", "Final complete sentence", 3);
+        existing.setRevision(8);
+        when(turns.findBySessionIdOrderBySeqAsc(SESSION)).thenReturn(List.of(existing));
         service.appendTurns(USER, SESSION, List.of(
-                new AiConversationMemoryService.TurnInput("ai", "A", 0),
-                // Giá trị lạ phải quy về "user", không được ghi thẳng vào DB.
-                new AiConversationMemoryService.TurnInput("system", "B", 1)));
+                new AiConversationMemoryService.TurnInput("user", "Final complete sentence", 3, 8L),
+                new AiConversationMemoryService.TurnInput("user", "Final", 3, 7L)));
+        assertThat(existing.getContent()).isEqualTo("Final complete sentence");
+        assertThat(existing.getRevision()).isEqualTo(8);
+        verify(turns, never()).saveAll(any());
+    }
 
-        assertThat(savedRoles()).containsExactly("ai", "user");
+    @Test
+    void banChotMoiHonCoTheSuaBanNhanDangTamVaGhiNhanRevisionDuNoiDungKhongDoi() {
+        AiConversationTurn existing = turn("user", "I can see a sea", 3);
+        existing.setRevision(4);
+        when(turns.findBySessionIdOrderBySeqAsc(SESSION)).thenReturn(List.of(existing));
+        service.appendTurns(USER, SESSION, List.of(
+                new AiConversationMemoryService.TurnInput("user", "I can see the sea", 3, 5L),
+                new AiConversationMemoryService.TurnInput("user", "I can see the sea", 3, 6L),
+                new AiConversationMemoryService.TurnInput("user", "I can see", 3, 5L)));
+        assertThat(existing.getContent()).isEqualTo("I can see the sea");
+        assertThat(existing.getRevision()).isEqualTo(6);
+        verify(turns, never()).saveAll(any());
+    }
+
+    @Test
+    void haiBanCuaMotLuotTrongCungLoChiGhiMotDong() {
+        service.appendTurns(USER, SESSION, List.of(
+                new AiConversationMemoryService.TurnInput("user", "Partial", 4, 1L),
+                new AiConversationMemoryService.TurnInput("user", "Final sentence", 4, 2L)));
+        assertThat(savedSeqs()).containsExactly(4);
+        assertThat(savedContents()).containsExactly("Final sentence");
     }
 
     @Test

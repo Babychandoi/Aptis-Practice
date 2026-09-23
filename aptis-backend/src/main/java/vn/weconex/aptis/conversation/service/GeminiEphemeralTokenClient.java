@@ -37,6 +37,16 @@ public class GeminiEphemeralTokenClient {
         setup.put("generationConfig", generationConfig);
         setup.put("inputAudioTranscription", Map.of());
         setup.put("outputAudioTranscription", Map.of());
+        // With a locked bidiGenerateContentSetup, client-side setup values are ignored.
+        // Keep VAD and no-interruption behavior on the server's authoritative setup.
+        setup.put("realtimeInputConfig", Map.of(
+                "activityHandling", "NO_INTERRUPTION",
+                "automaticActivityDetection", Map.of(
+                        "disabled", false,
+                        "startOfSpeechSensitivity", "START_SENSITIVITY_HIGH",
+                        "endOfSpeechSensitivity", "END_SENSITIVITY_HIGH",
+                        "prefixPaddingMs", 100,
+                        "silenceDurationMs", 600)));
         setup.put("sessionResumption", resumptionHandle == null || resumptionHandle.isBlank()
                 ? Map.of() : Map.of("handle", resumptionHandle));
         setup.put("contextWindowCompression", Map.of(

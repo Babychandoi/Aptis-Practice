@@ -4,12 +4,17 @@ import java.time.Instant;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.weconex.aptis.common.security.CurrentUser;
 import vn.weconex.aptis.conversation.service.AiConversationService;
 import vn.weconex.aptis.conversation.service.GeminiProviderPool;
+import vn.weconex.aptis.conversation.service.AiConversationHistoryService.HistoryTurn;
 
 @RestController
 @RequestMapping("/api/v1/ai-conversation")
@@ -32,10 +37,28 @@ public class AiConversationController {
     @ResponseStatus(HttpStatus.CREATED)
     public SessionResponse create(@Valid @RequestBody CreateSessionRequest request) {
         var created = service.create(currentUser.requireUserId(), request.topic(), request.level(),
-                request.previousSessionId(), request.resumptionHandle(), request.voice());
+                request.previousSessionId(), request.resumptionHandle(), request.voice(),
+                request.history(), request.historyRevision(), Boolean.TRUE.equals(request.freshStart()));
+        return response(created);
+    }
+
+    @PostMapping("/sessions/{id}/reconnect")
+    public SessionResponse reconnect(@PathVariable String id, @Valid @RequestBody ReconnectRequest request) {
+        return response(service.reconnect(currentUser.requireUserId(), id, request.resumptionHandle(),
+                request.history(), request.historyRevision(), Boolean.TRUE.equals(request.forceNew())));
+    }
+
+    @PutMapping("/sessions/{id}/history")
+    public HistoryResponse history(@PathVariable String id, @Valid @RequestBody HistoryRequest request) {
+        return new HistoryResponse(service.saveHistory(currentUser.requireUserId(), id,
+                request.turns(), request.revision()));
+    }
+
+    private SessionResponse response(AiConversationService.CreatedSession created) {
         var s = created.session();
         return new SessionResponse(s.getId(), created.ephemeralToken(), s.getModel(), s.getStartedAt(),
-                s.getExpiresAt(), created.tokenStartExpiresAt(), created.handoffSecondsBeforeExpiry());
+                s.getExpiresAt(), created.tokenStartExpiresAt(), created.handoffSecondsBeforeExpiry(),
+                created.resumeAttempted(), created.history(), s.getHistoryRevision());
     }
 
     @PutMapping("/sessions/{id}/summary")
@@ -68,14 +91,21 @@ public class AiConversationController {
     public record AccessResponse(boolean allowed, boolean configured, long dailyLimitSeconds,
             long dailyRemainingSeconds) {}
     public record CreateSessionRequest(@Size(max=100) String topic, String level, String previousSessionId,
-            @Size(max=8192) String resumptionHandle, @Size(max=30) String voice) {}
+            @Size(max=8192) String resumptionHandle, @Size(max=30) String voice,
+            @Valid List<HistoryTurn> history, @Min(0) Long historyRevision, Boolean freshStart) {}
+    public record ReconnectRequest(@Size(max=8192) String resumptionHandle, Boolean forceNew,
+            @Valid List<HistoryTurn> history, @Min(0) Long historyRevision) {}
+    public record HistoryRequest(@NotNull @Valid List<HistoryTurn> turns, @NotNull @Min(0) Long revision) {}
+    public record HistoryResponse(long historyRevision) {}
     public record SessionResponse(String sessionId, String ephemeralToken, String model, Instant startedAt,
-            Instant expiresAt, Instant tokenStartExpiresAt, int handoffSecondsBeforeExpiry) {}
+            Instant expiresAt, Instant tokenStartExpiresAt, int handoffSecondsBeforeExpiry,
+            boolean resumeAttempted, List<HistoryTurn> history, long historyRevision) {}
     private static int value(Integer value) { return value == null ? 0 : value; }
     public record SummaryRequest(@Size(max=20000) String summary, @Min(0) Long inputTokens, @Min(0) Long outputTokens,
             @Min(0) Long connectLatencyMs, @Min(0) Integer reconnectCount,
             @Min(0) Integer disconnectCount, @Min(0) Integer rateLimitCount) {}
     public record CloseRequest(@Size(max=500) String error) {}
-    public record TurnsRequest(@Size(max=200) java.util.List<TurnItem> turns) {}
-    public record TurnItem(@Size(max=10) String role, @Size(max=8000) String content, @Min(0) int seq) {}
+    public record TurnsRequest(@NotNull @Size(max=200) @Valid java.util.List<TurnItem> turns) {}
+    public record TurnItem(@NotBlank @Pattern(regexp="user|ai") String role,
+            @NotBlank @Size(max=8000) String content, @Min(0) int seq, @Min(0) Long revision) {}
 }

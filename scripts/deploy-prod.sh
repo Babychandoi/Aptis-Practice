@@ -66,15 +66,17 @@ if [ "${SKIP_IDLE_CHECK:-0}" != "1" ]; then
           (SELECT COUNT(DISTINCT user_id) FROM test_attempts
             WHERE updated_at > NOW() - INTERVAL 15 MINUTE),
           (SELECT COUNT(*) FROM refresh_tokens
-            WHERE created_at > NOW() - INTERVAL 15 MINUTE AND ip_address <> '$ADMIN_IP');
+            WHERE created_at > NOW() - INTERVAL 15 MINUTE AND ip_address <> '$ADMIN_IP'),
+          (SELECT COUNT(*) FROM ai_conversation_sessions
+            WHERE status='ACTIVE' AND ended_at IS NULL AND expires_at > UTC_TIMESTAMP());
     " 2>/dev/null | tr '\t' ' ')
 
-    read -r DANG_LAM HOAT_DONG DANG_NHAP <<< "$BUSY"
-    echo "    đang làm bài: $DANG_LAM | hoạt động 15p: $HOAT_DONG | đăng nhập 15p: $DANG_NHAP"
+    read -r DANG_LAM HOAT_DONG DANG_NHAP AI_VOICE <<< "$BUSY"
+    echo "    đang làm bài: $DANG_LAM | hoạt động 15p: $HOAT_DONG | đăng nhập 15p: $DANG_NHAP | phòng AI Voice: $AI_VOICE"
 
     # Đăng nhập tính riêng: người vừa vào hệ thống chưa sinh bản ghi test_attempts
     # nào, nhìn mỗi bảng đó sẽ tưởng vắng trong khi họ đang thao tác.
-    if [ "$DANG_LAM" != "0" ] || [ "$HOAT_DONG" != "0" ] || [ "$DANG_NHAP" != "0" ]; then
+    if [ "$DANG_LAM" != "0" ] || [ "$HOAT_DONG" != "0" ] || [ "$DANG_NHAP" != "0" ] || [ "$AI_VOICE" != "0" ]; then
         echo "" >&2
         echo "DỪNG: đang có người dùng hệ thống." >&2
         echo "Chờ lúc vắng, hoặc chạy lại với SKIP_IDLE_CHECK=1 nếu lỗi gấp." >&2

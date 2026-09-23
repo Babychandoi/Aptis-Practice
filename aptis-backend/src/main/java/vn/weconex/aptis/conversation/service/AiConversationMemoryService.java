@@ -22,6 +22,8 @@ import vn.weconex.aptis.conversation.domain.AiConversationProfile;
 import vn.weconex.aptis.conversation.domain.AiConversationTurn;
 import vn.weconex.aptis.conversation.repository.AiConversationProfileRepository;
 import vn.weconex.aptis.conversation.repository.AiConversationTurnRepository;
+import vn.weconex.aptis.common.exception.ApiException;
+import vn.weconex.aptis.common.exception.ErrorCode;
 
 /**
  * Bộ nhớ của phòng AI Voice.
@@ -72,24 +74,39 @@ public class AiConversationMemoryService {
         if (turns == null || turns.isEmpty()) {
             return 0;
         }
-        // Client đánh seq theo transcript trên màn hình, vốn chạy liên tục qua
-        // nhiều phiên khi bị chuyển giao. Ở đây đánh lại theo số lượt đã có của
-        // chính phiên này, để seq luôn liền từ 0 và ràng buộc duy nhất
-        // (session_id, seq) chặn được lô gửi trùng.
-        int next = (int) turnRepository.countBySessionId(sessionId);
+        // The owner service holds the session lock. Retain the client's sequence;
+        // renumbering from count() made retries duplicate entire batches.
+        Map<Integer, AiConversationTurn> existing = new java.util.HashMap<>();
+        turnRepository.findBySessionIdOrderBySeqAsc(sessionId).forEach(t -> existing.put(t.getSeq(), t));
         List<AiConversationTurn> toSave = new ArrayList<>();
         for (TurnInput input : turns) {
-            if (input == null || input.content() == null || input.content().isBlank()) {
-                continue;
+            if (input == null || input.content() == null || input.content().isBlank()
+                    || input.content().length() > 8000 || input.seq() < 0
+                    || !("ai".equals(input.role()) || "user".equals(input.role()))) {
+                throw new ApiException(ErrorCode.VALIDATION_FAILED, "Lượt nói không hợp lệ.");
             }
-            AiConversationTurn turn = new AiConversationTurn();
-            turn.setSessionId(sessionId);
-            turn.setUserId(userId);
-            turn.setRole("ai".equals(input.role()) ? "ai" : "user");
-            turn.setContent(input.content().length() > 8_000
-                    ? input.content().substring(0, 8_000) : input.content());
-            turn.setSeq(next++);
-            toSave.add(turn);
+            AiConversationTurn turn = existing.get(input.seq());
+            if (turn != null) {
+                if (!turn.getRole().equals(input.role())) {
+                    throw new ApiException(ErrorCode.CONFLICT, "Thứ tự lượt nói không khớp.");
+                }
+                if (input.revision() != null && input.revision() <= turn.getRevision()) continue;
+                if (input.revision() == null && !input.content().startsWith(turn.getContent())) continue;
+                if (turn.getContent().equals(input.content())) {
+                    if (input.revision() != null) turn.setRevision(input.revision());
+                    continue;
+                }
+            } else {
+                turn = new AiConversationTurn();
+                turn.setSessionId(sessionId);
+                turn.setUserId(userId);
+                turn.setRole(input.role());
+                turn.setSeq(input.seq());
+                existing.put(input.seq(), turn);
+                toSave.add(turn);
+            }
+            turn.setContent(input.content());
+            if (input.revision() != null) turn.setRevision(input.revision());
         }
         if (toSave.isEmpty()) {
             return 0;
@@ -295,5 +312,7 @@ public class AiConversationMemoryService {
     }
 
     /** Một lượt nói do client gửi lên. */
-    public record TurnInput(String role, String content, int seq) {}
+    public record TurnInput(String role, String content, int seq, Long revision) {
+        public TurnInput(String role, String content, int seq) { this(role, content, seq, null); }
+    }
 }

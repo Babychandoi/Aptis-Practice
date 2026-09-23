@@ -15,6 +15,7 @@ import vn.weconex.aptis.common.exception.ErrorCode;
 import vn.weconex.aptis.conversation.domain.AiConversationSession;
 import vn.weconex.aptis.conversation.repository.AiConversationSessionRepository;
 import vn.weconex.aptis.entitlement.service.EntitlementService;
+import vn.weconex.aptis.conversation.service.AiConversationHistoryService.HistoryTurn;
 
 @Service
 @RequiredArgsConstructor
@@ -29,25 +30,34 @@ public class AiConversationService {
     private final AptisProperties properties;
     private final AiConversationPrompt conversationPrompt;
     private final AiConversationMemoryService memoryService;
+    private final AiConversationHistoryService historyService;
+    private final AiConversationReconnectLimiter reconnectLimiter;
 
     @Transactional
     public CreatedSession create(String userId, String topic, String level, String previousSessionId,
             String resumptionHandle, String voice) {
+        return create(userId, topic, level, previousSessionId, resumptionHandle, voice, null, null);
+    }
+
+    @Transactional
+    public CreatedSession create(String userId, String topic, String level, String previousSessionId,
+            String resumptionHandle, String voice, List<HistoryTurn> history, Long historyRevision) {
+        return create(userId, topic, level, previousSessionId, resumptionHandle, voice, history, historyRevision, false);
+    }
+
+    @Transactional
+    public CreatedSession create(String userId, String topic, String level, String previousSessionId,
+            String resumptionHandle, String voice, List<HistoryTurn> history, Long historyRevision, boolean freshStart) {
         requireAccess(userId);
-        String safeLevel = LEVELS.contains(level) ? level : "B1";
-        String safeVoice = VOICES.contains(voice) ? voice : "Aoede";
+        String safeLevel = level != null && LEVELS.contains(level) ? level : "B1";
+        String safeVoice = voice != null && VOICES.contains(voice) ? voice : "Aoede";
         String safeTopic = topic == null || topic.isBlank() ? "Daily life" : topic.strip();
         if (safeTopic.length() > 100) safeTopic = safeTopic.substring(0, 100);
         Instant now = Instant.now();
-        if (repository.countByUserIdAndCreatedAtAfter(userId, now.minusSeconds(60)) >= 6) {
-            throw new ApiException(ErrorCode.RATE_LIMITED, "Bạn đang tạo lại phiên quá nhanh, hãy chờ một phút");
-        }
         List<AiConversationSession> live = repository.findLive(userId, now);
         AiConversationSession previous = null;
         if (previousSessionId != null) {
-            previous = repository.findById(previousSessionId)
-                    .filter(s -> s.getUserId().equals(userId))
-                    .orElseThrow(() -> ApiException.notFound("AiConversationSession", previousSessionId));
+            previous = requireOwned(userId, previousSessionId);
             for (AiConversationSession item : live) {
                 item.setStatus("HANDOFF");
                 if (item.getEndedAt() == null) item.setEndedAt(now);
@@ -60,11 +70,13 @@ public class AiConversationService {
                 if (item.getEndedAt() == null) item.setEndedAt(now);
             }
         }
-        // Ngữ cảnh dựng từ bộ nhớ bền, không chỉ từ phiên liền trước: học viên có
-        // thể đã nhảy qua vài phiên vì mất mạng, và hôm sau quay lại vẫn cần AI
-        // nhớ tên cùng chuyện đã kể.
-        String memory = memoryService.buildContext(
-                userId, previous == null ? null : previous.getSummary());
+        if (repository.countByUserIdAndCreatedAtAfter(userId, now.minusSeconds(60)) >= 6) {
+            throw new ApiException(ErrorCode.RATE_LIMITED, "Bạn đang tạo lại phiên quá nhanh, hãy chờ một phút");
+        }
+        // A deliberate new conversation is a context boundary, not deletion of the archive.
+        // Automatic lease handoff must keep history even if the original room was started fresh.
+        boolean resetContext = freshStart && previousSessionId == null;
+        if (previous == null && !resetContext) previous = repository.findFirstByUserIdOrderByStartedAtDesc(userId).orElse(null);
         var config = properties.aiConversation();
         DailyQuota quota = dailyQuota(userId, now);
         if (quota.remainingSeconds() <= 0) {
@@ -74,56 +86,125 @@ public class AiConversationService {
         }
         long configuredSessionSeconds = Math.max(1, config.sessionMinutes()) * 60L;
         long sessionSeconds = Math.min(configuredSessionSeconds, quota.remainingSeconds());
-        int tokenMinutes = (int) Math.max(1, (sessionSeconds + 59) / 60);
         int handoffSeconds = quota.remainingSeconds() > sessionSeconds
                 ? config.handoffSecondsBeforeExpiry() : 0;
-        var credential = providerPool.acquire();
-        GeminiEphemeralTokenClient.Token token;
-        try {
-            token = tokenClient.create(conversationPrompt.build(safeTopic, safeLevel, memory), credential,
-                    tokenMinutes, resumptionHandle, safeVoice);
-            providerPool.success(credential.providerId());
-        } catch (RuntimeException ex) {
-            providerPool.failure(credential.providerId(), ex.getMessage());
-            throw ex;
-        }
         AiConversationSession session = new AiConversationSession();
         session.setUserId(userId);
         session.setStatus("ACTIVE");
         session.setTopic(safeTopic);
         session.setCefrLevel(safeLevel);
-        session.setModel(credential.model());
-        session.setProviderId(credential.providerId());
+        session.setVoice(safeVoice);
         session.setStartedAt(now);
         session.setExpiresAt(now.plusSeconds(sessionSeconds));
-        session.setPreviousSessionId(previousSessionId);
+        session.setPreviousSessionId(previous == null ? null : previous.getId());
+        historyService.inherit(session, previous);
+        session.setMemoryContext(resetContext ? "" : memoryService.buildContext(userId, null));
+        boolean resume = hasHandle(resumptionHandle) && previousSessionId != null
+                && previous != null && previous.getConnectionPrompt() != null;
+        var credential = resume ? providerPool.forSession(previous.getProviderId(), previous.getModel())
+                : providerPool.acquire();
+        session.setModel(credential.model());
+        session.setProviderId(credential.providerId());
+        if (resume) session.setVoice(previous.getVoice());
         session = repository.save(session);
-        return new CreatedSession(session, token.value(), token.newSessionExpiresAt(), handoffSeconds);
+        historyService.save(session, history, historyRevision);
+        session.setConnectionPrompt(resume ? previous.getConnectionPrompt()
+                : conversationPrompt.build(safeTopic, safeLevel, historyService.promptContext(session)));
+        var token = issueToken(session, credential, resume ? resumptionHandle : null, now);
+        return new CreatedSession(session, token.value(), token.newSessionExpiresAt(), handoffSeconds,
+                resume, historyService.read(session));
     }
+
+    @Transactional
+    public CreatedSession reconnect(String userId, String id, String resumptionHandle,
+            List<HistoryTurn> history, Long historyRevision, boolean forceNew) {
+        requireAccess(userId);
+        AiConversationSession session = requireOwned(userId, id);
+        Instant now = Instant.now();
+        if (!"ACTIVE".equals(session.getStatus()) || session.getEndedAt() != null) {
+            throw new ApiException(ErrorCode.CONFLICT, "Phòng hội thoại đã kết thúc.",
+                    java.util.Map.of("reason", "AI_SESSION_CLOSED"));
+        }
+        if (!session.getExpiresAt().isAfter(now)) {
+            throw new ApiException(ErrorCode.CONFLICT, "Phiên hội thoại đã hết thời gian.",
+                    java.util.Map.of("reason", "AI_SESSION_EXPIRED"));
+        }
+        if (dailyQuota(userId, now).remainingSeconds() <= 0) {
+            throw new ApiException(ErrorCode.RATE_LIMITED, "Bạn đã dùng hết thời gian AI Voice hôm nay.",
+                    java.util.Map.of("reason", "AI_DAILY_QUOTA_EXHAUSTED"));
+        }
+        reconnectLimiter.acquire(userId, now);
+        historyService.save(session, history, historyRevision);
+        boolean resume = !forceNew && hasHandle(resumptionHandle) && session.getConnectionPrompt() != null;
+        GeminiProviderPool.Credential credential;
+        try {
+            credential = providerPool.forSession(session.getProviderId(), session.getModel());
+        } catch (ApiException unavailable) {
+            // A handle may never move to a different Google project. Only a deliberately
+            // fresh connection can use another project and rehydrate the archived conversation.
+            if (!forceNew) throw unavailable;
+            credential = providerPool.acquire();
+        }
+        if (!resume) {
+            session.setConnectionPrompt(conversationPrompt.build(session.getTopic(), session.getCefrLevel(),
+                    historyService.promptContext(session)));
+        }
+        var token = issueToken(session, credential, resume ? resumptionHandle : null, now);
+        session.setProviderId(credential.providerId());
+        session.setModel(credential.model());
+        long leaseRemaining = Duration.between(now, session.getExpiresAt()).getSeconds();
+        int handoffSeconds = dailyQuota(userId, now).remainingSeconds() > leaseRemaining
+                ? properties.aiConversation().handoffSecondsBeforeExpiry() : 0;
+        return new CreatedSession(session, token.value(), token.newSessionExpiresAt(), handoffSeconds,
+                resume, historyService.read(session));
+    }
+
+    @Transactional
+    public long saveHistory(String userId, String id, List<HistoryTurn> history, Long revision) {
+        return historyService.save(requireOwned(userId, id), history, revision);
+    }
+
+    private GeminiEphemeralTokenClient.Token issueToken(AiConversationSession session,
+            GeminiProviderPool.Credential credential, String handle, Instant now) {
+        int minutes = (int) Math.max(1, (Duration.between(now, session.getExpiresAt()).getSeconds() + 59) / 60);
+        try {
+            var token = tokenClient.create(session.getConnectionPrompt(), credential, minutes, handle, session.getVoice());
+            providerPool.success(credential.providerId());
+            return token;
+        } catch (RuntimeException ex) {
+            providerPool.failure(credential.providerId(), ex.getMessage());
+            throw ex;
+        }
+    }
+
+    private boolean hasHandle(String handle) { return handle != null && !handle.isBlank(); }
 
     @Transactional
     public void saveSummary(String userId, String id, String summary, long inputTokens, long outputTokens,
             Long connectLatencyMs, int reconnectCount, int disconnectCount, int rateLimitCount) {
         AiConversationSession session = requireOwned(userId, id);
-        if (summary != null && summary.length() > 20_000) summary = summary.substring(0, 20_000);
-        session.setSummary(summary);
-        session.setInputTokens(Math.max(0, inputTokens));
-        session.setOutputTokens(Math.max(0, outputTokens));
+        if (summary != null && summary.length() > 20_000) {
+            throw new ApiException(ErrorCode.VALIDATION_FAILED, "Tóm tắt vượt giới hạn 20.000 ký tự.");
+        }
+        if (summary != null) session.setSummary(summary);
+        session.setInputTokens(Math.max(session.getInputTokens(), inputTokens));
+        session.setOutputTokens(Math.max(session.getOutputTokens(), outputTokens));
         if (connectLatencyMs != null) session.setConnectLatencyMs(Math.max(0, connectLatencyMs));
-        session.setReconnectCount(Math.max(0, reconnectCount));
-        session.setDisconnectCount(Math.max(0, disconnectCount));
-        session.setRateLimitCount(Math.max(0, rateLimitCount));
+        session.setReconnectCount(Math.max(session.getReconnectCount(), reconnectCount));
+        session.setDisconnectCount(Math.max(session.getDisconnectCount(), disconnectCount));
+        session.setRateLimitCount(Math.max(session.getRateLimitCount(), rateLimitCount));
     }
 
     /** Ghi lượt nói mới. Chỉ chủ phiên mới ghi được. */
     @Transactional
     public void appendTurns(String userId, String sessionId,
             List<vn.weconex.aptis.conversation.web.AiConversationController.TurnItem> turns) {
-        requireOwned(userId, sessionId);
+        AiConversationSession session = requireOwned(userId, sessionId);
         if (turns == null || turns.isEmpty()) return;
         memoryService.appendTurns(userId, sessionId, turns.stream()
-                .map(t -> new AiConversationMemoryService.TurnInput(t.role(), t.content(), t.seq()))
+                .map(t -> new AiConversationMemoryService.TurnInput(t.role(), t.content(), t.seq(), t.revision()))
                 .toList());
+        historyService.reconcileLegacyArchive(session);
     }
 
     @Transactional
@@ -132,9 +213,8 @@ public class AiConversationService {
         session.setStatus(error == null || error.isBlank() ? "CLOSED" : "ERROR");
         if (session.getEndedAt() == null) session.setEndedAt(Instant.now());
         if (error != null) session.setErrorMessage(error.substring(0, Math.min(500, error.length())));
-        // HANDOFF không đi qua đây; chỉ tóm tắt khi học viên thật sự dừng nói,
-        // tránh gọi LLM mỗi lần rớt mạng rồi nối lại.
-        memoryService.summariseSession(userId, id);
+        // Durable history is authoritative. Closing a room must never wait for an
+        // external text model, and no background task may race the final history save.
     }
 
     public void requireAccess(String userId) {
@@ -158,8 +238,8 @@ public class AiConversationService {
         long used = 0;
         for (AiConversationSession session : repository.findOverlappingDay(userId, dayStart, dayEnd)) {
             Instant start = session.getStartedAt().isBefore(dayStart) ? dayStart : session.getStartedAt();
-            Instant naturalEnd = session.getEndedAt() != null ? session.getEndedAt()
-                    : (session.getExpiresAt().isBefore(now) ? session.getExpiresAt() : now);
+            Instant naturalEnd = session.getEndedAt() != null ? session.getEndedAt() : now;
+            if (naturalEnd.isAfter(session.getExpiresAt())) naturalEnd = session.getExpiresAt();
             Instant end = naturalEnd.isAfter(dayEnd) ? dayEnd : naturalEnd;
             if (end.isAfter(start)) used += Duration.between(start, end).getSeconds();
         }
@@ -167,11 +247,12 @@ public class AiConversationService {
     }
 
     private AiConversationSession requireOwned(String userId, String id) {
-        return repository.findById(id).filter(s -> s.getUserId().equals(userId))
+        return repository.findOwnedForUpdate(userId, id)
                 .orElseThrow(() -> ApiException.notFound("AiConversationSession", id));
     }
 
     public record CreatedSession(AiConversationSession session, String ephemeralToken,
-            Instant tokenStartExpiresAt, int handoffSecondsBeforeExpiry) {}
+            Instant tokenStartExpiresAt, int handoffSecondsBeforeExpiry, boolean resumeAttempted,
+            List<HistoryTurn> history) {}
     public record DailyQuota(long limitSeconds, long usedSeconds, long remainingSeconds) {}
 }

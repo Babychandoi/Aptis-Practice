@@ -297,8 +297,12 @@ export const billingApi = {
 
 export const aiConversationApi = {
   access: () => api.get<{ allowed: boolean; configured: boolean; dailyLimitSeconds: number; dailyRemainingSeconds: number }>('/ai-conversation/access').then((r) => r.data),
-  createSession: (body: { topic: string; level: string; voice: string; previousSessionId?: string; resumptionHandle?: string }) =>
+  createSession: (body: { topic: string; level: string; voice: string; freshStart?: boolean; previousSessionId?: string; resumptionHandle?: string; history?: AiConversationHistoryTurn[]; historyRevision?: number }) =>
     api.post<AiConversationSession>('/ai-conversation/sessions', body).then((r) => r.data),
+  reconnectSession: (sessionId: string, body: { resumptionHandle?: string; forceNew?: boolean; history?: AiConversationHistoryTurn[]; historyRevision?: number }) =>
+    api.post<AiConversationSession>(`/ai-conversation/sessions/${sessionId}/reconnect`, body).then((r) => r.data),
+  saveHistory: (sessionId: string, body: { turns: AiConversationHistoryTurn[]; revision: number }) =>
+    api.put<void>(`/ai-conversation/sessions/${sessionId}/history`, body),
   saveSummary: (sessionId: string, body: { summary: string; inputTokens: number; outputTokens: number; connectLatencyMs?: number; reconnectCount?: number; disconnectCount?: number; rateLimitCount?: number }) =>
     api.put<void>(`/ai-conversation/sessions/${sessionId}/summary`, body),
   closeSession: (sessionId: string, error?: string) =>
@@ -316,7 +320,12 @@ export interface AiConversationSession {
   expiresAt: string;
   tokenStartExpiresAt: string;
   handoffSecondsBeforeExpiry: number;
+  resumeAttempted?: boolean;
+  historyRevision?: number;
+  history?: AiConversationHistoryTurn[];
 }
+
+export interface AiConversationHistoryTurn { id: string; role: 'user' | 'ai'; text: string; }
 
 // ---------------------------------------------------------------------
 // Asset

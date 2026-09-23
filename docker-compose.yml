@@ -187,6 +187,15 @@ services:
       AI_STT_MODEL: "${AI_STT_MODEL:-ag/gemini-3-flash}"
       AI_STT_TIMEOUT: "${AI_STT_TIMEOUT:-120}"
 
+      # Hội thoại realtime: API key chỉ tồn tại ở backend, browser nhận token tạm một lần.
+      GEMINI_LIVE_ENABLED: "${GEMINI_LIVE_ENABLED:-false}"
+      GEMINI_LIVE_RELEASED: "${GEMINI_LIVE_RELEASED:-true}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      GEMINI_LIVE_MODEL: "${GEMINI_LIVE_MODEL:-gemini-2.5-flash-native-audio-preview-12-2025}"
+      GEMINI_LIVE_SESSION_MINUTES: "${GEMINI_LIVE_SESSION_MINUTES:-60}"
+      GEMINI_LIVE_DAILY_MINUTES: "${GEMINI_LIVE_DAILY_MINUTES:-120}"
+      GEMINI_LIVE_HANDOFF_SECONDS: "${GEMINI_LIVE_HANDOFF_SECONDS:-90}"
+
       # Local by default. Paid remote audio fallback must be enabled explicitly.
       LOCAL_SPEAKING_ENABLED: "${LOCAL_SPEAKING_ENABLED:-true}"
       LOCAL_SPEAKING_URL: "http://speaking-analyzer:8000"

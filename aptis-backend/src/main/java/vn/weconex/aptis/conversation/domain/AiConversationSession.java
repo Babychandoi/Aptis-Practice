@@ -25,6 +25,16 @@ public class AiConversationSession extends BaseEntity {
     private String model;
     @Column(name = "provider_id", columnDefinition = "CHAR(36)")
     private String providerId;
+    @Column(name = "voice", length = 30, nullable = false)
+    private String voice = "Aoede";
+    @Column(name = "history_json", columnDefinition = "LONGTEXT")
+    private String historyJson;
+    @Column(name = "history_revision", nullable = false)
+    private long historyRevision;
+    @Column(name = "connection_prompt", columnDefinition = "LONGTEXT")
+    private String connectionPrompt;
+    @Column(name = "memory_context", columnDefinition = "LONGTEXT")
+    private String memoryContext;
     @Column(name = "started_at", nullable = false)
     private Instant startedAt;
     @Column(name = "expires_at", nullable = false)

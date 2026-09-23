@@ -18,6 +18,7 @@ function VoiceLounge({ configured, dailyLimitSeconds, dailyRemainingSeconds, onU
   const [topic, setTopic] = useState('Daily life');
   const [level, setLevel] = useState('B1');
   const [voice, setVoice] = useState('Aoede');
+  const [freshStart, setFreshStart] = useState(false);
   const [studioOpen, setStudioOpen] = useState(false);
   return <div className="mx-auto max-w-4xl space-y-6">
     <header className="rounded-3xl bg-gradient-to-br from-indigo-950 via-violet-900 to-fuchsia-800 px-7 py-9 text-white shadow-lg"><span className="inline-flex rounded-full border border-white/25 bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-widest">AI Voice Premium</span><h1 className="mt-4 text-3xl font-bold">AI English Lounge</h1><p className="mt-3 max-w-2xl text-sm leading-7 text-violet-100">Trò chuyện tiếng Anh bằng giọng nói với AI để luyện phản xạ thoải mái, không chấm điểm và không mô phỏng bài thi.</p></header>
@@ -25,17 +26,18 @@ function VoiceLounge({ configured, dailyLimitSeconds, dailyRemainingSeconds, onU
       {!configured && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">Hệ thống Gemini Live chưa sẵn sàng. Vui lòng báo quản trị viên.</p>}
       <div className="grid gap-4 sm:grid-cols-3"><label className="text-sm font-medium">Chủ đề<input className="input mt-1" maxLength={100} value={topic} onChange={(e) => setTopic(e.target.value)} /></label><label className="text-sm font-medium">Trình độ<select className="input mt-1" value={level} onChange={(e) => setLevel(e.target.value)}><option>A2</option><option>B1</option><option>B2</option><option>C1</option></select></label><label className="text-sm font-medium">Giọng AI<select className="input mt-1" value={voice} onChange={(e) => setVoice(e.target.value)}><option value="Aoede">Nữ · Aoede</option><option value="Puck">Nam · Puck</option></select></label></div>
       <div className="mt-5 flex items-center justify-between rounded-xl bg-violet-50 px-4 py-3 text-sm text-violet-900"><span>Thời lượng AI Voice hôm nay</span><strong>Còn {Math.ceil(dailyRemainingSeconds / 60)} / {Math.round(dailyLimitSeconds / 60)} phút</strong></div>
+      <label className="mt-4 flex items-start gap-2 text-sm text-slate-600"><input type="checkbox" className="mt-1" checked={freshStart} onChange={(event) => setFreshStart(event.target.checked)} /><span>Bắt đầu cuộc trò chuyện mới, không mang theo ngữ cảnh trước.<span className="block text-xs text-slate-500">Mặc định AI tiếp tục nhớ cuộc trò chuyện gần nhất. Lịch sử đã lưu không bị xóa.</span></span></label>
       <button type="button" className="btn-primary mt-3 w-full !py-3" disabled={!configured || dailyRemainingSeconds <= 0} onClick={() => setStudioOpen(true)}>🎙️ Mở phòng thu và trò chuyện</button>
     </section>
-    {studioOpen && <VoiceStudioModal topic={topic} level={level} voice={voice} onClose={() => { setStudioOpen(false); onUsageChanged(); }} />}
+    {studioOpen && <VoiceStudioModal topic={topic} level={level} voice={voice} freshStart={freshStart} onClose={() => { setStudioOpen(false); onUsageChanged(); }} />}
   </div>;
 }
 
-function VoiceStudioModal({ topic, level, voice, onClose }: { topic: string; level: string; voice: string; onClose: () => void }) {
-  const conversation = useGeminiLiveConversation(topic, level, voice);
+function VoiceStudioModal({ topic, level, voice, freshStart, onClose }: { topic: string; level: string; voice: string; freshStart: boolean; onClose: () => void }) {
+  const conversation = useGeminiLiveConversation(topic, level, voice, freshStart);
   const transcriptEndRef = useRef<HTMLDivElement | null>(null);
   const active = conversation.status !== 'idle' && conversation.status !== 'error';
-  const close = async () => { await conversation.stop(); onClose(); };
+  const close = () => { void conversation.stop(); onClose(); };
   useEscapeKey(() => { void close(); });
   useEffect(() => { transcriptEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [conversation.transcript]);
   useEffect(() => { const previous = document.body.style.overflow; document.body.style.overflow = 'hidden'; return () => { document.body.style.overflow = previous; }; }, []);
@@ -51,7 +53,9 @@ function VoiceStudioModal({ topic, level, voice, onClose }: { topic: string; lev
             <button type="button" disabled={conversation.status === 'connecting' || conversation.status === 'handoff'} onClick={() => active ? void conversation.stop() : void conversation.start()} className={`relative grid h-36 w-36 place-items-center rounded-full border-4 shadow-[0_0_60px_rgba(139,92,246,0.45)] transition ${active ? 'border-fuchsia-300 bg-gradient-to-br from-violet-600 to-fuchsia-600' : 'border-white/20 bg-white/10 hover:scale-105 hover:bg-white/15'}`} aria-label={active ? 'Dừng trò chuyện' : 'Bắt đầu trò chuyện'}><span className="text-6xl" aria-hidden="true">🎙️</span></button>
           </div>
           <p className="text-lg font-semibold">{statusLabel(conversation.status)}</p>
-          <p className="mt-2 text-center text-sm text-slate-400">{active ? 'Cứ nói tự nhiên. Bạn có thể ngắt lời AI bất cứ lúc nào.' : 'Chạm mic để cấp quyền micro và bắt đầu.'}</p>
+          <p className="mt-2 text-center text-sm text-slate-400">{active ? 'Mic tạm nghỉ khi AI đang nói và tự mở lại khi AI nói xong.' : 'Chạm mic để cấp quyền micro và bắt đầu.'}</p>
+          {conversation.notice && <p role="status" className="mt-4 rounded-xl border border-amber-300/25 bg-amber-500/10 p-3 text-center text-sm text-amber-100">{conversation.notice}</p>}
+          {active && <button type="button" className="mt-3 text-xs text-violet-200 underline" onClick={conversation.resumeAudio}>Tiếp tục âm thanh</button>}
           {conversation.secondsLeft > 0 && <p className="mt-3 rounded-full bg-white/10 px-3 py-1 text-xs text-slate-300">Còn khoảng {Math.ceil(conversation.secondsLeft / 60)} phút</p>}
           {conversation.error && <p className="mt-4 rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-center text-sm text-red-200">{conversation.error}</p>}
         </section>
@@ -63,4 +67,4 @@ function VoiceStudioModal({ topic, level, voice, onClose }: { topic: string; lev
 }
 
 function ComingSoon() { return <div className="mx-auto max-w-4xl"><section className="rounded-3xl bg-gradient-to-br from-indigo-950 via-violet-900 to-fuchsia-800 px-7 py-10 text-white shadow-lg"><span className="inline-flex rounded-full border border-white/25 bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-widest">Đã ra mắt</span><h1 className="mt-5 text-3xl font-bold">AI English Lounge</h1><p className="mt-4 max-w-2xl text-sm leading-7 text-violet-100">Luyện phản xạ giao tiếp tiếng Anh tự nhiên với AI bằng giọng nói, chọn giọng nam hoặc nữ và sử dụng tối đa 120 phút mỗi ngày.</p><Link to="/ai-voice/plans" className="mt-6 inline-flex rounded-xl bg-white px-5 py-3 text-sm font-bold text-violet-900 shadow-sm transition hover:bg-violet-50">Xem gói AI Voice</Link></section></div>; }
-function statusLabel(status: string) { return ({ idle: 'Sẵn sàng', connecting: 'Đang kết nối', listening: 'Đang nghe', speaking: 'AI đang nói', handoff: 'Đang chuyển phiên', error: 'Có lỗi' } as Record<string, string>)[status] ?? status; }
+function statusLabel(status: string) { return ({ idle: 'Sẵn sàng', connecting: 'Đang kết nối', reconnecting: 'Đang khôi phục hội thoại', listening: 'Đang nghe', speaking: 'AI đang nói', handoff: 'Đang chuyển phiên', error: 'Có lỗi' } as Record<string, string>)[status] ?? status; }

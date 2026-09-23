@@ -28,6 +28,12 @@ import vn.weconex.aptis.catalog.repository.TaskTypeRepository;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import vn.weconex.aptis.common.util.Enums.AccessLevel;
 import vn.weconex.aptis.common.util.Enums.PracticeMode;
+import vn.weconex.aptis.conversation.domain.AiConversationSession;
+import vn.weconex.aptis.conversation.domain.AiConversationTurn;
+import vn.weconex.aptis.conversation.repository.AiConversationSessionRepository;
+import vn.weconex.aptis.conversation.repository.AiConversationTurnRepository;
+import vn.weconex.aptis.conversation.service.AiConversationHistoryService;
+import vn.weconex.aptis.conversation.service.AiConversationHistoryService.HistoryTurn;
 import vn.weconex.aptis.practice.domain.TestAttempt;
 import vn.weconex.aptis.practice.mongo.AttemptDocument;
 import vn.weconex.aptis.practice.mongo.AttemptDocumentRepository;
@@ -130,6 +136,15 @@ class SchemaConsistencyTest {
     @Autowired
     PlatformTransactionManager transactionManager;
 
+    @Autowired
+    AiConversationHistoryService conversationHistory;
+
+    @Autowired
+    AiConversationSessionRepository conversationSessions;
+
+    @Autowired
+    AiConversationTurnRepository conversationTurns;
+
     /**
      * Context load được nghĩa là Flyway chạy hết 10 migration và
      * hibernate.ddl-auto=validate không tìm thấy lệch schema.
@@ -137,6 +152,69 @@ class SchemaConsistencyTest {
     @Test
     void contextLoadsWithValidatedSchema() {
         assertThat(roleRepository.count()).isPositive();
+    }
+
+    @Test
+    void aiVoiceHistoryPersistsLateTranscriptInsertionAndIdempotentRevisions() {
+        User user = User.register("schema-ai-history@test.local", "not-used");
+        user.markEmailVerified();
+        String userId = userRepository.saveAndFlush(user).getId();
+        AiConversationSession session = new AiConversationSession();
+        session.setUserId(userId);
+        session.setStatus("ACTIVE");
+        session.setTopic("Synthetic integration test");
+        session.setCefrLevel("B1");
+        session.setModel("integration-test-no-external-api");
+        session.setStartedAt(Instant.now());
+        session.setExpiresAt(Instant.now().plusSeconds(600));
+        conversationHistory.inherit(session, null);
+        String sessionId = conversationSessions.saveAndFlush(session).getId();
+        List<HistoryTurn> first = List.of(new HistoryTurn("ai-turn", "ai", "Hello there."));
+        List<HistoryTurn> complete = List.of(
+                new HistoryTurn("user-turn", "user", "Hi, I am practising English."),
+                new HistoryTurn("ai-turn", "ai", "Hello there."));
+        TransactionTemplate transactions = new TransactionTemplate(transactionManager);
+        try {
+            transactions.executeWithoutResult(status -> {
+                AiConversationSession locked = conversationSessions.findOwnedForUpdate(userId, sessionId).orElseThrow();
+                assertThat(conversationHistory.save(locked, first, 1L)).isEqualTo(1);
+            });
+            transactions.executeWithoutResult(status -> {
+                AiConversationSession locked = conversationSessions.findOwnedForUpdate(userId, sessionId).orElseThrow();
+                assertThat(conversationHistory.save(locked, complete, 2L)).isEqualTo(2);
+            });
+            transactions.executeWithoutResult(status -> {
+                AiConversationSession locked = conversationSessions.findOwnedForUpdate(userId, sessionId).orElseThrow();
+                assertThat(conversationHistory.save(locked, first, 1L)).isEqualTo(2);
+                assertThat(conversationHistory.save(locked, complete, 2L)).isEqualTo(2);
+            });
+            // A fresh persistence context verifies actual MySQL writes, including
+            // the shifted archive row, rather than the in-memory entities above.
+            transactions.executeWithoutResult(status -> {
+                AiConversationSession persisted = conversationSessions.findOwnedForUpdate(userId, sessionId).orElseThrow();
+                assertThat(persisted.getHistoryRevision()).isEqualTo(2);
+                assertThat(persisted.getHistoryJson()).contains("user-turn", "ai-turn");
+                assertThat(conversationHistory.read(persisted)).isEqualTo(complete);
+                List<AiConversationTurn> archived = conversationTurns.findBySessionIdOrderBySeqAsc(sessionId);
+                assertThat(archived).hasSize(2);
+                assertThat(archived).extracting(AiConversationTurn::getSeq).containsExactly(0, 1);
+                assertThat(archived).extracting(AiConversationTurn::getClientTurnId)
+                        .containsExactly("user-turn", "ai-turn");
+                assertThat(archived).extracting(AiConversationTurn::getRole).containsExactly("user", "ai");
+                assertThat(archived).extracting(AiConversationTurn::getContent)
+                        .containsExactly(complete.get(0).text(), complete.get(1).text());
+                assertThat(conversationSessions.findLive(userId, Instant.now()))
+                        .extracting(AiConversationSession::getId).containsExactly(sessionId);
+                assertThat(conversationSessions.findFirstByUserIdOrderByStartedAtDesc(userId))
+                        .get().extracting(AiConversationSession::getId).isEqualTo(sessionId);
+            });
+        } finally {
+            transactions.executeWithoutResult(status -> {
+                conversationTurns.deleteAll(conversationTurns.findBySessionIdOrderBySeqAsc(sessionId));
+                conversationSessions.deleteById(sessionId);
+                userRepository.deleteById(userId);
+            });
+        }
     }
 
     @Test

@@ -46,6 +46,21 @@ public class GeminiProviderPool {
         throw unavailable();
     }
 
+    /** Resumption handles are scoped to the original project/model, not the pool. */
+    public Credential forSession(String providerId, String model) {
+        if (providerId != null) {
+            var provider = providers.findById(providerId)
+                    .filter(GeminiLiveProvider::isEnabled).orElseThrow(GeminiProviderPool::unavailable);
+            return new Credential(providerId, provider.getName(),
+                    cipher.decrypt(provider.getEncryptedApiKey()), model);
+        }
+        var cfg = properties.aiConversation();
+        if (cfg != null && cfg.enabled() && cfg.apiKey() != null && !cfg.apiKey().isBlank()) {
+            return new Credential(null, "Environment", cfg.apiKey(), model);
+        }
+        throw unavailable();
+    }
+
     @Transactional
     public void success(String providerId) {
         if (providerId == null) return;

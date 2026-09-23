@@ -41,4 +41,8 @@ public class AiConversationTurn extends BaseEntity {
      */
     @Column(name = "seq", nullable = false)
     private int seq;
+    @Column(name = "client_turn_id", length = 100)
+    private String clientTurnId;
+    @Column(name = "revision", nullable = false)
+    private long revision;
 }
