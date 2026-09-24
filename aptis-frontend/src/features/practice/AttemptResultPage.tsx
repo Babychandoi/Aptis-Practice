@@ -559,14 +559,57 @@ export function AttemptResultPage() {
               Rubric CEFR
             </span>
           </div>
-          <div className="space-y-4">
-            {evaluationsQuery.data.map((evaluation) => (
-              <EvaluationFeedbackCard
-                key={evaluation.questionSetId}
-                result={evaluation}
-                recordingAssetIds={recordingsByQuestionSet.get(evaluation.questionSetId) ?? []}
-              />
-            ))}
+          {/* Gom nhận xét theo kỹ năng rồi theo part, cùng thứ tự với bảng điểm
+              phía trên. Để phẳng thì bài full test ra cả chục thẻ lẫn lộn Speaking
+              với Writing, không biết thẻ nào của part nào. */}
+          <div className="space-y-8">
+            {groupedSkills.map((skill) => {
+              const partsWithFeedback = skill.parts
+                .map((part) => ({
+                  part,
+                  evaluations: part.sets.flatMap((set) =>
+                    evaluationsQuery.data!.filter((e) => e.questionSetId === set.questionSetId),
+                  ),
+                }))
+                .filter((entry) => entry.evaluations.length > 0);
+              if (partsWithFeedback.length === 0) return null;
+
+              return (
+                <div key={skill.componentCode} className="space-y-4">
+                  <h3 className="flex items-center gap-2 text-lg font-bold text-slate-900">
+                    <span>{skill.icon}</span>
+                    {skill.nameVi}
+                    <span className="text-xs font-normal uppercase text-slate-400">({skill.nameEn})</span>
+                  </h3>
+
+                  {partsWithFeedback.map(({ part, evaluations }) => (
+                    <div key={part.partId} className="space-y-3 border-l-2 border-brand-200 pl-4">
+                      <div className="flex flex-wrap items-baseline justify-between gap-2">
+                        <h4 className="text-sm font-semibold text-slate-800">{part.partTitle}</h4>
+                        {evaluations.length > 1 && (
+                          <span className="text-xs text-slate-500">{evaluations.length} câu</span>
+                        )}
+                      </div>
+                      {evaluations.map((evaluation, index) => (
+                        <div key={evaluation.questionSetId}>
+                          {/* Speaking Part 1 có 3 câu riêng, mỗi câu một thẻ; đánh số
+                              để biết đang đọc nhận xét câu nào. */}
+                          {evaluations.length > 1 && (
+                            <p className="mb-1.5 text-xs font-semibold uppercase text-slate-500">
+                              Câu {index + 1}
+                            </p>
+                          )}
+                          <EvaluationFeedbackCard
+                            result={evaluation}
+                            recordingAssetIds={recordingsByQuestionSet.get(evaluation.questionSetId) ?? []}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
           </div>
         </section>
       )}
