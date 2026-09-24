@@ -100,9 +100,38 @@ public class AttemptQuestionSet {
         }
     }
 
+    /**
+     * Ghi điểm, làm tròn về bội số 0.5 cho dễ đọc.
+     *
+     * <p>AI và giáo viên đều chấm số nguyên theo rubric, nhưng điểm rubric còn
+     * phải quy về thang của bộ đề trong đề thi. Phép quy đổi đó sinh ra những
+     * số không ai đọc được: Speaking Part 1 có rubric 5 điểm chia cho 3 câu nên
+     * chấm 4/5 ra 1.33, Writing Part 1 chia cho 5 câu ra 0.20/0.40/0.60.
+     *
+     * <p>Làm tròn tới 0.5 chứ không tới 1.0: một câu chỉ đáng 1-2 điểm mà ép về
+     * số nguyên thì chỉ còn 2-3 mức, hai bài chênh nhau rõ rệt lại cùng điểm.
+     */
     public void applyScore(BigDecimal awarded) {
-        this.awardedScore = awarded;
+        this.awardedScore = awarded == null ? null : lamTronNuaDiem(awarded, maxScore);
         this.status = AttemptItemStatus.SCORED;
+    }
+
+    /**
+     * Làm tròn về bội số gần nhất của 0.5.
+     *
+     * <p>Trần điểm là ngoại lệ: chấm tuyệt đối phải ra đúng trần. Bộ đề có trần
+     * lẻ như 1.66 mà ép về 1.5 thì học viên đạt 5/5 vẫn hiện "1.5/1.7", nhìn
+     * như vẫn mất điểm. Nên khi điểm đã chạm trần thì giữ nguyên trần đó.
+     */
+    private static BigDecimal lamTronNuaDiem(BigDecimal value, BigDecimal max) {
+        if (max != null && value.compareTo(max) >= 0) {
+            return max;
+        }
+        BigDecimal rounded = value.multiply(BigDecimal.valueOf(2))
+                .setScale(0, java.math.RoundingMode.HALF_UP)
+                .divide(BigDecimal.valueOf(2), 2, java.math.RoundingMode.HALF_UP);
+        // Làm tròn lên có thể vượt trần (1.4 -> 1.5 khi trần là 1.45).
+        return max != null && rounded.compareTo(max) > 0 ? max : rounded;
     }
 
     /**
