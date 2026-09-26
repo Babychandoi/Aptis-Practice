@@ -67,7 +67,22 @@ public class ClassroomService {
      */
     @Transactional
     public Classroom createForTeacher(String teacherUserId, String name) {
-        return classroomRepository.findByTeacherUserId(teacherUserId).orElseGet(() -> {
+        return classroomRepository.findByTeacherUserIdOrderByCreatedAtAsc(teacherUserId).stream().findFirst().orElseGet(() -> newClassroom(teacherUserId, name));
+    }
+
+    /**
+     * Admin mở thêm một lớp cho giáo viên đã có lớp.
+     *
+     * <p>Khác createForTeacher: không idempotent — gọi là tạo lớp mới. Quyền mở
+     * lớp vẫn thuộc admin, giáo viên không tự mở được.
+     */
+    @Transactional
+    public Classroom createAdditionalForTeacher(String teacherUserId, String name) {
+        return newClassroom(teacherUserId, name);
+    }
+
+    private Classroom newClassroom(String teacherUserId, String name) {
+        {
             Classroom classroom = new Classroom();
             classroom.setId(UUID.randomUUID().toString());
             classroom.setTeacherUserId(teacherUserId);
@@ -77,7 +92,7 @@ public class ClassroomService {
 
             log.info("Tạo lớp {} cho giáo viên {}", classroom.getJoinCode(), teacherUserId);
             return classroom;
-        });
+        }
     }
 
     private String generateUniqueCode() {
@@ -126,10 +141,25 @@ public class ClassroomService {
      */
     @Transactional(readOnly = true)
     public Classroom ownedClassroom(String teacherUserId) {
-        return classroomRepository.findByTeacherUserId(teacherUserId)
+        // Giáo viên nhiều lớp: frontend gửi lớp đang chọn qua header. Mọi API
+        // giáo viên đi qua đây nên không phải thêm tham số lớp cho từng API.
+        // Header trỏ lớp của người khác thì báo không tìm thấy, không lộ lớp đó.
+        String selected = TeacherClassroomContext.selectedClassroomId();
+        if (selected != null) {
+            return classroomRepository.findByIdAndTeacherUserId(selected, teacherUserId)
+                    .orElseThrow(() -> new ApiException(
+                            ErrorCode.RESOURCE_NOT_FOUND, "Không tìm thấy lớp này trong danh sách lớp bạn dạy"));
+        }
+        return teacherClassrooms(teacherUserId).stream().findFirst()
                 .orElseThrow(() -> new ApiException(
                         ErrorCode.RESOURCE_NOT_FOUND,
                         "Tài khoản chưa được gắn lớp học nào"));
+    }
+
+    /** Mọi lớp của giáo viên, cũ trước. */
+    @Transactional(readOnly = true)
+    public List<Classroom> teacherClassrooms(String teacherUserId) {
+        return classroomRepository.findByTeacherUserIdOrderByCreatedAtAsc(teacherUserId);
     }
 
     /**
@@ -250,11 +280,16 @@ public class ClassroomService {
             if (member.getStatus() == MemberStatus.ACTIVE) {
                 throw new ApiException(ErrorCode.CONFLICT, "Bạn đã ở trong lớp này");
             }
+            if (member.getStatus() == MemberStatus.PENDING) {
+                throw new ApiException(ErrorCode.CONFLICT, "Bạn đã gửi yêu cầu, hãy chờ giáo viên duyệt");
+            }
             // Từng bị xoá rồi vào lại: bật lại bản ghi cũ thay vì tạo bản mới,
             // vì UNIQUE(classroom_id, user_id) không cho hai dòng. Vẫn phải đếm
             // sĩ số — người cũ quay lại cũng chiếm một chỗ như người mới.
             requireRoom(classroom);
-            member.setStatus(MemberStatus.ACTIVE);
+            member.setStatus(entryStatus(classroom));
+            member.setRequestedAt(Instant.now());
+            member.setDecidedBy(null);
             member.setJoinedAt(Instant.now());
             member.setPaymentStatus(initialPaymentStatus(classroom));
             return member;
@@ -266,10 +301,79 @@ public class ClassroomService {
         member.setId(UUID.randomUUID().toString());
         member.setClassroomId(classroom.getId());
         member.setUserId(userId);
+        member.setStatus(entryStatus(classroom));
+        member.setRequestedAt(Instant.now());
         member.setPaymentStatus(initialPaymentStatus(classroom));
         memberRepository.save(member);
 
         log.info("Học viên {} vào lớp {}", userId, classroom.getJoinCode());
+        return member;
+    }
+
+    /**
+     * Lớp bật duyệt thì vào hàng chờ, không thì vào ngay.
+     *
+     * <p>Người chờ duyệt chưa chiếm chỗ (requireRoom chỉ đếm ACTIVE), nên lúc
+     * duyệt phải đếm sĩ số lần nữa.
+     */
+    private static MemberStatus entryStatus(Classroom classroom) {
+        return classroom.isRequireApproval() ? MemberStatus.PENDING : MemberStatus.ACTIVE;
+    }
+
+    /** Lớp theo id, không kiểm hạn hay quyền — caller tự kiểm. */
+    @Transactional(readOnly = true)
+    public Classroom classroomById(String classroomId) {
+        return classroomRepository.findById(classroomId)
+                .orElseThrow(() -> ApiException.notFound("Classroom", classroomId));
+    }
+
+    /** Giáo viên đổi công tắc lớp và lịch học. Trường null thì giữ nguyên. */
+    @Transactional
+    public Classroom updateSettings(String teacherUserId, String scheduleNote, Boolean requireApproval,
+            Boolean showLeaderboard, Boolean revealAnswersAfterDue) {
+        Classroom classroom = requireOwnedClassroom(teacherUserId);
+        if (scheduleNote != null) classroom.setScheduleNote(scheduleNote.isBlank() ? null : scheduleNote.trim());
+        if (requireApproval != null) classroom.setRequireApproval(requireApproval);
+        if (showLeaderboard != null) classroom.setShowLeaderboard(showLeaderboard);
+        if (revealAnswersAfterDue != null) classroom.setRevealAnswersAfterDue(revealAnswersAfterDue);
+        return classroom;
+    }
+
+    /**
+     * Đổi mã tham gia, ví dụ khi mã cũ bị lộ ra ngoài.
+     *
+     * <p>Học viên đã ở trong lớp không bị ảnh hưởng; chỉ mã cũ hết dùng được.
+     */
+    @Transactional
+    public Classroom regenerateJoinCode(String teacherUserId) {
+        Classroom classroom = requireOwnedClassroom(teacherUserId);
+        classroom.setJoinCode(generateUniqueCode());
+        log.info("Lớp {} đổi mã tham gia", classroom.getId());
+        return classroom;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ClassroomMember> pendingRequests(String teacherUserId) {
+        Classroom classroom = ownedClassroom(teacherUserId);
+        return memberRepository.findByClassroomIdAndStatusOrderByJoinedAtDesc(classroom.getId(), MemberStatus.PENDING);
+    }
+
+    /** Giáo viên duyệt hoặc từ chối một yêu cầu vào lớp. */
+    @Transactional
+    public ClassroomMember decideJoinRequest(String teacherUserId, String memberId, boolean approve) {
+        Classroom classroom = requireOwnedClassroom(teacherUserId);
+        ClassroomMember member = memberRepository.findById(memberId)
+                .filter(m -> m.getClassroomId().equals(classroom.getId()))
+                .orElseThrow(() -> ApiException.notFound("ClassroomMember", memberId));
+        if (member.getStatus() != MemberStatus.PENDING) {
+            throw new ApiException(ErrorCode.CONFLICT, "Yêu cầu này đã được xử lý");
+        }
+        if (approve) {
+            requireRoom(classroom);
+            member.setJoinedAt(Instant.now());
+        }
+        member.setStatus(approve ? MemberStatus.ACTIVE : MemberStatus.REJECTED);
+        member.setDecidedBy(teacherUserId);
         return member;
     }
 
@@ -373,7 +477,8 @@ public class ClassroomService {
      */
     @Transactional
     public void renameClassroom(String teacherUserId, String name) {
-        classroomRepository.findByTeacherUserId(teacherUserId)
+        // Giữ hành vi cũ cho màn admin: đổi tên lớp đầu tiên của giáo viên.
+        classroomRepository.findByTeacherUserIdOrderByCreatedAtAsc(teacherUserId).stream().findFirst()
                 .ifPresent(classroom -> classroom.setName(name));
     }
 

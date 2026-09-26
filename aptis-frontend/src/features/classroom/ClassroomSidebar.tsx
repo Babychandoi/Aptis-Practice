@@ -1,22 +1,20 @@
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { SupportLinksCompact, type SupportContacts } from '@/components/ui/SupportLinks';
+import { Icon, type IconName } from '@/components/shell/icons';
 
 /**
- * Thanh bên khi đang ở trong một lớp học.
+ * Thanh bên khi đang ở trong một lớp học, theo mock.
  *
- * <p>Dựng đúng khung của thanh bên hệ thống — cột cố định bám mép trái, cao hết
- * màn hình, cùng logo và cùng kiểu mục — vì nó THAY CHỖ thanh bên đó chứ không
- * phải một khối phụ nằm trong nội dung. Làm khác khung thì người dùng thấy giao
- * diện lệch hẳn khi bước vào lớp.
- *
- * <p>Trên điện thoại vẫn là hàng nút cuộn ngang: không có thanh bên nào ở kích
- * thước đó, còn 7 mục xuống dòng thì đẩy nội dung xuống quá sâu.
+ * <p>Thay chỗ thanh bên hệ thống (cùng vị trí, cùng bề ngang) để chuyển vào lớp
+ * không thấy giao diện nhảy. Trên điện thoại là hàng nút cuộn ngang.
  */
 export interface ClassroomNavItem<T extends string> {
   key: T;
   label: string;
-  /** Số hiện bên phải, ví dụ sĩ số lớp. Bỏ trống thì không hiện. */
+  icon?: IconName;
+  /** Số hiện bên phải, ví dụ yêu cầu chờ duyệt. Bỏ trống thì không hiện. */
   badge?: number;
 }
 
@@ -29,6 +27,7 @@ export function ClassroomSidebar<T extends string>({
   value,
   onChange,
   contacts,
+  switcher,
 }: {
   title: string;
   subtitle?: string;
@@ -39,77 +38,59 @@ export function ClassroomSidebar<T extends string>({
   onChange: (key: T) => void;
   /** Kênh liên hệ của giáo viên dạy lớp này; thiếu thì không hiện khối hỗ trợ. */
   contacts?: SupportContacts;
+  /** Ô chọn lớp khi giáo viên dạy nhiều lớp. */
+  switcher?: ReactNode;
 }) {
   return (
     <>
-      {/* Cột cố định cho màn rộng — cùng vị trí và cùng bề ngang với thanh bên
-          hệ thống, để chuyển vào lớp không thấy giao diện nhảy. */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-white md:flex">
-        <div className="flex h-18 items-center gap-3 border-b border-border px-3.5 py-4">
-          <Link to={backTo} className="flex min-w-0 items-center gap-3">
-            <img
-              src="/images/logo-mark-sm.png"
-              alt=""
-              width="36"
-              height="36"
-              className="h-9 w-9 shrink-0 object-contain"
-            />
-            <span className="min-w-0">
-              <span className="block truncate text-sm font-bold leading-tight text-slate-900">
-                Aptis Practice
-              </span>
-              <span className="block font-mono text-[10px] uppercase tracking-wider text-slate-400">
-                Lớp học
-              </span>
-            </span>
-          </Link>
+        <div className="flex items-center gap-2.5 px-4 py-4">
+          <img src="/images/logo-mark-sm.png" alt="" width="34" height="34" className="h-[34px] w-[34px] shrink-0 object-contain" />
+          <span className="min-w-0">
+            <span className="block truncate text-[15px] font-bold leading-5 tracking-tight">Aptis Practice</span>
+            <span className="block text-[10px] font-semibold uppercase leading-3 tracking-[0.14em] text-ink-faint">Lớp học</span>
+          </span>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-3.5 py-5">
+        <div className="flex-1 overflow-y-auto px-3 pb-6">
           <Link
             to={backTo}
-            className="mb-4 flex min-h-[38px] items-center gap-2 rounded-xl px-3.5 text-xs font-semibold text-slate-500 transition-colors hover:bg-surface-paper hover:text-slate-900"
+            className="mb-3 flex min-h-[36px] items-center gap-2 rounded-xl px-2.5 text-[13px] font-semibold text-ink-soft transition-colors hover:bg-surface-paper hover:text-ink"
           >
-            ← {backLabel}
+            <Icon name="back" className="h-4 w-4" />
+            {backLabel}
           </Link>
 
-          <div className="mb-4 rounded-2xl bg-surface-paper px-3.5 py-3">
-            <p className="text-sm font-bold leading-5 text-slate-900">{title}</p>
-            {subtitle && <p className="mt-0.5 text-[11px] leading-4 text-slate-500">{subtitle}</p>}
+          <div className="mb-5 rounded-2xl border border-border bg-surface-paper px-3.5 py-3">
+            {switcher ?? <p className="text-[15px] font-bold leading-5">{title}</p>}
+            {subtitle && <p className="mt-1 text-xs leading-4 text-ink-mute">{subtitle}</p>}
           </div>
 
-          <p className="mb-2 px-3.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-            Trong lớp
-          </p>
-          <nav className="space-y-1" aria-label="Mục trong lớp">
-            {items.map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                aria-current={value === item.key ? 'page' : undefined}
-                onClick={() => onChange(item.key)}
-                className={clsx(
-                  'flex min-h-[42px] w-full items-center gap-3 rounded-xl px-3.5 text-sm font-medium transition-all duration-150',
-                  value === item.key
-                    ? 'bg-brand-100 font-semibold text-brand-800'
-                    : 'text-slate-600 hover:bg-surface-paper hover:text-slate-900',
-                )}
-              >
-                <span className="flex-1 truncate text-left">{item.label}</span>
-                {item.badge != null && item.badge > 0 && (
-                  <span
-                    className={clsx(
-                      'shrink-0 rounded-full px-1.5 py-0.5 font-mono text-[10px] font-bold',
-                      value === item.key
-                        ? 'bg-brand-600 text-white'
-                        : 'bg-surface-muted text-slate-600',
-                    )}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-              </button>
-            ))}
+          <p className="mb-1.5 px-2.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-faint">Trong lớp</p>
+          <nav className="flex flex-col gap-0.5" aria-label="Mục trong lớp">
+            {items.map((item) => {
+              const on = value === item.key;
+              return (
+                <button
+                  key={item.key}
+                  type="button"
+                  aria-current={on ? 'page' : undefined}
+                  onClick={() => onChange(item.key)}
+                  className={clsx(
+                    'flex min-h-[42px] w-full items-center gap-3 rounded-xl border px-2.5 text-sm transition-colors',
+                    on ? 'border-ink/80 bg-surface-muted font-bold text-ink' : 'border-transparent font-medium text-ink-soft hover:bg-surface-paper hover:text-ink',
+                  )}
+                >
+                  {item.icon && <Icon name={item.icon} />}
+                  <span className="flex-1 truncate text-left">{item.label}</span>
+                  {item.badge != null && item.badge > 0 && (
+                    <span className="grid h-5 min-w-5 place-items-center rounded-full bg-amber-500 px-1.5 text-[11px] font-bold text-white">
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </nav>
 
           <SupportLinksCompact contacts={contacts ?? {}} />
@@ -118,16 +99,12 @@ export function ClassroomSidebar<T extends string>({
 
       {/* Điện thoại và máy tính bảng */}
       <div className="md:hidden">
-        <Link
-          to={backTo}
-          className="mb-2.5 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-slate-800"
-        >
-          ← {backLabel}
+        <Link to={backTo} className="mb-2.5 inline-flex items-center gap-1.5 text-xs font-semibold text-ink-mute hover:text-ink">
+          <Icon name="back" className="h-3.5 w-3.5" /> {backLabel}
         </Link>
-        {/* Cuộn ngang thay vì xuống dòng: 7 mục xuống dòng đẩy nội dung xuống
-            quá sâu trên màn hẹp. */}
+        {switcher && <div className="mb-2.5">{switcher}</div>}
         <div className="-mx-4 overflow-x-auto px-4 pb-1">
-          <div className="flex w-max gap-1.5 rounded-2xl bg-surface-muted p-1">
+          <div className="flex w-max gap-1 rounded-full bg-surface-muted p-1">
             {items.map((item) => (
               <button
                 key={item.key}
@@ -135,17 +112,13 @@ export function ClassroomSidebar<T extends string>({
                 aria-current={value === item.key ? 'page' : undefined}
                 onClick={() => onChange(item.key)}
                 className={clsx(
-                  'flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors',
-                  value === item.key
-                    ? 'bg-white text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800',
+                  'flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold transition-colors',
+                  value === item.key ? 'bg-white text-ink shadow-sm' : 'text-ink-mute hover:text-ink',
                 )}
               >
                 {item.label}
                 {item.badge != null && item.badge > 0 && (
-                  <span className="rounded-full bg-brand-600 px-1.5 py-0.5 font-mono text-[10px] font-bold text-white">
-                    {item.badge}
-                  </span>
+                  <span className="rounded-full bg-amber-500 px-1.5 text-[10px] font-bold text-white">{item.badge}</span>
                 )}
               </button>
             ))}

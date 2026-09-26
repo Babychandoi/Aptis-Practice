@@ -564,8 +564,57 @@ export const adminAnalyticsApi = {
 // Lớp học
 // ---------------------------------------------------------------------
 
+export interface JoinRequest { memberId: string; userId: string; fullName: string; email: string | null; requestedAt: string }
+/** totalCount = 0 nghĩa là buổi đó chưa điểm danh. myAttendance chỉ có ở phía học viên. */
+export interface ClassSession {
+  id: string; startsAt: string; endsAt: string; topic: string; meetingUrl: string | null;
+  status: 'SCHEDULED' | 'CANCELLED'; presentCount: number; totalCount: number; myAttendance?: boolean | null;
+}
+export interface AttendanceRow { userId: string; fullName: string; present: boolean | null }
+export interface PostEngagement { postId: string; readCount: number; memberCount: number; commentCount: number }
+export interface ClassComment { id: string; userId: string; fullName: string; body: string; hidden: boolean; createdAt: string }
+export interface ClassMembers { teacherName: string; leaderboard: boolean; members: { userId: string; fullName: string; you: boolean; score50: number | null }[] }
+export interface SaveSessionBody { startsAt: string; endsAt: string; topic: string; meetingUrl?: string }
+
+/** Lịch học, bình luận, thành viên — phía học viên (V64). */
+export const classroomActivityApi = {
+  sessions: (classroomId: string) => api.get<ClassSession[]>(`/classrooms/${classroomId}/sessions`).then((r) => r.data),
+  markRead: (classroomId: string, postId: string) => api.post(`/classrooms/${classroomId}/posts/${postId}/read`),
+  engagement: (classroomId: string) => api.get<PostEngagement[]>(`/classrooms/${classroomId}/posts/engagement`).then((r) => r.data),
+  comments: (classroomId: string, postId: string) =>
+    api.get<ClassComment[]>(`/classrooms/${classroomId}/posts/${postId}/comments`).then((r) => r.data),
+  addComment: (classroomId: string, postId: string, body: string) =>
+    api.post<ClassComment>(`/classrooms/${classroomId}/posts/${postId}/comments`, { body }).then((r) => r.data),
+  members: (classroomId: string) => api.get<ClassMembers>(`/classrooms/${classroomId}/members`).then((r) => r.data),
+};
+
 export const teacherClassroomApi = {
   myClassroom: () => api.get<Classroom>('/teacher/classroom').then((r) => r.data),
+
+  /** Mọi lớp giáo viên dạy; các API khác thao tác trên lớp đang chọn. */
+  all: () => api.get<Classroom[]>('/teacher/classroom/all').then((r) => r.data),
+
+  updateSettings: (body: { scheduleNote?: string; requireApproval?: boolean; showLeaderboard?: boolean; revealAnswersAfterDue?: boolean }) =>
+    api.put<Classroom>('/teacher/classroom/settings', body).then((r) => r.data),
+
+  regenerateJoinCode: () => api.post<Classroom>('/teacher/classroom/join-code').then((r) => r.data),
+
+  joinRequests: () => api.get<JoinRequest[]>('/teacher/classroom/join-requests').then((r) => r.data),
+  approve: (memberId: string) => api.post(`/teacher/classroom/join-requests/${memberId}/approve`),
+  reject: (memberId: string) => api.post(`/teacher/classroom/join-requests/${memberId}/reject`),
+
+  sessions: () => api.get<ClassSession[]>('/teacher/classroom/sessions').then((r) => r.data),
+  addSession: (body: SaveSessionBody) => api.post<ClassSession>('/teacher/classroom/sessions', body).then((r) => r.data),
+  updateSession: (id: string, body: SaveSessionBody) =>
+    api.put<ClassSession>(`/teacher/classroom/sessions/${id}`, body).then((r) => r.data),
+  cancelSession: (id: string) => api.delete(`/teacher/classroom/sessions/${id}`),
+  attendance: (id: string) => api.get<AttendanceRow[]>(`/teacher/classroom/sessions/${id}/attendance`).then((r) => r.data),
+  markAttendance: (id: string, userId: string, present: boolean) =>
+    api.put(`/teacher/classroom/sessions/${id}/attendance`, { userId, present }),
+
+  postEngagement: () => api.get<PostEngagement[]>('/teacher/classroom/posts/engagement').then((r) => r.data),
+  postComments: (postId: string) => api.get<ClassComment[]>(`/teacher/classroom/posts/${postId}/comments`).then((r) => r.data),
+  hideComment: (commentId: string) => api.put(`/teacher/classroom/comments/${commentId}/hide`),
 
   students: () =>
     api.get<ClassroomStudent[]>('/teacher/classroom/students').then((r) => r.data),
@@ -721,6 +770,40 @@ export const studentWorkspaceApi = {
       .then((r) => r.data),
 };
 
+/** Số liệu bảng điều khiển; tính từ bài làm thật, xem DashboardController. */
+export interface DashboardStats {
+  streakDays: number;
+  activity: { date: string; minutes: number }[];
+  skills: { componentCode: string; score50: number; attempts: number }[];
+}
+
+export const dashboardApi = {
+  stats: () => api.get<DashboardStats>('/me/dashboard').then((r) => r.data),
+};
+
+export interface Part4Set { id: string; title: string; questions: string[] }
+export interface MergeResult {
+  commonIdea?: string;
+  why?: string;
+  outline?: string[];
+  modelAnswer: string;
+  adaptations?: { topicId?: string; topic?: string; changes?: string[] }[];
+  usefulPhrases?: string[];
+}
+export interface SpeakingMerge { id: string; questionSetIds: string[]; result: MergeResult; createdAt: string }
+export interface SpeakingMergeOverview {
+  sets: Part4Set[];
+  quota: { limit: number; used: number; remaining: number };
+  history: SpeakingMerge[];
+}
+
+/** Công cụ gộp đề Speaking Part 4, xem SpeakingMergeService. */
+export const toolsApi = {
+  speakingMerge: () => api.get<SpeakingMergeOverview>('/tools/speaking-merge').then((r) => r.data),
+  mergeSpeaking: (questionSetIds: string[]) =>
+    api.post<SpeakingMerge>('/tools/speaking-merge', { questionSetIds }).then((r) => r.data),
+};
+
 export const studentClassroomApi = {
   mine: () => api.get<StudentClassroom[]>('/classrooms/mine').then((r) => r.data),
 
@@ -735,6 +818,10 @@ export const adminClassroomApi = {
       .then((r) => r.data),
 
   teachers: () => api.get<AdminTeacher[]>('/admin/classrooms/teachers').then((r) => r.data),
+
+  /** Mở thêm một lớp cho giáo viên đã có tài khoản (V64). */
+  createExtraClassroom: (teacherUserId: string, name: string) =>
+    api.post<CreateTeacherResult>(`/admin/classrooms/teachers/${teacherUserId}/classrooms`, { name }).then((r) => r.data),
 
   createTeacher: (body: {
     fullName: string;

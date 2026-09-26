@@ -76,14 +76,14 @@ export function ScoringConfigPage() {
     <div className="grid gap-5 xl:grid-cols-2">
       {groups.map(([componentCode, items]) => {
         const total = totals.get(componentCode) ?? 0;
-        return <section key={componentCode} className="overflow-hidden rounded-2xl border border-[#dedbd1] bg-white shadow-[0_4px_18px_rgba(31,41,35,.06)]">
-          <header className="flex items-center justify-between border-b border-[#ebe8df] bg-[#f8f7f2] px-5 py-4">
-            <div><h2 className="text-base font-bold text-stone-900">{items[0]?.componentName}</h2><p className="mt-0.5 text-xs text-stone-500">{items[0]?.includedInOverall ? 'Tính vào Overall' : 'Không tính vào Overall'}</p></div>
+        return <section key={componentCode} className="overflow-hidden rounded-2xl border border-border bg-white shadow-[0_4px_18px_rgba(15,23,42,.06)]">
+          <header className="flex items-center justify-between border-b border-border bg-surface-muted px-5 py-4">
+            <div><h2 className="text-base font-bold text-ink">{items[0]?.componentName}</h2><p className="mt-0.5 text-xs text-ink-mute">{items[0]?.includedInOverall ? 'Tính vào Overall' : 'Không tính vào Overall'}</p></div>
             <span className={`rounded-full px-3 py-1 text-sm font-bold ${Math.abs(total - 50) < .001 ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-700'}`}>{formatScore(total)} / 50</span>
           </header>
-          <div className="divide-y divide-[#efede7]">
+          <div className="divide-y divide-border">
             {items.map((rule) => <div key={rule.id} className="grid gap-3 px-5 py-4 md:grid-cols-[minmax(150px,1fr)_110px_125px_110px] md:items-end">
-              <div><p className="font-semibold text-stone-900">{rule.partName}</p><p className="mt-1 text-xs text-stone-500">{description(rule)}</p></div>
+              <div><p className="font-semibold text-ink">{rule.partName}</p><p className="mt-1 text-xs text-ink-mute">{description(rule)}</p></div>
               <NumberField label="Điểm Part" value={rule.maxScore} onChange={(value) => update(rule.id, 'maxScore', value)} />
               <NumberField label="Mỗi đáp án đúng" value={rule.pointsPerCorrect} optional onChange={(value) => update(rule.id, 'pointsPerCorrect', value)} />
               <NumberField label="Thưởng trọn bộ" value={rule.perfectBonus} onChange={(value) => update(rule.id, 'perfectBonus', value)} />
@@ -97,13 +97,13 @@ export function ScoringConfigPage() {
 }
 
 function NumberField({ label, value, optional, onChange }: { label: string; value: number | null; optional?: boolean; onChange: (value: string) => void }) {
-  return <label className="block text-xs font-semibold text-stone-600">{label}
-    <input aria-label={label} type="number" min="0" step="0.5" value={value ?? ''} placeholder={optional ? 'Rubric' : '0'} onChange={(event) => onChange(event.target.value)} className="mt-1 h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-stone-900 outline-none focus:border-brand-700 focus:ring-2 focus:ring-brand-100" />
+  return <label className="block text-xs font-semibold text-ink-mute">{label}
+    <input aria-label={label} type="number" min="0" step="0.5" value={value ?? ''} placeholder={optional ? 'Rubric' : '0'} onChange={(event) => onChange(event.target.value)} className="mt-1 h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-ink outline-none focus:border-brand-700 focus:ring-2 focus:ring-brand-100" />
   </label>;
 }
 
 function ScoreSummary({ label, value, note, valid = true }: { label: string; value: string; note: string; valid?: boolean }) {
-  return <div className="rounded-xl border border-[#dedbd1] bg-white p-4"><p className="text-xs font-semibold uppercase tracking-wide text-stone-500">{label}</p><p className={`mt-1 text-2xl font-bold ${valid ? 'text-brand-900' : 'text-red-700'}`}>{value}</p><p className="text-xs text-stone-500">{note}</p></div>;
+  return <div className="rounded-xl border border-border bg-white p-4"><p className="text-xs font-semibold uppercase tracking-wide text-ink-mute">{label}</p><p className={`mt-1 text-2xl font-bold ${valid ? 'text-brand-900' : 'text-red-700'}`}>{value}</p><p className="text-xs text-ink-mute">{note}</p></div>;
 }
 
 function formatScore(value: number) { return Number.isInteger(value) ? String(value) : value.toFixed(1); }

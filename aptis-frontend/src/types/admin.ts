@@ -34,6 +34,7 @@ export interface SaveGeminiProviderRequest {
 export type ContentStatus =
   | 'DRAFT'
   | 'IN_REVIEW'
+  | 'APPROVED'
   | 'CHANGES_REQUESTED'
   | 'PUBLISHED'
   | 'SUSPENDED'

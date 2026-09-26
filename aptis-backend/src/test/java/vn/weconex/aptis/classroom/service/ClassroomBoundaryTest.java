@@ -8,6 +8,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -67,7 +68,7 @@ class ClassroomBoundaryTest {
     @DisplayName("Giáo viên chỉ lấy được lớp của chính mình")
     void teacherGetsOnlyOwnClassroom() {
         Classroom lopA = classroomOf(teacherA, "AAA111");
-        when(classroomRepository.findByTeacherUserId(teacherA)).thenReturn(Optional.of(lopA));
+        when(classroomRepository.findByTeacherUserIdOrderByCreatedAtAsc(teacherA)).thenReturn(List.of(lopA));
 
         Classroom result = service.requireOwnedClassroom(teacherA);
 
@@ -77,7 +78,7 @@ class ClassroomBoundaryTest {
     @Test
     @DisplayName("Giáo viên chưa có lớp thì báo lỗi, không trả lớp người khác")
     void teacherWithoutClassroomFails() {
-        when(classroomRepository.findByTeacherUserId(teacherB)).thenReturn(Optional.empty());
+        when(classroomRepository.findByTeacherUserIdOrderByCreatedAtAsc(teacherB)).thenReturn(List.of());
 
         assertThatThrownBy(() -> service.requireOwnedClassroom(teacherB))
                 .isInstanceOf(ApiException.class)
@@ -195,7 +196,7 @@ class ClassroomBoundaryTest {
     @DisplayName("Mỗi giáo viên chỉ một lớp — gọi tạo lần hai trả lớp cũ")
     void createIsIdempotent() {
         Classroom existing = classroomOf(teacherA, "AAA111");
-        when(classroomRepository.findByTeacherUserId(teacherA)).thenReturn(Optional.of(existing));
+        when(classroomRepository.findByTeacherUserIdOrderByCreatedAtAsc(teacherA)).thenReturn(List.of(existing));
 
         Classroom result = service.createForTeacher(teacherA, "Lớp mới toanh");
 

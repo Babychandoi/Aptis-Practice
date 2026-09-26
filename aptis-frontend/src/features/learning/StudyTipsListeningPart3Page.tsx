@@ -80,7 +80,7 @@ export function StudyTipsListeningPart3Page() {
         </p>
       </header>
 
-      <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+      <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
         <h2 className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
           Quy tắc mã hóa
         </h2>
@@ -107,7 +107,7 @@ export function StudyTipsListeningPart3Page() {
         </div>
       </section>
 
-      <section className="rounded-xl border border-[#dfe5dd] bg-white">
+      <section className="rounded-xl border border-[#E5E9F0] bg-white">
         <header className="flex flex-wrap items-center justify-between gap-3 border-b border-[#eee9dc] px-5 py-4">
           <div>
             <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
@@ -122,7 +122,7 @@ export function StudyTipsListeningPart3Page() {
               value={keyword}
               onChange={(event) => setKeyword(event.target.value)}
               placeholder="Tìm chủ đề hoặc mã…"
-              className="w-56 rounded-lg border border-[#ded5c2] px-3 py-2 text-xs"
+              className="w-56 rounded-lg border border-[#E5E9F0] px-3 py-2 text-xs"
             />
           </label>
         </header>
@@ -183,7 +183,7 @@ function TopicRow({
           type="button"
           onClick={onToggle}
           aria-expanded={expanded}
-          className="shrink-0 rounded-lg border border-[#ded5c2] px-3 py-1.5 text-[11px] font-semibold text-stone-700 hover:border-brand-400"
+          className="shrink-0 rounded-lg border border-[#E5E9F0] px-3 py-1.5 text-[11px] font-semibold text-stone-700 hover:border-brand-400"
         >
           {expanded ? 'Thu gọn ▲' : 'Xem mẹo ▼'}
         </button>
@@ -191,7 +191,7 @@ function TopicRow({
 
       {expanded && (
         <div className="mt-2.5 space-y-2 pl-9">
-          <p className="rounded-lg bg-[#eaf4ef] px-3 py-2 text-xs leading-5 text-brand-900">
+          <p className="rounded-lg bg-[#F1F5F9] px-3 py-2 text-xs leading-5 text-brand-900">
             Theo đúng thứ tự câu hỏi trong Part bank: {entry.code.split('').join(' ')}. Quy ước
             1 = Nam, 2 = Nữ, 0 = Cả hai; không đảo mã theo người bắt đầu hội thoại.
           </p>

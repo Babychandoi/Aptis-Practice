@@ -64,7 +64,9 @@ public class StudentClassroomController {
                     classroom.getSupportFacebook(),
                     classroom.getSupportGroup(),
                     classroom.getSupportNote(),
-                    !classroom.isUsable());
+                    !classroom.isUsable(),
+                    false,
+                    classroom.getScheduleNote());
         }).toList();
     }
 
@@ -81,10 +83,9 @@ public class StudentClassroomController {
         String userId = currentUser.requireUserId();
         ClassroomMember member = classroomService.join(userId, request.joinCode());
 
-        Classroom classroom = classroomService.classroomsOfStudent(userId).stream()
-                .filter(c -> c.getId().equals(member.getClassroomId()))
-                .findFirst()
-                .orElseThrow();
+        // Lấy lớp theo id chứ không lọc trong lớp đang học: lớp bật duyệt thì
+        // học viên mới ở trạng thái chờ, chưa nằm trong danh sách đó.
+        Classroom classroom = classroomService.classroomById(member.getClassroomId());
 
         String teacherName = namesById(List.of(classroom.getTeacherUserId()))
                 .getOrDefault(classroom.getTeacherUserId(), "Giáo viên");
@@ -103,7 +104,9 @@ public class StudentClassroomController {
                 classroom.getSupportFacebook(),
                 classroom.getSupportGroup(),
                 classroom.getSupportNote(),
-                !classroom.isUsable());
+                !classroom.isUsable(),
+                member.getStatus() == ClassroomMember.MemberStatus.PENDING,
+                classroom.getScheduleNote());
     }
 
     private Map<String, String> namesById(List<String> ids) {

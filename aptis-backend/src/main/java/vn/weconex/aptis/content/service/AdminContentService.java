@@ -181,6 +181,38 @@ public class AdminContentService {
         return questionSet;
     }
 
+    /** Số đề theo từng trạng thái; trạng thái không có đề nào vẫn trả 0. */
+    @Transactional(readOnly = true)
+    public Map<ContentStatus, Long> statusCounts(String partId) {
+        Map<ContentStatus, Long> counts = new java.util.EnumMap<>(ContentStatus.class);
+        for (ContentStatus status : ContentStatus.values()) {
+            counts.put(status, 0L);
+        }
+        for (Object[] row : questionSetRepository.countByStatus(partId)) {
+            counts.put((ContentStatus) row[0], ((Number) row[1]).longValue());
+        }
+        return counts;
+    }
+
+    /**
+     * Biên tập viên duyệt nội dung: IN_REVIEW → APPROVED, chờ phát hành.
+     *
+     * <p>Ghi người duyệt để trang ngân hàng câu hỏi biết ai đã chịu trách nhiệm
+     * nội dung trước khi nó ra tới học viên.
+     */
+    @Transactional
+    public QuestionSet approve(String actorId, String questionSetId, String note) {
+        QuestionSet questionSet = require(questionSetId);
+        transition(questionSet, ContentStatus.APPROVED);
+        questionSet.setApprovedBy(actorId);
+        questionSet.setApprovedAt(java.time.Instant.now());
+        questionSet.setUpdatedBy(actorId);
+
+        auditService.record(actorId, "QUESTION_SET_APPROVE", "QUESTION_SET", questionSetId,
+                null, Map.of("note", note == null ? "" : note));
+        return questionSet;
+    }
+
     /**
      * Trả về DRAFT khi reviewer yêu cầu sửa.
      */

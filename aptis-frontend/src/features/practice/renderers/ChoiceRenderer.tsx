@@ -62,7 +62,7 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
                   dungNhungBoTrong && 'bg-emerald-100 text-emerald-800',
                   !showAnswer && selected && 'bg-brand-800 text-white',
                   !chonDung && !isWrongPick && !dungNhungBoTrong
-                    && !(!showAnswer && selected) && 'bg-[#fde7b8] text-[#a76b12]',
+                    && !(!showAnswer && selected) && 'bg-[#F1F5F9] text-[#334155]',
                 )}
               >
                 {option.code}
@@ -112,7 +112,7 @@ export function SingleChoiceSelectRenderer({ item, draft, disabled, showAnswer, 
         onChange={(event) => onChange({ selectedOptionId: event.target.value })}
         className={clsx(
           'min-h-11 w-full rounded-lg border bg-white px-3 py-2 text-xs outline-none transition sm:text-[13px]',
-          !showAnswer && 'border-[#d9cdb4] focus:border-brand-700 focus:ring-2 focus:ring-brand-100',
+          !showAnswer && 'border-[#E2E8F0] focus:border-brand-700 focus:ring-2 focus:ring-brand-100',
           showAnswer && selectedId === correctId && 'border-emerald-400 bg-emerald-50 text-emerald-900',
           selectedIsWrong && 'border-red-400 bg-red-50 text-red-900',
         selectedIsBlank && 'border-amber-300 bg-amber-50/50',
@@ -179,7 +179,7 @@ export function MultipleChoiceRenderer({
               onChange={() => toggle(option.id)}
               className="sr-only"
             />
-            {option.code && <span className={clsx('grid h-6 min-w-6 shrink-0 place-items-center rounded-md px-1 text-[11px] font-semibold', selected ? 'bg-brand-800 text-white' : 'bg-[#fde7b8] text-[#a76b12]')}>{option.code}</span>}
+            {option.code && <span className={clsx('grid h-6 min-w-6 shrink-0 place-items-center rounded-md px-1 text-[11px] font-semibold', selected ? 'bg-brand-800 text-white' : 'bg-[#F1F5F9] text-[#334155]')}>{option.code}</span>}
             <span className="text-xs leading-5 sm:text-[13px]">
               {option.content}
             </span>

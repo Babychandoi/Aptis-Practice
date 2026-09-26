@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -57,7 +58,7 @@ class ClassroomExpiryTest {
         c.setName("Lớp thử");
         c.setJoinCode("ABC123");
         c.setExpiresAt(expiresAt);
-        when(classroomRepository.findByTeacherUserId(teacherId)).thenReturn(Optional.of(c));
+        when(classroomRepository.findByTeacherUserIdOrderByCreatedAtAsc(teacherId)).thenReturn(List.of(c));
         when(classroomRepository.findById(classroomId)).thenReturn(Optional.of(c));
         return c;
     }

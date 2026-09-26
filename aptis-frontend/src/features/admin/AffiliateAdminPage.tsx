@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
 import { adminAffiliateApi } from '@/api/endpoints';
@@ -9,6 +9,7 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatCurrency, formatDateTime } from '@/lib/format';
 import { useEscapeKey } from '@/lib/useEscapeKey';
 import { usePermission } from '@/features/admin/usePermission';
+import { StatusTiles } from './components/AdminUi';
 import type {
   AdminAffiliateRow,
   AffiliatePayoutStatus,
@@ -37,8 +38,8 @@ export function AffiliateAdminPage() {
   return (
     <div className="space-y-5">
       <header>
-        <h1 className="text-xl font-bold text-slate-900">Giới thiệu &amp; hoa hồng</h1>
-        <p className="mt-0.5 text-sm text-slate-500">
+        <h1 className="text-xl font-bold text-ink">Giới thiệu &amp; hoa hồng</h1>
+        <p className="mt-0.5 text-sm text-ink-mute">
           Duyệt yêu cầu rút tiền và theo dõi hiệu quả chương trình giới thiệu.
         </p>
       </header>
@@ -89,7 +90,7 @@ export function AffiliateAdminPage() {
               'rounded-xl border px-3.5 py-2 text-sm font-semibold transition-colors',
               tab === key
                 ? 'border-transparent bg-brand-700 text-white'
-                : 'border-border bg-white text-slate-700 hover:bg-surface',
+                : 'border-border bg-white text-ink-soft hover:bg-surface',
             )}
           >
             {label}
@@ -104,6 +105,14 @@ export function AffiliateAdminPage() {
   );
 }
 
+/** Ô đếm yêu cầu rút tiền theo trạng thái; bấm lại ô đang chọn để xem tất cả. */
+const PAYOUT_TILES: { value: string; label: string; hint: string }[] = [
+  { value: 'REQUESTED', label: 'Chờ duyệt', hint: 'Cần xem và quyết định' },
+  { value: 'APPROVED', label: 'Đã duyệt', hint: 'Chờ chuyển tiền' },
+  { value: 'PAID', label: 'Đã chuyển', hint: 'Hoàn tất' },
+  { value: 'REJECTED', label: 'Từ chối', hint: 'Không chi trả' },
+];
+
 /** Hàng đợi duyệt rút tiền. */
 function PayoutQueue({ canManage }: { canManage: boolean }) {
   const queryClient = useQueryClient();
@@ -114,6 +123,16 @@ function PayoutQueue({ canManage }: { canManage: boolean }) {
     queryKey: ['admin', 'affiliate', 'payouts', status],
     queryFn: () => adminAffiliateApi.payouts({ status: status || undefined }),
   });
+  // Số đếm: cùng endpoint danh sách, lọc trạng thái, size=1, đọc totalElements.
+  const countQueries = useQueries({
+    queries: PAYOUT_TILES.map((tile) => ({
+      queryKey: ['admin', 'affiliate', 'payouts', 'count', tile.value],
+      queryFn: () => adminAffiliateApi.payouts({ status: tile.value, page: 0, size: 1 }),
+    })),
+  });
+  const counts = Object.fromEntries(
+    PAYOUT_TILES.map((tile, index) => [tile.value, countQueries[index]?.data?.totalElements]),
+  ) as Partial<Record<string, number>>;
 
   const act = useMutation({
     mutationFn: ({ id, action, note }: { id: string; action: string; note?: string }) => {
@@ -131,29 +150,7 @@ function PayoutQueue({ canManage }: { canManage: boolean }) {
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap gap-2">
-        {[
-          ['REQUESTED', 'Chờ duyệt'],
-          ['APPROVED', 'Đã duyệt'],
-          ['PAID', 'Đã chuyển'],
-          ['REJECTED', 'Từ chối'],
-          ['', 'Tất cả'],
-        ].map(([value, label]) => (
-          <button
-            key={label}
-            type="button"
-            onClick={() => setStatus(value ?? '')}
-            className={clsx(
-              'rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition-colors',
-              status === value
-                ? 'border-brand-600 bg-brand-50 text-brand-800'
-                : 'border-border bg-white text-slate-600 hover:bg-surface',
-            )}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <StatusTiles tiles={PAYOUT_TILES} counts={counts} active={status} onPick={setStatus} />
 
       {error && (
         <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -166,7 +163,7 @@ function PayoutQueue({ canManage }: { canManage: boolean }) {
       ) : query.error ? (
         <ErrorBlock message="Không tải được danh sách" onRetry={() => void query.refetch()} />
       ) : query.data.content.length === 0 ? (
-        <p className="card text-center text-sm text-slate-500">Không có yêu cầu nào.</p>
+        <p className="card text-center text-sm text-ink-mute">Không có yêu cầu nào.</p>
       ) : (
         <div className="space-y-2.5">
           {query.data.content.map((payout) => {
@@ -179,7 +176,7 @@ function PayoutQueue({ canManage }: { canManage: boolean }) {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-lg font-bold text-slate-900">
+                      <span className="text-lg font-bold text-ink">
                         {formatCurrency(payout.amount)}
                       </span>
                       <span
@@ -190,26 +187,26 @@ function PayoutQueue({ canManage }: { canManage: boolean }) {
                       >
                         {meta.label}
                       </span>
-                      <span className="font-mono text-[11px] text-slate-400">
+                      <span className="font-mono text-[11px] text-ink-faint">
                         {payout.commissionCount} khoản
                       </span>
                     </div>
-                    <p className="mt-1 text-sm font-semibold text-slate-800">
+                    <p className="mt-1 text-sm font-semibold text-ink-soft">
                       {payout.userName || 'Học viên'}{' '}
-                      <span className="font-mono text-xs font-normal text-slate-500">
+                      <span className="font-mono text-xs font-normal text-ink-mute">
                         {payout.userEmail}
                       </span>
                     </p>
-                    <p className="mt-1.5 rounded-lg bg-surface px-2.5 py-1.5 font-mono text-xs text-slate-700">
+                    <p className="mt-1.5 rounded-lg bg-surface px-2.5 py-1.5 font-mono text-xs text-ink-soft">
                       {payout.bankName} · {payout.bankAccountNumber} · {payout.bankAccountName}
                     </p>
                     {payout.note && (
-                      <p className="mt-1 text-xs text-slate-500">Ghi chú: {payout.note}</p>
+                      <p className="mt-1 text-xs text-ink-mute">Ghi chú: {payout.note}</p>
                     )}
                     {payout.adminNote && (
-                      <p className="mt-1 text-xs text-slate-500">Admin: {payout.adminNote}</p>
+                      <p className="mt-1 text-xs text-ink-mute">Admin: {payout.adminNote}</p>
                     )}
-                    <p className="mt-1 text-[11px] text-slate-400">
+                    <p className="mt-1 text-[11px] text-ink-faint">
                       Gửi {formatDateTime(payout.createdAt)}
                       {payout.reviewedAt && ` · Duyệt ${formatDateTime(payout.reviewedAt)}`}
                       {payout.paidAt && ` · Chuyển ${formatDateTime(payout.paidAt)}`}
@@ -333,7 +330,7 @@ function AccountTable({ canManage }: { canManage: boolean }) {
 
   const toolbar = (
     <div className="flex flex-wrap items-center justify-between gap-2">
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-ink-mute">
         Người đã mua hoặc được cấp Premium tay đều được cấp mã; tài khoản dùng thử thì không.
       </p>
       <div className="flex items-center gap-2">
@@ -342,7 +339,7 @@ function AccountTable({ canManage }: { canManage: boolean }) {
           type="button"
           disabled={backfill.isPending}
           onClick={() => backfill.mutate()}
-          className="rounded-xl border border-border bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-surface disabled:opacity-60"
+          className="rounded-xl border border-border bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft transition-colors hover:bg-surface disabled:opacity-60"
         >
           {backfill.isPending ? 'Đang cấp…' : 'Cấp mã cho người đủ điều kiện'}
         </button>
@@ -358,7 +355,7 @@ function AccountTable({ canManage }: { canManage: boolean }) {
     return (
       <div className="space-y-3">
         {toolbar}
-        <p className="card text-center text-sm text-slate-500">Chưa có ai được cấp mã.</p>
+        <p className="card text-center text-sm text-ink-mute">Chưa có ai được cấp mã.</p>
       </div>
     );
   }
@@ -374,7 +371,7 @@ function AccountTable({ canManage }: { canManage: boolean }) {
               (header) => (
                 <th
                   key={header}
-                  className="px-3 py-2 text-left font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500"
+                  className="px-3 py-2 text-left font-mono text-[10px] font-bold uppercase tracking-wider text-ink-mute"
                 >
                   {header}
                 </th>
@@ -386,14 +383,14 @@ function AccountTable({ canManage }: { canManage: boolean }) {
           {query.data.content.map((row) => (
             <tr key={row.userId} className="border-t border-border">
               <td className="px-3 py-2.5">
-                <p className="font-semibold text-slate-900">{row.userName || 'Học viên'}</p>
-                <p className="font-mono text-[11px] text-slate-500">{row.userEmail}</p>
+                <p className="font-semibold text-ink">{row.userName || 'Học viên'}</p>
+                <p className="font-mono text-[11px] text-ink-mute">{row.userEmail}</p>
               </td>
-              <td className="px-3 py-2.5 font-mono text-xs font-bold tracking-wider text-slate-800">
+              <td className="px-3 py-2.5 font-mono text-xs font-bold tracking-wider text-ink-soft">
                 {row.code}
               </td>
               <td className="px-3 py-2.5">
-                <span className="font-semibold text-slate-900">
+                <span className="font-semibold text-ink">
                   {row.effectiveCommissionPercent}% / {row.effectiveDiscountPercent}%
                 </span>
                 {/* Chỉ đánh dấu dòng có thoả thuận riêng — dòng theo mức chung
@@ -407,12 +404,12 @@ function AccountTable({ canManage }: { canManage: boolean }) {
                   </span>
                 )}
               </td>
-              <td className="px-3 py-2.5 text-slate-700">{row.referralCount}</td>
-              <td className="px-3 py-2.5 text-slate-700">{row.paidOrderCount}</td>
-              <td className="px-3 py-2.5 font-semibold text-slate-900">
+              <td className="px-3 py-2.5 text-ink-soft">{row.referralCount}</td>
+              <td className="px-3 py-2.5 text-ink-soft">{row.paidOrderCount}</td>
+              <td className="px-3 py-2.5 font-semibold text-ink">
                 {formatCurrency(row.totalEarned)}
               </td>
-              <td className="px-3 py-2.5 text-slate-600">{formatCurrency(row.totalPaid)}</td>
+              <td className="px-3 py-2.5 text-ink-mute">{formatCurrency(row.totalPaid)}</td>
               <td className="px-3 py-2.5 font-bold text-emerald-700">
                 {formatCurrency(row.availableAmount)}
               </td>
@@ -488,8 +485,8 @@ function RateDialog({ row, onClose }: { row: AdminAffiliateRow; onClose: () => v
         role="dialog"
         aria-modal="true"
       >
-        <h2 className="text-base font-bold text-slate-900">Mức riêng cho người này</h2>
-        <p className="mt-0.5 text-xs text-slate-500">
+        <h2 className="text-base font-bold text-ink">Mức riêng cho người này</h2>
+        <p className="mt-0.5 text-xs text-ink-mute">
           {row.userName || 'Học viên'} · <span className="font-mono">{row.userEmail}</span>
         </p>
 
@@ -506,7 +503,7 @@ function RateDialog({ row, onClose }: { row: AdminAffiliateRow; onClose: () => v
           }}
         >
           <label className="block">
-            <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+            <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-ink-mute">
               Hoa hồng người này nhận (%)
             </span>
             <input
@@ -519,7 +516,7 @@ function RateDialog({ row, onClose }: { row: AdminAffiliateRow; onClose: () => v
           </label>
 
           <label className="block">
-            <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+            <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-ink-mute">
               Giảm giá cho người nhập mã (%)
             </span>
             <input
@@ -532,7 +529,7 @@ function RateDialog({ row, onClose }: { row: AdminAffiliateRow; onClose: () => v
           </label>
 
           <label className="block">
-            <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+            <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-ink-mute">
               Ghi chú
             </span>
             <input
@@ -543,7 +540,7 @@ function RateDialog({ row, onClose }: { row: AdminAffiliateRow; onClose: () => v
             />
           </label>
 
-          <p className="rounded-xl bg-surface-paper px-3 py-2 text-[11px] leading-5 text-slate-600">
+          <p className="rounded-xl bg-surface-paper px-3 py-2 text-[11px] leading-5 text-ink-mute">
             Để trống một ô là người này theo tỉ lệ chung ở ô đó. Điền 0 thì đúng là 0% — khác với
             để trống. Mức mới chỉ áp cho đơn phát sinh sau khi lưu; hoa hồng đã ghi nhận giữ
             nguyên tỉ lệ cũ.
@@ -559,7 +556,7 @@ function RateDialog({ row, onClose }: { row: AdminAffiliateRow; onClose: () => v
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-xl border border-border py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-surface"
+              className="flex-1 rounded-xl border border-border py-2.5 text-sm font-semibold text-ink-soft transition-colors hover:bg-surface"
             >
               Hủy
             </button>
@@ -713,7 +710,7 @@ function NumberField({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold text-slate-600">{label}</span>
+      <span className="mb-1 block text-xs font-semibold text-ink-mute">{label}</span>
       <input
         type="number"
         value={value}
@@ -723,7 +720,7 @@ function NumberField({
         onChange={(event) => onChange(Number(event.target.value))}
         className="w-full rounded-xl border border-border px-3 py-2 text-sm outline-none focus:border-brand-500 disabled:bg-surface"
       />
-      {hint && <span className="mt-1 block text-[11px] text-slate-500">{hint}</span>}
+      {hint && <span className="mt-1 block text-[11px] text-ink-mute">{hint}</span>}
     </label>
   );
 }
@@ -751,8 +748,8 @@ function Toggle({
         className="mt-0.5 h-4 w-4 shrink-0 rounded border-border"
       />
       <span className="min-w-0">
-        <span className="block text-sm font-semibold text-slate-800">{label}</span>
-        {hint && <span className="block text-[11px] leading-4 text-slate-500">{hint}</span>}
+        <span className="block text-sm font-semibold text-ink-soft">{label}</span>
+        {hint && <span className="block text-[11px] leading-4 text-ink-mute">{hint}</span>}
       </span>
     </label>
   );
@@ -776,18 +773,18 @@ function Stat({
         highlight ? 'border-amber-300 bg-amber-50/70' : 'border-border bg-white',
       )}
     >
-      <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500">
+      <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-ink-mute">
         {label}
       </p>
       <p
         className={clsx(
           'mt-1 text-xl font-bold',
-          highlight ? 'text-amber-800' : 'text-slate-900',
+          highlight ? 'text-amber-800' : 'text-ink',
         )}
       >
         {value}
       </p>
-      {hint && <p className="mt-0.5 text-[11px] leading-4 text-slate-500">{hint}</p>}
+      {hint && <p className="mt-0.5 text-[11px] leading-4 text-ink-mute">{hint}</p>}
     </div>
   );
 }

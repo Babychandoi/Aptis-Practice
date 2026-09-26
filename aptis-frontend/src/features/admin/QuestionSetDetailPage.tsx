@@ -129,12 +129,14 @@ export function QuestionSetDetailPage() {
 
   const showSubmit =
     canWrite && (status === 'DRAFT' || status === 'CHANGES_REQUESTED');
-  const showRequestChanges = canReview && status === 'IN_REVIEW';
-  const showPublish = canPublish && status === 'IN_REVIEW';
+  // Quy trình 4 bước theo mock: Nháp → Chờ duyệt → Đã duyệt → Phát hành.
+  const showApprove = canReview && status === 'IN_REVIEW';
+  const showRequestChanges = canReview && (status === 'IN_REVIEW' || status === 'APPROVED');
+  const showPublish = canPublish && (status === 'IN_REVIEW' || status === 'APPROVED');
   const showSuspend = canPublish && status === 'PUBLISHED';
   const showArchive = canArchive && status !== 'PUBLISHED';
   const hasAnyAction =
-    showSubmit || showRequestChanges || showPublish || showSuspend || showArchive;
+    showSubmit || showApprove || showRequestChanges || showPublish || showSuspend || showArchive;
   // Hai hành động này bắt buộc nêu lý do, dùng chung một ô nhập
   const needsReason = showRequestChanges || showSuspend;
   const trimmedReason = reason.trim();
@@ -171,7 +173,7 @@ export function QuestionSetDetailPage() {
       <section className="card mb-4">
         <div className="mb-3 flex items-center gap-2">
           <StatusBadge status={status} />
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-ink-mute">
             Bản hiện tại: {questionSet.currentRevision}
           </span>
         </div>
@@ -200,7 +202,7 @@ export function QuestionSetDetailPage() {
 
       {hasAnyAction && (
         <section className="card mb-4">
-          <h2 className="mb-3 text-sm font-semibold text-slate-900">Hành động</h2>
+          <h2 className="mb-3 text-sm font-semibold text-ink">Hành động</h2>
 
           {needsReason && (
             <div className="mb-3">
@@ -232,6 +234,22 @@ export function QuestionSetDetailPage() {
                 }
               >
                 Gửi duyệt
+              </button>
+            )}
+
+            {showApprove && (
+              <button
+                type="button"
+                className="btn-primary"
+                disabled={busy}
+                onClick={() =>
+                  runAction.mutate({
+                    run: () => adminContentApi.approve(id),
+                    successMessage: 'Đã duyệt nội dung, chờ phát hành.',
+                  })
+                }
+              >
+                Duyệt
               </button>
             )}
 
@@ -301,7 +319,7 @@ export function QuestionSetDetailPage() {
           </div>
 
           {needsReason && trimmedReason === '' && (
-            <p className="mt-2 text-xs text-slate-500">
+            <p className="mt-2 text-xs text-ink-mute">
               Cần nhập lý do trước khi yêu cầu sửa hoặc tạm ẩn.
             </p>
           )}
@@ -310,10 +328,10 @@ export function QuestionSetDetailPage() {
 
       <section className="card mb-4">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <div><h2 className="text-sm font-semibold text-slate-900">Câu hỏi, lựa chọn và đáp án</h2><p className="mt-0.5 text-xs text-slate-500">Nội dung đầy đủ của đề theo thứ tự học viên sẽ làm</p></div>
+          <div><h2 className="text-sm font-semibold text-ink">Câu hỏi, lựa chọn và đáp án</h2><p className="mt-0.5 text-xs text-ink-mute">Nội dung đầy đủ của đề theo thứ tự học viên sẽ làm</p></div>
 
           {canWrite && (
-            <label className="flex items-center gap-2 text-sm text-slate-600">
+            <label className="flex items-center gap-2 text-sm text-ink-mute">
               <input
                 type="checkbox"
                 className="h-4 w-4 rounded border-slate-300 text-brand-600"
@@ -346,7 +364,7 @@ export function QuestionSetDetailPage() {
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-semibold text-slate-900">Lịch sử phiên bản</h2>
+        <h2 className="mb-2 text-sm font-semibold text-ink">Lịch sử phiên bản</h2>
 
         {revisionsQuery.isPending ? (
           <LoadingBlock label="Đang tải lịch sử phiên bản…" />
@@ -367,16 +385,16 @@ export function QuestionSetDetailPage() {
           >
             {revisionsQuery.data.map((revision) => (
               <tr key={revision.revision}>
-                <td className="whitespace-nowrap px-4 py-2.5 font-medium text-slate-900">
+                <td className="whitespace-nowrap px-4 py-2.5 font-medium text-ink">
                   {revision.revision}
                 </td>
-                <td className="px-4 py-2.5 text-slate-600">
+                <td className="px-4 py-2.5 text-ink-mute">
                   {revision.changeSummary ?? '—'}
                 </td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-slate-600">
+                <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                   {revision.createdBy ?? '—'}
                 </td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
+                <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                   {formatDateTime(revision.createdAt)}
                 </td>
               </tr>
@@ -399,16 +417,16 @@ export function QuestionSetPreview({ content, revision, showAnswers, hideHeader 
   const images = content.assets.filter((asset) => asset.role.includes('IMAGE'));
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-stone-200 bg-stone-50">
+    <div className="overflow-hidden rounded-2xl border border-border bg-surface-muted">
       {hideHeader ? (
         // Chỉ giữ một dải mỏng: tiêu đề đã nằm ở thanh trên popup, lặp lại thì
         // riêng phần đầu đã chiếm hết màn hình, phải cuộn mới thấy câu hỏi.
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-200 bg-white px-4 py-2 sm:px-6">
-          <p className="text-xs text-stone-500">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-white px-4 py-2 sm:px-6">
+          <p className="text-xs text-ink-mute">
             Phiên bản {revision} · {content.items.length} câu hỏi ·{' '}
             {content.taskTypeCode.replaceAll('_', ' ')}
           </p>
-          <span className="rounded-full bg-stone-100 px-2.5 py-1 text-[11px] font-semibold text-stone-600">
+          <span className="rounded-full bg-surface-muted px-2.5 py-1 text-[11px] font-semibold text-ink-mute">
             {showAnswers ? 'Đang hiện đáp án' : 'Giao diện học viên'}
           </span>
         </div>
@@ -450,14 +468,14 @@ export function QuestionSetPreview({ content, revision, showAnswers, hideHeader 
         )}
 
         {content.stimulus?.value && (
-          <div className="rounded-xl border border-stone-200 bg-white p-4 sm:p-5">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500">Ngữ liệu chung</p>
-            <RichContentBlock content={content.stimulus} className="text-sm leading-7 text-stone-800" />
+          <div className="rounded-xl border border-border bg-white p-4 sm:p-5">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-mute">Ngữ liệu chung</p>
+            <RichContentBlock content={content.stimulus} className="text-sm leading-7 text-ink-soft" />
           </div>
         )}
 
         {content.items.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-stone-300 bg-white px-4 py-10 text-center text-sm text-stone-500">
+          <div className="rounded-xl border border-dashed border-border-strong bg-white px-4 py-10 text-center text-sm text-ink-mute">
             Bộ câu hỏi này chưa có câu nào.
           </div>
         ) : (
@@ -465,12 +483,12 @@ export function QuestionSetPreview({ content, revision, showAnswers, hideHeader 
             {content.items.map((item) => {
               const itemAudio = content.assets.filter((asset) => asset.role === `ITEM_AUDIO:${item.id}`);
               return (
-                <article key={item.id} className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm sm:p-5">
-                  <div className="mb-4 flex items-center justify-between gap-3 border-b border-stone-100 pb-3">
+                <article key={item.id} className="rounded-xl border border-border bg-white p-4 shadow-sm sm:p-5">
+                  <div className="mb-4 flex items-center justify-between gap-3 border-b border-border-subtle pb-3">
                     <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-sm font-bold text-brand-700">
                       {item.sequenceNo}
                     </span>
-                    <span className="text-xs text-stone-500">{item.maxScore} điểm</span>
+                    <span className="text-xs text-ink-mute">{item.maxScore} điểm</span>
                   </div>
 
                   {itemAudio.length > 0 && (
@@ -478,7 +496,7 @@ export function QuestionSetPreview({ content, revision, showAnswers, hideHeader 
                   )}
 
                   {item.prompt?.value && (
-                    <RichContentBlock content={item.prompt} className="mb-4 text-base font-medium leading-7 text-stone-900" />
+                    <RichContentBlock content={item.prompt} className="mb-4 text-base font-medium leading-7 text-ink" />
                   )}
 
                   <ItemRenderer
@@ -548,9 +566,9 @@ function PreviewImage({ asset }: { asset: AssetRef }) {
     staleTime: 5 * 60 * 1000,
   });
 
-  if (imageQuery.isPending) return <div className="h-48 animate-pulse rounded-xl bg-stone-200" />;
+  if (imageQuery.isPending) return <div className="h-48 animate-pulse rounded-xl bg-slate-200" />;
   if (!imageQuery.data?.signedUrl) return null;
-  return <img src={imageQuery.data.signedUrl} alt="Tài liệu minh họa của bộ câu hỏi" className="max-h-96 w-full rounded-xl border border-stone-200 bg-white object-contain" />;
+  return <img src={imageQuery.data.signedUrl} alt="Tài liệu minh họa của bộ câu hỏi" className="max-h-96 w-full rounded-xl border border-border bg-white object-contain" />;
 }
 
 function Field({
@@ -564,12 +582,12 @@ function Field({
 }) {
   return (
     <div>
-      <dt className="text-xs uppercase tracking-wide text-slate-400">{label}</dt>
+      <dt className="text-xs uppercase tracking-wide text-ink-faint">{label}</dt>
       <dd
         className={
           mono
-            ? 'mt-0.5 font-mono text-sm text-slate-800'
-            : 'mt-0.5 text-sm text-slate-800'
+            ? 'mt-0.5 font-mono text-sm text-ink-soft'
+            : 'mt-0.5 text-sm text-ink-soft'
         }
       >
         {value}

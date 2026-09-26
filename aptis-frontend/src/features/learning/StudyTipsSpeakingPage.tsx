@@ -48,7 +48,7 @@ export function StudyTipsSpeakingPage() {
               'rounded-lg border px-4 py-2 text-sm font-semibold transition',
               section.key === active?.key
                 ? 'border-brand-800 bg-brand-800 text-white'
-                : 'border-[#ded5c2] bg-white text-stone-700 hover:border-brand-400',
+                : 'border-[#E5E9F0] bg-white text-stone-700 hover:border-brand-400',
             )}
           >
             {section.label}
@@ -92,7 +92,7 @@ function TopicLibrary({
     : library.entries;
 
   return (
-    <section className="rounded-xl border border-[#dfe5dd] bg-white">
+    <section className="rounded-xl border border-[#E5E9F0] bg-white">
       <header className="border-b border-[#eee9dc] px-5 py-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
@@ -115,7 +115,7 @@ function TopicLibrary({
               value={keyword}
               onChange={(event) => setKeyword(event.target.value)}
               placeholder="Ví dụ: job interview, teamwork, travel…"
-              className="w-72 rounded-lg border border-[#ded5c2] px-3 py-2 text-xs"
+              className="w-72 rounded-lg border border-[#E5E9F0] px-3 py-2 text-xs"
             />
           </label>
           <span aria-live="polite" className="text-[11px] text-stone-500">
@@ -157,14 +157,14 @@ function TopicLibrary({
                       ))}
                     </span>
                   </span>
-                  <span className="shrink-0 rounded-lg border border-[#ded5c2] px-3 py-1.5 text-[11px] font-semibold text-stone-700">
+                  <span className="shrink-0 rounded-lg border border-[#E5E9F0] px-3 py-1.5 text-[11px] font-semibold text-stone-700">
                     {expanded ? 'Thu gọn ▲' : 'Xem bài ▼'}
                   </span>
                 </button>
 
                 {expanded && (
                   <div className="mt-2.5 space-y-2 pl-9">
-                    <p className="rounded-lg bg-[#fdf9ef] px-3 py-2 text-xs leading-5 text-[#6f5716]">
+                    <p className="rounded-lg bg-[#FAFBFC] px-3 py-2 text-xs leading-5 text-[#6f5716]">
                       <strong>Cách học:</strong> đánh dấu bối cảnh, diễn biến, cảm xúc và bài học.
                       Sau đó kể lại bằng chi tiết của riêng bạn.
                     </p>
@@ -190,7 +190,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
   return (
     <div className="space-y-3">
       <section className="grid gap-3 lg:grid-cols-[1.7fr_1fr]">
-        <div className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <div className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
             {section.eyebrow}
           </span>
@@ -201,7 +201,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
         </div>
 
         {section.principle && (
-          <aside className="rounded-xl border border-[#e6dcc4] bg-[#fdf9ef] p-5">
+          <aside className="rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] p-5">
             <span className="text-[10px] font-semibold uppercase tracking-wide text-[#6f5716]">
               {section.principle.label}
             </span>
@@ -213,7 +213,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
         )}
 
         {section.badge && (
-          <aside className="flex items-center justify-around gap-3 rounded-xl border border-[#dfe5dd] bg-white p-5 text-center">
+          <aside className="flex items-center justify-around gap-3 rounded-xl border border-[#E5E9F0] bg-white p-5 text-center">
             {(Array.isArray(section.badge) ? section.badge : [section.badge]).map((badge) => (
               <div key={badge.value}>
                 <strong className="block text-2xl font-semibold tabular-nums text-brand-800">
@@ -227,19 +227,19 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       </section>
 
       {section.examNote && (
-        <p className="rounded-xl border border-[#e6dcc4] bg-[#fdf9ef] px-5 py-3.5 text-xs leading-5 text-[#6f5716]">
+        <p className="rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] px-5 py-3.5 text-xs leading-5 text-[#6f5716]">
           <strong>{section.examNote.title}</strong> {section.examNote.text}
         </p>
       )}
 
       {section.prepPlan && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.prepPlan.title}</h3>
           <p className="mt-1 text-xs leading-5 text-stone-600">{section.prepPlan.note}</p>
           <div className="mt-3 grid gap-3 sm:grid-cols-3">
             {section.prepPlan.branches.map((branch) => (
               <div key={branch.code} className="rounded-lg border border-[#e8e3d6] p-3.5">
-                <span className="rounded-md bg-[#eaf4ef] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
+                <span className="rounded-md bg-[#F1F5F9] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
                   {branch.code}
                 </span>
                 <strong className="mt-1.5 block text-xs">{branch.title}</strong>
@@ -247,7 +247,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
               </div>
             ))}
           </div>
-          <aside className="mt-3 rounded-lg border border-[#e6dcc4] bg-[#fdf9ef] p-3.5">
+          <aside className="mt-3 rounded-lg border border-[#e6dcc4] bg-[#FAFBFC] p-3.5">
             <span className="text-[10px] font-semibold uppercase tracking-wide text-[#6f5716]">
               {section.prepPlan.example.title}
             </span>
@@ -267,7 +267,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.topicWeave && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.topicWeave.title}</h3>
           <p className="mt-1 text-xs leading-5 text-stone-600">{section.topicWeave.note}</p>
           <div className="mt-3 grid gap-3 sm:grid-cols-3">
@@ -281,14 +281,14 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
               </div>
             ))}
           </div>
-          <p className="mt-3 rounded-lg border border-[#e6dcc4] bg-[#fdf9ef] px-3.5 py-2.5 text-xs leading-5 text-[#6f5716]">
+          <p className="mt-3 rounded-lg border border-[#e6dcc4] bg-[#FAFBFC] px-3.5 py-2.5 text-xs leading-5 text-[#6f5716]">
             <strong>{section.topicWeave.exampleTitle}</strong> {section.topicWeave.exampleText}
           </p>
         </section>
       )}
 
       {section.lengthen && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.lengthen.title}</h3>
           <div className="mt-3 grid gap-3 sm:grid-cols-3">
             {section.lengthen.items.map((item) => (
@@ -305,7 +305,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.runTrack && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.runTrack.title}</h3>
           <p className="mt-1 text-xs leading-5 text-stone-600">{section.runTrack.note}</p>
           <ol className="mt-3 space-y-1.5">
@@ -326,7 +326,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.phraseLibrary && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
             Phrase bank đầy đủ
           </span>
@@ -349,7 +349,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.storyBanks && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.storyBanks.title}</h3>
           <p className="mt-1 text-xs leading-5 text-stone-600">{section.storyBanks.note}</p>
           <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -366,12 +366,12 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       {section.topicLibrary && <TopicLibrary library={section.topicLibrary} />}
 
       {section.formatCards && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">Cấu trúc bốn phần Aptis Speaking</h3>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {section.formatCards.map((card) => (
               <div key={card.part} className="rounded-lg border border-[#e8e3d6] p-3.5">
-                <span className="rounded-md bg-[#eaf4ef] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
+                <span className="rounded-md bg-[#F1F5F9] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
                   {card.part}
                 </span>
                 <strong className="mt-1.5 block text-sm">{card.title}</strong>
@@ -384,7 +384,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.formula && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
             {section.formula.eyebrow}
           </span>
@@ -405,7 +405,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
           {section.formula.example && (
             <blockquote
               lang="en"
-              className="mt-3 rounded-lg border-l-4 border-brand-600 bg-[#eaf4ef] px-3.5 py-2.5"
+              className="mt-3 rounded-lg border-l-4 border-brand-600 bg-[#F1F5F9] px-3.5 py-2.5"
             >
               <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-800">
                 Ví dụ khung
@@ -421,9 +421,9 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
           {section.frameworks.map((framework) => (
             <section
               key={framework.tag}
-              className="rounded-xl border border-[#dfe5dd] bg-white p-5"
+              className="rounded-xl border border-[#E5E9F0] bg-white p-5"
             >
-              <span className="rounded-md bg-[#eaf4ef] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
+              <span className="rounded-md bg-[#F1F5F9] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
                 {framework.tag}
               </span>
               <h3 className="mt-1.5 text-sm font-semibold">{framework.title}</h3>
@@ -441,7 +441,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.timing && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.timing.title}</h3>
           <p className="mt-1 text-xs leading-5 text-stone-600">{section.timing.note}</p>
           <div className="mt-3 grid gap-3 lg:grid-cols-3">
@@ -467,7 +467,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.compareTrack && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.compareTrack.title}</h3>
           <p className="mt-1 text-xs leading-5 text-stone-600">{section.compareTrack.note}</p>
           <ol className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
@@ -486,7 +486,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
               <span
                 key={pair}
                 lang="en"
-                className="rounded-md bg-[#eaf4ef] px-2.5 py-1 text-xs font-semibold text-brand-800"
+                className="rounded-md bg-[#F1F5F9] px-2.5 py-1 text-xs font-semibold text-brand-800"
               >
                 {pair}
               </span>
@@ -496,7 +496,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.dimensions && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.dimensions.title}</h3>
           <p className="mt-1 text-xs leading-5 text-stone-600">{section.dimensions.note}</p>
           <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -511,9 +511,9 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.compareModel && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.compareModel.title}</h3>
-          <p lang="en" className="mt-2 rounded-lg bg-[#eaf4ef] px-3.5 py-2.5 text-xs leading-6 text-brand-900">
+          <p lang="en" className="mt-2 rounded-lg bg-[#F1F5F9] px-3.5 py-2.5 text-xs leading-6 text-brand-900">
             {section.compareModel.text}
           </p>
           <small className="mt-1.5 block text-[11px] text-stone-600">
@@ -523,8 +523,8 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.modelLab && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
-          <span className="rounded-md bg-[#eaf4ef] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
+          <span className="rounded-md bg-[#F1F5F9] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
             {section.modelLab.tag}
           </span>
           <h3 className="mt-1.5 text-sm font-semibold">{section.modelLab.title}</h3>
@@ -537,7 +537,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
           >
             {section.modelLab.model}
           </blockquote>
-          <p className="mt-2.5 rounded-lg border border-[#e6dcc4] bg-[#fdf9ef] px-3.5 py-2.5 text-xs leading-5 text-[#6f5716]">
+          <p className="mt-2.5 rounded-lg border border-[#e6dcc4] bg-[#FAFBFC] px-3.5 py-2.5 text-xs leading-5 text-[#6f5716]">
             <strong>{section.modelLab.extendTitle}</strong> {section.modelLab.extendText}
           </p>
         </section>
@@ -546,8 +546,8 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       {section.detailCards && (
         <div className="grid gap-3 lg:grid-cols-2">
           {section.detailCards.map((card) => (
-            <section key={card.tag} className="rounded-xl border border-[#dfe5dd] bg-white p-5">
-              <span className="rounded-md bg-[#eaf4ef] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
+            <section key={card.tag} className="rounded-xl border border-[#E5E9F0] bg-white p-5">
+              <span className="rounded-md bg-[#F1F5F9] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
                 {card.tag}
               </span>
               <h3 className="mt-1.5 text-sm font-semibold">{card.title}</h3>
@@ -580,7 +580,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.memoryCodes && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.memoryCodes.title}</h3>
           <div className="mt-3 grid gap-3 sm:grid-cols-3">
             {section.memoryCodes.items.map((item) => (
@@ -599,7 +599,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.fixes && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.fixes.title}</h3>
           <div className="mt-3 space-y-2">
             {section.fixes.items.map((fix) => (
@@ -619,7 +619,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
       )}
 
       {section.promptBank && (
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <h3 className="text-sm font-semibold">{section.promptBank.title}</h3>
           <p className="mt-1 text-xs leading-5 text-stone-600">{section.promptBank.note}</p>
           <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -642,7 +642,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
 
       <div className="grid gap-3 lg:grid-cols-2">
         {section.phraseBank && (
-          <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+          <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
             <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
               Phrase bank
             </span>
@@ -661,7 +661,7 @@ function SectionPanel({ section }: { section: SpeakingSection }) {
         )}
 
         {section.checklist && (
-          <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+          <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
             <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
               Checklist
             </span>

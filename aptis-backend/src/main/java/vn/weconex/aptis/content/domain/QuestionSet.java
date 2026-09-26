@@ -109,6 +109,12 @@ public class QuestionSet extends BaseEntity {
     @Column(name = "published_at")
     private Instant publishedAt;
 
+    @Column(name = "approved_by", columnDefinition = "CHAR(36)")
+    private String approvedBy;
+
+    @Column(name = "approved_at")
+    private Instant approvedAt;
+
     @Column(name = "created_by", columnDefinition = "CHAR(36)")
     private String createdBy;
 
@@ -130,6 +136,11 @@ public class QuestionSet extends BaseEntity {
         return switch (status) {
             case DRAFT -> target == ContentStatus.IN_REVIEW || target == ContentStatus.ARCHIVED;
             case IN_REVIEW -> target == ContentStatus.DRAFT
+                    || target == ContentStatus.APPROVED
+                    // Giữ đường thẳng tới PUBLISHED cho luồng phát hành có từ trước.
+                    || target == ContentStatus.PUBLISHED
+                    || target == ContentStatus.ARCHIVED;
+            case APPROVED -> target == ContentStatus.DRAFT
                     || target == ContentStatus.PUBLISHED
                     || target == ContentStatus.ARCHIVED;
             case PUBLISHED -> target == ContentStatus.SUSPENDED || target == ContentStatus.ARCHIVED;

@@ -53,7 +53,7 @@ export function OrderAdminPage() {
 
     return (
       <>
-        <p className="mb-2 text-xs text-slate-500">{totalElements} đơn hàng</p>
+        <p className="mb-2 text-xs text-ink-mute">{totalElements} đơn hàng</p>
 
         <DataTable
           headers={[
@@ -79,33 +79,33 @@ export function OrderAdminPage() {
               }}
               className="cursor-pointer transition-colors hover:bg-brand-50"
             >
-              <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-slate-600">
+              <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-ink-mute">
                 {order.orderCode}
               </td>
-              <td className="px-4 py-2.5 text-slate-700">{order.userEmail ?? '—'}</td>
+              <td className="px-4 py-2.5 text-ink-soft">{order.userEmail ?? '—'}</td>
               <td className="whitespace-nowrap px-4 py-2.5">
                 <StatusBadge status={order.status} />
               </td>
-              <td className="whitespace-nowrap px-4 py-2.5 text-slate-600">
+              <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                 {formatCurrency(order.subtotalAmount, order.currency)}
               </td>
-              <td className="whitespace-nowrap px-4 py-2.5 text-slate-600">
+              <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                 {order.discountAmount > 0
                   ? `− ${formatCurrency(order.discountAmount, order.currency)}`
                   : '—'}
               </td>
-              <td className="whitespace-nowrap px-4 py-2.5 font-medium text-slate-900">
+              <td className="whitespace-nowrap px-4 py-2.5 font-medium text-ink">
                 {formatCurrency(order.totalAmount, order.currency)}
               </td>
-              <td className="whitespace-nowrap px-4 py-2.5 text-slate-600">
+              <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                 {order.refundedAmount > 0
                   ? formatCurrency(order.refundedAmount, order.currency)
                   : '—'}
               </td>
-              <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
+              <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                 {formatDateTime(order.paidAt)}
               </td>
-              <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
+              <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                 {formatDateTime(order.createdAt)}
               </td>
             </tr>
@@ -173,7 +173,7 @@ function OrderDetailPanel({
       />
       <aside className="flex w-full max-w-lg flex-col overflow-y-auto bg-white shadow-xl">
         <div className="flex items-start justify-between gap-3 border-b border-slate-200 px-5 py-4">
-          <h2 className="font-semibold text-slate-900">Chi tiết đơn hàng</h2>
+          <h2 className="font-semibold text-ink">Chi tiết đơn hàng</h2>
           <button type="button" className="btn-ghost !px-2 !py-1" onClick={onClose}>
             Đóng
           </button>
@@ -264,7 +264,7 @@ function OrderDetailBody({
       )}
 
       {!refundable && (
-        <p className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+        <p className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-ink-mute">
           Đơn này không hoàn tiền được: chỉ đơn ở trạng thái Đã thanh toán hoặc Hoàn một
           phần và còn số dư mới hoàn được.
         </p>
@@ -276,8 +276,8 @@ function OrderDetailBody({
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-2">
-      <dt className="shrink-0 text-slate-500">{label}</dt>
-      <dd className="text-right text-slate-800">{children}</dd>
+      <dt className="shrink-0 text-ink-mute">{label}</dt>
+      <dd className="text-right text-ink-soft">{children}</dd>
     </div>
   );
 }
@@ -330,7 +330,7 @@ function RefundForm({
         });
       }}
     >
-      <h3 className="font-semibold text-slate-900">Hoàn tiền</h3>
+      <h3 className="font-semibold text-ink">Hoàn tiền</h3>
 
       {/* Cảnh báo nghiệp vụ: hệ quả khác nhau giữa hoàn toàn bộ và hoàn một phần */}
       <div className="space-y-1 text-sm text-amber-900">
@@ -344,7 +344,7 @@ function RefundForm({
         </p>
       </div>
 
-      <p className="text-sm text-slate-700">
+      <p className="text-sm text-ink-soft">
         Còn có thể hoàn:{' '}
         <strong>{formatCurrency(refundableAmount, order.currency)}</strong>
       </p>
@@ -373,7 +373,7 @@ function RefundForm({
         {amountError ? (
           <p className="mt-1 text-xs text-red-700">{amountError}</p>
         ) : (
-          <p className="mt-1 text-xs text-slate-600">
+          <p className="mt-1 text-xs text-ink-mute">
             {isFullRefund
               ? 'Đây là hoàn toàn bộ phần còn lại — quyền Premium sẽ bị thu hồi.'
               : 'Đây là hoàn một phần — quyền Premium được giữ nguyên.'}

@@ -224,7 +224,7 @@ export function CheckoutPage() {
               <p className="mt-1 text-xs text-stone-500">MB Bank · {transfer.accountNumber}</p>
             </div>
             <div className="p-5">
-              <div className="relative grid min-h-[300px] place-items-center overflow-hidden rounded-2xl bg-[#f5f2e9] p-4">
+              <div className="relative grid min-h-[300px] place-items-center overflow-hidden rounded-2xl bg-[#F8FAFC] p-4">
                 {qrDataUrl ? (
                   <img src={qrDataUrl} alt={`Mã VietQR thanh toán đơn ${order.orderCode}`} className={`w-full max-w-[290px] rounded-xl bg-white p-2 shadow-sm transition ${qrExpired ? 'blur-[2px] grayscale opacity-25' : ''}`} />
                 ) : (

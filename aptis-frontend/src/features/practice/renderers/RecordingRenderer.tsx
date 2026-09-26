@@ -241,7 +241,7 @@ export function RecordingRenderer({
             {examMode ? (
               <span className={clsx(
                 'inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-semibold',
-                phase === 'recording' ? 'bg-red-600 text-white' : 'bg-[#eaf4ef] text-brand-900',
+                phase === 'recording' ? 'bg-red-600 text-white' : 'bg-[#F1F5F9] text-brand-900',
               )}>
                 {phase === 'recording' ? (
                   <>

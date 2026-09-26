@@ -100,7 +100,7 @@ public class SecurityConfig {
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of(
                 "Authorization", "Content-Type", "Idempotency-Key", "X-Request-Id",
-                "X-Requested-With"));
+                "X-Requested-With", "X-Classroom-Id"));
         config.setExposedHeaders(List.of("X-Request-Id"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);

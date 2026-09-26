@@ -69,7 +69,7 @@ function ImageAsset({ asset, label }: { asset: AssetRef; label: string }) {
 
   return (
     <>
-      <div className="overflow-hidden rounded-lg border border-[#dfe5dd] bg-white">
+      <div className="overflow-hidden rounded-lg border border-[#E5E9F0] bg-white">
         {signedUrl ? (
           <button
             type="button"

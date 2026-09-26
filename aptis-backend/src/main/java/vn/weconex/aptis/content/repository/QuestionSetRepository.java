@@ -173,6 +173,14 @@ public interface QuestionSetRepository
 
     long countByPartIdAndStatus(String partId, ContentStatus status);
 
+    /** Đếm đề theo trạng thái, lọc theo part nếu có — cho các ô đếm ở ngân hàng câu hỏi. */
+    @Query("""
+            SELECT qs.status, COUNT(qs) FROM QuestionSet qs
+            WHERE (:partId IS NULL OR qs.part.id = :partId)
+            GROUP BY qs.status
+            """)
+    List<Object[]> countByStatus(@Param("partId") String partId);
+
     /**
      * Số bộ đề khớp bài viết bảng tin. Tham số null nghĩa là không lọc theo
      * chiều đó, nên bài chỉ gắn Part vẫn đếm được, và bài gắn cả Part + chủ đề

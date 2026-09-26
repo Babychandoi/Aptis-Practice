@@ -125,12 +125,12 @@ export function ExamPredictionAdminPage() {
     <div className="space-y-5">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold text-slate-900">Dự đoán đề</h1>
-          <p className="mt-1 text-xs text-slate-500">
+          <h1 className="text-xl font-bold text-ink">Dự đoán đề</h1>
+          <p className="mt-1 text-xs text-ink-mute">
             Chủ đề khả năng ra thi theo ngày. Học viên bấm vào là luyện ngay đề của chủ đề đó.
           </p>
         </div>
-        <label className="text-xs font-semibold text-slate-600">
+        <label className="text-xs font-semibold text-ink-mute">
           Lọc theo ngày
           <input
             type="date"
@@ -143,12 +143,12 @@ export function ExamPredictionAdminPage() {
 
       {/* Form thêm / sửa */}
       <section className="rounded-2xl border border-border bg-white p-4">
-        <h2 className="mb-3 text-sm font-bold text-slate-900">
+        <h2 className="mb-3 text-sm font-bold text-ink">
           {editingId ? 'Sửa mục dự đoán' : 'Thêm mục dự đoán'}
         </h2>
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold text-ink-mute">
             Ngày dự đoán
             <input
               type="date"
@@ -158,7 +158,7 @@ export function ExamPredictionAdminPage() {
             />
           </label>
 
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold text-ink-mute">
             Kỹ năng
             <select
               value={form.componentId}
@@ -178,8 +178,8 @@ export function ExamPredictionAdminPage() {
             </select>
           </label>
 
-          <label className="text-xs font-semibold text-slate-600">
-            Part <span className="font-normal text-slate-400">(bỏ trống = cả kỹ năng)</span>
+          <label className="text-xs font-semibold text-ink-mute">
+            Part <span className="font-normal text-ink-faint">(bỏ trống = cả kỹ năng)</span>
             <select
               value={form.partId ?? ''}
               onChange={(e) => setForm({ ...form, partId: e.target.value || null })}
@@ -195,7 +195,7 @@ export function ExamPredictionAdminPage() {
             </select>
           </label>
 
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold text-ink-mute">
             Chủ đề
             <select
               value={form.topicId}
@@ -211,7 +211,7 @@ export function ExamPredictionAdminPage() {
             </select>
           </label>
 
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold text-ink-mute">
             Mức ưu tiên
             <select
               value={form.priority ?? 'HOT'}
@@ -225,7 +225,7 @@ export function ExamPredictionAdminPage() {
             </select>
           </label>
 
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold text-ink-mute">
             Nhóm hiển thị
             <input
               type="text"
@@ -236,8 +236,8 @@ export function ExamPredictionAdminPage() {
             />
           </label>
 
-          <label className="text-xs font-semibold text-slate-600">
-            Nhãn <span className="font-normal text-slate-400">(bỏ trống = tên chủ đề)</span>
+          <label className="text-xs font-semibold text-ink-mute">
+            Nhãn <span className="font-normal text-ink-faint">(bỏ trống = tên chủ đề)</span>
             <input
               type="text"
               value={form.label ?? ''}
@@ -246,7 +246,7 @@ export function ExamPredictionAdminPage() {
             />
           </label>
 
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold text-ink-mute">
             Nguồn
             <input
               type="text"
@@ -256,7 +256,7 @@ export function ExamPredictionAdminPage() {
             />
           </label>
 
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold text-ink-mute">
             Trạng thái
             <select
               value={form.status ?? 'PUBLISHED'}
@@ -270,7 +270,7 @@ export function ExamPredictionAdminPage() {
             </select>
           </label>
 
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold text-ink-mute">
             Thứ tự
             <input
               type="number"
@@ -304,7 +304,7 @@ export function ExamPredictionAdminPage() {
                 setForm(EMPTY_FORM);
                 setError(null);
               }}
-              className="min-h-[38px] rounded-xl border border-border px-4 text-xs font-bold text-slate-700 hover:bg-surface"
+              className="min-h-[38px] rounded-xl border border-border px-4 text-xs font-bold text-ink-soft hover:bg-surface"
             >
               Huỷ
             </button>
@@ -314,13 +314,13 @@ export function ExamPredictionAdminPage() {
 
       {/* Danh sách */}
       {grouped.length === 0 ? (
-        <p className="card text-center text-sm text-slate-500">Chưa có mục dự đoán nào.</p>
+        <p className="card text-center text-sm text-ink-mute">Chưa có mục dự đoán nào.</p>
       ) : (
         grouped.map(([day, items]) => (
           <section key={day} className="rounded-2xl border border-border bg-white">
             <header className="flex items-center justify-between border-b border-border px-4 py-3">
-              <h2 className="text-sm font-bold text-slate-900">{formatDate(day)}</h2>
-              <span className="font-mono text-[10px] font-bold text-slate-500">
+              <h2 className="text-sm font-bold text-ink">{formatDate(day)}</h2>
+              <span className="font-mono text-[10px] font-bold text-ink-mute">
                 {items.length} mục
               </span>
             </header>
@@ -338,14 +338,14 @@ export function ExamPredictionAdminPage() {
                     {item.priority}
                   </span>
                   {item.status === 'DRAFT' && (
-                    <span className="shrink-0 rounded-full bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] font-bold text-slate-600">
+                    <span className="shrink-0 rounded-full bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] font-bold text-ink-mute">
                       Nháp
                     </span>
                   )}
-                  <span className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-900">
+                  <span className="min-w-0 flex-1 truncate text-sm font-semibold text-ink">
                     {item.label || item.topicName}
                   </span>
-                  <span className="shrink-0 font-mono text-[10px] text-slate-500">
+                  <span className="shrink-0 font-mono text-[10px] text-ink-mute">
                     {item.componentCode}
                     {item.partName ? ` · ${item.partName}` : ' · cả kỹ năng'}
                     {item.sectionLabel ? ` · ${item.sectionLabel}` : ''}
@@ -355,7 +355,7 @@ export function ExamPredictionAdminPage() {
                       'shrink-0 rounded-full px-1.5 py-0.5 font-mono text-[10px] font-bold',
                       item.questionSetCount === 0
                         ? 'bg-red-50 text-red-700'
-                        : 'bg-surface text-slate-600',
+                        : 'bg-surface text-ink-mute',
                     )}
                     title={
                       item.questionSetCount === 0

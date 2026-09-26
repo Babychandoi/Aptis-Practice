@@ -11,8 +11,10 @@ import vn.weconex.aptis.classroom.domain.ClassroomEntities.Classroom;
 /** Lớp học. */
 public interface ClassroomRepository extends JpaRepository<Classroom, String> {
 
-    /** Lớp của một giáo viên — mỗi người đúng một lớp. */
-    Optional<Classroom> findByTeacherUserId(String teacherUserId);
+    /** Các lớp của một giáo viên, cũ trước — từ V64 một giáo viên dạy được nhiều lớp. */
+    List<Classroom> findByTeacherUserIdOrderByCreatedAtAsc(String teacherUserId);
+
+    Optional<Classroom> findByIdAndTeacherUserId(String id, String teacherUserId);
 
     Optional<Classroom> findByJoinCode(String joinCode);
 

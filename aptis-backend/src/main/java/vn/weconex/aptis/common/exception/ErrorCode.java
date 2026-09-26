@@ -14,6 +14,8 @@ public enum ErrorCode {
     CONFLICT(HttpStatus.CONFLICT),
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR),
     RATE_LIMITED(HttpStatus.TOO_MANY_REQUESTS),
+    /** Dịch vụ ngoài (AI) đang tắt hoặc bận; thử lại sau là được. */
+    SERVICE_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE),
 
     // --- Auth ---
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED),

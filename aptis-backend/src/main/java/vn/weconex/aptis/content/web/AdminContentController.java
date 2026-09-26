@@ -79,6 +79,18 @@ public class AdminContentController {
         return toResponse(result, null);
     }
 
+    /** Duyệt nội dung: Chờ duyệt → Đã duyệt, chờ phát hành. */
+    @PostMapping("/{id}/approve")
+    @PreAuthorize("hasAuthority('question_set:review')")
+    @Transactional
+    public AdminContentDtos.AdminQuestionSetResponse approve(
+            @PathVariable String id,
+            @RequestBody(required = false) AdminContentDtos.TransitionRequest request) {
+
+        QuestionSet result = adminContentService.approve(currentUser.requireUserId(), id, note(request));
+        return toResponse(result, null);
+    }
+
     @PostMapping("/{id}/request-changes")
     @PreAuthorize("hasAuthority('question_set:review')")
     @Transactional
@@ -146,6 +158,12 @@ public class AdminContentController {
 
         // Danh sách không kèm nội dung để payload nhỏ
         return PageResponse.of(result, qs -> toResponse(qs, null));
+    }
+
+    @GetMapping("/status-counts")
+    @PreAuthorize("hasAuthority('question_set:read')")
+    public java.util.Map<ContentStatus, Long> statusCounts(@RequestParam(required = false) String partId) {
+        return adminContentService.statusCounts(partId);
     }
 
     @GetMapping("/{id}")

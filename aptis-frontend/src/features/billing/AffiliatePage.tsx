@@ -48,8 +48,7 @@ export function AffiliatePage() {
   const data = query.data;
 
   return (
-    <div className="space-y-5">
-      <Breadcrumb />
+    <div className="mx-auto flex w-full max-w-[1040px] flex-col gap-5">
 
       <HeroCard
         code={data.code}
@@ -105,10 +104,10 @@ export function AffiliatePage() {
                 aria-selected={tab === key}
                 onClick={() => setTab(key)}
                 className={clsx(
-                  'rounded-xl border px-3.5 py-2 text-sm font-semibold transition-colors',
+                  'min-h-[36px] rounded-full border px-4 text-[13px] font-semibold transition-colors',
                   tab === key
-                    ? 'border-transparent bg-brand-700 text-white'
-                    : 'border-border bg-white text-slate-700 hover:bg-surface',
+                    ? 'border-transparent bg-ink text-white'
+                    : 'border-transparent bg-surface-muted text-ink hover:bg-brand-200',
                 )}
               >
                 {label}
@@ -152,75 +151,50 @@ function HeroCard({
   };
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-emerald-200/80 bg-white shadow-[0_18px_44px_-34px_rgba(5,150,105,0.5)]">
-      <div className="h-1.5 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500" />
-
-      <div className="space-y-4 bg-gradient-to-br from-emerald-50/80 via-white to-teal-50/50 px-5 py-5 sm:px-6">
-        <div>
-          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300/70 bg-white px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-emerald-700">
-            <GiftIcon />
-            Giới thiệu bạn bè
-          </span>
-          <h1 className="mt-2 text-2xl font-bold leading-tight tracking-tight text-slate-900 sm:text-[26px]">
-            Giới thiệu bạn — cả hai cùng có lợi
-          </h1>
-          <p className="mt-1 text-sm leading-6 text-slate-600">
-            Bạn bè dùng mã của bạn được <strong className="text-emerald-700">giảm {discountPercent}%</strong>,
-            còn bạn nhận <strong className="text-emerald-700">{commissionPercent}% hoa hồng</strong> mỗi đơn
-            họ mua.
-          </p>
-        </div>
+    <>
+      <section className="relative animate-rise overflow-hidden rounded-3xl bg-ink px-6 py-8 text-white sm:px-9">
+        <span aria-hidden="true" className="pointer-events-none absolute -bottom-32 -right-20 h-80 w-80 rounded-full border border-dashed border-white/10" />
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50">Giới thiệu nhận thưởng</p>
+        <h1 className="mt-3 max-w-[22ch] text-[clamp(28px,4vw,42px)] font-extrabold leading-[1.1] tracking-[-0.035em]">
+          Mời bạn bè, nhận {commissionPercent}% hoa hồng mỗi đơn họ mua
+        </h1>
+        <p className="mt-3 max-w-[60ch] text-[15px] leading-6 text-white/70">
+          Bạn bè dùng mã của bạn được giảm {discountPercent}% khi mua gói.
+        </p>
 
         {eligible && code ? (
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex min-w-0 items-center gap-3 rounded-xl border-2 border-dashed border-emerald-400 bg-white px-4 py-3">
-              <span className="font-mono text-xl font-bold tracking-[0.2em] text-slate-900">
-                {code}
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => void copy()}
-              className="rounded-xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-emerald-700"
-            >
-              {copied ? 'Đã chép!' : 'Chép mã'}
+          <div className="mt-6 flex max-w-lg items-center gap-3 rounded-2xl bg-white/10 p-2 pl-5">
+            <span className="min-w-0 flex-1 truncate font-mono text-lg font-bold tracking-[0.2em]">{code}</span>
+            <button type="button" onClick={() => void copy()} className="btn min-h-[40px] bg-white px-5 text-ink hover:bg-surface-muted">
+              {copied ? 'Đã chép ✓' : 'Sao chép'}
             </button>
           </div>
         ) : (
-          <div className="rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3.5">
-            <p className="text-sm font-semibold text-amber-900">
-              Bạn chưa có mã giới thiệu
+          <div className="mt-6 max-w-lg rounded-2xl bg-white/10 p-5">
+            <p className="text-sm font-semibold">Bạn chưa có mã giới thiệu</p>
+            <p className="mt-1 text-sm leading-6 text-white/70">
+              Mua một gói bất kỳ để nhận mã. Sau đó mỗi người dùng mã của bạn, bạn nhận {commissionPercent}% giá trị đơn của họ.
             </p>
-            <p className="mt-1 text-sm leading-6 text-amber-800">
-              Mua một gói bất kỳ để nhận mã. Sau đó mỗi người dùng mã của bạn, bạn nhận{' '}
-              {commissionPercent}% giá trị đơn của họ.
-            </p>
-            <Link
-              to="/plans"
-              className="mt-2.5 inline-flex rounded-xl bg-amber-600 px-3.5 py-2 text-sm font-bold text-white transition-colors hover:bg-amber-700"
-            >
-              Xem các gói →
-            </Link>
+            <Link to="/plans" className="btn mt-3 min-h-[40px] bg-white px-5 text-ink hover:bg-surface-muted">Xem các gói</Link>
           </div>
         )}
+      </section>
 
-        <ol className="grid gap-2 text-sm text-slate-700 sm:grid-cols-3">
-          <Step n={1} text="Gửi mã cho bạn bè" />
-          <Step n={2} text={`Họ nhập mã khi mua, được giảm ${discountPercent}%`} />
-          <Step n={3} text={`Bạn nhận ${commissionPercent}% vào số dư, rút về tài khoản`} />
-        </ol>
-      </div>
-    </section>
+      <ol className="grid gap-3 sm:grid-cols-3">
+        <Step n={1} title="Gửi mã" text="Chia sẻ mã cho bạn qua Zalo, Facebook hoặc nhóm học." />
+        <Step n={2} title="Bạn mua gói" text={`Họ nhập mã khi thanh toán, được giảm ${discountPercent}%.`} />
+        <Step n={3} title={`Nhận ${commissionPercent}%`} text="Hoa hồng cộng vào số dư sau khi đối soát, rút về tài khoản." />
+      </ol>
+    </>
   );
 }
 
-function Step({ n, text }: { n: number; text: string }) {
+function Step({ n, title, text }: { n: number; title: string; text: string }) {
   return (
-    <li className="flex items-start gap-2 rounded-xl border border-border bg-white px-3 py-2.5">
-      <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-600 font-mono text-[10px] font-bold text-white">
-        {n}
-      </span>
-      <span className="leading-5">{text}</span>
+    <li className="animate-rise rounded-3xl bg-surface-paper p-5">
+      <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-sm font-bold text-white">{n}</span>
+      <p className="mt-3 font-bold">{title}</p>
+      <p className="mt-1 text-sm leading-6 text-ink-mute">{text}</p>
     </li>
   );
 }
@@ -237,29 +211,14 @@ function StatCard({
   highlight?: boolean;
 }) {
   return (
-    <div
-      className={clsx(
-        'rounded-2xl border px-4 py-3.5',
-        highlight ? 'border-emerald-300 bg-emerald-50/60' : 'border-border bg-white',
-      )}
-    >
-      <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500">
-        {label}
-      </p>
-      <p
-        className={clsx(
-          'mt-1 text-xl font-bold',
-          highlight ? 'text-emerald-700' : 'text-slate-900',
-        )}
-      >
-        {value}
-      </p>
-      {hint && <p className="mt-0.5 text-[11px] leading-4 text-slate-500">{hint}</p>}
+    <div className={clsx('rounded-3xl border bg-white px-5 py-4', highlight ? 'border-ink' : 'border-border')}>
+      <p className="text-xs text-ink-mute">{label}</p>
+      <p className="mt-1 text-[26px] font-extrabold leading-8 tracking-tight tabular-nums">{value}</p>
+      {hint && <p className="mt-1 text-[11px] leading-4 text-ink-faint">{hint}</p>}
     </div>
   );
 }
 
-/** Ô gửi yêu cầu rút tiền. */
 function PayoutBox({
   available,
   minimum,
@@ -558,32 +517,3 @@ function EmptyBox({ text }: { text: string }) {
   return <p className="card text-center text-sm text-slate-500">{text}</p>;
 }
 
-function GiftIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ width: 11, height: 11 }}
-      aria-hidden="true"
-    >
-      <rect x="3" y="8" width="18" height="13" rx="2" />
-      <path d="M12 8v13M3 12h18M12 8S9 3 6.5 4.5 8 8 12 8zM12 8s3-5 5.5-3.5S16 8 12 8z" />
-    </svg>
-  );
-}
-
-function Breadcrumb() {
-  return (
-    <nav className="flex flex-wrap items-center gap-2 text-xs text-stone-500" aria-label="Đường dẫn">
-      <Link to="/" className="hover:text-brand-800">
-        Trang chủ
-      </Link>
-      <span aria-hidden="true">›</span>
-      <span className="font-semibold text-stone-800">Giới thiệu bạn bè</span>
-    </nav>
-  );
-}

@@ -39,6 +39,8 @@ public final class Enums {
     public enum ContentStatus {
         DRAFT,
         IN_REVIEW,
+        /** Biên tập viên đã duyệt nội dung, chờ phát hành. */
+        APPROVED,
         PUBLISHED,
         SUSPENDED,
         ARCHIVED

@@ -89,7 +89,7 @@ export function StudyTipsReadingPage() {
               'flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition',
               tab === entry.key
                 ? 'border-brand-800 bg-brand-800 text-white'
-                : 'border-[#ded5c2] bg-white text-stone-700 hover:border-brand-400',
+                : 'border-[#E5E9F0] bg-white text-stone-700 hover:border-brand-400',
             )}
           >
             {entry.label}
@@ -141,7 +141,7 @@ export function StudyTipsReadingPage() {
 function PartRuleSection({ tip }: { tip: PartTip }) {
   return (
     <div className="space-y-3">
-      <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+      <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
         <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
           {tip.eyebrow}
         </span>
@@ -149,7 +149,7 @@ function PartRuleSection({ tip }: { tip: PartTip }) {
         <p className="mt-1 text-xs leading-5 text-stone-600">{tip.intro}</p>
       </section>
 
-      <section className="rounded-xl border border-[#e6dcc4] bg-[#fdf9ef] p-4">
+      <section className="rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] p-4">
         <p className="text-xs leading-5 text-[#6f5716]">
           <strong>Quy tắc vàng:</strong> {tip.goldenRule}
         </p>
@@ -167,7 +167,7 @@ function PartRuleSection({ tip }: { tip: PartTip }) {
 
 function ParaphraseTable({ rows, caption }: { rows: ParaphraseRow[]; caption: string }) {
   return (
-    <section className="rounded-xl border border-[#dfe5dd] bg-white">
+    <section className="rounded-xl border border-[#E5E9F0] bg-white">
       <header className="border-b border-[#eee9dc] px-5 py-3">
         <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
           Bảng nhận diện nhanh
@@ -188,7 +188,7 @@ function ParaphraseTable({ rows, caption }: { rows: ParaphraseRow[]; caption: st
             {rows.map((row, index) => (
               <tr key={row.role} className="align-top">
                 <td className="px-3 py-2">
-                  <span className="mr-1.5 inline-grid h-4 w-4 place-items-center rounded-full bg-[#eaf4ef] text-[9px] font-semibold text-brand-800">
+                  <span className="mr-1.5 inline-grid h-4 w-4 place-items-center rounded-full bg-[#F1F5F9] text-[9px] font-semibold text-brand-800">
                     {index + 1}
                   </span>
                   <strong>{row.role}</strong>
@@ -215,7 +215,7 @@ function ParaphraseTable({ rows, caption }: { rows: ParaphraseRow[]; caption: st
 
 function StepsCard({ steps }: { steps: string[] }) {
   return (
-    <div className="rounded-xl border border-[#dfe5dd] bg-white p-4">
+    <div className="rounded-xl border border-[#E5E9F0] bg-white p-4">
       <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-800">
         Quy trình phòng thi
       </span>
@@ -236,7 +236,7 @@ function StepsCard({ steps }: { steps: string[] }) {
 
 function ConfusionsCard({ items }: { items: string[] }) {
   return (
-    <div className="rounded-xl border border-[#e6dcc4] bg-[#fdf9ef] p-4">
+    <div className="rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] p-4">
       <span className="text-[10px] font-semibold uppercase tracking-wide text-[#8a6b1f]">
         Cần phân biệt
       </span>
@@ -281,7 +281,7 @@ function TopicList({
   const detailed = entries.filter(hasTip).length;
 
   return (
-    <section className="rounded-xl border border-[#dfe5dd] bg-white">
+    <section className="rounded-xl border border-[#E5E9F0] bg-white">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-[#eee9dc] px-5 py-4">
         <div>
           <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
@@ -299,7 +299,7 @@ function TopicList({
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
             placeholder="Tìm chủ đề…"
-            className="w-56 rounded-lg border border-[#ded5c2] px-3 py-2 text-xs"
+            className="w-56 rounded-lg border border-[#E5E9F0] px-3 py-2 text-xs"
           />
         </label>
       </header>
@@ -352,7 +352,7 @@ function TopicList({
                   aria-expanded={expandedId === entry.questionSetId}
                   onClick={() => setExpandedId((current) =>
                     current === entry.questionSetId ? null : entry.questionSetId)}
-                  className="shrink-0 rounded-lg border border-[#ded5c2] px-3 py-1.5 text-[11px] font-semibold text-stone-700 hover:border-brand-400"
+                  className="shrink-0 rounded-lg border border-[#E5E9F0] px-3 py-1.5 text-[11px] font-semibold text-stone-700 hover:border-brand-400"
                 >
                   {expandedId === entry.questionSetId ? 'Thu gọn ▲' : 'Xem mẹo ▼'}
                 </button>
@@ -376,7 +376,7 @@ function Part3Detail({
 }) {
   return (
     <div className="mt-3 space-y-3">
-      <div className="rounded-lg bg-[#eaf4ef] px-3 py-2.5">
+      <div className="rounded-lg bg-[#F1F5F9] px-3 py-2.5">
         <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-800">
           Chuỗi đáp án · theo thứ tự nhận định
         </span>
@@ -392,7 +392,7 @@ function Part3Detail({
       {tip ? (
         <>
           <p className="text-xs leading-5 text-stone-600">{tip.summary}</p>
-          <section className="rounded-xl border border-[#e6dcc4] bg-[#fdf9ef] p-3">
+          <section className="rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] p-3">
             <p className="text-xs leading-5 text-[#6f5716]">
               <strong>Quy tắc vàng:</strong> {tip.goldenRule}
             </p>
@@ -412,7 +412,7 @@ function Part3Detail({
                 {tip.hints.map((hint, index) => (
                   <tr key={hint.role} className="align-top">
                     <td className="px-3 py-2">
-                      <span className="mr-1.5 inline-grid h-4 w-4 place-items-center rounded-full bg-[#eaf4ef] text-[9px] font-semibold text-brand-800">
+                      <span className="mr-1.5 inline-grid h-4 w-4 place-items-center rounded-full bg-[#F1F5F9] text-[9px] font-semibold text-brand-800">
                         {index + 1}
                       </span>
                       <strong>{hint.role}</strong>
@@ -436,7 +436,7 @@ function Part3Detail({
           </div>
         </>
       ) : (
-        <p className="rounded-lg border border-dashed border-[#ded5c2] px-3 py-2.5 text-xs text-stone-500">
+        <p className="rounded-lg border border-dashed border-[#E5E9F0] px-3 py-2.5 text-xs text-stone-500">
           Chủ đề này chưa có bảng chi tiết. Chuỗi đáp án phía trên vẫn dùng để ôn được.
         </p>
       )}
@@ -447,7 +447,7 @@ function Part3Detail({
 function Part4Detail({ entry, tip }: { entry: HeadingChain; tip?: TopicTip }) {
   return (
     <div className="mt-3 space-y-3">
-      <div className="rounded-lg bg-[#eaf4ef] px-3 py-2.5">
+      <div className="rounded-lg bg-[#F1F5F9] px-3 py-2.5">
         <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-800">
           Chuỗi ghi nhớ · theo thứ tự đoạn
         </span>
@@ -481,7 +481,7 @@ function Part4Detail({ entry, tip }: { entry: HeadingChain; tip?: TopicTip }) {
                 {tip.hints.map((hint, index) => (
                   <tr key={hint.heading} className="align-top">
                     <td className="px-3 py-2">
-                      <span className="mr-1.5 inline-grid h-4 w-4 place-items-center rounded-full bg-[#eaf4ef] text-[9px] font-semibold text-brand-800">
+                      <span className="mr-1.5 inline-grid h-4 w-4 place-items-center rounded-full bg-[#F1F5F9] text-[9px] font-semibold text-brand-800">
                         {index + 1}
                       </span>
                       <strong>{hint.role}</strong>
@@ -504,7 +504,7 @@ function Part4Detail({ entry, tip }: { entry: HeadingChain; tip?: TopicTip }) {
             <ConfusionsCard items={tip.confusions} />
           </div>
 
-          <div className="rounded-lg border border-[#dfe5dd] bg-[#f9fbfa] p-3">
+          <div className="rounded-lg border border-[#E5E9F0] bg-[#f9fbfa] p-3">
             <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-800">
               Câu chuyện liên tưởng
             </span>
@@ -512,7 +512,7 @@ function Part4Detail({ entry, tip }: { entry: HeadingChain; tip?: TopicTip }) {
           </div>
         </>
       ) : (
-        <p className="rounded-lg border border-dashed border-[#ded5c2] px-3 py-2.5 text-xs text-stone-500">
+        <p className="rounded-lg border border-dashed border-[#E5E9F0] px-3 py-2.5 text-xs text-stone-500">
           Chủ đề này chưa có bảng phân tích paraphrase. Chuỗi tiêu đề phía trên vẫn dùng để ôn được.
         </p>
       )}

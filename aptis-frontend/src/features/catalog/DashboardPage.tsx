@@ -1,412 +1,485 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
-import type { ReactNode } from 'react';
-import { useComponents, useExamVersions } from '@/features/catalog/catalogQueries';
-import { practiceApi } from '@/api/endpoints';
+import { useComponents, useExamVersions, usePartsOfComponents } from '@/features/catalog/catalogQueries';
+import { aiConversationApi, dashboardApi, examPredictionApi, practiceApi, studentClassroomApi, studentWorkspaceApi } from '@/api/endpoints';
 import { useAuthStore } from '@/features/auth/authStore';
-import type { AttemptSummary } from '@/types/api';
-import { LoadingBlock } from '@/components/ui/LoadingBlock';
-import { ErrorBlock } from '@/components/ui/ErrorBlock';
-import { componentDisplayName, componentPath } from '@/features/catalog/catalogRoutes';
-import { formatPercent } from '@/lib/format';
-import { ContentUpdateCard } from '@/features/learning/ContentUpdateCard';
+import type { AttemptSummary, ExamPredictionFeed, StudentAssignment } from '@/types/api';
+import { componentPath } from '@/features/catalog/catalogRoutes';
+import { SKILLS, cefrFromScore50, skillByCode } from '@/lib/skills';
+import { Icon } from '@/components/shell/icons';
 
-const COMPONENT_ICONS: Record<string, IconName> = {
-  GRAMMAR_VOCABULARY: 'grammar',
-  READING: 'reading',
-  LISTENING: 'listening',
-  SPEAKING: 'speaking',
-  WRITING: 'writing',
-};
-
-type IconName = 'grammar' | 'reading' | 'listening' | 'speaking' | 'writing' | 'compass' | 'calendar' | 'trophy' | 'target' | 'clock';
+/**
+ * Ngưỡng điểm trên thang 50 cho từng bậc CEFR mục tiêu.
+ *
+ * Khớp cefrFromScore50 để vòng điểm và nhãn bậc ở danh sách kỹ năng không nói
+ * hai điều khác nhau.
+ */
+const LEVEL_FLOOR: Record<string, number> = { A1: 0, A2: 16, B1: 26, B2: 38, C1: 46, C2: 46, C: 46 };
+const LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2', 'C'];
 
 export function DashboardPage() {
   const user = useAuthStore((state) => state.user);
   const versionsQuery = useExamVersions();
-  const examVersionId = versionsQuery.data?.[0]?.id;
-  const componentsQuery = useComponents(examVersionId);
+  const componentsQuery = useComponents(versionsQuery.data?.[0]?.id);
+  const components = componentsQuery.data ?? [];
+  const partsQuery = usePartsOfComponents(components.map((c) => c.id));
 
-  // Lấy lịch sử các lượt luyện thi thực tế của học viên từ backend
+  const statsQuery = useQuery({ queryKey: ['me-dashboard'], queryFn: dashboardApi.stats, staleTime: 30_000 });
   const attemptsQuery = useQuery({
     queryKey: ['user-dashboard-attempts'],
-    queryFn: () => practiceApi.listAttempts(0, 50),
-    enabled: Boolean(user),
-    staleTime: 30 * 1000,
+    queryFn: () => practiceApi.listAttempts(0, 20),
+    staleTime: 30_000,
+  });
+  const loungeQuery = useQuery({ queryKey: ['ai-conversation-access'], queryFn: aiConversationApi.access, staleTime: 60_000 });
+  // Đề trọng điểm = chủ đề lặp nhiều nhất trong tháng, lấy từ dự đoán đề.
+  const focusQuery = useQuery({ queryKey: ['exam-predictions', 'hottest', 1], queryFn: () => examPredictionApi.hottest(1), staleTime: 300_000 });
+  const classroomsQuery = useQuery({ queryKey: ['my-classrooms'], queryFn: studentClassroomApi.mine, staleTime: 60_000 });
+
+  // Bài giao của mọi lớp đang học, để lấy ra bài chưa làm gần hạn nhất.
+  const usableClassrooms = (classroomsQuery.data ?? []).filter((c) => !c.locked);
+  const assignmentQueries = useQueries({
+    queries: usableClassrooms.map((c) => ({
+      queryKey: ['classroom-assignments', c.classroomId],
+      queryFn: () => studentWorkspaceApi.assignments(c.classroomId),
+      staleTime: 60_000,
+    })),
   });
 
-  const rawData = attemptsQuery.data;
   const attempts: AttemptSummary[] = useMemo(() => {
-    if (Array.isArray(rawData?.content)) return rawData.content;
-    if (Array.isArray(rawData)) return rawData;
-    return [];
-  }, [rawData]);
+    const data = attemptsQuery.data as unknown;
+    if (Array.isArray(data)) return data as AttemptSummary[];
+    const content = (data as { content?: AttemptSummary[] } | undefined)?.content;
+    return Array.isArray(content) ? content : [];
+  }, [attemptsQuery.data]);
 
-  const completedAttempts = useMemo(
-    () => attempts.filter((a: AttemptSummary) => a && a.status === 'COMPLETED'),
-    [attempts],
-  );
-  const inProgressAttempt = useMemo(
-    () => attempts.find((a: AttemptSummary) => a && a.status === 'IN_PROGRESS'),
-    [attempts],
-  );
-  const lastAttempt = attempts[0];
+  const componentById = new Map(components.map((c) => [c.id, c]));
+  const partById = new Map((partsQuery.data ?? []).map((p) => [p.id, p]));
 
-  // Tính toán số liệu thống kê thật từ database
-  const totalCompleted = completedAttempts.length;
-  const totalItemsAnswered = useMemo(
-    () => attempts.reduce((acc: number, cur: AttemptSummary) => acc + ((cur && cur.totalItems) || 0), 0),
-    [attempts],
-  );
+  const attemptTitle = (a: AttemptSummary) => {
+    const skill = a.componentId ? skillByCode(componentById.get(a.componentId)?.code) : null;
+    const part = a.partId ? partById.get(a.partId) : undefined;
+    if (a.mode === 'MOCK_TEST' && !a.componentId) return 'Đề thi thử đủ 5 kỹ năng';
+    if (part) return `${skill?.nameEn ?? ''} Part ${part.displayOrder}`.trim();
+    if (skill) return a.mode === 'MOCK_TEST' ? `${skill.nameEn} · bài test đầy đủ` : `${skill.nameEn} · luyện tập`;
+    return 'Bài luyện tập';
+  };
+  const attemptSkill = (a: AttemptSummary) =>
+    skillByCode(a.componentId ? componentById.get(a.componentId)?.code : partById.get(a.partId ?? '')?.componentCode);
 
-  const avgPercentage = useMemo(() => {
-    const scored = completedAttempts.filter((a: AttemptSummary) => a && a.percentageScore != null);
-    if (scored.length === 0) return null;
-    const sum = scored.reduce((acc: number, cur: AttemptSummary) => acc + (cur.percentageScore ?? 0), 0);
-    return sum / scored.length;
-  }, [completedAttempts]);
+  const inProgress = attempts.find((a) => a.status === 'IN_PROGRESS');
+  const recent = attempts.filter((a) => a.status === 'COMPLETED').slice(0, 3);
 
-  const latestScore = useMemo(() => {
-    if (!lastAttempt || lastAttempt.percentageScore == null) return null;
-    return formatPercent(lastAttempt.percentageScore);
-  }, [lastAttempt]);
+  const pendingAssignment: StudentAssignment | undefined = assignmentQueries
+    .flatMap((q) => q.data ?? [])
+    .filter((a) => a.status === 'NOT_STARTED' || a.status === 'IN_PROGRESS')
+    .sort((a, b) => (a.dueAt ?? '9999').localeCompare(b.dueAt ?? '9999'))[0];
+  const pendingClassroom = usableClassrooms.find((c) => c.classroomId === pendingAssignment?.classroomId);
 
-  const lastAttemptDate = useMemo(() => {
-    if (!lastAttempt?.createdAt) return null;
-    const t = new Date(lastAttempt.createdAt).getTime();
-    if (Number.isNaN(t)) return null;
-    return new Date(t).toLocaleDateString('vi-VN');
-  }, [lastAttempt]);
+  // Điểm kỹ năng: đủ 5 dòng theo thứ tự cố định, kỹ năng chưa làm để trống thay
+  // vì biến mất — học viên cần thấy mình còn bỏ sót kỹ năng nào.
+  const scoreByCode = new Map((statsQuery.data?.skills ?? []).map((s) => [s.componentCode, s]));
+  const skillRows = SKILLS.map((skill) => ({ skill, stat: scoreByCode.get(skill.code) }));
+  const scored = skillRows.filter((r) => r.stat);
+  const average = scored.length ? scored.reduce((sum, r) => sum + r.stat!.score50, 0) / scored.length : null;
+  // Kỹ năng thấp nhất là gợi ý luyện hôm nay; chưa làm kỹ năng nào thì gợi ý Writing
+  // vì đó là phần học viên mới hay bỏ qua nhất.
+  const weakest = scored.length
+    ? [...scored].sort((a, b) => a.stat!.score50 - b.stat!.score50)[0]!.skill
+    : skillByCode('WRITING');
 
-  // Tính toán số bài làm cho 7 ngày trong tuần hiện tại (T2 -> CN)
-  const weekDays = useMemo(() => {
-    const now = new Date();
-    const currentDayIndex = (now.getDay() + 6) % 7; // 0 = T2, 1 = T3, ..., 6 = CN
-    
-    // Tìm ngày Thứ 2 đầu tuần hiện tại
-    const monday = new Date(now);
-    monday.setDate(now.getDate() - currentDayIndex);
-    monday.setHours(0, 0, 0, 0);
+  const name = user?.profile?.displayName || user?.profile?.fullName?.split(' ').pop() || 'bạn';
+  const examDate = user?.profile?.targetExamDate ? new Date(user.profile.targetExamDate) : null;
+  const daysToExam = examDate ? Math.ceil((examDate.getTime() - Date.now()) / 86_400_000) : null;
 
-    const labels = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+  const currentLevel = average != null ? cefrFromScore50(average) : null;
+  const targetLevel = normalizeLevel(user?.profile?.targetCefrLevel)
+    ?? LEVEL_ORDER[Math.min(LEVEL_ORDER.length - 1, LEVEL_ORDER.indexOf(currentLevel ?? 'A2') + 1)]!;
+  const gap = average != null ? Math.max(0, (LEVEL_FLOOR[targetLevel] ?? 38) - average) : null;
 
-    return labels.map((label, index) => {
-      const dayStart = new Date(monday);
-      dayStart.setDate(monday.getDate() + index);
-      const dayEnd = new Date(dayStart);
-      dayEnd.setDate(dayStart.getDate() + 1);
-
-      // Đếm số bài đã nộp trong ngày này
-      const count = completedAttempts.filter((a) => {
-        const d = a.completedAt || a.createdAt;
-        if (!d) return false;
-        const time = new Date(d).getTime();
-        return time >= dayStart.getTime() && time < dayEnd.getTime();
-      }).length;
-
-      const isToday = index === currentDayIndex;
-
-      return {
-        label,
-        count,
-        isToday,
-        isCompleted: count >= 1,
-        isGoalMet: count >= 3,
-      };
-    });
-  }, [completedAttempts]);
-
-  const todayIndex = (new Date().getDay() + 6) % 7;
-  const todayCompletedCount = weekDays[todayIndex]?.count || 0;
-  const todayGoalMet = todayCompletedCount >= 3;
-
-  if (versionsQuery.isLoading || componentsQuery.isLoading) return <LoadingBlock label="Đang tải lộ trình học…" />;
-  if (versionsQuery.error || componentsQuery.error) {
-    return (
-      <ErrorBlock
-        message="Không tải được lộ trình học"
-        onRetry={() => {
-          void versionsQuery.refetch();
-          void componentsQuery.refetch();
-        }}
-      />
-    );
-  }
-
-  const components = componentsQuery.data ?? [];
-  const name = user?.profile?.displayName || user?.profile?.fullName || '';
-  const todayFormatted = new Intl.DateTimeFormat('vi-VN', {
-    weekday: 'long',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  }).format(new Date());
-
-
-
-
-  const stats = [
-    {
-      label: 'Bài đã hoàn thành',
-      value: String(totalCompleted),
-      note: totalCompleted > 0 ? `${totalCompleted} bài đã nộp` : 'Chưa có bài nộp',
-      ink: totalCompleted > 0 ? 'text-brand-600' : 'text-slate-500',
-    },
-    {
-      label: 'Tỷ lệ làm đúng TB',
-      value: avgPercentage !== null ? formatPercent(avgPercentage) : '--%',
-      note: avgPercentage !== null ? 'Trung bình các bài đã làm' : 'Cần làm thêm bài',
-      ink: avgPercentage !== null ? 'text-brand-600' : 'text-slate-500',
-    },
-    {
-      label: 'Tổng số câu đã làm',
-      value: `${totalItemsAnswered} câu`,
-      note: totalItemsAnswered > 0 ? 'Toàn bộ tiến độ' : 'Bắt đầu luyện ngay',
-      ink: totalItemsAnswered > 0 ? 'text-slate-700' : 'text-slate-500',
-    },
-    {
-      label: 'Điểm bài gần nhất',
-      value: latestScore ?? '--',
-      note: lastAttemptDate ? `Hoàn thành ${lastAttemptDate}` : 'Chưa có bài thi',
-      ink: latestScore ? 'text-brand-600' : 'text-slate-500',
-    },
-  ];
-
-  // Xác định bài để tiếp tục (Ưu tiên bài đang làm dở > bài gần nhất > mặc định)
-  const resumeTarget = inProgressAttempt || lastAttempt;
-  const resumeTitle = resumeTarget
-    ? (resumeTarget.mode === 'MOCK_TEST' ? 'Đề thi thử đầy đủ' : 'Bài luyện Part gần nhất')
-    : 'Nghe · Part 1 — Thông tin cụ thể';
-  const resumeLink = resumeTarget ? `/attempts/${resumeTarget.id}` : (components[0] ? componentPath(components[0].code) : '/mock-tests');
-  const resumeActionLabel = inProgressAttempt ? 'Làm tiếp bài dở →' : 'Xem lại bài gần nhất →';
-
-
-
+  const activity = statsQuery.data?.activity ?? [];
+  const maxMinutes = Math.max(30, ...activity.map((d) => d.minutes));
+  const totalMinutes = activity.reduce((sum, d) => sum + d.minutes, 0);
+  const loungeLeft = loungeQuery.data ? Math.floor(loungeQuery.data.dailyRemainingSeconds / 60) : null;
+  const loungeLimit = loungeQuery.data ? Math.floor(loungeQuery.data.dailyLimitSeconds / 60) : null;
 
   return (
-    <div className="space-y-6">
-      {/* Greeting Header */}
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            Chào {name ? name : 'Học viên'}
+    <div className="flex flex-col gap-5">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+        {/* Lời chào + gợi ý hôm nay */}
+        <section className="relative overflow-hidden rounded-3xl bg-ink p-7 text-white animate-rise sm:p-8">
+          <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full border border-white/10" />
+          <div aria-hidden="true" className="pointer-events-none absolute -right-8 top-10 h-56 w-56 rounded-full border border-dashed border-white/10" />
+          {(statsQuery.data?.streakDays ?? 0) > 0 && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+              {statsQuery.data!.streakDays} ngày liên tiếp
+            </span>
+          )}
+          <h1 className="mt-4 max-w-[18ch] text-[clamp(28px,3.6vw,38px)] font-extrabold leading-[1.1] tracking-[-0.035em]">
+            {daysToExam != null && daysToExam > 0
+              ? `Chào ${name}, còn ${daysToExam} ngày tới kỳ thi.`
+              : `Chào ${name}, hôm nay luyện gì?`}
           </h1>
-          <p className="text-sm text-slate-500">
-            {todayFormatted} · Tiếp tục kế hoạch luyện thi hôm nay
+          <p className="mt-3 max-w-[52ch] text-[15px] leading-6 text-white/70">
+            {scored.length ? (
+              <>
+                Hôm nay nên làm 1 đề <strong className="text-white">{weakest.nameEn}</strong> — kỹ năng đang kéo điểm tổng của bạn xuống.
+              </>
+            ) : (
+              <>Làm bài đầu tiên để hệ thống tính điểm từng kỹ năng và gợi ý bạn nên luyện gì mỗi ngày.</>
+            )}
           </p>
-        </div>
-        <Link
-          to="/mock-tests"
-          className="btn-primary mt-3 inline-flex sm:mt-0"
-        >
-          Làm đề thi thử đầy đủ →
-        </Link>
-      </div>
-
-      {/* Đề mới cập nhật; tự ẩn nếu chưa Premium hoặc chưa có đợt nào */}
-      <ContentUpdateCard />
-
-      {/* Hero Banner: Tiếp tục ở đâu bạn dừng */}
-      <div className="rounded-2xl bg-dark p-6 text-white shadow-md md:p-8">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div className="max-w-xl space-y-2">
-            <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-slate-400">
-              Tiếp tục ở đâu bạn dừng
-            </span>
-            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-              {resumeTitle}
-            </h2>
-            <p className="text-sm text-slate-300">
-              {inProgressAttempt
-                ? 'Bạn có bài luyện chưa hoàn thành · Hãy tiếp tục làm để lưu kết quả'
-                : 'Luyện từng câu hỏi thực tế kèm audio bản xứ · Tự lưu kết quả sau mỗi lựa chọn'}
+          {daysToExam == null && (
+            <p className="mt-2 text-xs text-white/50">
+              <Link to="/profile" className="underline underline-offset-2 hover:text-white">Đặt ngày thi</Link> để hiện số ngày còn lại.
             </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              to={resumeLink}
-              className="inline-flex min-h-[46px] items-center justify-center rounded-xl bg-accent px-6 text-sm font-bold text-dark shadow-sm transition-all hover:bg-accent-light"
-            >
-              {resumeActionLabel}
+          )}
+          <div className="mt-6 flex flex-wrap gap-2.5">
+            <Link to={componentPath(weakest.code)} className="btn bg-white text-ink hover:bg-surface-muted">
+              Làm bài gợi ý <Icon name="arrow" className="h-4 w-4" />
             </Link>
-            <Link
-              to="/mock-tests"
-              className="inline-flex min-h-[46px] items-center justify-center rounded-xl border border-slate-700 bg-transparent px-5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              Chọn đề mới
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* 4 Stats Grid */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        {stats.map((st) => (
-          <div
-            key={st.label}
-            className="rounded-2xl border border-border bg-white p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-          >
-            <span className="block text-xs font-medium text-slate-400">{st.label}</span>
-            <span className="mt-2 block font-mono text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              {st.value}
-            </span>
-            <span className={`mt-1 block text-xs ${st.ink}`}>{st.note}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Main Section: 5 Kỹ năng & Mục tiêu tuần */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Left: Five Skills List */}
-        <section className="rounded-2xl border border-border bg-white p-6 shadow-sm lg:col-span-2">
-          <div className="flex items-baseline justify-between border-b border-border-subtle pb-4">
-            <div>
-              <h2 className="text-lg font-bold text-slate-900">Năm kỹ năng Aptis General</h2>
-              <p className="text-xs text-slate-500">Cấu trúc chuẩn kỳ thi với 600+ câu hỏi luyện tập</p>
-            </div>
-            <span className="font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Tất cả kỹ năng
-            </span>
-          </div>
-
-          <div className="mt-3 divide-y divide-border-subtle">
-            {components.map((component) => (
-              <Link
-                key={component.id}
-                to={componentPath(component.code)}
-                className="group flex items-center justify-between gap-4 py-4 transition-colors hover:bg-surface/50 rounded-xl px-2 -mx-2"
-              >
-                <div className="flex items-center gap-3.5 min-w-0">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-100 text-brand-700 transition-transform group-hover:scale-105">
-                    <FeatureIcon name={COMPONENT_ICONS[component.code] ?? 'reading'} />
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="truncate font-semibold text-slate-900 group-hover:text-brand-600 transition-colors">
-                      {componentDisplayName(component)}
-                    </h3>
-                    <p className="truncate text-xs text-slate-500">
-                      {component.description || 'Luyện theo cấu trúc và dạng câu hỏi Aptis.'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 shrink-0">
-                  {component.durationSeconds ? (
-                    <span className="font-mono text-xs text-slate-400 hidden sm:inline">
-                      {Math.round(component.durationSeconds / 60)} phút
-                    </span>
-                  ) : null}
-                  <span className="grid h-8 w-8 place-items-center rounded-lg bg-surface text-slate-400 group-hover:bg-brand-600 group-hover:text-white transition-all">
-                    →
-                  </span>
-                </div>
-              </Link>
-            ))}
+            <Link to="/mock-tests" className="btn bg-white/10 text-white hover:bg-white/15">Mô phỏng thi</Link>
           </div>
         </section>
 
-        {/* Right: Weekly Goal & Study Tips */}
-        <div className="space-y-6">
-          <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
-            <div className="flex items-center justify-between">
-              <h2 className="text-base font-bold text-slate-900">Mục tiêu hôm nay</h2>
-              <span className="font-mono text-xs font-bold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-full">
-                {todayCompletedCount} / 3 bài
+        {/* Điểm trung bình tới mục tiêu */}
+        <section className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-white p-6 animate-rise sm:flex-row sm:p-7">
+          <ScoreRing value={average} />
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-faint">Tiến độ tới mục tiêu</p>
+            <div className="mt-3 flex items-center gap-2.5">
+              <LevelChip>{currentLevel ?? '—'}</LevelChip>
+              <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-muted">
+                <span
+                  className="block h-full rounded-full bg-ink transition-[width] duration-700"
+                  style={{ width: `${average != null ? Math.min(100, (average / (LEVEL_FLOOR[targetLevel] || 50)) * 100) : 0}%` }}
+                />
               </span>
+              <LevelChip dark>{targetLevel}</LevelChip>
             </div>
-            <p className="mt-1 text-xs text-slate-500">Hoàn thành đủ 3 bài mỗi ngày để duy trì thói quen</p>
-
-            {/* 7 Days of the Week Grid */}
-            <div className="mt-5 flex gap-2">
-              {weekDays.map((day) => (
-                <div key={day.label} className="flex flex-1 flex-col items-center gap-2">
-                  <div
-                    className={clsx(
-                      'relative flex h-12 w-full flex-col items-center justify-center rounded-xl text-xs transition-all',
-                      day.isGoalMet
-                        ? 'bg-accent text-dark font-bold shadow-sm'
-                        : day.isCompleted
-                        ? 'bg-brand-100 text-brand-800 font-semibold'
-                        : 'bg-surface text-slate-400',
-                      day.isToday && 'ring-2 ring-brand-500 ring-offset-1',
-                    )}
-                    title={`${day.label}: Đã làm ${day.count} bài`}
-                  >
-                    {day.isGoalMet ? (
-                      <span className="text-sm">✓</span>
-                    ) : day.count > 0 ? (
-                      <span className="font-mono text-[11px]">{day.count}</span>
-                    ) : (
-                      <span className="text-[10px] opacity-30">•</span>
-                    )}
-                  </div>
-                  <span
-                    className={clsx(
-                      'font-mono text-[10px]',
-                      day.isToday ? 'font-bold text-brand-600' : 'text-slate-400',
-                    )}
-                  >
-                    {day.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {todayGoalMet ? (
-              <div className="mt-5 flex min-h-[40px] w-full items-center justify-center rounded-xl bg-accent/30 font-semibold text-xs text-dark">
-                🎉 Đã hoàn thành 3 bài hôm nay!
-              </div>
-            ) : (
-              <Link
-                to="/mock-tests"
-                className="mt-5 flex min-h-[40px] w-full items-center justify-center rounded-xl bg-brand-100 font-semibold text-xs text-brand-800 transition-colors hover:bg-brand-200"
-              >
-                {todayCompletedCount > 0
-                  ? `Làm thêm ${3 - todayCompletedCount} bài để đạt mục tiêu →`
-                  : 'Làm bài ngay để đạt mục tiêu →'}
-              </Link>
-            )}
-          </section>
-
-
-          <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
-            <div className="flex items-center gap-2.5">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-accent text-dark font-bold text-xs">
-                TIP
-              </span>
-              <h2 className="text-base font-bold text-slate-900">Mẹo làm bài thi</h2>
-            </div>
-            <p className="mt-2 text-xs leading-relaxed text-slate-600">
-              Khám phá chiến thuật phân bổ thời gian và mẹo tránh bẫy cho từng Part thi Aptis General.
+            <p className="mt-3 text-sm leading-6 text-ink-soft">
+              {average == null
+                ? 'Chưa có bài nào được chấm trong 30 ngày qua.'
+                : gap && gap > 0
+                  ? <>Cần thêm <strong className="text-ink">{gap.toFixed(1)} điểm</strong> trung bình để chắc {targetLevel}.</>
+                  : <>Bạn đang ở mức {targetLevel}. Giữ nhịp để điểm ổn định trước ngày thi.</>}
             </p>
-            <Link
-              to="/meo-hoc"
-              className="mt-4 inline-flex items-center text-xs font-bold text-brand-600 hover:text-brand-700"
-            >
-              Xem tất cả mẹo học →
-            </Link>
-          </section>
-        </div>
+          </div>
+        </section>
       </div>
+
+      <div className="grid gap-5 md:grid-cols-3">
+        <MiniCard title="Đang làm dở" tag={inProgress ? attemptSkill(inProgress).nameEn : undefined} tagColor={inProgress ? attemptSkill(inProgress) : undefined}>
+          {inProgress ? (
+            <>
+              <p className="text-lg font-bold tracking-tight">{attemptTitle(inProgress)}</p>
+              <div className="mt-4 flex items-center gap-3">
+                <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-muted">
+                  <span
+                    className="block h-full rounded-full"
+                    style={{
+                      width: `${inProgress.totalItems ? ((inProgress.answeredItems ?? 0) / inProgress.totalItems) * 100 : 0}%`,
+                      background: attemptSkill(inProgress).fg,
+                    }}
+                  />
+                </span>
+                <span className="text-xs font-semibold tabular-nums text-ink-mute">
+                  {inProgress.answeredItems ?? 0}/{inProgress.totalItems} câu
+                </span>
+              </div>
+              <Link to={`/attempts/${inProgress.id}`} className="btn-primary mt-5 self-start">
+                Tiếp tục <Icon name="arrow" className="h-4 w-4" />
+              </Link>
+            </>
+          ) : (
+            <>
+              <p className="text-sm leading-6 text-ink-mute">Không có bài nào đang dở. Bắt đầu một bài mới để giữ chuỗi ngày học.</p>
+              <Link to="/mock-tests" className="btn-secondary mt-5 self-start">Chọn đề</Link>
+            </>
+          )}
+        </MiniCard>
+
+        <MiniCard
+          title="Bài tập lớp"
+          tag={pendingAssignment?.dueAt ? `Hạn ${formatDue(pendingAssignment.dueAt)}` : undefined}
+          tagWarn={pendingAssignment?.overdue || isToday(pendingAssignment?.dueAt)}
+        >
+          {pendingAssignment ? (
+            <>
+              <p className="text-lg font-bold tracking-tight">{pendingAssignment.title}</p>
+              <p className="mt-2 text-sm text-ink-mute">
+                {pendingClassroom?.teacherName ? `${pendingClassroom.teacherName} · ` : ''}{pendingAssignment.classroomName}
+              </p>
+              <Link to={`/lop-hoc/${pendingAssignment.classroomId}`} className="btn-secondary mt-5 self-start">Xem lớp học</Link>
+            </>
+          ) : (
+            <>
+              <p className="text-sm leading-6 text-ink-mute">
+                {usableClassrooms.length ? 'Bạn đã làm hết bài giáo viên giao.' : 'Bạn chưa tham gia lớp nào. Nhập mã lớp giáo viên gửi để nhận bài tập.'}
+              </p>
+              <Link to="/lop-hoc" className="btn-secondary mt-5 self-start">
+                {usableClassrooms.length ? 'Vào lớp học' : 'Tham gia lớp'}
+              </Link>
+            </>
+          )}
+        </MiniCard>
+
+        <MiniCard
+          title="AI English Lounge"
+          tag={loungeLeft != null && loungeLimit != null ? `Còn ${loungeLeft}/${loungeLimit} phút` : undefined}
+          plainTag
+        >
+          <span className="flex h-8 items-center gap-[3px]" aria-hidden="true">
+            {Array.from({ length: 26 }, (_, i) => (
+              <span
+                key={i}
+                className="w-[3px] rounded-sm bg-ink"
+                style={{ height: `${[45, 80, 100, 60, 90, 35, 70, 55][i % 8]}%` }}
+              />
+            ))}
+          </span>
+          <p className="mt-4 text-sm text-ink-mute">Luyện phản xạ nói với AI, chọn giọng nam hoặc nữ.</p>
+          <Link to="/ai-english-lounge" className="btn-primary mt-5 self-start">
+            <Icon name="mic" className="h-4 w-4" /> Gọi luyện nói
+          </Link>
+        </MiniCard>
+      </div>
+
+      <div className="grid gap-5 lg:grid-cols-2">
+        <section className="rounded-3xl border border-border bg-white p-5 sm:p-6">
+          <header className="flex items-baseline justify-between gap-3">
+            <h2 className="text-base font-bold">Điểm theo kỹ năng</h2>
+            <span className="text-xs text-ink-faint">30 ngày gần nhất</span>
+          </header>
+          <ul className="mt-2 divide-y divide-border-subtle">
+            {skillRows.map(({ skill, stat }) => (
+              <li key={skill.code}>
+                <Link to={componentPath(skill.code)} className="flex items-center gap-3.5 py-3.5">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl" style={{ background: skill.bg, color: skill.fg }}>
+                    <Icon name={skill.icon} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-baseline justify-between gap-2">
+                      <span className="truncate text-sm font-semibold">{skill.nameEn}</span>
+                      <span className="text-sm font-bold tabular-nums">{stat ? `${Math.round(stat.score50)}/50` : '—'}</span>
+                    </span>
+                    <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-surface-muted">
+                      <span
+                        className="block h-full rounded-full transition-[width] duration-700"
+                        style={{ width: `${stat ? (stat.score50 / 50) * 100 : 0}%`, background: skill.fg }}
+                      />
+                    </span>
+                  </span>
+                  <span className="w-14 shrink-0 text-center">
+                    {stat ? <LevelChip>{cefrFromScore50(stat.score50)}</LevelChip> : <span className="whitespace-nowrap text-[11px] text-ink-faint">Chưa làm</span>}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="flex flex-col rounded-3xl border border-border bg-white p-5 sm:p-6">
+          <header className="flex items-baseline justify-between gap-3">
+            <h2 className="text-base font-bold">Hoạt động 14 ngày</h2>
+            <span className="text-xs text-ink-mute">
+              <strong className="text-ink">{formatMinutes(totalMinutes)}</strong> luyện tập
+            </span>
+          </header>
+          <div className="mt-5 flex min-h-[180px] flex-1 items-end gap-1.5">
+            {activity.map((day, i) => {
+              const last = i === activity.length - 1;
+              return (
+                <div key={day.date} className="flex h-full flex-1 flex-col items-center justify-end gap-2">
+                  <span
+                    title={`${formatDayMonth(day.date)}: ${day.minutes} phút`}
+                    className={clsx('w-full rounded-md transition-[height] duration-700', last ? 'bg-ink' : 'bg-brand-300')}
+                    style={{ height: `${Math.max(3, (day.minutes / maxMinutes) * 100)}%` }}
+                  />
+                  <span className="text-[10px] text-ink-faint">{weekdayShort(day.date)}</span>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      </div>
+
+      <FocusTopics feed={focusQuery.data} />
+
+      <section className="rounded-3xl border border-border bg-white p-5 sm:p-6">
+        <header className="flex items-baseline justify-between gap-3">
+          <h2 className="text-base font-bold">Kết quả gần đây</h2>
+          <Link to="/history" className="text-xs font-semibold text-ink-mute hover:text-ink">Xem tất cả →</Link>
+        </header>
+        {recent.length ? (
+          <ul className="mt-2 divide-y divide-border-subtle">
+            {recent.map((a) => {
+              const skill = attemptSkill(a);
+              const score50 = a.percentageScore != null ? a.percentageScore / 2 : null;
+              return (
+                <li key={a.id}>
+                  <Link to={`/attempts/${a.id}/result`} className="flex items-center gap-3 py-3.5">
+                    <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: skill.fg }} />
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-semibold">{attemptTitle(a)}</span>
+                      <span className="block text-xs text-ink-faint">{formatDayMonth(a.completedAt ?? a.createdAt)}</span>
+                    </span>
+                    <span className="text-sm font-bold tabular-nums">{score50 != null ? `${Math.round(score50)}/50` : '—'}</span>
+                    {score50 != null && <LevelChip>{cefrFromScore50(score50)}</LevelChip>}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="mt-3 text-sm text-ink-mute">Chưa có bài nào hoàn thành.</p>
+        )}
+      </section>
     </div>
   );
 }
 
-function FeatureIcon({ name }: { name: IconName }) {
-  const paths: Record<IconName, ReactNode> = {
-    grammar: <><path d="M5 4h14v16H5z" /><path d="M8 8h8M8 12h5M8 16h7" /></>,
-    reading: <><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5v-16ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5v-16Z" /></>,
-    listening: <><path d="M4 14v-2a8 8 0 0 1 16 0v2" /><path d="M4 14h3v6H5a1 1 0 0 1-1-1v-5ZM20 14h-3v6h2a1 1 0 0 0 1-1v-5Z" /></>,
-    speaking: <><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6" /></>,
-    writing: <><path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" /><path d="m13.5 8 3 3M4 20h6" /></>,
-    compass: <><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z" /></>,
-    calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M8 3v4M16 3v4M3 10h18" /></>,
-    trophy: <><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z" /><path d="M8 6H4v2a4 4 0 0 0 4 4M16 6h4v2a4 4 0 0 1-4 4M12 13v5M8 21h8M9 18h6" /></>,
-    target: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></>,
-    clock: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></>,
-  };
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden="true">{paths[name]}</svg>;
+/** 6 chủ đề hot nhất tháng, xếp theo số lần lặp; bấm để luyện ở trang dự đoán đề. */
+function FocusTopics({ feed }: { feed?: ExamPredictionFeed }) {
+  const topics = (feed?.skills ?? [])
+    .flatMap((skill) => skill.sections.flatMap((section) =>
+      section.items.map((item) => ({ item, skill: skillByCode(skill.componentCode), section: section.sectionLabel }))))
+    .filter(({ item }) => item.questionSetCount > 0)
+    .sort((a, b) => b.item.repeatCount - a.item.repeatCount)
+    .slice(0, 6);
+  if (!topics.length) return null;
+  return (
+    <section className="rounded-3xl border border-border bg-white p-5 sm:p-6">
+      <header className="flex items-baseline justify-between gap-3">
+        <h2 className="flex items-center gap-2 text-base font-bold"><Icon name="focus" className="h-4 w-4" /> Đề trọng điểm tháng này</h2>
+        <Link to="/du-doan-de" className="text-xs font-semibold text-ink-mute hover:text-ink">Xem dự đoán đề →</Link>
+      </header>
+      <ul className="mt-3 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+        {topics.map(({ item, skill, section }) => (
+          <li key={item.id}>
+            <Link to="/du-doan-de" className="flex h-full items-center gap-3 rounded-2xl border border-border-subtle p-3.5 transition hover:border-ink/30">
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl" style={{ background: skill.bg, color: skill.fg }}>
+                <Icon name={skill.icon} className="h-4 w-4" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-semibold">{item.label}</span>
+                <span className="block text-xs text-ink-faint">{skill.nameEn} · {section}</span>
+              </span>
+              <span className="shrink-0 text-xs font-semibold tabular-nums text-amber-600" title="Số lần lặp trong tháng">{item.repeatCount}×</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
 }
 
+function ScoreRing({ value }: { value: number | null }) {
+  const r = 64;
+  const c = 2 * Math.PI * r;
+  const ratio = value != null ? Math.min(1, value / 50) : 0;
+  return (
+    <svg viewBox="0 0 160 160" className="h-36 w-36 shrink-0" role="img" aria-label={value != null ? `Điểm trung bình ${value.toFixed(0)} trên 50` : 'Chưa có điểm'}>
+      <circle cx="80" cy="80" r={r} fill="none" stroke="#F1F5F9" strokeWidth="12" />
+      <circle
+        cx="80"
+        cy="80"
+        r={r}
+        fill="none"
+        stroke="#0F172A"
+        strokeWidth="12"
+        strokeLinecap="round"
+        strokeDasharray={c}
+        strokeDashoffset={c * (1 - ratio)}
+        transform="rotate(-90 80 80)"
+        style={{ transition: 'stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1)' }}
+      />
+      <text x="80" y="84" textAnchor="middle" fontSize="40" fontWeight="800" fill="#0F172A" style={{ letterSpacing: '-0.04em' }}>
+        {value != null ? Math.round(value) : '—'}
+      </text>
+      <text x="80" y="106" textAnchor="middle" fontSize="11" fill="#94A3B8">điểm TB / 50</text>
+    </svg>
+  );
+}
+
+function MiniCard({
+  title,
+  tag,
+  tagColor,
+  tagWarn,
+  plainTag,
+  children,
+}: {
+  title: string;
+  tag?: string;
+  tagColor?: { fg: string; bg: string };
+  tagWarn?: boolean;
+  plainTag?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="flex flex-col rounded-3xl border border-border bg-white p-5 animate-rise">
+      <header className="mb-3 flex items-center justify-between gap-2">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-faint">{title}</span>
+        {tag && (
+          <span
+            className={clsx(
+              'rounded-full px-2 py-0.5 text-[11px] font-semibold',
+              plainTag ? 'text-ink' : tagWarn ? 'bg-amber-50 text-amber-700' : !tagColor && 'bg-surface-muted text-ink-soft',
+            )}
+            style={tagColor && !tagWarn && !plainTag ? { background: tagColor.bg, color: tagColor.fg } : undefined}
+          >
+            {tag}
+          </span>
+        )}
+      </header>
+      <div className="flex flex-1 flex-col">{children}</div>
+    </section>
+  );
+}
+
+function LevelChip({ children, dark }: { children: React.ReactNode; dark?: boolean }) {
+  return (
+    <span
+      className={clsx(
+        'inline-grid h-6 min-w-[30px] place-items-center rounded-md px-1.5 text-[11px] font-bold',
+        dark ? 'bg-ink text-white' : 'bg-surface-muted text-ink',
+      )}
+    >
+      {children}
+    </span>
+  );
+}
+
+function normalizeLevel(level: string | null | undefined) {
+  if (!level) return null;
+  return level === 'C1' || level === 'C2' ? 'C' : level;
+}
+
+function formatMinutes(minutes: number) {
+  const h = Math.floor(minutes / 60);
+  return h ? `${h} giờ ${minutes % 60} phút` : `${minutes} phút`;
+}
+
+function formatDayMonth(value: string) {
+  const d = new Date(value);
+  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function weekdayShort(value: string) {
+  const day = new Date(`${value}T00:00:00`).getDay();
+  return ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'][day]!;
+}
+
+function isToday(value: string | null | undefined) {
+  if (!value) return false;
+  return new Date(value).toDateString() === new Date().toDateString();
+}
+
+function formatDue(value: string) {
+  const d = new Date(value);
+  const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  return isToday(value) ? `${time} hôm nay` : formatDayMonth(value);
+}

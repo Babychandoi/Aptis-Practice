@@ -104,125 +104,47 @@ export function ExamPredictionPage() {
   const feed = query.data;
 
   return (
-    <div className="space-y-5">
-      <Breadcrumb />
+    <div className="flex flex-col gap-6">
+      <header className="flex animate-rise flex-col gap-4">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+          Dự đoán đề · {formatDate(feed.predictDate)}
+          {/* Bản tin gốc cũ hơn ngày đang xem: nói rõ dự đoán lập từ hôm nào,
+              thay vì để học viên đoán mò. */}
+          {feed.sourceDate && feed.sourceDate !== feed.predictDate && ` · cập nhật ${formatDate(feed.sourceDate)}`}
+        </p>
+        <h1 className="max-w-[18ch] text-[clamp(34px,5vw,56px)] font-extrabold leading-[1.05] tracking-[-0.045em]">
+          {tab === 'today' ? 'Chủ đề có khả năng ra thi' : `Chủ đề ra nhiều nhất ${HOT_MONTHS} tháng qua`}
+        </h1>
+        <p className="max-w-[62ch] text-[15px] leading-6 text-ink-mute">
+          Tổng hợp từ báo cáo của học viên sau mỗi kỳ thi. Dùng để ưu tiên luyện tập — không phải đề chính thức.
+          {feed.source && <> Nguồn: <strong className="text-ink-soft">{feed.source}</strong>.</>}
+        </p>
 
-      <header className="overflow-hidden rounded-2xl border border-amber-200/80 bg-white shadow-[0_18px_44px_-34px_rgba(234,88,12,0.5)]">
-        {/* Dải nhiệt trên cùng: gợi ý "độ hot" mà không cần thêm chữ */}
-        <div className="h-1.5 bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500" />
-
-        <div className="flex flex-col gap-4 bg-gradient-to-br from-amber-50/80 via-white to-orange-50/60 px-5 py-5 sm:flex-row sm:items-start sm:justify-between sm:px-6">
-          <div className="flex min-w-0 items-start gap-3.5">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-[0_12px_24px_-14px_rgba(234,88,12,0.85)]">
-              <TrendIcon />
-            </span>
-            <div className="min-w-0">
-              <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/70 bg-white px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-amber-700">
-                <StarIcon />
-                Dự đoán đề Aptis
-              </span>
-              <h1 className="mt-2 text-2xl font-bold leading-tight tracking-tight text-slate-900 sm:text-[26px]">
-                {tab === 'today' ? 'Dự đoán đề hôm nay' : `Đề hot nhất ${HOT_MONTHS} tháng qua`}
-              </h1>
-              <p className="mt-1 text-xs leading-5 text-slate-600">
-                Chủ đề khả năng cao ra thi. Bấm vào một chủ đề để luyện ngay đề của chủ đề đó.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex shrink-0 flex-wrap items-center gap-2 sm:flex-col sm:items-end">
-            <span className="inline-flex items-center gap-1.5 rounded-xl border border-amber-200 bg-white px-3 py-2 font-mono text-xs font-bold text-slate-800">
-              <CalendarIcon />
-              {formatDate(feed.predictDate)}
-            </span>
-            {/* Bản tin gốc cũ hơn ngày đang xem: nói rõ dự đoán lập từ hôm nào,
-                thay vì để học viên đoán mò. */}
-            {feed.sourceDate && feed.sourceDate !== feed.predictDate && (
-              <span className="text-[10px] text-slate-500">
-                Cập nhật {formatDate(feed.sourceDate)}
-              </span>
-            )}
-            {feed.source && (
-              <span className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-white px-3 py-2">
-                <BookIcon />
-                <span className="min-w-0">
-                  <span className="block font-mono text-[9px] font-bold uppercase tracking-wider text-amber-700">
-                    Nguồn tham khảo
-                  </span>
-                  <span className="block truncate text-[11px] font-bold text-slate-800">
-                    {feed.source}
-                  </span>
-                </span>
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Tab đánh dấu bằng GẠCH TRÊN, không dùng kiểu "nối liền thân" bằng
-            viền + -mb-px: header có overflow-hidden nên phần âm bị cắt, viền
-            vàng chạy hết vòng và tab nhìn như cái hộp kẹt lại. */}
-        <div role="tablist" className="flex gap-1.5 border-t border-amber-200/60 bg-amber-50/40 p-2 sm:px-3">
+        <div role="tablist" aria-label="Khoảng thời gian" className="flex flex-wrap gap-2">
           {(
             [
-              ['today', 'Hôm nay', 'Đề mới nhất từ admin', <ClockIcon key="c" />],
-              [
-                'hottest',
-                `Đề hot nhất ${HOT_MONTHS} tháng qua`,
-                'Xếp theo số lần lặp',
-                <ListIcon key="l" />,
-              ],
+              ['today', 'Hôm nay'],
+              ['hottest', `Hot nhất ${HOT_MONTHS} tháng`],
             ] as const
-          ).map(([key, title, hint, icon]) => {
-            const active = tab === key;
-            return (
-              <button
-                key={key}
-                type="button"
-                role="tab"
-                aria-selected={active}
-                onClick={() => {
-                  setTab(key);
-                  setSkillCode(null);
-                  setError(null);
-                }}
-                className={clsx(
-                  'relative flex min-w-0 flex-1 items-center gap-2.5 overflow-hidden rounded-xl px-3 py-2.5 text-left transition-colors',
-                  active
-                    ? 'bg-white shadow-[0_8px_20px_-14px_rgba(234,88,12,0.5)]'
-                    : 'hover:bg-white/60',
-                )}
-              >
-                {/* Gạch trên chỉ tab đang chọn — đủ rõ mà không cần viền bao */}
-                {active && (
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500"
-                  />
-                )}
-                <span
-                  className={clsx(
-                    'grid h-8 w-8 shrink-0 place-items-center rounded-lg transition-colors',
-                    active
-                      ? 'bg-gradient-to-br from-orange-500 to-amber-400 text-white'
-                      : 'bg-white text-slate-400',
-                  )}
-                >
-                  {icon}
-                </span>
-                <span className="min-w-0">
-                  <span
-                    className={clsx(
-                      'block truncate text-xs font-bold sm:text-sm',
-                      active ? 'text-slate-900' : 'text-slate-600',
-                    )}
-                  >
-                    {title}
-                  </span>
-                  <span className="mt-0.5 block truncate text-[10px] text-slate-500">{hint}</span>
-                </span>
-              </button>
-            );
-          })}
+          ).map(([key, title]) => (
+            <button
+              key={key}
+              type="button"
+              role="tab"
+              aria-selected={tab === key}
+              onClick={() => {
+                setTab(key);
+                setSkillCode(null);
+                setError(null);
+              }}
+              className={clsx(
+                'min-h-[36px] rounded-full px-4 text-[13px] font-semibold transition-colors',
+                tab === key ? 'bg-ink text-white' : 'bg-surface-muted text-ink hover:bg-brand-200',
+              )}
+            >
+              {title}
+            </button>
+          ))}
         </div>
       </header>
 
@@ -507,7 +429,7 @@ function TopicChip({
         empty
           ? 'cursor-not-allowed border-dashed border-border bg-surface text-slate-400 shadow-none'
           : item.priority === 'HOT'
-            ? 'border-orange-200 bg-white text-slate-900 hover:-translate-y-0.5 hover:border-orange-400 hover:shadow-[0_14px_26px_-16px_rgba(234,88,12,0.45)] disabled:opacity-60'
+            ? 'border-border bg-white text-ink hover:-translate-y-0.5 hover:border-brand-300 disabled:opacity-60'
             : 'border-border bg-white text-slate-900 hover:-translate-y-0.5 hover:border-brand-400 hover:bg-brand-50 disabled:opacity-60',
       )}
     >
@@ -517,7 +439,7 @@ function TopicChip({
         className={clsx(
           'shrink-0 rounded-full px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase',
           item.priority === 'HOT'
-            ? 'bg-gradient-to-br from-orange-500 to-amber-400 text-white'
+            ? 'bg-ink text-white'
             : 'bg-emerald-50 text-emerald-700',
         )}
       >
@@ -553,59 +475,6 @@ function Svg({ children, size = 16 }: { children: ReactNode; size?: number }) {
     >
       {children}
     </svg>
-  );
-}
-
-function TrendIcon() {
-  return (
-    <Svg size={20}>
-      <path d="M3 17l6-6 4 4 7-7" />
-      <path d="M17 8h4v4" />
-    </Svg>
-  );
-}
-
-function StarIcon() {
-  return (
-    <Svg size={11}>
-      <path d="m12 3 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z" />
-    </Svg>
-  );
-}
-
-function CalendarIcon() {
-  return (
-    <Svg size={14}>
-      <rect x="3" y="5" width="18" height="16" rx="2" />
-      <path d="M8 3v4M16 3v4M3 11h18" />
-    </Svg>
-  );
-}
-
-function BookIcon() {
-  return (
-    <Svg size={15}>
-      <path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z" />
-      <path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z" />
-    </Svg>
-  );
-}
-
-function ClockIcon() {
-  return (
-    <Svg>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3.5 2" />
-    </Svg>
-  );
-}
-
-function ListIcon() {
-  return (
-    <Svg>
-      <path d="m3 17 2 2 4-4M3 7l2 2 4-4" />
-      <path d="M13 6h8M13 12h8M13 18h8" />
-    </Svg>
   );
 }
 

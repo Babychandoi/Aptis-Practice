@@ -40,7 +40,14 @@ export function StudentClassroomPage() {
   const join = useMutation({
     mutationFn: () => studentClassroomApi.join(code.trim()),
     onSuccess: (classroom) => {
-      setMessage({ text: `Đã tham gia lớp ${classroom.name}.`, ok: true });
+      // Lớp bật duyệt: chưa vào lớp, chỉ mới gửi yêu cầu — nói rõ để học viên
+      // không tưởng lỗi khi lớp chưa hiện trong danh sách.
+      setMessage({
+        text: classroom.pending
+          ? `Đã gửi yêu cầu vào lớp ${classroom.name}. Lớp sẽ hiện ở đây khi giáo viên duyệt.`
+          : `Đã tham gia lớp ${classroom.name}.`,
+        ok: true,
+      });
       setCode('');
       // Xoá tham số QR khỏi URL để tải lại trang không gợi ý vào lại.
       if (searchParams.has('ma')) {

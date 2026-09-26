@@ -64,7 +64,7 @@ export function StudyTipsWritingPage() {
 
       {activePart && (
         <div className="space-y-3">
-          <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+          <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
             <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
               Aptis · Viết
             </span>
@@ -109,7 +109,7 @@ function TabButton({
         'flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition',
         active
           ? 'border-brand-800 bg-brand-800 text-white'
-          : 'border-[#ded5c2] bg-white text-stone-700 hover:border-brand-400',
+          : 'border-[#E5E9F0] bg-white text-stone-700 hover:border-brand-400',
       )}
     >
       {label}
@@ -137,7 +137,7 @@ function OverviewPanel({ onJump }: { onJump: (tabKey: string) => void }) {
   return (
     <div className="space-y-3">
       <section className="grid gap-3 lg:grid-cols-[1.6fr_1fr]">
-        <div className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <div className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
             {o.kicker}
           </span>
@@ -148,7 +148,7 @@ function OverviewPanel({ onJump }: { onJump: (tabKey: string) => void }) {
             {o.formula.map((item, index) => (
               <span key={item.word} className="flex items-center gap-2">
                 {index > 0 && <span aria-hidden className="text-stone-400">+</span>}
-                <span className="rounded-lg bg-[#eaf4ef] px-3 py-2 text-center">
+                <span className="rounded-lg bg-[#F1F5F9] px-3 py-2 text-center">
                   <strong className="block text-sm text-brand-900">{item.word}</strong>
                   <small className="text-[10px] text-brand-800">{item.note}</small>
                 </span>
@@ -157,13 +157,13 @@ function OverviewPanel({ onJump }: { onJump: (tabKey: string) => void }) {
           </div>
         </div>
 
-        <aside className="rounded-xl border border-[#e6dcc4] bg-[#fdf9ef] p-5">
+        <aside className="rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] p-5">
           <strong className="block text-xs font-semibold text-[#6f5716]">{o.keyRule.title}</strong>
           <p className="mt-1.5 text-xs leading-5 text-[#6f5716]">{o.keyRule.text}</p>
         </aside>
       </section>
 
-      <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+      <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
         <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
           Giám khảo nhìn gì?
         </span>
@@ -188,7 +188,7 @@ function OverviewPanel({ onJump }: { onJump: (tabKey: string) => void }) {
         </div>
       </section>
 
-      <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+      <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
         <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
           Quản lý 50 phút
         </span>
@@ -201,7 +201,7 @@ function OverviewPanel({ onJump }: { onJump: (tabKey: string) => void }) {
           {o.partMap.map((entry) => (
             <div key={entry.part} className="rounded-lg border border-[#e8e3d6] p-3.5">
               <div className="flex items-center justify-between gap-2">
-                <span className="rounded-md bg-[#eaf4ef] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
+                <span className="rounded-md bg-[#F1F5F9] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
                   {entry.part}
                 </span>
                 <span className="text-[10px] font-semibold tabular-nums text-stone-500">
@@ -232,7 +232,7 @@ function OverviewPanel({ onJump }: { onJump: (tabKey: string) => void }) {
       </section>
 
       <div className="grid gap-3 lg:grid-cols-2">
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
             Tránh mất điểm oan
           </span>
@@ -254,7 +254,7 @@ function OverviewPanel({ onJump }: { onJump: (tabKey: string) => void }) {
           </ul>
         </section>
 
-        <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+        <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
           <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
             Bộ nối câu an toàn
           </span>
@@ -269,7 +269,7 @@ function OverviewPanel({ onJump }: { onJump: (tabKey: string) => void }) {
               </div>
             ))}
           </div>
-          <p className="mt-3 rounded-lg border border-[#e6dcc4] bg-[#fdf9ef] px-3 py-2 text-xs leading-5 text-[#6f5716]">
+          <p className="mt-3 rounded-lg border border-[#e6dcc4] bg-[#FAFBFC] px-3 py-2 text-xs leading-5 text-[#6f5716]">
             {o.linkingWarning}
           </p>
         </section>
@@ -284,7 +284,7 @@ function CardBlock({ card }: { card: WritingCard }) {
     : card.kind === 'forms' ? card.cards.length : card.articles.length;
 
   return (
-    <section className="rounded-xl border border-[#dfe5dd] bg-white p-5">
+    <section className="rounded-xl border border-[#E5E9F0] bg-white p-5">
       <div className="flex items-center gap-2">
         <h3 className="text-sm font-semibold">{card.heading}</h3>
         <span className="rounded-full bg-[#f5f3ec] px-2 py-0.5 text-[10px] font-semibold tabular-nums text-stone-500">
@@ -309,7 +309,7 @@ function CardBlock({ card }: { card: WritingCard }) {
       {card.kind === 'forms' && (
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {card.cards.map((form) => (
-            <div key={form.head} className="rounded-lg border border-[#e6dcc4] bg-[#fdf9ef] p-3.5">
+            <div key={form.head} className="rounded-lg border border-[#e6dcc4] bg-[#FAFBFC] p-3.5">
               <strong className="block text-xs font-semibold text-[#6f5716]">{form.head}</strong>
               <dl className="mt-2 space-y-1.5">
                 {form.lines.map((line, index) => (
