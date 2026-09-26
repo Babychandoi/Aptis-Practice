@@ -230,23 +230,26 @@ export function AppLayout() {
         <div className="ml-auto flex items-center gap-2">
           <Link
             to={isTeacher ? '/giang-day' : '/lop-hoc'}
+            aria-label="Lớp học"
             className={clsx(
-              'hidden min-h-[36px] items-center gap-1.5 rounded-full border px-3.5 text-[13px] font-semibold transition-colors sm:inline-flex',
+              // Điện thoại chỉ hiện icon (tròn 36px) cho khỏi chật; màn rộng hiện cả chữ.
+              'inline-flex min-h-[36px] min-w-[36px] items-center justify-center gap-1.5 rounded-full border px-2 text-[13px] font-semibold transition-colors sm:px-3.5',
               /^\/(lop-hoc|giang-day)/.test(location.pathname)
                 ? 'border-ink bg-surface-muted'
                 : 'border-border bg-white hover:border-brand-300',
             )}
           >
             <Icon name="classes" className="h-4 w-4" />
-            Lớp học
+            <span className="hidden sm:inline">Lớp học</span>
           </Link>
 
           <Link
             to="/gioi-thieu"
-            className="hidden min-h-[36px] items-center gap-1.5 rounded-full border border-border bg-white px-3.5 text-[13px] font-semibold transition-colors hover:border-brand-300 lg:inline-flex"
+            aria-label="Giới thiệu nhận thưởng"
+            className="inline-flex min-h-[36px] min-w-[36px] items-center justify-center gap-1.5 rounded-full border border-border bg-white px-2 text-[13px] font-semibold transition-colors hover:border-brand-300 lg:px-3.5"
           >
             <Icon name="gift" className="h-4 w-4" />
-            Giới thiệu
+            <span className="hidden lg:inline">Giới thiệu</span>
           </Link>
 
           <PremiumPill

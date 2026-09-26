@@ -136,6 +136,9 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
                 {FREE_FEATURES.map((f) => (
                   <li key={f} className="flex gap-2.5"><CheckIcon muted /> {f}</li>
                 ))}
+                {FREE_LOCKED.map((f) => (
+                  <li key={f} className="flex gap-2.5 text-ink-faint line-through decoration-ink-faint/60"><CrossIcon /> {f}</li>
+                ))}
               </ul>
               <span className="mt-auto flex min-h-[48px] items-center justify-center rounded-full border border-border text-sm font-semibold">
                 {user?.premiumActive ? 'Đã bao gồm trong Premium' : 'Đang dùng'}
@@ -213,12 +216,30 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
   );
 }
 
-/** Quyền của tài khoản miễn phí — khớp luật backend (3 đề đầu mỗi kỹ năng). */
+/**
+ * Quyền của tài khoản miễn phí — phải khớp luật backend (ContentAccessService):
+ * mọi đề và bài test đang là Premium, nên Free KHÔNG làm được đề nào ngoài bài
+ * giáo viên giao trong lớp. Ghi sai ở đây là hứa với khách điều không có.
+ */
 const FREE_FEATURES = [
-  '3 đề đầu của mỗi kỹ năng',
-  'Chấm tự động Reading, Listening, G&V',
-  'Bảng tin và cập nhật đề',
+  'Đọc bảng tin',
+  'Vào lớp học và làm bài giáo viên giao',
 ];
+
+/** Những gì Free không có, gạch đi để khách thấy rõ Premium mở thêm gì. */
+const FREE_LOCKED = [
+  'Luyện đề và thi thử 5 kỹ năng',
+  'AI chấm Writing & Speaking',
+  'Dự đoán đề, cập nhật đề, mẹo học',
+];
+
+function CrossIcon() {
+  return (
+    <span aria-hidden="true" className="mt-0.5 shrink-0 text-ink-faint">
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M6 6l12 12M18 6 6 18" /></svg>
+    </span>
+  );
+}
 
 function CheckIcon({ muted }: { muted?: boolean }) {
   return (
