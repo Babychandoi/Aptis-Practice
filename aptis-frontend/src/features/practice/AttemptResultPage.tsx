@@ -11,6 +11,8 @@ import { useComponents, useExamVersions, useParts, usePartsOfComponents } from '
 import { formatDuration, formatPercent } from '@/lib/format';
 import { formatScoreLine } from './scoreDisplay';
 import { AttemptQuestionSet, PartSummary } from '@/types/api';
+import { cefrFromScore50, skillByCode } from '@/lib/skills';
+import { componentPath } from '@/features/catalog/catalogRoutes';
 
 interface SkillGroup {
   componentCode: string;
@@ -239,7 +241,6 @@ export function AttemptResultPage() {
   const isPartPractice = attempt.mode === 'PART_PRACTICE' || Boolean(attempt.partId);
 
   const currentPart = parts?.find((p) => p.id === attempt.partId);
-  const currentSkill = currentPart ? SKILL_ORDER[currentPart.componentCode?.toUpperCase()] : null;
   const currentPartTitle = currentPart
     ? getStandardPartTitle(currentPart.componentCode, currentPart.displayOrder, currentPart.name)
     : (attempt.questionSets[0]?.content.title ?? 'Luyện tập theo Part');
@@ -273,14 +274,6 @@ export function AttemptResultPage() {
     : (attempt.percentageScore
         ?? (displayedMax > 0 ? (displayedAwarded / displayedMax) * 100 : null));
 
-  const getPerformanceBadge = (pct: number | null) => {
-    if (pct === null) return null;
-    if (pct >= 85) return { label: 'Xuất sắc', color: 'bg-emerald-100 text-emerald-800 border-emerald-200' };
-    if (pct >= 70) return { label: 'Đạt chuẩn', color: 'bg-blue-100 text-blue-800 border-blue-200' };
-    if (pct >= 50) return { label: 'Khá', color: 'bg-amber-100 text-amber-800 border-amber-200' };
-    return { label: 'Cần luyện thêm', color: 'bg-slate-100 text-slate-700 border-slate-200' };
-  };
-  const perfBadge = getPerformanceBadge(partPercentage);
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto px-3 sm:px-4 py-4">
@@ -332,67 +325,22 @@ export function AttemptResultPage() {
 
       {/* 1. KHI LUYỆN TẬP THEO TỪNG PART: Hiện Hero Card gọn gàng, tập trung đúng Part vừa làm */}
       {isPartPractice ? (
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-slate-100">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
-                {currentSkill && <span className="text-xl">{currentSkill.icon}</span>}
-                <span className="font-mono text-xs font-bold uppercase tracking-wider text-slate-500">
-                  {currentSkill ? `${currentSkill.nameVi} · ${currentSkill.nameEn}` : 'Luyện tập theo Part'}
-                </span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                {currentPartTitle}
-              </h1>
-              <p className="text-sm text-slate-500">
-                {scoring
-                  ? 'Bài làm đang được chuyển sang mô hình chấm tự động.'
-                  : attemptedSets.length > 0
-                    ? `Đạt ${displayedAwarded.toFixed(1)} / ${displayedMax.toFixed(1)} điểm trên ${attemptedSets.length} đề đã làm`
-                    : studentUserId
-                      ? 'Em chưa làm đề nào trong lượt này'
-                      : 'Bạn chưa làm đề nào trong lượt này'}
-              </p>
-            </div>
-
-            {!scoring && (
-              <div className="flex flex-col items-start sm:items-end gap-2 shrink-0">
-                <div className="font-mono text-4xl sm:text-5xl font-extrabold text-slate-900">
-                  {formatPercent(partPercentage)}
-                </div>
-                {perfBadge && (
-                  <span className={clsx('rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase', perfBadge.color)}>
-                    {perfBadge.label}
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Quick Stats Footer */}
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-            <div className="rounded-xl bg-slate-50 p-3">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">TỔNG SỐ CÂU</p>
-              <p className="mt-1 font-mono text-lg font-extrabold text-slate-900 sm:text-xl">{attempt.totalItems}</p>
-            </div>
-            <div className="rounded-xl bg-slate-50 p-3">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">ĐÃ LÀM</p>
-              <p className="mt-1 font-mono text-lg font-extrabold text-slate-900 sm:text-xl">{attempt.answeredItems} câu</p>
-            </div>
-            <div className="rounded-xl bg-emerald-50/80 border border-emerald-100 p-3">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-emerald-700">SỐ CÂU ĐÚNG</p>
-              <p className="mt-1 font-mono text-lg font-extrabold text-emerald-600 sm:text-xl">
-                {scoring ? 'Đang chấm' : `${attempt.correctItems ?? 0} câu`}
-              </p>
-            </div>
-            <div className="rounded-xl bg-slate-50 p-3">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">THỜI GIAN LÀM</p>
-              <p className="mt-1 font-mono text-lg font-extrabold text-slate-900 sm:text-xl">
-                {formatDuration(attempt.timeSpentSeconds)}
-              </p>
-            </div>
-          </div>
-        </div>
+        <PartResultHero
+          skillCode={currentPart?.componentCode}
+          title={currentPartTitle}
+          scoring={scoring}
+          percentage={partPercentage}
+          correct={attempt.correctItems ?? 0}
+          answered={attempt.answeredItems ?? 0}
+          total={attempt.totalItems}
+          timeSpent={formatDuration(attempt.timeSpentSeconds)}
+          summary={attemptedSets.length > 0
+            ? `Đạt ${displayedAwarded.toFixed(1)} / ${displayedMax.toFixed(1)} điểm trên ${attemptedSets.length} đề đã làm`
+            : studentUserId
+              ? 'Em chưa làm đề nào trong lượt này'
+              : 'Bạn chưa làm đề nào trong lượt này'}
+          showActions={!studentUserId}
+        />
       ) : (
         /* 2. KHI THI THỬ FULL KỸ NĂNG (MOCK TEST): Hiện Bảng điểm chuẩn Aptis British Council */
         <>
@@ -670,5 +618,82 @@ export function AttemptResultPage() {
         </div>
       )}
     </div>
+  );
+}
+
+const CEFR_STEPS = ['A1', 'A2', 'B1', 'B2', 'C'];
+
+/**
+ * Đầu trang kết quả luyện theo Part, theo mock: vòng điểm quy về thang 50,
+ * số câu đúng và thanh CEFR ước tính. Thang 50 để khớp điểm ở trang chủ.
+ */
+function PartResultHero({ skillCode, title, scoring, percentage, correct, answered, total, timeSpent, summary, showActions }: {
+  skillCode?: string;
+  title: string;
+  scoring: boolean;
+  percentage: number | null;
+  correct: number;
+  answered: number;
+  total: number;
+  timeSpent: string;
+  summary: string;
+  showActions: boolean;
+}) {
+  const skill = skillByCode(skillCode);
+  const score50 = percentage != null ? percentage / 2 : null;
+  const level = score50 != null ? cefrFromScore50(score50) : null;
+  const levelIndex = level ? Math.max(0, CEFR_STEPS.indexOf(level.startsWith('C') ? 'C' : level)) : -1;
+  const r = 84;
+  const c = 2 * Math.PI * r;
+  return (
+    <section className="flex flex-col items-center rounded-3xl border border-border bg-white px-4 py-8 text-center sm:px-8">
+      <span className="rounded-full px-3 py-1 text-xs font-semibold" style={{ background: skill.bg, color: skill.fg }}>
+        {skill.nameEn} · Kết quả
+      </span>
+      <h1 className="mt-3 text-balance text-xl font-bold tracking-tight text-ink sm:text-2xl">{title}</h1>
+      <svg viewBox="0 0 200 200" className="mt-5 h-44 w-44" role="img" aria-label={score50 != null ? `${Math.round(score50)} trên 50 điểm` : 'Đang chấm'}>
+        <circle cx="100" cy="100" r={r} fill="none" stroke="#F1F5F9" strokeWidth="14" />
+        {score50 != null && (
+          <circle cx="100" cy="100" r={r} fill="none" stroke={skill.fg} strokeWidth="14" strokeLinecap="round"
+            strokeDasharray={c} strokeDashoffset={c * (1 - Math.min(1, score50 / 50))} transform="rotate(-90 100 100)"
+            style={{ transition: 'stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1)' }} />
+        )}
+        <text x="100" y="108" textAnchor="middle" fontSize="52" fontWeight="800" fill="#0F172A">{scoring ? '…' : score50 != null ? Math.round(score50) : '—'}</text>
+        <text x="100" y="134" textAnchor="middle" fontSize="13" fill="#64748B">/ 50 điểm</text>
+      </svg>
+      <p className="mt-4 text-2xl font-bold tabular-nums text-ink">{scoring ? 'Đang chấm…' : `${correct}/${answered} câu đúng`}</p>
+      <p className="mt-1 text-sm text-ink-mute">{scoring ? 'Bài làm đang được chấm tự động.' : summary}</p>
+
+      <div className="mt-6 w-full max-w-2xl rounded-2xl border border-border p-4 text-left">
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-faint">Trình độ CEFR ước tính</span>
+          <span className="text-sm font-bold text-ink">{level ?? '—'}</span>
+        </div>
+        <div className="mt-3 grid grid-cols-5 gap-1.5">
+          {CEFR_STEPS.map((step, i) => (
+            <div key={step} className="flex flex-col items-center gap-1.5">
+              <span className={clsx('h-1.5 w-full rounded-full', i <= levelIndex ? 'bg-ink' : 'bg-surface-muted')} />
+              <span className={clsx('text-xs', i === levelIndex ? 'font-bold text-ink' : 'text-ink-faint')}>{step}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <dl className="mt-4 grid w-full max-w-2xl grid-cols-3 gap-2 text-center">
+        {[['Tổng số câu', String(total)], ['Đã làm', `${answered} câu`], ['Thời gian', timeSpent]].map(([label, value]) => (
+          <div key={label} className="rounded-xl bg-surface-muted px-2 py-3">
+            <dt className="text-[11px] font-semibold uppercase tracking-wide text-ink-faint">{label}</dt>
+            <dd className="mt-1 text-base font-bold tabular-nums text-ink">{value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {showActions && skillCode && (
+        <div className="mt-6 flex flex-wrap justify-center gap-2.5">
+          <Link to={componentPath(skillCode)} className="btn-primary">Luyện tiếp {skill.nameEn}</Link>
+          <Link to="/history" className="btn-secondary">Kết quả của tôi</Link>
+        </div>
+      )}
+    </section>
   );
 }
