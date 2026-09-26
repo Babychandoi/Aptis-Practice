@@ -4,7 +4,17 @@ import { componentDisplayName, componentPath, findComponentBySlug } from '@/feat
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { useIsPremium } from '@/features/auth/authStore';
+import { skillByCode } from '@/lib/skills';
+import { Icon } from '@/components/shell/icons';
 
+const TIPS_PATH: Record<string, string> = {
+  LISTENING: '/meo-hoc/nghe-phan-3',
+  READING: '/meo-hoc/doc',
+  WRITING: '/meo-hoc/viet',
+  SPEAKING: '/meo-hoc/noi',
+};
+
+/** Trang một kỹ năng: ba cách luyện, tô theo màu riêng của kỹ năng đó. */
 export function ComponentPage() {
   const { componentSlug, componentId } = useParams<{ componentSlug?: string; componentId?: string }>();
   const isPremium = useIsPremium();
@@ -34,143 +44,129 @@ export function ComponentPage() {
   }
 
   if (!component) {
-    return <ErrorBlock message="Không tìm thấy kỹ năng này. Hãy chọn lại từ menu Luyện Aptis." />;
+    return <ErrorBlock message="Không tìm thấy kỹ năng này. Hãy chọn lại từ menu Kỹ năng." />;
   }
 
   if (componentId) return <Navigate to={componentPath(component.code)} replace />;
 
-  const tipsPath = {
-    LISTENING: '/meo-hoc/nghe-phan-3',
-    READING: '/meo-hoc/doc',
-    WRITING: '/meo-hoc/viet',
-    SPEAKING: '/meo-hoc/noi',
-  }[component.code.toUpperCase()];
-  const hasTipsPage = Boolean(tipsPath);
-
+  const tipsPath = TIPS_PATH[component.code.toUpperCase()];
   const parts = partsQuery.data ?? [];
   const displayName = componentDisplayName(component);
   const totalQuestionSets = parts.reduce((sum, part) => sum + part.publishedQuestionSetCount, 0);
+  const skill = skillByCode(component.code);
+  const base = componentPath(component.code);
+
+  const modes = [
+    {
+      key: 'parts',
+      chip: `Linh hoạt · ${parts.length} Part`,
+      title: 'Luyện theo Part',
+      desc: 'Chọn đúng dạng bài cần cải thiện. Tập trung rèn luyện từng Part với giải thích chi tiết.',
+      // Backend vẫn là nơi chặn thật (PREMIUM_REQUIRED); dẫn sang trang gói để
+      // học viên biết mở bằng cách nào thay vì bấm vào rồi mới báo lỗi.
+      to: isPremium ? `${base}/theo-part` : '/plans',
+      cta: isPremium ? 'Chọn Part để luyện' : 'Nâng cấp Premium để luyện theo Part',
+      locked: !isPremium,
+      hot: false,
+    },
+    {
+      key: 'tests',
+      chip: 'Chuẩn thi · Bấm giờ',
+      title: 'Bài test đầy đủ',
+      desc: 'Làm liền mạch toàn bộ các Part của kỹ năng này với đồng hồ đếm ngược như kỳ thi thật.',
+      to: `${base}/bai-test`,
+      cta: 'Bắt đầu bài test',
+      locked: false,
+      hot: true,
+    },
+    {
+      key: 'tips',
+      chip: 'Chiến thuật',
+      title: tipsPath ? 'Mẹo làm bài' : 'Kết quả đã làm',
+      desc: tipsPath
+        ? 'Chiến thuật làm bài, từ khoá bẫy paraphrase và mẹo đạt band điểm cao.'
+        : 'Xem lại điểm và bài làm của kỹ năng này để biết mình còn yếu ở đâu.',
+      to: tipsPath ? (isPremium ? tipsPath : '/plans') : '/history',
+      cta: tipsPath ? (isPremium ? 'Xem mẹo làm bài' : 'Nâng cấp Premium để xem mẹo') : 'Xem kết quả',
+      locked: Boolean(tipsPath) && !isPremium,
+      hot: false,
+    },
+  ];
 
   return (
-    <div className="space-y-6">
-      {/* Navigation Header */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+    <div className="flex flex-col gap-7">
+      <header className="flex animate-rise flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <Link
-            to="/"
-            className="font-mono text-xs font-semibold uppercase tracking-wider text-slate-400 hover:text-brand-600"
-          >
-            ← Bảng điều khiển / {displayName}
-          </Link>
-          <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            {displayName}
+          <nav className="font-mono text-xs uppercase tracking-[0.12em] text-ink-faint" aria-label="Đường dẫn">
+            <Link to="/" className="hover:text-ink">← Bảng điều khiển</Link>
+            <span className="mx-2">/</span>
+            <span className="text-ink-soft">{skill.nameVi || displayName}</span>
+          </nav>
+          <h1 className="mt-4 text-[clamp(40px,6vw,64px)] font-extrabold leading-none tracking-[-0.045em]">
+            {skill.nameVi || displayName}
           </h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-3 text-base text-ink-mute">
             {parts.length} Part · {totalQuestionSets} bộ câu hỏi đang có sẵn
           </p>
         </div>
-
         {component.durationSeconds ? (
-          <span className="inline-flex items-center rounded-full bg-brand-100 px-4 py-1.5 font-mono text-xs font-bold uppercase tracking-wider text-brand-800 self-start sm:self-auto">
-            {Math.round(component.durationSeconds / 60)} PHÚT / ĐỀ FULL
+          <span
+            className="self-start rounded-full px-4 py-1.5 font-mono text-xs font-medium uppercase tracking-[0.12em] sm:self-auto"
+            style={{ background: skill.bg, color: skill.fg }}
+          >
+            {Math.round(component.durationSeconds / 60)} phút / đề full
           </span>
         ) : null}
-      </div>
+      </header>
 
-      {/* 3 Main Modes */}
       <div className="grid gap-4 md:grid-cols-3">
-        {/* Mode 1: Theo Part — chỉ dành cho Premium */}
-        <div className="flex flex-col justify-between rounded-2xl border border-border bg-white p-6 shadow-sm transition-all hover:border-brand-200 hover:shadow-md">
-          <div className="space-y-3">
-            <span className="inline-flex rounded-full bg-brand-50 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-brand-700">
-              Linh hoạt · {parts.length} Part
-            </span>
-            <h2 className="text-xl font-bold text-slate-900">Luyện theo Part</h2>
-            <p className="text-xs leading-relaxed text-slate-500">
-              Chọn đúng dạng bài cần cải thiện. Tập trung rèn luyện từng Part với giải thích chi tiết.
-            </p>
-          </div>
-          {isPremium ? (
-            <Link
-              to={`${componentPath(component.code)}/theo-part`}
-              className="mt-6 flex min-h-[44px] items-center justify-center rounded-xl bg-surface-paper border border-border font-semibold text-xs text-slate-700 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-800 transition-colors"
-            >
-              Chọn Part để luyện →
-            </Link>
-          ) : (
-            // Dẫn sang trang gói thay vì chặn im lặng: học viên cần biết mở
-            // bằng cách nào. Backend vẫn là nơi chặn thật (PREMIUM_REQUIRED),
-            // đây chỉ để không cho bấm vào rồi mới báo lỗi.
-            <Link
-              to="/plans"
-              className="mt-6 flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 font-semibold text-xs text-amber-900 transition-colors hover:border-amber-300 hover:bg-amber-100"
-            >
-              <span aria-hidden="true">🔒</span>
-              Nâng cấp Premium để luyện theo Part
-            </Link>
-          )}
-        </div>
-
-        {/* Mode 2: Bài test full kỹ năng */}
-        <div className="flex flex-col justify-between rounded-2xl border border-brand-200 bg-white p-6 shadow-sm transition-all hover:border-brand-400 hover:shadow-md">
-          <div className="space-y-3">
-            <span className="inline-flex rounded-full bg-accent px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-dark">
-              Chuẩn thi · Bấm giờ
-            </span>
-            <h2 className="text-xl font-bold text-slate-900">Bài test đầy đủ</h2>
-            <p className="text-xs leading-relaxed text-slate-500">
-              Làm liền mạch toàn bộ các Part của kỹ năng này với đồng hồ đếm ngược như kỳ thi thật.
-            </p>
-          </div>
-          <Link
-            to={`${componentPath(component.code)}/bai-test`}
-            className="mt-6 flex min-h-[44px] items-center justify-center rounded-xl bg-brand-600 font-semibold text-xs text-white hover:bg-brand-700 transition-colors shadow-sm"
+        {modes.map((m, i) => (
+          <article
+            key={m.key}
+            className="flex animate-rise flex-col gap-4 rounded-3xl border border-border bg-white p-6"
+            style={{
+              animationDelay: `${i * 80}ms`,
+              ...(m.hot
+                ? {
+                    borderColor: skill.fg,
+                    boxShadow: `0 22px 44px -30px ${skill.fg}`,
+                    background: `linear-gradient(180deg, ${skill.bg} 0%, #FFFFFF 55%)`,
+                  }
+                : {}),
+            }}
           >
-            Bắt đầu bài test →
-          </Link>
-        </div>
-
-        {/* Mode 3: Mẹo học & Lịch sử */}
-        <div className="flex flex-col justify-between rounded-2xl border border-border bg-white p-6 shadow-sm transition-all hover:border-brand-200 hover:shadow-md">
-          <div className="space-y-3">
-            <span className="inline-flex rounded-full bg-surface px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500">
-              Chiến thuật
+            <span
+              className="self-start rounded-full px-3 py-1 font-mono text-[10.5px] uppercase tracking-[0.1em]"
+              style={
+                m.hot
+                  ? { background: '#0F172A', color: '#FFFFFF' }
+                  : i === 0
+                    ? { background: skill.bg, color: skill.fg }
+                    : { background: '#F1F5F9', color: '#475569' }
+              }
+            >
+              {m.chip}
             </span>
-            <h2 className="text-xl font-bold text-slate-900">
-              {hasTipsPage ? 'Mẹo làm bài' : 'Lưu ý trước khi thi'}
-            </h2>
-            <p className="text-xs leading-relaxed text-slate-500">
-              {hasTipsPage
-                ? 'Chiến thuật làm bài, từ khóa bẫy paraphrase và mẹo đạt band điểm cao.'
-                : 'Cách phân bổ thời gian và các lưu ý quan trọng để không bị mất điểm oan.'}
-            </p>
-          </div>
-          {hasTipsPage && !isPremium ? (
+            <h2 className="text-2xl font-extrabold tracking-[-0.03em]">{m.title}</h2>
+            <p className="flex-1 text-[15px] leading-6 text-ink-mute">{m.desc}</p>
             <Link
-              to="/plans"
-              className="mt-6 flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 font-semibold text-xs text-amber-900 transition-colors hover:border-amber-300 hover:bg-amber-100"
+              to={m.to}
+              className="flex min-h-[52px] items-center justify-center gap-2 rounded-2xl border text-[15px] font-bold transition-opacity hover:opacity-90"
+              style={
+                m.locked
+                  ? { borderColor: '#FDE68A', background: '#FFFBEB', color: '#78350F' }
+                  : m.hot
+                    ? { background: skill.fg, borderColor: skill.fg, color: '#FFFFFF' }
+                    : { background: '#FAFAF7', borderColor: '#E7E5DF', color: '#0F172A' }
+              }
             >
-              <span aria-hidden="true">🔒</span>
-              Nâng cấp Premium để xem mẹo
+              {m.locked && <Icon name="lock" className="h-4 w-4" />}
+              {m.cta}
+              {!m.locked && <Icon name="arrow" className="h-4 w-4" />}
             </Link>
-          ) : hasTipsPage ? (
-            <Link
-              to={tipsPath!}
-              className="mt-6 flex min-h-[44px] items-center justify-center rounded-xl bg-surface-paper border border-border font-semibold text-xs text-slate-700 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-800 transition-colors"
-            >
-              Xem mẹo làm bài →
-            </Link>
-          ) : (
-            <Link
-              to="/history"
-              className="mt-6 flex min-h-[44px] items-center justify-center rounded-xl bg-surface-paper border border-border font-semibold text-xs text-slate-700 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-800 transition-colors"
-            >
-              Xem kết quả bài đã làm →
-            </Link>
-          )}
-        </div>
+          </article>
+        ))}
       </div>
     </div>
   );
 }
-
