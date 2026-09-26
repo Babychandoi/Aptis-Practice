@@ -381,3 +381,18 @@ export interface AdminPendingCounts {
 export const adminPendingApi = {
   counts: () => api.get<AdminPendingCounts>('/admin/pending-counts').then((r) => r.data),
 };
+
+/** Số liệu tổng quan trang Báo cáo; ngày tháng theo giờ Việt Nam. */
+export interface AdminReportSummary {
+  month: number;
+  monthRevenue: number;
+  paidOrders: number;
+  newUsers: number;
+  evaluations: number;
+  revenue7d: { date: string; amount: number }[];
+  attemptsBySkill30d: { componentCode: string; componentName: string; count: number }[];
+}
+
+export const adminReportApi = {
+  summary: () => api.get<AdminReportSummary>('/admin/reports/summary').then((r) => r.data),
+};
