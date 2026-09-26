@@ -896,7 +896,7 @@ export function AttemptPage() {
         */}
         {isSinglePartAttempt && isItemBank ? (
           // Part câu rời: không có chủ đề để chọn, chỉ cần biết đang ở câu nào.
-          <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#E5E9F0] bg-[linear-gradient(90deg,#e8f4ef_0%,#fffdf9_70%)] px-4 py-3">
+          <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white text-brand-800 shadow-sm">
               <MicIcon />
             </span>
@@ -1271,7 +1271,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
     <div className="space-y-2" onClick={(event) => event.stopPropagation()}>
       {/* Thẻ chủ đề đang mở: tên, vị trí, tiến độ, số lửa */}
       {current && (
-        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#E5E9F0] bg-[linear-gradient(90deg,#e8f4ef_0%,#fffdf9_70%)] px-4 py-3">
+        <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white text-brand-800 shadow-sm">
             <MicIcon />
           </span>
