@@ -65,15 +65,15 @@ export function HistoryPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="page-title animate-rise">Kết quả của tôi</h1>
+      <h1 className="page-title animate-in">Kết quả của tôi</h1>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <section className="grid grid-cols-3 gap-4 rounded-3xl border border-border bg-white p-5 animate-rise">
+        <section className="grid grid-cols-3 gap-4 rounded-3xl border border-border bg-white p-5 animate-in">
           <Stat label="Bài đã làm" value={String(totalElements)} />
           <Stat label="Điểm TB" value={avg != null ? avg.toFixed(1).replace('.', ',') : '—'} hint="20 bài gần nhất" />
           <Stat label="Cao nhất" value={best != null ? String(Math.round(best)) : '—'} />
         </section>
-        <section className="rounded-3xl border border-border bg-white p-5 animate-rise">
+        <section className="rounded-3xl border border-border bg-white p-5 animate-in">
           <header className="flex items-baseline justify-between">
             <span className="text-xs font-semibold text-ink-mute">{trend.length} bài gần nhất</span>
             {trend.length >= 2 && (
@@ -171,8 +171,9 @@ function Sparkline({ values }: { values: number[] }) {
   return (
     <svg viewBox={`0 -6 ${W} ${H + 12}`} className="mt-4 h-24 w-full" preserveAspectRatio="none" role="img" aria-label="Xu hướng điểm">
       <polygon points={`0,${H} ${line} ${W},${H}`} fill="#EEF2F7" />
-      <polyline points={line} fill="none" stroke="#0F172A" strokeWidth="2.5" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
-      <circle cx={last[0]} cy={last[1]} r="4" fill="#0F172A" vectorEffect="non-scaling-stroke" />
+      {/* Đường điểm tự vẽ ra từ trái sang (hmline); pathLength chuẩn hoá độ dài nét. */}
+      <polyline points={line} pathLength={1400} strokeDasharray="1400" className="animate-line" fill="none" stroke="#0F172A" strokeWidth="2.5" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+      <circle cx={last[0]} cy={last[1]} r="4" fill="#0F172A" className="origin-center animate-pop [animation-delay:1.6s] [transform-box:fill-box]" vectorEffect="non-scaling-stroke" />
     </svg>
   );
 }

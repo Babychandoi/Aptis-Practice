@@ -124,8 +124,8 @@ export function OrderingRenderer({ item, draft, disabled, showAnswer, onChange }
             } : undefined}
             className={clsx(
               'flex items-start gap-3 rounded-xl border bg-white px-3 py-2.5 transition',
-              inRightPlace && 'border-emerald-400 bg-emerald-50',
-              inWrongPlace && 'border-red-400 bg-red-50',
+              inRightPlace && 'animate-pop border-emerald-400 bg-emerald-50',
+              inWrongPlace && 'animate-shake border-red-400 bg-red-50',
               !showAnswer && 'border-brand-200',
               draggable && 'cursor-grab active:cursor-grabbing',
               draggingId === optionId && 'opacity-40',

@@ -8,6 +8,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { formatDateTime } from '@/lib/format';
 import { DataTable, PageHeader, Pager, ResultBanner, StatusBadge } from './components/AdminUi';
 import { usePermission } from './usePermission';
+import { ReportSummary } from './ReportSummary';
 import type { ExportJob, ExportType, JobStatus } from '@/types/admin';
 
 const PAGE_SIZE = 20;
@@ -170,8 +171,10 @@ export function ReportAdminPage() {
     <div>
       <PageHeader
         title="Báo cáo"
-        description="Tạo và tải các báo cáo dữ liệu hệ thống dưới dạng file."
+        description="Doanh thu, học viên mới và lượt làm bài; xuất file chi tiết ở phần dưới."
       />
+
+      <ReportSummary />
 
       {banner && (
         <ResultBanner
@@ -187,7 +190,7 @@ export function ReportAdminPage() {
       />
 
       <section className="card mb-5">
-        <h2 className="font-semibold text-ink">Tạo báo cáo mới</h2>
+        <h2 className="font-semibold text-ink">Xuất file báo cáo</h2>
         <p className="mt-1 text-sm text-ink-mute">
           Báo cáo chạy nền; trạng thái cập nhật trong bảng bên dưới.
         </p>

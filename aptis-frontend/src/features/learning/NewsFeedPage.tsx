@@ -5,6 +5,7 @@ import { newsApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate } from '@/lib/format';
+import { stagger } from '@/lib/motion';
 import type { NewsPostSummary } from '@/types/api';
 
 const PAGE_SIZE = 10;
@@ -38,7 +39,7 @@ export function NewsFeedPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <header className="animate-rise">
+      <header className="animate-in">
         <h1 className="page-title">Bảng tin</h1>
         <p className="page-description">Cách làm bài, dự đoán đề và thông báo mới nhất từ Aptis Practice.</p>
       </header>
@@ -54,7 +55,7 @@ export function NewsFeedPage() {
             i === 0 && page === 0 ? (
               <FeaturedCard key={post.id} post={post} />
             ) : (
-              <PostCard key={post.id} post={post} />
+              <PostCard key={post.id} post={post} index={i} />
             ),
           )}
         </div>
@@ -99,9 +100,9 @@ function FeaturedCard({ post }: { post: NewsPostSummary }) {
   return (
     <Link
       to={`/bang-tin/${post.slug}`}
-      className="relative flex min-h-[300px] animate-rise flex-col justify-end overflow-hidden rounded-3xl bg-ink p-7 text-white lg:row-span-2"
+      className="relative flex min-h-[300px] animate-in flex-col justify-end overflow-hidden rounded-3xl bg-ink p-7 text-white lg:row-span-2"
     >
-      <span aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full border border-dashed border-white/10" />
+      <span aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 animate-spin-slow rounded-full border border-dashed border-white/10" />
       <div className="absolute left-7 top-7"><Meta post={post} dark /></div>
       <h2 className="text-[clamp(24px,2.6vw,32px)] font-extrabold leading-[1.12] tracking-[-0.03em]">{post.title}</h2>
       {post.excerpt && <p className="mt-3 line-clamp-3 text-[15px] leading-6 text-white/70">{post.excerpt}</p>}
@@ -110,11 +111,12 @@ function FeaturedCard({ post }: { post: NewsPostSummary }) {
   );
 }
 
-function PostCard({ post }: { post: NewsPostSummary }) {
+function PostCard({ post, index }: { post: NewsPostSummary; index: number }) {
   return (
     <Link
       to={`/bang-tin/${post.slug}`}
-      className="flex animate-rise flex-col gap-3 rounded-3xl border border-border bg-white p-5 transition-colors hover:border-brand-300"
+      style={stagger(index)}
+      className="flex animate-in flex-col gap-3 rounded-3xl border border-border bg-white p-5 transition-colors hover:border-brand-300"
     >
       <Meta post={post} />
       <h2 className="text-lg font-bold leading-6 tracking-tight">{post.title}</h2>

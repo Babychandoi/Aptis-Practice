@@ -28,6 +28,7 @@ import { useAutosave } from '@/features/practice/useAutosave';
 import { confirmDialog } from '@/lib/dialog';
 import { formatDuration } from '@/lib/format';
 import { skillByCode } from '@/lib/skills';
+import { stagger } from '@/lib/motion';
 import type { AttemptQuestionSet, PartSummary, QuestionItem } from '@/types/api';
 
 /**
@@ -628,14 +629,14 @@ export function AttemptPage() {
         : [`Làm đủ ${partGroups.length} Part liên tục${attempt.durationSeconds ? `, hết giờ bài tự nộp` : ''}.`, 'Dùng mục lục để chuyển Part; đánh dấu câu cần xem lại.', 'Điểm và đáp án hiện sau khi nộp toàn bộ bài.'];
     return (
       <div className="mx-auto flex min-h-screen max-w-[620px] items-center px-4 py-10">
-        <section className="w-full rounded-[18px] border border-brand-200 bg-white p-5 shadow-[0_24px_48px_-24px_rgba(15,23,42,.18)] sm:p-7">
+        <section className="w-full animate-in-sm rounded-[18px] border border-brand-200 bg-white p-5 shadow-[0_24px_48px_-24px_rgba(15,23,42,.18)] sm:p-7">
           <span className="grid h-[52px] w-[52px] place-items-center rounded-2xl" style={{ background: introSkill.bg, color: introSkill.fg }}><HeadphoneIcon /></span>
           <p className="mt-4 text-[11px] font-bold uppercase tracking-[.1em]" style={{ color: introSkill.fg }}>{introKind}</p>
-          <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-ink sm:text-[32px] sm:leading-tight">{introTitle}</h1>
+          <h1 key={introTitle} className="mt-2 origin-bottom animate-word text-2xl font-extrabold tracking-tight text-ink sm:text-[32px] sm:leading-tight">{introTitle}</h1>
           <p className="mt-2 font-mono text-[13px] text-ink-mute">{partGroups.length} Part · {attempt.totalItems} câu{attempt.durationSeconds ? ` · ${Math.round(attempt.durationSeconds / 60)} phút` : ' · không tính giờ'}</p>
           <ol className="mt-4 space-y-2">
             {introRules.map((rule, index) => (
-              <li key={rule} className="flex items-start gap-3 text-sm text-ink-soft">
+              <li key={rule} className="flex animate-in-sm items-start gap-3 text-sm text-ink-soft" style={stagger(index, 60, 150)}>
                 <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-brand-100 text-[11px] font-bold text-ink">{index + 1}</span>
                 {rule}
               </li>
@@ -669,7 +670,7 @@ export function AttemptPage() {
 
     return (
       <div className="mx-auto flex min-h-screen max-w-[640px] items-center px-4 py-10">
-        <section className="w-full rounded-[18px] border border-brand-200 bg-white p-5 shadow-[0_24px_48px_-24px_rgba(15,23,42,.18)] sm:p-7">
+        <section key={pendingProgress.componentId} className="w-full animate-in-sm rounded-[18px] border border-brand-200 bg-white p-5 shadow-[0_24px_48px_-24px_rgba(15,23,42,.18)] sm:p-7">
           <p className="text-[11px] font-bold uppercase tracking-[.1em]" style={{ color: nextSkill.fg }}>
             Bài thi Aptis · {doneCount}/{total} kỹ năng đã nộp
           </p>
@@ -687,7 +688,7 @@ export function AttemptPage() {
               );
             })}
           </div>
-          <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-ink sm:text-[40px] sm:leading-tight">
+          <h1 key={skill} className="mt-4 origin-bottom animate-word text-3xl font-extrabold tracking-tight text-ink sm:text-[40px] sm:leading-tight">
             Tiếp theo: <span style={{ color: nextSkill.fg }}>{skill}</span>
           </h1>
           <p className="mt-2 text-[15px] text-ink-soft">
@@ -762,7 +763,10 @@ export function AttemptPage() {
             <HeadphoneIcon />
           </span>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-sm font-bold sm:text-base text-slate-900">
+            <h1
+              key={`${componentName}-${isSinglePartAttempt ? currentPart.name : 'full'}`}
+              className="origin-bottom animate-word truncate text-sm font-bold sm:text-base text-slate-900"
+            >
               {componentName} · {isSinglePartAttempt ? currentPart.name : 'Bài test full'}
             </h1>
             <p className="font-mono text-[11px] text-slate-500">
@@ -794,7 +798,7 @@ export function AttemptPage() {
           {/* Autosave Status */}
           <span className="hidden min-w-16 text-right font-mono text-xs text-slate-400 sm:block" aria-live="polite">
             {autosave.state === 'saving' && 'Đang lưu…'}
-            {autosave.state === 'saved' && <span className="text-emerald-600 font-semibold">✓ Đã lưu</span>}
+            {autosave.state === 'saved' && <span className="animate-flash rounded-md px-1.5 text-emerald-600 font-semibold">✓ Đã lưu</span>}
             {autosave.state === 'error' && <span className="text-rose-600 font-semibold">Lỗi lưu</span>}
           </span>
 
@@ -1383,7 +1387,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
       {open && (
         <ul
           role="listbox"
-          className="absolute z-40 mt-1 max-h-80 w-full overflow-y-auto rounded-xl border border-[#E5E9F0] bg-white p-1 shadow-[0_12px_32px_rgba(43,39,30,.16)]"
+          className="absolute z-40 mt-1 max-h-80 w-full origin-top animate-drop overflow-y-auto rounded-xl border border-[#E5E9F0] bg-white p-1 shadow-[0_12px_32px_rgba(43,39,30,.16)]"
         >
           {visibleSets.map(({ set, index }) => {
             const answered = countAnswered(set.content.items, responsesBySet[set.attemptQuestionSetId] ?? {});
@@ -1530,7 +1534,12 @@ function PartSection({ part, hideHeader, visibleSetIds, setNumberById, attemptId
         </div>
       )}
 
-      <div className="mt-3 space-y-4">
+      {/* Chế độ từng bài: đổi bộ đề/Part thì trượt vào từ phải (hmslide). Key theo
+          id bộ đề để chạy lại animation; xem cả bài thì không animate hàng trăm bộ. */}
+      <div
+        key={visibleSetIds ? visibleSetIds.join('|') : 'all'}
+        className={clsx('mt-3 space-y-4', visibleSetIds && 'animate-slide-in')}
+      >
         {visibleSets.map((set, index) => (
           <QuestionSetBlock
             key={set.attemptQuestionSetId}

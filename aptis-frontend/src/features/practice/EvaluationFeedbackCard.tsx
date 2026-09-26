@@ -64,7 +64,7 @@ export function EvaluationFeedbackCard({
               <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-slate-200">
                 <div
                   className={clsx(
-                    'h-full transition-all',
+                    'h-full origin-left animate-grow-x transition-all',
                     ratio >= 0.8
                       ? 'bg-emerald-500'
                       : ratio >= 0.5

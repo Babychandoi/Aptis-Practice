@@ -34,8 +34,8 @@ function VoiceLounge({ configured, dailyLimitSeconds, dailyRemainingSeconds, onU
 
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)]">
-      <section className="relative flex animate-rise flex-col gap-5 overflow-hidden rounded-3xl bg-ink p-6 text-white">
-        <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full border border-dashed border-white/10" />
+      <section className="relative flex animate-in flex-col gap-5 overflow-hidden rounded-3xl bg-ink p-6 text-white">
+        <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 animate-spin-slow rounded-full border border-dashed border-white/10" />
         <span className="grid h-12 w-12 place-items-center rounded-full bg-white/10"><Icon name="spark" /></span>
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">AI English Lounge</h1>
@@ -77,7 +77,7 @@ function VoiceLounge({ configured, dailyLimitSeconds, dailyRemainingSeconds, onU
             <strong>{usedMin}/{limitMin} phút</strong>
           </div>
           <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-white/15">
-            <span className="block h-full rounded-full bg-accent" style={{ width: `${limitMin ? (usedMin / limitMin) * 100 : 0}%` }} />
+            <span className="block h-full origin-left animate-grow-x rounded-full bg-accent" style={{ width: `${limitMin ? (usedMin / limitMin) * 100 : 0}%` }} />
           </span>
         </div>
 
@@ -100,7 +100,7 @@ function VoiceLounge({ configured, dailyLimitSeconds, dailyRemainingSeconds, onU
         </button>
       </section>
 
-      <section className="flex animate-rise flex-col gap-3 rounded-3xl border border-border bg-white p-5 sm:p-6">
+      <section className="flex animate-in flex-col gap-3 rounded-3xl border border-border bg-white p-5 [animation-delay:80ms] sm:p-6">
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-faint">Chủ đề gợi ý</p>
         <ul className="flex flex-col gap-2">
           {TOPICS.map((t) => (
@@ -156,17 +156,25 @@ function VoiceStudioModal({ topic, level, voice, freshStart, onClose }: { topic:
         <section className="flex flex-col items-center justify-center border-b border-white/10 bg-ink p-6 md:border-b-0 md:border-r">
           <p className="text-sm text-white/70">{topic} · {level} · {voice === 'Puck' ? 'Giọng nam' : 'Giọng nữ'}</p>
           <div className="relative my-8 grid h-52 w-52 place-items-center">
-            {active && <><span className="absolute inset-0 animate-ping rounded-full bg-white/10" /><span className="absolute inset-5 animate-pulse rounded-full bg-accent/20" /></>}
+            {active && <><span className="absolute inset-0 animate-ping-mic rounded-full bg-white/10 [animation-duration:2s]" /><span className="absolute inset-5 animate-pulse rounded-full bg-accent/20" /></>}
             <button type="button" disabled={conversation.status === 'connecting' || conversation.status === 'handoff'} onClick={() => active ? void conversation.stop() : void conversation.start()} className={`relative grid h-36 w-36 place-items-center rounded-full border-4 shadow-[0_0_60px_rgba(255,255,255,0.12)] transition ${active ? 'border-accent bg-white/15' : 'border-white/20 bg-white/10 hover:scale-105 hover:bg-white/15'}`} aria-label={active ? 'Dừng trò chuyện' : 'Bắt đầu trò chuyện'}><span className="text-6xl" aria-hidden="true">🎙️</span></button>
           </div>
-          <p className="text-lg font-semibold">{statusLabel(conversation.status)}</p>
+          <p key={conversation.status} className="flex animate-word items-center gap-2 text-lg font-semibold">
+            {statusLabel(conversation.status)}
+            {/* Ba chấm nhấp nháy khi đang chờ kết nối, như bong bóng "đang gõ" của mock */}
+            {(conversation.status === 'connecting' || conversation.status === 'reconnecting' || conversation.status === 'handoff') && (
+              <span aria-hidden="true" className="flex gap-1">
+                {[0, 1, 2].map((d) => <span key={d} className="h-1.5 w-1.5 animate-dot rounded-full bg-white/70" style={{ animationDelay: `${d * 0.15}s` }} />)}
+              </span>
+            )}
+          </p>
           <p className="mt-2 text-center text-sm text-slate-400">{active ? 'Mic tạm nghỉ khi AI đang nói và tự mở lại khi AI nói xong.' : 'Chạm mic để cấp quyền micro và bắt đầu.'}</p>
           {conversation.notice && <p role="status" className="mt-4 rounded-xl border border-amber-300/25 bg-amber-500/10 p-3 text-center text-sm text-amber-100">{conversation.notice}</p>}
           {active && <button type="button" className="mt-3 text-xs text-white/70 underline" onClick={conversation.resumeAudio}>Tiếp tục âm thanh</button>}
           {conversation.secondsLeft > 0 && <p className="mt-3 rounded-full bg-white/10 px-3 py-1 text-xs text-slate-300">Còn khoảng {Math.ceil(conversation.secondsLeft / 60)} phút</p>}
           {conversation.error && <p className="mt-4 rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-center text-sm text-red-200">{conversation.error}</p>}
         </section>
-        <section className="flex min-h-0 flex-col bg-[#111a2e]"><div className="border-b border-white/10 px-5 py-4"><h3 className="font-semibold">Transcript trực tiếp</h3><p className="text-xs text-slate-400">Hội thoại chỉ dùng để duy trì ngữ cảnh học tập.</p></div><div className="min-h-0 flex-1 space-y-3 overflow-y-auto p-5" aria-live="polite">{conversation.transcript.length === 0 ? <div className="grid h-full place-items-center text-center text-sm text-slate-500">Bấm vào mic và nói câu đầu tiên.<br />AI sẽ phản hồi bằng giọng nói.</div> : conversation.transcript.map((line, index) => <div key={`${line.role}-${index}`} className={line.role === 'user' ? 'ml-auto max-w-[88%] rounded-2xl rounded-br-md bg-white px-4 py-3 text-sm text-ink' : 'max-w-[88%] rounded-2xl rounded-bl-md bg-white/10 px-4 py-3 text-sm text-slate-100'}><span className="mb-1 block text-[10px] font-bold uppercase tracking-wider opacity-60">{line.role === 'user' ? 'Bạn' : 'AI Friend'}</span>{line.text}</div>)}<div ref={transcriptEndRef} /></div></section>
+        <section className="flex min-h-0 flex-col bg-[#111a2e]"><div className="border-b border-white/10 px-5 py-4"><h3 className="font-semibold">Transcript trực tiếp</h3><p className="text-xs text-slate-400">Hội thoại chỉ dùng để duy trì ngữ cảnh học tập.</p></div><div className="min-h-0 flex-1 space-y-3 overflow-y-auto p-5" aria-live="polite">{conversation.transcript.length === 0 ? <div className="grid h-full place-items-center text-center text-sm text-slate-500">Bấm vào mic và nói câu đầu tiên.<br />AI sẽ phản hồi bằng giọng nói.</div> : conversation.transcript.map((line, index) => <div key={`${line.role}-${index}`} className={line.role === 'user' ? 'ml-auto max-w-[88%] animate-in-sm rounded-2xl rounded-br-md bg-white px-4 py-3 text-sm text-ink' : 'max-w-[88%] animate-in-sm rounded-2xl rounded-bl-md bg-white/10 px-4 py-3 text-sm text-slate-100'}><span className="mb-1 block text-[10px] font-bold uppercase tracking-wider opacity-60">{line.role === 'user' ? 'Bạn' : 'AI Friend'}</span>{line.text}</div>)}<div ref={transcriptEndRef} /></div></section>
       </div>
       <footer className="flex items-center justify-between border-t border-white/10 bg-slate-950 px-5 pb-[max(.75rem,env(safe-area-inset-bottom))] pt-3"><span className="text-xs text-slate-500">AI Voice · Không chấm điểm</span><button type="button" className="rounded-xl bg-red-500/15 px-4 py-2 text-sm font-semibold text-red-300 hover:bg-red-500/25" onClick={() => void close()}>Kết thúc và đóng</button></footer>
     </div>

@@ -8,6 +8,7 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { PremiumGate } from '@/components/ui/PremiumGate';
 import { formatDate } from '@/lib/format';
 import { useAttemptLabels } from '@/features/practice/attemptLabels';
+import { stagger } from '@/lib/motion';
 
 /**
  * Nhật ký cập nhật nội dung: đợt nào thêm đề gì, bấm vào làm ngay.
@@ -76,7 +77,7 @@ export function ContentUpdatePage() {
 
   return (
     <div className="mx-auto flex w-full max-w-[880px] flex-col gap-6">
-      <header className="animate-rise">
+      <header className="animate-in">
         <h1 className="page-title">Cập nhật đề</h1>
         <p className="page-description">Đề mới thêm gần đây — bấm vào đề để luyện đúng những đề của đợt đó.</p>
       </header>
@@ -96,7 +97,7 @@ export function ContentUpdatePage() {
         {logs.map((log, i) => {
           const skill = skillOfPart(log.partId);
           return (
-            <li key={log.id} className="relative animate-rise" style={{ animationDelay: `${i * 60}ms` }}>
+            <li key={log.id} className="relative animate-in" style={stagger(i)}>
               <span
                 aria-hidden="true"
                 className="absolute -left-[33px] top-6 h-4 w-4 rounded-full border-[3px] bg-white sm:-left-[37px]"

@@ -181,14 +181,18 @@
 .news-body img { border-radius: 0.75rem; margin: 1rem 0; }
 .news-body hr { border-color: theme('colors.border.DEFAULT'); margin: 1.5rem 0; }
 
-/* Vạch sóng âm của trình phát audio nhún lên xuống khi đang phát. */
-@keyframes wavebar {
-  from { transform: scaleY(0.45); }
-  to { transform: scaleY(1); }
-}
-
-/* Vòng sóng toả ra quanh nút micro (theo mock trang làm bài). */
-@keyframes micping {
-  0% { transform: scale(1); opacity: .7; }
-  100% { transform: scale(1.6); opacity: 0; }
+/*
+ * Keyframe chuyển động nằm trong tailwind.config.js (animate-in, animate-pop…).
+ * Người dùng bật "giảm chuyển động" trong hệ điều hành thì tắt hết: mọi
+ * keyframe đều kết thúc ở trạng thái hiện rõ nên bỏ animation không làm mất
+ * nội dung.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

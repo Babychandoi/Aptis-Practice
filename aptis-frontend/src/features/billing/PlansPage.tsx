@@ -93,7 +93,7 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
 
   return (
     <div className="mx-auto flex w-full max-w-[1040px] flex-col gap-7">
-      <header className="flex animate-rise flex-col items-center gap-4 text-center">
+      <header className="flex animate-in flex-col items-center gap-4 text-center">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">{aiVoice ? 'Gói AI Voice' : 'Gói Premium'}</p>
         <h1 className="max-w-[16ch] text-[clamp(34px,5vw,56px)] font-extrabold leading-[1.05] tracking-[-0.045em]">
           {aiVoice ? 'Luyện nói mỗi ngày cùng AI' : 'Mở toàn bộ đề, AI chấm không giới hạn'}
@@ -129,12 +129,15 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
       {selectedPlan && (
         <div className="grid items-stretch gap-4 md:grid-cols-2">
           {!aiVoice && (
-            <section className="flex animate-rise flex-col gap-4 rounded-3xl border border-border bg-white p-6">
+            <section className="flex animate-in flex-col gap-4 rounded-3xl border border-border bg-white p-6">
               <h2 className="text-lg font-bold">Miễn phí</h2>
               <p className="text-[44px] font-extrabold leading-none tracking-[-0.04em]">0đ</p>
               <ul className="flex flex-col gap-2.5 text-sm text-ink-soft">
                 {FREE_FEATURES.map((f) => (
                   <li key={f} className="flex gap-2.5"><CheckIcon muted /> {f}</li>
+                ))}
+                {FREE_LOCKED.map((f) => (
+                  <li key={f} className="flex gap-2.5 text-ink-faint line-through decoration-ink-faint/60"><CrossIcon /> {f}</li>
                 ))}
               </ul>
               <span className="mt-auto flex min-h-[48px] items-center justify-center rounded-full border border-border text-sm font-semibold">
@@ -143,7 +146,7 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
             </section>
           )}
 
-          <section className="relative flex animate-rise flex-col gap-4 overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-[0_28px_60px_-34px_rgba(15,23,42,.7)]">
+          <section className="relative flex animate-in flex-col gap-4 overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-[0_28px_60px_-34px_rgba(15,23,42,.7)]">
             <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full border border-dashed border-white/10" />
             <div className="flex items-center justify-between gap-2">
               <h2 className="text-lg font-bold">{selectedPlan.name}</h2>
@@ -213,12 +216,30 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
   );
 }
 
-/** Quyền của tài khoản miễn phí — khớp luật backend (3 đề đầu mỗi kỹ năng). */
+/**
+ * Quyền của tài khoản miễn phí — phải khớp luật backend (ContentAccessService):
+ * mọi đề và bài test đang là Premium, nên Free KHÔNG làm được đề nào ngoài bài
+ * giáo viên giao trong lớp. Ghi sai ở đây là hứa với khách điều không có.
+ */
 const FREE_FEATURES = [
-  '3 đề đầu của mỗi kỹ năng',
-  'Chấm tự động Reading, Listening, G&V',
-  'Bảng tin và cập nhật đề',
+  'Đọc bảng tin',
+  'Vào lớp học và làm bài giáo viên giao',
 ];
+
+/** Những gì Free không có, gạch đi để khách thấy rõ Premium mở thêm gì. */
+const FREE_LOCKED = [
+  'Luyện đề và thi thử 5 kỹ năng',
+  'AI chấm Writing & Speaking',
+  'Dự đoán đề, cập nhật đề, mẹo học',
+];
+
+function CrossIcon() {
+  return (
+    <span aria-hidden="true" className="mt-0.5 shrink-0 text-ink-faint">
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M6 6l12 12M18 6 6 18" /></svg>
+    </span>
+  );
+}
 
 function CheckIcon({ muted }: { muted?: boolean }) {
   return (

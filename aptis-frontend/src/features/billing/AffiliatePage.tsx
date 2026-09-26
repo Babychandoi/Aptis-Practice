@@ -152,7 +152,7 @@ function HeroCard({
 
   return (
     <>
-      <section className="relative animate-rise overflow-hidden rounded-3xl bg-ink px-6 py-8 text-white sm:px-9">
+      <section className="relative animate-in overflow-hidden rounded-3xl bg-ink px-6 py-8 text-white sm:px-9">
         <span aria-hidden="true" className="pointer-events-none absolute -bottom-32 -right-20 h-80 w-80 rounded-full border border-dashed border-white/10" />
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50">Giới thiệu nhận thưởng</p>
         <h1 className="mt-3 max-w-[22ch] text-[clamp(28px,4vw,42px)] font-extrabold leading-[1.1] tracking-[-0.035em]">
@@ -191,7 +191,7 @@ function HeroCard({
 
 function Step({ n, title, text }: { n: number; title: string; text: string }) {
   return (
-    <li className="animate-rise rounded-3xl bg-surface-paper p-5">
+    <li className="animate-in rounded-3xl bg-surface-paper p-5">
       <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-sm font-bold text-white">{n}</span>
       <p className="mt-3 font-bold">{title}</p>
       <p className="mt-1 text-sm leading-6 text-ink-mute">{text}</p>

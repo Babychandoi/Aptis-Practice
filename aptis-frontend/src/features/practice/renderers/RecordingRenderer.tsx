@@ -271,12 +271,12 @@ export function RecordingRenderer({
               {/* Sóng toả ra theo mock: đỏ dồn dập khi đang ghi, xám nhẹ khi chờ bấm. */}
               {phase === 'recording' && (
                 <>
-                  <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full border-2 border-red-400 [animation:micping_1.6s_ease-out_infinite]" />
-                  <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full border-2 border-red-400 [animation:micping_1.6s_ease-out_.8s_infinite]" />
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full border-2 border-red-400 animate-ping-mic" />
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full border-2 border-red-400 animate-ping-mic [animation-delay:.8s]" />
                 </>
               )}
               {phase === 'idle' && !examMode && (
-                <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full border-2 border-ink/30 [animation:micping_2.4s_ease-out_infinite]" />
+                <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full border-2 border-ink/30 animate-ping-mic [animation-duration:2.4s]" />
               )}
               <span className="relative flex flex-col items-center">
                 <MicGlyph />
@@ -295,11 +295,12 @@ export function RecordingRenderer({
                 key={index}
                 className={clsx(
                   'w-[3px] rounded-full transition-colors',
-                  phase === 'recording' ? 'bg-red-500' : 'bg-brand-300',
+                  phase === 'recording' ? 'bg-red-500 animate-bar' : 'bg-brand-300',
                 )}
                 style={{
                   height: `${height}%`,
-                  animation: phase === 'recording' ? `wavebar .${4 + (index % 5)}s ease-in-out ${(index * 0.04).toFixed(2)}s infinite alternate` : undefined,
+                  animationDuration: `.${4 + (index % 5)}s`,
+                  animationDelay: `${(index * 0.04).toFixed(2)}s`,
                 }}
               />
             ))}
@@ -327,9 +328,9 @@ export function RecordingRenderer({
       {phase === 'done' && (
         <div className="flex flex-col items-center gap-3 text-center">
           {/* Cùng vòng tròn với lúc ghi để màn không nhảy sang kiểu cũ sau khi ghi xong. */}
-          <span className="grid h-[168px] w-[168px] place-items-center rounded-full border-[10px] border-skill-speaking-bg bg-skill-speaking text-white">
+          <span className="grid h-[168px] w-[168px] animate-pop place-items-center rounded-full border-[10px] border-skill-speaking-bg bg-skill-speaking text-white">
             <span className="flex flex-col items-center gap-1">
-              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" strokeDasharray="60" className="animate-draw [animation-delay:.1s]" /></svg>
               <span className="text-[11px] font-bold uppercase tracking-[0.14em]">Đã lưu</span>
             </span>
           </span>

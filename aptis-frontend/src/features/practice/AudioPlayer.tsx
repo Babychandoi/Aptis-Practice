@@ -172,10 +172,11 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
               return (
                 <span
                   key={i}
-                  className={clsx('w-[3px] shrink-0 rounded-sm transition-colors duration-300', played ? 'bg-white' : 'bg-slate-600')}
+                  className={clsx('w-[3px] shrink-0 rounded-sm transition-colors duration-300', played ? 'bg-white' : 'bg-slate-600', playing && 'animate-bar')}
                   style={{
                     height: `${height}%`,
-                    animation: playing ? `wavebar .${4 + (i % 5)}s ease-in-out ${(i * 0.04).toFixed(2)}s infinite alternate` : undefined,
+                    animationDuration: `.${4 + (i % 5)}s`,
+                    animationDelay: `${(i * 0.04).toFixed(2)}s`,
                   }}
                 />
               );

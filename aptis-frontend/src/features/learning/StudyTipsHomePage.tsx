@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useIsPremium } from '@/features/auth/authStore';
 import { skillByCode } from '@/lib/skills';
+import { stagger } from '@/lib/motion';
 import { Icon } from '@/components/shell/icons';
 
 /**
@@ -58,7 +59,7 @@ export function StudyTipsHomePage() {
 
   return (
     <div className="mx-auto flex w-full max-w-[920px] flex-col gap-6">
-      <header className="animate-rise">
+      <header className="animate-in">
         <h1 className="page-title">Mẹo học</h1>
         <p className="page-description">Chiến lược ngắn gọn cho từng kỹ năng — đọc 2 phút, áp dụng ngay vào phòng thi.</p>
       </header>
@@ -68,7 +69,7 @@ export function StudyTipsHomePage() {
           const skill = skillByCode(tip.code);
           const expanded = open === tip.code;
           return (
-            <section key={tip.code} className="animate-rise overflow-hidden rounded-3xl border border-border bg-white" style={{ animationDelay: `${i * 60}ms` }}>
+            <section key={tip.code} className="animate-in overflow-hidden rounded-3xl border border-border bg-white" style={stagger(i)}>
               <button
                 type="button"
                 // Chưa Premium: vẫn thấy tên kỹ năng để biết mình đang thiếu gì,

@@ -33,7 +33,7 @@ export function ToolsPage() {
 
   return (
     <div className="flex flex-col gap-7">
-      <header className="animate-rise">
+      <header className="animate-in">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">Công cụ</p>
         <h1 className="mt-2 max-w-[20ch] text-[clamp(32px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-[-0.04em]">
           Gộp đề, khung trả lời, mẫu email — dùng được ngay

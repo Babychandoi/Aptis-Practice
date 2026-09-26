@@ -95,7 +95,7 @@ export function ComponentPage() {
 
   return (
     <div className="flex flex-col gap-7">
-      <header className="flex animate-rise flex-col justify-between gap-4 sm:flex-row sm:items-end">
+      <header className="flex animate-in flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <nav className="font-mono text-xs uppercase tracking-[0.12em] text-ink-faint" aria-label="Đường dẫn">
             <Link to="/" className="hover:text-ink">← Bảng điều khiển</Link>
@@ -123,7 +123,7 @@ export function ComponentPage() {
         {modes.map((m, i) => (
           <article
             key={m.key}
-            className="flex animate-rise flex-col gap-4 rounded-3xl border border-border bg-white p-6"
+            className="flex animate-in flex-col gap-4 rounded-3xl border border-border bg-white p-6"
             style={{
               animationDelay: `${i * 80}ms`,
               ...(m.hot

@@ -105,7 +105,7 @@ export function ExamPredictionPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <header className="flex animate-rise flex-col gap-4">
+      <header className="flex animate-in flex-col gap-4">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
           Dự đoán đề · {formatDate(feed.predictDate)}
           {/* Bản tin gốc cũ hơn ngày đang xem: nói rõ dự đoán lập từ hôm nào,

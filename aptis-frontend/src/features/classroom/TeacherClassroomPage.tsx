@@ -407,7 +407,7 @@ function ProgressPanel({ studentCount }: { studentCount: number }) {
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-surface-muted">
               <div
-                className={clsx('h-full rounded-full transition-all', scoreTone(row.score))}
+                className={clsx('h-full origin-left animate-grow-x rounded-full transition-all', scoreTone(row.score))}
                 style={{ width: `${Math.max(2, Math.min(100, row.score))}%` }}
               />
             </div>

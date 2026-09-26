@@ -125,7 +125,7 @@ function PageRanking({ days }: { days: number }) {
                 <span className="block text-sm font-semibold text-ink">{page.label}</span>
                 <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-surface">
                   <span
-                    className="block h-full rounded-full bg-brand-600"
+                    className="block h-full origin-left animate-grow-x rounded-full bg-brand-600"
                     style={{ width: `${Math.max(2, (page.views / max) * 100)}%` }}
                   />
                 </span>
@@ -226,7 +226,7 @@ function ConversionFunnel({ days }: { days: number }) {
               </span>
               <span className="h-6 min-w-0 flex-1 overflow-hidden rounded-lg bg-surface">
                 <span
-                  className="flex h-full items-center justify-end rounded-lg bg-brand-600 px-2 text-[11px] font-bold text-white"
+                  className="flex h-full origin-left animate-grow-x items-center justify-end rounded-lg bg-brand-600 px-2 text-[11px] font-bold text-white"
                   style={{ width: `${Math.max(6, (step.value / max) * 100)}%` }}
                 >
                   {step.value}

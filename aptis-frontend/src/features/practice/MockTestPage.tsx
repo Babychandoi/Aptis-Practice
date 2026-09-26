@@ -65,7 +65,7 @@ export function MockTestPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <header className="animate-rise">
+      <header className="animate-in">
         <h1 className="page-title">Mô phỏng thi</h1>
         <p className="page-description">
           Làm đủ 5 kỹ năng liên tục, đúng thứ tự và thời gian của kỳ thi thật. Hết giờ bài tự nộp.
@@ -118,7 +118,7 @@ function MockTestCard({
 
   return (
     <article
-      className={clsx('flex animate-rise flex-col gap-4 rounded-3xl border border-border bg-white p-5', !mockTest.canAccess && 'bg-surface-paper')}
+      className={clsx('flex animate-in flex-col gap-4 rounded-3xl border border-border bg-white p-5', !mockTest.canAccess && 'bg-surface-paper')}
       style={{ animationDelay: `${(index % 3) * 80}ms` }}
     >
       <header className="flex items-start justify-between gap-3">
