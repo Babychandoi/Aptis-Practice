@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 import { assetApi } from '@/api/endpoints';
 import { claimPlayback, releasePlayback } from '@/features/practice/audioSession';
 import type { AssetRef } from '@/types/api';
@@ -11,6 +12,9 @@ interface Props {
   initialPlayCount: number;
   disabled: boolean;
 }
+
+// Chiều cao từng vạch sóng âm (%), lấy theo mock trang làm bài.
+const WAVE = [35, 60, 45, 80, 55, 30, 70, 50, 85, 40, 65, 45, 75, 35, 55, 90, 45, 60, 30, 70, 50, 40, 80, 55, 35, 65, 45, 75, 60, 40];
 
 const PLAYBACK_RATES = [1, 1.25, 1.5, 0.75] as const;
 
@@ -115,7 +119,7 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
       ) : !signedUrl ? (
         <p className="py-1 text-xs text-slate-400">Đang tải audio…</p>
       ) : (
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
           <audio
             ref={audioRef}
             src={signedUrl}
@@ -159,6 +163,23 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
                 Đang phát
               </span>
             )}
+          </div>
+
+          {/* Sóng âm theo mock: phần đã nghe sáng lên, nhún nhẹ khi đang phát. Chỉ trang trí. */}
+          <div aria-hidden="true" className="order-first flex h-7 w-full shrink-0 items-center sm:basis-full gap-[3px] overflow-hidden">
+            {WAVE.map((height, i) => {
+              const played = duration > 0 && i / WAVE.length < currentTime / duration;
+              return (
+                <span
+                  key={i}
+                  className={clsx('w-[3px] shrink-0 rounded-sm transition-colors duration-300', played ? 'bg-white' : 'bg-slate-600')}
+                  style={{
+                    height: `${height}%`,
+                    animation: playing ? `wavebar .${4 + (i % 5)}s ease-in-out ${(i * 0.04).toFixed(2)}s infinite alternate` : undefined,
+                  }}
+                />
+              );
+            })}
           </div>
 
           <div className="flex flex-1 items-center gap-3">

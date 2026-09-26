@@ -180,3 +180,9 @@
 .news-body pre code { background: none; padding: 0; }
 .news-body img { border-radius: 0.75rem; margin: 1rem 0; }
 .news-body hr { border-color: theme('colors.border.DEFAULT'); margin: 1.5rem 0; }
+
+/* Vạch sóng âm của trình phát audio nhún lên xuống khi đang phát. */
+@keyframes wavebar {
+  from { transform: scaleY(0.45); }
+  to { transform: scaleY(1); }
+}
