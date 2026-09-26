@@ -18,7 +18,7 @@ public class AiConversationPrompt {
     private final String profile;
 
     public AiConversationPrompt(ObjectMapper objectMapper,
-            @Value("classpath:conversation/prompts/viet-friend-v2.txt") Resource instructionsResource,
+            @Value("classpath:conversation/prompts/viet-friend-v3.txt") Resource instructionsResource,
             @Value("${aptis.ai-conversation.personality-resource:classpath:conversation/prompts/viet-friend-profile.json}")
                     Resource profileResource) throws IOException {
         this.objectMapper = objectMapper;
