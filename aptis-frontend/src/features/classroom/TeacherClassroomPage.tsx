@@ -9,7 +9,7 @@ import { confirmDialog } from '@/lib/dialog';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatCurrency, formatDate, formatDateTime } from '@/lib/format';
-import { SupportLinksCard } from '@/components/ui/SupportLinks';
+import { SupportLinksCard, SupportLinksCompact } from '@/components/ui/SupportLinks';
 import { useEscapeKey } from '@/lib/useEscapeKey';
 import { TeacherAssignmentsTab } from '@/features/classroom/TeacherAssignmentsTab';
 import { TeacherContentTab } from '@/features/classroom/TeacherContentTab';
@@ -133,6 +133,7 @@ export function TeacherClassroomPage() {
           <p className="page-description">{meta.desc}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <ExpiryBadge expiresAt={classroom.expiresAt} />
           <PricingBadge classroom={classroom} />
           <SystemContentBadge enabled={classroom.systemContentEnabled} />
           <button type="button" onClick={() => setInviteOpen(true)} className="btn-secondary min-h-[40px] px-4">
@@ -141,6 +142,7 @@ export function TeacherClassroomPage() {
         </div>
       </header>
 
+      <ExpiryWarning expiresAt={classroom.expiresAt} />
 
       <ClassroomSidebar
           title={classroom.name}
@@ -766,6 +768,58 @@ function InviteDialog({ classroom, onClose }: { classroom: Classroom; onClose: (
           Đóng
         </button>
       </div>
+    </div>
+  );
+}
+
+/** Số ngày còn lại tới hạn lớp, làm tròn lên: hết hạn chiều nay vẫn là "còn 1 ngày". */
+function daysLeft(expiresAt: string) {
+  return Math.ceil((new Date(expiresAt).getTime() - Date.now()) / 86_400_000);
+}
+
+/** Ngưỡng bắt đầu nhắc gia hạn: đủ thời gian để giáo viên liên hệ và admin xử lý. */
+const EXPIRY_WARN_DAYS = 14;
+
+/** Nhãn hạn lớp luôn hiện ở đầu trang, để giáo viên biết trước chứ không đợi tới lúc bị khoá. */
+function ExpiryBadge({ expiresAt }: { expiresAt?: string | null }) {
+  if (!expiresAt) return null;
+  const left = daysLeft(expiresAt);
+  const tone = left <= 3
+    ? 'border-red-200 bg-red-50 text-red-700'
+    : left <= EXPIRY_WARN_DAYS
+      ? 'border-amber-200 bg-amber-50 text-amber-800'
+      : 'border-border bg-white text-ink-soft';
+  return (
+    <Badge tone={tone}>
+      Hạn lớp {formatDate(expiresAt)} · còn {left} ngày
+    </Badge>
+  );
+}
+
+/** Còn ít ngày thì nhắc rõ và đưa luôn kênh liên hệ admin để gia hạn. */
+function ExpiryWarning({ expiresAt }: { expiresAt?: string | null }) {
+  if (!expiresAt) return null;
+  const left = daysLeft(expiresAt);
+  if (left > EXPIRY_WARN_DAYS) return null;
+  const urgent = left <= 3;
+  return (
+    <div
+      role="status"
+      className={clsx(
+        'flex flex-col gap-3 rounded-2xl border px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between',
+        urgent ? 'border-red-200 bg-red-50' : 'border-amber-200 bg-amber-50',
+      )}
+    >
+      <div className="min-w-0">
+        <p className={clsx('text-sm font-bold', urgent ? 'text-red-800' : 'text-amber-900')}>
+          Lớp còn {left} ngày nữa là hết hạn ({formatDate(expiresAt)})
+        </p>
+        <p className={clsx('mt-0.5 text-[13px] leading-5', urgent ? 'text-red-700' : 'text-amber-800')}>
+          Liên hệ quản trị viên để gia hạn. Hết hạn thì lớp bị khoá cho tới khi gia hạn; học viên,
+          bài giao và đề đã soạn vẫn được giữ nguyên.
+        </p>
+      </div>
+      <SupportLinksCompact />
     </div>
   );
 }
