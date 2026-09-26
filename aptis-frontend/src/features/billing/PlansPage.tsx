@@ -78,203 +78,152 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
     return <ErrorBlock message="Không tải được danh sách gói" onRetry={() => void plansQuery.refetch()} />;
   }
 
+  // Mức tiết kiệm so với giá theo tháng của gói ngắn nhất — con số thật tính
+  // từ bảng giá, không lấy phần trăm cố định như mock.
+  const baseMonthly = plans[0]?.durationDays ? plans[0].priceAmount / (plans[0].durationDays / 30) : null;
+  const savingOf = (plan: Plan) => {
+    if (!baseMonthly || !plan.durationDays || plan.durationDays <= 30) return null;
+    const pct = Math.round((1 - plan.priceAmount / (plan.durationDays / 30) / baseMonthly) * 100);
+    return pct > 0 ? pct : null;
+  };
+  const features = selectedPlan && selectedPlan.features.length > 0
+    ? selectedPlan.features.map((f) => f.displayName ?? f.code)
+    : DEFAULT_FEATURES;
+  const saving = selectedPlan ? savingOf(selectedPlan) : null;
+
   return (
-    <div className="space-y-6">
-      <header className="relative overflow-hidden rounded-2xl bg-dark px-6 py-8 text-white sm:px-8 shadow-sm">
-        <div className="relative max-w-2xl space-y-2">
-          <span className="inline-flex rounded-full bg-accent px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-dark">{aiVoice ? 'AI Voice Premium' : 'Aptis Practice Premium'}</span>
-          <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">{aiVoice ? 'Luyện nói mỗi ngày cùng AI' : 'Học trọn bộ, tiến bộ rõ ràng'}</h1>
-          <p className="text-sm leading-relaxed text-slate-300">{aiVoice ? 'Trò chuyện tiếng Anh bằng giọng nói tự nhiên, chọn giọng nam hoặc nữ và sử dụng tối đa 120 phút mỗi ngày.' : 'Mở toàn bộ 600+ câu hỏi luyện thi, thi thử 4 kỹ năng và nhận đánh giá Writing & Speaking bằng AI.'}</p>
+    <div className="mx-auto flex w-full max-w-[1040px] flex-col gap-7">
+      <header className="flex animate-rise flex-col items-center gap-4 text-center">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">{aiVoice ? 'Gói AI Voice' : 'Gói Premium'}</p>
+        <h1 className="max-w-[16ch] text-[clamp(34px,5vw,56px)] font-extrabold leading-[1.05] tracking-[-0.045em]">
+          {aiVoice ? 'Luyện nói mỗi ngày cùng AI' : 'Mở toàn bộ đề, AI chấm không giới hạn'}
+        </h1>
+        {!aiVoice && user?.premiumActive && (
+          <p className="text-sm text-ink-mute">
+            Bạn đang có gói Premium{user.premiumEndsAt ? ` đến ${formatDate(user.premiumEndsAt)}` : ' trọn đời'}. Mua thêm sẽ cộng nối tiếp thời hạn.
+          </p>
+        )}
+        <div role="radiogroup" aria-label="Thời hạn gói" className="flex max-w-full flex-wrap justify-center gap-1 rounded-full bg-surface-muted p-1">
+          {plans.map((plan) => (
+            <button
+              key={plan.id}
+              type="button"
+              role="radio"
+              aria-checked={selectedPlan?.id === plan.id}
+              onClick={() => { setSelectedPlanId(plan.id); setCodeCheck(null); }}
+              className={clsx(
+                'min-h-[40px] rounded-full px-5 text-sm font-semibold transition-colors',
+                selectedPlan?.id === plan.id ? 'bg-white text-ink shadow-sm' : 'text-ink-mute hover:text-ink',
+              )}
+            >
+              {planDurationLabel(plan.durationDays)}
+            </button>
+          ))}
         </div>
       </header>
-
-      {!aiVoice && user?.premiumActive && (
-        <div className="rounded-2xl border border-brand-200 bg-brand-50 px-5 py-4 text-sm text-brand-900 font-medium">
-          Bạn đang có gói Premium{user.premiumEndsAt ? ` đến ${formatDate(user.premiumEndsAt)}` : ' trọn đời'}.
-          Mua thêm sẽ tự động cộng nối tiếp thời hạn.
-        </div>
-      )}
 
       {createOrder.error && (
         <ErrorBlock message={createOrder.error instanceof ApiError ? createOrder.error.message : 'Không tạo được đơn hàng'} />
       )}
 
-      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
-        <section className="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between border-b border-border-subtle px-6 py-4">
-            <div>
-              <h2 className="font-bold text-slate-900">{aiVoice ? 'Chọn thời hạn AI Voice' : 'Chọn gói luyện đề'}</h2>
-              <p className="mt-0.5 text-xs text-slate-500">{aiVoice ? 'AI English Lounge là gói riêng, không đi kèm Premium luyện đề' : 'Các gói này dành riêng cho kho đề và tính năng luyện thi'}</p>
-            </div>
-            <span className="rounded-full bg-brand-100 px-3 py-1 font-mono text-xs font-bold text-brand-800">
-              {plans.length} gói
-            </span>
-          </div>
-
-          <div className="grid gap-4 p-6 md:grid-cols-2 2xl:grid-cols-3">
-            {plans.map((plan) => (
-              <PlanCard
-                key={plan.id}
-                plan={plan}
-                selected={selectedPlan?.id === plan.id}
-                popular={plan.durationDays === 30}
-                onSelect={() => setSelectedPlanId(plan.id)}
-              />
-            ))}
-          </div>
-        </section>
-
-        {selectedPlan && (
-          <aside className="sticky top-24 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-[0_12px_35px_rgba(30,41,35,.09)]">
-            <div className="border-b border-stone-200 px-5 py-4">
-              <div className="flex items-center gap-3">
-                <span className="grid h-8 w-8 place-items-center rounded-lg bg-[#dda43e] text-sm font-bold text-white">2</span>
-                <div>
-                  <h2 className="font-semibold text-stone-900">Xác nhận thanh toán</h2>
-                  <p className="mt-0.5 text-xs text-stone-500">Kiểm tra gói trước khi tiếp tục</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-5">
-              <div className="rounded-xl bg-[#f5f2e9] p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">Gói đã chọn</p>
-                <p className="mt-2 font-semibold text-stone-900">{selectedPlan.name}</p>
-                <p className="mt-1 text-sm text-stone-600">{planDurationLabel(selectedPlan.durationDays)}</p>
-                <div className="mt-4 flex items-end justify-between border-t border-stone-300 pt-4">
-                  <span className="text-sm text-stone-600">Tổng cộng</span>
-                  <span className="text-xl font-bold text-brand-800">{formatCurrency(selectedPlan.priceAmount, selectedPlan.currency)}</span>
-                </div>
-              </div>
-
-              <ul className="mt-4 space-y-2 text-xs leading-5 text-stone-600">
-                <li className="flex gap-2"><CheckIcon /> Kích hoạt tự động sau khi thanh toán thành công</li>
-                <li className="flex gap-2"><CheckIcon /> Thanh toán một lần, không tự động gia hạn</li>
-                <li className="flex gap-2"><CheckIcon /> Tiến độ học được giữ nguyên khi gia hạn</li>
+      {selectedPlan && (
+        <div className="grid items-stretch gap-4 md:grid-cols-2">
+          {!aiVoice && (
+            <section className="flex animate-rise flex-col gap-4 rounded-3xl border border-border bg-white p-6">
+              <h2 className="text-lg font-bold">Miễn phí</h2>
+              <p className="text-[44px] font-extrabold leading-none tracking-[-0.04em]">0đ</p>
+              <ul className="flex flex-col gap-2.5 text-sm text-ink-soft">
+                {FREE_FEATURES.map((f) => (
+                  <li key={f} className="flex gap-2.5"><CheckIcon muted /> {f}</li>
+                ))}
               </ul>
+              <span className="mt-auto flex min-h-[48px] items-center justify-center rounded-full border border-border text-sm font-semibold">
+                {user?.premiumActive ? 'Đã bao gồm trong Premium' : 'Đang dùng'}
+              </span>
+            </section>
+          )}
 
-              <div className="mt-4 border-t border-stone-300 pt-4">
-                <label className="block text-xs font-semibold text-stone-600" htmlFor="affiliate-code">
-                  Mã giới thiệu (nếu có)
-                </label>
-                <div className="mt-1.5 flex gap-2">
-                  <input
-                    id="affiliate-code"
-                    type="text"
-                    value={affiliateCode}
-                    placeholder="VD: ABCD2345"
-                    onChange={(event) => {
-                      setAffiliateCode(event.target.value.toUpperCase());
-                      setCodeCheck(null);
-                    }}
-                    className="min-w-0 flex-1 rounded-xl border border-stone-300 px-3 py-2 font-mono text-sm uppercase tracking-wider outline-none focus:border-brand-500"
-                  />
-                  <button
-                    type="button"
-                    disabled={!affiliateCode.trim() || checkCode.isPending}
-                    onClick={() => checkCode.mutate(affiliateCode.trim())}
-                    className="shrink-0 rounded-xl border border-stone-300 px-3 py-2 text-sm font-semibold text-stone-700 transition-colors hover:bg-stone-100 disabled:opacity-50"
-                  >
-                    {checkCode.isPending ? '…' : 'Áp dụng'}
-                  </button>
-                </div>
-                {codeCheck && (
-                  <p
-                    className={clsx(
-                      'mt-1.5 text-xs leading-5',
-                      codeCheck.valid ? 'text-emerald-700' : 'text-red-600',
-                    )}
-                  >
-                    {codeCheck.valid
-                      ? `Được giảm ${formatCurrency(codeCheck.discountAmount, selectedPlan.currency)}`
-                      : (codeCheck.message ?? 'Mã không dùng được')}
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="button"
-                disabled={createOrder.isPending}
-                onClick={() => createOrder.mutate(selectedPlan.id)}
-                className="btn-primary mt-4 w-full"
-              >
-                {createOrder.isPending ? 'Đang tạo đơn…' : 'Tiếp tục thanh toán →'}
-              </button>
-              <p className="mt-3 text-center text-[11px] leading-5 text-stone-500">
-                Bằng việc tiếp tục, bạn xác nhận đã chọn đúng gói và thời hạn.
-              </p>
+          <section className="relative flex animate-rise flex-col gap-4 overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-[0_28px_60px_-34px_rgba(15,23,42,.7)]">
+            <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full border border-dashed border-white/10" />
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="text-lg font-bold">{selectedPlan.name}</h2>
+              {saving && <span className="rounded-full bg-accent px-2.5 py-0.5 text-[11px] font-bold text-ink">Tiết kiệm {saving}%</span>}
             </div>
-          </aside>
-        )}
-      </div>
+            <p className="flex items-baseline gap-2">
+              <span className="text-[44px] font-extrabold leading-none tracking-[-0.04em]">{formatCurrency(selectedPlan.priceAmount, selectedPlan.currency)}</span>
+              {selectedPlan.durationDays && <span className="text-sm text-white/60">/ {selectedPlan.durationDays} ngày</span>}
+            </p>
+            <ul className="flex flex-col gap-2.5 text-sm text-white/85">
+              {features.slice(0, 6).map((f) => (
+                <li key={f} className="flex gap-2.5"><CheckIcon /> {f}</li>
+              ))}
+            </ul>
+
+            <div className="mt-2">
+              <label className="mb-1.5 block text-xs font-semibold text-white/60" htmlFor="affiliate-code">Mã giới thiệu (nếu có)</label>
+              <div className="flex gap-2">
+                <input
+                  id="affiliate-code"
+                  type="text"
+                  value={affiliateCode}
+                  placeholder="VD: ABCD2345"
+                  onChange={(event) => {
+                    setAffiliateCode(event.target.value.toUpperCase());
+                    setCodeCheck(null);
+                  }}
+                  className="min-h-[44px] min-w-0 flex-1 rounded-full border border-white/15 bg-white/10 px-4 font-mono text-sm uppercase tracking-wider text-white placeholder:text-white/40 focus:border-white/40 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  disabled={!affiliateCode.trim() || checkCode.isPending}
+                  onClick={() => checkCode.mutate(affiliateCode.trim())}
+                  className="min-h-[44px] shrink-0 rounded-full border border-white/15 px-4 text-sm font-semibold hover:bg-white/10 disabled:opacity-50"
+                >
+                  {checkCode.isPending ? '…' : 'Áp dụng'}
+                </button>
+              </div>
+              {codeCheck && (
+                <p className={clsx('mt-1.5 text-xs leading-5', codeCheck.valid ? 'text-accent-light' : 'text-red-300')}>
+                  {codeCheck.valid
+                    ? `Được giảm ${formatCurrency(codeCheck.discountAmount, selectedPlan.currency)}`
+                    : (codeCheck.message ?? 'Mã không dùng được')}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="button"
+              disabled={createOrder.isPending}
+              onClick={() => createOrder.mutate(selectedPlan.id)}
+              className="btn mt-auto min-h-[52px] bg-white text-ink hover:bg-surface-muted"
+            >
+              {createOrder.isPending
+                ? 'Đang tạo đơn…'
+                : `${user?.premiumActive && !aiVoice ? 'Gia hạn' : 'Mua'} ${planDurationLabel(selectedPlan.durationDays).toLowerCase()}`}
+            </button>
+            <p className="text-center text-[11px] leading-5 text-white/50">
+              Thanh toán một lần qua VietQR, không tự gia hạn. Kích hoạt ngay khi đối soát xong.
+            </p>
+          </section>
+        </div>
+      )}
 
       <SupportLinksCard />
     </div>
   );
 }
 
-function PlanCard({ plan, selected, popular, onSelect }: {
-  plan: Plan;
-  selected: boolean;
-  popular: boolean;
-  onSelect: () => void;
-}) {
-  const features = plan.features.length > 0
-    ? plan.features.map((feature) => feature.displayName ?? feature.code)
-    : DEFAULT_FEATURES;
-  const monthlyPrice = plan.durationDays && plan.durationDays >= 30
-    ? Math.round(plan.priceAmount / (plan.durationDays / 30))
-    : null;
+/** Quyền của tài khoản miễn phí — khớp luật backend (3 đề đầu mỗi kỹ năng). */
+const FREE_FEATURES = [
+  '3 đề đầu của mỗi kỹ năng',
+  'Chấm tự động Reading, Listening, G&V',
+  'Bảng tin và cập nhật đề',
+];
 
+function CheckIcon({ muted }: { muted?: boolean }) {
   return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={clsx(
-        'group relative flex min-h-[310px] flex-col overflow-hidden rounded-2xl border p-4 text-left transition-all',
-        selected
-          ? 'border-brand-700 bg-[#f2faf7] shadow-[0_8px_22px_rgba(5,92,76,.10)] ring-1 ring-brand-700'
-          : 'border-stone-200 bg-white hover:border-brand-300 hover:shadow-sm',
-      )}
-      aria-pressed={selected}
-    >
-      <span className="absolute -right-8 -top-10 h-24 w-24 rounded-full bg-brand-50" aria-hidden="true" />
-      <div className="relative flex min-h-7 items-start justify-between gap-2">
-        <span className={clsx(
-          'rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide',
-          popular ? 'bg-[#fbecd1] text-[#986b20]' : 'bg-brand-50 text-brand-800',
-        )}>
-          {popular ? 'Phổ biến nhất' : durationBadge(plan.durationDays)}
-        </span>
-        <span className={clsx(
-          'grid h-5 w-5 place-items-center rounded-full border',
-          selected ? 'border-brand-700 bg-brand-700 text-white' : 'border-stone-300 bg-[#f5f2e9]',
-        )} aria-hidden="true">{selected ? '✓' : ''}</span>
-      </div>
-
-      <p className="mt-3 text-xs font-bold uppercase tracking-wide text-stone-500">{planDurationLabel(plan.durationDays)}</p>
-      <h3 className="mt-1 text-base font-semibold text-stone-900">{plan.name}</h3>
-      <p className="mt-3 text-xl font-bold tracking-[-0.03em] text-stone-900">{formatCurrency(plan.priceAmount, plan.currency)}</p>
-      {monthlyPrice !== null && <p className="mt-1 text-xs font-semibold text-[#4d7b28]">~{formatCurrency(monthlyPrice, plan.currency)}/tháng</p>}
-
-      <div className="my-4 border-t border-stone-200" />
-      <p className="text-[10px] font-bold uppercase tracking-wide text-stone-700">Bao gồm</p>
-      <ul className="mt-2 space-y-2">
-        {features.slice(0, 5).map((feature) => (
-          <li key={feature} className="flex gap-2 text-xs leading-5 text-stone-600"><CheckIcon /> <span>{feature}</span></li>
-        ))}
-      </ul>
-    </button>
+    <span aria-hidden="true" className={clsx('mt-0.5 shrink-0', muted ? 'text-ink-faint' : 'text-accent')}>
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 12.5 10 17l9-10" /></svg>
+    </span>
   );
-}
-
-function durationBadge(durationDays: number | null | undefined) {
-  if (durationDays == null) return 'Trọn đời';
-  if (durationDays <= 14) return 'Trải nghiệm nhanh';
-  if (durationDays >= 90) return 'Tiết kiệm dài hạn';
-  return 'Luyện tập hiệu quả';
-}
-
-function CheckIcon() {
-  return <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-emerald-100 text-[10px] font-bold text-emerald-700" aria-hidden="true">✓</span>;
 }
