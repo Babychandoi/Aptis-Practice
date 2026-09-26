@@ -148,7 +148,7 @@ function SpeakingMergeTool() {
                   </span>
                   <span className="min-w-0">
                     <span className="block text-sm font-semibold">{set.title}</span>
-                    <span className="mt-1 block text-xs leading-5 text-ink-mute">{set.questions.join(' · ')}</span>
+                    <span className="mt-1 block text-xs leading-5 text-ink-mute">{set.questions.filter((q) => q !== set.title).join(' · ')}</span>
                   </span>
                 </button>
               </li>

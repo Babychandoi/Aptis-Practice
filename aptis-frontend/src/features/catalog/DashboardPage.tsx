@@ -270,8 +270,8 @@ export function DashboardPage() {
                       />
                     </span>
                   </span>
-                  <span className="w-9 shrink-0 text-center">
-                    {stat ? <LevelChip>{cefrFromScore50(stat.score50)}</LevelChip> : <span className="text-[11px] text-ink-faint">Chưa làm</span>}
+                  <span className="w-14 shrink-0 text-center">
+                    {stat ? <LevelChip>{cefrFromScore50(stat.score50)}</LevelChip> : <span className="whitespace-nowrap text-[11px] text-ink-faint">Chưa làm</span>}
                   </span>
                 </Link>
               </li>
