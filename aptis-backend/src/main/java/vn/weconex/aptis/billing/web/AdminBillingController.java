@@ -95,15 +95,34 @@ public class AdminBillingController {
     @PreAuthorize("hasAuthority('order:read')")
     @Transactional(readOnly = true)
     public PageResponse<AdminBillingDtos.AdminOrderResponse> orders(
+            @RequestParam(required = false) vn.weconex.aptis.common.util.Enums.OrderStatus status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
 
-        var orders = orderRepository.findAll(
-                PageRequest.of(page, Math.min(size, 100),
-                        org.springframework.data.domain.Sort.by(
-                                org.springframework.data.domain.Sort.Direction.DESC, "createdAt")));
+        var pageable = PageRequest.of(page, Math.min(size, 100),
+                org.springframework.data.domain.Sort.by(
+                        org.springframework.data.domain.Sort.Direction.DESC, "createdAt"));
+        var orders = status == null
+                ? orderRepository.findAll(pageable)
+                : orderRepository.findByStatus(status, pageable);
 
         return PageResponse.of(orders, this::toOrderResponse);
+    }
+
+    /** Số đơn theo từng trạng thái; trạng thái chưa có đơn vẫn trả 0. */
+    @GetMapping("/orders/status-counts")
+    @PreAuthorize("hasAuthority('order:read')")
+    @Transactional(readOnly = true)
+    public java.util.Map<vn.weconex.aptis.common.util.Enums.OrderStatus, Long> orderStatusCounts() {
+        var counts = new java.util.EnumMap<vn.weconex.aptis.common.util.Enums.OrderStatus, Long>(
+                vn.weconex.aptis.common.util.Enums.OrderStatus.class);
+        for (var status : vn.weconex.aptis.common.util.Enums.OrderStatus.values()) {
+            counts.put(status, 0L);
+        }
+        for (Object[] row : orderRepository.countGroupByStatus()) {
+            counts.put((vn.weconex.aptis.common.util.Enums.OrderStatus) row[0], ((Number) row[1]).longValue());
+        }
+        return counts;
     }
 
     @GetMapping("/orders/{orderId}")

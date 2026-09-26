@@ -133,7 +133,7 @@ export function CheckoutPage() {
 
   return (
     <div className="space-y-5">
-      <nav className="flex items-center gap-2 text-xs text-stone-500" aria-label="Các bước thanh toán">
+      <nav className="flex items-center gap-2 text-xs text-slate-500" aria-label="Các bước thanh toán">
         <Link to={plansPath} className="font-medium hover:text-brand-800">1. Chọn gói</Link>
         <span aria-hidden="true">›</span>
         <span className="font-semibold text-brand-800">2. Chuyển khoản</span>
@@ -157,11 +157,11 @@ export function CheckoutPage() {
 
       {transfer && (
         <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_410px]">
-          <section className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
-            <div className="flex items-center justify-between border-b border-stone-200 px-5 py-4">
+          <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
               <div>
-                <h2 className="font-semibold text-stone-900">Thông tin chuyển khoản</h2>
-                <p className="mt-0.5 text-xs text-stone-500">Mã đơn <span className="font-mono font-medium text-stone-700">{order.orderCode}</span></p>
+                <h2 className="font-semibold text-slate-900">Thông tin chuyển khoản</h2>
+                <p className="mt-0.5 text-xs text-slate-500">Mã đơn <span className="font-mono font-medium text-slate-700">{order.orderCode}</span></p>
               </div>
               <TransferStatus status={transfer.status} expired={qrExpired} />
             </div>
@@ -196,7 +196,7 @@ export function CheckoutPage() {
               <div className={`mt-5 rounded-2xl border-2 p-4 ${qrExpired ? 'border-red-200 bg-red-50' : 'border-amber-300 bg-amber-50'}`}>
                 <p className="text-xs font-bold uppercase tracking-wide text-amber-800">Nội dung chuyển khoản bắt buộc</p>
                 <div className="mt-2 flex items-center justify-between gap-4">
-                  <strong className={`font-mono text-2xl tracking-[0.12em] ${qrExpired ? 'text-red-700 line-through opacity-60' : 'text-stone-950'}`}>
+                  <strong className={`font-mono text-2xl tracking-[0.12em] ${qrExpired ? 'text-red-700 line-through opacity-60' : 'text-slate-950'}`}>
                     {qrExpired ? 'ĐÃ HẾT HẠN' : transfer.transferCode}
                   </strong>
                   {!qrExpired && (
@@ -213,35 +213,35 @@ export function CheckoutPage() {
                 <Instruction number="3" title="Báo đã chuyển khoản" text="Bấm nút bên dưới để admin biết và kiểm tra giao dịch trên sao kê." />
               </ol>
 
-              {transfer.transferNote && <p className="mt-5 rounded-xl bg-stone-100 px-4 py-3 text-xs leading-5 text-stone-600">{transfer.transferNote}</p>}
-              {transfer.expiresAt && <p className="mt-3 text-xs text-stone-500">Đơn có hiệu lực đến {formatDateTime(transfer.expiresAt)}</p>}
+              {transfer.transferNote && <p className="mt-5 rounded-xl bg-slate-100 px-4 py-3 text-xs leading-5 text-slate-600">{transfer.transferNote}</p>}
+              {transfer.expiresAt && <p className="mt-3 text-xs text-slate-500">Đơn có hiệu lực đến {formatDateTime(transfer.expiresAt)}</p>}
             </div>
           </section>
 
-          <aside className="sticky top-24 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-[0_12px_35px_rgba(30,41,35,.09)]">
-            <div className="border-b border-stone-200 px-5 py-4 text-center">
-              <h2 className="font-semibold text-stone-900">Quét mã VietQR</h2>
-              <p className="mt-1 text-xs text-stone-500">MB Bank · {transfer.accountNumber}</p>
+          <aside className="sticky top-24 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_35px_rgba(30,41,35,.09)]">
+            <div className="border-b border-slate-200 px-5 py-4 text-center">
+              <h2 className="font-semibold text-slate-900">Quét mã VietQR</h2>
+              <p className="mt-1 text-xs text-slate-500">MB Bank · {transfer.accountNumber}</p>
             </div>
             <div className="p-5">
               <div className="relative grid min-h-[300px] place-items-center overflow-hidden rounded-2xl bg-[#F8FAFC] p-4">
                 {qrDataUrl ? (
                   <img src={qrDataUrl} alt={`Mã VietQR thanh toán đơn ${order.orderCode}`} className={`w-full max-w-[290px] rounded-xl bg-white p-2 shadow-sm transition ${qrExpired ? 'blur-[2px] grayscale opacity-25' : ''}`} />
                 ) : (
-                  <p className="text-sm text-stone-500">Đang tạo mã QR…</p>
+                  <p className="text-sm text-slate-500">Đang tạo mã QR…</p>
                 )}
                 {qrExpired && (
                   <div className="absolute inset-0 grid place-items-center bg-white/55 text-center backdrop-blur-[1px]">
                     <div>
                       <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-red-50 text-red-700"><LockIcon /></span>
                       <p className="mt-3 font-bold text-red-700">QR đã hết hạn</p>
-                      <p className="mt-1 text-xs text-stone-600">Tạo mã mới để tiếp tục thanh toán</p>
+                      <p className="mt-1 text-xs text-slate-600">Tạo mã mới để tiếp tục thanh toán</p>
                     </div>
                   </div>
                 )}
               </div>
               <div className="mt-4 text-center">
-                <p className="text-xs text-stone-500">Tổng thanh toán</p>
+                <p className="text-xs text-slate-500">Tổng thanh toán</p>
                 <p className="mt-1 text-2xl font-bold text-brand-800">{formatCurrency(transfer.amount, transfer.currency)}</p>
               </div>
 
@@ -259,7 +259,7 @@ export function CheckoutPage() {
               {qrExpired && (
                 <button
                   type="button"
-                  className="mt-4 w-full rounded-xl bg-stone-950 px-4 py-3.5 text-sm font-bold text-white transition hover:bg-stone-800 disabled:cursor-wait disabled:opacity-60"
+                  className="mt-4 w-full rounded-xl bg-slate-950 px-4 py-3.5 text-sm font-bold text-white transition hover:bg-slate-800 disabled:cursor-wait disabled:opacity-60"
                   disabled={refreshQr.isPending}
                   onClick={() => refreshQr.mutate()}
                 >
@@ -275,7 +275,7 @@ export function CheckoutPage() {
 
               {claimTransfer.error && <p className="mt-3 text-center text-xs text-red-700">Không gửi được thông báo. Vui lòng thử lại.</p>}
               {refreshQr.error && <p className="mt-3 text-center text-xs text-red-700">Không tạo được mã mới. Vui lòng thử lại.</p>}
-              <p className="mt-3 text-center text-[11px] leading-5 text-stone-500">Bấm “đã chuyển khoản” không tự xác nhận thanh toán.</p>
+              <p className="mt-3 text-center text-[11px] leading-5 text-slate-500">Bấm “đã chuyển khoản” không tự xác nhận thanh toán.</p>
             </div>
           </aside>
         </div>
@@ -286,20 +286,20 @@ export function CheckoutPage() {
 
 function TransferRow({ label, value, onCopy, copied, danger }: { label: string; value: string; onCopy?: () => void; copied?: boolean; danger?: boolean }) {
   return (
-    <div className="flex min-h-16 items-center justify-between gap-3 border-b border-stone-100 py-3">
-      <div><p className="text-xs text-stone-500">{label}</p><p className={`mt-1 font-semibold ${danger ? 'text-red-700' : 'text-stone-900'}`}>{value}</p></div>
+    <div className="flex min-h-16 items-center justify-between gap-3 border-b border-slate-100 py-3">
+      <div><p className="text-xs text-slate-500">{label}</p><p className={`mt-1 font-semibold ${danger ? 'text-red-700' : 'text-slate-900'}`}>{value}</p></div>
       {onCopy && <button type="button" className="rounded-lg px-2 py-1 text-xs font-semibold text-brand-800 hover:bg-brand-50" onClick={onCopy}>{copied ? 'Đã chép ✓' : 'Sao chép'}</button>}
     </div>
   );
 }
 
 function Instruction({ number, title, text }: { number: string; title: string; text: string }) {
-  return <li className="flex gap-3"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-50 text-xs font-bold text-brand-800">{number}</span><div><p className="text-sm font-semibold text-stone-900">{title}</p><p className="mt-0.5 text-xs leading-5 text-stone-500">{text}</p></div></li>;
+  return <li className="flex gap-3"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-50 text-xs font-bold text-brand-800">{number}</span><div><p className="text-sm font-semibold text-slate-900">{title}</p><p className="mt-0.5 text-xs leading-5 text-slate-500">{text}</p></div></li>;
 }
 
 function TransferStatus({ status, expired }: { status: BankTransferInstruction['status']; expired: boolean }) {
   const labels = { PENDING: 'Chờ chuyển khoản', CLAIMED: 'Chờ admin kiểm tra', CONFIRMED: 'Đã xác nhận', REJECTED: 'Bị từ chối', EXPIRED: 'Đã hết hạn' };
-  return <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${expired ? 'bg-red-100 text-red-700' : 'bg-[#fbecd1] text-[#986b20]'}`}>{expired ? 'QR hết hạn' : labels[status]}</span>;
+  return <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${expired ? 'bg-red-100 text-red-700' : 'bg-[#fbecd1] text-amber-800'}`}>{expired ? 'QR hết hạn' : labels[status]}</span>;
 }
 
 function useCountdown(expiresAt: string | null) {

@@ -52,10 +52,10 @@ const SKILLS = [
 export function SkillListPage() {
   return (
     <div className="space-y-5">
-      <nav className="flex flex-wrap items-center gap-2 text-xs text-stone-500" aria-label="Đường dẫn">
+      <nav className="flex flex-wrap items-center gap-2 text-xs text-slate-500" aria-label="Đường dẫn">
         <Link to="/" className="hover:text-brand-800">Trang chủ</Link>
         <span aria-hidden="true">›</span>
-        <span className="font-semibold text-stone-800">Kỹ năng</span>
+        <span className="font-semibold text-slate-800">Kỹ năng</span>
       </nav>
 
       <header className="rounded-xl bg-brand-900 px-5 py-5 text-white shadow-[0_10px_28px_rgba(5,63,53,.14)] sm:px-7">

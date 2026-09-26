@@ -266,31 +266,31 @@ export function RecordingRenderer({
             )}
 
             {/* Thanh sóng âm: chỉ để báo trạng thái, không phân tích tín hiệu thật */}
-            <div className="flex h-11 flex-1 items-center gap-[3px] overflow-hidden rounded-lg border border-[#e2d9c4] bg-white px-3">
+            <div className="flex h-11 flex-1 items-center gap-[3px] overflow-hidden rounded-lg border border-slate-200 bg-white px-3">
               {WAVE_BARS.map((height, index) => (
                 <span
                   key={index}
                   className={clsx(
                     'w-[3px] rounded-full transition-colors',
-                    phase === 'recording' ? 'animate-pulse bg-brand-700' : 'bg-stone-300',
+                    phase === 'recording' ? 'animate-pulse bg-brand-700' : 'bg-slate-300',
                   )}
                   style={{ height: `${height}%`, animationDelay: `${index * 60}ms` }}
                 />
               ))}
             </div>
 
-            <span className="shrink-0 rounded-lg border border-[#e2d9c4] bg-white px-3 py-2 text-[11px] font-medium tabular-nums text-stone-600">
+            <span className="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[11px] font-medium tabular-nums text-slate-600">
               <span className={phase === 'recording' ? 'text-red-600' : undefined}>●</span>{' '}
-              {formatDuration(elapsed)} <span className="text-stone-400">/ {formatDuration(responseSeconds)}</span>
+              {formatDuration(elapsed)} <span className="text-slate-400">/ {formatDuration(responseSeconds)}</span>
             </span>
           </div>
 
           <div className="mt-2 flex items-center gap-2">
-            <span className="rounded-md border border-[#e2d9c4] bg-white px-2 py-1 text-[10px] text-stone-500">
+            <span className="rounded-md border border-slate-200 bg-white px-2 py-1 text-[10px] text-slate-500">
               Đã nói: {draft.recordingAssetId ? '—' : 0} từ
             </span>
             {maxRecordings > 1 && (
-              <span className="text-[10px] text-stone-500">Được ghi {maxRecordings} lần</span>
+              <span className="text-[10px] text-slate-500">Được ghi {maxRecordings} lần</span>
             )}
           </div>
         </>

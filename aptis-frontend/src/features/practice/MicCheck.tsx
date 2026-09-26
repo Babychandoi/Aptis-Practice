@@ -151,14 +151,14 @@ export function MicCheck({ onContinue, continueLabel, continuePending }: Props) 
 
   return (
     <div className="mx-auto max-w-xl py-4">
-      <section className="rounded-2xl border border-stone-200 bg-gradient-to-b from-[#eef6f1] to-white p-5 shadow-[0_8px_24px_rgba(43,39,30,.08)] sm:p-7">
+      <section className="rounded-2xl border border-slate-200 bg-gradient-to-b from-[#eef6f1] to-white p-5 shadow-[0_8px_24px_rgba(43,39,30,.08)] sm:p-7">
         <div className="text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e0d6c2] bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-stone-600">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e0d6c2] bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
             <span className="h-1.5 w-1.5 rounded-full bg-[#c2410c]" aria-hidden="true" />
             Bước 1/2 · Kiểm tra micro
           </span>
           <h1 className="mt-3 text-2xl font-semibold">Kiểm tra micro trước khi nói</h1>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-stone-500">
+          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
             Hãy nói thử một câu ngắn để chắc chắn micro thu âm rõ. Điều này giúp AI nghe chính xác
             và chấm điểm Speaking tốt hơn.
           </p>
@@ -171,14 +171,14 @@ export function MicCheck({ onContinue, continueLabel, continuePending }: Props) 
             className={`grid h-24 w-24 place-items-center rounded-full border-2 transition ${
               phase === 'recording'
                 ? 'animate-pulse border-[#c2410c] bg-[#fef2ec] text-[#c2410c]'
-                : 'border-stone-300 bg-white text-stone-500 hover:border-brand-500 hover:text-brand-800'
+                : 'border-slate-300 bg-white text-slate-500 hover:border-brand-500 hover:text-brand-800'
             }`}
             aria-label={phase === 'recording' ? 'Dừng ghi âm thử' : 'Bấm để ghi âm thử'}
           >
             {phase === 'recording' ? <StopIcon /> : <MicIcon />}
           </button>
 
-          <p className="mt-3 text-sm font-medium text-stone-700">
+          <p className="mt-3 text-sm font-medium text-slate-700">
             {phase === 'recording'
               ? `Đang ghi… còn ${secondsLeft}s — bấm để dừng`
               : phase === 'done'
@@ -194,7 +194,7 @@ export function MicCheck({ onContinue, continueLabel, continuePending }: Props) 
                 return (
                   <span
                     key={index}
-                    className={`w-1.5 rounded-full ${phase === 'recording' ? 'bg-brand-700' : 'bg-stone-300'}`}
+                    className={`w-1.5 rounded-full ${phase === 'recording' ? 'bg-brand-700' : 'bg-slate-300'}`}
                     style={{ height: `${height}%` }}
                   />
                 );
@@ -223,7 +223,7 @@ export function MicCheck({ onContinue, continueLabel, continuePending }: Props) 
               <button
                 type="button"
                 onClick={() => void startTest()}
-                className="mt-2 w-full rounded-lg border border-stone-300 px-3 py-2 text-xs font-semibold text-stone-700 hover:border-brand-400"
+                className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 hover:border-brand-400"
               >
                 Ghi âm thử lại
               </button>
@@ -237,8 +237,8 @@ export function MicCheck({ onContinue, continueLabel, continuePending }: Props) 
           )}
         </div>
 
-        <div className="mt-6 rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] p-4">
-          <h2 className="text-[10px] font-semibold uppercase tracking-wide text-[#8a6b1f]">
+        <div className="mt-6 rounded-xl border border-slate-200 bg-[#FAFBFC] p-4">
+          <h2 className="text-[10px] font-semibold uppercase tracking-wide text-amber-800">
             💡 Trước khi ghi âm
           </h2>
           <ul className="mt-2 space-y-1">
@@ -247,7 +247,7 @@ export function MicCheck({ onContinue, continueLabel, continuePending }: Props) 
               'Ngồi ở nơi yên tĩnh, tránh tiếng người nói phía sau.',
               'Giữ micro cách miệng khoảng 10–15cm.',
             ].map((tip) => (
-              <li key={tip} className="flex gap-2 text-xs leading-5 text-[#6f5716]">
+              <li key={tip} className="flex gap-2 text-xs leading-5 text-amber-800">
                 <span aria-hidden="true">•</span>
                 <span>{tip}</span>
               </li>

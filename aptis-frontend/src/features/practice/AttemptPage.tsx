@@ -616,7 +616,7 @@ export function AttemptPage() {
         <section className="w-full rounded-2xl border border-[#E5E9F0] bg-white p-6 shadow-[0_12px_40px_rgba(44,38,24,.09)]">
           <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand-800 text-white"><HeadphoneIcon /></span>
           <h1 className="mt-4 text-2xl font-semibold">Sẵn sàng làm {componentName}?</h1>
-          <p className="mt-2 text-sm text-stone-600">{partGroups.length} Part · {attempt.totalItems} câu{attempt.durationSeconds ? ` · ${Math.round(attempt.durationSeconds / 60)} phút` : ''}</p>
+          <p className="mt-2 text-sm text-slate-600">{partGroups.length} Part · {attempt.totalItems} câu{attempt.durationSeconds ? ` · ${Math.round(attempt.durationSeconds / 60)} phút` : ''}</p>
           <p className="mt-4 rounded-xl bg-[#F1F5F9] px-4 py-3 text-sm text-brand-900">Đồng hồ và tiến độ lưu tự động bắt đầu khi bạn vào bài.</p>
           <button type="button" onClick={() => startMutation.mutate()} disabled={startMutation.isPending} className="btn-primary mt-5 w-full">
             {startMutation.isPending ? 'Đang bắt đầu…' : 'Bắt đầu làm bài'}
@@ -645,12 +645,12 @@ export function AttemptPage() {
             Bài thi Aptis · {doneCount}/{total} kỹ năng đã nộp
           </p>
           <h1 className="mt-2 text-2xl font-semibold">Tiếp theo: {skill}</h1>
-          <p className="mt-2 text-sm text-stone-600">
+          <p className="mt-2 text-sm text-slate-600">
             Phần này làm trong{' '}
             <strong>{Math.round(pendingProgress.durationSeconds / 60)} phút</strong>. Đồng hồ bắt
             đầu chạy khi bạn bấm nút bên dưới.
           </p>
-          <p className="mt-4 rounded-xl bg-[#FAFBFC] px-4 py-3 text-sm text-[#6f5716]">
+          <p className="mt-4 rounded-xl bg-[#FAFBFC] px-4 py-3 text-sm text-amber-800">
             Nộp xong kỹ năng này sẽ không sửa hay xem lại được. Điểm của cả bài chỉ hiện sau khi
             hoàn thành đủ {total} kỹ năng.
           </p>
@@ -856,11 +856,11 @@ export function AttemptPage() {
                 {pageSets.length > 1 && `–${pageStart + pageSets.length}`}
                 {' / '}{setCount}
               </h3>
-              <p className="text-[10px] text-stone-500">
+              <p className="text-[10px] text-slate-500">
                 Đã trả lời {answeredByPart.get(currentPart.id) ?? 0}/{currentPart.totalItems} câu
               </p>
             </div>
-            <label className="flex items-center gap-1.5 text-[10px] font-medium text-stone-600">
+            <label className="flex items-center gap-1.5 text-[10px] font-medium text-slate-600">
               Tới câu
               <input
                 type="number"
@@ -898,8 +898,8 @@ export function AttemptPage() {
                   <span className="block text-sm font-semibold">
                     {part.skill ? `${part.skill} · Phần ${part.number}` : `Phần ${part.number}`}
                   </span>
-                  <span className="block text-[9px] font-semibold uppercase text-stone-500">{part.label}</span>
-                  <span className="mt-2 block text-[10px] font-medium text-stone-600">{answered}/{part.totalItems}</span>
+                  <span className="block text-[9px] font-semibold uppercase text-slate-500">{part.label}</span>
+                  <span className="mt-2 block text-[10px] font-medium text-slate-600">{answered}/{part.totalItems}</span>
                   <span className="mt-1.5 block h-0.5 overflow-hidden rounded-full bg-[#CBD5E1]"><span className="block h-full bg-brand-700 transition-all" style={{ width: `${part.totalItems ? (answered / part.totalItems) * 100 : 0}%` }} /></span>
                 </button>
               );
@@ -1232,13 +1232,13 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
                 <span className="ml-1.5">{'🔥'.repeat(current.hotness ?? 0)}</span>
               )}
             </h3>
-            <p className="text-[10px] text-stone-500">
+            <p className="text-[10px] text-slate-500">
               Chủ đề {currentIndex + 1} / {sets.length} · {currentTotal} câu nói
             </p>
           </div>
 
           <div className="min-w-40 flex-1">
-            <div className="flex items-center justify-between text-[10px] text-stone-500">
+            <div className="flex items-center justify-between text-[10px] text-slate-500">
               <span>Tiến độ chủ đề</span>
               <span className="font-semibold tabular-nums">{currentProgress} / {currentTotal} câu</span>
             </div>
@@ -1261,7 +1261,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
 
       {/* Hàng lọc + chuyển nhanh */}
       <div className="flex flex-wrap items-end gap-2 rounded-xl border border-[#E5E9F0] bg-[#FAFBFC] px-3 py-2.5">
-        <span className="text-[10px] font-medium text-stone-500">Lọc chủ đề</span>
+        <span className="text-[10px] font-medium text-slate-500">Lọc chủ đề</span>
         <FilterChip label="Tất cả" count={sets.length} active={filter === 'all'} onClick={() => setFilter('all')} />
         {years.map((year) => (
           <FilterChip
@@ -1277,7 +1277,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
         )}
 
         <div className="ml-auto flex items-end gap-2">
-          <label className="text-[10px] font-medium text-stone-500">
+          <label className="text-[10px] font-medium text-slate-500">
             <span className="mb-1 block">Chuyển nhanh</span>
             <input
               type="number"
@@ -1317,7 +1317,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
               </span>
             )}
           </span>
-          <span className="block text-[10px] text-stone-500">
+          <span className="block text-[10px] text-slate-500">
             Chủ đề đang mở · {currentIndex + 1}/{sets.length}
             {filter !== 'all' && ` · đang lọc: ${visibleSets.length} đề`}
           </span>
@@ -1347,10 +1347,10 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
                   }}
                   className={clsx(
                     'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm transition',
-                    index === currentIndex ? 'bg-[#F1F5F9] font-semibold' : 'hover:bg-stone-50',
+                    index === currentIndex ? 'bg-[#F1F5F9] font-semibold' : 'hover:bg-slate-50',
                   )}
                 >
-                  <span className="w-6 shrink-0 text-[11px] tabular-nums text-stone-500">
+                  <span className="w-6 shrink-0 text-[11px] tabular-nums text-slate-500">
                     {setNumberById.get(set.attemptQuestionSetId) ?? index + 1}.
                   </span>
                   <span className="min-w-0 flex-1 truncate">{labelOf(set, index)}</span>
@@ -1415,12 +1415,12 @@ function FilterChip({ label, count, active, onClick }: {
         'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition',
         active
           ? 'border-brand-800 bg-brand-800 text-white'
-          : 'border-[#E5E9F0] bg-white text-stone-600 hover:border-brand-300',
+          : 'border-[#E5E9F0] bg-white text-slate-600 hover:border-brand-300',
       )}
     >
       {active && <span aria-hidden="true">✓</span>}
       {label}
-      <span className={clsx('tabular-nums', active ? 'text-white/70' : 'text-stone-400')}>{count}</span>
+      <span className={clsx('tabular-nums', active ? 'text-white/70' : 'text-slate-400')}>{count}</span>
     </button>
   );
 }
@@ -1670,7 +1670,7 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
         luyện tập.
       */}
       {item.explanation?.value && (revealed
-        ? <SafeContent content={item.explanation} className="question-content mt-3 rounded-lg bg-stone-100 p-3 text-xs" />
+        ? <SafeContent content={item.explanation} className="question-content mt-3 rounded-lg bg-slate-100 p-3 text-xs" />
         : <SampleAnswer content={item.explanation} kind={explanationKind(set)} />)}
     </article>
   );

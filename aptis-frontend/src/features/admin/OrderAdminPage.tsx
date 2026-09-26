@@ -6,9 +6,18 @@ import { adminOrderApi } from '@/api/adminEndpoints';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { formatCurrency, formatDateTime } from '@/lib/format';
-import { DataTable, PageHeader, Pager, ResultBanner, StatusBadge } from './components/AdminUi';
+import { DataTable, PageHeader, Pager, ResultBanner, StatusBadge, StatusTiles, type StatusTile } from './components/AdminUi';
+
 import { usePermission } from './usePermission';
 import type { AdminOrder, CreateRefundRequest, OrderStatus } from '@/types/admin';
+
+const ORDER_TILES: StatusTile<OrderStatus>[] = [
+  { value: 'AWAITING_PAYMENT', label: 'Chờ thanh toán', hint: 'Đã tạo, chưa trả tiền' },
+  { value: 'PAID', label: 'Đã thanh toán', hint: 'Đã kích hoạt Premium' },
+  { value: 'REFUNDED', label: 'Đã hoàn tiền', hint: 'Hoàn toàn bộ' },
+  { value: 'CANCELLED', label: 'Đã huỷ', hint: 'Người mua huỷ' },
+  { value: 'EXPIRED', label: 'Hết hạn', hint: 'Quá hạn thanh toán' },
+];
 
 const PAGE_SIZE = 20;
 
@@ -25,15 +34,18 @@ export function OrderAdminPage() {
   const canRefund = has('refund:write');
 
   const [page, setPage] = useState(0);
+  const [status, setStatus] = useState<OrderStatus | ''>('');
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [banner, setBanner] = useState<string | null>(null);
 
   const ordersQuery = useQuery({
-    queryKey: ['admin', 'orders', page],
-    queryFn: () => adminOrderApi.list(page, PAGE_SIZE),
+    queryKey: ['admin', 'orders', status, page],
+    queryFn: () => adminOrderApi.list(page, PAGE_SIZE, status || undefined),
     // Giữ dữ liệu trang trước trong lúc tải để bảng không nháy trắng
     placeholderData: (prev) => prev,
   });
+
+  const countsQuery = useQuery({ queryKey: ['admin', 'orders', 'status-counts'], queryFn: adminOrderApi.statusCounts });
 
   const body = () => {
     if (ordersQuery.isPending) {
@@ -123,6 +135,8 @@ export function OrderAdminPage() {
         title="Đơn hàng"
         description="Tra cứu đơn hàng và xử lý hoàn tiền. Bấm vào một dòng để xem chi tiết."
       />
+
+      <StatusTiles tiles={ORDER_TILES} counts={countsQuery.data} active={status} onPick={(next) => { setStatus(next); setPage(0); }} />
 
       {banner && (
         <ResultBanner tone="success" message={banner} onDismiss={() => setBanner(null)} />

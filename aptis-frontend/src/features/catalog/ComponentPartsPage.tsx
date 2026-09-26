@@ -30,14 +30,14 @@ export function ComponentPartsPage() {
   if (!isPremium) {
     return (
       <div className="space-y-5">
-        <nav className="flex flex-wrap items-center gap-2 text-xs text-stone-500" aria-label="Đường dẫn">
+        <nav className="flex flex-wrap items-center gap-2 text-xs text-slate-500" aria-label="Đường dẫn">
           <Link to="/" className="hover:text-brand-800">Trang chủ</Link>
           <span aria-hidden="true">›</span>
           <Link to={componentPath(component.code)} className="hover:text-brand-800">
             Luyện {componentDisplayName(component)}
           </Link>
           <span aria-hidden="true">›</span>
-          <span className="font-semibold text-stone-800">Theo Part</span>
+          <span className="font-semibold text-slate-800">Theo Part</span>
         </nav>
         <PremiumGate message="Luyện theo Part thuộc gói Premium. Tài khoản miễn phí làm được 3 đề thi thử đầu của mỗi kỹ năng." />
       </div>
@@ -50,12 +50,12 @@ export function ComponentPartsPage() {
 
   return (
     <div className="space-y-5">
-      <nav className="flex flex-wrap items-center gap-2 text-xs text-stone-500" aria-label="Đường dẫn">
+      <nav className="flex flex-wrap items-center gap-2 text-xs text-slate-500" aria-label="Đường dẫn">
         <Link to="/" className="hover:text-brand-800">Trang chủ</Link>
         <span aria-hidden="true">›</span>
         <Link to={componentPath(component.code)} className="hover:text-brand-800">Luyện {displayName}</Link>
         <span aria-hidden="true">›</span>
-        <span className="font-semibold text-stone-800">Theo Part</span>
+        <span className="font-semibold text-slate-800">Theo Part</span>
       </nav>
 
       <header className="flex flex-col gap-4 rounded-lg bg-brand-900 px-5 py-5 text-white shadow-[0_10px_28px_rgba(5,63,53,.14)] sm:flex-row sm:items-center sm:px-7">
@@ -68,9 +68,9 @@ export function ComponentPartsPage() {
       </header>
 
       <section>
-        <div className="mb-3 flex flex-wrap items-end justify-between gap-3 border-b border-stone-200 pb-3">
-          <div><h2 className="text-xl font-semibold tracking-[-0.025em]">Danh sách Part</h2><p className="mt-1 text-xs text-stone-500">Mỗi Part tập trung vào một dạng câu hỏi riêng</p></div>
-          <span className="text-xs text-stone-500">{parts.length} Part · {totalQuestionSets} bộ câu hỏi</span>
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3 border-b border-slate-200 pb-3">
+          <div><h2 className="text-xl font-semibold tracking-[-0.025em]">Danh sách Part</h2><p className="mt-1 text-xs text-slate-500">Mỗi Part tập trung vào một dạng câu hỏi riêng</p></div>
+          <span className="text-xs text-slate-500">{parts.length} Part · {totalQuestionSets} bộ câu hỏi</span>
         </div>
 
         {parts.length > 0 ? (
@@ -79,15 +79,15 @@ export function ComponentPartsPage() {
               <Link key={part.id} to={partPath(component.code, part)} className="group flex min-h-24 items-center gap-4 rounded-lg border border-[#ddd6c6] bg-white px-4 py-4 shadow-[0_2px_8px_rgba(43,39,30,.05)] transition-colors hover:border-brand-400 hover:bg-brand-50/40">
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-[#f4f1e8] text-[#80662e]"><PartIcon /></span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-semibold text-stone-900">{part.name}</span>
-                  {part.description && <span className="mt-0.5 block truncate text-xs text-stone-500">{part.description}</span>}
-                  <span className="mt-1.5 block text-[11px] text-stone-500">Part {part.displayOrder} · {part.publishedQuestionSetCount} bộ câu hỏi{part.defaultDurationSeconds ? ` · ${Math.round(part.defaultDurationSeconds / 60)} phút` : ''}</span>
+                  <span className="block text-sm font-semibold text-slate-900">{part.name}</span>
+                  {part.description && <span className="mt-0.5 block truncate text-xs text-slate-500">{part.description}</span>}
+                  <span className="mt-1.5 block text-[11px] text-slate-500">Part {part.displayOrder} · {part.publishedQuestionSetCount} bộ câu hỏi{part.defaultDurationSeconds ? ` · ${Math.round(part.defaultDurationSeconds / 60)} phút` : ''}</span>
                 </span>
                 <span className="text-brand-800 transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
               </Link>
             ))}
           </div>
-        ) : <p className="rounded-lg bg-white p-4 text-sm text-stone-600">Kỹ năng này chưa có Part nào được phát hành.</p>}
+        ) : <p className="rounded-lg bg-white p-4 text-sm text-slate-600">Kỹ năng này chưa có Part nào được phát hành.</p>}
       </section>
     </div>
   );
