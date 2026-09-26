@@ -140,7 +140,7 @@ export function AdminLayout() {
       {drawerOpen && (
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Menu quản trị">
           <button type="button" className="absolute inset-0 bg-ink/40" aria-label="Đóng menu" onClick={() => setDrawerOpen(false)} />
-          <div className="absolute inset-y-0 left-0 flex w-[min(300px,86vw)] flex-col bg-admin shadow-2xl">{sidebar}</div>
+          <div className="absolute inset-y-0 left-0 flex w-[min(300px,86vw)] animate-drawer-left flex-col bg-admin shadow-2xl">{sidebar}</div>
         </div>
       )}
 

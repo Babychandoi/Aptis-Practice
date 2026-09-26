@@ -72,8 +72,8 @@ export function MatchingRenderer({
             className={clsx(
               // Một hàng: nhãn + nội dung bên trái, ô chọn bên phải; xếp chồng trên điện thoại.
               'grid gap-2 rounded-xl border bg-white p-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center',
-              isCorrect && 'border-emerald-400 bg-emerald-50',
-              isWrong && 'border-red-400 bg-red-50',
+              isCorrect && 'animate-pop border-emerald-400 bg-emerald-50',
+              isWrong && 'animate-shake border-red-400 bg-red-50',
               isBlank && 'border-amber-300 bg-amber-50/50',
               !showAnswer && 'border-brand-200',
             )}

@@ -37,7 +37,7 @@ export function ClassHero({ classroom }: { classroom: StudentClassroom }) {
   const open = next && left <= 10 * 60_000 && next.meetingUrl;
 
   return (
-    <section className="relative grid animate-rise gap-6 overflow-hidden rounded-3xl bg-ink p-6 text-white sm:p-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-center">
+    <section className="relative grid animate-in gap-6 overflow-hidden rounded-3xl bg-ink p-6 text-white sm:p-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-center">
       <span aria-hidden="true" className="pointer-events-none absolute -bottom-32 left-24 h-72 w-72 rounded-full border border-dashed border-white/10" />
       <div>
         <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">Lớp học{classroom.scheduleNote ? ` · ${classroom.scheduleNote}` : ''}</span>

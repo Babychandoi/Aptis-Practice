@@ -9,6 +9,7 @@ import type { AttemptSummary, ExamPredictionFeed, StudentAssignment } from '@/ty
 import { componentPath } from '@/features/catalog/catalogRoutes';
 import { SKILLS, cefrFromScore50, skillByCode } from '@/lib/skills';
 import { Icon } from '@/components/shell/icons';
+import { stagger } from '@/lib/motion';
 
 /**
  * Ngưỡng điểm trên thang 50 cho từng bậc CEFR mục tiêu.
@@ -108,16 +109,16 @@ export function DashboardPage() {
     <div className="flex flex-col gap-5">
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
         {/* Lời chào + gợi ý hôm nay */}
-        <section className="relative overflow-hidden rounded-3xl bg-ink p-7 text-white animate-rise sm:p-8">
+        <section className="relative overflow-hidden rounded-3xl bg-ink p-7 text-white animate-in sm:p-8">
           <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full border border-white/10" />
-          <div aria-hidden="true" className="pointer-events-none absolute -right-8 top-10 h-56 w-56 rounded-full border border-dashed border-white/10" />
+          <div aria-hidden="true" className="pointer-events-none absolute -right-8 top-10 h-56 w-56 animate-spin-slow rounded-full border border-dashed border-white/10" />
           {(statsQuery.data?.streakDays ?? 0) > 0 && (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
               <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
               {statsQuery.data!.streakDays} ngày liên tiếp
             </span>
           )}
-          <h1 className="mt-4 max-w-[18ch] text-[clamp(28px,3.6vw,38px)] font-extrabold leading-[1.1] tracking-[-0.035em]">
+          <h1 key={daysToExam ?? 'chao'} className="mt-4 max-w-[18ch] animate-word text-[clamp(28px,3.6vw,38px)] font-extrabold leading-[1.1] tracking-[-0.035em]">
             {daysToExam != null && daysToExam > 0
               ? `Chào ${name}, còn ${daysToExam} ngày tới kỳ thi.`
               : `Chào ${name}, hôm nay luyện gì?`}
@@ -145,7 +146,7 @@ export function DashboardPage() {
         </section>
 
         {/* Điểm trung bình tới mục tiêu */}
-        <section className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-white p-6 animate-rise sm:flex-row sm:p-7">
+        <section className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-white p-6 animate-in [animation-delay:80ms] sm:flex-row sm:p-7">
           <ScoreRing value={average} />
           <div className="min-w-0 flex-1">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-faint">Tiến độ tới mục tiêu</p>
@@ -153,7 +154,7 @@ export function DashboardPage() {
               <LevelChip>{currentLevel ?? '—'}</LevelChip>
               <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-muted">
                 <span
-                  className="block h-full rounded-full bg-ink transition-[width] duration-700"
+                  className="block h-full origin-left animate-grow-x rounded-full bg-ink transition-[width] duration-700"
                   style={{ width: `${average != null ? Math.min(100, (average / (LEVEL_FLOOR[targetLevel] || 50)) * 100) : 0}%` }}
                 />
               </span>
@@ -178,7 +179,7 @@ export function DashboardPage() {
               <div className="mt-4 flex items-center gap-3">
                 <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-muted">
                   <span
-                    className="block h-full rounded-full"
+                    className="block h-full origin-left animate-grow-x rounded-full"
                     style={{
                       width: `${inProgress.totalItems ? ((inProgress.answeredItems ?? 0) / inProgress.totalItems) * 100 : 0}%`,
                       background: attemptSkill(inProgress).fg,
@@ -235,8 +236,8 @@ export function DashboardPage() {
             {Array.from({ length: 26 }, (_, i) => (
               <span
                 key={i}
-                className="w-[3px] rounded-sm bg-ink"
-                style={{ height: `${[45, 80, 100, 60, 90, 35, 70, 55][i % 8]}%` }}
+                className="w-[3px] animate-bar rounded-sm bg-ink"
+                style={{ height: `${[45, 80, 100, 60, 90, 35, 70, 55][i % 8]}%`, animationDuration: `.${4 + (i % 5)}s`, animationDelay: `${(i * 0.04).toFixed(2)}s` }}
               />
             ))}
           </span>
@@ -248,7 +249,7 @@ export function DashboardPage() {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-2">
-        <section className="rounded-3xl border border-border bg-white p-5 sm:p-6">
+        <section className="animate-in rounded-3xl border border-border bg-white p-5 [animation-delay:120ms] sm:p-6">
           <header className="flex items-baseline justify-between gap-3">
             <h2 className="text-base font-bold">Điểm theo kỹ năng</h2>
             <span className="text-xs text-ink-faint">30 ngày gần nhất</span>
@@ -267,7 +268,7 @@ export function DashboardPage() {
                     </span>
                     <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-surface-muted">
                       <span
-                        className="block h-full rounded-full transition-[width] duration-700"
+                        className="block h-full origin-left animate-grow-x rounded-full transition-[width] duration-700"
                         style={{ width: `${stat ? (stat.score50 / 50) * 100 : 0}%`, background: skill.fg }}
                       />
                     </span>
@@ -281,7 +282,7 @@ export function DashboardPage() {
           </ul>
         </section>
 
-        <section className="flex flex-col rounded-3xl border border-border bg-white p-5 sm:p-6">
+        <section className="flex animate-in flex-col rounded-3xl border border-border bg-white p-5 [animation-delay:160ms] sm:p-6">
           <header className="flex items-baseline justify-between gap-3">
             <h2 className="text-base font-bold">Hoạt động 14 ngày</h2>
             <span className="text-xs text-ink-mute">
@@ -295,8 +296,8 @@ export function DashboardPage() {
                 <div key={day.date} className="flex h-full flex-1 flex-col items-center justify-end gap-2">
                   <span
                     title={`${formatDayMonth(day.date)}: ${day.minutes} phút`}
-                    className={clsx('w-full rounded-md transition-[height] duration-700', last ? 'bg-ink' : 'bg-brand-300')}
-                    style={{ height: `${Math.max(3, (day.minutes / maxMinutes) * 100)}%` }}
+                    className={clsx('w-full origin-bottom animate-grow-y rounded-md transition-[height] duration-700', last ? 'bg-ink' : 'bg-brand-300')}
+                    style={{ height: `${Math.max(3, (day.minutes / maxMinutes) * 100)}%`, animationDelay: `${Math.min(i, 13) * 40}ms` }}
                   />
                   <span className="text-[10px] text-ink-faint">{weekdayShort(day.date)}</span>
                 </div>
@@ -308,7 +309,7 @@ export function DashboardPage() {
 
       <FocusTopics feed={focusQuery.data} />
 
-      <section className="rounded-3xl border border-border bg-white p-5 sm:p-6">
+      <section className="animate-in rounded-3xl border border-border bg-white p-5 [animation-delay:200ms] sm:p-6">
         <header className="flex items-baseline justify-between gap-3">
           <h2 className="text-base font-bold">Kết quả gần đây</h2>
           <Link to="/history" className="text-xs font-semibold text-ink-mute hover:text-ink">Xem tất cả →</Link>
@@ -351,14 +352,14 @@ function FocusTopics({ feed }: { feed?: ExamPredictionFeed }) {
     .slice(0, 6);
   if (!topics.length) return null;
   return (
-    <section className="rounded-3xl border border-border bg-white p-5 sm:p-6">
+    <section className="animate-in rounded-3xl border border-border bg-white p-5 [animation-delay:160ms] sm:p-6">
       <header className="flex items-baseline justify-between gap-3">
         <h2 className="flex items-center gap-2 text-base font-bold"><Icon name="focus" className="h-4 w-4" /> Đề trọng điểm tháng này</h2>
         <Link to="/du-doan-de" className="text-xs font-semibold text-ink-mute hover:text-ink">Xem dự đoán đề →</Link>
       </header>
       <ul className="mt-3 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-        {topics.map(({ item, skill, section }) => (
-          <li key={item.id}>
+        {topics.map(({ item, skill, section }, i) => (
+          <li key={item.id} className="animate-in" style={stagger(i, 60, 200)}>
             <Link to="/du-doan-de" className="flex h-full items-center gap-3 rounded-2xl border border-border-subtle p-3.5 transition hover:border-ink/30">
               <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl" style={{ background: skill.bg, color: skill.fg }}>
                 <Icon name={skill.icon} className="h-4 w-4" />
@@ -420,7 +421,7 @@ function MiniCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex flex-col rounded-3xl border border-border bg-white p-5 animate-rise">
+    <section className="flex flex-col rounded-3xl border border-border bg-white p-5 animate-in">
       <header className="mb-3 flex items-center justify-between gap-2">
         <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-faint">{title}</span>
         {tag && (

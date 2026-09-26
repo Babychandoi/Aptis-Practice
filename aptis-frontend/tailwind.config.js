@@ -17,27 +17,146 @@ export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      // Chuyển động lấy đúng giá trị từ hai mock (hm*). Mỗi keyframe khai báo
+      // một lần ở đây; index.css tắt hết khi người dùng bật "giảm chuyển động".
+      // Chỉ animate transform/opacity (word thêm filter như mock) để không
+      // gây reflow.
       keyframes: {
         // Nội dung được nhân đôi, dịch đúng một nửa nên vòng lặp liền mạch.
         marquee: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
         },
-        // Hiện dần khi vào trang, như các khối trong mock.
-        rise: {
-          '0%': { opacity: '0', transform: 'translateY(12px)' },
-          '100%': { opacity: '1', transform: 'none' },
+        // hmin: hiện dần và nhô lên khi vào trang.
+        in: {
+          from: { opacity: '0', transform: 'translateY(24px)' },
+          to: { opacity: '1', transform: 'none' },
         },
-        // Sóng âm lúc AI nói hoặc đang ghi âm.
-        wave: {
-          '0%': { transform: 'scaleY(.35)' },
-          '100%': { transform: 'scaleY(1)' },
+        // Bản nhẹ của hmin dùng trong trang làm bài (14px).
+        'in-sm': {
+          from: { opacity: '0', transform: 'translateY(14px)' },
+          to: { opacity: '1', transform: 'none' },
+        },
+        // hmslide: trượt vào từ bên phải khi đổi bộ đề/part/kỹ năng.
+        'slide-in': {
+          from: { opacity: '0', transform: 'translateX(28px)' },
+          to: { opacity: '1', transform: 'none' },
+        },
+        // hmleft / hmright: ngăn kéo trượt vào từ mép.
+        'drawer-left': {
+          from: { transform: 'translateX(-100%)' },
+          to: { transform: 'none' },
+        },
+        'drawer-right': {
+          from: { transform: 'translateX(100%)' },
+          to: { transform: 'none' },
+        },
+        // hmpop: nảy nhẹ khi chọn đúng hoặc lưu xong.
+        pop: {
+          '0%': { transform: 'scale(1)' },
+          '40%': { transform: 'scale(1.035)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        // hmshake: lắc ngang khi chọn sai.
+        shake: {
+          '0%, 100%': { transform: 'none' },
+          '20%': { transform: 'translateX(-8px)' },
+          '40%': { transform: 'translateX(7px)' },
+          '60%': { transform: 'translateX(-5px)' },
+          '80%': { transform: 'translateX(3px)' },
+        },
+        // hmping: vòng toả ra rồi mờ dần (chấm trạng thái, quanh micro).
+        'ping-soft': {
+          '0%': { transform: 'scale(1)', opacity: '.7' },
+          '100%': { transform: 'scale(2.4)', opacity: '0' },
+        },
+        // Vòng quanh nút micro toả hẹp hơn để không tràn khung.
+        'ping-mic': {
+          '0%': { transform: 'scale(1)', opacity: '.7' },
+          '100%': { transform: 'scale(1.6)', opacity: '0' },
+        },
+        // hmbar: vạch sóng âm nhún lên xuống.
+        bar: {
+          from: { transform: 'scaleY(.25)' },
+          to: { transform: 'scaleY(1)' },
+        },
+        // hmgrow / hmgrowY: thanh tiến độ và cột biểu đồ mọc ra.
+        'grow-x': {
+          from: { transform: 'scaleX(0)' },
+          to: { transform: 'scaleX(1)' },
+        },
+        'grow-y': {
+          from: { transform: 'scaleY(0)' },
+          to: { transform: 'scaleY(1)' },
+        },
+        // hmdraw / hmline: nét vẽ dấu tích và đường biểu đồ.
+        draw: {
+          from: { strokeDashoffset: '60' },
+          to: { strokeDashoffset: '0' },
+        },
+        line: {
+          from: { strokeDashoffset: '1400' },
+          to: { strokeDashoffset: '0' },
+        },
+        // hmdot: ba chấm "đang gõ/đang kết nối".
+        dot: {
+          '0%, 80%, 100%': { transform: 'scale(.6)', opacity: '.4' },
+          '40%': { transform: 'scale(1)', opacity: '1' },
+        },
+        // hmdrop: menu thả xuống.
+        drop: {
+          from: { opacity: '0', transform: 'translateY(-8px) scale(.98)' },
+          to: { opacity: '1', transform: 'none' },
+        },
+        // hmword: tiêu đề hiện lại mỗi khi đổi chữ (gắn key theo nội dung).
+        word: {
+          from: { opacity: '0', transform: 'translateY(60%) rotateX(-60deg)', filter: 'blur(6px)' },
+          to: { opacity: '1', transform: 'none', filter: 'none' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        blink: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0' },
+        },
+        // hmscan dùng top; ở đây đổi sang translateY cho nhẹ, phần tử cha phải
+        // có chiều cao cố định và vạch đặt top-0.
+        scan: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(var(--scan-distance, 120px))' },
+        },
+        // hmflash: nền xanh nhạt loé lên khi vừa lưu.
+        flash: {
+          from: { backgroundColor: '#ECFDF3' },
+          to: { backgroundColor: 'transparent' },
         },
       },
       animation: {
         marquee: 'marquee 28s linear infinite',
-        rise: 'rise .5s cubic-bezier(.2,.8,.2,1) both',
-        wave: 'wave .5s ease-in-out infinite alternate',
+        in: 'in .5s cubic-bezier(.2,.8,.2,1) both',
+        'in-sm': 'in-sm .4s cubic-bezier(.2,.8,.2,1) both',
+        'slide-in': 'slide-in .45s cubic-bezier(.2,.8,.2,1) both',
+        'drawer-left': 'drawer-left .35s cubic-bezier(.2,.8,.2,1) both',
+        'drawer-right': 'drawer-right .35s cubic-bezier(.2,.8,.2,1) both',
+        pop: 'pop .45s ease both',
+        shake: 'shake .45s ease both',
+        'ping-soft': 'ping-soft 1.8s ease-out infinite',
+        'ping-mic': 'ping-mic 1.6s ease-out infinite',
+        bar: 'bar .5s ease-in-out infinite alternate',
+        'grow-x': 'grow-x 1s .3s cubic-bezier(.2,.8,.2,1) both',
+        'grow-y': 'grow-y .8s cubic-bezier(.2,.8,.2,1) both',
+        draw: 'draw .6s ease both',
+        line: 'line 1.6s .2s cubic-bezier(.2,.8,.2,1) both',
+        dot: 'dot 1.2s ease-in-out infinite',
+        drop: 'drop .22s cubic-bezier(.2,.8,.2,1) both',
+        word: 'word .5s cubic-bezier(.2,.8,.2,1) both',
+        float: 'float 6s ease-in-out infinite',
+        blink: 'blink 1s step-end infinite',
+        scan: 'scan 2.4s ease-in-out infinite',
+        flash: 'flash 1.6s ease both',
+        'spin-slow': 'spin 50s linear infinite',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', '"Segoe UI"', 'sans-serif'],

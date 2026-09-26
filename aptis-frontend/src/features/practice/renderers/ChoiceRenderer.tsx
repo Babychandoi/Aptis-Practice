@@ -35,9 +35,10 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
             key={option.id}
             className={clsx(
               'flex min-h-11 cursor-pointer items-center gap-2.5 rounded-xl border bg-white px-3 py-2.5 text-left transition-colors',
-              chonDung && 'border-2 border-emerald-500 bg-emerald-50',
+              // Chọn đúng nảy nhẹ, chọn sai lắc ngang (hmpop / hmshake của mock).
+              chonDung && 'animate-pop border-2 border-emerald-500 bg-emerald-50',
               dungNhungBoTrong && 'border border-dashed border-emerald-400 bg-emerald-50/40',
-              isWrongPick && 'border-2 border-red-400 bg-red-50',
+              isWrongPick && 'animate-shake border-2 border-red-400 bg-red-50',
               showAnswer && !selected && correctId !== option.id && 'border-slate-200',
               !showAnswer && selected && 'border-ink bg-brand-50',
               !showAnswer && !selected && 'border-brand-200 hover:bg-brand-50',
@@ -73,8 +74,10 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
             </span>
             {/* Đánh dấu bằng hình chứ không chỉ bằng màu. */}
             {chonDung && (
-              <span className="shrink-0 text-sm font-bold text-emerald-700" title="Chọn đúng">
-                ✓
+              <span className="shrink-0 text-emerald-700" title="Chọn đúng">
+                <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12.5 10 17 19 7" strokeDasharray="60" className="animate-draw" />
+                </svg>
               </span>
             )}
             {isWrongPick && (
@@ -113,8 +116,8 @@ export function SingleChoiceSelectRenderer({ item, draft, disabled, showAnswer, 
         className={clsx(
           'min-h-12 w-full rounded-xl border bg-white px-4 py-2.5 text-sm outline-none transition sm:text-[13px]',
           !showAnswer && 'border-[#E2E8F0] focus:border-brand-700 focus:ring-2 focus:ring-brand-100',
-          showAnswer && selectedId === correctId && 'border-emerald-400 bg-emerald-50 text-emerald-900',
-          selectedIsWrong && 'border-red-400 bg-red-50 text-red-900',
+          showAnswer && selectedId === correctId && 'animate-pop border-emerald-400 bg-emerald-50 text-emerald-900',
+          selectedIsWrong && 'animate-shake border-red-400 bg-red-50 text-red-900',
         selectedIsBlank && 'border-amber-300 bg-amber-50/50',
           disabled && 'cursor-default opacity-100',
         )}
@@ -165,8 +168,9 @@ export function MultipleChoiceRenderer({
             key={option.id}
             className={clsx(
               'flex min-h-11 cursor-pointer items-center gap-2.5 rounded-xl border bg-white px-3 py-2.5 transition-colors',
+              isCorrect && selected && 'animate-pop',
               isCorrect && 'border-emerald-400 bg-emerald-50',
-              isWrongPick && 'border-red-400 bg-red-50',
+              isWrongPick && 'animate-shake border-red-400 bg-red-50',
               !showAnswer && selected && 'border-ink bg-brand-50',
               !showAnswer && !selected && 'border-brand-200 hover:bg-brand-50',
               disabled && 'cursor-default',

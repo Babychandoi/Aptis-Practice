@@ -93,7 +93,7 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
 
   return (
     <div className="mx-auto flex w-full max-w-[1040px] flex-col gap-7">
-      <header className="flex animate-rise flex-col items-center gap-4 text-center">
+      <header className="flex animate-in flex-col items-center gap-4 text-center">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">{aiVoice ? 'Gói AI Voice' : 'Gói Premium'}</p>
         <h1 className="max-w-[16ch] text-[clamp(34px,5vw,56px)] font-extrabold leading-[1.05] tracking-[-0.045em]">
           {aiVoice ? 'Luyện nói mỗi ngày cùng AI' : 'Mở toàn bộ đề, AI chấm không giới hạn'}
@@ -129,7 +129,7 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
       {selectedPlan && (
         <div className="grid items-stretch gap-4 md:grid-cols-2">
           {!aiVoice && (
-            <section className="flex animate-rise flex-col gap-4 rounded-3xl border border-border bg-white p-6">
+            <section className="flex animate-in flex-col gap-4 rounded-3xl border border-border bg-white p-6">
               <h2 className="text-lg font-bold">Miễn phí</h2>
               <p className="text-[44px] font-extrabold leading-none tracking-[-0.04em]">0đ</p>
               <ul className="flex flex-col gap-2.5 text-sm text-ink-soft">
@@ -143,7 +143,7 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
             </section>
           )}
 
-          <section className="relative flex animate-rise flex-col gap-4 overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-[0_28px_60px_-34px_rgba(15,23,42,.7)]">
+          <section className="relative flex animate-in flex-col gap-4 overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-[0_28px_60px_-34px_rgba(15,23,42,.7)]">
             <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full border border-dashed border-white/10" />
             <div className="flex items-center justify-between gap-2">
               <h2 className="text-lg font-bold">{selectedPlan.name}</h2>
