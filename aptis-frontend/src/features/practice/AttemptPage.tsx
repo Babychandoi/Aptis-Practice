@@ -613,11 +613,11 @@ export function AttemptPage() {
   if (attempt.status === 'CREATED') {
     return (
       <div className="mx-auto flex min-h-screen max-w-2xl items-center px-4 py-10">
-        <section className="w-full rounded-2xl border border-[#e5decd] bg-white p-6 shadow-[0_12px_40px_rgba(44,38,24,.09)]">
+        <section className="w-full rounded-2xl border border-[#E5E9F0] bg-white p-6 shadow-[0_12px_40px_rgba(44,38,24,.09)]">
           <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand-800 text-white"><HeadphoneIcon /></span>
           <h1 className="mt-4 text-2xl font-semibold">Sẵn sàng làm {componentName}?</h1>
           <p className="mt-2 text-sm text-stone-600">{partGroups.length} Part · {attempt.totalItems} câu{attempt.durationSeconds ? ` · ${Math.round(attempt.durationSeconds / 60)} phút` : ''}</p>
-          <p className="mt-4 rounded-xl bg-[#eef6f2] px-4 py-3 text-sm text-brand-900">Đồng hồ và tiến độ lưu tự động bắt đầu khi bạn vào bài.</p>
+          <p className="mt-4 rounded-xl bg-[#F1F5F9] px-4 py-3 text-sm text-brand-900">Đồng hồ và tiến độ lưu tự động bắt đầu khi bạn vào bài.</p>
           <button type="button" onClick={() => startMutation.mutate()} disabled={startMutation.isPending} className="btn-primary mt-5 w-full">
             {startMutation.isPending ? 'Đang bắt đầu…' : 'Bắt đầu làm bài'}
           </button>
@@ -640,7 +640,7 @@ export function AttemptPage() {
 
     return (
       <div className="mx-auto flex min-h-screen max-w-2xl items-center px-4 py-10">
-        <section className="w-full rounded-2xl border border-[#e5decd] bg-white p-6 shadow-[0_12px_40px_rgba(44,38,24,.09)]">
+        <section className="w-full rounded-2xl border border-[#E5E9F0] bg-white p-6 shadow-[0_12px_40px_rgba(44,38,24,.09)]">
           <p className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
             Bài thi Aptis · {doneCount}/{total} kỹ năng đã nộp
           </p>
@@ -650,7 +650,7 @@ export function AttemptPage() {
             <strong>{Math.round(pendingProgress.durationSeconds / 60)} phút</strong>. Đồng hồ bắt
             đầu chạy khi bạn bấm nút bên dưới.
           </p>
-          <p className="mt-4 rounded-xl bg-[#fdf9ef] px-4 py-3 text-sm text-[#6f5716]">
+          <p className="mt-4 rounded-xl bg-[#FAFBFC] px-4 py-3 text-sm text-[#6f5716]">
             Nộp xong kỹ năng này sẽ không sửa hay xem lại được. Điểm của cả bài chỉ hiện sau khi
             hoàn thành đủ {total} kỹ năng.
           </p>
@@ -843,7 +843,7 @@ export function AttemptPage() {
         */}
         {isSinglePartAttempt && isItemBank ? (
           // Part câu rời: không có chủ đề để chọn, chỉ cần biết đang ở câu nào.
-          <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#cee1d9] bg-[linear-gradient(90deg,#e8f4ef_0%,#fffdf9_70%)] px-4 py-3">
+          <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#E5E9F0] bg-[linear-gradient(90deg,#e8f4ef_0%,#fffdf9_70%)] px-4 py-3">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white text-brand-800 shadow-sm">
               <MicIcon />
             </span>
@@ -872,7 +872,7 @@ export function AttemptPage() {
                   const value = Number((event.target as HTMLInputElement).value);
                   if (value >= 1 && value <= setCount) void goToSetIndex(value - 1);
                 }}
-                className="w-16 rounded-lg border border-[#ded5c2] px-2 py-1 text-xs tabular-nums"
+                className="w-16 rounded-lg border border-[#E5E9F0] px-2 py-1 text-xs tabular-nums"
                 aria-label={`Nhảy tới câu, từ 1 đến ${setCount}`}
               />
             </label>
@@ -894,13 +894,13 @@ export function AttemptPage() {
               const active = viewMode === 'part' && index === currentPartIndex;
               const locked = !readOnly && speakingLocked && index !== currentPartIndex;
               return (
-                <button key={part.id} type="button" onClick={() => void goToPart(index)} disabled={locked} className={clsx('rounded-xl border bg-[#fffdf8] px-3 py-2.5 text-left transition', active ? 'border-brand-800 bg-[#eaf4ef] shadow-sm' : locked ? 'border-[#e3dac7] opacity-40' : 'border-[#e3dac7] hover:border-brand-300')} aria-current={active ? 'step' : undefined}>
+                <button key={part.id} type="button" onClick={() => void goToPart(index)} disabled={locked} className={clsx('rounded-xl border bg-[#FAFBFC] px-3 py-2.5 text-left transition', active ? 'border-brand-800 bg-[#F1F5F9] shadow-sm' : locked ? 'border-[#E5E9F0] opacity-40' : 'border-[#E5E9F0] hover:border-brand-300')} aria-current={active ? 'step' : undefined}>
                   <span className="block text-sm font-semibold">
                     {part.skill ? `${part.skill} · Phần ${part.number}` : `Phần ${part.number}`}
                   </span>
                   <span className="block text-[9px] font-semibold uppercase text-stone-500">{part.label}</span>
                   <span className="mt-2 block text-[10px] font-medium text-stone-600">{answered}/{part.totalItems}</span>
-                  <span className="mt-1.5 block h-0.5 overflow-hidden rounded-full bg-[#d9d0bc]"><span className="block h-full bg-brand-700 transition-all" style={{ width: `${part.totalItems ? (answered / part.totalItems) * 100 : 0}%` }} /></span>
+                  <span className="mt-1.5 block h-0.5 overflow-hidden rounded-full bg-[#CBD5E1]"><span className="block h-full bg-brand-700 transition-all" style={{ width: `${part.totalItems ? (answered / part.totalItems) * 100 : 0}%` }} /></span>
                 </button>
               );
             })}
@@ -1218,7 +1218,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
     <div className="space-y-2" onClick={(event) => event.stopPropagation()}>
       {/* Thẻ chủ đề đang mở: tên, vị trí, tiến độ, số lửa */}
       {current && (
-        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#cee1d9] bg-[linear-gradient(90deg,#e8f4ef_0%,#fffdf9_70%)] px-4 py-3">
+        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#E5E9F0] bg-[linear-gradient(90deg,#e8f4ef_0%,#fffdf9_70%)] px-4 py-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white text-brand-800 shadow-sm">
             <MicIcon />
           </span>
@@ -1242,7 +1242,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
               <span>Tiến độ chủ đề</span>
               <span className="font-semibold tabular-nums">{currentProgress} / {currentTotal} câu</span>
             </div>
-            <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-[#d9d0bc]">
+            <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-[#CBD5E1]">
               <span
                 className="block h-full bg-brand-700 transition-all"
                 style={{ width: `${currentTotal ? (currentProgress / currentTotal) * 100 : 0}%` }}
@@ -1250,7 +1250,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
             </span>
           </div>
 
-          <span className="shrink-0 rounded-lg border border-[#cee1d9] bg-white px-3 py-1.5 text-[10px] font-semibold uppercase text-brand-800">
+          <span className="shrink-0 rounded-lg border border-[#E5E9F0] bg-white px-3 py-1.5 text-[10px] font-semibold uppercase text-brand-800">
             {doneCount} sẵn sàng
           </span>
           <span className="shrink-0 rounded-lg border border-amber-300 bg-white px-3 py-1.5 text-[10px] font-semibold uppercase text-amber-700">
@@ -1260,7 +1260,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
       )}
 
       {/* Hàng lọc + chuyển nhanh */}
-      <div className="flex flex-wrap items-end gap-2 rounded-xl border border-[#e3dac7] bg-[#fffdf8] px-3 py-2.5">
+      <div className="flex flex-wrap items-end gap-2 rounded-xl border border-[#E5E9F0] bg-[#FAFBFC] px-3 py-2.5">
         <span className="text-[10px] font-medium text-stone-500">Lọc chủ đề</span>
         <FilterChip label="Tất cả" count={sets.length} active={filter === 'all'} onClick={() => setFilter('all')} />
         {years.map((year) => (
@@ -1303,7 +1303,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="flex w-full items-center gap-3 rounded-xl border border-[#e3dac7] bg-[#fffdf8] px-4 py-3 text-left transition hover:border-brand-300"
+        className="flex w-full items-center gap-3 rounded-xl border border-[#E5E9F0] bg-[#FAFBFC] px-4 py-3 text-left transition hover:border-brand-300"
       >
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-800 text-xs font-semibold text-white">
           {currentIndex + 1}
@@ -1330,7 +1330,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
       {open && (
         <ul
           role="listbox"
-          className="absolute z-40 mt-1 max-h-80 w-full overflow-y-auto rounded-xl border border-[#ded5c2] bg-white p-1 shadow-[0_12px_32px_rgba(43,39,30,.16)]"
+          className="absolute z-40 mt-1 max-h-80 w-full overflow-y-auto rounded-xl border border-[#E5E9F0] bg-white p-1 shadow-[0_12px_32px_rgba(43,39,30,.16)]"
         >
           {visibleSets.map(({ set, index }) => {
             const answered = countAnswered(set.content.items, responsesBySet[set.attemptQuestionSetId] ?? {});
@@ -1347,7 +1347,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
                   }}
                   className={clsx(
                     'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm transition',
-                    index === currentIndex ? 'bg-[#eaf4ef] font-semibold' : 'hover:bg-stone-50',
+                    index === currentIndex ? 'bg-[#F1F5F9] font-semibold' : 'hover:bg-stone-50',
                   )}
                 >
                   <span className="w-6 shrink-0 text-[11px] tabular-nums text-stone-500">
@@ -1363,7 +1363,7 @@ function SetPicker({ sets, currentIndex, partName, setNumberById, responsesBySet
                     </span>
                   )}
                   {scored ? (
-                    <span className="shrink-0 rounded-full bg-[#eef6f2] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
+                    <span className="shrink-0 rounded-full bg-[#F1F5F9] px-2 py-0.5 text-[10px] font-semibold text-brand-800">
                       ✓ {set.awardedScore ?? 0}/{set.maxScore}
                     </span>
                   ) : answered > 0 ? (
@@ -1392,7 +1392,7 @@ function ItemMetaBadge({ item }: { item: QuestionItem }) {
   if (typeof seconds !== 'number') return null;
 
   return (
-    <span className="shrink-0 rounded-full bg-[#eef6f2] px-2 py-1 font-mono text-[10px] text-brand-800">
+    <span className="shrink-0 rounded-full bg-[#F1F5F9] px-2 py-1 font-mono text-[10px] text-brand-800">
       ● {formatDuration(seconds)}
       {typeof minWords === 'number' && typeof maxWords === 'number' && ` · ${minWords}–${maxWords} từ`}
     </span>
@@ -1415,7 +1415,7 @@ function FilterChip({ label, count, active, onClick }: {
         'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition',
         active
           ? 'border-brand-800 bg-brand-800 text-white'
-          : 'border-[#ded5c2] bg-white text-stone-600 hover:border-brand-300',
+          : 'border-[#E5E9F0] bg-white text-stone-600 hover:border-brand-300',
       )}
     >
       {active && <span aria-hidden="true">✓</span>}
@@ -1463,11 +1463,11 @@ function PartSection({ part, hideHeader, visibleSetIds, attemptId, responsesBySe
     <section aria-labelledby={hideHeader ? undefined : `part-title-${part.id}`} aria-label={hideHeader ? part.name : undefined}>
       {hideHeader ? (
         // Vẫn giữ hướng dẫn làm bài; chỉ bỏ dòng "Phần N – ..." vì đã có ở dropdown
-        <p className="rounded-xl border border-[#cee1d9] bg-[#f2f9f6] px-4 py-2.5 text-[11px] font-medium text-brand-900 sm:text-xs">
+        <p className="rounded-xl border border-[#E5E9F0] bg-[#F1F5F9] px-4 py-2.5 text-[11px] font-medium text-brand-900 sm:text-xs">
           {part.instruction}
         </p>
       ) : (
-        <div className="flex items-center gap-3 rounded-xl border border-[#cee1d9] bg-[linear-gradient(90deg,#deeee8_0%,#fffdf9_72%)] px-4 py-3">
+        <div className="flex items-center gap-3 rounded-xl border border-[#E5E9F0] bg-[linear-gradient(90deg,#deeee8_0%,#fffdf9_72%)] px-4 py-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-brand-800 font-semibold text-white shadow-sm">{toRoman(part.number)}</span>
           <div className="min-w-0 flex-1">
             <h2 id={`part-title-${part.id}`} className="text-base font-semibold sm:text-lg">
@@ -1479,7 +1479,7 @@ function PartSection({ part, hideHeader, visibleSetIds, attemptId, responsesBySe
         </div>
       )}
 
-      <div className="mt-3 space-y-3 rounded-xl border-l-2 border-brand-800 bg-[#fbfaf5] p-2.5 sm:p-3">
+      <div className="mt-3 space-y-3 rounded-xl border-l-2 border-brand-800 bg-[#FAFBFC] p-2.5 sm:p-3">
         {visibleSets.map((set) => (
           <QuestionSetBlock
             key={set.attemptQuestionSetId}
@@ -1555,7 +1555,7 @@ function QuestionSetBlock({ set, itemNumberById, attemptId, responses, readOnly,
   return (
     <div className="space-y-3">
       {(showTopic || set.content.instructions || set.content.stimulus?.value || sharedAssets.length > 0) && (
-        <div className="rounded-xl border border-[#d9dfd7] bg-[#f7fcfa] p-3 sm:p-4">
+        <div className="rounded-xl border border-[#E5E9F0] bg-[#F8FAFC] p-3 sm:p-4">
           {showTopic && (
             <div className="mb-3 flex items-center gap-3 border-l-2 border-brand-800 pl-3">
               {commonAssets.length > 0 && <span className="text-brand-800"><HeadphoneIcon /></span>}
@@ -1565,7 +1565,7 @@ function QuestionSetBlock({ set, itemNumberById, attemptId, responses, readOnly,
               </div>
             </div>
           )}
-          {set.content.instructions && <p className="mb-3 rounded-lg bg-[#eaf4ef] px-3 py-2 text-xs text-brand-900">{set.content.instructions}</p>}
+          {set.content.instructions && <p className="mb-3 rounded-lg bg-[#F1F5F9] px-3 py-2 text-xs text-brand-900">{set.content.instructions}</p>}
           {set.content.stimulus?.value && <SafeContent content={set.content.stimulus} className="question-content mb-3 text-sm" />}
           {sharedImages.length > 0 && <div className="mb-3"><ImageViewer assets={sharedImages} /></div>}
           {commonAssets.length > 0 && <AudioPlayer assets={commonAssets} maxAudioPlays={set.maxAudioPlays} initialPlayCount={set.audioPlayCount} disabled={readOnly} />}

@@ -237,7 +237,7 @@ export function MicCheck({ onContinue, continueLabel, continuePending }: Props) 
           )}
         </div>
 
-        <div className="mt-6 rounded-xl border border-[#e6dcc4] bg-[#fdf9ef] p-4">
+        <div className="mt-6 rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] p-4">
           <h2 className="text-[10px] font-semibold uppercase tracking-wide text-[#8a6b1f]">
             💡 Trước khi ghi âm
           </h2>

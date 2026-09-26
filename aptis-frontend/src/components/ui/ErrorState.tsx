@@ -16,7 +16,7 @@ const TONE_STYLE: Record<ErrorTone, { panel: string; badge: string; title: strin
     body: 'text-amber-800',
   },
   info: {
-    panel: 'border-[#cfe6dc] bg-[#eef6f2]',
+    panel: 'border-[#cfe6dc] bg-[#F1F5F9]',
     badge: 'bg-[#dcefe8] text-brand-800',
     title: 'text-brand-900',
     body: 'text-brand-900/80',
