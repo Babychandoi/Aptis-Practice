@@ -70,25 +70,28 @@ export function MatchingRenderer({
           <div
             key={left.id}
             className={clsx(
-              'rounded-lg border p-3',
+              // Một hàng: nhãn + nội dung bên trái, ô chọn bên phải; xếp chồng trên điện thoại.
+              'grid gap-2 rounded-xl border bg-white p-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center',
               isCorrect && 'border-emerald-400 bg-emerald-50',
               isWrong && 'border-red-400 bg-red-50',
               isBlank && 'border-amber-300 bg-amber-50/50',
-              !showAnswer && 'border-slate-200',
+              !showAnswer && 'border-brand-200',
             )}
           >
-            {left.label && (
-              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {left.label}
-              </p>
-            )}
-            <SafeContent content={left.content} className="question-content text-sm" />
+            <div className="min-w-0">
+              {left.label && (
+                <p className="mb-1 text-[11px] font-bold uppercase tracking-[.08em] text-ink-mute">
+                  {left.label}
+                </p>
+              )}
+              <SafeContent content={left.content} className="question-content text-sm text-ink" />
+            </div>
 
             <select
               value={picked}
               disabled={disabled}
               onChange={(e) => setMatch(left.id, e.target.value)}
-              className="input mt-2"
+              className="min-h-10 w-full min-w-0 rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-ink outline-none transition focus:border-ink focus:ring-2 focus:ring-brand-200 disabled:opacity-100"
             >
               <option value="">— Chọn —</option>
               {rightOptions.map((right) => (
@@ -100,7 +103,7 @@ export function MatchingRenderer({
             </select>
 
             {(isWrong || isBlank) && correct && (
-              <p className="mt-1.5 text-xs text-emerald-700">
+              <p className="text-xs text-emerald-700 sm:col-span-2">
                 Đáp án đúng: {rightOptions.find((r) => r.id === correct)?.content ?? correct}
               </p>
             )}

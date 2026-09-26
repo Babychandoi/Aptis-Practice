@@ -106,8 +106,8 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
   return (
     <div
       className={
-        'rounded-2xl bg-dark p-4 text-white shadow-sm transition-colors ' +
-        (playing ? 'border-2 border-accent' : 'border border-slate-800')
+        'rounded-2xl bg-ink p-3 text-white transition-colors sm:p-4 ' +
+        (playing ? 'border border-white/30' : 'border border-ink')
       }
     >
       {error ? (
@@ -143,7 +143,7 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
               type="button"
               onClick={() => void togglePlayback()}
               disabled={!canPlay}
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-600 text-white shadow-md transition hover:bg-brand-500 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white text-ink shadow-md transition hover:bg-brand-100 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
               aria-label={playing ? 'Tạm dừng audio' : 'Phát audio'}
               title={playing ? 'Tạm dừng' : 'Phát'}
             >
@@ -175,7 +175,7 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
                 setCurrentTime(next);
                 if (audio) audio.currentTime = next;
               }}
-              className="h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-slate-700 accent-brand-500 focus:outline-none"
+              className="h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-slate-700 accent-white focus:outline-none"
               aria-label="Thanh thời gian audio"
             />
 
@@ -200,7 +200,7 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
           </div>
 
           {playsLeft !== null && (
-            <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-accent shrink-0">
+            <span className="shrink-0 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-white">
               {exhausted ? 'Hết lượt phát' : `Còn ${playsLeft}/${maxAudioPlays} lượt`}
             </span>
           )}
