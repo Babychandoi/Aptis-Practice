@@ -1,36 +1,86 @@
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useAuthStore } from '@/features/auth/authStore';
 import { usePermission } from '@/features/admin/usePermission';
 import { formatDate } from '@/lib/format';
-import { SupportLinksCompact } from '@/components/ui/SupportLinks';
+import {
+  COMMUNITY_FACEBOOK_GROUP_URL,
+  SUPPORT_FACEBOOK_URL,
+  SUPPORT_ZALO_PHONE_DISPLAY,
+  SUPPORT_ZALO_URL,
+} from '@/lib/support';
 import { MarqueeBanner } from '@/components/ui/MarqueeBanner';
 import { useSidebarCollapsed } from '@/app/useSidebarCollapsed';
 import { describePremiumExpiry } from '@/features/billing/premiumExpiry';
 import { usePageTracking } from '@/app/usePageTracking';
+import { Icon, type IconName } from '@/components/shell/icons';
 
-// shortLabel dùng cho thanh nav dưới trên điện thoại: 5 mục trên máy hẹp
-// (~360px) chỉ còn ~64px mỗi ô, nhãn đầy đủ tràn ra ngoài vùng bấm. Sidebar
-// desktop vẫn dùng label đầy đủ.
-const PRIMARY_NAV = [
-  { to: '/', label: 'Bảng điều khiển', shortLabel: 'Trang chủ', icon: 'home' },
-  { to: '/mock-tests', label: 'Mô phỏng thi', shortLabel: 'Thi thử', icon: 'exam' },
-  { to: '/cap-nhat-de', label: 'Cập nhật đề', shortLabel: 'Đề mới', icon: 'sparkle' },
-  { to: '/du-doan-de', label: 'Dự đoán đề', shortLabel: 'Dự đoán', icon: 'predict' },
-  { to: '/bang-tin', label: 'Bảng tin', shortLabel: 'Bảng tin', icon: 'news' },
-  { to: '/meo-hoc', label: 'Mẹo học', shortLabel: 'Mẹo học', icon: 'tips' },
-  { to: '/history', label: 'Kết quả của tôi', shortLabel: 'Kết quả', icon: 'history' },
-  { to: '/ai-english-lounge', label: 'AI English Lounge', shortLabel: 'AI Voice', icon: 'chat' },
-] as const;
+interface NavItem {
+  to: string;
+  label: string;
+  icon: IconName;
+  external?: boolean;
+}
 
-const SKILL_NAV = [
-  { to: '/luyen-tap/ngu-phap-tu-vung', label: 'Ngữ pháp & Từ vựng', icon: 'grammar' },
+interface NavGroup {
+  title: string;
+  items: NavItem[];
+}
+
+// Thứ tự và tên nhóm theo mock. "Công cụ" không có trong menu của mock (trang
+// có sẵn nhưng không có lối vào), nên thêm vào đây theo quyết định 26/09/2026.
+const MAIN_NAV: NavItem[] = [
+  { to: '/', label: 'Bảng điều khiển', icon: 'home' },
+  { to: '/mock-tests', label: 'Mô phỏng thi', icon: 'doc' },
+  { to: '/cap-nhat-de', label: 'Cập nhật đề', icon: 'plus' },
+  { to: '/du-doan-de', label: 'Dự đoán đề', icon: 'trend' },
+  { to: '/bang-tin', label: 'Bảng tin', icon: 'news' },
+  { to: '/meo-hoc', label: 'Mẹo học', icon: 'bulb' },
+  { to: '/cong-cu', label: 'Công cụ', icon: 'tools' },
+  { to: '/history', label: 'Kết quả của tôi', icon: 'clock' },
+  { to: '/ai-english-lounge', label: 'AI English Lounge', icon: 'chat' },
+];
+
+const SKILL_NAV: NavItem[] = [
+  { to: '/luyen-tap/ngu-phap-tu-vung', label: 'Ngữ pháp & Từ vựng', icon: 'gv' },
   { to: '/luyen-tap/doc', label: 'Đọc', icon: 'reading' },
   { to: '/luyen-tap/nghe', label: 'Nghe', icon: 'listening' },
   { to: '/luyen-tap/viet', label: 'Viết', icon: 'writing' },
   { to: '/luyen-tap/noi', label: 'Nói', icon: 'speaking' },
-] as const;
+];
+
+const SUPPORT_NAV: NavItem[] = [
+  { to: SUPPORT_ZALO_URL, label: `Zalo ${SUPPORT_ZALO_PHONE_DISPLAY}`, icon: 'zalo', external: true },
+  { to: SUPPORT_FACEBOOK_URL, label: 'Trang hỗ trợ', icon: 'globe', external: true },
+  { to: COMMUNITY_FACEBOOK_GROUP_URL, label: 'Nhóm học tập', icon: 'group', external: true },
+];
+
+/** Tên trang hiện trên thanh trên cùng, theo đoạn đầu của đường dẫn. */
+const CRUMBS: [RegExp, string][] = [
+  [/^\/$/, 'Bảng điều khiển'],
+  [/^\/mock-tests/, 'Mô phỏng thi'],
+  [/^\/cap-nhat-de/, 'Cập nhật đề'],
+  [/^\/du-doan-de/, 'Dự đoán đề'],
+  [/^\/bang-tin/, 'Bảng tin'],
+  [/^\/meo-hoc/, 'Mẹo học'],
+  [/^\/cong-cu/, 'Công cụ'],
+  [/^\/history/, 'Kết quả của tôi'],
+  [/^\/attempts\/[^/]+\/result/, 'Kết quả'],
+  [/^\/ai-english-lounge/, 'AI English Lounge'],
+  [/^\/ai-voice\/plans/, 'Gói AI Voice'],
+  [/^\/plans/, 'Gói Premium'],
+  [/^\/checkout/, 'Thanh toán'],
+  [/^\/gioi-thieu/, 'Giới thiệu nhận thưởng'],
+  [/^\/lop-hoc|^\/lop\//, 'Lớp học'],
+  [/^\/giang-day/, 'Lớp tôi dạy'],
+  [/^\/profile/, 'Tài khoản'],
+  [/^\/luyen-tap|^\/components|^\/parts|^\/practice/, 'Kỹ năng'],
+];
+
+function crumbOf(path: string) {
+  return CRUMBS.find(([re]) => re.test(path))?.[1] ?? 'Aptis Practice';
+}
 
 export function AppLayout() {
   // Ghi lượt xem trang để biết học viên quan tâm gì; đặt ở layout nên trang mới
@@ -40,37 +90,59 @@ export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuthStore();
-  const primaryNav = PRIMARY_NAV;
-  const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
   const { isAdmin, has } = usePermission();
-  // Giáo viên vào thẳng trang lớp mình dạy; học viên vào trang lớp đang học.
   const isTeacher = has('classroom:write');
+  const { collapsed, toggle: toggleSidebar } = useSidebarCollapsed();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [bannerOpen, setBannerOpen] = useState(true);
+
+  // Đổi trang thì đóng ngăn kéo: bấm một mục trong đó là đã chọn xong.
+  useEffect(() => setDrawerOpen(false), [location.pathname]);
 
   // Trong một lớp thì lớp có thanh bên riêng, thay hẳn thanh bên hệ thống.
-  // Để cả hai thì màn hình mất gần nửa chiều ngang cho hai cột điều hướng, mà
-  // các mục luyện tập chung cũng chỉ gây nhiễu khi đang làm việc với lớp.
-  // Chỉ những trang tự dựng ClassroomSidebar mới ẩn thanh bên hệ thống. Trang
-  // soạn đề nằm dưới /giang-day nhưng là màn toàn trang, không có thanh bên
-  // riêng — ẩn luôn thì bên trái trống hoác.
+  // Để cả hai thì màn hình mất gần nửa chiều ngang cho hai cột điều hướng.
   const trongLopHoc =
     location.pathname === '/giang-day' || location.pathname.startsWith('/lop-hoc/');
-  const { collapsed, toggle: toggleSidebar } = useSidebarCollapsed();
+
   const expiry = describePremiumExpiry(user?.premiumEndsAt);
   // Dùng thử và gói đã mua cùng dùng premiumEndsAt, chỉ khác chữ hiển thị.
   const trial = user?.premiumActive === true && user.premiumFromTrial === true;
   const planLabel = trial ? 'Dùng thử' : 'Premium';
   const displayName = user?.profile?.displayName || user?.profile?.fullName || user?.email || 'Học viên';
+  const roleLabel = isAdmin ? 'Quản trị' : isTeacher ? 'Giáo viên' : user?.premiumActive ? planLabel : 'Miễn phí';
+
+  const groups: NavGroup[] = [
+    { title: 'Menu chính', items: MAIN_NAV },
+    { title: 'Kỹ năng', items: SKILL_NAV },
+    {
+      title: 'Tài khoản',
+      items: [
+        { to: '/plans', label: 'Gói Premium', icon: 'star' },
+        { to: '/gioi-thieu', label: 'Giới thiệu nhận thưởng', icon: 'gift' },
+        // Chỉ tài khoản có quyền mới thấy: mock đặt nút này cho mọi người, nhưng
+        // học viên bấm vào chỉ gặp trang báo không có quyền.
+        ...(isAdmin ? [{ to: '/admin', label: 'Quản trị hệ thống', icon: 'home' as IconName }] : []),
+      ],
+    },
+    { title: 'Hỗ trợ', items: SUPPORT_NAV },
+  ];
+
+  // Giáo viên vào lớp mình dạy mỗi ngày nên để lên đầu, trên cả Menu chính.
+  if (isTeacher) {
+    groups.unshift({ title: 'Giảng dạy', items: [{ to: '/giang-day', label: 'Lớp tôi dạy', icon: 'classes' }] });
+  }
 
   const handleLogout = async () => {
     await logout();
     navigate('/login', { replace: true });
   };
 
+  // Màn làm bài chiếm trọn màn hình, không thanh bên, không thanh trên — như
+  // trong mock, để học viên tập trung như trong phòng thi.
   const isActiveAttempt = /^\/attempts\/[^/]+\/?$/.test(location.pathname);
-
   if (isActiveAttempt) {
     return (
-      <div className="min-h-screen bg-[#f5f5f2] text-[#15161a]">
+      <div className="min-h-screen bg-white text-ink">
         <main>
           <Outlet />
         </main>
@@ -78,513 +150,307 @@ export function AppLayout() {
     );
   }
 
-  // Generate breadcrumb text
-  const getBreadcrumb = () => {
-    const path = location.pathname;
-    if (path === '/') return 'BẢNG ĐIỀU KHIỂN';
-    if (path === '/luyen-tap') return 'KỸ NĂNG / SKILLS';
-    if (path.startsWith('/mock-tests')) return 'THI THỬ / MOCK TESTS';
-    if (path.startsWith('/cap-nhat-de')) return 'CẬP NHẬT ĐỀ / NEW CONTENT';
-    if (path.startsWith('/du-doan-de')) return 'DỰ ĐOÁN ĐỀ / PREDICTIONS';
-    if (path.startsWith('/meo-hoc')) return 'MẸO HỌC / STUDY TIPS';
-    if (path.startsWith('/history')) return 'LỊCH SỬ / KẾT QUẢ';
-    if (path.startsWith('/ai-english-lounge')) return 'AI ENGLISH LOUNGE';
-    if (path.startsWith('/ai-voice/plans')) return 'GÓI AI VOICE';
-    if (path.startsWith('/plans')) return 'GÓI PREMIUM';
-    if (path.startsWith('/profile')) return 'HỒ SƠ / TÀI KHOẢN';
-    if (path.includes('ngu-phap-tu-vung')) return 'LUYỆN TẬP / NGỮ PHÁP & TỪ VỰNG';
-    if (path.includes('/doc')) return 'LUYỆN TẬP / ĐỌC';
-    if (path.includes('/nghe')) return 'LUYỆN TẬP / NGHE';
-    if (path.includes('/viet')) return 'LUYỆN TẬP / VIẾT';
-    if (path.includes('/noi')) return 'LUYỆN TẬP / NÓI';
-    return 'APTIS PRACTICE';
-  };
+  const sideWidth = trongLopHoc ? 'md:pl-64' : collapsed ? 'md:pl-[76px]' : 'md:pl-64';
+  const sideLeft = trongLopHoc ? 'md:left-64' : collapsed ? 'md:left-[76px]' : 'md:left-64';
+  const showBanner = bannerOpen && !trongLopHoc;
 
   return (
-    <div className="min-h-screen bg-surface text-[#15161a]">
-      {/* Desktop Sidebar */}
-      <aside
-        className={clsx(
-          'fixed inset-y-0 left-0 z-40 hidden flex-col border-r border-border bg-white',
-          trongLopHoc ? 'md:hidden' : 'md:flex',
-          // Chuyển động chỉ trên chiều rộng: animate cả layout làm nội dung
-          // chính giật theo mỗi lần bấm.
-          'transition-[width] duration-200 ease-out',
-          collapsed ? 'w-[4.5rem]' : 'w-64',
-        )}
-      >
-        <div className="flex h-18 items-center gap-3 border-b border-border px-3.5 py-4">
-          <Link
-            to="/"
-            className={clsx('flex min-w-0 items-center gap-3', collapsed && 'justify-center')}
-            title={collapsed ? 'Aptis Practice' : undefined}
-          >
-            {/* width/height khai sẵn để trình duyệt giữ chỗ, không giật layout khi
-                ảnh tải xong. File nguồn cao 128px nên hiển thị 36px vẫn nét ở màn
-                hình retina. */}
-            <img
-              src="/images/logo-mark-sm.png"
-              alt=""
-              width="36"
-              height="36"
-              className="h-9 w-9 shrink-0 object-contain"
-            />
-            {!collapsed && (
-              <span className="min-w-0">
-                <span className="block truncate text-[15px] font-bold tracking-tight text-slate-900">Aptis Practice</span>
-                <span className="block font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-400">General</span>
-              </span>
-            )}
-          </Link>
-
-          {!collapsed && (
-            <button
-              type="button"
-              onClick={toggleSidebar}
-              className="ml-auto grid h-8 w-8 shrink-0 place-items-center rounded-lg text-slate-400 transition-colors hover:bg-surface hover:text-slate-800"
-              aria-label="Thu gọn thanh điều hướng"
-              aria-expanded="true"
-              title="Thu gọn"
-            >
-              <ChevronLeftIcon />
-            </button>
+    <div className="min-h-screen bg-white text-ink">
+      {!trongLopHoc && (
+        <aside
+          className={clsx(
+            'fixed inset-y-0 left-0 z-40 hidden flex-col border-r border-border bg-white md:flex',
+            'transition-[width] duration-200 ease-out',
+            collapsed ? 'w-[76px]' : 'w-64',
           )}
-        </div>
+        >
+          <SidebarHeader collapsed={collapsed} onToggle={toggleSidebar} />
+          <div className="flex-1 overflow-y-auto px-3 pb-6">
+            <SidebarGroups groups={groups} collapsed={collapsed} />
+          </div>
+        </aside>
+      )}
 
-        {/* Khi đã thu gọn, nút mở lại đứng riêng một dòng: nhồi chung với logo
-            thì cả hai đều bị bó trong 4.5rem và khó bấm đúng. */}
-        {collapsed && (
+      {/* Ngăn kéo điện thoại: cùng nội dung với sidebar desktop. */}
+      {drawerOpen && (
+        <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true" aria-label="Menu">
           <button
             type="button"
-            onClick={toggleSidebar}
-            className="mx-auto mt-2 grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-colors hover:bg-surface hover:text-slate-800"
-            aria-label="Mở rộng thanh điều hướng"
-            aria-expanded="false"
-            title="Mở rộng"
-          >
-            <ChevronRightIcon />
-          </button>
-        )}
-        <div className="flex-1 overflow-y-auto px-3.5 py-5">
-          {/* Nhãn nhóm biến mất khi thu gọn: chữ "Menu chính" không vừa 4.5rem,
-              để lại chỉ thành một vệt bị cắt. Ranh giới nhóm vẫn nhận ra được
-              nhờ khoảng cách giữa các nav. */}
-          {/* Lớp dạy lên đầu: với giáo viên đây là chỗ họ vào mỗi ngày, để lẫn
-              dưới mục Tài khoản thì phải cuộn qua hết phần luyện tập mới thấy. */}
-          {isTeacher && (
-            <>
-              {!collapsed && <NavSectionLabel>Giảng dạy</NavSectionLabel>}
-              <nav className="mb-6 space-y-1" aria-label="Giảng dạy">
-                <SidebarLink
-                  to="/giang-day"
-                  label="Lớp tôi dạy"
-                  icon="school"
-                  collapsed={collapsed}
-                />
-              </nav>
-            </>
-          )}
-
-          {!collapsed && <NavSectionLabel>Menu chính</NavSectionLabel>}
-          <nav className="space-y-1" aria-label="Điều hướng chính">
-            {primaryNav.map((item) => (
-              <SidebarLink key={item.to} {...item} collapsed={collapsed} />
-            ))}
-          </nav>
-
-          {!collapsed && <NavSectionLabel className="mt-6">Kỹ năng</NavSectionLabel>}
-          <nav className={clsx('space-y-1', collapsed && 'mt-4 border-t border-border pt-4')} aria-label="Các kỹ năng Aptis">
-            {SKILL_NAV.map((item) => (
-              <SidebarLink key={item.to} {...item} collapsed={collapsed} />
-            ))}
-          </nav>
-
-          {!collapsed && <NavSectionLabel className="mt-6">Tài khoản</NavSectionLabel>}
-          <nav className={clsx('space-y-1', collapsed && 'mt-4 border-t border-border pt-4')} aria-label="Tài khoản">
-            <SidebarLink to="/plans" label="Gói Premium" icon="premium" collapsed={collapsed} />
-            <SidebarLink to="/gioi-thieu" label="Giới thiệu nhận thưởng" icon="gift" collapsed={collapsed} />
-            {isAdmin && <SidebarLink to="/admin" label="Quản trị hệ thống" icon="admin" collapsed={collapsed} />}
-          </nav>
-
-          {!collapsed && <SupportLinksCompact />}
-        </div>
-
-        {/* Premium Widget */}
-        <div className="p-3.5">
-          {collapsed ? (
-            // Thu gọn: thẻ quảng cáo dài không vừa, nên chỉ còn một chỉ dấu
-            // bấm được — vẫn giữ đường vào trang gói.
-            !user?.premiumActive ? (
-              <Link
-                to="/plans"
-                className="grid h-10 w-full place-items-center rounded-xl bg-dark font-mono text-[10px] font-bold uppercase tracking-widest text-accent transition-colors hover:bg-dark/90"
-                title="Nâng cấp Premium"
-                aria-label="Nâng cấp Premium"
+            className="absolute inset-0 bg-ink/40"
+            aria-label="Đóng menu"
+            onClick={() => setDrawerOpen(false)}
+          />
+          <div className="absolute inset-y-0 left-0 flex w-[min(300px,86vw)] flex-col bg-white shadow-2xl">
+            <div className="flex items-center justify-between px-4 py-4">
+              <Brand />
+              <button
+                type="button"
+                onClick={() => setDrawerOpen(false)}
+                className="grid h-9 w-9 place-items-center rounded-full text-ink-mute hover:bg-surface-muted"
+                aria-label="Đóng menu"
               >
-                PRO
-              </Link>
-            ) : (
-              <div
-                className="grid h-10 w-full place-items-center rounded-xl border border-brand-200 bg-brand-50"
-                title={
-                  user.premiumEndsAt
-                    ? `${planLabel} — hết hạn ${formatDate(user.premiumEndsAt)}`
-                    : 'Premium — gói kích hoạt đầy đủ'
-                }
-              >
-                <span className="h-2 w-2 rounded-full bg-accent" />
-              </div>
-            )
-          ) : !user?.premiumActive ? (
-            <div className="rounded-2xl bg-dark p-4 text-white shadow-sm">
-              <span className="inline-block font-mono text-[10px] font-bold tracking-widest uppercase text-accent">
-                Premium
-              </span>
-              <p className="mt-1.5 text-xs leading-relaxed text-slate-300">
-                Mở trọn bộ 600+ đề và AI chấm Writing & Speaking.
-              </p>
-              <Link
-                to="/plans"
-                className="mt-3 flex min-h-[36px] w-full items-center justify-center rounded-xl bg-accent px-3 text-xs font-bold text-dark transition-all hover:bg-accent-light"
-              >
-                Nâng cấp ngay →
-              </Link>
+                <Icon name="close" />
+              </button>
             </div>
-          ) : (
-            <div
-              className={clsx(
-                'rounded-2xl border p-3.5',
-                expiry?.expiringSoon
-                  ? 'border-amber-200 bg-amber-50'
-                  : 'border-brand-200 bg-brand-50',
-              )}
-            >
-              <div className="flex items-center gap-2">
-                <span
-                  className={clsx(
-                    'h-2 w-2 rounded-full',
-                    expiry?.expiringSoon ? 'bg-amber-500' : 'bg-accent',
-                  )}
-                />
-                <span
-                  className={clsx(
-                    'font-mono text-xs font-bold uppercase',
-                    expiry?.expiringSoon ? 'text-amber-900' : 'text-brand-800',
-                  )}
-                >
-                  {expiry ? expiry.label : 'Premium trọn đời'}
-                </span>
-              </div>
-              <p className="mt-1 text-[11px] text-slate-600">
-                {user.premiumEndsAt
-                  ? `Hết hạn ${formatDate(user.premiumEndsAt)}`
-                  : 'Gói kích hoạt đầy đủ'}
-              </p>
-
-              {/* Giáo viên dễ tưởng hết hạn là mất lớp. Lớp học không phụ thuộc
-                  gói Premium — gói này chỉ cho phần tự luyện của chính họ. */}
-              {isTeacher && (
-                <p className="mt-1 text-[11px] leading-4 text-slate-500">
-                  Gói cho phần tự luyện của bạn, không ảnh hưởng tới lớp đang dạy.
-                </p>
-              )}
-
-              {/* Nút gia hạn chỉ hiện khi sắp hết: gói còn dài mà cứ mời gia hạn
-                  thì thành quảng cáo, học viên bỏ qua và đến lúc cần thật cũng
-                  không để ý nữa. */}
-              {expiry?.expiringSoon && (
-                <Link
-                  to="/plans"
-                  className="mt-2.5 flex min-h-[34px] w-full items-center justify-center rounded-xl bg-amber-500 px-3 text-xs font-bold text-white transition-colors hover:bg-amber-600"
-                >
-                  Gia hạn ngay →
-                </Link>
-              )}
+            <div className="flex-1 overflow-y-auto px-3 pb-6">
+              <SidebarGroups groups={groups} collapsed={false} />
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="mt-4 flex min-h-[42px] w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-ink-mute hover:bg-surface-muted"
+              >
+                <Icon name="logout" />
+                Đăng xuất
+              </button>
             </div>
-          )}
+          </div>
         </div>
-      </aside>
+      )}
 
-      {/* Header */}
       <header
         className={clsx(
-          'fixed inset-x-0 top-0 z-30 flex h-16 items-center border-b border-border bg-white/95 px-4 backdrop-blur md:px-8',
+          'fixed inset-x-0 top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-white/95 px-4 backdrop-blur md:px-5',
           'transition-[left] duration-200 ease-out',
-          // Trong lớp: thanh bên của lớp cũng rộng w-64 nhưng không thu gọn được,
-          // nên luôn chừa đúng bề ngang đó.
-          trongLopHoc ? 'md:left-64' : collapsed ? 'md:left-[4.5rem]' : 'md:left-64',
+          sideLeft,
         )}
       >
-        <Link to="/" className="flex items-center gap-2 md:hidden">
-          <img
-            src="/images/logo-mark-sm.png"
-            alt=""
-            width="32"
-            height="32"
-            className="h-8 w-8 shrink-0 object-contain"
-          />
-          <span className="text-sm font-bold tracking-tight">Aptis Practice</span>
-        </Link>
+        <button
+          type="button"
+          onClick={() => setDrawerOpen(true)}
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border text-ink md:hidden"
+          aria-label="Mở menu"
+        >
+          <Icon name="menu" />
+        </button>
 
-        {/* Breadcrumbs for desktop */}
-        <div className="hidden items-center gap-2 md:flex">
-          <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-            {getBreadcrumb()}
-          </span>
-        </div>
+        <span className="truncate text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-mute">
+          {crumbOf(location.pathname)}
+        </span>
 
-        <div className="ml-auto flex items-center gap-2 sm:gap-3">
-          {/* Lớp học đưa lên header để người dùng nhận ra giao diện đã đổi —
-              nằm trong sidebar thì lẫn giữa các mục cũ, ít ai để ý. Giáo viên
-              không cần vì họ đã có mục "Lớp tôi dạy" riêng. */}
-          {!isTeacher && (
-            <Link
-              to="/lop-hoc"
-              className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-xl border border-brand-200 bg-brand-50 px-2.5 text-xs font-semibold text-brand-800 transition-colors hover:border-brand-300 hover:bg-brand-100 sm:px-3"
-              title="Lớp học của tôi"
-            >
-              <NavIcon name="school" />
-              <span className="hidden sm:inline">Lớp học</span>
-            </Link>
-          )}
-
-          {/* Giới thiệu nhận thưởng: để ở header vì thanh nav dưới đã kín 7 ô
-              và sidebar thì mobile không có. Màu xanh lá tách khỏi nhóm nút
-              Premium màu nâu — đây là "kiếm tiền", không phải "mua thêm".
-              Máy hẹp chỉ còn icon quà: đủ gợi ý, mà không đẩy nút Premium ra
-              khỏi header. */}
+        <div className="ml-auto flex items-center gap-2">
           <Link
-            to="/gioi-thieu"
-            className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-2.5 text-xs font-semibold text-emerald-800 transition-colors hover:border-emerald-300 hover:bg-emerald-100 sm:px-3"
-            title="Giới thiệu bạn bè — bạn nhận hoa hồng, bạn bè được giảm giá"
+            to={isTeacher ? '/giang-day' : '/lop-hoc'}
+            className={clsx(
+              'hidden min-h-[36px] items-center gap-1.5 rounded-full border px-3.5 text-[13px] font-semibold transition-colors sm:inline-flex',
+              /^\/(lop-hoc|giang-day)/.test(location.pathname)
+                ? 'border-ink bg-surface-muted'
+                : 'border-border bg-white hover:border-brand-300',
+            )}
           >
-            <NavIcon name="gift" />
-            <span className="hidden sm:inline">Giới thiệu</span>
+            <Icon name="classes" className="h-4 w-4" />
+            Lớp học
           </Link>
 
-          {/* Hiện cả trên điện thoại: Premium đã rời khỏi thanh nav dưới để
-              nhường chỗ cho Kỹ năng, nên đây là đường vào duy nhất trên mobile.
-              Nhãn rút ngắn ở máy hẹp cho vừa header. */}
-          {!user?.premiumActive && (
-            <Link
-              to="/plans"
-              className="inline-flex min-h-[36px] shrink-0 items-center rounded-xl bg-brand-100 px-3 text-xs font-semibold text-brand-800 transition-colors hover:bg-brand-200 sm:px-3.5"
-            >
-              <span className="sm:hidden">Premium</span>
-              <span className="hidden sm:inline">Nâng cấp Premium</span>
-            </Link>
-          )}
+          <Link
+            to="/gioi-thieu"
+            className="hidden min-h-[36px] items-center gap-1.5 rounded-full border border-border bg-white px-3.5 text-[13px] font-semibold transition-colors hover:border-brand-300 lg:inline-flex"
+          >
+            <Icon name="gift" className="h-4 w-4" />
+            Giới thiệu
+          </Link>
 
-          {/* Đã Premium: hiện thời hạn còn lại để học viên không bị mất quyền
-              giữa lúc đang ôn. Sắp hết hạn thì đổi sang nút gia hạn màu cảnh
-              báo — lúc đó thông tin không đủ, cần một hành động. */}
-          {user?.premiumActive && expiry?.expiringSoon && (
-            <Link
-              to="/plans"
-              className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-3 text-xs font-semibold text-amber-900 transition-colors hover:border-amber-300 hover:bg-amber-100"
-              title={`${planLabel} ${expiry.label.toLowerCase()} — ${trial ? 'mua gói để học tiếp' : 'gia hạn để học không gián đoạn'}`}
-            >
-              <span aria-hidden="true">⏳</span>
-              <span className="sm:hidden">{trial ? 'Mua gói' : 'Gia hạn'}</span>
-              <span className="hidden sm:inline">{expiry.label} · {trial ? 'Mua gói' : 'Gia hạn'}</span>
-            </Link>
-          )}
+          <PremiumPill
+            active={user?.premiumActive === true}
+            label={planLabel}
+            expiryLabel={expiry?.label}
+            expiringSoon={expiry?.expiringSoon === true}
+            endsAt={user?.premiumEndsAt}
+          />
 
-          {user?.premiumActive && expiry && !expiry.expiringSoon && (
-            <Link
-              to="/plans"
-              className="hidden min-h-[36px] shrink-0 items-center gap-1.5 rounded-xl border border-brand-200 bg-brand-50 px-3 text-xs font-semibold text-brand-800 transition-colors hover:bg-brand-100 sm:inline-flex"
-              title={`${planLabel} hết hạn ${formatDate(user.premiumEndsAt)}`}
-            >
-              <span className="h-2 w-2 rounded-full bg-accent" />
-              {planLabel} · {expiry.label}
-            </Link>
-          )}
-
-          <Link to="/profile" className="flex items-center gap-2.5 rounded-xl p-1.5 transition-colors hover:bg-surface">
+          <Link to="/profile" className="flex items-center gap-2.5 rounded-full p-1 transition-colors hover:bg-surface-muted lg:pr-3">
             <Avatar name={displayName} />
             <span className="hidden max-w-40 text-left lg:block">
-              <span className="block truncate text-xs font-semibold text-slate-900">{displayName}</span>
-              <span className="block font-mono text-[10px] uppercase text-slate-400">
-                {user?.premiumActive ? (trial ? 'Dùng thử' : 'Premium') : 'Hết hạn'}
-              </span>
+              <span className="block truncate text-[13px] font-semibold leading-4">{displayName}</span>
+              <span className="block text-[10px] font-semibold uppercase leading-4 tracking-[0.08em] text-ink-faint">{roleLabel}</span>
             </span>
           </Link>
 
           <button
             type="button"
             onClick={handleLogout}
-            className="grid h-9 w-9 place-items-center rounded-xl text-slate-400 transition-colors hover:bg-surface hover:text-slate-800"
+            className="hidden h-9 w-9 place-items-center rounded-full text-ink-faint transition-colors hover:bg-surface-muted hover:text-ink md:grid"
             aria-label="Đăng xuất"
             title="Đăng xuất"
           >
-            <NavIcon name="logout" />
+            <Icon name="logout" />
           </button>
         </div>
       </header>
 
-      {/* Loan tin tính năng mới. Đặt dưới header cố định nên luôn thấy. */}
-      {(
-        <div
-          className={clsx(
-            'fixed inset-x-0 top-16 z-20 transition-[left] duration-200 ease-out',
-            trongLopHoc ? 'md:left-64' : collapsed ? 'md:left-[4.5rem]' : 'md:left-64',
-          )}
-        >
+      {showBanner && (
+        <div className={clsx('fixed inset-x-0 top-16 z-20 transition-[left] duration-200 ease-out', sideLeft)}>
           <MarqueeBanner
-            text="Mới: AI English Lounge — luyện phản xạ giao tiếp tiếng Anh bằng giọng nói với AI, chọn giọng nam hoặc nữ, tối đa 120 phút mỗi ngày."
+            text="AI English Lounge — luyện phản xạ giao tiếp tiếng Anh bằng giọng nói với AI, chọn giọng nam hoặc nữ, tối đa 120 phút mỗi ngày."
             to="/ai-english-lounge"
             ctaLabel="Khám phá ngay"
+            onClose={() => setBannerOpen(false)}
           />
         </div>
       )}
 
-      {/* Main Content Area */}
       <div
         className={clsx(
           'transition-[padding] duration-200 ease-out',
-          // Chừa chỗ cho dải chữ chạy khi nó hiện.
-          'pt-[4.75rem]',
-          // Thanh bên của lớp cũng rộng w-64 và không thu gọn được.
-          trongLopHoc ? 'md:pl-64' : collapsed ? 'md:pl-[4.5rem]' : 'md:pl-64',
+          showBanner ? 'pt-[102px]' : 'pt-16',
+          sideWidth,
         )}
       >
-        <main className="mx-auto max-w-[1240px] px-4 py-6 pb-24 sm:px-6 lg:px-8 lg:py-8">
+        <main className="mx-auto max-w-[1240px] px-4 py-7 pb-20 sm:px-6">
           <Outlet />
         </main>
       </div>
-
-      {/* Mobile Bottom Navigation */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-white/95 px-2 pb-[max(.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur md:hidden" aria-label="Điều hướng di động">
-        {mobileMoreOpen && <button type="button" className="fixed inset-0 z-0 cursor-default bg-slate-950/15" aria-label="Đóng menu" onClick={() => setMobileMoreOpen(false)} />}
-        {mobileMoreOpen && <div className="absolute inset-x-3 bottom-full z-20 mb-2 grid grid-cols-3 gap-2 rounded-2xl border border-border bg-white p-3 shadow-2xl">
-          {[
-            { to: '/cap-nhat-de', label: 'Đề mới', icon: 'sparkle' as const },
-            { to: '/du-doan-de', label: 'Dự đoán', icon: 'predict' as const },
-            { to: '/bang-tin', label: 'Bảng tin', icon: 'news' as const },
-            { to: '/history', label: 'Kết quả', icon: 'history' as const },
-            { to: '/meo-hoc', label: 'Mẹo học', icon: 'tips' as const },
-            ...(isTeacher ? [{ to: '/giang-day', label: 'Lớp dạy', icon: 'school' as const }] : []),
-          ].map((item) => <NavLink key={item.to} to={item.to} onClick={() => setMobileMoreOpen(false)} className={({ isActive }) => clsx('flex min-h-16 flex-col items-center justify-center gap-1 rounded-xl text-xs font-medium', isActive ? 'bg-brand-100 text-brand-800' : 'bg-slate-50 text-slate-600')}><NavIcon name={item.icon} /><span>{item.label}</span></NavLink>)}
-        </div>}
-        <div className="relative z-20 mx-auto grid max-w-md grid-cols-5">
-          {[
-            primaryNav.find((item) => item.to === '/')!,
-            primaryNav.find((item) => item.to === '/mock-tests')!,
-            primaryNav.find((item) => item.to === '/ai-english-lounge')!,
-            { to: '/luyen-tap', label: 'Kỹ năng', shortLabel: 'Kỹ năng', icon: 'skills' as const },
-          ].map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === '/'}
-              className={({ isActive }) => clsx(
-                'flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl px-0 text-[9px] font-medium transition-colors',
-                isActive ? 'bg-brand-100 text-brand-800 font-semibold' : 'text-slate-500 hover:text-slate-900',
-              )}
-            >
-              <NavIcon name={item.icon} />
-              {/* truncate thay vì cho xuống dòng: hai dòng chữ đội chiều cao
-                  thanh nav lên và ăn vào nội dung trang. */}
-              <span className="w-full truncate text-center leading-tight tracking-tight">
-                {item.shortLabel}
-              </span>
-            </NavLink>
-          ))}
-          <button type="button" onClick={() => setMobileMoreOpen((open) => !open)} className={clsx('flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl px-0 text-[9px] font-medium transition-colors', mobileMoreOpen ? 'bg-brand-100 text-brand-800 font-semibold' : 'text-slate-500')} aria-expanded={mobileMoreOpen} aria-label="Mở thêm mục"><NavIcon name="more" /><span>Thêm</span></button>
-        </div>
-      </nav>
     </div>
   );
 }
 
-function NavSectionLabel({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <p className={clsx('mb-2 px-3.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400', className)}>{children}</p>;
+function Brand({ collapsed = false }: { collapsed?: boolean }) {
+  return (
+    <Link to="/" className={clsx('flex min-w-0 items-center gap-2.5', collapsed && 'justify-center')} title="Aptis Practice">
+      {/* width/height khai sẵn để trình duyệt giữ chỗ, không giật layout khi ảnh
+          tải xong. */}
+      <img src="/images/logo-mark-sm.png" alt="" width="34" height="34" className="h-[34px] w-[34px] shrink-0 object-contain" />
+      {!collapsed && (
+        <span className="min-w-0">
+          <span className="block truncate text-[15px] font-bold leading-5 tracking-tight">Aptis Practice</span>
+          <span className="block text-[10px] font-semibold uppercase leading-3 tracking-[0.14em] text-ink-faint">General</span>
+        </span>
+      )}
+    </Link>
+  );
 }
 
-function SidebarLink({
-  to,
-  label,
-  icon,
-  collapsed = false,
-}: {
-  to: string;
-  label: string;
-  icon: IconName;
-  collapsed?: boolean;
-}) {
+function SidebarHeader({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
+  return (
+    <div className={clsx('flex items-center gap-2 px-4 py-4', collapsed && 'flex-col px-2')}>
+      <Brand collapsed={collapsed} />
+      <button
+        type="button"
+        onClick={onToggle}
+        className={clsx(
+          'grid h-8 w-8 shrink-0 place-items-center rounded-full bg-surface-muted text-ink-mute transition-colors hover:text-ink',
+          !collapsed && 'ml-auto',
+        )}
+        aria-label={collapsed ? 'Mở rộng thanh điều hướng' : 'Thu gọn thanh điều hướng'}
+        aria-expanded={!collapsed}
+      >
+        <span className={clsx('transition-transform', collapsed && 'rotate-180')}>
+          <Icon name="chevronLeft" className="h-4 w-4" />
+        </span>
+      </button>
+    </div>
+  );
+}
+
+function SidebarGroups({ groups, collapsed }: { groups: NavGroup[]; collapsed: boolean }) {
+  return (
+    <div className="flex flex-col gap-5">
+      {groups.map((group) => (
+        <nav key={group.title} aria-label={group.title} className="flex flex-col gap-0.5">
+          {/* Nhãn nhóm biến mất khi thu gọn: chữ không vừa 76px, còn lại chỉ
+              một vệt bị cắt. Ranh giới nhóm vẫn nhận ra nhờ vạch ngăn. */}
+          {!collapsed ? (
+            <p className="mb-1.5 px-2.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-faint">{group.title}</p>
+          ) : (
+            <span className="mx-auto mb-1 h-px w-6 bg-border" />
+          )}
+          {group.items.map((item) => (
+            <SidebarLink key={item.to} item={item} collapsed={collapsed} />
+          ))}
+        </nav>
+      ))}
+    </div>
+  );
+}
+
+function SidebarLink({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
+  const base = clsx(
+    'flex min-h-[40px] items-center rounded-xl text-sm transition-colors',
+    collapsed ? 'justify-center px-0' : 'gap-3 px-2.5',
+  );
+  const content = (
+    <>
+      <Icon name={item.icon} />
+      {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
+    </>
+  );
+
+  if (item.external) {
+    return (
+      <a
+        href={item.to}
+        target="_blank"
+        rel="noreferrer"
+        title={collapsed ? item.label : undefined}
+        aria-label={collapsed ? item.label : undefined}
+        className={clsx(base, 'font-medium text-ink-soft hover:bg-surface-paper hover:text-ink')}
+      >
+        {content}
+      </a>
+    );
+  }
+
   return (
     <NavLink
-      to={to}
-      end={to === '/'}
-      // title cho tooltip khi chỉ còn icon; aria-label để trình đọc màn hình
-      // vẫn đọc được tên mục dù chữ đã ẩn.
-      title={collapsed ? label : undefined}
-      aria-label={collapsed ? label : undefined}
+      to={item.to}
+      end={item.to === '/'}
+      title={collapsed ? item.label : undefined}
+      aria-label={collapsed ? item.label : undefined}
       className={({ isActive }) => clsx(
-        'flex min-h-[42px] items-center rounded-xl text-sm font-medium transition-all duration-150',
-        collapsed ? 'justify-center px-0' : 'gap-3 px-3.5',
-        isActive ? 'bg-brand-100 text-brand-800 font-semibold' : 'text-slate-600 hover:bg-surface-paper hover:text-slate-900',
+        base,
+        isActive ? 'bg-surface-muted font-bold text-ink' : 'font-medium text-ink-soft hover:bg-surface-paper hover:text-ink',
       )}
     >
-      <span className="text-brand-600"><NavIcon name={icon} /></span>
-      {!collapsed && <span className="flex-1 truncate">{label}</span>}
+      {content}
     </NavLink>
   );
 }
 
-function ChevronLeftIcon() {
+function PremiumPill({
+  active,
+  label,
+  expiryLabel,
+  expiringSoon,
+  endsAt,
+}: {
+  active: boolean;
+  label: string;
+  expiryLabel?: string;
+  expiringSoon: boolean;
+  endsAt?: string | null;
+}) {
+  // Chưa có gói: một lời mời nâng cấp. Có gói: chấm xanh và số ngày còn lại,
+  // chuyển vàng khi sắp hết để học viên kịp gia hạn giữa lúc đang ôn.
+  if (!active) {
+    return (
+      <Link
+        to="/plans"
+        className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-full bg-ink px-3.5 text-[13px] font-semibold text-white transition-colors hover:bg-ink-soft"
+      >
+        <Icon name="star" className="h-4 w-4" />
+        Nâng cấp
+      </Link>
+    );
+  }
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="m15 18-6-6 6-6" />
-    </svg>
-  );
-}
-
-function ChevronRightIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="m9 18 6-6-6-6" />
-    </svg>
+    <Link
+      to="/plans"
+      title={endsAt ? `${label} hết hạn ${formatDate(endsAt)}` : label}
+      className={clsx(
+        'inline-flex min-h-[36px] shrink-0 items-center gap-2 rounded-full border px-3.5 text-[13px] font-semibold transition-colors',
+        expiringSoon ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-border bg-white hover:border-brand-300',
+      )}
+    >
+      <span className={clsx('h-2 w-2 rounded-full', expiringSoon ? 'bg-amber-500' : 'bg-accent')} />
+      <span className="sm:hidden">{label}</span>
+      <span className="hidden sm:inline">{expiryLabel ? `${label} · ${expiryLabel}` : label}</span>
+    </Link>
   );
 }
 
 function Avatar({ name }: { name: string }) {
   return (
-    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-600 font-mono text-xs font-bold text-white shadow-sm ring-2 ring-brand-100">
+    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ink text-xs font-bold text-white">
       {name.trim().charAt(0).toUpperCase() || 'A'}
     </span>
   );
-}
-
-type IconName = 'home' | 'sparkle' | 'predict' | 'news' | 'skills' | 'exam' | 'tips' | 'history' | 'premium' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking' | 'admin' | 'logout' | 'gift' | 'school' | 'chat' | 'more';
-
-function NavIcon({ name }: { name: IconName }) {
-  const paths: Record<IconName, React.ReactNode> = {
-    home: <><path d="m3 11 9-8 9 8" /><path d="M5 10v10h14V10M9 20v-6h6v6" /></>,
-    // Lưới 4 ô: gợi ý "chọn từ nhiều mục", không trùng icon của kỹ năng nào
-    // Tia sáng: gợi ý "mới thêm", không trùng icon kỹ năng nào
-    sparkle: <><path d="M12 3v4M12 17v4M3 12h4M17 12h4" /><path d="M12 8.5 13.2 11l2.5 1-2.5 1L12 15.5 10.8 13l-2.5-1 2.5-1z" /></>,
-    skills: <><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></>,
-    // Đường đi lên kèm ngôi sao: gợi ý "xu hướng, khả năng ra thi cao"
-    predict: <><path d="M3 17l6-6 4 4 7-7" /><path d="M17 8h4v4" /></>,
-    // Tờ tin có dòng chữ và gáy gập: gợi ý bài đọc, không trùng icon đề thi
-    news: <><path d="M4 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v14a2 2 0 0 0 2-2V8h1v9a3 3 0 0 1-3 3H5a1 1 0 0 1-1-1V5Z" /><path d="M7 8h7M7 12h7M7 16h4" /></>,
-    exam: <><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></>,
-    tips: <><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6M10 22h4" /></>,
-    history: <><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5M12 7v5l3 2" /></>,
-    chat: <><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.7 8.7 0 0 1-3.7-.9L4 20l1.2-3.4A7.1 7.1 0 0 1 4.5 13a7.5 7.5 0 0 1 8-7.5 7.5 7.5 0 0 1 7.5 6Z" /><path d="M8 12h.01M12 12h.01M16 12h.01" /></>,
-    more: <><circle cx="5" cy="12" r="1" fill="currentColor" stroke="none" /><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" /><circle cx="19" cy="12" r="1" fill="currentColor" stroke="none" /></>,
-    premium: <path d="m12 3 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8L12 3Z" />,
-    gift: <><rect x="3" y="8" width="18" height="13" rx="2" /><path d="M12 8v13M3 12h18M12 8S9 3 6.5 4.5 8 8 12 8zM12 8s3-5 5.5-3.5S16 8 12 8z" /></>,
-    school: <><path d="m12 3 10 5-10 5L2 8l10-5Z" /><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" /></>,
-    grammar: <><path d="M5 4h14v16H5z" /><path d="M8 8h8M8 12h5M8 16h7" /></>,
-    reading: <><path d="M4 5a3 3 0 0 1 3-3h4v17H7a3 3 0 0 0-3 3V5ZM20 5a3 3 0 0 0-3-3h-4v17h4a3 3 0 0 1 3 3V5Z" /></>,
-    listening: <><path d="M4 14v-2a8 8 0 0 1 16 0v2" /><path d="M4 14h3v6H5a1 1 0 0 1-1-1v-5ZM20 14h-3v6h2a1 1 0 0 0 1-1v-5Z" /></>,
-    writing: <><path d="m4 20 4-1 10-10a2 2 0 0 0-3-3L5 16l-1 4Z" /><path d="m13.5 7.5 3 3" /></>,
-    speaking: <><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6" /></>,
-    admin: <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></>,
-    logout: <><path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4" /><path d="m15 8 4 4-4 4M19 12H9" /></>,
-  };
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-[18px] w-[18px]" aria-hidden="true">{paths[name]}</svg>;
 }
