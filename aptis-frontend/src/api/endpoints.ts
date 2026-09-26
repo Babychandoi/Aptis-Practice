@@ -819,6 +819,10 @@ export const adminClassroomApi = {
 
   teachers: () => api.get<AdminTeacher[]>('/admin/classrooms/teachers').then((r) => r.data),
 
+  /** Mở thêm một lớp cho giáo viên đã có tài khoản (V64). */
+  createExtraClassroom: (teacherUserId: string, name: string) =>
+    api.post<CreateTeacherResult>(`/admin/classrooms/teachers/${teacherUserId}/classrooms`, { name }).then((r) => r.data),
+
   createTeacher: (body: {
     fullName: string;
     email: string;

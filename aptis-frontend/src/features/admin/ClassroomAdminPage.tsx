@@ -237,6 +237,7 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
 function TeacherTable({ canManage }: { canManage: boolean }) {
   const [createOpen, setCreateOpen] = useState(false);
   const [editing, setEditing] = useState<AdminTeacher | null>(null);
+  const [extraFor, setExtraFor] = useState<AdminTeacher | null>(null);
 
   const query = useQuery({
     queryKey: ['admin', 'classrooms', 'teachers'],
@@ -247,7 +248,7 @@ function TeacherTable({ canManage }: { canManage: boolean }) {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-slate-500">
-          Mỗi tài khoản giáo viên gắn với đúng một lớp, hệ thống tự sinh khi tạo.
+          Tạo tài khoản là có sẵn một lớp. Giáo viên dạy nhiều lớp thì bấm “Mở thêm lớp”.
         </p>
         {canManage && (
           <button
@@ -305,6 +306,15 @@ function TeacherTable({ canManage }: { canManage: boolean }) {
                         Sửa
                       </button>
                     )}
+                    {canManage && (
+                      <button
+                        type="button"
+                        onClick={() => setExtraFor(teacher)}
+                        className="ml-3 text-xs font-semibold text-brand-700 hover:text-brand-800"
+                      >
+                        Mở thêm lớp
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -317,6 +327,47 @@ function TeacherTable({ canManage }: { canManage: boolean }) {
       {editing && (
         <EditTeacherDialog teacher={editing} onClose={() => setEditing(null)} />
       )}
+      {extraFor && <ExtraClassroomDialog teacher={extraFor} onClose={() => setExtraFor(null)} />}
+    </div>
+  );
+}
+
+/** Mở thêm một lớp cho giáo viên; lớp mới dùng trần sĩ số mặc định. */
+function ExtraClassroomDialog({ teacher, onClose }: { teacher: AdminTeacher; onClose: () => void }) {
+  const queryClient = useQueryClient();
+  const [name, setName] = useState('');
+  const create = useMutation({
+    mutationFn: () => adminClassroomApi.createExtraClassroom(teacher.userId, name.trim()),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['admin', 'classrooms'] });
+      onClose();
+    },
+  });
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/45 px-4" role="presentation" onClick={onClose}>
+      <form
+        role="dialog"
+        aria-modal="true"
+        className="w-full max-w-md rounded-3xl bg-white p-6"
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={(e) => { e.preventDefault(); if (name.trim()) create.mutate(); }}
+      >
+        <h2 className="text-lg font-bold">Mở thêm lớp cho {teacher.fullName || teacher.email}</h2>
+        <p className="mt-1 text-sm text-ink-mute">Lớp mới có mã tham gia riêng. Đặt hạn dùng và sĩ số ở bảng Lớp học sau khi tạo.</p>
+        <label htmlFor="extra-class-name" className="label mt-4">Tên lớp</label>
+        <input id="extra-class-name" className="input" required maxLength={255} value={name} onChange={(e) => setName(e.target.value)} placeholder="Aptis B2 · khoá tháng 11" />
+        {create.error && (
+          <p role="alert" className="mt-2 text-sm text-red-600">
+            {create.error instanceof ApiError ? create.error.message : 'Không tạo được lớp'}
+          </p>
+        )}
+        <div className="mt-5 flex justify-end gap-2">
+          <button type="button" className="btn-secondary" onClick={onClose}>Huỷ</button>
+          <button type="submit" className="btn-primary" disabled={create.isPending || !name.trim()}>
+            {create.isPending ? 'Đang tạo…' : 'Tạo lớp'}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
