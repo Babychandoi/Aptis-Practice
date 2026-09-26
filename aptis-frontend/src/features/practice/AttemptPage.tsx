@@ -1608,15 +1608,29 @@ function QuestionSetBlock({ set, setNumber, itemNumberById, attemptId, responses
   const twoColumn = sharedImages.length > 0
     && set.content.items.some((item) => item.responseType === 'AUDIO_RECORDING');
 
+  /*
+    Luyện tập Speaking có ảnh: mỗi lúc chỉ hiện một câu, chuyển bằng tab dưới ảnh.
+    Chế độ thi đã tự hiện từng câu nên không có tab. Câu không đang chọn chỉ bị
+    ẩn bằng thuộc tính hidden chứ không unmount, để bản ghi đang ghi hoặc đang
+    tải lên không bị mất khi học viên đổi tab.
+  */
+  const useTabs = twoColumn && !examMode && set.content.items.length > 1;
+  const [activeTab, setActiveTab] = useState(0);
+  const activeIndex = Math.min(activeTab, Math.max(0, set.content.items.length - 1));
+  const activeItem = set.content.items[activeIndex];
+  const numberOf = (item: QuestionItem) =>
+    String(itemNumberById?.get(item.id) ?? (set.content.items.indexOf(item) + 1));
+
   const questionCards = visibleItems.map((item) => {
         const itemIndex = set.content.items.indexOf(item);
         const itemKey = `${set.attemptQuestionSetId}:${item.id}`;
         const itemAudio = set.content.assets.filter((asset) => asset.role === `ITEM_AUDIO:${item.id}`);
-        const numberLabel = String(itemNumberById?.get(item.id) ?? (itemIndex + 1));
+        const numberLabel = numberOf(item);
         return (
+          <div key={item.id} hidden={useTabs && itemIndex !== activeIndex}>
           <QuestionCard
-            key={item.id}
             item={item}
+            hidePrompt={useTabs}
             numberLabel={numberLabel}
             itemAudio={itemAudio}
             set={set}
@@ -1630,6 +1644,7 @@ function QuestionSetBlock({ set, setNumber, itemNumberById, attemptId, responses
             onToggleFlag={() => onToggleFlag(itemKey)}
             onChange={(draft) => onItemChange(item.id, draft)}
           />
+          </div>
         );
       });
 
@@ -1662,6 +1677,35 @@ function QuestionSetBlock({ set, setNumber, itemNumberById, attemptId, responses
           <div className="min-w-0 space-y-3">
             <ImageViewer assets={sharedImages} />
             {stimulusBlock}
+            {useTabs && activeItem && (
+              <>
+                {activeItem.prompt?.value && (
+                  <SafeContent content={activeItem.prompt} className="question-content text-lg font-semibold text-ink sm:text-xl" />
+                )}
+                <div className="flex flex-wrap gap-2" role="tablist" aria-label="Các câu trong bài">
+                  {set.content.items.map((item, index) => {
+                    const done = countAnswered([item], responses) > 0;
+                    const active = index === activeIndex;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={active}
+                        onClick={() => setActiveTab(index)}
+                        className={clsx(
+                          'inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition',
+                          active ? 'border-ink bg-ink text-white' : 'border-brand-200 bg-white text-ink-soft hover:bg-brand-50',
+                        )}
+                      >
+                        Câu {numberOf(item)}
+                        {done && <span aria-label="đã trả lời" className={active ? 'text-green-300' : 'text-skill-speaking'}>✓</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
           <div className="min-w-0 space-y-3">{questionCards}</div>
         </div>
@@ -1676,8 +1720,10 @@ function QuestionSetBlock({ set, setNumber, itemNumberById, attemptId, responses
   );
 }
 
-function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, readOnly, isSubmitted, flagged, examMode, onExamFinished, onToggleFlag, onChange }: {
+function QuestionCard({ item, hidePrompt, numberLabel, itemAudio, set, attemptId, draft, readOnly, isSubmitted, flagged, examMode, onExamFinished, onToggleFlag, onChange }: {
   item: QuestionItem;
+  /** Đề câu hỏi đã hiện dưới ảnh (tab Speaking) nên không lặp lại trong thẻ. */
+  hidePrompt?: boolean;
   examMode?: boolean;
   onExamFinished?: () => void;
   numberLabel: string;
@@ -1716,7 +1762,7 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
           </span>
         )}
         <ItemMetaBadge item={item} />
-        {item.prompt?.value ? <SafeContent content={item.prompt} className="question-content min-w-0 flex-1 pt-1 text-sm font-semibold text-slate-900" /> : <span className="flex-1" />}
+        {item.prompt?.value && !hidePrompt ? <SafeContent content={item.prompt} className="question-content min-w-0 flex-1 pt-1 text-sm font-semibold text-slate-900" /> : <span className="flex-1" />}
         <button type="button" onClick={onToggleFlag} className={clsx('inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-xl border px-3 text-xs font-semibold transition-colors', flagged ? 'border-amber-400 bg-amber-50 text-amber-800' : 'border-border bg-white text-slate-600 hover:bg-surface')} aria-pressed={flagged}><FlagIcon /> {flagged ? 'Đã đánh dấu' : 'Đánh dấu'}</button>
       </div>
 

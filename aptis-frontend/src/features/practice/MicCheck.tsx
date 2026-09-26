@@ -151,13 +151,13 @@ export function MicCheck({ onContinue, continueLabel, continuePending }: Props) 
 
   return (
     <div className="mx-auto max-w-xl py-4">
-      <section className="rounded-2xl border border-slate-200 bg-gradient-to-b from-[#eef6f1] to-white p-5 shadow-[0_8px_24px_rgba(43,39,30,.08)] sm:p-7">
+      <section className="rounded-[18px] border border-brand-200 bg-white p-5 shadow-[0_24px_48px_-24px_rgba(15,23,42,.18)] sm:p-7">
         <div className="text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e0d6c2] bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#c2410c]" aria-hidden="true" />
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
+            <span className="h-1.5 w-1.5 rounded-full bg-skill-speaking" aria-hidden="true" />
             Bước 1/2 · Kiểm tra micro
           </span>
-          <h1 className="mt-3 text-2xl font-semibold">Kiểm tra micro trước khi nói</h1>
+          <h1 className="mt-3 text-2xl font-extrabold tracking-tight text-ink">Kiểm tra micro trước khi nói</h1>
           <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
             Hãy nói thử một câu ngắn để chắc chắn micro thu âm rõ. Điều này giúp AI nghe chính xác
             và chấm điểm Speaking tốt hơn.
@@ -216,7 +216,7 @@ export function MicCheck({ onContinue, continueLabel, continuePending }: Props) 
                   rồi thử lại.
                 </p>
               ) : (
-                <p className="rounded-lg bg-[#eef6f1] px-3 py-2 text-xs leading-5 text-brand-900">
+                <p className="rounded-lg bg-skill-speaking-bg px-3 py-2 text-xs leading-5 text-skill-speaking">
                   Micro thu tốt (mức cao nhất {peakLevel}/100). Nghe lại thấy rõ là bạn đã sẵn sàng.
                 </p>
               )}
@@ -237,7 +237,7 @@ export function MicCheck({ onContinue, continueLabel, continuePending }: Props) 
           )}
         </div>
 
-        <div className="mt-6 rounded-xl border border-slate-200 bg-[#FAFBFC] p-4">
+        <div className="mt-6 rounded-xl bg-amber-50 p-4">
           <h2 className="text-[10px] font-semibold uppercase tracking-wide text-amber-800">
             💡 Trước khi ghi âm
           </h2>
