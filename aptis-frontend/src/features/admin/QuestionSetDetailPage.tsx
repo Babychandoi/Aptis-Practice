@@ -129,12 +129,14 @@ export function QuestionSetDetailPage() {
 
   const showSubmit =
     canWrite && (status === 'DRAFT' || status === 'CHANGES_REQUESTED');
-  const showRequestChanges = canReview && status === 'IN_REVIEW';
-  const showPublish = canPublish && status === 'IN_REVIEW';
+  // Quy trình 4 bước theo mock: Nháp → Chờ duyệt → Đã duyệt → Phát hành.
+  const showApprove = canReview && status === 'IN_REVIEW';
+  const showRequestChanges = canReview && (status === 'IN_REVIEW' || status === 'APPROVED');
+  const showPublish = canPublish && (status === 'IN_REVIEW' || status === 'APPROVED');
   const showSuspend = canPublish && status === 'PUBLISHED';
   const showArchive = canArchive && status !== 'PUBLISHED';
   const hasAnyAction =
-    showSubmit || showRequestChanges || showPublish || showSuspend || showArchive;
+    showSubmit || showApprove || showRequestChanges || showPublish || showSuspend || showArchive;
   // Hai hành động này bắt buộc nêu lý do, dùng chung một ô nhập
   const needsReason = showRequestChanges || showSuspend;
   const trimmedReason = reason.trim();
@@ -232,6 +234,22 @@ export function QuestionSetDetailPage() {
                 }
               >
                 Gửi duyệt
+              </button>
+            )}
+
+            {showApprove && (
+              <button
+                type="button"
+                className="btn-primary"
+                disabled={busy}
+                onClick={() =>
+                  runAction.mutate({
+                    run: () => adminContentApi.approve(id),
+                    successMessage: 'Đã duyệt nội dung, chờ phát hành.',
+                  })
+                }
+              >
+                Duyệt
               </button>
             )}
 

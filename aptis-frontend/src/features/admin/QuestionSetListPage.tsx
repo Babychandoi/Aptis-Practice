@@ -19,6 +19,7 @@ const PAGE_SIZE = 12;
 const STATUS_OPTIONS: { value: ContentStatus; label: string }[] = [
   { value: 'DRAFT', label: 'Nháp' },
   { value: 'IN_REVIEW', label: 'Chờ duyệt' },
+  { value: 'APPROVED', label: 'Đã duyệt' },
   { value: 'CHANGES_REQUESTED', label: 'Cần sửa' },
   { value: 'PUBLISHED', label: 'Đã phát hành' },
   { value: 'SUSPENDED', label: 'Tạm ẩn' },
@@ -119,6 +120,10 @@ function TestScreen({ component, part }: { component: ComponentSummary; part: Pa
     queryFn: () => adminContentApi.search({ partId: part.id, status: status || undefined, q: debouncedSearch || undefined, page, size: PAGE_SIZE }),
     placeholderData: (previous) => previous,
   });
+  const countsQuery = useQuery({
+    queryKey: ['admin', 'question-sets', 'status-counts', part.id],
+    queryFn: () => adminContentApi.statusCounts(part.id),
+  });
   const hierarchyQuery = `componentId=${component.id}&partId=${part.id}`;
   const createUrl = `/admin/question-sets/new?${hierarchyQuery}`;
 
@@ -126,6 +131,7 @@ function TestScreen({ component, part }: { component: ComponentSummary; part: Pa
     <div>
       <PageHeader title={part.name} description={`${component.name} · Quản lý các đề và câu hỏi trong Part này.`} actions={<div className="flex gap-2"><button type="button" className="btn-secondary" onClick={() => navigate(`/admin/question-sets/skills/${component.id}`)}>← Đổi Part</button>{has('question_set:write') && <button type="button" className="btn-primary" onClick={() => navigate(createUrl)}>+ Tạo đề mới</button>}</div>} />
       <Breadcrumb items={['Ngân hàng', component.name, part.name, 'Danh sách đề']} onBack={() => navigate(`/admin/question-sets/skills/${component.id}`)} />
+      <StatusTiles counts={countsQuery.data} active={status} onPick={(next) => { setStatus(next); setPage(0); }} />
       <section className="rounded-2xl border border-[#e5e1d7] bg-white p-5 shadow-[0_4px_18px_rgba(31,41,35,.05)] sm:p-7">
         <div className="flex flex-wrap items-end justify-between gap-4"><LevelHeader number="3" title="Danh sách đề" description="Mở một đề để xem câu hỏi, lựa chọn và đáp án đúng" /><div className="flex w-full flex-wrap gap-2 lg:w-auto"><select aria-label="Lọc trạng thái đề" className="input min-w-44 !py-2" value={status} onChange={(event) => { setStatus(event.target.value as ContentStatus | ''); setPage(0); }}><option value="">Tất cả trạng thái</option>{STATUS_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select><input aria-label="Tìm đề" type="search" className="input min-w-64 flex-1 !py-2" placeholder="Tìm theo mã hoặc tên đề" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} /></div></div>
         <div className="mt-5"><QuestionSetGrid query={listQuery} onOpen={(id) => navigate(`/admin/question-sets/${id}?${hierarchyQuery}`)} onCreate={() => navigate(createUrl)} canCreate={has('question_set:write')} /></div>
@@ -146,3 +152,42 @@ function Breadcrumb({ items, onBack }: { items: string[]; onBack?: () => void })
 function LevelHeader({ number, title, description }: { number: string; title: string; description: string }) { return <div className="flex items-center gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-800 text-sm font-bold text-white">{number}</span><div><h2 className="text-lg font-semibold text-slate-900">{title}</h2><p className="text-sm text-slate-500">{description}</p></div></div>; }
 function EmptyMessage({ title, description }: { title: string; description: string }) { return <div className="mt-5 rounded-xl border border-dashed border-stone-300 bg-stone-50 p-10 text-center"><h3 className="font-semibold text-slate-900">{title}</h3><p className="mt-1 text-sm text-slate-500">{description}</p></div>; }
 function Meta({ label, value }: { label: string; value: string }) { return <span className="min-w-0 pr-2"><span className="block text-[10px] uppercase tracking-wide text-slate-400">{label}</span><span className="mt-0.5 block truncate font-medium text-slate-700">{value}</span></span>; }
+
+/** Quy trình 4 bước theo mock; bấm ô để lọc danh sách theo trạng thái đó. */
+const WORKFLOW_TILES: { value: ContentStatus; label: string; hint: string }[] = [
+  { value: 'DRAFT', label: 'Nháp', hint: 'Đang soạn' },
+  { value: 'IN_REVIEW', label: 'Chờ duyệt', hint: 'Cần biên tập viên xem' },
+  { value: 'APPROVED', label: 'Đã duyệt', hint: 'Chờ phát hành' },
+  { value: 'PUBLISHED', label: 'Đã phát hành', hint: 'Học viên đang thấy' },
+];
+
+function StatusTiles({ counts, active, onPick }: {
+  counts?: Partial<Record<ContentStatus, number>>;
+  active: ContentStatus | '';
+  onPick: (status: ContentStatus | '') => void;
+}) {
+  return (
+    <div className="mb-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      {WORKFLOW_TILES.map((tile, index) => {
+        const selected = active === tile.value;
+        return (
+          <button
+            key={tile.value}
+            type="button"
+            aria-pressed={selected}
+            onClick={() => onPick(selected ? '' : tile.value)}
+            className={clsx(
+              'rounded-2xl border bg-white p-4 text-left transition hover:border-slate-400',
+              selected ? 'border-slate-900 ring-1 ring-slate-900' : 'border-slate-200',
+            )}
+          >
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Bước {index + 1}</span>
+            <span className="mt-1 block text-2xl font-bold tabular-nums text-slate-900">{counts?.[tile.value] ?? '–'}</span>
+            <span className="block text-sm font-semibold text-slate-800">{tile.label}</span>
+            <span className="block text-xs text-slate-500">{tile.hint}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}

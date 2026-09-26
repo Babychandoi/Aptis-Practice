@@ -160,6 +160,12 @@ public class AdminContentController {
         return PageResponse.of(result, qs -> toResponse(qs, null));
     }
 
+    @GetMapping("/status-counts")
+    @PreAuthorize("hasAuthority('question_set:read')")
+    public java.util.Map<ContentStatus, Long> statusCounts(@RequestParam(required = false) String partId) {
+        return adminContentService.statusCounts(partId);
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('question_set:read')")
     @Transactional(readOnly = true)

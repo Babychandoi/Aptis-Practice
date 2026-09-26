@@ -15,6 +15,7 @@ export type Tone = keyof typeof TONE_CLASS;
 const STATUS_TONE: Record<string, Tone> = {
   DRAFT: 'neutral',
   IN_REVIEW: 'info',
+  APPROVED: 'success',
   CHANGES_REQUESTED: 'warn',
   PUBLISHED: 'success',
   SUSPENDED: 'warn',
@@ -47,6 +48,7 @@ const STATUS_TONE: Record<string, Tone> = {
 const STATUS_LABEL: Record<string, string> = {
   DRAFT: 'Nháp',
   IN_REVIEW: 'Chờ duyệt',
+  APPROVED: 'Đã duyệt',
   CHANGES_REQUESTED: 'Cần sửa',
   PUBLISHED: 'Đã phát hành',
   SUSPENDED: 'Tạm ẩn',

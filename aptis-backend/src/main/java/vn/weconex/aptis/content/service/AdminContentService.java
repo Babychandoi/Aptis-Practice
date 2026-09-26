@@ -181,6 +181,19 @@ public class AdminContentService {
         return questionSet;
     }
 
+    /** Số đề theo từng trạng thái; trạng thái không có đề nào vẫn trả 0. */
+    @Transactional(readOnly = true)
+    public Map<ContentStatus, Long> statusCounts(String partId) {
+        Map<ContentStatus, Long> counts = new java.util.EnumMap<>(ContentStatus.class);
+        for (ContentStatus status : ContentStatus.values()) {
+            counts.put(status, 0L);
+        }
+        for (Object[] row : questionSetRepository.countByStatus(partId)) {
+            counts.put((ContentStatus) row[0], ((Number) row[1]).longValue());
+        }
+        return counts;
+    }
+
     /**
      * Biên tập viên duyệt nội dung: IN_REVIEW → APPROVED, chờ phát hành.
      *

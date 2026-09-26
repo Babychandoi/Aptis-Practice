@@ -9,6 +9,7 @@ import type {
   AdminOrder,
   AdminPlan,
   AdminQuestionSet,
+  ContentStatus,
   CreatePlanRequest,
   CreateQuestionSetRequest,
   CreateRefundRequest,
@@ -94,6 +95,16 @@ export const adminContentApi = {
   submitForReview: (id: string) =>
     api
       .post<AdminQuestionSet>(`/admin/question-sets/${id}/submit-review`)
+      .then((r) => r.data),
+
+  /** Chờ duyệt → Đã duyệt; phát hành là bước riêng. */
+  approve: (id: string) =>
+    api.post<AdminQuestionSet>(`/admin/question-sets/${id}/approve`).then((r) => r.data),
+
+  /** Số đề theo trạng thái, lọc theo Part nếu có. */
+  statusCounts: (partId?: string) =>
+    api
+      .get<Partial<Record<ContentStatus, number>>>('/admin/question-sets/status-counts', { params: { partId } })
       .then((r) => r.data),
 
   requestChanges: (id: string, reason: string) =>
