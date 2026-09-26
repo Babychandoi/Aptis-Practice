@@ -88,10 +88,11 @@ export function OrderingRenderer({ item, draft, disabled, showAnswer, onChange }
           Kéo thả câu để sắp xếp, hoặc dùng nút ▲▼.
         </p>
       )}
-      {fixedOption && <div className="flex items-start gap-3 rounded-lg border border-brand-200 bg-brand-50 px-3 py-2.5">
-        <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-semibold text-white">1</span>
-        <p className="flex-1 text-sm">{fixedOption.content}</p>
-        <span className="rounded-full bg-white px-2 py-1 text-[11px] font-semibold text-brand-700">Câu mẫu cố định</span>
+      {/* Câu mẫu cố định: tô xanh để phân biệt với các câu kéo được. */}
+      {fixedOption && <div className="flex items-start gap-3 rounded-xl border border-green-300 bg-skill-speaking-bg px-3 py-2.5">
+        <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-skill-speaking text-xs font-semibold text-white">1</span>
+        <p className="min-w-0 flex-1 text-sm text-ink">{fixedOption.content}</p>
+        <span className="shrink-0 rounded-full bg-white px-2 py-1 text-[11px] font-semibold text-skill-speaking">Câu mẫu cố định</span>
       </div>}
       {order.map((optionId, index) => {
         const option = item.options.find((o) => o.id === optionId);
@@ -122,10 +123,10 @@ export function OrderingRenderer({ item, draft, disabled, showAnswer, onChange }
               endDrag();
             } : undefined}
             className={clsx(
-              'flex items-start gap-3 rounded-lg border px-3 py-2.5 transition',
+              'flex items-start gap-3 rounded-xl border bg-white px-3 py-2.5 transition',
               inRightPlace && 'border-emerald-400 bg-emerald-50',
               inWrongPlace && 'border-red-400 bg-red-50',
-              !showAnswer && 'border-slate-200',
+              !showAnswer && 'border-brand-200',
               draggable && 'cursor-grab active:cursor-grabbing',
               draggingId === optionId && 'opacity-40',
               dragOverId === optionId && draggingId !== optionId && 'border-brand-500 bg-brand-50',
@@ -135,8 +136,8 @@ export function OrderingRenderer({ item, draft, disabled, showAnswer, onChange }
               {index + (fixedOption ? 2 : 1)}
             </span>
 
-            <div className="flex-1">
-              <p className="text-sm">{option.content}</p>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm text-ink">{option.content}</p>
               {inWrongPlace && correctPositionOf(optionId) !== null && (
                 <p className="mt-1 text-[11px] font-medium text-emerald-700">
                   → Câu này đúng ở vị trí {correctPositionOf(optionId)}

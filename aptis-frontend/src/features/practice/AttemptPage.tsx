@@ -27,6 +27,7 @@ import { useAttemptTimer } from '@/features/practice/useAttemptTimer';
 import { useAutosave } from '@/features/practice/useAutosave';
 import { confirmDialog } from '@/lib/dialog';
 import { formatDuration } from '@/lib/format';
+import { skillByCode } from '@/lib/skills';
 import type { AttemptQuestionSet, PartSummary, QuestionItem } from '@/types/api';
 
 /**
@@ -611,15 +612,38 @@ export function AttemptPage() {
   }
 
   if (attempt.status === 'CREATED') {
+    // Thẻ mở đầu theo mock: nhãn loại bài, tiêu đề, dòng thông tin, các luật đánh số.
+    const introSkill = skillByCode(isFullMock ? '' : componentCode);
+    const singlePart = partGroups.length === 1 ? partGroups[0] : undefined;
+    const introKind = isFullMock ? 'Thi thử 5 kỹ năng' : singlePart ? 'Luyện theo Part' : 'Bài test kỹ năng';
+    const introTitle = isFullMock
+      ? 'Sẵn sàng làm bài thi Aptis đủ 5 kỹ năng?'
+      : singlePart
+        ? `Sẵn sàng làm ${componentName} · Phần ${singlePart.number}?`
+        : `Sẵn sàng làm ${componentName}?`;
+    const introRules = isFullMock
+      ? ['Làm lần lượt 5 kỹ năng. Mỗi kỹ năng có đồng hồ riêng, bắt đầu khi bạn bấm vào làm.', 'Nộp xong một kỹ năng sẽ không quay lại được.', 'Phần Nói tự chạy như đề thật: tự ghi âm, tự chuyển câu.']
+      : singlePart
+        ? ['Làm từng bài, chấm ngay từng bài để xem đáp án.', 'Chọn đề khác trong Part bằng menu “Chọn chủ đề”.', 'Có câu mẫu và transcript để đối chiếu sau khi tự làm.']
+        : [`Làm đủ ${partGroups.length} Part liên tục${attempt.durationSeconds ? `, hết giờ bài tự nộp` : ''}.`, 'Dùng mục lục để chuyển Part; đánh dấu câu cần xem lại.', 'Điểm và đáp án hiện sau khi nộp toàn bộ bài.'];
     return (
-      <div className="mx-auto flex min-h-screen max-w-2xl items-center px-4 py-10">
-        <section className="w-full rounded-2xl border border-[#E5E9F0] bg-white p-6 shadow-[0_12px_40px_rgba(44,38,24,.09)]">
-          <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand-800 text-white"><HeadphoneIcon /></span>
-          <h1 className="mt-4 text-2xl font-semibold">Sẵn sàng làm {componentName}?</h1>
-          <p className="mt-2 text-sm text-slate-600">{partGroups.length} Part · {attempt.totalItems} câu{attempt.durationSeconds ? ` · ${Math.round(attempt.durationSeconds / 60)} phút` : ''}</p>
-          <p className="mt-4 rounded-xl bg-[#F1F5F9] px-4 py-3 text-sm text-brand-900">Đồng hồ và tiến độ lưu tự động bắt đầu khi bạn vào bài.</p>
-          <button type="button" onClick={() => startMutation.mutate()} disabled={startMutation.isPending} className="btn-primary mt-5 w-full">
-            {startMutation.isPending ? 'Đang bắt đầu…' : 'Bắt đầu làm bài'}
+      <div className="mx-auto flex min-h-screen max-w-[620px] items-center px-4 py-10">
+        <section className="w-full rounded-[18px] border border-brand-200 bg-white p-5 shadow-[0_24px_48px_-24px_rgba(15,23,42,.18)] sm:p-7">
+          <span className="grid h-[52px] w-[52px] place-items-center rounded-2xl" style={{ background: introSkill.bg, color: introSkill.fg }}><HeadphoneIcon /></span>
+          <p className="mt-4 text-[11px] font-bold uppercase tracking-[.1em]" style={{ color: introSkill.fg }}>{introKind}</p>
+          <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-ink sm:text-[32px] sm:leading-tight">{introTitle}</h1>
+          <p className="mt-2 font-mono text-[13px] text-ink-mute">{partGroups.length} Part · {attempt.totalItems} câu{attempt.durationSeconds ? ` · ${Math.round(attempt.durationSeconds / 60)} phút` : ' · không tính giờ'}</p>
+          <ol className="mt-4 space-y-2">
+            {introRules.map((rule, index) => (
+              <li key={rule} className="flex items-start gap-3 text-sm text-ink-soft">
+                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-brand-100 text-[11px] font-bold text-ink">{index + 1}</span>
+                {rule}
+              </li>
+            ))}
+          </ol>
+          <p className="mt-4 rounded-xl bg-skill-speaking-bg px-4 py-3 text-sm text-skill-speaking">Đồng hồ và tiến độ lưu tự động bắt đầu khi bạn vào bài.</p>
+          <button type="button" onClick={() => startMutation.mutate()} disabled={startMutation.isPending} className="mt-4 w-full rounded-xl bg-ink px-4 py-3.5 text-[15px] font-bold text-white hover:bg-brand-700 disabled:opacity-50">
+            {startMutation.isPending ? 'Đang bắt đầu…' : 'Bắt đầu làm bài →'}
           </button>
         </section>
       </div>
@@ -637,30 +661,56 @@ export function AttemptPage() {
     const skill = skillNameOf(pendingProgress.componentCode);
     const doneCount = (attempt.componentProgress ?? []).filter((row) => row.submittedAt).length;
     const total = (attempt.componentProgress ?? []).length;
+    const nextSkill = skillByCode(pendingProgress.componentCode);
+    // Thanh 5 bước: xếp theo thứ tự thi thật, tô màu các kỹ năng đã nộp và kỹ năng kế tiếp.
+    const steps = [...(attempt.componentProgress ?? [])].sort(
+      (a, b) => COMPONENT_ORDER.indexOf(a.componentCode.toUpperCase()) - COMPONENT_ORDER.indexOf(b.componentCode.toUpperCase()),
+    );
 
     return (
-      <div className="mx-auto flex min-h-screen max-w-2xl items-center px-4 py-10">
-        <section className="w-full rounded-2xl border border-[#E5E9F0] bg-white p-6 shadow-[0_12px_40px_rgba(44,38,24,.09)]">
-          <p className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
+      <div className="mx-auto flex min-h-screen max-w-[640px] items-center px-4 py-10">
+        <section className="w-full rounded-[18px] border border-brand-200 bg-white p-5 shadow-[0_24px_48px_-24px_rgba(15,23,42,.18)] sm:p-7">
+          <p className="text-[11px] font-bold uppercase tracking-[.1em]" style={{ color: nextSkill.fg }}>
             Bài thi Aptis · {doneCount}/{total} kỹ năng đã nộp
           </p>
-          <h1 className="mt-2 text-2xl font-semibold">Tiếp theo: {skill}</h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <div className="mt-4 grid gap-1.5" style={{ gridTemplateColumns: `repeat(${Math.max(1, steps.length)}, minmax(0, 1fr))` }}>
+            {steps.map((row) => {
+              const current = row.componentId === pendingProgress.componentId;
+              const lit = current || Boolean(row.submittedAt);
+              return (
+                <div key={row.componentId} className="min-w-0">
+                  <span className="block h-1.5 rounded-full" style={{ background: lit ? skillByCode(row.componentCode).fg : '#E2E8F0' }} />
+                  <span className={clsx('mt-1 block truncate text-[11px] font-medium', current ? 'text-ink' : 'text-ink-faint')}>
+                    {skillNameOf(row.componentCode)}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+          <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-ink sm:text-[40px] sm:leading-tight">
+            Tiếp theo: <span style={{ color: nextSkill.fg }}>{skill}</span>
+          </h1>
+          <p className="mt-2 text-[15px] text-ink-soft">
             Phần này làm trong{' '}
-            <strong>{Math.round(pendingProgress.durationSeconds / 60)} phút</strong>. Đồng hồ bắt
+            <strong className="text-ink">{Math.round(pendingProgress.durationSeconds / 60)} phút</strong>. Đồng hồ bắt
             đầu chạy khi bạn bấm nút bên dưới.
           </p>
-          <p className="mt-4 rounded-xl bg-[#FAFBFC] px-4 py-3 text-sm text-amber-800">
+          <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
             Nộp xong kỹ năng này sẽ không sửa hay xem lại được. Điểm của cả bài chỉ hiện sau khi
             hoàn thành đủ {total} kỹ năng.
           </p>
+          {pendingProgress.componentCode.toUpperCase() === 'SPEAKING' && (
+            <p className="mt-4 rounded-xl bg-skill-speaking-bg px-4 py-3 text-sm text-skill-speaking">
+              Phần Nói tự chạy: máy tự đếm giờ chuẩn bị, tự ghi âm và tự chuyển câu. Hãy kiểm tra micro trước khi bắt đầu.
+            </p>
+          )}
           <button
             type="button"
             onClick={() => beginComponentMutation.mutate(pendingProgress.componentId)}
             disabled={beginComponentMutation.isPending}
-            className="btn-primary mt-5 w-full"
+            className="mt-4 w-full rounded-xl bg-ink px-4 py-3.5 text-[15px] font-bold text-white hover:bg-brand-700 disabled:opacity-50"
           >
-            {beginComponentMutation.isPending ? 'Đang mở…' : `Bắt đầu ${skill}`}
+            {beginComponentMutation.isPending ? 'Đang mở…' : `Bắt đầu ${skill} →`}
           </button>
         </section>
       </div>
@@ -705,7 +755,10 @@ export function AttemptPage() {
       {/* Sticky Exam HUD Header */}
       <header className="sticky top-0 z-30 border-b border-border bg-white/95 backdrop-blur shadow-sm">
         <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-3 px-4 py-3 sm:px-6">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-600 text-white shadow-sm font-bold text-base">
+          <span
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-white"
+            style={{ background: skillByCode(isFullMock ? openProgress?.componentCode : componentCode).fg }}
+          >
             <HeadphoneIcon />
           </span>
           <div className="min-w-0 flex-1">
@@ -940,11 +993,11 @@ export function AttemptPage() {
           ))}
         </div>
 
-        <div className="sticky bottom-4 mt-8 flex justify-end border-t border-border pt-4">
-          <div className="flex flex-wrap items-center gap-2.5 rounded-2xl border border-border bg-white/95 p-2.5 shadow-xl backdrop-blur">
+        <div className="sticky bottom-4 mt-6 flex justify-end">
+          <div className="flex max-w-full flex-wrap items-center justify-end gap-2 rounded-2xl border border-brand-200 bg-white/95 p-2 shadow-[0_18px_40px_-18px_rgba(15,23,42,.3)] backdrop-blur">
             {viewMode === 'single' ? (
               <>
-                <span className="px-3 font-mono text-xs font-medium tabular-nums text-slate-500">
+                <span className="px-2 font-mono text-xs font-medium tabular-nums text-ink-mute">
                   Bài {pageStart + 1}
                   {pageSets.length > 1 && `–${pageStart + pageSets.length}`}
                   /{setCount} · {currentPart.skill ? `${currentPart.skill} · ` : ''}Phần {currentPart.number}
@@ -956,7 +1009,7 @@ export function AttemptPage() {
                       type="button"
                       onClick={() => void goToSet(-1)}
                       disabled={isFirstSetOverall}
-                      className="inline-flex items-center gap-1 rounded-xl border border-border bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-surface disabled:opacity-40 transition-colors"
+                      className="inline-flex items-center gap-1 rounded-xl border border-brand-200 bg-white px-3.5 py-2.5 text-[13px] font-semibold text-ink-soft transition-colors hover:bg-brand-50 disabled:text-ink-faint"
                     >
                       ← Bài trước
                     </button>
@@ -965,7 +1018,7 @@ export function AttemptPage() {
                         type="button"
                         onClick={() => void goToSet(1)}
                         disabled={isLastSetOverall}
-                        className="inline-flex items-center gap-1 rounded-xl bg-brand-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-brand-700 disabled:opacity-40 transition-colors"
+                        className="inline-flex items-center gap-1 rounded-xl bg-ink px-4 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-brand-700 disabled:bg-ink-faint"
                       >
                         Bài tiếp theo →
                       </button>
@@ -984,7 +1037,7 @@ export function AttemptPage() {
                       type="button"
                       onClick={() => scoreSetMutation.mutate(visibleSetOnly.questionSetId)}
                       disabled={scoreSetMutation.isPending}
-                      className="rounded-xl bg-brand-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-brand-700 disabled:opacity-50 transition-colors"
+                      className="rounded-xl bg-skill-speaking px-4 py-2.5 text-[13px] font-bold text-white transition hover:opacity-90 disabled:opacity-50"
                     >
                       {scoreSetMutation.isPending ? 'Đang chấm…' : 'Chấm điểm bài này'}
                     </button>
@@ -998,7 +1051,7 @@ export function AttemptPage() {
                     type="button"
                     onClick={() => void goToPart(currentPartIndex - 1)}
                     disabled={viewMode === 'all' || currentPartIndex === 0}
-                    className="inline-flex items-center gap-1 rounded-xl border border-border bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-surface disabled:opacity-40 transition-colors"
+                    className="inline-flex items-center gap-1 rounded-xl border border-brand-200 bg-white px-3.5 py-2.5 text-[13px] font-semibold text-ink-soft transition-colors hover:bg-brand-50 disabled:text-ink-faint"
                   >
                     ← Phần trước
                   </button>
@@ -1006,7 +1059,7 @@ export function AttemptPage() {
                     type="button"
                     onClick={() => void goToPart(currentPartIndex + 1)}
                     disabled={viewMode === 'all' || currentPartIndex === partGroups.length - 1}
-                    className="inline-flex items-center gap-1 rounded-xl bg-brand-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-brand-700 disabled:opacity-40 transition-colors"
+                    className="inline-flex items-center gap-1 rounded-xl bg-ink px-4 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-brand-700 disabled:bg-ink-faint"
                   >
                     Phần tiếp theo →
                   </button>
@@ -1034,7 +1087,7 @@ export function AttemptPage() {
                   type="button"
                   onClick={submitCurrentComponent}
                   disabled={submitComponentMutation.isPending}
-                  className="rounded-xl bg-accent px-4 py-2 text-xs font-bold text-dark shadow-sm hover:bg-accent-light disabled:opacity-50 transition-all"
+                  className="rounded-xl bg-amber-500 px-4 py-2.5 text-[13px] font-bold text-ink transition hover:bg-amber-400 disabled:opacity-50"
                 >
                   {submitComponentMutation.isPending
                     ? 'Đang nộp…'
@@ -1046,12 +1099,12 @@ export function AttemptPage() {
                 type="button"
                 onClick={submitAttempt}
                 disabled={submitMutation.isPending}
-                className="rounded-xl bg-accent px-5 py-2 text-xs font-bold text-dark shadow-sm hover:bg-accent-light disabled:opacity-50 transition-all"
+                className="rounded-xl bg-amber-500 px-4 py-2.5 text-[13px] font-bold text-ink transition hover:bg-amber-400 disabled:opacity-50"
               >
                 {submitMutation.isPending
                   ? 'Đang nộp…'
                   : needsAiScoring
-                  ? 'Nộp bài · AI Chấm điểm'
+                  ? 'Nộp bài · AI chấm điểm'
                   : 'Nộp toàn bộ bài thi'}
               </button>
             )}
@@ -1434,7 +1487,7 @@ function MicIcon() {
   );
 }
 
-function PartSection({ part, hideHeader, visibleSetIds, attemptId, responsesBySet, readOnly, isSubmitted, flaggedItems, itemNumberById, examMode, onExamFinished, onToggleFlag, onItemChange }: {
+function PartSection({ part, hideHeader, visibleSetIds, setNumberById, attemptId, responsesBySet, readOnly, isSubmitted, flaggedItems, itemNumberById, examMode, onExamFinished, onToggleFlag, onItemChange }: {
   part: PartGroup;
   /** Speaking bài full: tự chạy, ghi một lần, không nghe lại. */
   examMode?: boolean;
@@ -1462,27 +1515,26 @@ function PartSection({ part, hideHeader, visibleSetIds, attemptId, responsesBySe
   return (
     <section aria-labelledby={hideHeader ? undefined : `part-title-${part.id}`} aria-label={hideHeader ? part.name : undefined}>
       {hideHeader ? (
-        // Vẫn giữ hướng dẫn làm bài; chỉ bỏ dòng "Phần N – ..." vì đã có ở dropdown
-        <p className="rounded-xl border border-[#E5E9F0] bg-[#F1F5F9] px-4 py-2.5 text-[11px] font-medium text-brand-900 sm:text-xs">
-          {part.instruction}
-        </p>
+        // Hướng dẫn chung của Part chỉ còn là một dòng chữ xám, không đóng khung.
+        <p className="px-1 text-xs text-ink-mute">{part.instruction}</p>
       ) : (
-        <div className="flex items-center gap-3 rounded-xl border border-[#E5E9F0] bg-[linear-gradient(90deg,#deeee8_0%,#fffdf9_72%)] px-4 py-3">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-brand-800 font-semibold text-white shadow-sm">{toRoman(part.number)}</span>
+        <div className="flex items-center gap-3 px-1">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-brand-100 font-mono text-xs font-bold text-ink">{toRoman(part.number)}</span>
           <div className="min-w-0 flex-1">
-            <h2 id={`part-title-${part.id}`} className="text-base font-semibold sm:text-lg">
+            <h2 id={`part-title-${part.id}`} className="text-[15px] font-bold text-ink">
               {part.skill ? `${part.skill} · ` : ''}Phần {part.number} – {part.name}
             </h2>
-            <p className="text-[11px] font-medium text-brand-900 sm:text-xs">{part.instruction}</p>
+            <p className="text-xs text-ink-mute">{part.instruction}</p>
           </div>
-          <strong className="shrink-0 text-[11px]">{answered}/{part.totalItems} câu</strong>
+          <span className="shrink-0 rounded-full bg-brand-100 px-2.5 py-1 text-[11px] font-semibold text-ink-soft">{answered}/{part.totalItems} câu</span>
         </div>
       )}
 
-      <div className="mt-3 space-y-3 rounded-xl border-l-2 border-brand-800 bg-[#FAFBFC] p-2.5 sm:p-3">
-        {visibleSets.map((set) => (
+      <div className="mt-3 space-y-4">
+        {visibleSets.map((set, index) => (
           <QuestionSetBlock
             key={set.attemptQuestionSetId}
+            setNumber={setNumberById?.get(set.attemptQuestionSetId) ?? index + 1}
             set={set}
             itemNumberById={itemNumberById}
             attemptId={attemptId}
@@ -1501,8 +1553,10 @@ function PartSection({ part, hideHeader, visibleSetIds, attemptId, responsesBySe
   );
 }
 
-function QuestionSetBlock({ set, itemNumberById, attemptId, responses, readOnly, isSubmitted, flaggedItems, examMode, onExamFinished, onToggleFlag, onItemChange }: {
+function QuestionSetBlock({ set, setNumber, itemNumberById, attemptId, responses, readOnly, isSubmitted, flaggedItems, examMode, onExamFinished, onToggleFlag, onItemChange }: {
   set: AttemptQuestionSet;
+  /** Số thứ tự "Bài N" hiện trên chip đầu thẻ. */
+  setNumber: number;
   examMode?: boolean;
   onExamFinished?: () => void;
   itemNumberById?: Map<string, string>;
@@ -1527,9 +1581,6 @@ function QuestionSetBlock({ set, itemNumberById, attemptId, responses, readOnly,
   const hasSharedStimulus =
     sharedAssets.length > 0 || Boolean(set.content.stimulus?.value);
   const showTopic = Boolean(set.content.title) && hasSharedStimulus;
-  const topicLabel = commonAssets.length > 0
-    ? 'Chủ đề · Bài nghe'
-    : sharedImages.length > 0 ? 'Chủ đề · Ảnh' : 'Chủ đề';
 
   /**
    * Chế độ thi Speaking: mỗi lúc chỉ một câu.
@@ -1552,27 +1603,12 @@ function QuestionSetBlock({ set, itemNumberById, attemptId, responses, readOnly,
     );
   })();
 
-  return (
-    <div className="space-y-3">
-      {(showTopic || set.content.instructions || set.content.stimulus?.value || sharedAssets.length > 0) && (
-        <div className="rounded-xl border border-[#E5E9F0] bg-[#F8FAFC] p-3 sm:p-4">
-          {showTopic && (
-            <div className="mb-3 flex items-center gap-3 border-l-2 border-brand-800 pl-3">
-              {commonAssets.length > 0 && <span className="text-brand-800"><HeadphoneIcon /></span>}
-              <div>
-                <p className="text-[9px] font-semibold uppercase tracking-[.12em] text-brand-800">{topicLabel}</p>
-                <h3 className="text-sm font-semibold sm:text-base">{set.content.title}</h3>
-              </div>
-            </div>
-          )}
-          {set.content.instructions && <p className="mb-3 rounded-lg bg-[#F1F5F9] px-3 py-2 text-xs text-brand-900">{set.content.instructions}</p>}
-          {set.content.stimulus?.value && <SafeContent content={set.content.stimulus} className="question-content mb-3 text-sm" />}
-          {sharedImages.length > 0 && <div className="mb-3"><ImageViewer assets={sharedImages} /></div>}
-          {commonAssets.length > 0 && <AudioPlayer assets={commonAssets} maxAudioPlays={set.maxAudioPlays} initialPlayCount={set.audioPlayCount} disabled={readOnly} />}
-        </div>
-      )}
+  const answeredInSet = countAnswered(set.content.items, responses);
+  // Speaking có ảnh: ảnh bên trái, ô ghi âm bên phải trên màn rộng; xếp chồng trên điện thoại.
+  const twoColumn = sharedImages.length > 0
+    && set.content.items.some((item) => item.responseType === 'AUDIO_RECORDING');
 
-      {visibleItems.map((item) => {
+  const questionCards = visibleItems.map((item) => {
         const itemIndex = set.content.items.indexOf(item);
         const itemKey = `${set.attemptQuestionSetId}:${item.id}`;
         const itemAudio = set.content.assets.filter((asset) => asset.role === `ITEM_AUDIO:${item.id}`);
@@ -1595,8 +1631,48 @@ function QuestionSetBlock({ set, itemNumberById, attemptId, responses, readOnly,
             onChange={(draft) => onItemChange(item.id, draft)}
           />
         );
-      })}
-    </div>
+      });
+
+  const stimulusBlock = (
+    <>
+      {set.content.stimulus?.value && (
+        <SafeContent content={set.content.stimulus} className="question-content rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-[15px] text-ink-soft" />
+      )}
+      {commonAssets.length > 0 && <AudioPlayer assets={commonAssets} maxAudioPlays={set.maxAudioPlays} initialPlayCount={set.audioPlayCount} disabled={readOnly} />}
+    </>
+  );
+
+  return (
+    // Mỗi bộ là MỘT thẻ trắng: chip "Bài N", tiêu đề, số câu đã trả lời, các câu nằm bên trong.
+    <section className="rounded-[18px] border border-brand-200 bg-white p-3 sm:p-[18px]">
+      <header className="flex flex-wrap items-center gap-2.5">
+        <span className="shrink-0 rounded-md bg-brand-100 px-2 py-1 font-mono text-[11px] font-bold text-ink-soft">Bài {setNumber}</span>
+        <h3 className="min-w-0 flex-1 text-base font-bold text-ink">
+          {/* Bộ gồm các câu độc lập (Speaking Part 1): title chỉ là câu đầu nên không hiện. */}
+          {showTopic ? set.content.title : null}
+        </h3>
+        <span className="ml-auto shrink-0 rounded-full bg-brand-100 px-2.5 py-1 text-[11px] font-semibold text-ink-soft">
+          {answeredInSet}/{set.content.items.length} đã trả lời
+        </span>
+      </header>
+      {set.content.instructions && <p className="mt-2 text-xs text-ink-mute">{set.content.instructions}</p>}
+
+      {twoColumn ? (
+        <div className="mt-3 grid gap-4 lg:grid-cols-2">
+          <div className="min-w-0 space-y-3">
+            <ImageViewer assets={sharedImages} />
+            {stimulusBlock}
+          </div>
+          <div className="min-w-0 space-y-3">{questionCards}</div>
+        </div>
+      ) : (
+        <div className="mt-3 space-y-3">
+          {sharedImages.length > 0 && <ImageViewer assets={sharedImages} />}
+          {stimulusBlock}
+          {questionCards}
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -1622,9 +1698,9 @@ function QuestionCard({ item, numberLabel, itemAudio, set, attemptId, draft, rea
   const ketQua = revealed ? ketQuaCauHoi(item, draft) : null;
 
   return (
-    <article className={clsx('rounded-2xl border bg-white p-4 shadow-sm transition-all', flagged ? 'border-amber-400 ring-2 ring-amber-200' : 'border-border')}>
-      <div className="flex items-start gap-3">
-        <span className="grid min-h-7 min-w-7 shrink-0 place-items-center rounded-xl bg-brand-100 px-2 font-mono text-xs font-bold text-brand-700 shadow-sm">
+    <article className={clsx('rounded-[14px] border bg-white p-3 transition-all sm:p-4', flagged ? 'border-amber-400 ring-2 ring-amber-200' : 'border-brand-200')}>
+      <div className="flex items-start gap-2.5 sm:gap-3">
+        <span className="grid min-h-6 min-w-8 shrink-0 place-items-center rounded-md bg-brand-100 px-1.5 font-mono text-xs font-bold text-ink-soft">
           {numberLabel}
         </span>
         {ketQua && (
