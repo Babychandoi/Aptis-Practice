@@ -118,7 +118,7 @@ export function ReportAdminPage() {
 
             return (
               <tr key={job.id}>
-                <td className="whitespace-nowrap px-4 py-2.5 font-medium text-slate-900">
+                <td className="whitespace-nowrap px-4 py-2.5 font-medium text-ink">
                   {EXPORT_TYPE_LABELS[job.exportType] ?? job.exportType}
                 </td>
                 <td className="whitespace-nowrap px-4 py-2.5">
@@ -129,13 +129,13 @@ export function ReportAdminPage() {
                     </p>
                   )}
                 </td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
+                <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                   {formatDateTime(job.queuedAt)}
                 </td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
+                <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                   {formatDateTime(job.completedAt)}
                 </td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
+                <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                   {formatDateTime(job.expiresAt)}
                 </td>
                 <td className="whitespace-nowrap px-4 py-2.5">
@@ -187,8 +187,8 @@ export function ReportAdminPage() {
       />
 
       <section className="card mb-5">
-        <h2 className="font-semibold text-slate-900">Tạo báo cáo mới</h2>
-        <p className="mt-1 text-sm text-slate-500">
+        <h2 className="font-semibold text-ink">Tạo báo cáo mới</h2>
+        <p className="mt-1 text-sm text-ink-mute">
           Báo cáo chạy nền; trạng thái cập nhật trong bảng bên dưới.
         </p>
 
@@ -209,7 +209,7 @@ export function ReportAdminPage() {
         </div>
       </section>
 
-      <h2 className="mb-2 font-semibold text-slate-900">Lịch sử báo cáo</h2>
+      <h2 className="mb-2 font-semibold text-ink">Lịch sử báo cáo</h2>
       {renderTable()}
     </div>
   );

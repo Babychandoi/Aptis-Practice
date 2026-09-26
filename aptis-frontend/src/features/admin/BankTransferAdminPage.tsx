@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { adminBankTransferApi } from '@/api/adminEndpoints';
 import { ApiError } from '@/api/client';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
@@ -7,7 +7,7 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { confirmDialog } from '@/lib/dialog';
 import { formatCurrency, formatDateTime } from '@/lib/format';
 import type { BankAccount, BankTransferStatus, SaveBankAccountRequest } from '@/types/admin';
-import { DataTable, PageHeader, Pager, ResultBanner } from './components/AdminUi';
+import { DataTable, PageHeader, Pager, ResultBanner, StatusTiles } from './components/AdminUi';
 import { usePermission } from './usePermission';
 import { useAdminWebSocket } from './useAdminWebSocket';
 
@@ -64,6 +64,17 @@ export function BankTransferAdminPage() {
     queryFn: () => adminBankTransferApi.list('CLAIMED', 0, 1),
   });
   const pendingClaimCount = claimedCountQuery.data?.totalElements ?? 0;
+  // Ô đếm theo trạng thái: cùng endpoint danh sách, size=1, đọc totalElements.
+  const tileFilters = FILTERS.flatMap((filter) => (filter.value ? [{ value: filter.value, label: filter.label }] : []));
+  const countQueries = useQueries({
+    queries: tileFilters.map((filter) => ({
+      queryKey: ['admin', 'bank-transfers', 'count', filter.value],
+      queryFn: () => adminBankTransferApi.list(filter.value, 0, 1),
+    })),
+  });
+  const counts = Object.fromEntries(
+    tileFilters.map((filter, index) => [filter.value, countQueries[index]?.data?.totalElements]),
+  ) as Partial<Record<BankTransferStatus, number>>;
 
   const accountsQuery = useQuery({
     queryKey: ['admin', 'bank-accounts'],
@@ -113,10 +124,10 @@ export function BankTransferAdminPage() {
             <button
               type="button"
               onClick={reconnect}
-              className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-600 hover:bg-stone-200"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-muted px-3 py-1 text-xs font-semibold text-ink-mute hover:bg-slate-200"
               title="Nhấn để kết nối lại WebSocket"
             >
-              <span className="h-2 w-2 rounded-full bg-stone-400"></span>
+              <span className="h-2 w-2 rounded-full bg-slate-400"></span>
               WS Offline (Thử lại)
             </button>
           )}
@@ -154,20 +165,27 @@ export function BankTransferAdminPage() {
 
       {canConfirm && <BankAccountCard account={accountsQuery.data?.[0]} loading={accountsQuery.isPending} />}
 
-      <section className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+      <StatusTiles
+        tiles={tileFilters}
+        counts={counts}
+        active={status}
+        onPick={(next) => { setStatus(next || undefined); setPage(0); }}
+      />
+
+      <section className="rounded-2xl border border-border bg-white p-5 shadow-sm">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="font-semibold text-stone-900">Yêu cầu chuyển khoản</h2>
-            <p className="mt-1 text-xs text-stone-500">Ưu tiên các yêu cầu học viên đã báo chuyển.</p>
+            <h2 className="font-semibold text-ink">Yêu cầu chuyển khoản</h2>
+            <p className="mt-1 text-xs text-ink-mute">Ưu tiên các yêu cầu học viên đã báo chuyển.</p>
           </div>
-          <div className="flex flex-wrap gap-1 rounded-xl bg-stone-100 p-1">
+          <div className="flex flex-wrap gap-1 rounded-xl bg-surface-muted p-1">
             {FILTERS.map((filter) => {
               const showBadge = filter.value === 'CLAIMED' && pendingClaimCount > 0;
               return (
                 <button
                   key={filter.label}
                   type="button"
-                  className={`relative inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold ${status === filter.value ? 'bg-white text-brand-900 shadow-sm' : 'text-stone-500 hover:text-stone-900'}`}
+                  className={`relative inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold ${status === filter.value ? 'bg-white text-brand-900 shadow-sm' : 'text-ink-mute hover:text-ink'}`}
                   onClick={() => { setStatus(filter.value); setPage(0); }}
                 >
                   {filter.label}
@@ -191,13 +209,13 @@ export function BankTransferAdminPage() {
               {transfersQuery.data.content.map((transfer) => {
                 const isClaimed = transfer.status === 'CLAIMED';
                 return (
-                  <tr key={transfer.id} className={`border-b border-stone-100 last:border-0 transition-colors ${isClaimed ? 'bg-amber-50/40 hover:bg-amber-50/70' : 'hover:bg-stone-50/60'}`}>
+                  <tr key={transfer.id} className={`border-b border-border-subtle last:border-0 transition-colors ${isClaimed ? 'bg-amber-50/40 hover:bg-amber-50/70' : 'hover:bg-surface-muted/60'}`}>
                     <td className="whitespace-nowrap px-4 py-3 font-mono text-sm font-bold text-brand-800">{transfer.transferCode}</td>
-                    <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-stone-500">{transfer.orderCode ?? '—'}</td>
-                    <td className="px-4 py-3 text-sm text-stone-700">{transfer.userEmail ?? '—'}</td>
-                    <td className="whitespace-nowrap px-4 py-3 font-semibold text-stone-900">{formatCurrency(transfer.amount, transfer.currency)}</td>
+                    <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-ink-mute">{transfer.orderCode ?? '—'}</td>
+                    <td className="px-4 py-3 text-sm text-ink-soft">{transfer.userEmail ?? '—'}</td>
+                    <td className="whitespace-nowrap px-4 py-3 font-semibold text-ink">{formatCurrency(transfer.amount, transfer.currency)}</td>
                     <td className="whitespace-nowrap px-4 py-3"><TransferStatusBadge status={transfer.status} /></td>
-                    <td className="whitespace-nowrap px-4 py-3 text-xs text-stone-500">{formatDateTime(transfer.claimedAt)}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-xs text-ink-mute">{formatDateTime(transfer.claimedAt)}</td>
                     <td className="whitespace-nowrap px-4 py-3">
                       {canConfirm && ['PENDING', 'CLAIMED'].includes(transfer.status) ? (
                         <div className="flex gap-2">
@@ -275,23 +293,23 @@ function BankAccountCard({ account, loading }: { account?: BankAccount; loading:
   if (!account || !form) return <ResultBanner tone="danger" message="Chưa có tài khoản ngân hàng nhận tiền." />;
 
   return (
-    <section className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+    <section className="rounded-2xl border border-border bg-white p-5 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-brand-700">Tài khoản đang nhận tiền</p>
-          <h2 className="mt-1 text-lg font-semibold text-stone-900">{account.bankName} · {account.accountNumber}</h2>
-          <p className="mt-1 text-xs text-stone-500">{account.accountHolder || 'Chưa nhập tên chủ tài khoản'} · {account.active ? 'Đang bật' : 'Đang tắt'}</p>
+          <h2 className="mt-1 text-lg font-semibold text-ink">{account.bankName} · {account.accountNumber}</h2>
+          <p className="mt-1 text-xs text-ink-mute">{account.accountHolder || 'Chưa nhập tên chủ tài khoản'} · {account.active ? 'Đang bật' : 'Đang tắt'}</p>
         </div>
         <button type="button" className="btn-secondary text-xs" onClick={() => setEditing((value) => !value)}>{editing ? 'Đóng' : 'Chỉnh tài khoản'}</button>
       </div>
 
       {editing && (
-        <form className="mt-5 grid gap-4 border-t border-stone-200 pt-5 sm:grid-cols-2 lg:grid-cols-4" onSubmit={(event) => { event.preventDefault(); saveMutation.mutate(); }}>
+        <form className="mt-5 grid gap-4 border-t border-border pt-5 sm:grid-cols-2 lg:grid-cols-4" onSubmit={(event) => { event.preventDefault(); saveMutation.mutate(); }}>
           <Field label="Mã ngân hàng" value={form.bankCode} onChange={(value) => setForm({ ...form, bankCode: value })} />
           <Field label="Tên ngân hàng" value={form.bankName} onChange={(value) => setForm({ ...form, bankName: value })} />
           <Field label="Số tài khoản" value={form.accountNumber} onChange={(value) => setForm({ ...form, accountNumber: value })} />
           <Field label="Tên chủ tài khoản" value={form.accountHolder} onChange={(value) => setForm({ ...form, accountHolder: value.toUpperCase() })} placeholder="Nhập đúng tên trên ngân hàng" />
-          <label className="flex items-center gap-2 text-sm font-medium text-stone-700"><input type="checkbox" checked={form.active} onChange={(event) => setForm({ ...form, active: event.target.checked })} /> Cho phép nhận tiền</label>
+          <label className="flex items-center gap-2 text-sm font-medium text-ink-soft"><input type="checkbox" checked={form.active} onChange={(event) => setForm({ ...form, active: event.target.checked })} /> Cho phép nhận tiền</label>
           <div className="sm:col-span-2 lg:col-span-3"><button type="submit" className="btn-primary" disabled={!form.bankCode.trim() || !form.bankName.trim() || !form.accountNumber.trim() || !form.accountHolder.trim() || saveMutation.isPending}>{saveMutation.isPending ? 'Đang lưu…' : 'Lưu tài khoản'}</button></div>
           {saveMutation.error && <div className="sm:col-span-2 lg:col-span-4"><ResultBanner tone="danger" message={errorMessage(saveMutation.error, 'Không lưu được tài khoản')} /></div>}
         </form>
@@ -305,7 +323,7 @@ function Field({ label, value, onChange, placeholder }: { label: string; value: 
 }
 
 function TransferStatusBadge({ status }: { status: BankTransferStatus }) {
-  const styles = { PENDING: 'bg-stone-100 text-stone-600', CLAIMED: 'bg-amber-100 text-amber-800', CONFIRMED: 'bg-emerald-100 text-emerald-800', REJECTED: 'bg-red-100 text-red-700', EXPIRED: 'bg-stone-200 text-stone-500' };
+  const styles = { PENDING: 'bg-surface-muted text-ink-mute', CLAIMED: 'bg-amber-100 text-amber-800', CONFIRMED: 'bg-emerald-100 text-emerald-800', REJECTED: 'bg-red-100 text-red-700', EXPIRED: 'bg-slate-200 text-ink-mute' };
   const labels = { PENDING: 'Chưa báo chuyển', CLAIMED: 'Cần kiểm tra', CONFIRMED: 'Đã xác nhận', REJECTED: 'Đã từ chối', EXPIRED: 'Hết hạn' };
   return <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${styles[status]}`}>{labels[status]}</span>;
 }

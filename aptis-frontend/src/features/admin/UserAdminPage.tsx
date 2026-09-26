@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/api/client';
 import { adminEntitlementApi, adminUserApi } from '@/api/adminEndpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
@@ -8,10 +8,18 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { confirmDialog } from '@/lib/dialog';
 import { formatDateTime, relativeTime } from '@/lib/format';
 import type { AccessState, ActivityWindow, AdminEntitlement, AdminSubscription, AdminUser, UserSort, UserStatus } from '@/types/admin';
-import { DataTable, PageHeader, Pager, ResultBanner } from './components/AdminUi';
+import { DataTable, PageHeader, Pager, ResultBanner, StatusTiles } from './components/AdminUi';
 import { usePermission } from './usePermission';
 
 const PAGE_SIZE = 20;
+
+/** Ô đếm tài khoản theo trạng thái; bấm ô để lọc danh sách. */
+const USER_TILES: { value: UserStatus; label: string; hint: string }[] = [
+  { value: 'ACTIVE', label: 'Đang hoạt động', hint: 'Tài khoản dùng bình thường' },
+  { value: 'PENDING_VERIFICATION', label: 'Chờ xác minh', hint: 'Chưa xác minh tài khoản' },
+  { value: 'LOCKED', label: 'Khóa tạm thời', hint: 'Bị khóa có thời hạn' },
+  { value: 'SUSPENDED', label: 'Tạm khóa', hint: 'Quản trị viên đã khóa' },
+];
 
 function errorMessage(error: unknown, fallback: string) {
   return error instanceof ApiError ? error.message : fallback;
@@ -54,6 +62,16 @@ export function UserAdminPage() {
       }),
     placeholderData: (previous) => previous,
   });
+  // Số đếm: cùng endpoint danh sách, lọc trạng thái, size=1, đọc totalElements.
+  const countQueries = useQueries({
+    queries: USER_TILES.map((tile) => ({
+      queryKey: ['admin', 'users', 'count', tile.value],
+      queryFn: () => adminUserApi.list({ status: tile.value, page: 0, size: 1 }),
+    })),
+  });
+  const counts = Object.fromEntries(
+    USER_TILES.map((tile, index) => [tile.value, countQueries[index]?.data?.totalElements]),
+  ) as Partial<Record<UserStatus, number>>;
 
   const content = () => {
     if (usersQuery.isPending) return <LoadingBlock label="Đang tải danh sách người dùng…" />;
@@ -64,7 +82,7 @@ export function UserAdminPage() {
     const data = usersQuery.data;
     return (
       <>
-        <p className="mb-2 text-xs text-slate-500">{data.totalElements} người dùng</p>
+        <p className="mb-2 text-xs text-ink-mute">{data.totalElements} người dùng</p>
         <DataTable
           headers={[
             'Người dùng',
@@ -109,11 +127,11 @@ export function UserAdminPage() {
           {data.content.map((user) => (
             <tr key={user.id} className="transition-colors hover:bg-brand-50">
               <td className="px-4 py-3">
-                <p className="font-medium text-slate-900">{user.displayName || user.fullName || 'Chưa đặt tên'}</p>
-                <p className="text-xs text-slate-500">{user.email}</p>
+                <p className="font-medium text-ink">{user.displayName || user.fullName || 'Chưa đặt tên'}</p>
+                <p className="text-xs text-ink-mute">{user.email}</p>
               </td>
               <td className="px-4 py-3"><UserStatusBadge status={user.status} /></td>
-              <td className="px-4 py-3"><div className="flex max-w-72 flex-wrap gap-1">{user.roles.map((role) => <span key={role} className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700">{role}</span>)}</div></td>
+              <td className="px-4 py-3"><div className="flex max-w-72 flex-wrap gap-1">{user.roles.map((role) => <span key={role} className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-ink-soft">{role}</span>)}</div></td>
               <td className="px-4 py-3"><AccessStateBadge user={user} /></td>
               <td className="px-4 py-3"><PremiumSummary user={user} canManage={canManagePremium} /></td>
               <td className="px-4 py-3"><AiVoiceSummary user={user} canManage={canManagePremium} /></td>
@@ -122,12 +140,12 @@ export function UserAdminPage() {
                   ngày không phải đăng nhập và lastLoginAt đứng im. Vẫn hiện
                   đăng nhập ở dòng phụ để đối chiếu. */}
               <td className="whitespace-nowrap px-4 py-3 text-xs">
-                <p className="font-medium text-slate-700">{relativeTime(user.lastActivityAt)}</p>
-                <p className="text-[11px] text-slate-400">
+                <p className="font-medium text-ink-soft">{relativeTime(user.lastActivityAt)}</p>
+                <p className="text-[11px] text-ink-faint">
                   Đăng nhập: {formatDateTime(user.lastLoginAt)}
                 </p>
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-xs text-slate-500">{formatDateTime(user.createdAt)}</td>
+              <td className="whitespace-nowrap px-4 py-3 text-xs text-ink-mute">{formatDateTime(user.createdAt)}</td>
               <td className="px-4 py-3 text-right"><button type="button" className="btn-secondary !px-3 !py-1.5" onClick={() => setSelected(user)}>Quản lý</button></td>
             </tr>
           ))}
@@ -140,8 +158,9 @@ export function UserAdminPage() {
   return (
     <div>
       <PageHeader title="Quản lý người dùng" description="Tìm tài khoản, quản lý trạng thái, vai trò, gói Premium và AI Voice." />
+      <StatusTiles tiles={USER_TILES} counts={counts} active={status} onPick={(next) => { setStatus(next); setPage(0); }} />
       {banner && <ResultBanner tone="success" message={banner} onDismiss={() => setBanner(null)} />}
-      <div className="mb-5 grid gap-3 rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(31,41,35,.07)] sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_180px_180px_190px]">
+      <div className="mb-5 grid gap-3 rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(15,23,42,.07)] sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_180px_180px_190px]">
         <div><label htmlFor="user-search" className="label">Tìm người dùng</label><input id="user-search" className="input" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} placeholder="Email hoặc số điện thoại" /></div>
         <div><label htmlFor="user-status" className="label">Trạng thái</label><select id="user-status" className="input" value={status} onChange={(event) => { setStatus(event.target.value as UserStatus | ''); setPage(0); }}><option value="">Tất cả</option><option value="ACTIVE">Đang hoạt động</option><option value="SUSPENDED">Tạm khóa</option><option value="PENDING_VERIFICATION">Chờ xác minh</option><option value="LOCKED">Khóa tạm thời</option></select></div>
         <div>
@@ -201,13 +220,13 @@ function UserPanel({ user, canWrite, canManagePremium, onClose, onSaved }: { use
     <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40">
       <button type="button" className="flex-1 cursor-default" aria-label="Đóng quản lý người dùng" onClick={onClose} />
       <aside className="flex w-full max-w-lg flex-col overflow-y-auto bg-white shadow-xl" aria-label={`Quản lý ${user.email}`}>
-        <header className="flex items-start justify-between gap-3 border-b border-slate-200 px-5 py-4"><div><h2 className="font-semibold text-slate-900">{user.displayName || user.fullName || 'Người dùng'}</h2><p className="text-sm text-slate-500">{user.email}</p></div><button type="button" className="btn-ghost !px-2 !py-1" onClick={onClose}>Đóng</button></header>
+        <header className="flex items-start justify-between gap-3 border-b border-slate-200 px-5 py-4"><div><h2 className="font-semibold text-ink">{user.displayName || user.fullName || 'Người dùng'}</h2><p className="text-sm text-ink-mute">{user.email}</p></div><button type="button" className="btn-ghost !px-2 !py-1" onClick={onClose}>Đóng</button></header>
         <div className="flex-1 space-y-6 p-5">
           {mutationError && <ResultBanner tone="danger" message={errorMessage(mutationError, 'Không thể cập nhật người dùng')} />}
-          <section className="rounded-xl border border-slate-200 p-4"><div className="flex items-center justify-between gap-3"><div><h3 className="font-semibold text-slate-900">Trạng thái tài khoản</h3><p className="mt-1 text-sm text-slate-500">Tạm khóa sẽ chặn đăng nhập nhưng không xóa dữ liệu.</p></div><UserStatusBadge status={user.status} /></div>{canWrite && (user.status === 'ACTIVE' || user.status === 'SUSPENDED') && <button type="button" className={user.status === 'ACTIVE' ? 'btn-secondary mt-4 w-full !border-red-200 !text-red-700' : 'btn-primary mt-4 w-full'} disabled={statusMutation.isPending} onClick={() => statusMutation.mutate()}>{user.status === 'ACTIVE' ? 'Tạm khóa tài khoản' : 'Mở lại tài khoản'}</button>}</section>
+          <section className="rounded-xl border border-slate-200 p-4"><div className="flex items-center justify-between gap-3"><div><h3 className="font-semibold text-ink">Trạng thái tài khoản</h3><p className="mt-1 text-sm text-ink-mute">Tạm khóa sẽ chặn đăng nhập nhưng không xóa dữ liệu.</p></div><UserStatusBadge status={user.status} /></div>{canWrite && (user.status === 'ACTIVE' || user.status === 'SUSPENDED') && <button type="button" className={user.status === 'ACTIVE' ? 'btn-secondary mt-4 w-full !border-red-200 !text-red-700' : 'btn-primary mt-4 w-full'} disabled={statusMutation.isPending} onClick={() => statusMutation.mutate()}>{user.status === 'ACTIVE' ? 'Tạm khóa tài khoản' : 'Mở lại tài khoản'}</button>}</section>
           <PremiumSection user={user} canManage={canManagePremium} onSaved={onSaved} />
           <AiVoiceSection user={user} canManage={canManagePremium} onSaved={onSaved} />
-          <section><h3 className="font-semibold text-slate-900">Vai trò</h3><p className="mt-1 text-sm text-slate-500">Vai trò quyết định các khu vực và thao tác tài khoản được phép sử dụng.</p>{rolesQuery.isPending && <LoadingBlock label="Đang tải vai trò…" />}{rolesQuery.data && <div className="mt-3 space-y-2">{rolesQuery.data.map((role) => <label key={role.code} className="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-3 hover:bg-slate-50"><input type="checkbox" className="mt-1 h-4 w-4 accent-brand-800" checked={roles.includes(role.code)} disabled={!canWrite} onChange={(event) => setRoles((current) => event.target.checked ? [...current, role.code] : current.filter((code) => code !== role.code))} /><span><span className="block text-sm font-semibold text-slate-900">{role.name}</span><span className="block text-xs text-slate-500">{role.description || role.code}</span></span></label>)}</div>}{canWrite && <button type="button" className="btn-primary mt-4 w-full" disabled={roles.length === 0 || rolesMutation.isPending || roles.slice().sort().join('|') === user.roles.slice().sort().join('|')} onClick={() => rolesMutation.mutate()}>Lưu vai trò</button>}</section>
+          <section><h3 className="font-semibold text-ink">Vai trò</h3><p className="mt-1 text-sm text-ink-mute">Vai trò quyết định các khu vực và thao tác tài khoản được phép sử dụng.</p>{rolesQuery.isPending && <LoadingBlock label="Đang tải vai trò…" />}{rolesQuery.data && <div className="mt-3 space-y-2">{rolesQuery.data.map((role) => <label key={role.code} className="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-3 hover:bg-slate-50"><input type="checkbox" className="mt-1 h-4 w-4 accent-brand-800" checked={roles.includes(role.code)} disabled={!canWrite} onChange={(event) => setRoles((current) => event.target.checked ? [...current, role.code] : current.filter((code) => code !== role.code))} /><span><span className="block text-sm font-semibold text-ink">{role.name}</span><span className="block text-xs text-ink-mute">{role.description || role.code}</span></span></label>)}</div>}{canWrite && <button type="button" className="btn-primary mt-4 w-full" disabled={roles.length === 0 || rolesMutation.isPending || roles.slice().sort().join('|') === user.roles.slice().sort().join('|')} onClick={() => rolesMutation.mutate()}>Lưu vai trò</button>}</section>
         </div>
       </aside>
     </div>
@@ -235,7 +254,7 @@ function SortButton({ label, active, descending, onClick }: {
         : `Sắp theo ${label.toLowerCase()}`}
       className={clsx(
         'inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide transition-colors',
-        active ? 'text-brand-800' : 'text-slate-500 hover:text-slate-800',
+        active ? 'text-brand-800' : 'text-ink-mute hover:text-ink-soft',
       )}
     >
       {label}
@@ -270,14 +289,14 @@ function AccessStateBadge({ user }: { user: AdminUser }) {
           Đang dùng thử
         </span>
         {user.trialEndsAt && (
-          <p className="mt-1 text-[11px] text-slate-500">{describeTrialLeft(user.trialEndsAt)}</p>
+          <p className="mt-1 text-[11px] text-ink-mute">{describeTrialLeft(user.trialEndsAt)}</p>
         )}
       </div>
     );
   }
 
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-ink-mute">
       <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
       Hết hạn
     </span>
@@ -340,11 +359,11 @@ function AiVoiceSection({ user, canManage, onSaved }: {
   return (
     <section className="rounded-xl border border-violet-200 bg-violet-50/40 p-4">
       <div className="flex items-start justify-between gap-3">
-        <div><h3 className="font-semibold text-slate-900">AI Voice · English Lounge</h3><p className="mt-1 text-sm text-slate-500">Quyền riêng, không đi kèm Premium luyện đề. Tối đa 120 phút mỗi ngày.</p></div>
-        <span className={period ? 'rounded-full bg-violet-100 px-2.5 py-1 text-xs font-semibold text-violet-800' : 'rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600'}>{period ? 'Đã có quyền' : 'Chưa có quyền'}</span>
+        <div><h3 className="font-semibold text-ink">AI Voice · English Lounge</h3><p className="mt-1 text-sm text-ink-mute">Quyền riêng, không đi kèm Premium luyện đề. Tối đa 120 phút mỗi ngày.</p></div>
+        <span className={period ? 'rounded-full bg-violet-100 px-2.5 py-1 text-xs font-semibold text-violet-800' : 'rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-ink-mute'}>{period ? 'Đã có quyền' : 'Chưa có quyền'}</span>
       </div>
-      {period && <p className="mt-3 text-xs text-slate-600">Hiệu lực: {formatDateTime(period.startsAt)} — {period.endsAt ? formatDateTime(period.endsAt) : 'Trọn đời'}</p>}
-      {entitlementsQuery.isPending && <p className="mt-3 text-xs text-slate-500">Đang tải quyền AI Voice…</p>}
+      {period && <p className="mt-3 text-xs text-ink-mute">Hiệu lực: {formatDateTime(period.startsAt)} — {period.endsAt ? formatDateTime(period.endsAt) : 'Trọn đời'}</p>}
+      {entitlementsQuery.isPending && <p className="mt-3 text-xs text-ink-mute">Đang tải quyền AI Voice…</p>}
       {(entitlementsQuery.error || mutationError) && <div className="mt-3"><ResultBanner tone="danger" message={errorMessage(mutationError ?? entitlementsQuery.error, 'Không thể cập nhật AI Voice')} /></div>}
       {canManage && <div className="mt-4 grid grid-cols-[1fr_auto] gap-2"><select className="input" value={durationDays} onChange={(event) => setDurationDays(Number(event.target.value))} disabled={pending}><option value={7}>7 ngày</option><option value={14}>14 ngày</option><option value={30}>30 ngày</option><option value={90}>90 ngày</option><option value={180}>180 ngày</option><option value={365}>365 ngày</option></select><button type="button" className="btn-primary whitespace-nowrap" disabled={pending} onClick={() => grantMutation.mutate()}>{period ? 'Gia hạn AI Voice' : 'Cấp AI Voice'}</button></div>}
       {canManage && period && <button type="button" className="btn-secondary mt-3 w-full !border-red-200 !text-red-700" disabled={pending} onClick={async () => { const ok = await confirmDialog({ title: 'Thu hồi AI Voice?', text: 'Người dùng sẽ mất quyền AI English Lounge ngay lập tức.', confirmText: 'Thu hồi quyền', danger: true }); if (ok) revokeMutation.mutate(); }}>Thu hồi AI Voice</button>}
@@ -363,14 +382,14 @@ function PremiumSummary({ user, canManage }: { user: AdminUser; canManage: boole
   const startsAt = period?.startsAt;
   const endsAt = period?.endsAt ?? user.premiumEndsAt;
 
-  if (entitlementsQuery.isPending) return <span className="text-xs text-slate-400">Đang tải gói…</span>;
-  if (!isPremium) return <span className="text-xs text-slate-400">Chưa có gói</span>;
+  if (entitlementsQuery.isPending) return <span className="text-xs text-ink-faint">Đang tải gói…</span>;
+  if (!isPremium) return <span className="text-xs text-ink-faint">Chưa có gói</span>;
 
   return (
     <div className="min-w-44 text-xs">
       <span className="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 font-semibold text-amber-800">Premium</span>
-      <p className="mt-1 text-slate-600">Từ: {startsAt ? formatDateTime(startsAt) : '—'}</p>
-      <p className="text-slate-600">Đến: {endsAt ? formatDateTime(endsAt) : 'Trọn đời'}</p>
+      <p className="mt-1 text-ink-mute">Từ: {startsAt ? formatDateTime(startsAt) : '—'}</p>
+      <p className="text-ink-mute">Đến: {endsAt ? formatDateTime(endsAt) : 'Trọn đời'}</p>
     </div>
   );
 }
@@ -383,15 +402,15 @@ function AiVoiceSummary({ user, canManage }: { user: AdminUser; canManage: boole
   });
   const period = getEntitlementPeriod(entitlementsQuery.data ?? [], AI_VOICE_CODE);
 
-  if (!canManage) return <span className="text-xs text-slate-400">Không có quyền xem</span>;
-  if (entitlementsQuery.isPending) return <span className="text-xs text-slate-400">Đang tải gói…</span>;
-  if (!period) return <span className="text-xs text-slate-400">Chưa có gói</span>;
+  if (!canManage) return <span className="text-xs text-ink-faint">Không có quyền xem</span>;
+  if (entitlementsQuery.isPending) return <span className="text-xs text-ink-faint">Đang tải gói…</span>;
+  if (!period) return <span className="text-xs text-ink-faint">Chưa có gói</span>;
 
   return (
     <div className="min-w-44 text-xs">
       <span className="inline-block rounded-full bg-violet-100 px-2.5 py-0.5 font-semibold text-violet-800">AI Voice</span>
-      <p className="mt-1 text-slate-600">Từ: {formatDateTime(period.startsAt)}</p>
-      <p className="text-slate-600">Đến: {period.endsAt ? formatDateTime(period.endsAt) : 'Trọn đời'}</p>
+      <p className="mt-1 text-ink-mute">Từ: {formatDateTime(period.startsAt)}</p>
+      <p className="text-ink-mute">Đến: {period.endsAt ? formatDateTime(period.endsAt) : 'Trọn đời'}</p>
     </div>
   );
 }
@@ -483,26 +502,26 @@ function PremiumSection({ user, canManage, onSaved }: {
     <section className="rounded-xl border border-amber-200 bg-amber-50/40 p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 className="font-semibold text-slate-900">Gói Premium</h3>
-          <p className="mt-1 text-sm text-slate-500">
+          <h3 className="font-semibold text-ink">Gói Premium</h3>
+          <p className="mt-1 text-sm text-ink-mute">
             {hasPremium
               ? premiumPeriod?.startsAt ? `Từ ${formatDateTime(premiumPeriod.startsAt)} đến ${premiumEndsAt ? formatDateTime(premiumEndsAt) : 'trọn đời'}.` : `Có hiệu lực đến ${premiumEndsAt ? formatDateTime(premiumEndsAt) : 'trọn đời'}.`
               : 'Tài khoản chưa có gói Premium.'}
           </p>
         </div>
-        <span className={hasPremium ? 'rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800' : 'rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600'}>
+        <span className={hasPremium ? 'rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800' : 'rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-ink-mute'}>
           {hasPremium ? 'Premium' : 'Chưa có gói'}
         </span>
       </div>
 
       {canManage && (
         <>
-          {(entitlementsQuery.isPending || subscriptionsQuery.isPending) && <p className="mt-3 text-xs text-slate-500">Đang tải thông tin gói…</p>}
+          {(entitlementsQuery.isPending || subscriptionsQuery.isPending) && <p className="mt-3 text-xs text-ink-mute">Đang tải thông tin gói…</p>}
           {(entitlementsQuery.error || subscriptionsQuery.error) && <p className="mt-3 text-xs text-red-600">Không tải được đầy đủ thông tin gói. Hãy thử lại.</p>}
           {mutationError && <div className="mt-3"><ResultBanner tone="danger" message={errorMessage(mutationError, 'Không thể cập nhật gói Premium')} /></div>}
 
           {hasPremium && (activeSubscriptions.length > 0 || premiumEntitlements.length > 0) && (
-            <p className="mt-3 text-xs text-slate-500">
+            <p className="mt-3 text-xs text-ink-mute">
               Nguồn quyền: {activeSubscriptions.length > 0 ? `${activeSubscriptions.length} gói đã mua` : 'cấp thủ công'}.
             </p>
           )}
@@ -592,7 +611,7 @@ function UserStatusBadge({ status }: { status: UserStatus }) {
     SUSPENDED: 'bg-amber-100 text-amber-800',
     LOCKED: 'bg-red-100 text-red-800',
     PENDING_VERIFICATION: 'bg-sky-100 text-sky-800',
-    DELETED: 'bg-slate-100 text-slate-700',
+    DELETED: 'bg-slate-100 text-ink-soft',
   };
   return <span className={`inline-block whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-medium ${colors[status]}`}>{labels[status]}</span>;
 }

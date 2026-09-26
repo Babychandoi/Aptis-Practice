@@ -693,7 +693,7 @@ export function QuestionSetEditorPage({ mode = 'admin' }: { mode?: 'admin' | 'te
             onRemove={(assetId) => setForm((current) => ({ ...current, assets: current.assets.filter((asset) => asset.assetId !== assetId) }))}
           />
         </div>}
-        {!partTemplate?.stimulus && !partTemplate?.sharedMedia && <div className="mt-4 rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-600">
+        {!partTemplate?.stimulus && !partTemplate?.sharedMedia && <div className="mt-4 rounded-xl border border-border bg-surface-muted px-4 py-3 text-sm text-ink-mute">
           Part này không có ngữ liệu, audio hoặc hình ảnh dùng chung. Nội dung được nhập trực tiếp theo từng câu ở bước tiếp theo.
         </div>}
       </section>}
@@ -744,7 +744,7 @@ export function QuestionSetEditorPage({ mode = 'admin' }: { mode?: 'admin' | 'te
           <Summary label="Số câu" value={`${form.items.length} câu`} />
           <Summary label="Truy cập" value={form.accessLevel === 'FREE' ? 'Miễn phí' : 'Premium'} />
         </div>
-        <h3 className="mb-3 text-sm font-semibold text-stone-900">Tùy chọn luyện tập</h3>
+        <h3 className="mb-3 text-sm font-semibold text-ink">Tùy chọn luyện tập</h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Check label="Trộn câu hỏi" checked={form.shuffleItems} onChange={(shuffleItems) => setForm((current) => ({ ...current, shuffleItems }))} />
           <Check label="Trộn đáp án" checked={form.shuffleOptions} onChange={(shuffleOptions) => setForm((current) => ({ ...current, shuffleOptions }))} />
@@ -758,8 +758,8 @@ export function QuestionSetEditorPage({ mode = 'admin' }: { mode?: 'admin' | 'te
         </div>
       </section>}
 
-      <div className="fixed bottom-0 right-0 z-20 flex w-full items-center justify-end gap-3 border-t border-stone-200 bg-white/95 px-6 py-3 shadow-[0_-8px_24px_rgba(28,38,32,0.08)] backdrop-blur md:w-[calc(100%-15rem)]">
-        <span className="mr-auto hidden text-sm text-stone-500 sm:block">Bước {step}/4 · {EDITOR_STEPS[step - 1]?.description}</span>
+      <div className="fixed bottom-0 right-0 z-20 flex w-full items-center justify-end gap-3 border-t border-border bg-white/95 px-6 py-3 shadow-[0_-8px_24px_rgba(28,38,32,0.08)] backdrop-blur md:w-[calc(100%-15rem)]">
+        <span className="mr-auto hidden text-sm text-ink-mute sm:block">Bước {step}/4 · {EDITOR_STEPS[step - 1]?.description}</span>
         {step > 1 && <button type="button" className="btn-secondary" onClick={() => changeStep(step - 1)}>← Quay lại</button>}
         {step < 4 ? (
           <button type="button" className="btn-primary min-w-32" onClick={goNext}>Tiếp tục →</button>
@@ -791,8 +791,8 @@ function QuestionCard({ item, index, responseType, promptLabel, fixedFirstOption
   const updateOptions = (options: QuestionOptionPayload[]) => onChange({ ...item, options });
   return (
     <article className="card border-l-4 !border-l-brand-600">
-      <div className="mb-4 flex items-center justify-between gap-3 border-b border-stone-100 pb-3">
-        <div><span className="text-xs font-semibold uppercase tracking-wider text-brand-700">Câu {index + 1}</span><p className="mt-0.5 text-xs text-stone-500">{responseType.replaceAll('_', ' ')}</p></div>
+      <div className="mb-4 flex items-center justify-between gap-3 border-b border-border-subtle pb-3">
+        <div><span className="text-xs font-semibold uppercase tracking-wider text-brand-700">Câu {index + 1}</span><p className="mt-0.5 text-xs text-ink-mute">{responseType.replaceAll('_', ' ')}</p></div>
         {allowRemove && <button type="button" className="btn-ghost text-red-700" disabled={index === 0} onClick={onRemove}>Xóa câu</button>}
       </div>
       {requiresAudio && <div className="mb-4">
@@ -827,8 +827,8 @@ function QuestionCard({ item, index, responseType, promptLabel, fixedFirstOption
 
 function OptionEditor({ groupName, options, multiple, ordering, fixedFirstOption, answerKey, onOptions, onAnswer }: { groupName: string; options: QuestionOptionPayload[]; multiple: boolean; ordering: boolean; fixedFirstOption?: boolean; answerKey?: AnswerKeyPayload; onOptions: (options: QuestionOptionPayload[]) => void; onAnswer: (key: AnswerKeyPayload) => void }) {
   const selected = new Set(answerKey?.selectedOptionIds ?? []);
-  return <div className="mt-4 rounded-xl bg-stone-50 p-4">
-    <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-semibold text-stone-900">Phương án trả lời</h3><button type="button" className="btn-ghost !py-1 text-xs" onClick={() => onOptions([...options, blankOption(options.length)])}>+ Thêm phương án</button></div>
+  return <div className="mt-4 rounded-xl bg-surface-muted p-4">
+    <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-semibold text-ink">Phương án trả lời</h3><button type="button" className="btn-ghost !py-1 text-xs" onClick={() => onOptions([...options, blankOption(options.length)])}>+ Thêm phương án</button></div>
     <div className="space-y-2">{options.map((option, optionIndex) => <div key={option.id} className="flex items-center gap-2">
       {!ordering && <input aria-label={`Đáp án ${option.code}`} type={multiple ? 'checkbox' : 'radio'} name={multiple ? undefined : groupName} checked={multiple ? selected.has(option.id) : answerKey?.selectedOptionId === option.id} onChange={(event) => {
         if (multiple) {
@@ -851,22 +851,22 @@ function OptionEditor({ groupName, options, multiple, ordering, fixedFirstOption
 
 function MatchingEditor({ item, autoLeftLabel, onChange }: { item: EditorItem; autoLeftLabel?: string; onChange: (item: EditorItem) => void }) {
   const updateSide = (side: 'leftItems' | 'rightItems', values: QuestionOptionPayload[]) => onChange({ ...item, [side]: values });
-  return <div className="mt-4 rounded-xl bg-stone-50 p-4">
-    <h3 className="mb-3 text-sm font-semibold text-stone-900">{autoLeftLabel ? 'Các mẩu thông tin' : 'Các cặp nối'}</h3>
+  return <div className="mt-4 rounded-xl bg-surface-muted p-4">
+    <h3 className="mb-3 text-sm font-semibold text-ink">{autoLeftLabel ? 'Các mẩu thông tin' : 'Các cặp nối'}</h3>
     <div className={clsx('grid gap-4', !autoLeftLabel && 'lg:grid-cols-2')}>
       {/* autoLeftLabel: vế trái đã điền sẵn (Speaker A, B…) nên không cần ô nhập */}
       {!autoLeftLabel && <OptionColumn title="Vế trái" options={item.leftItems} onChange={(values) => updateSide('leftItems', values)} />}
       <OptionColumn title={autoLeftLabel ? 'Nhập các mẩu thông tin (dùng chung cho tất cả)' : 'Vế phải'} options={item.rightItems} onChange={(values) => updateSide('rightItems', values)} />
     </div>
     <div className="mt-4">
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500">Đáp án</p>
+      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-mute">Đáp án</p>
       <div className="grid gap-2 sm:grid-cols-2">{item.leftItems.map((left) => <label key={left.id} className="flex items-center gap-2 text-sm"><span className="min-w-24 font-medium">{autoLeftLabel ? left.content : left.code}</span><select className="input" value={item.answerKey?.matches?.[left.id] ?? ''} onChange={(event) => onChange({ ...item, answerKey: { ...(item.answerKey ?? { type: 'MATCHING' }), matches: { ...(item.answerKey?.matches ?? {}), [left.id]: event.target.value } } })}><option value="">Chọn đáp án</option>{item.rightItems.map((right) => <option key={right.id} value={right.id}>{right.code} — {right.content || 'Chưa nhập'}</option>)}</select></label>)}</div>
     </div>
   </div>;
 }
 
 function OptionColumn({ title, options, onChange }: { title: string; options: QuestionOptionPayload[]; onChange: (options: QuestionOptionPayload[]) => void }) {
-  return <div><div className="mb-2 flex items-center justify-between"><span className="text-xs font-semibold uppercase tracking-wide text-stone-500">{title}</span><button type="button" className="btn-ghost !p-1 text-xs" onClick={() => onChange([...options, nextOption(options)])}>+ Thêm</button></div><div className="space-y-2">{options.map((option, index) => <input key={option.id} className="input" value={option.content} placeholder={`${option.code} — Nội dung`} onChange={(event) => onChange(options.map((entry, i) => i === index ? { ...entry, content: event.target.value } : entry))} />)}</div></div>;
+  return <div><div className="mb-2 flex items-center justify-between"><span className="text-xs font-semibold uppercase tracking-wide text-ink-mute">{title}</span><button type="button" className="btn-ghost !p-1 text-xs" onClick={() => onChange([...options, nextOption(options)])}>+ Thêm</button></div><div className="space-y-2">{options.map((option, index) => <input key={option.id} className="input" value={option.content} placeholder={`${option.code} — Nội dung`} onChange={(event) => onChange(options.map((entry, i) => i === index ? { ...entry, content: event.target.value } : entry))} />)}</div></div>;
 }
 
 function AssetUploader({ assets, media, onAdd, onRemove }: {
@@ -901,14 +901,14 @@ function AssetUploader({ assets, media, onAdd, onRemove }: {
     onSuccess: (asset) => { onAdd(asset); setFile(null); },
   });
 
-  return <div className="rounded-xl border border-dashed border-stone-300 bg-stone-50 p-4">
+  return <div className="rounded-xl border border-dashed border-border-strong bg-surface-muted p-4">
     <div className="flex flex-wrap items-end gap-3">
       <label className="min-w-64 flex-1"><span className="label">{media.label}{media.required && <span className="text-red-600"> *</span>}</span><input type="file" accept={media.type === 'AUDIO' ? 'audio/*' : 'image/*'} className="input bg-white" disabled={upload.isPending || assets.length >= (media.maxFiles ?? 1)} onChange={(event) => setFile(event.target.files?.[0] ?? null)} /></label>
       <button type="button" className="btn-secondary" disabled={!file || upload.isPending || assets.length >= (media.maxFiles ?? 1)} onClick={() => file && upload.mutate(file)}>{upload.isPending ? 'Đang tải…' : 'Tải tệp lên'}</button>
     </div>
     {upload.error && <p className="mt-2 text-sm text-red-700">{upload.error instanceof Error ? upload.error.message : 'Không tải được tệp'}</p>}
-    {assets.length > 0 && <ul className="mt-3 grid gap-2 sm:grid-cols-2">{assets.map((asset) => <li key={asset.assetId} className="flex items-center justify-between gap-2 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm"><span className="min-w-0 truncate"><strong>{asset.role === 'MAIN_AUDIO' ? 'Audio' : 'Ảnh'}</strong> · {asset.label}</span><button type="button" className="text-red-700 hover:underline" onClick={() => onRemove(asset.assetId)}>Gỡ</button></li>)}</ul>}
-    <p className="mt-2 text-xs text-stone-500">{media.help}</p>
+    {assets.length > 0 && <ul className="mt-3 grid gap-2 sm:grid-cols-2">{assets.map((asset) => <li key={asset.assetId} className="flex items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 py-2 text-sm"><span className="min-w-0 truncate"><strong>{asset.role === 'MAIN_AUDIO' ? 'Audio' : 'Ảnh'}</strong> · {asset.label}</span><button type="button" className="text-red-700 hover:underline" onClick={() => onRemove(asset.assetId)}>Gỡ</button></li>)}</ul>}
+    <p className="mt-2 text-xs text-ink-mute">{media.help}</p>
   </div>;
 }
 
@@ -937,7 +937,7 @@ function ItemAudioUploader({ itemNumber, title, help, assetId, label, onChange }
 
   return <div className="rounded-xl border border-sky-200 bg-sky-50/70 p-4">
     <div className="mb-3 flex items-center justify-between gap-3">
-      <div><h3 className="text-sm font-semibold text-stone-900">{title} <span className="text-red-600">*</span></h3><p className="mt-0.5 text-xs text-stone-500">{help}</p></div>
+      <div><h3 className="text-sm font-semibold text-ink">{title} <span className="text-red-600">*</span></h3><p className="mt-0.5 text-xs text-ink-mute">{help}</p></div>
       {assetId && <button type="button" className="btn-ghost text-red-700" onClick={() => onChange(undefined, undefined)}>Gỡ audio</button>}
     </div>
     {assetId ? (
@@ -1108,9 +1108,9 @@ function WizardProgress({ currentStep, onSelect }: { currentStep: number; onSele
         const active = item.number === currentStep;
         const complete = item.number < currentStep;
         return <li key={item.number}>
-          <button type="button" className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${active ? 'bg-brand-800 text-white' : complete ? 'bg-brand-50 text-brand-900 hover:bg-brand-100' : 'text-stone-400'}`} disabled={!complete} onClick={() => onSelect(item.number)}>
-            <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${active ? 'bg-white text-brand-800' : complete ? 'bg-brand-700 text-white' : 'bg-stone-100 text-stone-500'}`}>{complete ? '✓' : item.number}</span>
-            <span className="min-w-0"><strong className="block text-sm">{item.label}</strong><span className={`block truncate text-xs ${active ? 'text-brand-100' : 'text-stone-500'}`}>{item.description}</span></span>
+          <button type="button" className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${active ? 'bg-brand-800 text-white' : complete ? 'bg-brand-50 text-brand-900 hover:bg-brand-100' : 'text-ink-faint'}`} disabled={!complete} onClick={() => onSelect(item.number)}>
+            <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${active ? 'bg-white text-brand-800' : complete ? 'bg-brand-700 text-white' : 'bg-surface-muted text-ink-mute'}`}>{complete ? '✓' : item.number}</span>
+            <span className="min-w-0"><strong className="block text-sm">{item.label}</strong><span className={`block truncate text-xs ${active ? 'text-brand-100' : 'text-ink-mute'}`}>{item.description}</span></span>
           </button>
         </li>;
       })}
@@ -1119,15 +1119,15 @@ function WizardProgress({ currentStep, onSelect }: { currentStep: number; onSele
 }
 
 function Summary({ label, value }: { label: string; value: string }) {
-  return <div className="rounded-xl border border-stone-200 bg-stone-50 px-4 py-3"><span className="text-xs uppercase tracking-wide text-stone-500">{label}</span><strong className="mt-1 block text-sm text-stone-950">{value}</strong></div>;
+  return <div className="rounded-xl border border-border bg-surface-muted px-4 py-3"><span className="text-xs uppercase tracking-wide text-ink-mute">{label}</span><strong className="mt-1 block text-sm text-ink">{value}</strong></div>;
 }
 
 function ReadOnlyClassification({ label, value }: { label: string; value: string }) {
-  return <div className="rounded-xl border border-brand-100 bg-white px-4 py-3"><span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{label}</span><strong className="mt-1 block text-sm text-slate-900">{value}</strong></div>;
+  return <div className="rounded-xl border border-brand-100 bg-white px-4 py-3"><span className="text-[11px] font-semibold uppercase tracking-wide text-ink-faint">{label}</span><strong className="mt-1 block text-sm text-ink">{value}</strong></div>;
 }
 
-function SectionTitle({ number, title, subtitle }: { number: string; title: string; subtitle: string }) { return <div className="mb-4 flex items-start gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-100 text-sm font-bold text-brand-800">{number}</span><div><h2 className="font-semibold text-stone-950">{title}</h2><p className="mt-0.5 text-sm text-stone-500">{subtitle}</p></div></div>; }
+function SectionTitle({ number, title, subtitle }: { number: string; title: string; subtitle: string }) { return <div className="mb-4 flex items-start gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-100 text-sm font-bold text-brand-800">{number}</span><div><h2 className="font-semibold text-ink">{title}</h2><p className="mt-0.5 text-sm text-ink-mute">{subtitle}</p></div></div>; }
 function Input({ label, value, onChange, required, disabled, placeholder, type = 'text' }: { label: string; value: string; onChange: (value: string) => void; required?: boolean; disabled?: boolean; placeholder?: string; type?: string }) { return <label className="block"><span className="label">{label}{required && <span className="text-red-600"> *</span>}</span><input type={type} className="input" value={value} disabled={disabled} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} /></label>; }
 function TextArea({ label, value, onChange, required, placeholder, rows }: { label: string; value: string; onChange: (value: string) => void; required?: boolean; placeholder?: string; rows: number }) { return <label className="block"><span className="label">{label}{required && <span className="text-red-600"> *</span>}</span><textarea className="input resize-y" rows={rows} value={value} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} /></label>; }
 function Select({ label, value, onChange, options, disabled }: { label: string; value: string; onChange: (value: string) => void; options: Array<{ value: string; label: string }>; disabled?: boolean }) { return <label className="block"><span className="label">{label}</span><select className="input" value={value} disabled={disabled} onChange={(event) => onChange(event.target.value)}>{options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>; }
-function Check({ label, checked, onChange }: { label: string; checked: boolean; onChange: (checked: boolean) => void }) { return <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm text-stone-700"><input type="checkbox" className="h-4 w-4 rounded border-stone-300 text-brand-700" checked={checked} onChange={(event) => onChange(event.target.checked)} />{label}</label>; }
+function Check({ label, checked, onChange }: { label: string; checked: boolean; onChange: (checked: boolean) => void }) { return <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-border bg-surface-muted px-3 py-2.5 text-sm text-ink-soft"><input type="checkbox" className="h-4 w-4 rounded border-border-strong text-brand-700" checked={checked} onChange={(event) => onChange(event.target.checked)} />{label}</label>; }

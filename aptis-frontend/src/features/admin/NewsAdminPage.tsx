@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ApiError } from '@/api/client';
@@ -20,7 +20,7 @@ import type {
   NewsPostStatus,
   SaveNewsPostRequest,
 } from '@/types/admin';
-import { DataTable, PageHeader, Pager, ResultBanner } from './components/AdminUi';
+import { DataTable, PageHeader, Pager, ResultBanner, StatusTiles } from './components/AdminUi';
 import { usePermission } from './usePermission';
 
 const PAGE_SIZE = 20;
@@ -51,7 +51,7 @@ export function NewsAdminPage() {
       />
       {banner && <ResultBanner tone="success" message={banner} onDismiss={() => setBanner(null)} />}
 
-      <div className="mb-5 flex gap-1 border-b border-[#e8e5dc]">
+      <div className="mb-5 flex gap-1 border-b border-border">
         {canWrite && (
           <TabButton active={tab === 'posts'} onClick={() => setTab('posts')}>
             Bài viết
@@ -88,7 +88,7 @@ function TabButton({
         'relative -mb-px inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold transition-colors',
         active
           ? 'border-b-2 border-brand-800 text-brand-900'
-          : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800',
+          : 'border-b-2 border-transparent text-ink-mute hover:text-ink-soft',
       )}
     >
       {children}
@@ -118,6 +118,13 @@ function PendingBadge() {
 // Tab bài viết
 // ---------------------------------------------------------------------
 
+/** Ô đếm bài viết theo trạng thái; bấm ô để lọc danh sách. */
+const POST_TILES: { value: NewsPostStatus; label: string; hint: string }[] = [
+  { value: 'PUBLISHED', label: 'Đã đăng', hint: 'Học viên đang thấy' },
+  { value: 'DRAFT', label: 'Bản nháp', hint: 'Chưa đăng' },
+  { value: 'ARCHIVED', label: 'Đã lưu trữ', hint: 'Đã gỡ khỏi bảng tin' },
+];
+
 function PostsTab({ onBanner }: { onBanner: (message: string) => void }) {
   const queryClient = useQueryClient();
   const [status, setStatus] = useState<NewsPostStatus | ''>('');
@@ -130,6 +137,16 @@ function PostsTab({ onBanner }: { onBanner: (message: string) => void }) {
       adminNewsApi.posts({ status: status || undefined, page, size: PAGE_SIZE }),
     placeholderData: (previous) => previous,
   });
+  // Số đếm: cùng endpoint danh sách, lọc trạng thái, size=1, đọc totalElements.
+  const countQueries = useQueries({
+    queries: POST_TILES.map((tile) => ({
+      queryKey: ['admin', 'news', 'posts', 'count', tile.value],
+      queryFn: () => adminNewsApi.posts({ status: tile.value, page: 0, size: 1 }),
+    })),
+  });
+  const counts = Object.fromEntries(
+    POST_TILES.map((tile, index) => [tile.value, countQueries[index]?.data?.totalElements]),
+  ) as Partial<Record<NewsPostStatus, number>>;
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => adminNewsApi.remove(id),
@@ -145,7 +162,8 @@ function PostsTab({ onBanner }: { onBanner: (message: string) => void }) {
 
   return (
     <div>
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(31,41,35,.07)]">
+      <StatusTiles tiles={POST_TILES} counts={counts} active={status} onPick={(next) => { setStatus(next); setPage(0); }} />
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(15,23,42,.07)]">
         <div className="w-full sm:w-52">
           <label htmlFor="news-status" className="label">
             Trạng thái
@@ -179,7 +197,7 @@ function PostsTab({ onBanner }: { onBanner: (message: string) => void }) {
         />
       ) : (
         <>
-          <p className="mb-2 text-xs text-slate-500">{postsQuery.data.totalElements} bài viết</p>
+          <p className="mb-2 text-xs text-ink-mute">{postsQuery.data.totalElements} bài viết</p>
           <DataTable
             headers={['Bài viết', 'Trạng thái', 'Bình luận', 'Lượt xem', 'Cập nhật', '']}
             isEmpty={postsQuery.data.content.length === 0}
@@ -188,31 +206,31 @@ function PostsTab({ onBanner }: { onBanner: (message: string) => void }) {
             {postsQuery.data.content.map((post) => (
               <tr key={post.id} className="transition-colors hover:bg-brand-50">
                 <td className="px-4 py-3">
-                  <p className="font-medium text-slate-900">
+                  <p className="font-medium text-ink">
                     {post.pinned && <span title="Đã ghim">📌 </span>}
                     {post.title}
                   </p>
-                  <p className="font-mono text-[11px] text-slate-400">/{post.slug}</p>
+                  <p className="font-mono text-[11px] text-ink-faint">/{post.slug}</p>
                 </td>
                 <td className="px-4 py-3">
                   <PostStatusBadge status={post.status} />
                   {!post.commentsEnabled && (
-                    <p className="mt-1 text-[11px] text-slate-400">Đã tắt bình luận</p>
+                    <p className="mt-1 text-[11px] text-ink-faint">Đã tắt bình luận</p>
                   )}
                   {post.commentsEnabled && post.commentsModerated && (
                     <p className="mt-1 text-[11px] text-amber-700">Bình luận cần duyệt</p>
                   )}
                 </td>
                 <td className="px-4 py-3 text-xs">
-                  <span className="font-medium text-slate-700">{post.commentCount}</span>
+                  <span className="font-medium text-ink-soft">{post.commentCount}</span>
                   {post.pendingCommentCount > 0 && (
                     <span className="ml-1.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-800">
                       +{post.pendingCommentCount} chờ
                     </span>
                   )}
                 </td>
-                <td className="px-4 py-3 text-xs text-slate-500">{post.viewCount}</td>
-                <td className="whitespace-nowrap px-4 py-3 text-xs text-slate-500">
+                <td className="px-4 py-3 text-xs text-ink-mute">{post.viewCount}</td>
+                <td className="whitespace-nowrap px-4 py-3 text-xs text-ink-mute">
                   {post.updatedAt ? relativeTime(post.updatedAt) : '—'}
                 </td>
                 <td className="px-4 py-3 text-right">
@@ -266,8 +284,8 @@ function PostsTab({ onBanner }: { onBanner: (message: string) => void }) {
 function PostStatusBadge({ status }: { status: NewsPostStatus }) {
   const map: Record<NewsPostStatus, { label: string; className: string }> = {
     PUBLISHED: { label: 'Đã đăng', className: 'bg-brand-50 text-brand-800' },
-    DRAFT: { label: 'Bản nháp', className: 'bg-slate-100 text-slate-600' },
-    ARCHIVED: { label: 'Lưu trữ', className: 'bg-stone-200 text-stone-700' },
+    DRAFT: { label: 'Bản nháp', className: 'bg-slate-100 text-ink-mute' },
+    ARCHIVED: { label: 'Lưu trữ', className: 'bg-slate-200 text-ink-soft' },
   };
   const item = map[status];
   return (
@@ -419,7 +437,7 @@ ${snippet}` }));
         aria-label={postId ? 'Sửa bài viết' : 'Viết bài mới'}
       >
         <header className="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
-          <h2 className="font-semibold text-slate-900">
+          <h2 className="font-semibold text-ink">
             {postId ? 'Sửa bài viết' : 'Viết bài mới'}
           </h2>
           <div className="flex items-center gap-2">
@@ -465,7 +483,7 @@ ${snippet}` }));
 
             <div>
               <label htmlFor="post-excerpt" className="label">
-                Tóm tắt <span className="font-normal text-slate-400">(để trống thì tự cắt từ nội dung)</span>
+                Tóm tắt <span className="font-normal text-ink-faint">(để trống thì tự cắt từ nội dung)</span>
               </label>
               <textarea
                 id="post-excerpt"
@@ -480,7 +498,7 @@ ${snippet}` }));
               <div>
                 <p className="label">Xem trước</p>
                 <div className="rounded-xl border border-slate-200 p-4">
-                  <h1 className="text-xl font-bold text-slate-900">{form.title || '(chưa có tiêu đề)'}</h1>
+                  <h1 className="text-xl font-bold text-ink">{form.title || '(chưa có tiêu đề)'}</h1>
                   <SafeHtml html={previewHtml} className="news-body mt-3" />
                 </div>
               </div>
@@ -500,7 +518,7 @@ ${snippet}` }));
                   onChange={(event) => setForm((f) => ({ ...f, body: event.target.value }))}
                   placeholder={'## Bước 1\n\n**Đọc câu đầu** của mỗi đoạn trước.\n\n- gạch đầu dòng\n- gạch đầu dòng\n\n> Lưu ý quan trọng\n\n[Chữ hiện ra](/luyen-tap/doc)\n\n![Ảnh](/duong-dan-anh.png)'}
                 />
-                <p className="mt-1.5 text-[11px] leading-5 text-slate-500">
+                <p className="mt-1.5 text-[11px] leading-5 text-ink-mute">
                   Định dạng: <code className="font-mono">## Tiêu đề</code> ·{' '}
                   <code className="font-mono">**đậm**</code> ·{' '}
                   <code className="font-mono">*nghiêng*</code> ·{' '}
@@ -525,10 +543,10 @@ ${snippet}` }));
             />
 
             <div className="rounded-xl border border-slate-200 p-4">
-              <p className="mb-1 text-sm font-semibold text-slate-900">
+              <p className="mb-1 text-sm font-semibold text-ink">
                 Hoặc lấy đề theo nhóm
               </p>
-              <p className="mb-3 text-xs text-slate-500">
+              <p className="mb-3 text-xs text-ink-mute">
                 Chỉ dùng khi KHÔNG chọn đề đích danh ở trên. Học viên bấm một nút và nhận đề
                 bất kỳ trong nhóm — phù hợp bài dự đoán đề theo chủ đề.
               </p>
@@ -666,10 +684,10 @@ function BlueprintPicker({
 
   return (
     <div className="rounded-xl border border-brand-300 bg-brand-50/60 p-4">
-      <p className="mb-1 text-sm font-semibold text-slate-900">
-        Đề thi thử đủ 4 phần <span className="font-normal text-slate-500">(khuyến nghị)</span>
+      <p className="mb-1 text-sm font-semibold text-ink">
+        Đề thi thử đủ 4 phần <span className="font-normal text-ink-mute">(khuyến nghị)</span>
       </p>
-      <p className="mb-3 text-xs text-slate-500">
+      <p className="mb-3 text-xs text-ink-mute">
         Học viên bấm một lần làm hết Part 1 đến Part 4. Dùng cho bài hướng dẫn cả kỹ năng.
       </p>
 
@@ -683,10 +701,10 @@ function BlueprintPicker({
               <span className="grid h-6 w-6 shrink-0 place-items-center rounded bg-brand-800 text-[11px] font-bold text-white">
                 {index + 1}
               </span>
-              <span className="min-w-0 flex-1 truncate text-sm text-slate-800">{item.name}</span>
+              <span className="min-w-0 flex-1 truncate text-sm text-ink-soft">{item.name}</span>
               <button
                 type="button"
-                className="px-1 text-slate-400 hover:text-slate-800 disabled:opacity-30"
+                className="px-1 text-ink-faint hover:text-ink-soft disabled:opacity-30"
                 disabled={index === 0}
                 onClick={() => move(index, -1)}
                 aria-label="Lên"
@@ -695,7 +713,7 @@ function BlueprintPicker({
               </button>
               <button
                 type="button"
-                className="px-1 text-slate-400 hover:text-slate-800 disabled:opacity-30"
+                className="px-1 text-ink-faint hover:text-ink-soft disabled:opacity-30"
                 disabled={index === selected.length - 1}
                 onClick={() => move(index, 1)}
                 aria-label="Xuống"
@@ -725,9 +743,9 @@ function BlueprintPicker({
       {query.length > 0 && (
         <div className="mt-2 max-h-56 overflow-y-auto rounded-lg border border-slate-200 bg-white">
           {listQuery.isPending ? (
-            <p className="p-3 text-xs text-slate-400">Đang tải…</p>
+            <p className="p-3 text-xs text-ink-faint">Đang tải…</p>
           ) : matches.length === 0 ? (
-            <p className="p-3 text-xs text-slate-400">Không tìm thấy đề thi thử phù hợp.</p>
+            <p className="p-3 text-xs text-ink-faint">Không tìm thấy đề thi thử phù hợp.</p>
           ) : (
             <ul className="divide-y divide-slate-100">
               {matches.slice(0, 30).map((item) => {
@@ -740,7 +758,7 @@ function BlueprintPicker({
                       onClick={() => add({ id: item.id, name: item.name })}
                       className="flex w-full items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-brand-50 disabled:bg-slate-50 disabled:opacity-60"
                     >
-                      <span className="min-w-0 flex-1 truncate text-sm text-slate-800">
+                      <span className="min-w-0 flex-1 truncate text-sm text-ink-soft">
                         {item.name}
                       </span>
                       <span className="shrink-0 text-[11px] font-semibold text-brand-800">
@@ -818,10 +836,10 @@ function QuestionSetPicker({
 
   return (
     <div className="rounded-xl border border-brand-200 bg-brand-50/40 p-4">
-      <p className="mb-1 text-sm font-semibold text-slate-900">
-        Đề gắn vào bài <span className="font-normal text-slate-500">(chọn đích danh)</span>
+      <p className="mb-1 text-sm font-semibold text-ink">
+        Đề gắn vào bài <span className="font-normal text-ink-mute">(chọn đích danh)</span>
       </p>
-      <p className="mb-3 text-xs text-slate-500">
+      <p className="mb-3 text-xs text-ink-mute">
         Học viên thấy danh sách và bấm vào từng đề để làm ĐÚNG đề đó. Kéo thứ tự bằng hai
         mũi tên.
       </p>
@@ -837,14 +855,14 @@ function QuestionSetPicker({
                 {index + 1}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm text-slate-800">{item.title}</span>
+                <span className="block truncate text-sm text-ink-soft">{item.title}</span>
                 {item.partLabel && (
-                  <span className="block text-[11px] text-slate-400">{item.partLabel}</span>
+                  <span className="block text-[11px] text-ink-faint">{item.partLabel}</span>
                 )}
               </span>
               <button
                 type="button"
-                className="px-1 text-slate-400 hover:text-slate-800 disabled:opacity-30"
+                className="px-1 text-ink-faint hover:text-ink-soft disabled:opacity-30"
                 disabled={index === 0}
                 onClick={() => move(index, -1)}
                 aria-label="Lên"
@@ -853,7 +871,7 @@ function QuestionSetPicker({
               </button>
               <button
                 type="button"
-                className="px-1 text-slate-400 hover:text-slate-800 disabled:opacity-30"
+                className="px-1 text-ink-faint hover:text-ink-soft disabled:opacity-30"
                 disabled={index === selected.length - 1}
                 onClick={() => move(index, 1)}
                 aria-label="Xuống"
@@ -896,13 +914,13 @@ function QuestionSetPicker({
       </div>
 
       {searchQuery.isFetching && (
-        <p className="mt-2 text-xs text-slate-400">Đang tìm…</p>
+        <p className="mt-2 text-xs text-ink-faint">Đang tìm…</p>
       )}
 
       {searchQuery.data && (
         <div className="mt-2 max-h-64 overflow-y-auto rounded-lg border border-slate-200 bg-white">
           {searchQuery.data.content.length === 0 ? (
-            <p className="p-3 text-xs text-slate-400">Không tìm thấy đề phù hợp.</p>
+            <p className="p-3 text-xs text-ink-faint">Không tìm thấy đề phù hợp.</p>
           ) : (
             <ul className="divide-y divide-slate-100">
               {searchQuery.data.content.map((set) => {
@@ -916,8 +934,8 @@ function QuestionSetPicker({
                       className="flex w-full items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-brand-50 disabled:bg-slate-50 disabled:opacity-60"
                     >
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm text-slate-800">{set.title}</span>
-                        <span className="block font-mono text-[10px] text-slate-400">
+                        <span className="block truncate text-sm text-ink-soft">{set.title}</span>
+                        <span className="block font-mono text-[10px] text-ink-faint">
                           {set.code} · {set.partName}
                         </span>
                       </span>
@@ -1026,8 +1044,8 @@ function Toggle({
         onChange={(event) => onChange(event.target.checked)}
       />
       <span>
-        <span className="block text-sm font-medium text-slate-800">{label}</span>
-        {hint && <span className="block text-xs text-slate-500">{hint}</span>}
+        <span className="block text-sm font-medium text-ink-soft">{label}</span>
+        {hint && <span className="block text-xs text-ink-mute">{hint}</span>}
       </span>
     </label>
   );
@@ -1079,7 +1097,7 @@ function CommentsTab({ onBanner }: { onBanner: (message: string) => void }) {
 
   return (
     <div>
-      <div className="mb-5 w-full rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(31,41,35,.07)] sm:w-64">
+      <div className="mb-5 w-full rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(15,23,42,.07)] sm:w-64">
         <label htmlFor="comment-status" className="label">
           Trạng thái
         </label>
@@ -1107,12 +1125,12 @@ function CommentsTab({ onBanner }: { onBanner: (message: string) => void }) {
           onRetry={() => void commentsQuery.refetch()}
         />
       ) : commentsQuery.data.content.length === 0 ? (
-        <div className="card text-center text-sm text-slate-500">
+        <div className="card text-center text-sm text-ink-mute">
           {status === 'PENDING' ? 'Không có bình luận nào chờ duyệt.' : 'Không có bình luận nào.'}
         </div>
       ) : (
         <>
-          <p className="mb-2 text-xs text-slate-500">{commentsQuery.data.totalElements} bình luận</p>
+          <p className="mb-2 text-xs text-ink-mute">{commentsQuery.data.totalElements} bình luận</p>
           <div className="space-y-3">
             {commentsQuery.data.content.map((comment) => (
               <CommentCard
@@ -1151,24 +1169,24 @@ function CommentCard({
   const [reason, setReason] = useState('');
 
   return (
-    <div className="rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(31,41,35,.07)]">
+    <div className="rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(15,23,42,.07)]">
       <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
-        <span className="font-semibold text-slate-900">{comment.authorName}</span>
-        <span className="text-slate-400">{comment.authorEmail}</span>
+        <span className="font-semibold text-ink">{comment.authorName}</span>
+        <span className="text-ink-faint">{comment.authorEmail}</span>
         <span className="text-slate-300">·</span>
-        <span className="text-slate-400">{formatDateTime(comment.createdAt)}</span>
+        <span className="text-ink-faint">{formatDateTime(comment.createdAt)}</span>
       </div>
 
-      <p className="text-[11px] text-slate-400">
-        Ở bài: <span className="font-medium text-slate-600">{comment.postTitle}</span>
+      <p className="text-[11px] text-ink-faint">
+        Ở bài: <span className="font-medium text-ink-mute">{comment.postTitle}</span>
       </p>
 
-      <p className="mt-2 whitespace-pre-wrap rounded-lg bg-stone-50 p-3 text-sm leading-6 text-slate-700">
+      <p className="mt-2 whitespace-pre-wrap rounded-lg bg-surface-muted p-3 text-sm leading-6 text-ink-soft">
         {comment.body}
       </p>
 
       {comment.hiddenReason && (
-        <p className="mt-2 text-[11px] italic text-slate-500">
+        <p className="mt-2 text-[11px] italic text-ink-mute">
           Lý do ẩn đang hiện cho người viết: {comment.hiddenReason}
         </p>
       )}
@@ -1176,7 +1194,7 @@ function CommentCard({
       {hiding ? (
         <div className="mt-3">
           <label htmlFor={`reason-${comment.id}`} className="label">
-            Lý do ẩn <span className="font-normal text-slate-400">(người viết đọc được)</span>
+            Lý do ẩn <span className="font-normal text-ink-faint">(người viết đọc được)</span>
           </label>
           <input
             id={`reason-${comment.id}`}

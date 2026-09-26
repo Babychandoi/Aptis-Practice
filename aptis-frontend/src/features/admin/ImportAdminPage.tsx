@@ -128,7 +128,7 @@ export function ImportAdminPage() {
       )}
 
       <section className="card mb-5">
-        <h2 className="font-semibold text-slate-900">Tải file lên</h2>
+        <h2 className="font-semibold text-ink">Tải file lên</h2>
 
         <div className="mt-3 flex flex-wrap items-end gap-3">
           <div className="min-w-[260px] flex-1">
@@ -173,7 +173,7 @@ export function ImportAdminPage() {
 
       <ExcelFormatGuide />
 
-      <h2 className="mb-2 mt-6 font-semibold text-slate-900">Lịch sử import</h2>
+      <h2 className="mb-2 mt-6 font-semibold text-ink">Lịch sử import</h2>
       {renderJobTable()}
     </div>
   );
@@ -217,7 +217,7 @@ export function ImportAdminPage() {
       >
         {jobs.map((job) => (
           <tr key={job.id}>
-            <td className="whitespace-nowrap px-4 py-2.5 text-slate-600">
+            <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
               {job.importType}
             </td>
             <td className="whitespace-nowrap px-4 py-2.5">
@@ -226,7 +226,7 @@ export function ImportAdminPage() {
                 <p className="mt-1 max-w-xs text-xs text-red-700">{job.errorMessage}</p>
               )}
             </td>
-            <td className="whitespace-nowrap px-4 py-2.5 text-slate-600">
+            <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
               {job.totalRows}
             </td>
             <td className="whitespace-nowrap px-4 py-2.5 text-emerald-700">
@@ -235,10 +235,10 @@ export function ImportAdminPage() {
             <td className="whitespace-nowrap px-4 py-2.5 text-red-700">
               {job.failedRows}
             </td>
-            <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
+            <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
               {formatDateTime(job.queuedAt)}
             </td>
-            <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
+            <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
               {formatDateTime(job.completedAt)}
             </td>
             <td className="whitespace-nowrap px-4 py-2.5">
@@ -308,9 +308,9 @@ function DownloadAssetButton({
 function ExcelFormatGuide() {
   return (
     <section className="card">
-      <h2 className="font-semibold text-slate-900">Định dạng file Excel</h2>
+      <h2 className="font-semibold text-ink">Định dạng file Excel</h2>
 
-      <p className="mt-2 text-sm text-slate-600">
+      <p className="mt-2 text-sm text-ink-mute">
         Cột bắt buộc:{' '}
         <code className="rounded bg-slate-100 px-1 font-mono text-xs">code</code>,{' '}
         <code className="rounded bg-slate-100 px-1 font-mono text-xs">part_code</code>,{' '}
@@ -318,13 +318,13 @@ function ExcelFormatGuide() {
         <code className="rounded bg-slate-100 px-1 font-mono text-xs">prompt</code>.
       </p>
 
-      <p className="mt-2 text-sm text-slate-600">
+      <p className="mt-2 text-sm text-ink-mute">
         Cột <code className="rounded bg-slate-100 px-1 font-mono text-xs">task_type</code>{' '}
         quyết định dạng bài; bỏ trống thì mặc định{' '}
         <code className="rounded bg-slate-100 px-1 font-mono text-xs">SINGLE_CHOICE</code>.
       </p>
 
-      <ul className="mt-3 space-y-2 text-sm text-slate-700">
+      <ul className="mt-3 space-y-2 text-sm text-ink-soft">
         <li>
           <strong>SINGLE_CHOICE / GAP_FILL_CHOICE</strong>:{' '}
           <code className="font-mono text-xs">correct_option</code> là một mã phương án (A,
@@ -362,7 +362,7 @@ function ExcelFormatGuide() {
         </li>
       </ul>
 
-      <p className="mt-3 text-sm text-slate-600">
+      <p className="mt-3 text-sm text-ink-mute">
         Cột tùy chọn khác: <code className="font-mono text-xs">title</code>,{' '}
         <code className="font-mono text-xs">difficulty</code> (1..5),{' '}
         <code className="font-mono text-xs">access_level</code> (FREE/PREMIUM),{' '}
@@ -372,13 +372,13 @@ function ExcelFormatGuide() {
         <code className="font-mono text-xs">partial_credit</code>.
       </p>
 
-      <p className="mt-2 text-sm text-slate-600">
+      <p className="mt-2 text-sm text-ink-mute">
         Nhiều dòng cùng <code className="font-mono text-xs">code</code> sẽ gộp thành một bộ
         nhiều câu; các dòng cùng code phải có cùng{' '}
         <code className="font-mono text-xs">task_type</code>.
       </p>
 
-      <p className="mt-3 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-700">
+      <p className="mt-3 rounded-lg bg-slate-50 px-3 py-2 text-sm text-ink-soft">
         Dạng tự luận (<code className="font-mono text-xs">LONG_TEXT</code>,{' '}
         <code className="font-mono text-xs">AUDIO_RECORDING</code>) không import được vì
         chấm bằng rubric — phải soạn qua trang quản trị.

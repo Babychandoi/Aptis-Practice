@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/api/client';
 import { adminRefundApi } from '@/api/adminEndpoints';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { formatCurrency, formatDateTime } from '@/lib/format';
-import { DataTable, PageHeader, Pager, ResultBanner, StatusBadge } from './components/AdminUi';
+import { DataTable, PageHeader, Pager, ResultBanner, StatusBadge, StatusTiles } from './components/AdminUi';
 import { usePermission } from './usePermission';
 import type { Refund, RefundStatus } from '@/types/admin';
 
@@ -42,6 +42,16 @@ export function RefundAdminPage() {
     // Giữ dữ liệu trang trước trong lúc tải để bảng không nháy trắng
     placeholderData: (prev) => prev,
   });
+  // Ô đếm theo trạng thái: gọi lại endpoint danh sách với size=1 để lấy totalElements.
+  const countQueries = useQueries({
+    queries: STATUS_OPTIONS.map((option) => ({
+      queryKey: ['admin', 'refunds', { status: option.value, page: 0, size: 1 }],
+      queryFn: () => adminRefundApi.list(option.value, 0, 1),
+    })),
+  });
+  const counts = Object.fromEntries(
+    STATUS_OPTIONS.map((option, index) => [option.value, countQueries[index]?.data?.totalElements]),
+  ) as Partial<Record<RefundStatus, number>>;
 
   const rejectMutation = useMutation({
     mutationFn: ({ refundId, reason }: { refundId: string; reason: string }) =>
@@ -73,7 +83,7 @@ export function RefundAdminPage() {
 
     return (
       <>
-        <p className="mb-2 text-xs text-slate-500">{totalElements} yêu cầu hoàn tiền</p>
+        <p className="mb-2 text-xs text-ink-mute">{totalElements} yêu cầu hoàn tiền</p>
 
         <DataTable
           headers={[
@@ -92,26 +102,26 @@ export function RefundAdminPage() {
         >
           {refunds.map((refund) => (
             <tr key={refund.id} className="transition-colors hover:bg-brand-50">
-              <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-slate-600">
+              <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-ink-mute">
                 {refund.id}
               </td>
-              <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-slate-600">
+              <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-ink-mute">
                 {refund.orderId}
               </td>
-              <td className="whitespace-nowrap px-4 py-2.5 font-medium text-slate-900">
+              <td className="whitespace-nowrap px-4 py-2.5 font-medium text-ink">
                 {formatCurrency(refund.amount)}
               </td>
               <td className="whitespace-nowrap px-4 py-2.5">
                 <StatusBadge status={refund.status} />
               </td>
-              <td className="px-4 py-2.5 text-slate-600">{refund.reason ?? '—'}</td>
-              <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-slate-500">
+              <td className="px-4 py-2.5 text-ink-mute">{refund.reason ?? '—'}</td>
+              <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-ink-mute">
                 {refund.providerRefundId ?? '—'}
               </td>
-              <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
+              <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                 {formatDateTime(refund.requestedAt)}
               </td>
-              <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">
+              <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
                 {formatDateTime(refund.completedAt)}
               </td>
               <td className="whitespace-nowrap px-4 py-2.5 text-right">
@@ -152,6 +162,16 @@ export function RefundAdminPage() {
           ' xác nhận qua webhook. Quyền Premium của học viên CHƯA bị thu hồi cho tới khi cổng xác' +
           ' nhận thành công.'
         }
+      />
+
+      <StatusTiles
+        tiles={STATUS_OPTIONS}
+        counts={counts}
+        active={status}
+        onPick={(next) => {
+          setStatus(next);
+          setPage(0);
+        }}
       />
 
       {banner && (
@@ -231,8 +251,8 @@ function RejectDialog({
         }}
       >
         <div>
-          <h2 className="font-semibold text-slate-900">Từ chối yêu cầu hoàn tiền</h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <h2 className="font-semibold text-ink">Từ chối yêu cầu hoàn tiền</h2>
+          <p className="mt-1 text-sm text-ink-mute">
             Yêu cầu hoàn {formatCurrency(refund.amount)} cho đơn{' '}
             <span className="font-mono text-xs">{refund.orderId}</span> sẽ chuyển sang
             trạng thái Từ chối và không xử lý tiếp.

@@ -100,25 +100,25 @@ export function PlanAdminPage() {
       >
         {plans.map((plan) => (
           <tr key={plan.id} className="transition-colors hover:bg-brand-50">
-            <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-slate-600">
+            <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-ink-mute">
               {plan.code}
             </td>
             <td className="px-4 py-2.5">
-              <p className="font-medium text-slate-900">{plan.name}</p>
+              <p className="font-medium text-ink">{plan.name}</p>
               {plan.description && (
-                <p className="mt-0.5 text-xs text-slate-500">{plan.description}</p>
+                <p className="mt-0.5 text-xs text-ink-mute">{plan.description}</p>
               )}
             </td>
-            <td className="whitespace-nowrap px-4 py-2.5 text-slate-600">
+            <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
               {planDurationLabel(plan.durationDays)}
             </td>
-            <td className="whitespace-nowrap px-4 py-2.5 font-medium text-slate-900">
+            <td className="whitespace-nowrap px-4 py-2.5 font-medium text-ink">
               {formatCurrency(plan.priceAmount, plan.currency)}
             </td>
             <td className="whitespace-nowrap px-4 py-2.5">
               <StatusBadge status={plan.status} />
             </td>
-            <td className="whitespace-nowrap px-4 py-2.5 text-slate-600">
+            <td className="whitespace-nowrap px-4 py-2.5 text-ink-mute">
               {plan.displayOrder}
             </td>
             <td className="whitespace-nowrap px-4 py-2.5 text-right">
@@ -258,8 +258,8 @@ function CreatePlanForm({
       }}
     >
       <div>
-        <h2 className="font-semibold text-slate-900">Tạo gói mới</h2>
-        <p className="mt-1 text-sm text-slate-600">
+        <h2 className="font-semibold text-ink">Tạo gói mới</h2>
+        <p className="mt-1 text-sm text-ink-mute">
           Gói được tạo ở trạng thái <strong>Nháp</strong> và chưa bán được. Sau khi
           kiểm tra lại giá và thời hạn, hãy mở phần sửa gói và đổi trạng thái sang{' '}
           <strong>Đang bán</strong> để học viên nhìn thấy.
@@ -282,7 +282,7 @@ function CreatePlanForm({
             onChange={(e) => setCode(e.target.value)}
             required
           />
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-ink-mute">
             Không đổi được sau khi tạo — dùng để đối chiếu đơn hàng.
           </p>
         </div>
@@ -351,7 +351,7 @@ function CreatePlanForm({
             required
           />
           {priceAmount.trim() !== '' && Number.isFinite(price) && (
-            <p className="mt-1 text-xs text-slate-500">{formatCurrency(price)}</p>
+            <p className="mt-1 text-xs text-ink-mute">{formatCurrency(price)}</p>
           )}
         </div>
 
@@ -366,7 +366,7 @@ function CreatePlanForm({
             value={displayOrder}
             onChange={(e) => setDisplayOrder(e.target.value)}
           />
-          <p className="mt-1 text-xs text-slate-500">Số nhỏ hiện trước.</p>
+          <p className="mt-1 text-xs text-ink-mute">Số nhỏ hiện trước.</p>
         </div>
       </div>
 
@@ -426,8 +426,8 @@ function EditPlanForm({
       }}
     >
       <div>
-        <h2 className="font-semibold text-slate-900">
-          Sửa gói <span className="font-mono text-sm text-slate-600">{plan.code}</span>
+        <h2 className="font-semibold text-ink">
+          Sửa gói <span className="font-mono text-sm text-ink-mute">{plan.code}</span>
         </h2>
         {plan.status === 'DRAFT' && (
           <p className="mt-1 text-sm text-amber-700">
@@ -488,7 +488,7 @@ function EditPlanForm({
         {/* Thời hạn chỉ đọc: đơn đã bán tính quyền theo giá trị lúc mua */}
         <div>
           <span className="label">Thời hạn</span>
-          <div className="input flex items-center bg-slate-50 text-slate-600">
+          <div className="input flex items-center bg-slate-50 text-ink-mute">
             {planDurationLabel(plan.durationDays)}
           </div>
           <p className="mt-1 text-xs text-amber-700">
@@ -512,7 +512,7 @@ function EditPlanForm({
             onChange={(e) => setPriceAmount(e.target.value)}
             required
           />
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-ink-mute">
             {Number.isFinite(price) ? formatCurrency(price, plan.currency) : '—'} · Giá
             mới chỉ áp cho đơn tạo sau khi lưu.
           </p>

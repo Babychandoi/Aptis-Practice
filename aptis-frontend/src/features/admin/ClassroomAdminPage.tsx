@@ -20,8 +20,8 @@ export function ClassroomAdminPage() {
   return (
     <div className="space-y-5">
       <header>
-        <h1 className="text-xl font-bold text-slate-900">Lớp học &amp; giáo viên</h1>
-        <p className="mt-0.5 text-sm text-slate-500">
+        <h1 className="text-xl font-bold text-ink">Lớp học &amp; giáo viên</h1>
+        <p className="mt-0.5 text-sm text-ink-mute">
           Tạo tài khoản giáo viên, bật/tắt kho đề hệ thống cho từng lớp.
         </p>
       </header>
@@ -44,7 +44,7 @@ export function ClassroomAdminPage() {
               'rounded-xl border px-3.5 py-2 text-sm font-semibold transition-colors',
               tab === key
                 ? 'border-transparent bg-brand-700 text-white'
-                : 'border-border bg-white text-slate-700 hover:bg-surface',
+                : 'border-border bg-white text-ink-soft hover:bg-surface',
             )}
           >
             {label}
@@ -94,7 +94,7 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
   }
   if (query.data.content.length === 0) {
     return (
-      <p className="card text-center text-sm text-slate-500">
+      <p className="card text-center text-sm text-ink-mute">
         Chưa có lớp nào. Tạo tài khoản giáo viên ở tab bên cạnh — hệ thống tự sinh lớp kèm theo.
       </p>
     );
@@ -115,7 +115,7 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
               {['Lớp', 'Giáo viên', 'Học viên', 'Học phí', 'Đề hệ thống', 'Hạn dùng'].map((header) => (
                 <th
                   key={header}
-                  className="px-4 py-2.5 text-left font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500"
+                  className="px-4 py-2.5 text-left font-mono text-[10px] font-bold uppercase tracking-wider text-ink-mute"
                 >
                   {header}
                 </th>
@@ -126,17 +126,17 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
             {query.data.content.map((classroom) => (
               <tr key={classroom.id} className="border-t border-border-subtle">
                 <td className="px-4 py-3">
-                  <p className="font-semibold text-slate-900">{classroom.name}</p>
-                  <p className="font-mono text-[11px] text-slate-500">{classroom.joinCode}</p>
+                  <p className="font-semibold text-ink">{classroom.name}</p>
+                  <p className="font-mono text-[11px] text-ink-mute">{classroom.joinCode}</p>
                 </td>
                 <td className="px-4 py-3">
-                  <p className="text-slate-700">{classroom.teacherName || '—'}</p>
-                  <p className="font-mono text-[11px] text-slate-500">{classroom.teacherEmail}</p>
+                  <p className="text-ink-soft">{classroom.teacherName || '—'}</p>
+                  <p className="font-mono text-[11px] text-ink-mute">{classroom.teacherEmail}</p>
                 </td>
-                <td className="px-4 py-3 text-slate-700">
+                <td className="px-4 py-3 text-ink-soft">
                   {classroom.studentCount}/{classroom.maxStudents}
                 </td>
-                <td className="px-4 py-3 text-slate-700">
+                <td className="px-4 py-3 text-ink-soft">
                   {classroom.pricingType === 'PAID' && classroom.priceAmount > 0
                     ? formatCurrency(classroom.priceAmount)
                     : 'Miễn phí'}
@@ -170,7 +170,7 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
                     <span
                       className={clsx(
                         'text-xs font-semibold',
-                        classroom.systemContentEnabled ? 'text-brand-800' : 'text-slate-500',
+                        classroom.systemContentEnabled ? 'text-brand-800' : 'text-ink-mute',
                       )}
                     >
                       {classroom.systemContentEnabled ? 'Bật' : 'Tắt'}
@@ -186,8 +186,8 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
                       classroom.expired
                         ? 'text-red-600'
                         : classroom.expiresAt
-                          ? 'text-slate-700'
-                          : 'text-slate-400',
+                          ? 'text-ink-soft'
+                          : 'text-ink-faint',
                     )}
                   >
                     {classroom.expired
@@ -205,7 +205,7 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
                           type="button"
                           disabled={giaHan.isPending}
                           onClick={() => giaHan.mutate({ id: classroom.id, days })}
-                          className="rounded-md border border-border px-1.5 py-0.5 font-mono text-[10px] font-semibold text-slate-600 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-800 disabled:opacity-50"
+                          className="rounded-md border border-border px-1.5 py-0.5 font-mono text-[10px] font-semibold text-ink-mute transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-800 disabled:opacity-50"
                           title={`Gia hạn ${days} ngày kể từ hôm nay`}
                         >
                           {days}n
@@ -216,7 +216,7 @@ function ClassroomTable({ canManage }: { canManage: boolean }) {
                           type="button"
                           disabled={giaHan.isPending}
                           onClick={() => giaHan.mutate({ id: classroom.id, days: null })}
-                          className="rounded-md px-1.5 py-0.5 text-[10px] font-semibold text-slate-500 hover:text-slate-800 disabled:opacity-50"
+                          className="rounded-md px-1.5 py-0.5 text-[10px] font-semibold text-ink-mute hover:text-ink-soft disabled:opacity-50"
                           title="Bỏ hạn, lớp dùng vô thời hạn"
                         >
                           bỏ hạn
@@ -247,7 +247,7 @@ function TeacherTable({ canManage }: { canManage: boolean }) {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-ink-mute">
           Tạo tài khoản là có sẵn một lớp. Giáo viên dạy nhiều lớp thì bấm “Mở thêm lớp”.
         </p>
         {canManage && (
@@ -266,7 +266,7 @@ function TeacherTable({ canManage }: { canManage: boolean }) {
       ) : query.error ? (
         <ErrorBlock message="Không tải được danh sách" onRetry={() => void query.refetch()} />
       ) : query.data.length === 0 ? (
-        <p className="card text-center text-sm text-slate-500">Chưa có tài khoản giáo viên nào.</p>
+        <p className="card text-center text-sm text-ink-mute">Chưa có tài khoản giáo viên nào.</p>
       ) : (
         <div className="overflow-x-auto rounded-2xl border border-border bg-white">
           <table className="w-full min-w-[680px] text-sm">
@@ -275,7 +275,7 @@ function TeacherTable({ canManage }: { canManage: boolean }) {
                 {['Giáo viên', 'Email', 'Lớp', 'Mã lớp', 'Học viên', ''].map((header) => (
                   <th
                     key={header}
-                    className="px-4 py-2.5 text-left font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500"
+                    className="px-4 py-2.5 text-left font-mono text-[10px] font-bold uppercase tracking-wider text-ink-mute"
                   >
                     {header}
                   </th>
@@ -285,17 +285,17 @@ function TeacherTable({ canManage }: { canManage: boolean }) {
             <tbody>
               {query.data.map((teacher) => (
                 <tr key={teacher.userId} className="border-t border-border-subtle">
-                  <td className="px-4 py-3 font-semibold text-slate-900">
+                  <td className="px-4 py-3 font-semibold text-ink">
                     {teacher.fullName || '—'}
                   </td>
-                  <td className="px-4 py-3 font-mono text-[11px] text-slate-600">
+                  <td className="px-4 py-3 font-mono text-[11px] text-ink-mute">
                     {teacher.email}
                   </td>
-                  <td className="px-4 py-3 text-slate-700">{teacher.classroomName}</td>
-                  <td className="px-4 py-3 font-mono text-xs font-bold text-slate-800">
+                  <td className="px-4 py-3 text-ink-soft">{teacher.classroomName}</td>
+                  <td className="px-4 py-3 font-mono text-xs font-bold text-ink-soft">
                     {teacher.joinCode}
                   </td>
-                  <td className="px-4 py-3 text-slate-700">{teacher.studentCount}</td>
+                  <td className="px-4 py-3 text-ink-soft">{teacher.studentCount}</td>
                   <td className="px-4 py-3 text-right">
                     {canManage && (
                       <button
@@ -403,8 +403,8 @@ function EditTeacherDialog({
 
   return (
     <Overlay onClose={onClose}>
-      <h2 className="text-base font-bold text-slate-900">Sửa tài khoản giáo viên</h2>
-      <p className="mt-0.5 font-mono text-xs text-slate-500">{teacher.email}</p>
+      <h2 className="text-base font-bold text-ink">Sửa tài khoản giáo viên</h2>
+      <p className="mt-0.5 font-mono text-xs text-ink-mute">{teacher.email}</p>
 
       <form
         className="mt-4 space-y-3"
@@ -427,7 +427,7 @@ function EditTeacherDialog({
           hint="Nhập vào là đặt lại mật khẩu cho giáo viên; nhớ báo lại cho họ."
         />
 
-        <p className="rounded-xl bg-surface-paper px-3 py-2 text-[11px] leading-5 text-slate-600">
+        <p className="rounded-xl bg-surface-paper px-3 py-2 text-[11px] leading-5 text-ink-mute">
           Email không đổi được — đó là thứ giáo viên dùng để đăng nhập.
         </p>
 
@@ -441,7 +441,7 @@ function EditTeacherDialog({
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-xl border border-border py-2.5 text-sm font-semibold text-slate-700 hover:bg-surface"
+            className="flex-1 rounded-xl border border-border py-2.5 text-sm font-semibold text-ink-soft hover:bg-surface"
           >
             Hủy
           </button>
@@ -489,8 +489,8 @@ function CreateTeacherDialog({ onClose }: { onClose: () => void }) {
   if (created) {
     return (
       <Overlay onClose={onClose}>
-        <h2 className="text-base font-bold text-slate-900">Đã tạo tài khoản</h2>
-        <p className="mt-0.5 text-xs text-slate-500">
+        <h2 className="text-base font-bold text-ink">Đã tạo tài khoản</h2>
+        <p className="mt-0.5 text-xs text-ink-mute">
           Gửi thông tin này cho giáo viên. Mật khẩu không xem lại được sau khi đóng.
         </p>
 
@@ -513,8 +513,8 @@ function CreateTeacherDialog({ onClose }: { onClose: () => void }) {
 
   return (
     <Overlay onClose={onClose}>
-      <h2 className="text-base font-bold text-slate-900">Tạo tài khoản giáo viên</h2>
-      <p className="mt-0.5 text-xs text-slate-500">
+      <h2 className="text-base font-bold text-ink">Tạo tài khoản giáo viên</h2>
+      <p className="mt-0.5 text-xs text-ink-mute">
         Hệ thống tự tạo một lớp học gắn với tài khoản này.
       </p>
 
@@ -554,7 +554,7 @@ function CreateTeacherDialog({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-xl border border-border py-2.5 text-sm font-semibold text-slate-700 hover:bg-surface"
+            className="flex-1 rounded-xl border border-border py-2.5 text-sm font-semibold text-ink-soft hover:bg-surface"
           >
             Hủy
           </button>
@@ -606,7 +606,7 @@ function SettingsForm({ canManage }: { canManage: boolean }) {
       }}
     >
       <label className="block">
-        <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+        <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-ink-mute">
           Nền tảng giữ lại từ học phí lớp (%)
         </span>
         <input
@@ -620,13 +620,13 @@ function SettingsForm({ canManage }: { canManage: boolean }) {
           }
           className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400 disabled:bg-surface"
         />
-        <span className="mt-1 block text-[11px] text-slate-500">
+        <span className="mt-1 block text-[11px] text-ink-mute">
           Phần còn lại chuyển cho giáo viên.
         </span>
       </label>
 
       <label className="block">
-        <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+        <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-ink-mute">
           Trần học viên mặc định mỗi lớp
         </span>
         <input
@@ -639,7 +639,7 @@ function SettingsForm({ canManage }: { canManage: boolean }) {
           }
           className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400 disabled:bg-surface"
         />
-        <span className="mt-1 block text-[11px] text-slate-500">
+        <span className="mt-1 block text-[11px] text-ink-mute">
           Áp dụng cho lớp chưa đặt trần riêng.
         </span>
       </label>
@@ -700,7 +700,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600">
+      <span className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-ink-mute">
         {label}
       </span>
       <input
@@ -711,7 +711,7 @@ function Field({
         onChange={(event) => onChange(event.target.value)}
         className="w-full rounded-xl border border-border px-3.5 py-2.5 text-sm outline-none focus:border-brand-400"
       />
-      {hint && <span className="mt-1 block text-[11px] text-slate-500">{hint}</span>}
+      {hint && <span className="mt-1 block text-[11px] text-ink-mute">{hint}</span>}
     </label>
   );
 }
@@ -719,8 +719,8 @@ function Field({
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-baseline justify-between gap-3">
-      <dt className="text-xs text-slate-500">{label}</dt>
-      <dd className="font-mono text-sm font-bold text-slate-900">{value}</dd>
+      <dt className="text-xs text-ink-mute">{label}</dt>
+      <dd className="font-mono text-sm font-bold text-ink">{value}</dd>
     </div>
   );
 }
