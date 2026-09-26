@@ -34,13 +34,13 @@ export function SingleChoiceRenderer({ item, draft, disabled, showAnswer, onChan
           <label
             key={option.id}
             className={clsx(
-              'flex min-h-10 cursor-pointer items-center gap-2 rounded-lg border px-2.5 py-2 text-left transition-colors',
+              'flex min-h-11 cursor-pointer items-center gap-2.5 rounded-xl border bg-white px-3 py-2.5 text-left transition-colors',
               chonDung && 'border-2 border-emerald-500 bg-emerald-50',
               dungNhungBoTrong && 'border border-dashed border-emerald-400 bg-emerald-50/40',
               isWrongPick && 'border-2 border-red-400 bg-red-50',
               showAnswer && !selected && correctId !== option.id && 'border-slate-200',
-              !showAnswer && selected && 'border-brand-500 bg-brand-50',
-              !showAnswer && !selected && 'border-slate-200 hover:bg-slate-50',
+              !showAnswer && selected && 'border-ink bg-brand-50',
+              !showAnswer && !selected && 'border-brand-200 hover:bg-brand-50',
               disabled && 'cursor-default',
             )}
           >
@@ -111,7 +111,7 @@ export function SingleChoiceSelectRenderer({ item, draft, disabled, showAnswer, 
         aria-label="Chọn đáp án"
         onChange={(event) => onChange({ selectedOptionId: event.target.value })}
         className={clsx(
-          'min-h-11 w-full rounded-lg border bg-white px-3 py-2 text-xs outline-none transition sm:text-[13px]',
+          'min-h-12 w-full rounded-xl border bg-white px-4 py-2.5 text-sm outline-none transition sm:text-[13px]',
           !showAnswer && 'border-[#E2E8F0] focus:border-brand-700 focus:ring-2 focus:ring-brand-100',
           showAnswer && selectedId === correctId && 'border-emerald-400 bg-emerald-50 text-emerald-900',
           selectedIsWrong && 'border-red-400 bg-red-50 text-red-900',
@@ -164,11 +164,11 @@ export function MultipleChoiceRenderer({
           <label
             key={option.id}
             className={clsx(
-              'flex min-h-10 cursor-pointer items-center gap-2 rounded-lg border px-2.5 py-2 transition-colors',
+              'flex min-h-11 cursor-pointer items-center gap-2.5 rounded-xl border bg-white px-3 py-2.5 transition-colors',
               isCorrect && 'border-emerald-400 bg-emerald-50',
               isWrongPick && 'border-red-400 bg-red-50',
-              !showAnswer && selected && 'border-brand-500 bg-brand-50',
-              !showAnswer && !selected && 'border-slate-200 hover:bg-slate-50',
+              !showAnswer && selected && 'border-ink bg-brand-50',
+              !showAnswer && !selected && 'border-brand-200 hover:bg-brand-50',
               disabled && 'cursor-default',
             )}
           >

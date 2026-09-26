@@ -226,8 +226,13 @@ export function RecordingRenderer({
   /** Giây đã ghi, để hiện dạng "đã ghi / tổng" giống máy ghi âm. */
   const elapsed = phase === 'recording' ? responseSeconds - secondsLeft : 0;
 
+  /** Số giây hiện giữa vòng tròn và tỉ lệ vòng còn lại. */
+  const ringSeconds = phase === 'recording' || phase === 'prep' ? secondsLeft : responseSeconds;
+  const ringTotal = phase === 'prep' ? prepSeconds : responseSeconds;
+  const ringRatio = phase === 'idle' || ringTotal <= 0 ? 1 : Math.max(0, Math.min(1, secondsLeft / ringTotal));
+
   return (
-    <div className="rounded-xl border border-[#e5dcc8] bg-[#fdf6e3]/60 p-3">
+    <div className="rounded-[14px] border border-brand-200 bg-white p-3">
       {/* Bài chỉ đọc mà chưa ghi gì: nói rõ em bỏ trống, chứ hiện nút ghi âm thì
           giáo viên bấm nhầm là ghi đè vào bài của học viên. */}
       {disabled && phase === 'idle' && (
@@ -235,65 +240,71 @@ export function RecordingRenderer({
       )}
 
       {!disabled && (phase === 'idle' || phase === 'recording' || phase === 'prep') && (
-        <>
-          <div className="flex items-center gap-3">
-            {/* Chế độ thi không có nút bấm: máy tự chạy, chỉ báo đang ở nhịp nào. */}
-            {examMode ? (
-              <span className={clsx(
-                'inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-semibold',
-                phase === 'recording' ? 'bg-red-600 text-white' : 'bg-[#F1F5F9] text-brand-900',
-              )}>
-                {phase === 'recording' ? (
-                  <>
-                    <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-sm bg-white" />
-                    Đang ghi · còn {secondsLeft}s
-                  </>
-                ) : phase === 'prep' ? (
-                  <>⏳ Chuẩn bị · {secondsLeft}s</>
-                ) : (
-                  <>🎤 Sắp bắt đầu…</>
-                )}
+        <div className="flex flex-col items-center gap-3 py-2">
+          {/* Vòng đếm ngược lớn có micro ở giữa. Chế độ thi không bấm được: máy tự chạy. */}
+          <button
+            type="button"
+            onClick={phase === 'recording' ? stopRecording : beginPrep}
+            disabled={examMode || phase === 'prep'}
+            aria-label={phase === 'recording' ? 'Dừng và lưu' : 'Bắt đầu ghi âm'}
+            className="relative grid h-44 w-44 place-items-center rounded-full disabled:cursor-default sm:h-[210px] sm:w-[210px]"
+          >
+            <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full -rotate-90" aria-hidden="true">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#E2E8F0" strokeWidth="4" />
+              <circle
+                cx="50"
+                cy="50"
+                r="46"
+                fill="none"
+                stroke={phase === 'recording' ? '#DC2626' : phase === 'prep' ? '#F59E0B' : '#0F172A'}
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeDasharray={2 * Math.PI * 46}
+                strokeDashoffset={2 * Math.PI * 46 * (1 - ringRatio)}
+                className="transition-[stroke-dashoffset] duration-1000 ease-linear"
+              />
+            </svg>
+            <span className={clsx(
+              'grid h-[82%] w-[82%] place-items-center rounded-full text-white',
+              phase === 'recording' ? 'bg-red-600' : 'bg-ink',
+            )}>
+              <span className="flex flex-col items-center">
+                <MicGlyph />
+                <span className="mt-1 font-mono text-3xl font-bold tabular-nums sm:text-[34px]">{formatDuration(ringSeconds)}</span>
+                <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-[.14em] text-white/70">
+                  {phase === 'recording' ? 'Đang ghi' : phase === 'prep' ? 'Chuẩn bị' : examMode ? 'Sắp bắt đầu' : 'Sẵn sàng'}
+                </span>
               </span>
-            ) : phase === 'recording' ? (
-              <button type="button" onClick={stopRecording} className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-red-700">
-                <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-sm bg-white" />
-                Dừng và lưu
-              </button>
-            ) : (
-              <button type="button" onClick={beginPrep} disabled={disabled || phase === 'prep'} className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-800 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-brand-900 disabled:opacity-50">
-                🎤 {phase === 'prep' ? `Chuẩn bị ${secondsLeft}s` : 'Bắt đầu ghi âm'}
-              </button>
-            )}
-
-            {/* Thanh sóng âm: chỉ để báo trạng thái, không phân tích tín hiệu thật */}
-            <div className="flex h-11 flex-1 items-center gap-[3px] overflow-hidden rounded-lg border border-slate-200 bg-white px-3">
-              {WAVE_BARS.map((height, index) => (
-                <span
-                  key={index}
-                  className={clsx(
-                    'w-[3px] rounded-full transition-colors',
-                    phase === 'recording' ? 'animate-pulse bg-brand-700' : 'bg-slate-300',
-                  )}
-                  style={{ height: `${height}%`, animationDelay: `${index * 60}ms` }}
-                />
-              ))}
-            </div>
-
-            <span className="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[11px] font-medium tabular-nums text-slate-600">
-              <span className={phase === 'recording' ? 'text-red-600' : undefined}>●</span>{' '}
-              {formatDuration(elapsed)} <span className="text-slate-400">/ {formatDuration(responseSeconds)}</span>
             </span>
+          </button>
+
+          {/* Thanh sóng âm: chỉ để báo trạng thái, không phân tích tín hiệu thật */}
+          <div className="flex h-8 items-center gap-[3px]" aria-hidden="true">
+            {WAVE_BARS.slice(0, 22).map((height, index) => (
+              <span
+                key={index}
+                className={clsx(
+                  'w-[3px] rounded-full transition-colors',
+                  phase === 'recording' ? 'animate-pulse bg-red-500' : 'bg-brand-300',
+                )}
+                style={{ height: `${height}%`, animationDelay: `${index * 60}ms` }}
+              />
+            ))}
           </div>
 
-          <div className="mt-2 flex items-center gap-2">
-            <span className="rounded-md border border-slate-200 bg-white px-2 py-1 text-[10px] text-slate-500">
-              Đã nói: {draft.recordingAssetId ? '—' : 0} từ
-            </span>
-            {maxRecordings > 1 && (
-              <span className="text-[10px] text-slate-500">Được ghi {maxRecordings} lần</span>
-            )}
-          </div>
-        </>
+          <p className="text-center text-sm text-ink-soft">
+            {phase === 'recording'
+              ? `Đang ghi ${formatDuration(elapsed)} / ${formatDuration(responseSeconds)}${examMode ? '' : ' — bấm vòng tròn để dừng và lưu'}`
+              : phase === 'prep'
+                ? `Chuẩn bị — máy tự ghi âm sau ${secondsLeft} giây`
+                : examMode
+                  ? 'Máy sẽ tự bắt đầu ghi âm'
+                  : `Bấm để bắt đầu nói — bạn có ${responseSeconds} giây`}
+          </p>
+          {maxRecordings > 1 && (
+            <span className="text-[11px] text-ink-mute">Được ghi {maxRecordings} lần</span>
+          )}
+        </div>
       )}
 
       {phase === 'uploading' && (
@@ -353,6 +364,15 @@ export function RecordingRenderer({
         </div>
       )}
     </div>
+  );
+}
+
+function MicGlyph() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z" />
+      <path d="M19 11a7 7 0 0 1-14 0M12 18v3" />
+    </svg>
   );
 }
 
