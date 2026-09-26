@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +33,9 @@ import vn.weconex.aptis.common.security.CurrentUser;
 /**
  * Lớp học nhìn từ phía giáo viên.
  *
- * <p>Mỗi giáo viên đúng một lớp nên không endpoint nào nhận {@code classroomId}
- * từ client — lớp luôn lấy từ tài khoản đang đăng nhập. Nhờ vậy không có đường
- * nào để giáo viên A chạm vào lớp của giáo viên B.
+ * <p>Giáo viên có thể dạy nhiều lớp; lớp đang thao tác đến từ header
+ * X-Classroom-Id và luôn được kiểm là của chính tài khoản đang đăng nhập
+ * (ClassroomService.ownedClassroom), nên giáo viên A không chạm được lớp của B.
  */
 @RestController
 @RequestMapping("/api/v1/teacher/classroom")
@@ -57,6 +58,66 @@ public class TeacherClassroomController {
         // viên vẫn phải mở được trang để đọc thông báo và biết đường gia hạn.
         Classroom classroom = classroomService.ownedClassroom(currentUser.requireUserId());
         return toDto(classroom);
+    }
+
+    /**
+     * Mọi lớp giáo viên đang dạy, để chọn lớp làm việc.
+     *
+     * <p>Các API còn lại thao tác trên lớp đang chọn (header X-Classroom-Id).
+     */
+    @GetMapping("/all")
+    @PreAuthorize("hasAuthority('classroom:read')")
+    @Transactional(readOnly = true)
+    public List<ClassroomDtos.ClassroomResponse> allClassrooms() {
+        return classroomService.teacherClassrooms(currentUser.requireUserId()).stream().map(this::toDto).toList();
+    }
+
+    @PutMapping("/settings")
+    @PreAuthorize("hasAuthority('classroom:write')")
+    public ClassroomDtos.ClassroomResponse updateSettings(
+            @Valid @RequestBody ClassroomDtos.UpdateClassroomSettingsRequest request) {
+        return toDto(classroomService.updateSettings(currentUser.requireUserId(), request.scheduleNote(),
+                request.requireApproval(), request.showLeaderboard(), request.revealAnswersAfterDue()));
+    }
+
+    @PostMapping("/join-code")
+    @PreAuthorize("hasAuthority('classroom:write')")
+    public ClassroomDtos.ClassroomResponse regenerateJoinCode() {
+        return toDto(classroomService.regenerateJoinCode(currentUser.requireUserId()));
+    }
+
+    /** Yêu cầu vào lớp đang chờ duyệt, mới trước. */
+    @GetMapping("/join-requests")
+    @PreAuthorize("hasAuthority('classroom:read')")
+    @Transactional(readOnly = true)
+    public List<ClassroomDtos.JoinRequestResponse> joinRequests() {
+        List<ClassroomMember> pending = classroomService.pendingRequests(currentUser.requireUserId());
+        List<String> ids = pending.stream().map(ClassroomMember::getUserId).toList();
+        Map<String, User> users = userRepository.findAllById(ids).stream()
+                .collect(Collectors.toMap(User::getId, Function.identity()));
+        Map<String, UserProfile> profiles = profileRepository.findByUserIdIn(ids).stream()
+                .collect(Collectors.toMap(UserProfile::getUserId, Function.identity()));
+        return pending.stream().map(m -> {
+            User u = users.get(m.getUserId());
+            UserProfile p = profiles.get(m.getUserId());
+            String name = p != null && p.getFullName() != null && !p.getFullName().isBlank()
+                    ? p.getFullName() : (u != null ? u.getEmail() : "Học viên");
+            return new ClassroomDtos.JoinRequestResponse(m.getId(), m.getUserId(), name,
+                    u != null ? u.getEmail() : null,
+                    m.getRequestedAt() != null ? m.getRequestedAt() : m.getJoinedAt());
+        }).toList();
+    }
+
+    @PostMapping("/join-requests/{memberId}/approve")
+    @PreAuthorize("hasAuthority('classroom:write')")
+    public void approve(@PathVariable String memberId) {
+        classroomService.decideJoinRequest(currentUser.requireUserId(), memberId, true);
+    }
+
+    @PostMapping("/join-requests/{memberId}/reject")
+    @PreAuthorize("hasAuthority('classroom:write')")
+    public void reject(@PathVariable String memberId) {
+        classroomService.decideJoinRequest(currentUser.requireUserId(), memberId, false);
     }
 
     /** Danh sách học viên kèm tiến độ tóm tắt. */
@@ -196,7 +257,12 @@ public class TeacherClassroomController {
                 classroom.getSupportGroup(),
                 classroom.getSupportNote(),
                 classroom.getExpiresAt(),
-                classroom.isExpired());
+                classroom.isExpired(),
+                classroom.getScheduleNote(),
+                classroom.isRequireApproval(),
+                classroom.isShowLeaderboard(),
+                classroom.isRevealAnswersAfterDue(),
+                memberRepository.countByClassroomIdAndStatus(classroom.getId(), MemberStatus.PENDING));
     }
 
     private Map<String, User> usersById(List<String> ids) {

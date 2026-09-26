@@ -39,7 +39,30 @@ public final class ClassroomDtos {
             /** Hạn sử dụng lớp; null = không giới hạn. */
             Instant expiresAt,
             /** Quá hạn thì giáo viên chỉ xem được thông báo, không thao tác gì. */
-            boolean expired) {
+            boolean expired,
+            String scheduleNote,
+            boolean requireApproval,
+            boolean showLeaderboard,
+            boolean revealAnswersAfterDue,
+            /** Số học viên đang chờ duyệt vào lớp. */
+            long pendingRequests) {
+    }
+
+    /** Công tắc và lịch học trong màn Cài đặt lớp. Trường null thì giữ nguyên. */
+    public record UpdateClassroomSettingsRequest(
+            @Size(max = 255) String scheduleNote,
+            Boolean requireApproval,
+            Boolean showLeaderboard,
+            Boolean revealAnswersAfterDue) {
+    }
+
+    /** Một yêu cầu vào lớp đang chờ giáo viên duyệt. */
+    public record JoinRequestResponse(
+            String memberId,
+            String userId,
+            String fullName,
+            String email,
+            Instant requestedAt) {
     }
 
     /** Một học viên trong lớp, kèm tiến độ tóm tắt. */
@@ -106,7 +129,15 @@ public final class ClassroomDtos {
             String supportGroup,
             String supportNote,
             /** Lớp hết hạn hoặc đã đóng: học viên chỉ thấy thông báo, không vào được. */
-            boolean locked) {
+            boolean locked,
+            /** Đã nhập mã nhưng lớp bật duyệt, đang chờ giáo viên. */
+            boolean pending,
+            String scheduleNote) {
+    }
+
+    /** Admin mở thêm một lớp cho giáo viên đã có tài khoản. */
+    public record CreateExtraClassroomRequest(
+            @NotBlank @Size(max = 255) String name) {
     }
 
     public record JoinClassroomRequest(

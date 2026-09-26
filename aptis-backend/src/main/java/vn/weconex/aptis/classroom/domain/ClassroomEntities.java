@@ -56,6 +56,10 @@ public final class ClassroomEntities {
         @Column(name = "description", columnDefinition = "TEXT")
         private String description;
 
+        /** Lịch học dạng chữ, ví dụ "Tối T3–T5–T7 · 19:30–21:00". */
+        @Column(name = "schedule_note", length = 255)
+        private String scheduleNote;
+
         /** Kênh liên hệ của chính giáo viên; để trống thì lớp không hiện khối hỗ trợ. */
         @Column(name = "support_zalo", length = 255)
         private String supportZalo;
@@ -75,6 +79,18 @@ public final class ClassroomEntities {
 
         @Column(name = "join_enabled", nullable = false)
         private boolean joinEnabled = true;
+
+        /** Nhập mã xong phải chờ giáo viên duyệt mới vào lớp. */
+        @Column(name = "require_approval", nullable = false)
+        private boolean requireApproval;
+
+        /** Học viên thấy điểm của bạn cùng lớp. */
+        @Column(name = "show_leaderboard", nullable = false)
+        private boolean showLeaderboard;
+
+        /** Mở đáp án bài giao sau khi hết hạn nộp. */
+        @Column(name = "reveal_answers_after_due", nullable = false)
+        private boolean revealAnswersAfterDue = true;
 
         /**
          * Lớp có được giao đề từ ngân hàng hệ thống không.
@@ -139,7 +155,10 @@ public final class ClassroomEntities {
         }
 
         public enum MemberStatus {
+            /** Đã nhập mã, chờ giáo viên duyệt (lớp bật duyệt trước khi vào). */
+            PENDING,
             ACTIVE,
+            REJECTED,
             REMOVED
         }
 
@@ -170,6 +189,12 @@ public final class ClassroomEntities {
 
         @Column(name = "joined_at", nullable = false)
         private Instant joinedAt = Instant.now();
+
+        @Column(name = "requested_at")
+        private Instant requestedAt;
+
+        @Column(name = "decided_by", columnDefinition = "CHAR(36)")
+        private String decidedBy;
 
         /** Đã trả tiền hoặc lớp miễn phí — được làm bài. */
         public boolean canPractice() {

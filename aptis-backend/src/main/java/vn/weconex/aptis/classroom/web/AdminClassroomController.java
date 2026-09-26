@@ -130,6 +130,21 @@ public class AdminClassroomController {
     }
 
     /**
+     * Mở thêm một lớp cho giáo viên đã có tài khoản.
+     *
+     * <p>Quyền mở lớp thuộc admin (quyết định 26/09/2026); giáo viên không tự
+     * mở được. Lớp mới dùng trần sĩ số mặc định, admin đặt hạn riêng sau.
+     */
+    @PostMapping("/teachers/{teacherUserId}/classrooms")
+    @PreAuthorize("hasAuthority('classroom:admin')")
+    public ClassroomDtos.CreateTeacherResponse createExtraClassroom(
+            @PathVariable String teacherUserId,
+            @Valid @RequestBody ClassroomDtos.CreateExtraClassroomRequest request) {
+        Classroom classroom = classroomService.createAdditionalForTeacher(teacherUserId, request.name());
+        return new ClassroomDtos.CreateTeacherResponse(teacherUserId, null, classroom.getId(), classroom.getJoinCode());
+    }
+
+    /**
      * Sửa thông tin giáo viên và tên lớp của họ.
      *
      * <p>Không đổi email: đó là thứ giáo viên dùng đăng nhập, đổi ngầm sẽ khiến
