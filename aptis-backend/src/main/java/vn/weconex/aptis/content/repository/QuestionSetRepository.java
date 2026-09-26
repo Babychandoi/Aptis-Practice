@@ -176,7 +176,7 @@ public interface QuestionSetRepository
     /** Đếm đề theo trạng thái, lọc theo part nếu có — cho các ô đếm ở ngân hàng câu hỏi. */
     @Query("""
             SELECT qs.status, COUNT(qs) FROM QuestionSet qs
-            WHERE (:partId IS NULL OR qs.partId = :partId)
+            WHERE (:partId IS NULL OR qs.part.id = :partId)
             GROUP BY qs.status
             """)
     List<Object[]> countByStatus(@Param("partId") String partId);
