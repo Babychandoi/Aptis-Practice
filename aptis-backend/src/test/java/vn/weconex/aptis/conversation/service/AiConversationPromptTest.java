@@ -90,14 +90,14 @@ class AiConversationPromptTest {
     @ValueSource(strings = {"null", "[]", "{}", "{\"id\":\"\"}", "{\"id\":\"   \"}", "{\"id\":1}", "{\"id\":true}", "{broken"})
     void invalidPersonalityConfigurationFailsBeforeServingSessions(String profile) {
         assertThatThrownBy(() -> new AiConversationPrompt(objectMapper,
-                new ClassPathResource("conversation/prompts/viet-friend-v2.txt"),
+                new ClassPathResource("conversation/prompts/viet-friend-v3.txt"),
                 new ByteArrayResource(profile.getBytes(StandardCharsets.UTF_8))))
                 .isInstanceOf(IOException.class);
     }
 
     private AiConversationPrompt packagedPrompt() throws IOException {
         return new AiConversationPrompt(objectMapper,
-                new ClassPathResource("conversation/prompts/viet-friend-v2.txt"),
+                new ClassPathResource("conversation/prompts/viet-friend-v3.txt"),
                 new ClassPathResource("conversation/prompts/viet-friend-profile.json"));
     }
 
