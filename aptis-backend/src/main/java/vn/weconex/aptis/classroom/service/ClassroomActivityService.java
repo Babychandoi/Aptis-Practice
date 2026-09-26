@@ -13,10 +13,10 @@ import vn.weconex.aptis.classroom.domain.ClassroomActivityEntities.PostRead;
 import vn.weconex.aptis.classroom.domain.ClassroomActivityEntities.PostUserKey;
 import vn.weconex.aptis.classroom.domain.ClassroomActivityEntities.SessionAttendance;
 import vn.weconex.aptis.classroom.domain.ClassroomEntities.Classroom;
-import vn.weconex.aptis.classroom.repository.ClassroomActivityRepositories.ClassroomSessionRepository;
-import vn.weconex.aptis.classroom.repository.ClassroomActivityRepositories.PostCommentRepository;
-import vn.weconex.aptis.classroom.repository.ClassroomActivityRepositories.PostReadRepository;
-import vn.weconex.aptis.classroom.repository.ClassroomActivityRepositories.SessionAttendanceRepository;
+import vn.weconex.aptis.classroom.repository.ClassroomSessionRepository;
+import vn.weconex.aptis.classroom.repository.ClassroomPostCommentRepository;
+import vn.weconex.aptis.classroom.repository.ClassroomPostReadRepository;
+import vn.weconex.aptis.classroom.repository.SessionAttendanceRepository;
 import vn.weconex.aptis.classroom.repository.ClassroomMemberRepository;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.exception.ErrorCode;
@@ -34,8 +34,8 @@ public class ClassroomActivityService {
     private final ClassroomService classroomService;
     private final ClassroomSessionRepository sessionRepository;
     private final SessionAttendanceRepository attendanceRepository;
-    private final PostReadRepository postReadRepository;
-    private final PostCommentRepository commentRepository;
+    private final ClassroomPostReadRepository postReadRepository;
+    private final ClassroomPostCommentRepository commentRepository;
     private final ClassroomMemberRepository memberRepository;
 
     // ---------------- Lịch học ----------------
