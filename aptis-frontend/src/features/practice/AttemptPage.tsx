@@ -1604,9 +1604,9 @@ function QuestionSetBlock({ set, setNumber, itemNumberById, attemptId, responses
   })();
 
   const answeredInSet = countAnswered(set.content.items, responses);
-  // Speaking có ảnh: ảnh bên trái, ô ghi âm bên phải trên màn rộng; xếp chồng trên điện thoại.
-  const twoColumn = sharedImages.length > 0
-    && set.content.items.some((item) => item.responseType === 'AUDIO_RECORDING');
+  // Speaking theo mock: đề (và ảnh nếu có) bên trái, micro bên phải trên màn rộng;
+  // xếp chồng trên điện thoại. Áp cho mọi part Speaking, không chỉ part có ảnh.
+  const twoColumn = set.content.items.some((item) => item.responseType === 'AUDIO_RECORDING');
 
   /*
     Luyện tập Speaking có ảnh: mỗi lúc chỉ hiện một câu, chuyển bằng tab dưới ảnh.
@@ -1617,7 +1617,8 @@ function QuestionSetBlock({ set, setNumber, itemNumberById, attemptId, responses
   const useTabs = twoColumn && !examMode && set.content.items.length > 1;
   const [activeTab, setActiveTab] = useState(0);
   const activeIndex = Math.min(activeTab, Math.max(0, set.content.items.length - 1));
-  const activeItem = set.content.items[activeIndex];
+  // Câu đang hiện: thi thì là câu máy đang chạy tới, luyện tập là tab đang chọn.
+  const activeItem = examMode ? visibleItems[0] : set.content.items[activeIndex];
   const numberOf = (item: QuestionItem) =>
     String(itemNumberById?.get(item.id) ?? (set.content.items.indexOf(item) + 1));
 
@@ -1630,7 +1631,7 @@ function QuestionSetBlock({ set, setNumber, itemNumberById, attemptId, responses
           <div key={item.id} hidden={useTabs && itemIndex !== activeIndex}>
           <QuestionCard
             item={item}
-            hidePrompt={useTabs}
+            hidePrompt={twoColumn}
             numberLabel={numberLabel}
             itemAudio={itemAudio}
             set={set}
@@ -1673,15 +1674,15 @@ function QuestionSetBlock({ set, setNumber, itemNumberById, attemptId, responses
       {set.content.instructions && <p className="mt-2 text-xs text-ink-mute">{set.content.instructions}</p>}
 
       {twoColumn ? (
-        <div className="mt-3 grid gap-4 lg:grid-cols-2">
+        <div className="mt-3 grid gap-4 lg:grid-cols-2 lg:items-center">
           <div className="min-w-0 space-y-3">
-            <ImageViewer assets={sharedImages} />
+            {sharedImages.length > 0 && <ImageViewer assets={sharedImages} />}
             {stimulusBlock}
+            {activeItem?.prompt?.value && (
+              <SafeContent content={activeItem.prompt} className="question-content text-lg font-semibold text-ink sm:text-xl" />
+            )}
             {useTabs && activeItem && (
               <>
-                {activeItem.prompt?.value && (
-                  <SafeContent content={activeItem.prompt} className="question-content text-lg font-semibold text-ink sm:text-xl" />
-                )}
                 <div className="flex flex-wrap gap-2" role="tablist" aria-label="Các câu trong bài">
                   {set.content.items.map((item, index) => {
                     const done = countAnswered([item], responses) > 0;

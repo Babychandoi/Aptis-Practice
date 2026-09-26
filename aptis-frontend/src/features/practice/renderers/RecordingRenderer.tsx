@@ -232,7 +232,7 @@ export function RecordingRenderer({
   const ringRatio = phase === 'idle' || ringTotal <= 0 ? 1 : Math.max(0, Math.min(1, secondsLeft / ringTotal));
 
   return (
-    <div className="rounded-[14px] border border-brand-200 bg-white p-3">
+    <div className="py-2">
       {/* Bài chỉ đọc mà chưa ghi gì: nói rõ em bỏ trống, chứ hiện nút ghi âm thì
           giáo viên bấm nhầm là ghi đè vào bài của học viên. */}
       {disabled && phase === 'idle' && (
@@ -265,10 +265,20 @@ export function RecordingRenderer({
               />
             </svg>
             <span className={clsx(
-              'grid h-[82%] w-[82%] place-items-center rounded-full text-white',
+              'relative grid h-[82%] w-[82%] place-items-center rounded-full text-white',
               phase === 'recording' ? 'bg-red-600' : 'bg-ink',
             )}>
-              <span className="flex flex-col items-center">
+              {/* Sóng toả ra theo mock: đỏ dồn dập khi đang ghi, xám nhẹ khi chờ bấm. */}
+              {phase === 'recording' && (
+                <>
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full border-2 border-red-400 [animation:micping_1.6s_ease-out_infinite]" />
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full border-2 border-red-400 [animation:micping_1.6s_ease-out_.8s_infinite]" />
+                </>
+              )}
+              {phase === 'idle' && !examMode && (
+                <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full border-2 border-ink/30 [animation:micping_2.4s_ease-out_infinite]" />
+              )}
+              <span className="relative flex flex-col items-center">
                 <MicGlyph />
                 <span className="mt-1 font-mono text-3xl font-bold tabular-nums sm:text-[34px]">{formatDuration(ringSeconds)}</span>
                 <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-[.14em] text-white/70">
@@ -285,9 +295,12 @@ export function RecordingRenderer({
                 key={index}
                 className={clsx(
                   'w-[3px] rounded-full transition-colors',
-                  phase === 'recording' ? 'animate-pulse bg-red-500' : 'bg-brand-300',
+                  phase === 'recording' ? 'bg-red-500' : 'bg-brand-300',
                 )}
-                style={{ height: `${height}%`, animationDelay: `${index * 60}ms` }}
+                style={{
+                  height: `${height}%`,
+                  animation: phase === 'recording' ? `wavebar .${4 + (index % 5)}s ease-in-out ${(index * 0.04).toFixed(2)}s infinite alternate` : undefined,
+                }}
               />
             ))}
           </div>
@@ -312,8 +325,15 @@ export function RecordingRenderer({
       )}
 
       {phase === 'done' && (
-        <div className="space-y-3">
-          <p className="text-sm font-medium text-emerald-700">✓ Đã lưu bản ghi âm</p>
+        <div className="flex flex-col items-center gap-3 text-center">
+          {/* Cùng vòng tròn với lúc ghi để màn không nhảy sang kiểu cũ sau khi ghi xong. */}
+          <span className="grid h-[168px] w-[168px] place-items-center rounded-full border-[10px] border-skill-speaking-bg bg-skill-speaking text-white">
+            <span className="flex flex-col items-center gap-1">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+              <span className="text-[11px] font-bold uppercase tracking-[0.14em]">Đã lưu</span>
+            </span>
+          </span>
+          <p className="text-sm font-medium text-ink-soft">Đã lưu bản ghi âm</p>
 
           {/* Đang thi thì không cho nghe lại, giống phòng thi thật. Nhưng khi
               xem lại bài đã nộp (disabled/showAnswer) thì phải nghe được —
@@ -321,11 +341,11 @@ export function RecordingRenderer({
           {(!examMode || disabled) && (
             <>
               {playbackUrl ? (
-                <audio controls src={playbackUrl} className="w-full" />
+                <audio controls src={playbackUrl} className="w-full max-w-sm" />
               ) : loadingSaved ? (
                 <p className="text-xs text-slate-500">Đang tải bản ghi…</p>
               ) : savedUrl ? (
-                <audio controls src={savedUrl} className="w-full" />
+                <audio controls src={savedUrl} className="w-full max-w-sm" />
               ) : (
                 <p className="text-xs text-amber-700">
                   Không tải được bản ghi. Thử tải lại trang.
@@ -340,7 +360,7 @@ export function RecordingRenderer({
                 setPhase('idle');
                 setPlaybackUrl(null);
               }}
-              className="btn-secondary w-full"
+              className="btn-secondary"
             >
               Ghi lại ({maxRecordings - attemptCount} lần còn lại)
             </button>
