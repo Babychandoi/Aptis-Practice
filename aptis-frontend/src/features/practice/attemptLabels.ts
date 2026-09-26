@@ -30,7 +30,12 @@ export function useAttemptLabels() {
     return a.mode === 'CUSTOM_PRACTICE' ? 'Luyện tuỳ chọn' : 'Bài luyện tập';
   };
 
-  return { skillOf, titleOf };
+  /** Kỹ năng của một Part, cho những chỗ chỉ biết partId (đợt cập nhật đề…). */
+  const skillOfPart = (partId: string | null | undefined): SkillMeta =>
+    skillByCode(partId ? partById.get(partId)?.componentCode : undefined);
+  const partNumberOf = (partId: string | null | undefined) => (partId ? partById.get(partId)?.displayOrder : undefined);
+
+  return { skillOf, titleOf, skillOfPart, partNumberOf };
 }
 
 /** Điểm quy về thang 50 của Aptis, từ phần trăm backend trả về. */

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ApiError } from '@/api/client';
 import { contentUpdateApi, practiceApi } from '@/api/endpoints';
@@ -7,6 +7,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { PremiumGate } from '@/components/ui/PremiumGate';
 import { formatDate } from '@/lib/format';
+import { useAttemptLabels } from '@/features/practice/attemptLabels';
 
 /**
  * Nhật ký cập nhật nội dung: đợt nào thêm đề gì, bấm vào làm ngay.
@@ -21,6 +22,7 @@ import { formatDate } from '@/lib/format';
 export function ContentUpdatePage() {
   const navigate = useNavigate();
   const [startError, setStartError] = useState<string | null>(null);
+  const { skillOfPart } = useAttemptLabels();
 
   const startAttempt = useMutation({
     mutationFn: (input: { partId: string; questionSetIds: string[] }) =>
@@ -73,110 +75,88 @@ export function ContentUpdatePage() {
   const logs = query.data;
 
   return (
-    <div className="space-y-5">
-      <Breadcrumb />
-
-      <header className="rounded-xl bg-brand-900 px-5 py-5 text-white shadow-[0_10px_28px_rgba(5,63,53,.14)] sm:px-7">
-        <p className="text-[10px] font-semibold uppercase tracking-wide">
-          <span className="rounded-md bg-white/10 px-2 py-0.5">
-            {logs.length} đợt cập nhật
-          </span>
-        </p>
-        <h1 className="mt-3 text-2xl font-semibold tracking-[-0.03em]">Cập nhật đề</h1>
-        <p className="mt-1 max-w-2xl text-xs leading-5 text-[#c4e1d8]">
-          Đề mới thêm gần đây — bấm vào để luyện ngay.
-        </p>
+    <div className="mx-auto flex w-full max-w-[880px] flex-col gap-6">
+      <header className="animate-rise">
+        <h1 className="page-title">Cập nhật đề</h1>
+        <p className="page-description">Đề mới thêm gần đây — bấm vào đề để luyện đúng những đề của đợt đó.</p>
       </header>
 
       {startError && (
-        <p role="alert" className="card text-sm text-red-700">{startError}</p>
+        <p role="alert" className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{startError}</p>
       )}
 
       {logs.length === 0 && (
-        <p className="card text-center text-sm text-slate-500">
+        <p className="rounded-3xl border border-border bg-white p-8 text-center text-sm text-ink-mute">
           Chưa có đợt cập nhật nào.
         </p>
       )}
 
-      <div className="space-y-4">
-        {logs.map((log) => (
-          <section
-            key={log.id}
-            className="rounded-xl border border-border bg-white p-5 shadow-sm"
-          >
-            <div className="flex flex-wrap items-center gap-2.5">
-              <span className="rounded-full bg-brand-50 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-brand-700">
-                {log.label}
-              </span>
-              <span className="font-mono text-[11px] text-slate-500">
-                {formatDate(log.logDate)}
-              </span>
-            </div>
-
-            <p className="mt-2.5 text-sm leading-relaxed text-slate-700">
-              {log.description}
-            </p>
-
-            {log.questionSets.length > 0 && (
-              <div className="mt-4">
-                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-                  <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-                    {log.questionSets.length} đề mới
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      start(
-                        log.partId,
-                        log.questionSets.map((set) => set.questionSetId),
-                      )
-                    }
-                    disabled={startAttempt.isPending || !log.partId}
-                    className="btn-primary min-h-[36px] px-3.5 text-xs disabled:opacity-60"
-                  >
-                    {startAttempt.isPending
-                      ? 'Đang mở…'
-                      : `Làm cả ${log.questionSets.length} đề →`}
-                  </button>
+      {/* Dòng thời gian: mỗi đợt một chấm tròn màu của kỹ năng. */}
+      <ol className="relative flex flex-col gap-5 border-l-2 border-ink/80 pl-6 sm:pl-7">
+        {logs.map((log, i) => {
+          const skill = skillOfPart(log.partId);
+          return (
+            <li key={log.id} className="relative animate-rise" style={{ animationDelay: `${i * 60}ms` }}>
+              <span
+                aria-hidden="true"
+                className="absolute -left-[33px] top-6 h-4 w-4 rounded-full border-[3px] bg-white sm:-left-[37px]"
+                style={{ borderColor: skill.fg }}
+              />
+              <section className="rounded-3xl border border-border bg-white p-5">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <span className="rounded-full px-2.5 py-0.5 text-xs font-semibold" style={{ background: skill.bg, color: skill.fg }}>
+                    {log.label}
+                  </span>
+                  <span className="text-xs text-ink-faint">{formatDate(log.logDate)}</span>
+                  {log.questionSets.length > 0 && (
+                    <span className="ml-auto text-xs font-semibold text-ink-soft">{log.questionSets.length} bộ mới</span>
+                  )}
                 </div>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {log.questionSets.map((set) => (
-                    // Mỗi đề mở được riêng: truyền đúng một questionSetId nên
-                    // lượt làm bài chỉ có đề này, không kèm đề cũ của Part.
-                    <button
-                      key={set.questionSetId}
-                      type="button"
-                      onClick={() => start(log.partId, [set.questionSetId])}
-                      disabled={startAttempt.isPending || !log.partId}
-                      className="flex items-center justify-between gap-2 rounded-lg border border-border bg-surface-paper px-3.5 py-2.5 text-left transition-colors hover:border-brand-400 hover:bg-brand-50 disabled:opacity-60"
-                    >
-                      <span className="min-w-0">
-                        <span className="block truncate text-xs font-semibold text-slate-900">
-                          {set.title}
-                        </span>
-                        <span className="block font-mono text-[10px] text-slate-500">
-                          {set.code} · {set.itemCount} câu
-                        </span>
-                      </span>
-                      <span aria-hidden className="shrink-0 text-brand-700">→</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </section>
-        ))}
-      </div>
+
+                <p className="mt-3 text-[15px] leading-6">{log.description}</p>
+
+                {log.questionSets.length > 0 && (
+                  <>
+                    <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                      {log.questionSets.map((set) => (
+                        // Mỗi đề mở được riêng: truyền đúng một questionSetId nên
+                        // lượt làm bài chỉ có đề này, không kèm đề cũ của Part.
+                        <button
+                          key={set.questionSetId}
+                          type="button"
+                          onClick={() => start(log.partId, [set.questionSetId])}
+                          disabled={startAttempt.isPending || !log.partId}
+                          className="flex items-center justify-between gap-2 rounded-2xl border border-border bg-surface-paper px-3.5 py-2.5 text-left transition-colors hover:border-brand-300 disabled:opacity-60"
+                        >
+                          <span className="min-w-0">
+                            <span className="block truncate text-sm font-semibold">{set.title}</span>
+                            <span className="block font-mono text-[11px] text-ink-faint">{set.code} · {set.itemCount} câu</span>
+                          </span>
+                          <span aria-hidden="true" className="shrink-0 text-ink-mute">›</span>
+                        </button>
+                      ))}
+                    </div>
+                    {log.questionSets.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => start(log.partId, log.questionSets.map((set) => set.questionSetId))}
+                        disabled={startAttempt.isPending || !log.partId}
+                        className="mt-3 text-xs font-semibold text-ink-mute hover:text-ink disabled:opacity-60"
+                      >
+                        {startAttempt.isPending ? 'Đang mở…' : `Làm cả ${log.questionSets.length} đề →`}
+                      </button>
+                    )}
+                  </>
+                )}
+              </section>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
 
 function Breadcrumb() {
-  return (
-    <nav className="flex flex-wrap items-center gap-2 text-xs text-stone-500" aria-label="Đường dẫn">
-      <Link to="/" className="hover:text-brand-800">Trang chủ</Link>
-      <span aria-hidden="true">›</span>
-      <span className="font-semibold text-stone-800">Cập nhật đề</span>
-    </nav>
-  );
+  return <h1 className="page-title">Cập nhật đề</h1>;
 }
