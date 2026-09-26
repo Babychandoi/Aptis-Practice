@@ -1055,6 +1055,12 @@ export interface Classroom {
   expiresAt?: string | null;
   /** Quá hạn thì lớp bị khoá, chờ admin gia hạn. */
   expired?: boolean;
+  scheduleNote?: string | null;
+  requireApproval?: boolean;
+  showLeaderboard?: boolean;
+  revealAnswersAfterDue?: boolean;
+  /** Số học viên đang chờ duyệt vào lớp. */
+  pendingRequests?: number;
 }
 
 export interface ClassroomStudent {
@@ -1102,6 +1108,9 @@ export interface StudentClassroom {
   supportNote?: string | null;
   /** Lớp hết hạn hoặc đã đóng: chỉ xem được thông báo, không vào được. */
   locked?: boolean;
+  /** Đã nhập mã, lớp bật duyệt nên đang chờ giáo viên. */
+  pending?: boolean;
+  scheduleNote?: string | null;
 }
 
 export interface AdminClassroom {

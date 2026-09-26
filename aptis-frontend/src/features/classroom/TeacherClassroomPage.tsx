@@ -20,6 +20,8 @@ import { TeacherQuestionSetsTab } from '@/features/classroom/TeacherQuestionSets
 import { TeacherBlueprintsTab } from '@/features/classroom/TeacherBlueprintsTab';
 import { StudentAttemptsPanel } from '@/features/classroom/StudentAttemptsPanel';
 import type { Classroom, ClassroomStudent } from '@/types/api';
+import { Icon } from '@/components/shell/icons';
+import { ClassSwitchesPanel, ClassroomSwitcher, JoinRequestsPanel, ScheduleTab } from '@/features/classroom/TeacherClassroomExtras';
 
 type Tab =
   | 'students'
@@ -30,7 +32,22 @@ type Tab =
   | 'posts'
   | 'predictions'
   | 'progress'
+  | 'schedule'
   | 'settings';
+
+/** Tiêu đề và mô tả từng mục, như mock. */
+const TAB_META: Record<Tab, { title: string; desc: string }> = {
+  students: { title: 'Học viên', desc: 'Duyệt yêu cầu tham gia và theo dõi từng học viên trong lớp.' },
+  assignments: { title: 'Bài giao', desc: 'Bài nộp Writing và Speaking có điểm AI gợi ý — bạn chỉnh lại và trả bài kèm nhận xét.' },
+  'my-sets': { title: 'Đề của tôi', desc: 'Đề bạn tự soạn cho lớp, gửi lên để biên tập viên duyệt vào ngân hàng.' },
+  blueprints: { title: 'Đề thi', desc: 'Ghép đề của bạn và đề hệ thống thành bài thi để giao cho lớp.' },
+  materials: { title: 'Tài liệu', desc: 'File và đường dẫn chia sẻ cho học viên.' },
+  posts: { title: 'Bảng tin lớp', desc: 'Thông báo cho cả lớp, xem ai đã đọc và trả lời bình luận.' },
+  predictions: { title: 'Dự đoán đề', desc: 'Chủ đề bạn dự đoán cho lớp, học viên bấm vào luyện ngay.' },
+  progress: { title: 'Tiến độ', desc: 'Điểm mạnh và yếu của cả lớp theo từng kỹ năng.' },
+  schedule: { title: 'Lịch học', desc: 'Buổi học, link lớp online và điểm danh.' },
+  settings: { title: 'Cài đặt lớp', desc: 'Mã tham gia, cách nhận học viên, học phí và kênh liên hệ.' },
+};
 
 /** Ngưỡng màu cho thanh tiến độ — khớp wireframe. */
 function scoreTone(score: number): string {
@@ -106,31 +123,24 @@ export function TeacherClassroomPage() {
     );
   }
 
+  const meta = TAB_META[tab];
+
   return (
     <div className="space-y-5">
-      <Breadcrumb />
-
-      <header className="flex flex-wrap items-start justify-between gap-4">
+      <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">{classroom.name}</h1>
-            <PricingBadge classroom={classroom} />
-            <SystemContentBadge enabled={classroom.systemContentEnabled} />
-          </div>
-          <p className="mt-1 text-sm text-slate-500">
-            {classroom.studentCount}/{classroom.maxStudents} học viên · Mã lớp{' '}
-            <span className="font-mono font-semibold text-slate-700">{classroom.joinCode}</span>
-          </p>
+          <h1 className="page-title">{meta.title}</h1>
+          <p className="page-description">{meta.desc}</p>
         </div>
-
-        <button
-          type="button"
-          onClick={() => setInviteOpen(true)}
-          className="shrink-0 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-700"
-        >
-          Mời vào lớp
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <PricingBadge classroom={classroom} />
+          <SystemContentBadge enabled={classroom.systemContentEnabled} />
+          <button type="button" onClick={() => setInviteOpen(true)} className="btn-secondary min-h-[40px] px-4">
+            <Icon name="copy" className="h-4 w-4" /> Mã lớp {classroom.joinCode}
+          </button>
+        </div>
       </header>
+
 
       <ClassroomSidebar
           title={classroom.name}
@@ -140,16 +150,19 @@ export function TeacherClassroomPage() {
           value={tab}
           onChange={setTab}
           contacts={classroom}
+          switcher={<ClassroomSwitcher current={classroom} />}
           items={[
-            { key: 'students', label: 'Học viên', badge: classroom.studentCount },
-            { key: 'assignments', label: 'Bài giao' },
-            { key: 'my-sets', label: 'Đề của tôi' },
-            { key: 'blueprints', label: 'Đề thi' },
-            { key: 'materials', label: 'Tài liệu' },
-            { key: 'posts', label: 'Bảng tin lớp' },
-            { key: 'predictions', label: 'Dự đoán đề' },
-            { key: 'progress', label: 'Tiến độ' },
-            { key: 'settings', label: 'Cài đặt lớp' },
+            // Badge Học viên là số yêu cầu chờ duyệt — việc cần làm ngay, như mock.
+            { key: 'students', label: 'Học viên', icon: 'group', badge: classroom.pendingRequests },
+            { key: 'assignments', label: 'Bài giao', icon: 'orders' },
+            { key: 'my-sets', label: 'Đề của tôi', icon: 'writing' },
+            { key: 'blueprints', label: 'Đề thi', icon: 'tests' },
+            { key: 'materials', label: 'Tài liệu', icon: 'doc' },
+            { key: 'posts', label: 'Bảng tin lớp', icon: 'news' },
+            { key: 'predictions', label: 'Dự đoán đề', icon: 'trend' },
+            { key: 'progress', label: 'Tiến độ', icon: 'reports' },
+            { key: 'schedule', label: 'Lịch học', icon: 'calendar' },
+            { key: 'settings', label: 'Cài đặt lớp', icon: 'settings' },
           ]}
       />
 
@@ -162,6 +175,7 @@ export function TeacherClassroomPage() {
         {tab === 'posts' && <TeacherPostsTab />}
         {tab === 'predictions' && <TeacherPredictionsTab classroom={classroom} />}
         {tab === 'progress' && <ProgressPanel studentCount={classroom.studentCount} />}
+        {tab === 'schedule' && <ScheduleTab />}
         {tab === 'settings' && <SettingsPanel classroom={classroom} />}
       </div>
 
@@ -197,14 +211,18 @@ function StudentTable() {
   }
   if (query.data.length === 0) {
     return (
-      <p className="card text-center text-sm text-slate-500">
-        Chưa có học viên nào. Bấm “Mời vào lớp” để lấy mã và QR gửi cho học viên.
-      </p>
+      <div className="space-y-3">
+        <JoinRequestsPanel />
+        <p className="card text-center text-sm text-ink-mute">
+          Chưa có học viên nào. Bấm “Mã lớp” để lấy mã và QR gửi cho học viên.
+        </p>
+      </div>
     );
   }
 
   return (
     <div className="space-y-3">
+      <JoinRequestsPanel />
       {error && (
         <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
           {error}
@@ -449,11 +467,6 @@ function SettingsPanel({ classroom }: { classroom: Classroom }) {
     onError: (err) => setError(err instanceof ApiError ? err.message : 'Không lưu được'),
   });
 
-  const toggleJoin = useMutation({
-    mutationFn: (enabled: boolean) => teacherClassroomApi.setJoinEnabled(enabled),
-    onSuccess: invalidate,
-    onError: (err) => setError(err instanceof ApiError ? err.message : 'Không lưu được'),
-  });
 
   // Hai cột trên màn rộng: năm khối xếp dọc một cột hẹp thì phải cuộn tới cuối
   // mới thấy hết, trong khi nửa màn hình bên phải bỏ trống. Dùng CSS columns
@@ -463,6 +476,7 @@ function SettingsPanel({ classroom }: { classroom: Classroom }) {
     <div className="grid max-w-5xl items-start gap-4 lg:grid-cols-2">
       {/* Cột trái: những thứ sửa thường xuyên. */}
       <div className="space-y-4">
+        <ClassSwitchesPanel classroom={classroom} />
         <form
           className="space-y-3 rounded-2xl border border-border bg-white px-5 py-5"
           onSubmit={(event) => {
@@ -576,26 +590,6 @@ function SettingsPanel({ classroom }: { classroom: Classroom }) {
             </button>
             {saved && <span className="text-sm font-semibold text-emerald-700">Đã lưu</span>}
           </div>
-        </section>
-
-        <section className="rounded-2xl border border-border bg-white px-5 py-4">
-          <label className="flex cursor-pointer items-start gap-3">
-            <input
-              type="checkbox"
-              checked={classroom.joinEnabled}
-              disabled={toggleJoin.isPending}
-              onChange={(event) => toggleJoin.mutate(event.target.checked)}
-              className="mt-0.5 h-4 w-4 shrink-0 rounded border-border"
-            />
-            <span>
-              <span className="block text-sm font-semibold text-slate-800">
-                Nhận học viên mới
-              </span>
-              <span className="block text-[11px] leading-4 text-slate-500">
-                Tắt khi lớp đã đủ người — mã lớp tạm ngừng hoạt động, học viên cũ không bị ảnh hưởng.
-              </span>
-            </span>
-          </label>
         </section>
 
         {!classroom.systemContentEnabled && (

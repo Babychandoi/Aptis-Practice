@@ -4,6 +4,7 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios';
 import { tokenStorage } from '@/lib/tokenStorage';
+import { selectedClassroomId } from '@/features/classroom/classroomSelection';
 import type { ApiErrorResponse, TokenResponse } from '@/types/api';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api/v1';
@@ -170,6 +171,13 @@ export async function restoreAccessToken(): Promise<void> {
 api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   if (isPublicPath(config.url)) {
     return config;
+  }
+
+  // Giáo viên nhiều lớp: gắn lớp đang chọn cho API giáo viên. Backend kiểm lớp
+  // đó đúng là của tài khoản này; không gắn thì backend lấy lớp đầu tiên.
+  const classroomId = selectedClassroomId();
+  if (classroomId && config.url?.startsWith('/teacher/')) {
+    config.headers.set('X-Classroom-Id', classroomId);
   }
 
   // Refresh chủ động trước khi token hết hạn, tránh vòng 401 -> retry

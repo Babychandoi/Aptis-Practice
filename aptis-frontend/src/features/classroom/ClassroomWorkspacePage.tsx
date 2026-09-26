@@ -9,6 +9,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate } from '@/lib/format';
 import { ClassroomSidebar } from '@/features/classroom/ClassroomSidebar';
+import { ClassHero, MembersList, PostFeed, ScheduleList } from '@/features/classroom/StudentClassroomExtras';
 import type {
   ClassroomPrediction,
   StudentAssignment,
@@ -16,7 +17,7 @@ import type {
   SubmissionStatus,
 } from '@/types/api';
 
-type Tab = 'assignments' | 'materials' | 'posts' | 'predictions';
+type Tab = 'assignments' | 'schedule' | 'posts' | 'members' | 'materials' | 'predictions';
 
 const STATUS_LABEL: Record<SubmissionStatus, { text: string; tone: string }> = {
   NOT_STARTED: { text: 'Chưa làm', tone: 'bg-surface-muted text-slate-600' },
@@ -79,12 +80,7 @@ export function ClassroomWorkspacePage() {
 
   return (
     <div className="space-y-5">
-      <Breadcrumb />
-
-      <header>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">{classroom.name}</h1>
-        <p className="mt-1 text-sm text-slate-500">Giáo viên: {classroom.teacherName}</p>
-      </header>
+      <ClassHero classroom={classroom} />
 
       {classroom.paymentStatus === 'PENDING' && (
         <p className="rounded-2xl bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900">
@@ -102,10 +98,12 @@ export function ClassroomWorkspacePage() {
           onChange={setTab}
           contacts={classroom}
           items={[
-            { key: 'assignments', label: 'Bài được giao' },
-            { key: 'materials', label: 'Tài liệu' },
-            { key: 'posts', label: 'Bảng tin' },
-            { key: 'predictions', label: 'Dự đoán đề' },
+            { key: 'assignments', label: 'Bài tập', icon: 'orders' },
+            { key: 'schedule', label: 'Lịch học', icon: 'calendar' },
+            { key: 'posts', label: 'Bảng tin lớp', icon: 'news' },
+            { key: 'members', label: 'Thành viên', icon: 'group' },
+            { key: 'materials', label: 'Tài liệu', icon: 'doc' },
+            { key: 'predictions', label: 'Dự đoán đề', icon: 'trend' },
           ]}
       />
 
@@ -114,7 +112,9 @@ export function ClassroomWorkspacePage() {
           <AssignmentList classroomId={classroomId} classroom={classroom} />
         )}
         {tab === 'materials' && <MaterialList classroomId={classroomId} />}
-        {tab === 'posts' && <PostList classroomId={classroomId} />}
+        {tab === 'schedule' && <ScheduleList classroomId={classroomId} />}
+        {tab === 'posts' && <PostFeed classroomId={classroomId} />}
+        {tab === 'members' && <MembersList classroomId={classroomId} />}
         {tab === 'predictions' && <PredictionList classroomId={classroomId} />}
       </div>
     </div>
@@ -297,34 +297,6 @@ function MaterialList({ classroomId }: { classroomId: string }) {
         </li>
       ))}
     </ul>
-  );
-}
-
-function PostList({ classroomId }: { classroomId: string }) {
-  const query = useQuery({
-    queryKey: ['classrooms', classroomId, 'posts'],
-    queryFn: () => studentWorkspaceApi.posts(classroomId),
-  });
-
-  if (query.isPending) return <LoadingBlock label="Đang tải…" />;
-  if (!query.data || query.data.length === 0) {
-    return <EmptyBox text="Chưa có thông báo nào." />;
-  }
-
-  return (
-    <div className="space-y-2.5">
-      {query.data.map((post) => (
-        <article key={post.id} className="rounded-2xl border border-border bg-white px-4 py-3.5">
-          <h3 className="font-bold text-slate-900">{post.title}</h3>
-          <p className="mt-0.5 text-[11px] text-slate-500">{formatDate(post.createdAt)}</p>
-          {post.content && (
-            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">
-              {post.content}
-            </p>
-          )}
-        </article>
-      ))}
-    </div>
   );
 }
 
