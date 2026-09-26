@@ -721,6 +721,40 @@ export const studentWorkspaceApi = {
       .then((r) => r.data),
 };
 
+/** Số liệu bảng điều khiển; tính từ bài làm thật, xem DashboardController. */
+export interface DashboardStats {
+  streakDays: number;
+  activity: { date: string; minutes: number }[];
+  skills: { componentCode: string; score50: number; attempts: number }[];
+}
+
+export const dashboardApi = {
+  stats: () => api.get<DashboardStats>('/me/dashboard').then((r) => r.data),
+};
+
+export interface Part4Set { id: string; title: string; questions: string[] }
+export interface MergeResult {
+  commonIdea?: string;
+  why?: string;
+  outline?: string[];
+  modelAnswer: string;
+  adaptations?: { topicId?: string; topic?: string; changes?: string[] }[];
+  usefulPhrases?: string[];
+}
+export interface SpeakingMerge { id: string; questionSetIds: string[]; result: MergeResult; createdAt: string }
+export interface SpeakingMergeOverview {
+  sets: Part4Set[];
+  quota: { limit: number; used: number; remaining: number };
+  history: SpeakingMerge[];
+}
+
+/** Công cụ gộp đề Speaking Part 4, xem SpeakingMergeService. */
+export const toolsApi = {
+  speakingMerge: () => api.get<SpeakingMergeOverview>('/tools/speaking-merge').then((r) => r.data),
+  mergeSpeaking: (questionSetIds: string[]) =>
+    api.post<SpeakingMerge>('/tools/speaking-merge', { questionSetIds }).then((r) => r.data),
+};
+
 export const studentClassroomApi = {
   mine: () => api.get<StudentClassroom[]>('/classrooms/mine').then((r) => r.data),
 

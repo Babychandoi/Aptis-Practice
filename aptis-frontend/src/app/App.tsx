@@ -45,6 +45,7 @@ const StudyTipsListeningPart3Page = lazy(() => import('@/features/learning/Study
 const StudyTipsReadingPage = lazy(() => import('@/features/learning/StudyTipsReadingPage').then((m) => ({ default: m.StudyTipsReadingPage })));
 const StudyTipsWritingPage = lazy(() => import('@/features/learning/StudyTipsWritingPage').then((m) => ({ default: m.StudyTipsWritingPage })));
 const StudyTipsSpeakingPage = lazy(() => import('@/features/learning/StudyTipsSpeakingPage').then((m) => ({ default: m.StudyTipsSpeakingPage })));
+const ToolsPage = lazy(() => import('@/features/tools/ToolsPage').then((m) => ({ default: m.ToolsPage })));
 const NotFoundPage = lazy(() => import('@/app/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
 const AdminLayout = lazy(() => import('@/features/admin/AdminLayout').then((m) => ({ default: m.AdminLayout })));
 const QuestionSetListPage = lazy(() => import('@/features/admin/QuestionSetListPage').then((m) => ({ default: m.QuestionSetListPage })));
@@ -137,6 +138,7 @@ export function App() {
         <Route path="/bang-tin" element={<NewsFeedPage />} />
         <Route path="/bang-tin/:slug" element={<NewsPostPage />} />
         <Route path="/meo-hoc" element={<StudyTipsHomePage />} />
+        <Route path="/cong-cu" element={<ToolsPage />} />
         <Route path="/meo-hoc/nghe-phan-3" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsListeningPart3Page /></PremiumRoute>} />
         <Route path="/meo-hoc/doc" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsReadingPage /></PremiumRoute>} />
         <Route path="/meo-hoc/viet" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsWritingPage /></PremiumRoute>} />
