@@ -182,6 +182,25 @@ public class AdminContentService {
     }
 
     /**
+     * Biên tập viên duyệt nội dung: IN_REVIEW → APPROVED, chờ phát hành.
+     *
+     * <p>Ghi người duyệt để trang ngân hàng câu hỏi biết ai đã chịu trách nhiệm
+     * nội dung trước khi nó ra tới học viên.
+     */
+    @Transactional
+    public QuestionSet approve(String actorId, String questionSetId, String note) {
+        QuestionSet questionSet = require(questionSetId);
+        transition(questionSet, ContentStatus.APPROVED);
+        questionSet.setApprovedBy(actorId);
+        questionSet.setApprovedAt(java.time.Instant.now());
+        questionSet.setUpdatedBy(actorId);
+
+        auditService.record(actorId, "QUESTION_SET_APPROVE", "QUESTION_SET", questionSetId,
+                null, Map.of("note", note == null ? "" : note));
+        return questionSet;
+    }
+
+    /**
      * Trả về DRAFT khi reviewer yêu cầu sửa.
      */
     @Transactional

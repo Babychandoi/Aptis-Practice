@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { adminBankTransferApi } from '@/api/adminEndpoints';
-import { adminNewsApi } from '@/api/adminEndpoints';
+import { adminPendingApi, type AdminPendingCounts } from '@/api/adminEndpoints';
 import { usePermission } from './usePermission';
 import { useAuthStore } from '@/features/auth/authStore';
 import { useAdminWebSocket } from './useAdminWebSocket';
 import { Icon, type IconName } from '@/components/shell/icons';
 
-type BadgeKey = 'transfers' | 'news';
+type BadgeKey = keyof AdminPendingCounts;
 
 interface AdminNavItem {
   to: string;
@@ -22,18 +21,18 @@ interface AdminNavItem {
 // Thứ tự và tên theo mock.
 const NAV_ITEMS: AdminNavItem[] = [
   { to: '/admin/skill-tests', label: 'Bài test kỹ năng', permission: 'blueprint:write', icon: 'tests' },
-  { to: '/admin/question-sets', label: 'Ngân hàng câu hỏi', permission: 'question_set:read', icon: 'questions' },
+  { to: '/admin/question-sets', label: 'Ngân hàng câu hỏi', permission: 'question_set:read', icon: 'questions', badge: 'questionSets' },
   { to: '/admin/imports', label: 'Import câu hỏi', permission: 'question_set:write', icon: 'import' },
-  { to: '/admin/contributions', label: 'Đề giáo viên gửi', permission: 'question_set:review', icon: 'tsets' },
+  { to: '/admin/contributions', label: 'Đề giáo viên gửi', permission: 'question_set:review', icon: 'tsets', badge: 'contributions' },
   { to: '/admin/scoring', label: 'Cấu hình điểm', permission: 'question_set:write', icon: 'scoring' },
   { to: '/admin/exam-predictions', label: 'Dự đoán đề', permission: 'question_set:write', icon: 'trend' },
-  { to: '/admin/news', label: 'Bảng tin', permission: 'news:write', icon: 'news', badge: 'news' },
+  { to: '/admin/news', label: 'Bảng tin', permission: 'news:write', icon: 'news', badge: 'newsComments' },
   { to: '/admin/plans', label: 'Gói Premium', permission: 'plan:write', icon: 'star' },
   { to: '/admin/gemini', label: 'Gemini Live', permission: 'plan:write', icon: 'spark' },
   { to: '/admin/orders', label: 'Đơn hàng', permission: 'order:read', icon: 'orders' },
-  { to: '/admin/bank-transfers', label: 'Đối soát chuyển khoản', permission: 'order:read', icon: 'transfers', badge: 'transfers' },
-  { to: '/admin/refunds', label: 'Hoàn tiền', permission: 'refund:write', icon: 'refunds' },
-  { to: '/admin/affiliate', label: 'Giới thiệu & hoa hồng', permission: 'affiliate:read', icon: 'gift' },
+  { to: '/admin/bank-transfers', label: 'Đối soát chuyển khoản', permission: 'order:read', icon: 'transfers', badge: 'bankTransfers' },
+  { to: '/admin/refunds', label: 'Hoàn tiền', permission: 'refund:write', icon: 'refunds', badge: 'refunds' },
+  { to: '/admin/affiliate', label: 'Giới thiệu & hoa hồng', permission: 'affiliate:read', icon: 'gift', badge: 'payouts' },
   { to: '/admin/classrooms', label: 'Lớp học & giáo viên', permission: 'classroom:read', icon: 'classes' },
   { to: '/admin/users', label: 'Quản lý người dùng', permission: 'user:read', icon: 'group' },
   { to: '/admin/analytics', label: 'Học viên quan tâm gì', permission: 'analytics:read', icon: 'pie' },
@@ -61,29 +60,18 @@ export function AdminLayout() {
         event.type === 'BANK_TRANSFER_REJECTED'
       ) {
         void queryClient.invalidateQueries({ queryKey: ['admin', 'bank-transfers'] });
+        void queryClient.invalidateQueries({ queryKey: ['admin', 'pending-counts'] });
       }
     },
   });
 
-  const pendingClaimsQuery = useQuery({
-    queryKey: ['admin', 'bank-transfers', 'claimed-badge'],
-    queryFn: () => adminBankTransferApi.list('CLAIMED', 0, 1),
-    enabled: canReadTransfers,
-  });
-
-  // Badge của bảng tin đếm bình luận chờ duyệt — phải là số riêng, dùng chung
-  // số chuyển khoản thì con số đó hiện lên cả mục Bảng tin.
-  const pendingCommentsQuery = useQuery({
-    queryKey: ['admin', 'news', 'pending-count'],
-    queryFn: adminNewsApi.pendingCount,
-    enabled: has('news:moderate'),
+  // Một lần gọi đếm mọi việc chờ xử lý; backend chỉ trả mục người xem có quyền.
+  const pendingQuery = useQuery({
+    queryKey: ['admin', 'pending-counts'],
+    queryFn: adminPendingApi.counts,
     refetchInterval: 60_000,
   });
-
-  const badges: Record<BadgeKey, number> = {
-    transfers: pendingClaimsQuery.data?.totalElements ?? 0,
-    news: pendingCommentsQuery.data ?? 0,
-  };
+  const badges: AdminPendingCounts = pendingQuery.data ?? {};
 
   const visible = NAV_ITEMS.filter((item) => has(item.permission));
   const current = visible.find((item) => location.pathname.startsWith(item.to));
@@ -110,7 +98,7 @@ export function AdminLayout() {
         <p className="mb-2 px-2.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-admin-fg/60">Quản lý hệ thống</p>
         <nav className="flex flex-col gap-0.5" aria-label="Khu quản trị">
           {visible.map((item) => {
-            const count = item.badge ? badges[item.badge] : 0;
+            const count = item.badge ? badges[item.badge] ?? 0 : 0;
             return (
               <NavLink
                 key={item.to}

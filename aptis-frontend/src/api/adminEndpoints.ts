@@ -352,3 +352,17 @@ export const adminNewsApi = {
   /** Xoá hẳn, chỉ dùng cho spam: người viết cũng không còn thấy. */
   purge: (id: string) => api.delete(`/admin/news/comments/${id}`),
 };
+
+/** Số việc chờ xử lý cho badge sidebar; mục không có quyền thì vắng mặt. */
+export interface AdminPendingCounts {
+  questionSets?: number;
+  contributions?: number;
+  newsComments?: number;
+  bankTransfers?: number;
+  refunds?: number;
+  payouts?: number;
+}
+
+export const adminPendingApi = {
+  counts: () => api.get<AdminPendingCounts>('/admin/pending-counts').then((r) => r.data),
+};
