@@ -214,12 +214,12 @@ function Badge({ tone, children }: { tone: string; children: ReactNode }) {
 
 function Breadcrumb() {
   return (
-    <nav className="flex flex-wrap items-center gap-2 text-xs text-stone-500" aria-label="Đường dẫn">
+    <nav className="flex flex-wrap items-center gap-2 text-xs text-slate-500" aria-label="Đường dẫn">
       <Link to="/" className="hover:text-brand-800">
         Trang chủ
       </Link>
       <span aria-hidden="true">›</span>
-      <span className="font-semibold text-stone-800">Lớp học của tôi</span>
+      <span className="font-semibold text-slate-800">Lớp học của tôi</span>
     </nav>
   );
 }

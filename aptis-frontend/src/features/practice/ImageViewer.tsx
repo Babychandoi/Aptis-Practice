@@ -80,7 +80,7 @@ function ImageAsset({ asset, label }: { asset: AssetRef; label: string }) {
             <img src={signedUrl} alt={label} className="h-[280px] w-full object-contain sm:h-[340px]" />
           </button>
         ) : (
-          <div className="grid h-48 place-items-center text-xs text-stone-400">Đang tải {label.toLowerCase()}…</div>
+          <div className="grid h-48 place-items-center text-xs text-slate-400">Đang tải {label.toLowerCase()}…</div>
         )}
       </div>
 

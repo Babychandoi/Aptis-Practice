@@ -125,7 +125,6 @@ export function App() {
         <Route path="/luyen-tap/:componentSlug/:partSlug" element={<PartPage />} />
         <Route path="/components/:componentId" element={<ComponentPage />} />
         <Route path="/parts/:partId" element={<PartPage />} />
-        <Route path="/practice/custom" element={<Navigate to="/mock-tests" replace />} />
         <Route path="/mock-tests" element={<MockTestPage />} />
         <Route path="/attempts/:attemptId" element={<AttemptPage />} />
         <Route path="/attempts/:attemptId/result" element={<AttemptResultPage />} />

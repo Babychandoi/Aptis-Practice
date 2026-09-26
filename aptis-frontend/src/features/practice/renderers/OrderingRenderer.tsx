@@ -84,7 +84,7 @@ export function OrderingRenderer({ item, draft, disabled, showAnswer, onChange }
   return (
     <div className="space-y-2">
       {!disabled && !showAnswer && (
-        <p className="text-[11px] text-stone-500">
+        <p className="text-[11px] text-slate-500">
           Kéo thả câu để sắp xếp, hoặc dùng nút ▲▼.
         </p>
       )}

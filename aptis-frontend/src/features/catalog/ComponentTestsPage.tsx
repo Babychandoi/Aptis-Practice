@@ -52,10 +52,10 @@ export function ComponentTestsPage() {
     : 0;
 
   return <div className="space-y-4">
-    <nav className="flex items-center gap-2 text-xs text-stone-500">
+    <nav className="flex items-center gap-2 text-xs text-slate-500">
       <Link to="/">Trang chủ</Link><span>›</span>
       <Link to={componentPath(component.code)}>Luyện {displayName}</Link><span>›</span>
-      <strong className="text-stone-800">Bài test</strong>
+      <strong className="text-slate-800">Bài test</strong>
     </nav>
 
     <header className="flex flex-col gap-5 rounded-xl bg-brand-900 px-6 py-5 text-white shadow-[0_10px_28px_rgba(5,63,53,.14)] sm:flex-row sm:items-center">
@@ -68,19 +68,19 @@ export function ComponentTestsPage() {
       </div>
     </header>
 
-    {skillTests.length === 0 ? <section className="rounded-xl border border-dashed border-stone-300 bg-white px-6 py-12 text-center">
-      <h2 className="font-semibold text-stone-800">Chưa có bài test {displayName}</h2>
-      <p className="mt-2 text-sm text-stone-500">Quản trị viên chưa ghép và phát hành đề hoàn chỉnh cho kỹ năng này.</p>
+    {skillTests.length === 0 ? <section className="rounded-xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
+      <h2 className="font-semibold text-slate-800">Chưa có bài test {displayName}</h2>
+      <p className="mt-2 text-sm text-slate-500">Quản trị viên chưa ghép và phát hành đề hoàn chỉnh cho kỹ năng này.</p>
       <Link to={`${componentPath(component.code)}/theo-part`} className="btn-secondary mt-5">Luyện theo Part</Link>
     </section> : <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {skillTests.map((test, index) => <article key={test.id} className="flex min-h-[235px] flex-col rounded-xl border border-[#dfc989] bg-white p-5 shadow-[0_3px_12px_rgba(83,65,25,.07)]">
         <div className="flex items-start justify-between gap-3">
-          <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase ${test.canAccess ? 'bg-[#e6f4ee] text-brand-800' : 'bg-[#fbf3dc] text-[#8b6415]'}`}>{test.canAccess ? 'Sẵn sàng' : 'Premium'}</span>
-          <span className="text-xs font-semibold text-stone-400">TEST {page * PAGE_SIZE + index + 1}</span>
+          <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase ${test.canAccess ? 'bg-[#e6f4ee] text-brand-800' : 'bg-[#fbf3dc] text-amber-800'}`}>{test.canAccess ? 'Sẵn sàng' : 'Premium'}</span>
+          <span className="text-xs font-semibold text-slate-400">TEST {page * PAGE_SIZE + index + 1}</span>
         </div>
         <h2 className="mt-4 text-lg font-semibold">{test.name}</h2>
-        <p className="mt-1 text-xs text-stone-500">{test.parts.length} Part · {test.totalQuestionSets} bộ câu hỏi{test.durationSeconds ? ` · ${Math.round(test.durationSeconds / 60)} phút` : ''}</p>
-        <p className="mt-3 line-clamp-3 text-xs leading-5 text-stone-600">{test.description || `Bài test ${displayName} hoàn chỉnh theo cấu trúc đã được thiết lập.`}</p>
+        <p className="mt-1 text-xs text-slate-500">{test.parts.length} Part · {test.totalQuestionSets} bộ câu hỏi{test.durationSeconds ? ` · ${Math.round(test.durationSeconds / 60)} phút` : ''}</p>
+        <p className="mt-3 line-clamp-3 text-xs leading-5 text-slate-600">{test.description || `Bài test ${displayName} hoàn chỉnh theo cấu trúc đã được thiết lập.`}</p>
         <Link to={`${componentPath(component.code)}/bai-test/${test.id}/gioi-thieu`} className="mt-auto inline-flex min-h-10 items-center justify-center rounded-lg bg-brand-800 px-4 text-xs font-semibold text-white hover:bg-brand-900">{test.canAccess ? 'Xem bài test' : 'Xem điều kiện mở khóa'}</Link>
       </article>)}
     </section>}
@@ -95,7 +95,7 @@ export function ComponentTestsPage() {
         >
           ← Trước
         </button>
-        <span className="text-xs tabular-nums text-stone-600">
+        <span className="text-xs tabular-nums text-slate-600">
           Trang {page + 1}/{totalPages} · {totalTests} bài
         </span>
         <button

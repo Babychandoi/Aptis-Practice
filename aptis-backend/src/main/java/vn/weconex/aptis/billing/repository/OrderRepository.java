@@ -40,6 +40,12 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
     Page<Order> findByUserIdOrderByCreatedAtDesc(String userId, Pageable pageable);
 
+    Page<Order> findByStatus(OrderStatus status, Pageable pageable);
+
+    /** Đếm đơn theo trạng thái cho các ô đếm ở trang Đơn hàng. */
+    @Query("SELECT o.status, COUNT(o) FROM PurchaseOrder o GROUP BY o.status")
+    List<Object[]> countGroupByStatus();
+
     /**
      * Khóa order trước khi kích hoạt Premium (§34 bước 1) để webhook gửi lại
      * nhiều lần không tạo nhiều subscription.

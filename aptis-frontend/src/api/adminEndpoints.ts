@@ -7,6 +7,7 @@ import type {
   BankAccount,
   BankTransferStatus,
   AdminOrder,
+  OrderStatus,
   AdminPlan,
   AdminQuestionSet,
   ContentStatus,
@@ -166,10 +167,13 @@ export const adminPlanApi = {
 // ---------------------------------------------------------------------
 
 export const adminOrderApi = {
-  list: (page = 0, size = 20) =>
+  list: (page = 0, size = 20, status?: OrderStatus) =>
     api
-      .get<PageResponse<AdminOrder>>('/admin/orders', { params: { page, size } })
+      .get<PageResponse<AdminOrder>>('/admin/orders', { params: { page, size, status } })
       .then((r) => r.data),
+
+  statusCounts: () =>
+    api.get<Partial<Record<OrderStatus, number>>>('/admin/orders/status-counts').then((r) => r.data),
 
   detail: (orderId: string) =>
     api.get<AdminOrder>(`/admin/orders/${orderId}`).then((r) => r.data),

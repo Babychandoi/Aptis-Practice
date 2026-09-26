@@ -490,12 +490,12 @@ function LayersIcon() {
 
 function Breadcrumb() {
   return (
-    <nav className="flex flex-wrap items-center gap-2 text-xs text-stone-500" aria-label="Đường dẫn">
+    <nav className="flex flex-wrap items-center gap-2 text-xs text-slate-500" aria-label="Đường dẫn">
       <Link to="/" className="hover:text-brand-800">
         Trang chủ
       </Link>
       <span aria-hidden="true">›</span>
-      <span className="font-semibold text-stone-800">Dự đoán đề</span>
+      <span className="font-semibold text-slate-800">Dự đoán đề</span>
     </nav>
   );
 }

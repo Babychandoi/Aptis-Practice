@@ -58,10 +58,10 @@ export function StudyTipsReadingPage() {
 
   return (
     <div className="space-y-4">
-      <nav className="flex items-center gap-2 text-xs text-stone-500">
+      <nav className="flex items-center gap-2 text-xs text-slate-500">
         <Link to="/">Trang chủ</Link><span>›</span>
         <Link to="/meo-hoc">Mẹo học</Link><span>›</span>
-        <strong className="text-stone-800">Đọc</strong>
+        <strong className="text-slate-800">Đọc</strong>
       </nav>
 
       <header className="rounded-xl bg-brand-900 px-6 py-5 text-white shadow-[0_10px_28px_rgba(5,63,53,.14)]">
@@ -89,13 +89,13 @@ export function StudyTipsReadingPage() {
               'flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition',
               tab === entry.key
                 ? 'border-brand-800 bg-brand-800 text-white'
-                : 'border-[#E5E9F0] bg-white text-stone-700 hover:border-brand-400',
+                : 'border-[#E5E9F0] bg-white text-slate-700 hover:border-brand-400',
             )}
           >
             {entry.label}
             <span className={clsx(
               'rounded-full px-1.5 text-[10px] tabular-nums',
-              tab === entry.key ? 'bg-white/20' : 'bg-[#f5f3ec] text-stone-500',
+              tab === entry.key ? 'bg-white/20' : 'bg-slate-50 text-slate-500',
             )}>
               {entry.count}
             </span>
@@ -146,11 +146,11 @@ function PartRuleSection({ tip }: { tip: PartTip }) {
           {tip.eyebrow}
         </span>
         <h2 className="mt-0.5 text-lg font-semibold">{tip.title}</h2>
-        <p className="mt-1 text-xs leading-5 text-stone-600">{tip.intro}</p>
+        <p className="mt-1 text-xs leading-5 text-slate-600">{tip.intro}</p>
       </section>
 
-      <section className="rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] p-4">
-        <p className="text-xs leading-5 text-[#6f5716]">
+      <section className="rounded-xl border border-slate-200 bg-[#FAFBFC] p-4">
+        <p className="text-xs leading-5 text-amber-800">
           <strong>Quy tắc vàng:</strong> {tip.goldenRule}
         </p>
       </section>
@@ -168,7 +168,7 @@ function PartRuleSection({ tip }: { tip: PartTip }) {
 function ParaphraseTable({ rows, caption }: { rows: ParaphraseRow[]; caption: string }) {
   return (
     <section className="rounded-xl border border-[#E5E9F0] bg-white">
-      <header className="border-b border-[#eee9dc] px-5 py-3">
+      <header className="border-b border-slate-200 px-5 py-3">
         <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
           Bảng nhận diện nhanh
         </span>
@@ -196,14 +196,14 @@ function ParaphraseTable({ rows, caption }: { rows: ParaphraseRow[]; caption: st
                 <td className="px-3 py-2">
                   <span className="flex flex-wrap gap-1">
                     {row.cues.map((cue) => (
-                      <code key={cue} className="rounded bg-[#f5f3ec] px-1.5 py-0.5 text-[10px]">
+                      <code key={cue} className="rounded bg-slate-50 px-1.5 py-0.5 text-[10px]">
                         {cue}
                       </code>
                     ))}
                   </span>
                 </td>
-                <td className="px-3 py-2 leading-5 text-stone-700">{row.signals}</td>
-                <td className="px-3 py-2 leading-5 text-stone-500">{row.trap}</td>
+                <td className="px-3 py-2 leading-5 text-slate-700">{row.signals}</td>
+                <td className="px-3 py-2 leading-5 text-slate-500">{row.trap}</td>
               </tr>
             ))}
           </tbody>
@@ -222,8 +222,8 @@ function StepsCard({ steps }: { steps: string[] }) {
       <h3 className="text-sm font-semibold">{steps.length} bước chống paraphrase</h3>
       <ol className="mt-2 space-y-2">
         {steps.map((step, index) => (
-          <li key={step} className="flex gap-2 text-xs leading-5 text-stone-600">
-            <span className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[#f5f3ec] text-[9px] font-semibold">
+          <li key={step} className="flex gap-2 text-xs leading-5 text-slate-600">
+            <span className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-slate-50 text-[9px] font-semibold">
               {index + 1}
             </span>
             <span>{step}</span>
@@ -236,14 +236,14 @@ function StepsCard({ steps }: { steps: string[] }) {
 
 function ConfusionsCard({ items }: { items: string[] }) {
   return (
-    <div className="rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] p-4">
-      <span className="text-[10px] font-semibold uppercase tracking-wide text-[#8a6b1f]">
+    <div className="rounded-xl border border-slate-200 bg-[#FAFBFC] p-4">
+      <span className="text-[10px] font-semibold uppercase tracking-wide text-amber-800">
         Cần phân biệt
       </span>
-      <h3 className="text-sm font-semibold text-[#6f5716]">Những cặp dễ nhầm nhất</h3>
+      <h3 className="text-sm font-semibold text-amber-800">Những cặp dễ nhầm nhất</h3>
       <ul className="mt-2 space-y-2">
         {items.map((item) => (
-          <li key={item} className="flex gap-2 text-xs leading-5 text-[#6f5716]">
+          <li key={item} className="flex gap-2 text-xs leading-5 text-amber-800">
             <span aria-hidden="true">⚠</span>
             <span>{item}</span>
           </li>
@@ -282,17 +282,17 @@ function TopicList({
 
   return (
     <section className="rounded-xl border border-[#E5E9F0] bg-white">
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-[#eee9dc] px-5 py-4">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
         <div>
           <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
             Toàn bộ Part bank
           </span>
           <h2 className="text-lg font-semibold">{entries.length} {heading}</h2>
-          <p className="mt-0.5 text-xs text-stone-500">
+          <p className="mt-0.5 text-xs text-slate-500">
             {subtitle} {detailed}/{entries.length} chủ đề đã có bảng chi tiết.
           </p>
         </div>
-        <label className="text-xs text-stone-600">
+        <label className="text-xs text-slate-600">
           <span className="sr-only">Tìm chủ đề</span>
           <input
             type="search"
@@ -305,7 +305,7 @@ function TopicList({
       </header>
 
       {filtered.length === 0 ? (
-        <p className="px-5 py-10 text-center text-sm text-stone-500">
+        <p className="px-5 py-10 text-center text-sm text-slate-500">
           Không có chủ đề nào khớp “{keyword}”.
         </p>
       ) : (
@@ -313,10 +313,10 @@ function TopicList({
           {filtered.map((entry, index) => (
             <li
               key={entry.questionSetId}
-              className={clsx('px-5 py-3', expandedId === entry.questionSetId && 'bg-[#f9fbfa]')}
+              className={clsx('px-5 py-3', expandedId === entry.questionSetId && 'bg-slate-50')}
             >
               <div className="flex flex-wrap items-center gap-3">
-                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#f5f3ec] text-[10px] font-semibold tabular-nums text-stone-500">
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-slate-50 text-[10px] font-semibold tabular-nums text-slate-500">
                   {index + 1}
                 </span>
 
@@ -338,7 +338,7 @@ function TopicList({
                     {entry.headings.map((label, position) => (
                       <span
                         key={position}
-                        className="rounded bg-[#f2f6f3] px-1.5 py-0.5 text-[10px] text-stone-600"
+                        className="rounded bg-[#f2f6f3] px-1.5 py-0.5 text-[10px] text-slate-600"
                         title={`Câu ${position + 1}`}
                       >
                         {label}
@@ -352,7 +352,7 @@ function TopicList({
                   aria-expanded={expandedId === entry.questionSetId}
                   onClick={() => setExpandedId((current) =>
                     current === entry.questionSetId ? null : entry.questionSetId)}
-                  className="shrink-0 rounded-lg border border-[#E5E9F0] px-3 py-1.5 text-[11px] font-semibold text-stone-700 hover:border-brand-400"
+                  className="shrink-0 rounded-lg border border-[#E5E9F0] px-3 py-1.5 text-[11px] font-semibold text-slate-700 hover:border-brand-400"
                 >
                   {expandedId === entry.questionSetId ? 'Thu gọn ▲' : 'Xem mẹo ▼'}
                 </button>
@@ -391,14 +391,14 @@ function Part3Detail({
 
       {tip ? (
         <>
-          <p className="text-xs leading-5 text-stone-600">{tip.summary}</p>
-          <section className="rounded-xl border border-[#e6dcc4] bg-[#FAFBFC] p-3">
-            <p className="text-xs leading-5 text-[#6f5716]">
+          <p className="text-xs leading-5 text-slate-600">{tip.summary}</p>
+          <section className="rounded-xl border border-slate-200 bg-[#FAFBFC] p-3">
+            <p className="text-xs leading-5 text-amber-800">
               <strong>Quy tắc vàng:</strong> {tip.goldenRule}
             </p>
           </section>
 
-          <div className="overflow-x-auto rounded-lg border border-[#e6e1d5]">
+          <div className="overflow-x-auto rounded-lg border border-slate-200">
             <table className="w-full min-w-[46rem] text-left text-xs">
               <thead className="bg-brand-800 text-white">
                 <tr>
@@ -418,12 +418,12 @@ function Part3Detail({
                       <strong>{hint.role}</strong>
                     </td>
                     <td className="px-3 py-2">
-                      <code className="rounded bg-[#f5f3ec] px-1.5 py-0.5 text-[10px]">
+                      <code className="rounded bg-slate-50 px-1.5 py-0.5 text-[10px]">
                         {hint.cues}
                       </code>
                     </td>
-                    <td className="px-3 py-2 leading-5 text-stone-700">{hint.signals}</td>
-                    <td className="px-3 py-2 leading-5 text-stone-500">{hint.trap}</td>
+                    <td className="px-3 py-2 leading-5 text-slate-700">{hint.signals}</td>
+                    <td className="px-3 py-2 leading-5 text-slate-500">{hint.trap}</td>
                   </tr>
                 ))}
               </tbody>
@@ -436,7 +436,7 @@ function Part3Detail({
           </div>
         </>
       ) : (
-        <p className="rounded-lg border border-dashed border-[#E5E9F0] px-3 py-2.5 text-xs text-stone-500">
+        <p className="rounded-lg border border-dashed border-[#E5E9F0] px-3 py-2.5 text-xs text-slate-500">
           Chủ đề này chưa có bảng chi tiết. Chuỗi đáp án phía trên vẫn dùng để ôn được.
         </p>
       )}
@@ -465,9 +465,9 @@ function Part4Detail({ entry, tip }: { entry: HeadingChain; tip?: TopicTip }) {
 
       {tip ? (
         <>
-          <p className="text-xs leading-5 text-stone-600">{tip.summary}</p>
+          <p className="text-xs leading-5 text-slate-600">{tip.summary}</p>
 
-          <div className="overflow-x-auto rounded-lg border border-[#e6e1d5]">
+          <div className="overflow-x-auto rounded-lg border border-slate-200">
             <table className="w-full min-w-[46rem] text-left text-xs">
               <thead className="bg-brand-800 text-white">
                 <tr>
@@ -487,12 +487,12 @@ function Part4Detail({ entry, tip }: { entry: HeadingChain; tip?: TopicTip }) {
                       <strong>{hint.role}</strong>
                     </td>
                     <td className="px-3 py-2">
-                      <code className="rounded bg-[#f5f3ec] px-1.5 py-0.5 text-[11px]">
+                      <code className="rounded bg-slate-50 px-1.5 py-0.5 text-[11px]">
                         {hint.heading}
                       </code>
                     </td>
-                    <td className="px-3 py-2 leading-5 text-stone-700">{hint.signals}</td>
-                    <td className="px-3 py-2 leading-5 text-stone-500">{hint.trap}</td>
+                    <td className="px-3 py-2 leading-5 text-slate-700">{hint.signals}</td>
+                    <td className="px-3 py-2 leading-5 text-slate-500">{hint.trap}</td>
                   </tr>
                 ))}
               </tbody>
@@ -504,15 +504,15 @@ function Part4Detail({ entry, tip }: { entry: HeadingChain; tip?: TopicTip }) {
             <ConfusionsCard items={tip.confusions} />
           </div>
 
-          <div className="rounded-lg border border-[#E5E9F0] bg-[#f9fbfa] p-3">
+          <div className="rounded-lg border border-[#E5E9F0] bg-slate-50 p-3">
             <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-800">
               Câu chuyện liên tưởng
             </span>
-            <p className="mt-1 text-xs leading-5 text-stone-700">{tip.story}</p>
+            <p className="mt-1 text-xs leading-5 text-slate-700">{tip.story}</p>
           </div>
         </>
       ) : (
-        <p className="rounded-lg border border-dashed border-[#E5E9F0] px-3 py-2.5 text-xs text-stone-500">
+        <p className="rounded-lg border border-dashed border-[#E5E9F0] px-3 py-2.5 text-xs text-slate-500">
           Chủ đề này chưa có bảng phân tích paraphrase. Chuỗi tiêu đề phía trên vẫn dùng để ôn được.
         </p>
       )}

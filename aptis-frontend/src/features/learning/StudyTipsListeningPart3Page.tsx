@@ -60,10 +60,10 @@ export function StudyTipsListeningPart3Page() {
 
   return (
     <div className="space-y-4">
-      <nav className="flex items-center gap-2 text-xs text-stone-500">
+      <nav className="flex items-center gap-2 text-xs text-slate-500">
         <Link to="/">Trang chủ</Link><span>›</span>
         <Link to="/meo-hoc">Mẹo học</Link><span>›</span>
-        <strong className="text-stone-800">Nghe · Phần 3</strong>
+        <strong className="text-slate-800">Nghe · Phần 3</strong>
       </nav>
 
       <header className="rounded-xl bg-brand-900 px-6 py-5 text-white shadow-[0_10px_28px_rgba(5,63,53,.14)]">
@@ -100,7 +100,7 @@ export function StudyTipsListeningPart3Page() {
         </div>
 
         <div className="mt-4 rounded-lg bg-[#fdf6e7] px-4 py-3">
-          <p className="text-xs leading-5 text-[#6f5716]">
+          <p className="text-xs leading-5 text-amber-800">
             <strong>Đừng đảo đáp án theo người mở lời.</strong> Mỗi nhận định phải đối chiếu riêng
             với ý kiến của Nam, Nữ hoặc Cả hai; thứ tự hội thoại không làm đổi đáp án.
           </p>
@@ -108,14 +108,14 @@ export function StudyTipsListeningPart3Page() {
       </section>
 
       <section className="rounded-xl border border-[#E5E9F0] bg-white">
-        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-[#eee9dc] px-5 py-4">
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
           <div>
             <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-brand-800">
               Bộ mã cần nhớ
             </span>
             <h2 className="text-lg font-semibold">{total} chủ đề Listening Part 3</h2>
           </div>
-          <label className="text-xs text-stone-600">
+          <label className="text-xs text-slate-600">
             <span className="sr-only">Tìm chủ đề hoặc mã</span>
             <input
               type="search"
@@ -128,7 +128,7 @@ export function StudyTipsListeningPart3Page() {
         </header>
 
         {filtered.length === 0 ? (
-          <p className="px-5 py-10 text-center text-sm text-stone-500">
+          <p className="px-5 py-10 text-center text-sm text-slate-500">
             Không có chủ đề nào khớp “{keyword}”.
           </p>
         ) : (
@@ -162,9 +162,9 @@ function TopicRow({
   onToggle: () => void;
 }) {
   return (
-    <li className={clsx('px-5 py-3', expanded && 'bg-[#f9fbfa]')}>
+    <li className={clsx('px-5 py-3', expanded && 'bg-slate-50')}>
       <div className="flex flex-wrap items-center gap-3">
-        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#f5f3ec] text-[10px] font-semibold tabular-nums text-stone-500">
+        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-slate-50 text-[10px] font-semibold tabular-nums text-slate-500">
           {number}
         </span>
 
@@ -183,7 +183,7 @@ function TopicRow({
           type="button"
           onClick={onToggle}
           aria-expanded={expanded}
-          className="shrink-0 rounded-lg border border-[#E5E9F0] px-3 py-1.5 text-[11px] font-semibold text-stone-700 hover:border-brand-400"
+          className="shrink-0 rounded-lg border border-[#E5E9F0] px-3 py-1.5 text-[11px] font-semibold text-slate-700 hover:border-brand-400"
         >
           {expanded ? 'Thu gọn ▲' : 'Xem mẹo ▼'}
         </button>
@@ -195,7 +195,7 @@ function TopicRow({
             Theo đúng thứ tự câu hỏi trong Part bank: {entry.code.split('').join(' ')}. Quy ước
             1 = Nam, 2 = Nữ, 0 = Cả hai; không đảo mã theo người bắt đầu hội thoại.
           </p>
-          <p className="text-xs text-stone-600">
+          <p className="text-xs text-slate-600">
             {entry.speakers
               .map((speaker) => VIETNAMESE[speaker as Speaker] ?? speaker)
               .join(' · ')}
@@ -218,7 +218,7 @@ function CodeChips({ code }: { code: string }) {
             key={index}
             className={clsx(
               'grid h-7 w-7 place-items-center rounded-md border text-xs font-semibold tabular-nums',
-              style?.className ?? 'border-stone-200 bg-stone-50 text-stone-500',
+              style?.className ?? 'border-slate-200 bg-slate-50 text-slate-500',
             )}
             title={speaker && style ? `${speaker} — ${style.label}` : undefined}
           >

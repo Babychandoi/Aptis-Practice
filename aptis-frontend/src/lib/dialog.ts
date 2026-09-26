@@ -21,8 +21,8 @@ const base: SweetAlertOptions = {
   focusCancel: true,
   customClass: {
     popup: 'rounded-2xl',
-    title: 'text-lg font-semibold text-stone-900',
-    htmlContainer: 'text-sm leading-6 text-stone-600',
+    title: 'text-lg font-semibold text-slate-900',
+    htmlContainer: 'text-sm leading-6 text-slate-600',
     actions: 'gap-2',
     confirmButton: 'btn-primary',
     cancelButton: 'btn-secondary',
