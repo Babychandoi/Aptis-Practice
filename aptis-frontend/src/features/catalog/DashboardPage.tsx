@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useComponents, useExamVersions, usePartsOfComponents } from '@/features/catalog/catalogQueries';
-import { aiConversationApi, dashboardApi, practiceApi, studentClassroomApi, studentWorkspaceApi } from '@/api/endpoints';
+import { aiConversationApi, dashboardApi, examPredictionApi, practiceApi, studentClassroomApi, studentWorkspaceApi } from '@/api/endpoints';
 import { useAuthStore } from '@/features/auth/authStore';
-import type { AttemptSummary, StudentAssignment } from '@/types/api';
+import type { AttemptSummary, ExamPredictionFeed, StudentAssignment } from '@/types/api';
 import { componentPath } from '@/features/catalog/catalogRoutes';
 import { SKILLS, cefrFromScore50, skillByCode } from '@/lib/skills';
 import { Icon } from '@/components/shell/icons';
@@ -33,6 +33,8 @@ export function DashboardPage() {
     staleTime: 30_000,
   });
   const loungeQuery = useQuery({ queryKey: ['ai-conversation-access'], queryFn: aiConversationApi.access, staleTime: 60_000 });
+  // Đề trọng điểm = chủ đề lặp nhiều nhất trong tháng, lấy từ dự đoán đề.
+  const focusQuery = useQuery({ queryKey: ['exam-predictions', 'hottest', 1], queryFn: () => examPredictionApi.hottest(1), staleTime: 300_000 });
   const classroomsQuery = useQuery({ queryKey: ['my-classrooms'], queryFn: studentClassroomApi.mine, staleTime: 60_000 });
 
   // Bài giao của mọi lớp đang học, để lấy ra bài chưa làm gần hạn nhất.
@@ -304,6 +306,8 @@ export function DashboardPage() {
         </section>
       </div>
 
+      <FocusTopics feed={focusQuery.data} />
+
       <section className="rounded-3xl border border-border bg-white p-5 sm:p-6">
         <header className="flex items-baseline justify-between gap-3">
           <h2 className="text-base font-bold">Kết quả gần đây</h2>
@@ -334,6 +338,41 @@ export function DashboardPage() {
         )}
       </section>
     </div>
+  );
+}
+
+/** 6 chủ đề hot nhất tháng, xếp theo số lần lặp; bấm để luyện ở trang dự đoán đề. */
+function FocusTopics({ feed }: { feed?: ExamPredictionFeed }) {
+  const topics = (feed?.skills ?? [])
+    .flatMap((skill) => skill.sections.flatMap((section) =>
+      section.items.map((item) => ({ item, skill: skillByCode(skill.componentCode), section: section.sectionLabel }))))
+    .filter(({ item }) => item.questionSetCount > 0)
+    .sort((a, b) => b.item.repeatCount - a.item.repeatCount)
+    .slice(0, 6);
+  if (!topics.length) return null;
+  return (
+    <section className="rounded-3xl border border-border bg-white p-5 sm:p-6">
+      <header className="flex items-baseline justify-between gap-3">
+        <h2 className="flex items-center gap-2 text-base font-bold"><Icon name="focus" className="h-4 w-4" /> Đề trọng điểm tháng này</h2>
+        <Link to="/du-doan-de" className="text-xs font-semibold text-ink-mute hover:text-ink">Xem dự đoán đề →</Link>
+      </header>
+      <ul className="mt-3 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+        {topics.map(({ item, skill, section }) => (
+          <li key={item.id}>
+            <Link to="/du-doan-de" className="flex h-full items-center gap-3 rounded-2xl border border-border-subtle p-3.5 transition hover:border-ink/30">
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl" style={{ background: skill.bg, color: skill.fg }}>
+                <Icon name={skill.icon} className="h-4 w-4" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-semibold">{item.label}</span>
+                <span className="block text-xs text-ink-faint">{skill.nameEn} · {section}</span>
+              </span>
+              <span className="shrink-0 text-xs font-semibold tabular-nums text-amber-600" title="Số lần lặp trong tháng">{item.repeatCount}×</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
