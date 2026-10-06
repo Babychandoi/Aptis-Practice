@@ -1,7 +1,7 @@
 /**
  * Nhập dữ liệu AptisPrep đợt 10/2026 (thư mục Aptis/) vào ngân hàng đề.
  *
- *   node scripts/import-aptis-2026.mjs <reading|writing|grammar|vocab|listening|logs|all> [--dry-run] [--limit N]
+ *   node scripts/import-aptis-2026.mjs <reading|writing|grammar|vocab|listening|speaking|logs|all> [--dry-run] [--limit N]
  *
  * Bốn điều khác các script nhập cũ:
  *
@@ -37,6 +37,10 @@ const P = {
   VOCAB: '16000000-0000-4000-8000-000000000002',
   R2: '16000000-0000-4000-8000-000000000012',
   R3: '16000000-0000-4000-8000-000000000013',
+  S1: '16000000-0000-4000-8000-000000000031',
+  S2: '16000000-0000-4000-8000-000000000032',
+  S3: '16000000-0000-4000-8000-000000000033',
+  S4: '16000000-0000-4000-8000-000000000034',
   L1: '16000000-0000-4000-8000-000000000021',
   L2: '16000000-0000-4000-8000-000000000022',
   L3: '16000000-0000-4000-8000-000000000023',
@@ -215,7 +219,7 @@ async function createSet(spec) {
     partId, taskTypeCode, prefix, title, difficulty = null, hotness = 3, items, stimulus = null,
     instructions, settings, scoring, assets = [], skill, part, sqlTaskTypeCode = taskTypeCode,
   } = spec;
-  const maxScore = items.reduce((sum, i) => sum + i.maxScore, 0);
+  const maxScore = Number(items.reduce((sum, i) => sum + i.maxScore, 0).toFixed(2));
   const code = await nextCode(prefix, partId);
   const id = randomUUID();
   const safeTitle = clip(title);
@@ -849,6 +853,231 @@ async function listeningPart(part) {
 }
 
 // ---------------------------------------------------------------------------
+// Speaking (file lấy lại: aptis_speaking_part1..4.json)
+// ---------------------------------------------------------------------------
+
+/** Hai đáp án mẫu của website (B1 và B2-C1) gộp thành một đoạn để học viên xem sau khi nộp. */
+function sampleOf(answers) {
+  const texts = (answers ?? []).map((a) => String(a?.text ?? '').trim()).filter(Boolean);
+  if (texts.length === 0) return '';
+  if (texts.length === 1) return texts[0];
+  return `Đáp án mẫu B1:\n${texts[0]}\n\nĐáp án mẫu B2–C1:\n${texts[1]}`;
+}
+
+function imageType(url) {
+  const ext = String(url ?? '').match(/\.(webp|jpe?g|png|gif)(?:$|\?)/i)?.[1]?.toLowerCase();
+  if (ext === 'png') return { ext: 'png', mime: 'image/png' };
+  if (ext === 'gif') return { ext: 'gif', mime: 'image/gif' };
+  if (ext === 'jpg' || ext === 'jpeg') return { ext: 'jpg', mime: 'image/jpeg' };
+  return { ext: 'webp', mime: 'image/webp' };
+}
+
+/** Tải ảnh về MinIO và ghi hàng assets; trả về assetId, hoặc null nếu tải lỗi. */
+async function uploadImage(url, part, label) {
+  let bytes;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error(`  BỎ QUA ${label}: ảnh HTTP ${response.status}`);
+      return null;
+    }
+    bytes = Buffer.from(await response.arrayBuffer());
+  } catch (error) {
+    console.error(`  BỎ QUA ${label}: tải ảnh lỗi ${error.message}`);
+    return null;
+  }
+  const { ext, mime } = imageType(url);
+  const assetId = randomUUID();
+  const objectKey = `content/speaking/part${part}/${assetId}.${ext}`;
+  await s3.send(new PutObjectCommand({ Bucket: CONTENT_BUCKET, Key: objectKey, Body: bytes, ContentType: mime }));
+  await sql.execute(
+    `INSERT INTO assets (id, bucket_name, object_key, asset_type, mime_type, file_size, checksum_sha256,
+                         access_scope, status, created_by, created_at, updated_at)
+     VALUES (?, ?, ?, 'IMAGE', ?, ?, ?, 'SIGNED_URL', 'READY', ?, NOW(), NOW())`,
+    [assetId, CONTENT_BUCKET, objectKey, mime, bytes.length, createHash('sha256').update(bytes).digest('hex'), adminId],
+  );
+  return assetId;
+}
+
+const speakingItem = ({ prompt, maxScore, constraints, rubric, sample, sequenceNo = 1 }) => ({
+  id: randomUUID(),
+  sequenceNo,
+  prompt: { format: 'PLAIN_TEXT', value: prompt },
+  responseType: 'AUDIO_RECORDING',
+  required: true,
+  maxScore,
+  options: [],
+  leftItems: [],
+  rightItems: [],
+  constraints,
+  rubricCode: rubric,
+  answerKey: null,
+  explanation: explanationOf(sample),
+});
+
+const shortTitle = (text, max = 180) => {
+  const t = String(text ?? '').replace(/[?.!]+$/, '').trim();
+  return t.length > max ? `${t.slice(0, max - 3)}…` : t;
+};
+
+async function speakingKnown(partId) {
+  const existing = await docs.find({ partId }).toArray();
+  const known = new Set();
+  for (const d of existing) for (const it of d.items ?? []) if (it.prompt?.value) known.add(norm(it.prompt.value));
+  return { known, joined: [...known], tokenList: [...known].map((k) => tokens(k)) };
+}
+
+/** Câu gần giống câu có sẵn (khác chính tả, thêm bớt vài chữ): giống từ 80% theo cả hai chiều. */
+function isNearKnown(prompt, tokenList) {
+  const t = tokens(prompt);
+  return t.size > 0 && tokenList.some((k) => k.size > 0 && containment(t, k) >= 0.8 && containment(k, t) >= 0.8);
+}
+
+async function speakingPart1() {
+  const { known } = await speakingKnown(P.S1);
+  const rows = load('aptis_speaking_part1.json').filter((r) => {
+    const q = String(r.question ?? '').trim();
+    if (!q || known.has(norm(q))) return false;
+    known.add(norm(q));
+    return true;
+  });
+  const targets = rows.slice(0, limit);
+  let written = 0;
+  if (!dryRun) {
+    for (const r of targets) {
+      const prompt = String(r.question).trim();
+      await createSet({
+        partId: P.S1,
+        taskTypeCode: 'AUDIO_RECORDING',
+        prefix: 'SPEAKING_P1_AP_',
+        title: prompt,
+        skill: 'speaking',
+        part: 1,
+        instructions: 'Trả lời câu hỏi. Ghi âm tối đa 30 giây.',
+        scoring: { strategy: 'RUBRIC', partialCredit: true, maxScore: 1.66 },
+        items: [speakingItem({
+          prompt, maxScore: 1.66, constraints: { responseSeconds: 30 }, rubric: 'APTIS_SPEAKING_PART_1_V1', sample: sampleOf(r.answers),
+        })],
+      });
+      written += 1;
+    }
+  }
+  tally('Speaking Part 1 (1 câu/đề)', targets.length, 52, written);
+}
+
+/**
+ * Part 2 và 3: bài có ảnh và 3 câu hỏi nối tiếp. Câu 1 ("Describe this picture")
+ * giống nhau ở mọi bài nên bỏ qua khi so trùng, như script nhập cũ.
+ */
+async function speakingImagePart(part) {
+  const partId = P[`S${part}`];
+  const cfg = part === 2
+    ? {
+        file: 'aptis_speaking_part2.json', task: 'IMAGE_DESCRIPTION', rubric: 'APTIS_SPEAKING_PART_2_V1', total: 10, words: [60, 90],
+        instructions: (n) => `Nhìn ảnh và trả lời ${n} câu hỏi. Mỗi câu nói 45 giây (khoảng 60–90 từ).`,
+      }
+    : {
+        file: 'aptis_speaking_part3.json', task: 'IMAGE_COMPARISON', rubric: 'APTIS_SPEAKING_PART_3_V1', total: 15, words: [68, 90],
+        instructions: (n) => `So sánh hai bức ảnh và trả lời lần lượt ${n} câu hỏi. Mỗi câu nói trong 45 giây.`,
+      };
+  const { known, tokenList } = await speakingKnown(partId);
+  const all = load(cfg.file);
+  const fresh = [];
+  for (const r of all) {
+    const questions = (r.questions ?? [])
+      .map((q) => ({ prompt: String(q.question ?? '').trim(), sample: sampleOf(q.answers) }))
+      .filter((q) => q.prompt);
+    const images = (part === 2 ? [r.image_url] : (r.images ?? []).map((i) => i.url)).filter(Boolean);
+    if (questions.length === 0 || images.length === 0) continue;
+    // Đã có khi trùng đúng một câu (bỏ câu 1), hoặc cả hai câu sau đều gần giống câu có sẵn.
+    const rest = questions.slice(1);
+    if (rest.some((q) => known.has(norm(q.prompt))) || (rest.length > 0 && rest.every((q) => isNearKnown(q.prompt, tokenList)))) continue;
+    rest.forEach((q) => { known.add(norm(q.prompt)); tokenList.push(tokens(q.prompt)); });
+    fresh.push({ questions, images });
+  }
+  const targets = fresh.slice(0, limit);
+  let written = 0;
+  if (!dryRun) {
+    for (const set of targets) {
+      const title = shortTitle(set.questions[1]?.prompt ?? set.questions[0].prompt);
+      const assetIds = [];
+      for (const url of set.images) {
+        const id = await uploadImage(url, part, title.slice(0, 40));
+        if (!id) break;
+        assetIds.push(id);
+      }
+      if (assetIds.length !== set.images.length) continue;
+      // Part 2 tổng 10 điểm chia đều 3 câu (đã sửa từ 15 hôm 26/09); Part 3 mỗi câu 5 điểm.
+      const per = part === 2 ? cfg.total / set.questions.length : 5;
+      await createSet({
+        partId,
+        taskTypeCode: cfg.task,
+        prefix: `SPEAKING_P${part}_AP_`,
+        title,
+        skill: 'speaking',
+        part,
+        instructions: cfg.instructions(set.questions.length),
+        scoring: { strategy: 'RUBRIC', partialCredit: true, maxScore: cfg.total },
+        assets: assetIds.map((assetId, i) => ({
+          assetId,
+          role: part === 2 ? 'MAIN_IMAGE' : ['STIMULUS_IMAGE', 'SECONDARY_IMAGE'][i] ?? `IMAGE_${i + 1}`,
+          displayOrder: i + 1,
+        })),
+        items: set.questions.map((q, i) => speakingItem({
+          prompt: q.prompt,
+          maxScore: per,
+          sequenceNo: i + 1,
+          rubric: cfg.rubric,
+          sample: q.sample,
+          constraints: { prepSeconds: 0, responseSeconds: 45, minWords: cfg.words[0], maxWords: cfg.words[1] },
+        })),
+      });
+      written += 1;
+    }
+  }
+  tally(`Speaking Part ${part} (bài có ảnh)`, targets.length, all.length, written);
+}
+
+async function speakingPart4() {
+  const { joined } = await speakingKnown(P.S4);
+  const fresh = [];
+  for (const r of load('aptis_speaking_part4.json')) {
+    const questions = (r.questions ?? []).map((q) => String(q.question ?? '').split('\n')[0].trim()).filter(Boolean);
+    if (questions.length === 0) continue;
+    const first = norm(questions[0]);
+    if (joined.some((p) => p.includes(first))) continue;
+    joined.push(norm(questions.join(' ')));
+    fresh.push({ questions, sample: String(r.sample_answer_full ?? '').trim() });
+  }
+  const targets = fresh.slice(0, limit);
+  let written = 0;
+  if (!dryRun) {
+    for (const set of targets) {
+      const t = set.questions[0].replace(/[.?!]+$/, '').trim();
+      await createSet({
+        partId: P.S4,
+        taskTypeCode: 'AUDIO_RECORDING',
+        prefix: 'SPEAKING_P4_AP_',
+        title: t.length > 90 ? `${t.slice(0, 90)}…` : t,
+        skill: 'speaking',
+        part: 4,
+        instructions: `Chuẩn bị 1 phút, sau đó trả lời cả ${set.questions.length} câu hỏi trong 2 phút bằng MỘT lần ghi âm.`,
+        scoring: { strategy: 'RUBRIC', partialCredit: true, maxScore: 20 },
+        items: [speakingItem({
+          prompt: set.questions.map((q, i) => `${i + 1}. ${q}`).join('\n'),
+          maxScore: 20,
+          rubric: 'APTIS_SPEAKING_PART_4_V1',
+          sample: set.sample,
+          constraints: { prepSeconds: 60, responseSeconds: 120, questionCount: set.questions.length },
+        })],
+      });
+      written += 1;
+    }
+  }
+  tally('Speaking Part 4 (1 chủ đề + 3 câu)', targets.length, 33, written);
+}
+
+// ---------------------------------------------------------------------------
 // Trang Cập nhật đề
 // ---------------------------------------------------------------------------
 
@@ -863,6 +1092,10 @@ const LOG_SPECS = [
   { label: 'Update Listening', part: P.L2, name: 'Listening Part 2' },
   { label: 'Update Listening', part: P.L3, name: 'Listening Part 3' },
   { label: 'Update Listening', part: P.L4, name: 'Listening Part 4' },
+  { label: 'Update Speaking', part: P.S1, name: 'Speaking Part 1' },
+  { label: 'Update Speaking', part: P.S2, name: 'Speaking Part 2' },
+  { label: 'Update Speaking', part: P.S3, name: 'Speaking Part 3' },
+  { label: 'Update Speaking', part: P.S4, name: 'Speaking Part 4' },
   { label: 'Update Grammar', part: P.GRAMMAR, name: 'Ngữ pháp' },
   { label: 'Update Vocabulary', part: P.VOCAB, name: 'Từ vựng' },
 ];
@@ -874,10 +1107,10 @@ async function logs() {
     const fresh = await docs.find({ partId: spec.part, 'sourceRef.batch': BATCH }, { projection: { title: 1 } }).toArray();
     if (fresh.length === 0) continue;
     const [[{ n }]] = await sql.query(
-      `SELECT COUNT(*) AS n FROM content_update_logs WHERE part_id = ? AND log_date = ? AND label = ?`,
-      [spec.part, today, spec.label],
+      `SELECT COUNT(*) AS n FROM content_update_logs WHERE part_id = ? AND label = ? AND description LIKE '%đợt tháng 10/2026%'`,
+      [spec.part, spec.label],
     );
-    if (Number(n) > 0) { console.log(`  = đã có mục "${spec.name}" hôm nay, bỏ qua`); continue; }
+    if (Number(n) > 0) { console.log(`  = đã có mục "${spec.name}" của đợt này, bỏ qua`); continue; }
     const sample = fresh.slice(0, 4).map((d) => d.title.replace(/\s*\(2026\)$/, '')).join(', ');
     const description = clip(
       `Cập nhật ${fresh.length} đề mới ${spec.name} (đợt tháng 10/2026), đã phát hành và gắn nhóm đề 2026${fresh.length > 4 ? `: ${sample} và nhiều chủ đề khác` : `: ${sample}`}.`,
@@ -905,10 +1138,16 @@ async function main() {
     writing: async () => { await writingPart1(); await writingPart2(); await writingPart3(); await writingPart4(); },
     grammar,
     vocab,
+    speaking: async () => {
+      await speakingPart1();
+      await speakingImagePart(2);
+      await speakingImagePart(3);
+      await speakingPart4();
+    },
     listening: async () => { for (const part of [1, 2, 3, 4]) await listeningPart(part); },
     logs,
   };
-  const order = target === 'all' ? ['reading', 'writing', 'grammar', 'vocab', 'listening', 'logs'] : [target];
+  const order = target === 'all' ? ['reading', 'writing', 'grammar', 'vocab', 'listening', 'speaking', 'logs'] : [target];
   for (const name of order) {
     if (!run[name]) throw new Error(`Mục không hợp lệ: ${name}`);
     await run[name]();
