@@ -102,7 +102,7 @@ for (const doc of targets) {
 
 if (!dryRun && renamed.length > 0) {
   const sample = renamed.slice(0, 4).join(', ');
-  const description = `Cập nhật ${renamed.length} đề mới Reading Part 2 (sắp xếp câu) (đợt tháng 10/2026), đã phát hành và gắn nhóm đề 2026: ${sample} và nhiều chủ đề khác.`;
+  const description = `Cập nhật ${renamed.length} đề mới Reading Part 2 (sắp xếp câu): ${sample} và nhiều chủ đề khác.`;
   const [result] = await sql.execute(
     `UPDATE content_update_logs SET description = ?, updated_at = NOW()
       WHERE part_id = ? AND label = 'Update Reading' AND log_date = CURDATE()`,

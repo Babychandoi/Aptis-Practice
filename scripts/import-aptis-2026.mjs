@@ -32,6 +32,8 @@ import { MongoClient } from 'mongodb';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 const BATCH = '2026-10';
+/** Mục Cập nhật đề của đợt này có ngày từ mốc này; dùng để nhận ra mục đã tạo, tránh tạo trùng khi chạy lại. */
+const BATCH_START = '2026-10-01';
 const P = {
   GRAMMAR: '16000000-0000-4000-8000-000000000001',
   VOCAB: '16000000-0000-4000-8000-000000000002',
@@ -1135,8 +1137,8 @@ async function logs() {
     const fresh = await docs.find({ partId: spec.part, 'sourceRef.batch': BATCH }, { projection: { title: 1 } }).toArray();
     if (fresh.length === 0) continue;
     const [existingLogs] = await sql.query(
-      `SELECT id FROM content_update_logs WHERE part_id = ? AND label = ? AND description LIKE '%đợt tháng 10/2026%' LIMIT 1`,
-      [spec.part, spec.label],
+      `SELECT id FROM content_update_logs WHERE part_id = ? AND label = ? AND log_date >= ? LIMIT 1`,
+      [spec.part, spec.label, BATCH_START],
     );
     if (existingLogs.length > 0) {
       // Mục đã có thì chỉ bổ sung liên kết tới từng đề (nếu còn thiếu) để học viên bấm vào làm được.
@@ -1146,7 +1148,7 @@ async function logs() {
     }
     const sample = fresh.slice(0, 4).map((d) => d.title.replace(/\s*\(2026\)$/, '')).join(', ');
     const description = clip(
-      `Cập nhật ${fresh.length} đề mới ${spec.name} (đợt tháng 10/2026), đã phát hành và gắn nhóm đề 2026${fresh.length > 4 ? `: ${sample} và nhiều chủ đề khác` : `: ${sample}`}.`,
+      `Cập nhật ${fresh.length} đề mới ${spec.name}${fresh.length > 4 ? `: ${sample} và nhiều chủ đề khác` : `: ${sample}`}.`,
       1000,
     );
     if (!dryRun) {
