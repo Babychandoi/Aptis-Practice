@@ -1100,28 +1100,63 @@ const LOG_SPECS = [
   { label: 'Update Vocabulary', part: P.VOCAB, name: 'Từ vựng' },
 ];
 
+/**
+ * Gắn các đề của đợt này vào mục Cập nhật đề để học viên bấm vào làm được.
+ * Mục không gắn đề nào chỉ là thông báo, không có nút làm bài.
+ *
+ * LINK_MAX (biến môi trường): chỉ gắn khi mục có không quá chừng này đề. Dùng khi
+ * giao diện cũ chưa biết thu gọn danh sách (Ngữ pháp có 750 đề sẽ thành 750 nút).
+ */
+async function linkSets(logId, partId) {
+  const max = Number(process.env.LINK_MAX || Infinity);
+  const [rows] = await sql.query(
+    `SELECT qs.id FROM question_sets qs
+      WHERE qs.part_id = ? AND qs.status = 'PUBLISHED' AND qs.id IN (?)
+      ORDER BY qs.code`,
+    [partId, (await docs.find({ partId, 'sourceRef.batch': BATCH }, { projection: { questionSetId: 1 } }).toArray()).map((d) => d.questionSetId)],
+  );
+  if (rows.length === 0 || rows.length > max) return 0;
+  if (dryRun) return rows.length;
+  let added = 0;
+  for (const [index, row] of rows.entries()) {
+    const [result] = await sql.execute(
+      `INSERT IGNORE INTO content_update_log_question_sets (log_id, question_set_id, display_order) VALUES (?, ?, ?)`,
+      [logId, row.id, index],
+    );
+    added += result.affectedRows;
+  }
+  return added;
+}
+
 async function logs() {
   const [[{ today }]] = await sql.query(`SELECT DATE_FORMAT(CURDATE(), '%Y-%m-%d') AS today`);
   let created = 0;
   for (const spec of LOG_SPECS) {
     const fresh = await docs.find({ partId: spec.part, 'sourceRef.batch': BATCH }, { projection: { title: 1 } }).toArray();
     if (fresh.length === 0) continue;
-    const [[{ n }]] = await sql.query(
-      `SELECT COUNT(*) AS n FROM content_update_logs WHERE part_id = ? AND label = ? AND description LIKE '%đợt tháng 10/2026%'`,
+    const [existingLogs] = await sql.query(
+      `SELECT id FROM content_update_logs WHERE part_id = ? AND label = ? AND description LIKE '%đợt tháng 10/2026%' LIMIT 1`,
       [spec.part, spec.label],
     );
-    if (Number(n) > 0) { console.log(`  = đã có mục "${spec.name}" của đợt này, bỏ qua`); continue; }
+    if (existingLogs.length > 0) {
+      // Mục đã có thì chỉ bổ sung liên kết tới từng đề (nếu còn thiếu) để học viên bấm vào làm được.
+      const linked = await linkSets(existingLogs[0].id, spec.part);
+      console.log(`  = đã có mục "${spec.name}" của đợt này${linked > 0 ? `, gắn thêm ${linked} đề` : ''}`);
+      continue;
+    }
     const sample = fresh.slice(0, 4).map((d) => d.title.replace(/\s*\(2026\)$/, '')).join(', ');
     const description = clip(
       `Cập nhật ${fresh.length} đề mới ${spec.name} (đợt tháng 10/2026), đã phát hành và gắn nhóm đề 2026${fresh.length > 4 ? `: ${sample} và nhiều chủ đề khác` : `: ${sample}`}.`,
       1000,
     );
     if (!dryRun) {
+      const logId = randomUUID();
       await sql.execute(
         `INSERT INTO content_update_logs (id, log_date, label, description, part_id, status, display_order, created_by, created_at, updated_at)
          VALUES (?, ?, ?, ?, ?, 'PUBLISHED', 0, ?, NOW(), NOW())`,
-        [randomUUID(), today, spec.label, description, spec.part, adminId],
+        [logId, today, spec.label, description, spec.part, adminId],
       );
+      await linkSets(logId, spec.part);
     }
     console.log(`  + ${spec.label}: ${description.slice(0, 110)}…`);
     created += 1;

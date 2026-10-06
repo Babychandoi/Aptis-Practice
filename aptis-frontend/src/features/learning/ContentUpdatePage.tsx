@@ -20,9 +20,27 @@ import { stagger } from '@/lib/motion';
  * questionSetIds), không dẫn sang trang Part — ở đó backend tự chọn từ cả ngân
  * hàng nên học viên phải làm lại cả đề cũ.
  */
+/** Số đề hiện sẵn ở mỗi đợt; đợt lớn (Ngữ pháp 750 đề) bấm "Xem thêm" mới hiện tiếp. */
+const FIRST_PAGE = 12;
+const PAGE_STEP = 30;
+/** Đợt có quá chừng này đề thì nút làm hàng loạt chỉ mở một nhóm ngẫu nhiên, không mở cả trăm đề. */
+const ALL_LIMIT = 40;
+const SAMPLE_SIZE = 25;
+
+/** Chọn ngẫu nhiên `count` phần tử, không lặp. */
+function pickRandom<T>(items: T[], count: number): T[] {
+  const copy = items.slice();
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
+  }
+  return copy.slice(0, count);
+}
+
 export function ContentUpdatePage() {
   const navigate = useNavigate();
   const [startError, setStartError] = useState<string | null>(null);
+  const [shown, setShown] = useState<Record<string, number>>({});
   const { skillOfPart } = useAttemptLabels();
 
   const startAttempt = useMutation({
@@ -119,7 +137,7 @@ export function ContentUpdatePage() {
                 {log.questionSets.length > 0 && (
                   <>
                     <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                      {log.questionSets.map((set) => (
+                      {log.questionSets.slice(0, shown[log.id] ?? FIRST_PAGE).map((set) => (
                         // Mỗi đề mở được riêng: truyền đúng một questionSetId nên
                         // lượt làm bài chỉ có đề này, không kèm đề cũ của Part.
                         <button
@@ -137,14 +155,34 @@ export function ContentUpdatePage() {
                         </button>
                       ))}
                     </div>
+                    {(() => {
+                      const visibleCount = shown[log.id] ?? FIRST_PAGE;
+                      const remaining = log.questionSets.length - visibleCount;
+                      return remaining > 0 ? (
+                        <button
+                          type="button"
+                          onClick={() => setShown((prev) => ({ ...prev, [log.id]: visibleCount + PAGE_STEP }))}
+                          className="mt-3 block text-xs font-semibold text-ink-mute hover:text-ink"
+                        >
+                          Xem thêm {Math.min(PAGE_STEP, remaining)} đề (còn {remaining})
+                        </button>
+                      ) : null;
+                    })()}
                     {log.questionSets.length > 1 && (
                       <button
                         type="button"
-                        onClick={() => start(log.partId, log.questionSets.map((set) => set.questionSetId))}
+                        onClick={() => {
+                          const ids = log.questionSets.map((set) => set.questionSetId);
+                          start(log.partId, ids.length > ALL_LIMIT ? pickRandom(ids, SAMPLE_SIZE) : ids);
+                        }}
                         disabled={startAttempt.isPending || !log.partId}
-                        className="mt-3 text-xs font-semibold text-ink-mute hover:text-ink disabled:opacity-60"
+                        className="mt-3 block text-xs font-semibold text-ink-mute hover:text-ink disabled:opacity-60"
                       >
-                        {startAttempt.isPending ? 'Đang mở…' : `Làm cả ${log.questionSets.length} đề →`}
+                        {startAttempt.isPending
+                          ? 'Đang mở…'
+                          : log.questionSets.length > ALL_LIMIT
+                            ? `Làm thử ${SAMPLE_SIZE} đề ngẫu nhiên →`
+                            : `Làm cả ${log.questionSets.length} đề →`}
                       </button>
                     )}
                   </>
