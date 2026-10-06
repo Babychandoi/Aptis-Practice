@@ -39,6 +39,7 @@ const P = {
   VOCAB: '16000000-0000-4000-8000-000000000002',
   R2: '16000000-0000-4000-8000-000000000012',
   R3: '16000000-0000-4000-8000-000000000013',
+  R4: '16000000-0000-4000-8000-000000000014',
   S1: '16000000-0000-4000-8000-000000000031',
   S2: '16000000-0000-4000-8000-000000000032',
   S3: '16000000-0000-4000-8000-000000000033',
@@ -431,6 +432,88 @@ async function readingPart3() {
     }
   }
   tally('Reading Part 3 (ghép ý kiến)', targets.length, records.length, written);
+}
+
+/**
+ * Reading Part 4 của kho = file "part 5" của website: 7 đoạn văn ghép với 7 tiêu đề.
+ * Mỗi tiêu đề trong file ghi sẵn đoạn đúng của nó (correct_paragraph_number).
+ */
+async function readingPart4() {
+  const existing = await docs.find({ partId: P.R4 }).toArray();
+  const used = new Set(existing.map((d) => norm(d.title)));
+  const bankParagraphs = existing.map((d) => tokens((d.items?.[0]?.leftItems ?? []).map((l) => l.content).join(' ')));
+
+  // Tên đề: bỏ ghi chú biên tập đầu câu và phần giải thích trong "(Version N - ...)".
+  const cleanTitle = (text) =>
+    stripNote(text).replace(/\(\s*(Version\s*\d+)\s*[-–][^)]*\)/gi, '($1)').replace(/\s+/g, ' ').trim();
+
+  const records = load('aptis_reading_part5.json');
+  const fresh = [];
+  for (const r of records) {
+    const paragraphs = (r.paragraphs ?? []).map((p) => String(p.content ?? '').trim());
+    const headings = r.headings ?? [];
+    if (paragraphs.length < 2 || headings.length < paragraphs.length) continue;
+    // Đáp án: tiêu đề nào ghi đoạn nào. Mỗi đoạn phải có đúng một tiêu đề.
+    const headingOfParagraph = new Map();
+    for (const h of headings) headingOfParagraph.set(Number(h.correct_paragraph_number), h);
+    if (paragraphs.some((_, i) => !headingOfParagraph.has(i + 1))) continue;
+    // Đã có khi các đoạn văn giống từ 75% một đề trong kho; bản chỉ paraphrase đoạn văn thì vẫn là đề khác.
+    const body = tokens(paragraphs.join(' '));
+    if (Math.max(0, ...bankParagraphs.map((t) => containment(body, t))) >= 0.75) continue;
+    bankParagraphs.push(body);
+    fresh.push({ r, paragraphs, headings, headingOfParagraph });
+  }
+  const targets = fresh.slice(0, limit);
+  let written = 0;
+  if (!dryRun) {
+    for (const { r, paragraphs, headings, headingOfParagraph } of targets) {
+      const title = uniqueTitle(cleanTitle(r.title) || humanize(r.topic_slug) || 'Heading matching', used);
+      const letter = (i) => String.fromCharCode(65 + i);
+      const leftItems = paragraphs.map((content, i) => ({ id: `para${i + 1}`, code: `Paragraph ${letter(i)}`, content }));
+      // Xáo thứ tự tiêu đề: file liệt kê theo đúng thứ tự đoạn nên để nguyên là lộ đáp án.
+      const order = shuffledAway(headings.map((h) => h.number), `${r.id}|${title}`);
+      const ordered = order.map((n) => headings.find((h) => h.number === n));
+      const rightItems = ordered.map((h, i) => ({ id: `h${i + 1}`, code: String(i + 1), content: String(h.text ?? '').trim() }));
+      const rightIdOf = new Map(ordered.map((h, i) => [h.number, `h${i + 1}`]));
+      const matches = {};
+      const lines = [];
+      paragraphs.forEach((_, i) => {
+        const h = headingOfParagraph.get(i + 1);
+        matches[`para${i + 1}`] = rightIdOf.get(h.number);
+        lines.push(`${leftItems[i].code} → ${String(h.text).trim()}`);
+      });
+      const maxScore = paragraphs.length * 2;
+      await createSet({
+        partId: P.R4,
+        taskTypeCode: 'HEADING_MATCHING',
+        prefix: 'READING_P4_AP_',
+        title,
+        skill: 'reading',
+        part: 4,
+        instructions: 'Đọc bài văn và ghép tiêu đề phù hợp với từng đoạn.',
+        stimulus: { format: 'PLAIN_TEXT', value: `Topic: ${title}` },
+        scoring: { strategy: 'PARTIAL_MATCH', partialCredit: true, maxScore },
+        items: [{
+          id: randomUUID(),
+          sequenceNo: 1,
+          prompt: { format: 'PLAIN_TEXT', value: 'Ghép mỗi đoạn văn với tiêu đề phù hợp.' },
+          responseType: 'MATCHING',
+          required: true,
+          maxScore,
+          options: [],
+          leftItems,
+          rightItems,
+          constraints: { pointsPerCorrect: 2 },
+          answerKey: {
+            type: 'MATCHING', selectedOptionId: null, selectedOptionIds: [], matches, orderedOptionIds: [], acceptedValues: [], caseSensitive: false,
+          },
+          explanation: explanationOf(`Đáp án:\n${lines.join('\n')}`),
+        }],
+      });
+      written += 1;
+    }
+  }
+  tally('Reading Part 4 (ghép tiêu đề)', targets.length, records.length, written);
 }
 
 // ---------------------------------------------------------------------------
@@ -1086,6 +1169,7 @@ async function speakingPart4() {
 const LOG_SPECS = [
   { label: 'Update Reading', part: P.R2, name: 'Reading Part 2 (sắp xếp câu)' },
   { label: 'Update Reading', part: P.R3, name: 'Reading Part 3 (ghép ý kiến)' },
+  { label: 'Update Reading', part: P.R4, name: 'Reading Part 4 (ghép tiêu đề)' },
   { label: 'Update Writing', part: P.W1, name: 'Writing Part 1' },
   { label: 'Update Writing', part: P.W2, name: 'Writing Part 2' },
   { label: 'Update Writing', part: P.W3, name: 'Writing Part 3' },
@@ -1171,7 +1255,7 @@ async function logs() {
 async function main() {
   await connect();
   const run = {
-    reading: async () => { await readingPart2(); await readingPart3(); },
+    reading: async () => { await readingPart2(); await readingPart3(); await readingPart4(); },
     writing: async () => { await writingPart1(); await writingPart2(); await writingPart3(); await writingPart4(); },
     grammar,
     vocab,
