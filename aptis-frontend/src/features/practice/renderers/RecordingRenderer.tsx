@@ -24,7 +24,30 @@ interface Props {
 
 type Phase = 'idle' | 'prep' | 'recording' | 'uploading' | 'done' | 'error';
 
-const MIME_TYPE = 'audio/webm';
+/**
+ * Định dạng ghi âm theo trình duyệt: Chrome/Edge/Firefox ghi webm hoặc ogg, Safari
+ * (macOS/iOS) chỉ ghi mp4. Backend nhận cả bốn loại cho USER_RECORDING.
+ * Cố định 'audio/webm' làm MediaRecorder ném lỗi trên Safari và bị báo nhầm là
+ * không có quyền micro.
+ */
+const MIME_CANDIDATES = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus', 'audio/ogg'];
+
+function pickRecorderMime(): string | undefined {
+  if (typeof MediaRecorder === 'undefined' || typeof MediaRecorder.isTypeSupported !== 'function') return undefined;
+  return MIME_CANDIDATES.find((m) => MediaRecorder.isTypeSupported(m));
+}
+
+/** Bỏ phần tham số codecs: backend và S3 chỉ so khớp loại gốc. */
+const baseMime = (mime: string) => mime.split(';')[0];
+
+function micErrorMessage(error: unknown): string {
+  const name = (error as { name?: string } | null)?.name;
+  if (name === 'NotAllowedError' || name === 'SecurityError') return 'Trình duyệt đang chặn micro. Hãy cho phép micro cho trang này (và cho trình duyệt trong cài đặt hệ điều hành) rồi thử lại.';
+  if (name === 'NotFoundError') return 'Không tìm thấy micro trên thiết bị.';
+  if (name === 'NotReadableError') return 'Micro đang được ứng dụng khác sử dụng. Hãy đóng ứng dụng đó rồi thử lại.';
+  if (name === 'NotSupportedError') return 'Trình duyệt này không hỗ trợ ghi âm ở định dạng cần thiết. Hãy thử Chrome hoặc cập nhật trình duyệt.';
+  return 'Không ghi âm được. Hãy tải lại trang hoặc thử trình duyệt khác.';
+}
 
 /**
  * Chiều cao (%) các vạch sóng âm. Cố định thay vì phân tích tín hiệu thật:
@@ -68,6 +91,8 @@ export function RecordingRenderer({
   const chunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
   const timerRef = useRef<number | null>(null);
+  // Loại file của lần ghi hiện tại, dùng lại khi tạo blob và tải lên.
+  const mimeRef = useRef<string>('audio/webm');
 
   // Dừng stream và timer khi rời trang để không giữ microphone
   useEffect(
@@ -137,7 +162,10 @@ export function RecordingRenderer({
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
-      const recorder = new MediaRecorder(stream, { mimeType: MIME_TYPE });
+      const picked = pickRecorderMime();
+      // Không chọn được loại nào thì để trình duyệt tự quyết, rồi lấy loại nó thực sự ghi.
+      const recorder = picked ? new MediaRecorder(stream, { mimeType: picked }) : new MediaRecorder(stream);
+      mimeRef.current = baseMime(picked ?? recorder.mimeType ?? 'audio/webm');
       recorderRef.current = recorder;
       chunksRef.current = [];
 
@@ -152,9 +180,11 @@ export function RecordingRenderer({
       setPhase('recording');
       countdown(responseSeconds, () => stopRecording());
 
-    } catch {
+    } catch (error) {
+      // Nhả micro nếu đã mở được mà dựng recorder lỗi, kẻo đèn micro cứ sáng.
+      streamRef.current?.getTracks().forEach((track) => track.stop());
       setPhase('error');
-      setError('Không truy cập được microphone. Kiểm tra quyền của trình duyệt.');
+      setError(micErrorMessage(error));
     }
   };
 
@@ -191,19 +221,20 @@ export function RecordingRenderer({
   }, [examMode, disabled, draft.recordingAssetId]);
 
   const handleRecordingStopped = async () => {
-    const blob = new Blob(chunksRef.current, { type: MIME_TYPE });
+    const mimeType = mimeRef.current;
+    const blob = new Blob(chunksRef.current, { type: mimeType });
     setPhase('uploading');
 
     try {
       const { assetId, uploadUrl } = await assetApi.createUploadUrl({
         assetType: 'USER_RECORDING',
-        mimeType: MIME_TYPE,
+        mimeType,
         fileSize: blob.size,
         attemptId,
         questionSetId,
       });
 
-      await uploadToPresignedUrl(uploadUrl, blob, MIME_TYPE);
+      await uploadToPresignedUrl(uploadUrl, blob, mimeType);
       // Backend xác minh file trên storage rồi chuyển asset sang READY
       await assetApi.complete(assetId, { durationMs: responseSeconds * 1000 });
 
