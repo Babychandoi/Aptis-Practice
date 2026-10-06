@@ -1,0 +1,388 @@
+{
+  "predictDate": "2026-10-06",
+  "source": "Aptistest.edu.vn (kỳ thi 07/10/2026)",
+  "skills": [
+    {
+      "component": "READING",
+      "sections": [
+        {
+          "sectionLabel": "Part 5",
+          "part": "Reading Part 4",
+          "items": [
+            {
+              "label": "Four-day work week",
+              "priority": "HOT",
+              "topicCode": "R4_SRC_003"
+            },
+            {
+              "label": "Mountain summits",
+              "priority": "HOT",
+              "topicCode": "R4_SRC_001"
+            },
+            {
+              "label": "Women mathematicians",
+              "priority": "HOT",
+              "topicCode": "R4_SRC_007"
+            }
+          ]
+        },
+        {
+          "sectionLabel": "Part 4",
+          "part": "Reading Part 3",
+          "items": [
+            {
+              "label": "Game from childhood",
+              "priority": "HOT",
+              "topicCode": "R3_CHILDHOOD_GAMES"
+            },
+            {
+              "label": "Free time Activity",
+              "priority": "HOT"
+            },
+            {
+              "label": "Volunteering",
+              "priority": "HOT",
+              "topicCode": "R3_VOLUNTEERING"
+            },
+            {
+              "label": "Extreme sports",
+              "priority": "HOT",
+              "topicCode": "R3_EXTREME_SPORTS"
+            },
+            {
+              "label": "Job and training",
+              "priority": "HOT"
+            },
+            {
+              "label": "Music Festival",
+              "priority": "HOT",
+              "topicCode": "R3_MUSIC_FESTIVAL"
+            }
+          ]
+        },
+        {
+          "sectionLabel": "Part 2+3",
+          "part": "Reading Part 2",
+          "items": [
+            {
+              "label": "Weekend Activities",
+              "priority": "BACKUP",
+              "topicCode": "weekend-activities-r"
+            },
+            {
+              "label": "Film",
+              "priority": "BACKUP",
+              "topicCode": "R2_FILMS"
+            },
+            {
+              "label": "End of term",
+              "priority": "BACKUP"
+            },
+            {
+              "label": "Famous Singer",
+              "priority": "BACKUP",
+              "topicCode": "R2_SINGER"
+            },
+            {
+              "label": "Family sport day",
+              "priority": "BACKUP",
+              "topicCode": "R2_SPORTS_EVENT"
+            },
+            {
+              "label": "College welcoming day",
+              "priority": "BACKUP",
+              "topicCode": "R2_CAMPUS_DAY"
+            },
+            {
+              "label": "New coffee shop",
+              "priority": "BACKUP",
+              "topicCode": "new-coffee-shop-r"
+            },
+            {
+              "label": "History of transportation",
+              "priority": "BACKUP",
+              "topicCode": "R2_TRANSPORT"
+            },
+            {
+              "label": "The First woman in space",
+              "priority": "BACKUP",
+              "topicCode": "pred-the-first-america-woman-in-space"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "component": "LISTENING",
+      "sections": [
+        {
+          "sectionLabel": "Q14",
+          "part": "Listening Part 2",
+          "items": [
+            {
+              "label": "Actors",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P3_TOPIC_018"
+            },
+            {
+              "label": "Travel to work",
+              "priority": "HOT",
+              "topicCode": "pred-0d921138"
+            },
+            {
+              "label": "The place to run",
+              "priority": "HOT"
+            },
+            {
+              "label": "Listening to music",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P2_TOPIC_016"
+            },
+            {
+              "label": "Protect the environment",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P2_TOPIC_009"
+            },
+            {
+              "label": "Online shopping",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P2_TOPIC_015"
+            },
+            {
+              "label": "Outdoor Activities",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P2_TOPIC_017"
+            },
+            {
+              "label": "Reading books",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P2_TOPIC_026"
+            }
+          ]
+        },
+        {
+          "sectionLabel": "Q15",
+          "part": "Listening Part 3",
+          "items": [
+            {
+              "label": "The Internet",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P3_TOPIC_001"
+            },
+            {
+              "label": "Community Design",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P3_TOPIC_006"
+            },
+            {
+              "label": "Urban farming",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P3_TOPIC_024"
+            },
+            {
+              "label": "Change in the workplace",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P3_TOPIC_007"
+            },
+            {
+              "label": "Politics",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P3_TOPIC_002"
+            },
+            {
+              "label": "The art",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P3_TOPIC_011"
+            },
+            {
+              "label": "Information Technology",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P3_TOPIC_008"
+            },
+            {
+              "label": "Homeschooling",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P3_TOPIC_037"
+            },
+            {
+              "label": "Local Cultural Center",
+              "priority": "HOT"
+            },
+            {
+              "label": "Music and Singer",
+              "priority": "HOT"
+            },
+            {
+              "label": "Work from home",
+              "priority": "HOT",
+              "topicCode": "LISTENING_P4_TOPIC_004"
+            }
+          ]
+        },
+        {
+          "sectionLabel": "Q16-17",
+          "part": "Listening Part 4",
+          "items": [
+            {
+              "label": "Promotion Campaign",
+              "priority": "BACKUP"
+            },
+            {
+              "label": "Sport competition",
+              "priority": "BACKUP",
+              "topicCode": "LISTENING_P4_TOPIC_049"
+            },
+            {
+              "label": "Writer’s Block",
+              "priority": "BACKUP",
+              "topicCode": "LISTENING_P4_TOPIC_003"
+            },
+            {
+              "label": "Podcast",
+              "priority": "BACKUP",
+              "topicCode": "LISTENING_P4_TOPIC_035"
+            },
+            {
+              "label": "Script Production",
+              "priority": "BACKUP",
+              "topicCode": "LISTENING_P4_TOPIC_054"
+            },
+            {
+              "label": "Importance of sleep",
+              "priority": "BACKUP",
+              "topicCode": "LISTENING_P4_TOPIC_048"
+            },
+            {
+              "label": "A regional development plan",
+              "priority": "BACKUP"
+            },
+            {
+              "label": "Professionalism at work",
+              "priority": "BACKUP",
+              "topicCode": "LISTENING_P4_TOPIC_002"
+            },
+            {
+              "label": "Life after uni",
+              "priority": "BACKUP"
+            },
+            {
+              "label": "A break from studying",
+              "priority": "BACKUP",
+              "topicCode": "LISTENING_P4_TOPIC_021"
+            },
+            {
+              "label": "Criticism of the new novel",
+              "priority": "BACKUP"
+            },
+            {
+              "label": "Musician’s life",
+              "priority": "BACKUP",
+              "topicCode": "LISTENING_P4_TOPIC_036"
+            },
+            {
+              "label": "A Research into happiness",
+              "priority": "BACKUP",
+              "topicCode": "LISTENING_P4_TOPIC_018"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "component": "WRITING",
+      "sections": [
+        {
+          "sectionLabel": "Ưu tiên cao",
+          "part": null,
+          "items": [
+            {
+              "label": "Travel",
+              "priority": "HOT",
+              "topicCode": "wclub-travel-club"
+            },
+            {
+              "label": "Community",
+              "priority": "HOT",
+              "topicCode": "wclub-community-club"
+            },
+            {
+              "label": "Food",
+              "priority": "HOT",
+              "topicCode": "wclub-food-club"
+            },
+            {
+              "label": "Music",
+              "priority": "HOT",
+              "topicCode": "wclub-music-club"
+            },
+            {
+              "label": "Museum",
+              "priority": "HOT",
+              "topicCode": "wclub-museum-club"
+            },
+            {
+              "label": "Debate",
+              "priority": "HOT",
+              "topicCode": "wclub-debate-club"
+            },
+            {
+              "label": "Car",
+              "priority": "HOT",
+              "topicCode": "wclub-car-club"
+            },
+            {
+              "label": "Art",
+              "priority": "HOT",
+              "topicCode": "wclub-art-club"
+            },
+            {
+              "label": "Sports",
+              "priority": "HOT",
+              "topicCode": "wclub-sports-club"
+            },
+            {
+              "label": "Social",
+              "priority": "HOT",
+              "topicCode": "wclub-social-club"
+            },
+            {
+              "label": "Reading",
+              "priority": "HOT",
+              "topicCode": "wclub-reading-club"
+            },
+            {
+              "label": "Computer",
+              "priority": "HOT",
+              "topicCode": "wclub-computer-club"
+            },
+            {
+              "label": "Film",
+              "priority": "HOT",
+              "topicCode": "WRITING_P3_TOPIC_007"
+            },
+            {
+              "label": "Fashion",
+              "priority": "HOT",
+              "topicCode": "wclub-fashion-club"
+            },
+            {
+              "label": "Book",
+              "priority": "HOT",
+              "topicCode": "wclub-book-club"
+            },
+            {
+              "label": "English",
+              "priority": "HOT",
+              "topicCode": "wclub-english-club"
+            },
+            {
+              "label": "Photography",
+              "priority": "HOT",
+              "topicCode": "wclub-photography-club"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
