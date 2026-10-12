@@ -50,6 +50,8 @@ public final class EmailTemplate {
 
     public static final class Builder {
         private final String heading;
+        private String brandName = "Aptis Practice";
+        private String brandTagline = "GENERAL";
         private String intro;
         private final List<String> paragraphs = new ArrayList<>();
         private final List<String[]> facts = new ArrayList<>();
@@ -59,6 +61,12 @@ public final class EmailTemplate {
 
         private Builder(String heading) {
             this.heading = heading;
+        }
+
+        public Builder brand(String name, String tagline) {
+            this.brandName = name;
+            this.brandTagline = tagline;
+            return this;
         }
 
         /** Câu mở đầu, đậm hơn phần thân. */
@@ -172,9 +180,9 @@ public final class EmailTemplate {
                     .append("<tr><td style=\"padding:22px 28px;border-bottom:1px solid ")
                     .append(BORDER).append(";\">")
                     .append("<span style=\"font-size:17px;font-weight:800;letter-spacing:-.3px;color:")
-                    .append(INK).append(";\">Aptis Practice</span>")
+                    .append(INK).append(";\">").append(escape(brandName)).append("</span>")
                     .append("<span style=\"font-size:11px;font-weight:700;letter-spacing:1.5px;color:")
-                    .append(BRAND).append(";\">&nbsp;GENERAL</span>")
+                    .append(BRAND).append(";\">&nbsp;").append(escape(brandTagline)).append("</span>")
                     .append("</td></tr><tr><td style=\"padding:28px;\">")
                     .append("<h1 style=\"margin:0 0 18px;font-size:20px;line-height:28px;")
                     .append("font-weight:800;color:").append(INK).append(";\">")
@@ -183,7 +191,7 @@ public final class EmailTemplate {
                     .append("</td></tr><tr><td style=\"padding:18px 28px 24px;border-top:1px solid ")
                     .append(BORDER).append(";\">").append(footer)
                     .append("<p style=\"margin:0;font-size:12px;line-height:20px;color:").append(MUTED)
-                    .append(";\">Email tự động từ Aptis Practice — vui lòng không trả lời thư này.</p>")
+                    .append(";\">Email tự động từ ").append(escape(brandName)).append(" — vui lòng không trả lời thư này.</p>")
                     .append("</td></tr></table></td></tr></table></body></html>")
                     .toString();
         }
@@ -213,7 +221,7 @@ public final class EmailTemplate {
             if (footerNote != null) {
                 out.append(footerNote).append('\n');
             }
-            out.append("---\nAptis Practice — email tự động, vui lòng không trả lời.\n");
+            out.append("---\n").append(brandName).append(" — email tự động, vui lòng không trả lời.\n");
             return out.toString();
         }
     }

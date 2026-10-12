@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: ielts-practice
+aptis:
+  brand:
+    name: IELTS Practice
+    tagline: ACADEMIC & GENERAL TRAINING
+  jwt:
+    issuer: ielts-practice
+  refresh-cookie:
+    name: ielts_refresh
+  mail:
+    from: ${MAIL_FROM:no-reply@ielts.local}
+  minio:
+    buckets:
+      public-bucket: ielts-public
+      content: ielts-content
+      user-recordings: ielts-user-recordings
+      user-uploads: ielts-user-uploads
+      imports: ielts-imports
+      exports: ielts-exports

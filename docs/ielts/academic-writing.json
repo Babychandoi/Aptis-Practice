@@ -1,0 +1,47 @@
+{
+  "title": "Original practice · Academic Writing",
+  "track": "ACADEMIC",
+  "fullLength": true,
+  "premium": false,
+  "published": false,
+  "groups": [
+    {
+      "id": "writing1",
+      "skill": "WRITING",
+      "part": 1,
+      "title": "Task 1 · Library visits",
+      "instructions": "Write at least 150 words. Suggested time: 20 minutes.",
+      "passage": "The table shows annual visits to three local libraries in 2010 and 2020. Summarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nLibrary | 2010 visits | 2020 visits\nNorth | 24,000 | 32,000\nCentral | 48,000 | 41,000\nSouth | 18,000 | 29,000",
+      "questions": [
+        {
+          "id": "w1",
+          "type": "LONG_TEXT",
+          "prompt": "Write your report.",
+          "options": [],
+          "answers": [],
+          "explanation": "",
+          "minWords": 150
+        }
+      ]
+    },
+    {
+      "id": "writing2",
+      "skill": "WRITING",
+      "part": 2,
+      "title": "Task 2 · Public spaces",
+      "instructions": "Write at least 250 words. Suggested time: 40 minutes.",
+      "passage": "Some people believe cities should spend more money on public parks, while others think improving public transport should be the priority. Discuss both views and give your own opinion. Give reasons for your answer and include relevant examples from your own knowledge or experience.",
+      "questions": [
+        {
+          "id": "w2",
+          "type": "LONG_TEXT",
+          "prompt": "Write your essay.",
+          "options": [],
+          "answers": [],
+          "explanation": "",
+          "minWords": 250
+        }
+      ]
+    }
+  ]
+}

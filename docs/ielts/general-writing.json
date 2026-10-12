@@ -1,0 +1,47 @@
+{
+  "title": "Original practice · General Training Writing",
+  "track": "GENERAL_TRAINING",
+  "fullLength": true,
+  "premium": false,
+  "published": false,
+  "groups": [
+    {
+      "id": "general1",
+      "skill": "WRITING",
+      "part": 1,
+      "title": "Task 1 · Letter",
+      "instructions": "Write at least 150 words. Suggested time: 20 minutes.",
+      "passage": "You recently joined a local sports centre, but some of the facilities are unavailable. Write a letter to the manager. Describe which facilities you wanted to use, explain how the problem affects you, and suggest what the manager should do. Begin: Dear Sir or Madam,",
+      "questions": [
+        {
+          "id": "gtw1",
+          "type": "LONG_TEXT",
+          "prompt": "Write your letter.",
+          "options": [],
+          "answers": [],
+          "explanation": "",
+          "minWords": 150
+        }
+      ]
+    },
+    {
+      "id": "general2",
+      "skill": "WRITING",
+      "part": 2,
+      "title": "Task 2 · Lifelong learning",
+      "instructions": "Write at least 250 words. Suggested time: 40 minutes.",
+      "passage": "Some people think employers should provide training for their employees, while others believe people should pay for their own professional development. Discuss both views and give your own opinion.",
+      "questions": [
+        {
+          "id": "gtw2",
+          "type": "LONG_TEXT",
+          "prompt": "Write your essay.",
+          "options": [],
+          "answers": [],
+          "explanation": "",
+          "minWords": 250
+        }
+      ]
+    }
+  ]
+}

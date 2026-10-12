@@ -25,6 +25,10 @@ public class AuthMailSender {
     private final JavaMailSender mailSender;
     private final String fromAddress;
     private final String frontendBaseUrl;
+    @Value("${aptis.brand.name:Aptis Practice}")
+    private String brandName = "Aptis Practice";
+    @Value("${aptis.brand.tagline:GENERAL}")
+    private String brandTagline = "GENERAL";
 
     public AuthMailSender(
             JavaMailSender mailSender,
@@ -57,7 +61,8 @@ public class AuthMailSender {
         String link = frontendBaseUrl + "/verify-email?token=" + rawToken;
 
         EmailTemplate.Rendered mail = EmailTemplate.builder("Xác thực địa chỉ email")
-                .intro("Chào bạn, cảm ơn bạn đã tạo tài khoản Aptis Practice.")
+                .brand(brandName, brandTagline)
+                .intro("Chào bạn, cảm ơn bạn đã tạo tài khoản " + brandName + ".")
                 .paragraph("Bấm nút bên dưới để xác thực email và bắt đầu luyện thi.")
                 .action("Xác thực email", link)
                 .actionNote("Liên kết có hiệu lực trong 24 giờ.")
@@ -65,7 +70,7 @@ public class AuthMailSender {
                         + "sẽ không có thay đổi nào xảy ra.")
                 .build();
 
-        send(email, "Xác thực tài khoản Aptis Practice", mail);
+        send(email, "Xác thực tài khoản " + brandName, mail);
     }
 
     @Async
@@ -73,6 +78,7 @@ public class AuthMailSender {
         String link = frontendBaseUrl + "/reset-password?token=" + rawToken;
 
         EmailTemplate.Rendered mail = EmailTemplate.builder("Đặt lại mật khẩu")
+                .brand(brandName, brandTagline)
                 .intro("Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn.")
                 .paragraph("Bấm nút bên dưới để chọn mật khẩu mới.")
                 .action("Đặt lại mật khẩu", link)
@@ -81,7 +87,7 @@ public class AuthMailSender {
                         + "Mật khẩu hiện tại của bạn vẫn giữ nguyên.")
                 .build();
 
-        send(email, "Đặt lại mật khẩu Aptis Practice", mail);
+        send(email, "Đặt lại mật khẩu " + brandName, mail);
     }
 
     private void send(String to, String subject, EmailTemplate.Rendered mail) {

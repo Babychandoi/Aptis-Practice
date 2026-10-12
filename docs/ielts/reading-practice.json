@@ -1,0 +1,132 @@
+{
+  "title": "Original practice · Community library",
+  "track": "GENERAL_TRAINING",
+  "fullLength": false,
+  "premium": false,
+  "published": false,
+  "groups": [
+    {
+      "id": "reading1",
+      "skill": "READING",
+      "part": 1,
+      "title": "The Willow Community Library",
+      "instructions": "Questions 1–4: write ONE WORD OR A NUMBER. Questions 5–7: choose True, False or Not Given.",
+      "passage": "The Willow Community Library\n\nThe Willow Community Library opened in 2018 in a former railway office. It now welcomes visitors from Tuesday to Sunday, from 9 am to 6 pm. The building closes on Mondays for cleaning and maintenance.\n\nResidents can obtain a library card free of charge. They must bring proof of their home address. Each member may borrow six books for three weeks. Audio books are available through an online account. The library has twelve computers, but users must book a computer session in advance.\n\nA volunteer group runs a conversation club on Saturday mornings. Participants practise English in small groups. No exam preparation is offered in these sessions. The library also hosts a monthly repair workshop, where residents learn to mend household items rather than throw them away.",
+      "questions": [
+        {
+          "id": "r1",
+          "type": "SHORT_TEXT",
+          "prompt": "In what year did the library open?",
+          "options": [],
+          "answers": [
+            "2018"
+          ],
+          "explanation": "The first sentence states that it opened in 2018.",
+          "maxWords": 1
+        },
+        {
+          "id": "r2",
+          "type": "SHORT_TEXT",
+          "prompt": "On which day is the library closed?",
+          "options": [],
+          "answers": [
+            "Mondays"
+          ],
+          "explanation": "The building closes on Mondays for cleaning and maintenance.",
+          "maxWords": 1
+        },
+        {
+          "id": "r3",
+          "type": "SHORT_TEXT",
+          "prompt": "How many books may each member borrow?",
+          "options": [],
+          "answers": [
+            "six"
+          ],
+          "explanation": "Each member may borrow six books.",
+          "maxWords": 1
+        },
+        {
+          "id": "r4",
+          "type": "SHORT_TEXT",
+          "prompt": "For how many weeks may books be borrowed?",
+          "options": [],
+          "answers": [
+            "three"
+          ],
+          "explanation": "The loan period is three weeks.",
+          "maxWords": 1
+        },
+        {
+          "id": "r5",
+          "type": "TRUE_FALSE_NOT_GIVEN",
+          "prompt": "A library card is free for residents.",
+          "options": [
+            {
+              "id": "True",
+              "text": "True"
+            },
+            {
+              "id": "False",
+              "text": "False"
+            },
+            {
+              "id": "Not Given",
+              "text": "Not Given"
+            }
+          ],
+          "answers": [
+            "True"
+          ],
+          "explanation": "Residents can obtain a library card free of charge."
+        },
+        {
+          "id": "r6",
+          "type": "TRUE_FALSE_NOT_GIVEN",
+          "prompt": "The conversation club offers exam preparation.",
+          "options": [
+            {
+              "id": "True",
+              "text": "True"
+            },
+            {
+              "id": "False",
+              "text": "False"
+            },
+            {
+              "id": "Not Given",
+              "text": "Not Given"
+            }
+          ],
+          "answers": [
+            "False"
+          ],
+          "explanation": "The passage explicitly says no exam preparation is offered."
+        },
+        {
+          "id": "r7",
+          "type": "TRUE_FALSE_NOT_GIVEN",
+          "prompt": "The repair workshop is taught by professional engineers.",
+          "options": [
+            {
+              "id": "True",
+              "text": "True"
+            },
+            {
+              "id": "False",
+              "text": "False"
+            },
+            {
+              "id": "Not Given",
+              "text": "Not Given"
+            }
+          ],
+          "answers": [
+            "Not Given"
+          ],
+          "explanation": "The passage does not identify the workshop teachers."
+        }
+      ]
+    }
+  ]
+}

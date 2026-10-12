@@ -1,0 +1,93 @@
+{
+  "title": "Original practice · Speaking",
+  "track": "ACADEMIC",
+  "fullLength": true,
+  "premium": false,
+  "published": false,
+  "groups": [
+    {
+      "id": "speaking1",
+      "skill": "SPEAKING",
+      "part": 1,
+      "title": "Part 1 · Your neighbourhood",
+      "instructions": "Answer the questions naturally. This is recorded practice, not a live examiner interview.",
+      "passage": "",
+      "questions": [
+        {
+          "id": "s1",
+          "type": "AUDIO_RECORDING",
+          "prompt": "What do you like about the area where you live?",
+          "options": [],
+          "answers": [],
+          "explanation": "",
+          "responseSeconds": 60
+        },
+        {
+          "id": "s2",
+          "type": "AUDIO_RECORDING",
+          "prompt": "Has your neighbourhood changed since you first moved there?",
+          "options": [],
+          "answers": [],
+          "explanation": "",
+          "responseSeconds": 60
+        },
+        {
+          "id": "s3",
+          "type": "AUDIO_RECORDING",
+          "prompt": "What would you improve about your neighbourhood?",
+          "options": [],
+          "answers": [],
+          "explanation": "",
+          "responseSeconds": 60
+        }
+      ]
+    },
+    {
+      "id": "speaking2",
+      "skill": "SPEAKING",
+      "part": 2,
+      "title": "Part 2 · A useful skill",
+      "instructions": "Take one minute to prepare, then speak for one to two minutes.",
+      "passage": "Describe a useful skill that you learned. You should say: what the skill is; when and how you learned it; why you learned it; and explain how this skill helps you in your daily life.",
+      "questions": [
+        {
+          "id": "s4",
+          "type": "AUDIO_RECORDING",
+          "prompt": "Speak about the cue card.",
+          "options": [],
+          "answers": [],
+          "explanation": "",
+          "responseSeconds": 120
+        }
+      ]
+    },
+    {
+      "id": "speaking3",
+      "skill": "SPEAKING",
+      "part": 3,
+      "title": "Part 3 · Learning and society",
+      "instructions": "Discuss the following questions in greater depth.",
+      "passage": "",
+      "questions": [
+        {
+          "id": "s5",
+          "type": "AUDIO_RECORDING",
+          "prompt": "How has technology changed the way people learn new skills?",
+          "options": [],
+          "answers": [],
+          "explanation": "",
+          "responseSeconds": 90
+        },
+        {
+          "id": "s6",
+          "type": "AUDIO_RECORDING",
+          "prompt": "Should schools place more emphasis on practical skills?",
+          "options": [],
+          "answers": [],
+          "explanation": "",
+          "responseSeconds": 90
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+name: ielts-practice
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${IELTS_MYSQL_ROOT_PASSWORD:-ielts-local-root}
+      MYSQL_DATABASE: ielts
+      MYSQL_USER: ielts
+      MYSQL_PASSWORD: ${IELTS_MYSQL_PASSWORD:-ielts-local}
+    volumes: [ielts-mysql:/var/lib/mysql]
+    healthcheck:
+      test: [CMD-SHELL, 'mysqladmin ping -h 127.0.0.1 -uroot -p"$$MYSQL_ROOT_PASSWORD"']
+      interval: 10s
+      timeout: 5s
+      retries: 20
+  mongo:
+    image: mongo:7
+    volumes: [ielts-mongo:/data/db]
+    healthcheck:
+      test: [CMD, mongosh, --quiet, --eval, "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address :9001
+    environment:
+      MINIO_ROOT_USER: ${IELTS_MINIO_USER:-ielts-local}
+      MINIO_ROOT_PASSWORD: ${IELTS_MINIO_PASSWORD:-ielts-local-minio}
+    ports: ["127.0.0.1:9010:9000", "127.0.0.1:9011:9001"]
+    volumes: [ielts-minio:/data]
+    healthcheck:
+      test: [CMD, mc, ready, local]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+  mailpit:
+    image: axllent/mailpit:latest
+    ports: ["127.0.0.1:8035:8025"]
+  backend:
+    build: ./aptis-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: ielts
+      MYSQL_HOST: mysql
+      MYSQL_DB: ielts
+      MYSQL_USER: ielts
+      MYSQL_PASSWORD: ${IELTS_MYSQL_PASSWORD:-ielts-local}
+      MONGO_URI: mongodb://mongo:27017/ielts
+      REDIS_HOST: redis
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_PUBLIC_ENDPOINT: ${IELTS_MINIO_PUBLIC_ENDPOINT:-http://localhost:9010}
+      MINIO_ACCESS_KEY: ${IELTS_MINIO_USER:-ielts-local}
+      MINIO_SECRET_KEY: ${IELTS_MINIO_PASSWORD:-ielts-local-minio}
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_FROM: no-reply@ielts.local
+      CORS_ORIGINS: http://localhost:8180
+      REFRESH_COOKIE_SECURE: "false"
+      JWT_SECRET: ${IELTS_JWT_SECRET:-ZGV2LW9ubHktaWVsdHMtc2VjcmV0LXJlcGxhY2UtYmVmb3JlLXByb2R1Y3Rpb24=}
+      SIGNUP_TRIAL_DAYS: "0"
+      PAYWALL_AFTER_TRIAL: "false"
+      GEMINI_LIVE_ENABLED: "false"
+    depends_on:
+      mysql: {condition: service_healthy}
+      mongo: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      minio: {condition: service_healthy}
+  frontend:
+    build: ./ielts-frontend
+    ports: ["127.0.0.1:8180:80"]
+    depends_on:
+      backend: {condition: service_healthy}
+volumes:
+  ielts-mysql:
+  ielts-mongo:
+  ielts-minio:
