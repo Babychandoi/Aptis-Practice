@@ -111,6 +111,7 @@ export interface MeResponse {
    * "Premium" — người dùng bấm mới hiểu là cần mua.
    */
   premiumFromTrial: boolean;
+  signupTrialStatus?: 'LEGACY' | 'PENDING' | 'GRANTED' | 'BROWSER_USED' | 'BROWSER_UNAVAILABLE';
 }
 
 // ---------------------------------------------------------------------
@@ -482,6 +483,7 @@ export type BankTransferStatus =
   | 'EXPIRED';
 
 export interface BankTransferInstruction {
+  automaticConfirmation?: boolean;
   id: string;
   orderId: string;
   orderCode: string | null;

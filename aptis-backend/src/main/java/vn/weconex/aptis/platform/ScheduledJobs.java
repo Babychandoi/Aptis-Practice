@@ -47,6 +47,12 @@ public class ScheduledJobs {
     private final ImportWorker importWorker;
     private final ExportWorker exportWorker;
     private final SchedulerLock lock;
+    private final vn.weconex.aptis.auth.service.AbuseEventService abuseEvents;
+
+    @Scheduled(fixedDelay = 60 * 60 * 1000L, initialDelay = 300_000L)
+    public void purgeAbuseEvents() {
+        lock.runIfAcquired("purge-abuse-events", Duration.ofMinutes(10), abuseEvents::purgeExpired);
+    }
 
     /**
      * Hết hạn Premium (PHẦN IV §35). Chạy mỗi 15 phút — độ trễ tối đa 15 phút

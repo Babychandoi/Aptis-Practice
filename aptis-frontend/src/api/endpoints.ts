@@ -242,6 +242,8 @@ export const mockTestApi = {
 // ---------------------------------------------------------------------
 
 export const billingApi = {
+  paymentMethod: (orderId: string) => api.get<{ mode: 'SEPAY_GATEWAY' | 'BANK_TRANSFER' }>(`/orders/${orderId}/payment-method`).then((r) => r.data),
+  sepayCheckout: (orderId: string) => api.post<{ invoice: string; checkoutUrl: string; fields: Record<string, string> }>(`/orders/${orderId}/sepay-checkout`).then((r) => r.data),
   plans: () => api.get<Plan[]>('/plans').then((r) => r.data),
   currentSubscriptions: () =>
     api.get<Subscription[]>('/subscriptions/current').then((r) => r.data),

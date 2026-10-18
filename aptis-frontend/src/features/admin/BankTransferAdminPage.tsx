@@ -10,6 +10,7 @@ import type { BankAccount, BankTransferStatus, SaveBankAccountRequest } from '@/
 import { DataTable, PageHeader, Pager, ResultBanner, StatusTiles } from './components/AdminUi';
 import { usePermission } from './usePermission';
 import { useAdminWebSocket } from './useAdminWebSocket';
+import { SepaySettingsPanel } from './SepaySettingsPanel';
 
 const PAGE_SIZE = 20;
 const FILTERS: Array<{ value: BankTransferStatus | undefined; label: string }> = [
@@ -105,7 +106,7 @@ export function BankTransferAdminPage() {
   return (
     <div className="space-y-7">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <PageHeader title="Đối soát chuyển khoản" description="Kiểm tra sao kê theo mã nội dung rồi xác nhận để kích hoạt Premium." />
+        <PageHeader title="Đối soát chuyển khoản" description="SePay tự xác nhận giao dịch hợp lệ. Kiểm tra các giao dịch cần đối soát bổ sung tại đây." />
         <div className="flex items-center gap-2.5">
           {wsStatus === 'CONNECTED' ? (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800" title="Đang kết nối WebSocket thời gian thực">
@@ -144,6 +145,8 @@ export function BankTransferAdminPage() {
           </button>
         </div>
       </div>
+
+      <SepaySettingsPanel canConfigure={canConfirm} accounts={accountsQuery.data ?? []} />
 
       {toastNotice && (
         <div className="flex items-center justify-between rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 shadow-sm animate-pulse">

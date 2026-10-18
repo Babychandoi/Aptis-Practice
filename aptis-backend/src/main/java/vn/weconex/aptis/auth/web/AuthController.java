@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vn.weconex.aptis.auth.service.AuthService;
 import vn.weconex.aptis.auth.service.GoogleTokenVerifier;
 import vn.weconex.aptis.common.security.CurrentUser;
+import vn.weconex.aptis.common.security.ClientIpResolver;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -24,11 +25,14 @@ public class AuthController {
     private final GoogleTokenVerifier googleTokenVerifier;
     private final CurrentUser currentUser;
     private final RefreshTokenCookieService refreshTokenCookies;
+    private final ClientIpResolver clientIpResolver;
+    private final BrowserIdentityCookieService browserIdentity;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void register(@Valid @RequestBody AuthDtos.RegisterRequest request) {
-        authService.register(request);
+    public void register(@Valid @RequestBody AuthDtos.RegisterRequest request,
+            HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+        authService.register(request, browserIdentity.resolveOrIssue(httpRequest, httpResponse), clientIpResolver.resolve(httpRequest));
     }
 
     @PostMapping("/verify-email")
@@ -54,7 +58,7 @@ public class AuthController {
             HttpServletResponse httpResponse) {
 
         AuthDtos.TokenResponse tokens = authService.login(
-                request, httpRequest.getHeader("User-Agent"), clientIp(httpRequest));
+                request, httpRequest.getHeader("User-Agent"), clientIpResolver.resolve(httpRequest), browserIdentity.resolveOrIssue(httpRequest, httpResponse));
         refreshTokenCookies.write(httpResponse, tokens.refreshToken());
         return tokens.withoutRefreshToken();
     }
@@ -68,7 +72,9 @@ public class AuthController {
      * frontend.
      */
     @GetMapping("/config")
-    public AuthDtos.AuthConfigResponse config() {
+    public AuthDtos.AuthConfigResponse config(HttpServletRequest request, HttpServletResponse response) {
+        browserIdentity.resolveOrIssue(request, response);
+        response.setHeader("Cache-Control", "no-store");
         return new AuthDtos.AuthConfigResponse(googleTokenVerifier.clientId());
     }
 
@@ -87,7 +93,7 @@ public class AuthController {
                 request.idToken(),
                 request.deviceId(),
                 httpRequest.getHeader("User-Agent"),
-                clientIp(httpRequest));
+                clientIpResolver.resolve(httpRequest), browserIdentity.resolveOrIssue(httpRequest, httpResponse));
         refreshTokenCookies.write(httpResponse, tokens.refreshToken());
         return tokens.withoutRefreshToken();
     }
@@ -101,7 +107,7 @@ public class AuthController {
         String legacyToken = request == null ? null : request.refreshToken();
         String refreshToken = refreshTokenCookies.resolve(httpRequest, legacyToken);
         AuthDtos.TokenResponse tokens = authService.refresh(
-                refreshToken, httpRequest.getHeader("User-Agent"), clientIp(httpRequest));
+                refreshToken, httpRequest.getHeader("User-Agent"), clientIpResolver.resolve(httpRequest), browserIdentity.resolveOrIssue(httpRequest, httpResponse));
         refreshTokenCookies.write(httpResponse, tokens.refreshToken());
         return tokens.withoutRefreshToken();
     }
@@ -131,14 +137,4 @@ public class AuthController {
         authService.resetPassword(request);
     }
 
-    /**
-     * X-Forwarded-For có thể chứa danh sách khi qua nhiều proxy; lấy IP đầu tiên.
-     */
-    private static String clientIp(HttpServletRequest request) {
-        String forwarded = request.getHeader("X-Forwarded-For");
-        if (forwarded != null && !forwarded.isBlank()) {
-            return forwarded.split(",")[0].strip();
-        }
-        return request.getRemoteAddr();
-    }
 }

@@ -7,6 +7,7 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { formatDate } from '@/lib/format';
 import { stagger } from '@/lib/motion';
 import type { NewsPostSummary } from '@/types/api';
+import { NewsSeo } from './NewsSeo';
 
 const PAGE_SIZE = 10;
 
@@ -39,6 +40,7 @@ export function NewsFeedPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      <NewsSeo />
       <header className="animate-in">
         <h1 className="page-title">Bảng tin</h1>
         <p className="page-description">Cách làm bài, dự đoán đề và thông báo mới nhất từ Aptis Practice.</p>

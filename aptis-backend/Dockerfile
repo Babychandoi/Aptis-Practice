@@ -25,7 +25,7 @@ RUN addgroup -S aptis && adduser -S aptis -G aptis
 WORKDIR /app
 
 # curl cho healthcheck; tzdata để log đúng giờ khi cần
-RUN apk add --no-cache curl tzdata
+RUN apk add --no-cache curl tzdata fontconfig font-dejavu
 
 COPY --from=build /build/target/*.jar app.jar
 RUN chown -R aptis:aptis /app

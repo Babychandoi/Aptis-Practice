@@ -41,6 +41,7 @@ public interface BankTransferRequestRepository
     Optional<BankTransferRequest> findByIdForUpdate(@Param("id") String id);
 
     /** Yêu cầu quá hạn mà chưa ai xử lý. */
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("""
             SELECT r FROM BankTransferRequest r
             WHERE r.status IN :statuses

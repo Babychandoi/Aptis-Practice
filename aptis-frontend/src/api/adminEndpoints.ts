@@ -193,6 +193,12 @@ export const adminRefundApi = {
 };
 
 export const adminBankTransferApi = {
+  gatewayStatus: () => api.get<{ enabled: boolean; configured: boolean; environment: string; merchantId: string; ipnUrl: string }>('/admin/sepay/gateway').then((r) => r.data),
+  gatewayEvents: () => api.get<Array<{ invoice: string; transactionId: string; amount: number; status: string; reason: string | null; receivedAt: string }>>('/admin/sepay/gateway/events').then((r) => r.data),
+  sepaySettings: () => api.get<SepaySettings>('/admin/sepay/settings').then((r) => r.data),
+  saveSepaySettings: (body: { enabled: boolean; bankAccountId: string | null; authMode: 'HMAC' | 'API_KEY'; secret?: string }) =>
+    api.put<SepaySettings>('/admin/sepay/settings', body).then((r) => r.data),
+  sepayTransactions: () => api.get<SepayTransaction[]>('/admin/sepay/transactions').then((r) => r.data),
   list: (status: BankTransferStatus | undefined, page = 0, size = 20) =>
     api
       .get<PageResponse<AdminBankTransfer>>('/admin/bank-transfers', {
@@ -222,6 +228,27 @@ export const adminBankTransferApi = {
       .patch<BankAccount>(`/admin/bank-accounts/${accountId}`, body)
       .then((r) => r.data),
 };
+
+export interface SepaySettings {
+  enabled: boolean;
+  bankAccountId: string | null;
+  authMode: 'HMAC' | 'API_KEY';
+  secretConfigured: boolean;
+  maskedSecret: string | null;
+  webhookUrl: string;
+}
+
+export interface SepayTransaction {
+  eventId: number;
+  referenceCode: string | null;
+  amount: number;
+  transferCode: string | null;
+  orderId: string | null;
+  status: 'RECEIVED' | 'APPLIED' | 'REVIEW' | 'IGNORED';
+  reason: string | null;
+  transactionAt: string;
+  receivedAt: string;
+}
 
 // ---------------------------------------------------------------------
 // Quyền và chiến dịch dùng thử

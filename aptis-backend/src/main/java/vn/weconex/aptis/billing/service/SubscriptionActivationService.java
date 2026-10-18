@@ -85,15 +85,24 @@ public class SubscriptionActivationService {
 
         List<UserSubscription> activeSubscriptions = subscriptionRepository.findActiveByPlanCodePrefix(
                 order.getUserId(), productPrefix(plan.getCode()), SubscriptionStatus.ACTIVE, now);
+        boolean aiLoungePlan = plan.getCode().startsWith(AI_LOUNGE_PLAN_PREFIX);
+        Instant activePremiumEndsAt = aiLoungePlan ? null : latestActivePremiumEnd(order.getUserId(), now);
 
         UserSubscription subscription;
         if (!activeSubscriptions.isEmpty() && policy == RenewalPolicy.EXTEND_CURRENT) {
-            subscription = extendExisting(activeSubscriptions.get(0), plan, order);
+            subscription = extendExisting(activeSubscriptions.get(0), plan, order, activePremiumEndsAt, now);
+        } else if (activeSubscriptions.isEmpty() && policy == RenewalPolicy.EXTEND_CURRENT) {
+            subscription = createNew(order, plan, now);
+            if (!plan.isLifetime() && activePremiumEndsAt != null) {
+                subscription.setEndsAt(later(now, activePremiumEndsAt)
+                        .plus(plan.getDurationDays(), ChronoUnit.DAYS));
+                subscription = subscriptionRepository.save(subscription);
+            }
         } else {
             Instant startsAt = activeSubscriptions.isEmpty()
-                    ? now
+                    ? later(now, activePremiumEndsAt)
                     // QUEUE_NEXT: gói mới nối tiếp sau gói hiện tại
-                    : nvl(activeSubscriptions.get(0).getEndsAt(), now);
+                    : later(nvl(activeSubscriptions.get(0).getEndsAt(), now), activePremiumEndsAt);
             subscription = createNew(order, plan, startsAt);
         }
 
@@ -139,7 +148,8 @@ public class SubscriptionActivationService {
      * Cộng dồn thời hạn vào gói đang chạy. Gói trọn đời thì không đổi ends_at.
      */
     private UserSubscription extendExisting(
-            UserSubscription current, SubscriptionPlan plan, Order order) {
+            UserSubscription current, SubscriptionPlan plan, Order order,
+            Instant activePremiumEndsAt, Instant now) {
 
         if (current.getEndsAt() == null) {
             log.info("Subscription {} là trọn đời, không cần gia hạn", current.getId());
@@ -148,7 +158,8 @@ public class SubscriptionActivationService {
         if (plan.isLifetime()) {
             current.setEndsAt(null);
         } else {
-            current.setEndsAt(current.getEndsAt().plus(plan.getDurationDays(), ChronoUnit.DAYS));
+            Instant base = later(current.getEndsAt(), activePremiumEndsAt);
+            current.setEndsAt(later(now, base).plus(plan.getDurationDays(), ChronoUnit.DAYS));
         }
         current.setSourceOrderId(order.getId());
         return subscriptionRepository.save(current);
@@ -230,5 +241,22 @@ public class SubscriptionActivationService {
 
     private static Instant nvl(Instant value, Instant fallback) {
         return value == null ? fallback : value;
+    }
+
+    /** Uses the furthest active Premium end so paid days never get hidden under another grant. */
+    private Instant latestActivePremiumEnd(String userId, Instant now) {
+        return entitlementRepository.findActive(
+                        userId, UserEntitlement.PREMIUM_CONTENT_ACCESS, now)
+                .stream()
+                .map(UserEntitlement::getEndsAt)
+                .filter(java.util.Objects::nonNull)
+                .max(Instant::compareTo)
+                .orElse(null);
+    }
+
+    private static Instant later(Instant first, Instant second) {
+        if (first == null) return second;
+        if (second == null) return first;
+        return first.isAfter(second) ? first : second;
     }
 }

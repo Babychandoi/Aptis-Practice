@@ -30,9 +30,9 @@ public class EntitlementService {
      * Có quyền Premium — do đã mua, hoặc còn trong thời gian dùng thử tính từ
      * lúc tạo tài khoản.
      *
-     * <p>Dùng thử tính theo {@code users.created_at} thay vì cấp entitlement
-     * riêng: khỏi phải chạy job cấp quyền cho từng người đăng ký, và đổi số ngày
-     * trong cấu hình là đổi hạn của cả những người đã đăng ký.
+     * <p>Hạn vẫn tính từ users.created_at; tài khoản mới chỉ được dùng thử sau
+     * khi SignupTrialService cấp lượt duy nhất theo mã trình duyệt server ký.
+     * Tài khoản trước migration giữ trạng thái LEGACY và hạn cũ.
      *
      * <p>Mọi luồng kiểm quyền đều gọi qua đây (ContentAccessService,
      * AttemptService, MockTestService, các controller nội dung Premium), nên chỉ
@@ -59,6 +59,7 @@ public class EntitlementService {
             return false;
         }
         return userRepository.findById(userId)
+                .filter(User::signupTrialEligible)
                 .map(user -> properties.entitlement()
                         .withinSignupTrial(user.getCreatedAt(), Instant.now()))
                 .orElse(false);
@@ -75,6 +76,7 @@ public class EntitlementService {
             return Optional.empty();
         }
         return userRepository.findById(userId)
+                .filter(User::signupTrialEligible)
                 .map(User::getCreatedAt)
                 .filter(java.util.Objects::nonNull)
                 .map(createdAt -> createdAt.plus(java.time.Duration.ofDays(days)));

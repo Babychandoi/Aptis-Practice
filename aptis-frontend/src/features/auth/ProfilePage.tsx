@@ -167,7 +167,7 @@ export function ProfilePage() {
           </div>
         ) : (
           <div>
-            <p className="text-sm text-slate-600">Bạn đang dùng gói miễn phí</p>
+            <p className="text-sm text-slate-600">{user.signupTrialStatus === 'BROWSER_USED' ? 'Trình duyệt này đã nhận dùng thử; tài khoản này chưa có gói Premium.' : 'Bạn chưa có gói Premium đang hiệu lực.'}</p>
             <Link to="/plans" className="btn-secondary mt-2.5 min-h-[36px] w-full text-xs">
               Xem các gói Premium →
             </Link>

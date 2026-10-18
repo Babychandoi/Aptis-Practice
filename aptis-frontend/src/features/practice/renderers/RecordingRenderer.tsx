@@ -38,7 +38,7 @@ function pickRecorderMime(): string | undefined {
 }
 
 /** Bỏ phần tham số codecs: backend và S3 chỉ so khớp loại gốc. */
-const baseMime = (mime: string) => mime.split(';')[0];
+const baseMime = (mime: string): string => mime.split(';')[0]!;
 
 function micErrorMessage(error: unknown): string {
   const name = (error as { name?: string } | null)?.name;

@@ -25,6 +25,7 @@ public interface TrialReminderRepository
             FROM users u
             WHERE u.email_verified_at IS NOT NULL
               AND u.status = 'ACTIVE'
+              AND u.signup_trial_status IN ('LEGACY', 'GRANTED')
               AND u.created_at + INTERVAL :trialDays DAY BETWEEN :from AND :to
               AND NOT EXISTS (
                     SELECT 1 FROM user_entitlements e

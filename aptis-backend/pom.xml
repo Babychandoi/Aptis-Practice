@@ -34,6 +34,12 @@
     </properties>
 
     <dependencies>
+        <!-- Server-rendered public news; raw HTML and unsafe link schemes disabled. -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>0.24.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

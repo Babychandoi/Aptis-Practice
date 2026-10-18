@@ -1,0 +1,279 @@
+{
+  "predictDate": "2026-10-13",
+  "source": "Bản dự đoán 13/10/2026 do quản trị viên cung cấp",
+  "news": {
+    "slug": "du-doan-de-thi-ngay-13-10-chu-de-uu-tien-va-de-luyen",
+    "title": "Dự đoán đề thi 13/10: chủ đề ưu tiên và đề luyện theo kỹ năng",
+    "excerpt": "Danh sách ôn tập Reading, Writing, Listening và Speaking cho ngày 13/10, kèm bài luyện đúng chủ đề. Dự đoán chỉ mang tính tham khảo.",
+    "bodyFile": "news-prediction-2026-10-13.md",
+    "writingMocks": ["001", "039", "019", "035", "033", "009", "037", "029", "034", "007", "004", "032", "002", "036", "022", "020"]
+  },
+  "notes": [
+    "Giữ nhãn Reading Part 5 / Part 4 / Part 2+3 theo bản gốc; ánh xạ lần lượt sang Reading Part 4 / Part 3 / Part 2 của hệ thống.",
+    "Work from home ở Q15 trong bản gốc nhưng kho đề thuộc Listening Part 4; đặt trong nhóm Q16–17 và ghi chú ở bài bản tin.",
+    "Food và The art xuất hiện hai lần trong bản gốc; chỉ giữ một mục mỗi nhóm.",
+    "Writing mức Vừa dùng priority BACKUP vì schema chỉ có HOT/BACKUP; giữ sectionLabel Mức vừa để không lẫn với các đề dự phòng khác.",
+    "Các mục chưa xác nhận được đề phù hợp vẫn giữ trong dữ liệu nguồn và bài bản tin, không tạo topic rỗng hoặc gắn đề gần giống."
+  ],
+  "skills": [
+    {
+      "component": "READING",
+      "sections": [
+        {
+          "sectionLabel": "Part 5", "part": "Reading Part 4", "backupRemaining": true,
+          "items": [
+            {"label": "Four-day work week", "priority": "HOT", "topicCode": "R4_SRC_003"},
+            {"label": "Mountain summits", "priority": "HOT", "topicCode": "R4_SRC_001"},
+            {"label": "Women mathematicians", "priority": "HOT", "topicCode": "R4_SRC_007"}
+          ]
+        },
+        {
+          "sectionLabel": "Part 4", "part": "Reading Part 3", "backupRemaining": true,
+          "items": [
+            {"label": "Extreme sports", "priority": "HOT", "topicCode": "R3_EXTREME_SPORTS"},
+            {"label": "Game from childhood", "priority": "HOT", "topicCode": "R3_CHILDHOOD_GAMES"},
+            {"label": "Free time Activity", "priority": "HOT", "topicCode": "pred-free-time-activities"},
+            {"label": "Volunteering", "priority": "HOT", "topicCode": "R3_VOLUNTEERING"},
+            {"label": "Job and training", "priority": "HOT", "topicCode": "R3_CAREER"},
+            {"label": "Music Festival", "priority": "HOT", "topicCode": "R3_MUSIC_FESTIVAL"}
+          ]
+        },
+        {
+          "sectionLabel": "Part 2+3", "part": "Reading Part 2", "backupRemaining": true,
+          "items": [
+            {"label": "Weekend Activities", "priority": "HOT", "topicCode": "weekend-activities-r"},
+            {"label": "Film", "priority": "HOT", "topicCode": "R2_FILMS"},
+            {"label": "End of term", "priority": "HOT", "topicCode": "R2_PRESENTATION"},
+            {"label": "Famous Singer", "priority": "HOT", "topicCode": "R2_SINGER"},
+            {"label": "Family sport day", "priority": "HOT", "topicCode": "R2_SPORTS_EVENT"},
+            {"label": "College welcoming day", "priority": "HOT", "topicCode": "R2_CAMPUS_DAY"},
+            {"label": "New coffee shop", "priority": "HOT", "topicCode": "new-coffee-shop-r"},
+            {"label": "History of transportation", "priority": "HOT", "topicCode": "R2_TRANSPORT"},
+            {"label": "The First woman in space", "priority": "HOT", "topicCode": "pred-the-first-america-woman-in-space"}
+          ]
+        }
+      ]
+    },
+    {
+      "component": "WRITING",
+      "sections": [
+        {
+          "sectionLabel": "Ưu tiên cao", "part": null,
+          "items": [
+            {"label": "Travel", "priority": "HOT", "topicCode": "wclub-travel-club"},
+            {"label": "Community", "priority": "HOT", "topicCode": "wclub-community-club"},
+            {"label": "Food", "priority": "HOT", "topicCode": "wclub-food-club"},
+            {"label": "Music", "priority": "HOT", "topicCode": "wclub-music-club"},
+            {"label": "Museum", "priority": "HOT", "topicCode": "wclub-museum-club"},
+            {"label": "Debate", "priority": "HOT", "topicCode": "wclub-debate-club"},
+            {"label": "Car", "priority": "HOT", "topicCode": "wclub-car-club"},
+            {"label": "Art", "priority": "HOT", "topicCode": "wclub-art-club"},
+            {"label": "Sports", "priority": "HOT", "topicCode": "wclub-sports-club"},
+            {"label": "Social", "priority": "HOT", "topicCode": "wclub-social-club"},
+            {"label": "Reading", "priority": "HOT", "topicCode": "wclub-reading-club"},
+            {"label": "Computer", "priority": "HOT", "topicCode": "wclub-computer-club"},
+            {"label": "Film", "priority": "HOT", "topicCode": "WRITING_P3_TOPIC_007"},
+            {"label": "Fashion", "priority": "HOT", "topicCode": "wclub-fashion-club"},
+            {"label": "Book", "priority": "HOT", "topicCode": "wclub-book-club"},
+            {"label": "English", "priority": "HOT", "topicCode": "wclub-english-club"},
+            {"label": "Photography", "priority": "HOT", "topicCode": "wclub-photography-club"}
+          ]
+        },
+        {
+          "sectionLabel": "Mức vừa", "part": null,
+          "items": [
+            {"label": "Television", "priority": "BACKUP", "topicCode": "wclub-television-club"},
+            {"label": "Home Living", "priority": "BACKUP", "topicCode": "wclub-home-living-club"},
+            {"label": "Technology", "priority": "BACKUP", "topicCode": "wclub-technology-club"},
+            {"label": "Gardening", "priority": "BACKUP", "topicCode": "wclub-garden-club"},
+            {"label": "Cooking", "priority": "BACKUP", "topicCode": "wclub-cooking-club"},
+            {"label": "Beautiful Home", "priority": "BACKUP", "topicCode": "WRITING_P2_TOPIC_028"},
+            {"label": "Science", "priority": "BACKUP", "topicCode": "WRITING_P3_TOPIC_040"},
+            {"label": "Business", "priority": "BACKUP", "topicCode": "wclub-business-club"},
+            {"label": "Language", "priority": "BACKUP", "topicCode": "wclub-language-club"},
+            {"label": "Fitness", "priority": "BACKUP", "topicCode": "WRITING_P3_TOPIC_042"}
+          ]
+        }
+      ]
+    },
+    {
+      "component": "LISTENING",
+      "sections": [
+        {
+          "sectionLabel": "Q14", "part": "Listening Part 2",
+          "items": [
+            {"label": "Travel to work", "priority": "HOT", "topicCode": "pred-0d921138"},
+            {"label": "The place to run", "priority": "HOT", "topicCode": "pred-place-to-run"},
+            {"label": "Listening to music", "priority": "HOT", "topicCode": "LISTENING_P2_TOPIC_016"},
+            {"label": "Doing exercise", "priority": "HOT", "topicCode": "LISTENING_P2_TOPIC_019"},
+            {"label": "Protect the environment", "priority": "HOT", "topicCode": "LISTENING_P2_TOPIC_009"},
+            {"label": "Studying Habit", "priority": "HOT", "topicCode": "LISTENING_P2_TOPIC_006"},
+            {"label": "Online shopping", "priority": "HOT", "topicCode": "LISTENING_P2_TOPIC_015"},
+            {"label": "Computer", "priority": "HOT", "topicCode": null},
+            {"label": "Outdoor Activities", "priority": "HOT", "topicCode": "LISTENING_P2_TOPIC_017"},
+            {"label": "Reading books", "priority": "HOT", "topicCode": "LISTENING_P2_TOPIC_026"}
+          ]
+        },
+        {
+          "sectionLabel": "Q15", "part": "Listening Part 3", "backupRemaining": true,
+          "items": [
+            {"label": "The Internet", "priority": "HOT", "topicCode": "LISTENING_P3_TOPIC_001"},
+            {"label": "Community Design", "priority": "HOT", "topicCode": "LISTENING_P3_TOPIC_006"},
+            {"label": "Urban farming", "priority": "HOT", "topicCode": "LISTENING_P3_TOPIC_024"},
+            {"label": "Change in the workplace", "priority": "HOT", "topicCode": "LISTENING_P3_TOPIC_007"},
+            {"label": "Politics", "priority": "HOT", "topicCode": "LISTENING_P3_TOPIC_002"},
+            {"label": "The art", "priority": "HOT", "topicCode": "LISTENING_P3_TOPIC_011"},
+            {"label": "University and Technology", "priority": "HOT", "topicCode": "LISTENING_P3_TOPIC_028"},
+            {"label": "Homeschooling", "priority": "HOT", "topicCode": "LISTENING_P3_TOPIC_037"},
+            {"label": "Local Cultural Center", "priority": "HOT", "topicCode": null},
+            {"label": "Music and Singer", "priority": "HOT", "topicCode": "LISTENING_P3_TOPIC_034"},
+            {"label": "Actors", "priority": "HOT", "topicCode": "LISTENING_P3_TOPIC_018"}
+          ]
+        },
+        {
+          "sectionLabel": "Q16–17", "part": "Listening Part 4", "backupRemaining": true,
+          "items": [
+            {"label": "Promotion Campaign", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_014"},
+            {"label": "Camera", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_016"},
+            {"label": "Sport competition", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_049"},
+            {"label": "Writer’s Block", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_003"},
+            {"label": "Script Production", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_054"},
+            {"label": "Importance of sleep", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_048"},
+            {"label": "A regional development plan", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_012"},
+            {"label": "Two writers", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_010"},
+            {"label": "Professionalism at work", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_002"},
+            {"label": "Life after uni", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_013"},
+            {"label": "A break from studying", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_021"},
+            {"label": "A newly released novel", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_001"},
+            {"label": "Baloo’s restaurant", "priority": "HOT", "topicCode": null},
+            {"label": "Criticism of the new novel", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_055"},
+            {"label": "A Research into happiness", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_018"},
+            {"label": "Work from home", "priority": "HOT", "topicCode": "LISTENING_P4_TOPIC_004"}
+          ]
+        }
+      ]
+    },
+    {
+      "component": "SPEAKING",
+      "sections": [
+        {
+          "sectionLabel": "Part 1", "part": "Speaking Part 1",
+          "items": [
+            {"label": "Nơi ở", "priority": "HOT", "topicCode": "pred-noi-ban-song"},
+            {"label": "Gia đình", "priority": "HOT", "topicCode": "pred-thanh-vien-trong-gia-dinh"},
+            {"label": "Bạn bè", "priority": "HOT", "topicCode": "spk-your-friend"},
+            {"label": "Sinh nhật", "priority": "HOT", "topicCode": "pred-sinh-nhat-cua-ban"},
+            {"label": "Mùa yêu thích", "priority": "HOT", "topicCode": "sp1-mua-yeu-thich"},
+            {"label": "Điều nổi tiếng ở quê bạn", "priority": "HOT", "topicCode": null},
+            {"label": "Sở thích", "priority": "HOT", "topicCode": "spk-thich-lam-gi-khi-ranh"},
+            {"label": "Lịch trình / typical day / week", "priority": "HOT", "topicCode": "sp1-lich-sinh-hoat"},
+            {"label": "Đi lại", "priority": "HOT", "topicCode": "sp1-phuong-tien-di-lai"},
+            {"label": "Bữa ăn thường ngày", "priority": "HOT", "topicCode": "sp1-an-uong"},
+            {"label": "Mặc gì hôm nay", "priority": "HOT", "topicCode": "sp1-quan-ao"},
+            {"label": "Sách yêu thích", "priority": "HOT", "topicCode": "sp1-sach"},
+            {"label": "Ca sĩ / âm nhạc yêu thích", "priority": "HOT", "topicCode": "sp1-am-nhac"},
+            {"label": "Diễn viên yêu thích", "priority": "HOT", "topicCode": null},
+            {"label": "Thể thao yêu thích", "priority": "HOT", "topicCode": "sp1-the-thao"},
+            {"label": "Phim ảnh yêu thích", "priority": "HOT", "topicCode": "pred-bo-phim-yeu-thich-lan-cuoi-xem-phim"},
+            {"label": "Động vật yêu thích", "priority": "HOT", "topicCode": null},
+            {"label": "Địa điểm nổi tiếng", "priority": "HOT", "topicCode": "pred-dia-diem-noi-tieng"},
+            {"label": "Trường học cũ", "priority": "HOT", "topicCode": "pred-truong-hoc-dau-tien"},
+            {"label": "Chuyến đi gần nhất", "priority": "HOT", "topicCode": "sp1-chuyen-di"},
+            {"label": "Thời tiết hôm nay", "priority": "HOT", "topicCode": "sp1-thoi-tiet"}
+          ]
+        },
+        {
+          "sectionLabel": "Part 2", "part": "Speaking Part 2",
+          "items": [
+            {"label": "Leo núi / đi bộ đường dài", "priority": "HOT", "topicCode": "sp2-pred-leo-nui-di-bo-duong-dai"},
+            {"label": "Đi rừng / dạo thiên nhiên", "priority": "HOT", "topicCode": "sp2-pred-di-rung-dao-thien-nhien"},
+            {"label": "Mua sắm", "priority": "HOT", "topicCode": "pred-mua-sam-mua-quan-ao"},
+            {"label": "Tập gym / thể thao", "priority": "HOT", "topicCode": "sp2-pred-tap-gym-the-thao"},
+            {"label": "Chơi game", "priority": "HOT", "topicCode": null},
+            {"label": "Học nhóm", "priority": "HOT", "topicCode": "sp2-pred-hoc-nhom"},
+            {"label": "Dùng thiết bị điện tử / máy tính", "priority": "HOT", "topicCode": "sp2-pred-dung-thiet-bi-dien-tu-may-tinh"},
+            {"label": "Đi xem tranh", "priority": "HOT", "topicCode": null},
+            {"label": "Đọc sách báo", "priority": "HOT", "topicCode": "sp2-pred-doc-sach-bao"},
+            {"label": "Đi xem phim", "priority": "HOT", "topicCode": null},
+            {"label": "Nghe nhạc ở public places", "priority": "HOT", "topicCode": null},
+            {"label": "Ở quán cafe", "priority": "HOT", "topicCode": null},
+            {"label": "Gia đình sinh hoạt cùng nhau (ăn uống, nấu ăn)", "priority": "HOT", "topicCode": "pred-gia-dinh-sinh-hoat-cung-nhau-an-uong-nau-an-xem-tv"},
+            {"label": "Trang trí nhà cửa / dọn nhà", "priority": "HOT", "topicCode": "sp2-pred-trang-tri-nha-cua-don-nha"},
+            {"label": "Mẹ đọc sách cho con", "priority": "HOT", "topicCode": "spk-dua-tre-va-nguoi-me"},
+            {"label": "Trẻ em chơi đồ chơi", "priority": "HOT", "topicCode": null}
+          ]
+        },
+        {
+          "sectionLabel": "Part 3", "part": "Speaking Part 3",
+          "items": [
+            {"label": "Thư viện vs quán cafe", "priority": "HOT", "topicCode": "sp3-thu-vien-vs-quan-ca-phe"},
+            {"label": "Làm online ở nhà vs văn phòng", "priority": "HOT", "topicCode": "sp3-o-nha-vs-van-phong"},
+            {"label": "Làm một mình vs teamwork", "priority": "HOT", "topicCode": "sp3-lam-mot-minh-vs-lam-nhom"},
+            {"label": "Trẻ em học ở lớp vs học thực tế ở vườn", "priority": "HOT", "topicCode": null},
+            {"label": "Đọc sách vs chơi game", "priority": "HOT", "topicCode": "sp3-doc-sach-vs-choi-game"},
+            {"label": "Healthy vs fast food", "priority": "HOT", "topicCode": "sp3-an-healthy-vs-fast-food"},
+            {"label": "Nghe nhạc trên sân khấu vs tai nghe", "priority": "HOT", "topicCode": "sp3-am-nhac-nghe-o-nha-vs-xem-truc-tiep"},
+            {"label": "Chợ vs siêu thị", "priority": "HOT", "topicCode": "sp3-cho-vs-sieu-thi"},
+            {"label": "Nhà cổ vs nhà tiện nghi", "priority": "HOT", "topicCode": null},
+            {"label": "Thư viện vs bảo tàng", "priority": "HOT", "topicCode": null},
+            {"label": "Nhà cao tầng vs nhà riêng", "priority": "HOT", "topicCode": null},
+            {"label": "Sống với gia đình vs một mình", "priority": "HOT", "topicCode": "sp3-song-voi-gia-dinh-vs-song-mot-minh"},
+            {"label": "Nông thôn vs thành phố", "priority": "HOT", "topicCode": "sp3-song-o-thanh-pho-vs-nong-thon"},
+            {"label": "So sánh phương tiện", "priority": "HOT", "topicCode": "sp3-du-lich-bang-tau-vs-may-bay-vs-o-to"},
+            {"label": "Nhà máy vs văn phòng", "priority": "HOT", "topicCode": "sp3-lam-viec-trong-nha-may-vs-van-phong"},
+            {"label": "Thể thao ngoài trời vs trong nhà", "priority": "HOT", "topicCode": "sp3-the-thao-trong-nha-vs-ngoai-troi"},
+            {"label": "So sánh mùa", "priority": "HOT", "topicCode": "sp3-mua-he-vs-mua-dong"},
+            {"label": "Sa mạc vs tuyết", "priority": "HOT", "topicCode": null},
+            {"label": "So sánh động vật", "priority": "HOT", "topicCode": null}
+          ]
+        },
+        {
+          "sectionLabel": "Part 4", "part": "Speaking Part 4",
+          "items": [
+            {"label": "Lần đạt thành tựu khi làm việc với người khác", "priority": "HOT", "topicCode": "sp4-lan-lam-viec-nhom"},
+            {"label": "Lần nhận feedback", "priority": "HOT", "topicCode": null},
+            {"label": "Lần giúp ai đó / được giúp đỡ", "priority": "HOT", "topicCode": "sp4-lan-giup-ai-do-duoc-giup-do"},
+            {"label": "Lần tự tin", "priority": "HOT", "topicCode": null},
+            {"label": "Lần gặp bạn mới", "priority": "HOT", "topicCode": null},
+            {"label": "Lần đọc sách hay", "priority": "HOT", "topicCode": "sp4-lan-doc-mot-quyen-sach-hay"},
+            {"label": "Lần cho mượn đồ", "priority": "HOT", "topicCode": null},
+            {"label": "Lần thuyết trình", "priority": "HOT", "topicCode": null},
+            {"label": "Lần nói chuyện vui vẻ", "priority": "HOT", "topicCode": null},
+            {"label": "Lần nhận tin tốt / email quan trọng", "priority": "HOT", "topicCode": "sp4-lan-nhan-tin-tot"},
+            {"label": "Lần thư giãn", "priority": "HOT", "topicCode": null},
+            {"label": "Lần tự thử thách bản thân", "priority": "HOT", "topicCode": null},
+            {"label": "Lần vội vã", "priority": "HOT", "topicCode": "sp4-lan-voi-va-ban-ron"},
+            {"label": "Lần chịu trách nhiệm", "priority": "HOT", "topicCode": null},
+            {"label": "Lần thay đổi thói quen", "priority": "HOT", "topicCode": null},
+            {"label": "Lần thử điều mới / mạo hiểm", "priority": "HOT", "topicCode": "sp4-lan-thu-mot-dieu-moi-mao-hiem"},
+            {"label": "Lần học kỹ năng / ngôn ngữ mới", "priority": "HOT", "topicCode": "sp4-lan-hoc-ky-nang-ngon-ngu-moi"},
+            {"label": "Lần đi du lịch nơi mới", "priority": "HOT", "topicCode": null},
+            {"label": "Lần vượt qua khó khăn", "priority": "HOT", "topicCode": "sp4-lan-vuot-qua-kho-khan"},
+            {"label": "Lần đợi lâu", "priority": "HOT", "topicCode": null},
+            {"label": "Lần đứng trước thiên nhiên", "priority": "HOT", "topicCode": "sp4-lan-hoa-minh-vao-thien-nhien"},
+            {"label": "Chuyến đi xa / mạo hiểm", "priority": "HOT", "topicCode": null},
+            {"label": "Lần có nhiều lựa chọn", "priority": "HOT", "topicCode": "sp4-lan-dung-truoc-nhieu-lua-chon"},
+            {"label": "Khoảng cách thế hệ", "priority": "HOT", "topicCode": "sp4-lan-noi-chuyen-voi-nguoi-lon-nho-tuoi-hon"},
+            {"label": "Lần đạt thành tựu", "priority": "HOT", "topicCode": null},
+            {"label": "Người để lại ấn tượng tốt", "priority": "HOT", "topicCode": null},
+            {"label": "Lần làm điều không thích / không muốn làm", "priority": "HOT", "topicCode": "sp4-lan-lam-dieu-minh-khong-thich"},
+            {"label": "Lần tặng / nhận quà", "priority": "HOT", "topicCode": "sp4-lan-nhan-qua-tang-qua"},
+            {"label": "Sự kiện thể thao", "priority": "HOT", "topicCode": null},
+            {"label": "Sự kiện nghệ thuật", "priority": "HOT", "topicCode": "sp4-lan-xem-tac-pham-nghe-thuat"},
+            {"label": "Lần làm từ thiện", "priority": "HOT", "topicCode": null},
+            {"label": "Lần không mua được gì đó", "priority": "HOT", "topicCode": null}
+          ]
+        },
+        {
+          "sectionLabel": "Part 4 · Dự phòng", "part": "Speaking Part 4",
+          "items": [
+            {"label": "Lần mua đồ đắt tiền", "priority": "BACKUP", "topicCode": "sp4-lan-mua-do-dat-tien"},
+            {"label": "Mặc trang phục trang trọng", "priority": "BACKUP", "topicCode": null},
+            {"label": "Lần tiết kiệm tiền", "priority": "BACKUP", "topicCode": null},
+            {"label": "Lần thay đổi công việc / trường học", "priority": "BACKUP", "topicCode": null}
+          ]
+        }
+      ]
+    }
+  ]
+}

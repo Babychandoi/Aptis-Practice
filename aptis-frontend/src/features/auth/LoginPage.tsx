@@ -136,6 +136,9 @@ export function LoginPage() {
       </p>
 
       <AuthSupportNote />
+      <p className="mt-4 text-center text-[11px] leading-5 text-slate-500">
+        Cookie bảo mật ghi nhớ lượt dùng thử của trình duyệt. IP chỉ hỗ trợ kiểm tra lạm dụng; dùng chung Wi-Fi không tự động mất quyền dùng thử.
+      </p>
     </AuthCard>
   );
 }

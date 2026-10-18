@@ -15,6 +15,7 @@ import vn.weconex.aptis.billing.repository.BankAccountRepository;
 import vn.weconex.aptis.billing.repository.OrderRepository;
 import vn.weconex.aptis.billing.service.BankTransferService;
 import vn.weconex.aptis.billing.service.VietQrGenerator;
+import vn.weconex.aptis.billing.service.SepaySettingsService;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.security.CurrentUser;
 
@@ -34,6 +35,7 @@ public class BankTransferController {
     private final OrderRepository orderRepository;
     private final VietQrGenerator qrGenerator;
     private final CurrentUser currentUser;
+    private final SepaySettingsService sepaySettings;
 
     /** Lấy thông tin chuyển khoản; gọi lại trả đúng mã cũ, không sinh mã mới. */
     @PostMapping("/{orderId}/bank-transfer")
@@ -96,6 +98,6 @@ public class BankTransferController {
                 request.getTransferCode());
 
         return BankTransferDtos.TransferInstructionResponse.of(
-                request, account, orderCode, qrContent);
+                request, account, orderCode, qrContent, sepaySettings.automaticFor(account.getId()));
     }
 }

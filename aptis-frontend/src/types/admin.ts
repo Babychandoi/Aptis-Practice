@@ -460,6 +460,7 @@ export interface AdminUser {
   lastLoginAt: string | null;
   /** Lần cuối còn ở web — suy từ refresh token gần nhất, chính xác hơn lastLoginAt. */
   lastActivityAt: string | null;
+  signupTrialStatus?: 'LEGACY' | 'PENDING' | 'GRANTED' | 'BROWSER_USED' | 'BROWSER_UNAVAILABLE';
 }
 
 export type AccessState = 'PAID' | 'TRIAL' | 'EXPIRED';

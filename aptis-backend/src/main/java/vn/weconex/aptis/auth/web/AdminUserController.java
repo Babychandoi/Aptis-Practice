@@ -26,6 +26,13 @@ public class AdminUserController {
 
     private final AdminUserService service;
     private final CurrentUser currentUser;
+    private final vn.weconex.aptis.auth.service.AdminAbuseService abuseService;
+
+    @GetMapping("/abuse-signals")
+    @PreAuthorize("hasAuthority('user:read')")
+    public vn.weconex.aptis.auth.service.AdminAbuseService.Summary abuseSignals() {
+        return abuseService.summary();
+    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('user:read')")

@@ -58,6 +58,9 @@ public class SecurityConfig {
                         .permitAll()
                         // Webhook xác thực bằng chữ ký của provider, không dùng JWT
                         .requestMatchers(HttpMethod.POST, "/api/v1/payments/webhooks/**").permitAll()
+                        // Retired SePay test endpoints must stay inaccessible, including to admins.
+                        .requestMatchers("/api/v1/payments/sepay/ipn/sandbox", "/api/v1/admin/sepay/sandbox", "/api/v1/admin/sepay/sandbox/**").denyAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/payments/sepay/ipn").permitAll()
                         // Danh sách gói để trang bán hàng hiển thị khi chưa đăng nhập
                         .requestMatchers(HttpMethod.GET, "/api/v1/plans").permitAll()
                         // Bảng tin: ĐỌC tự do, kể cả khách chưa đăng nhập.
@@ -69,6 +72,7 @@ public class SecurityConfig {
                         // Chỉ mở GET. Bình luận (POST/DELETE) vẫn cần đăng nhập
                         // và cần Premium, chặn trong NewsService.
                         .requestMatchers(HttpMethod.GET, "/api/v1/news", "/api/v1/news/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/news-seo/**").permitAll()
                         // Ghi lượt xem trang: mở cho cả khách chưa đăng nhập vì
                         // người xem trang giá rồi bỏ đi chính là nhóm cần đo.
                         // Chỉ ghi, không đọc được gì; khóa trang lọc qua danh
