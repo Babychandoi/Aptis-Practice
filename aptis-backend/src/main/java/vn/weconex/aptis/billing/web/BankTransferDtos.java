@@ -40,13 +40,15 @@ public final class BankTransferDtos {
             String qrAssetId,
             Instant qrExpiresAt,
             Instant expiresAt,
-            Instant claimedAt) {
+            Instant claimedAt,
+            boolean automaticConfirmation) {
 
         public static TransferInstructionResponse of(
                 BankTransferRequest request,
                 BankAccount account,
                 String orderCode,
-                String qrContent) {
+                String qrContent,
+                boolean automaticConfirmation) {
 
             return new TransferInstructionResponse(
                     request.getId(),
@@ -65,7 +67,8 @@ public final class BankTransferDtos {
                     account.getQrAssetId(),
                     request.getQrExpiresAt(),
                     request.getExpiresAt(),
-                    request.getClaimedAt());
+                    request.getClaimedAt(),
+                    automaticConfirmation);
         }
     }
 

@@ -18,11 +18,11 @@ const HOT_MONTHS = 2;
 
 /** Nhãn và màu theo kỹ năng, khớp cách hiển thị ở các trang khác. */
 const SKILL_META: Record<string, { label: string; accent: string }> = {
-  READING: { label: 'Đọc', accent: 'from-blue-600 to-cyan-500' },
-  WRITING: { label: 'Viết', accent: 'from-amber-500 to-orange-500' },
-  LISTENING: { label: 'Nghe', accent: 'from-emerald-600 to-teal-500' },
-  SPEAKING: { label: 'Nói', accent: 'from-rose-500 to-orange-500' },
-  GRAMMAR_VOCABULARY: { label: 'Ngữ pháp & Từ vựng', accent: 'from-violet-600 to-indigo-500' },
+  READING: { label: 'Đọc', accent: 'from-slate-900 to-slate-800' },
+  WRITING: { label: 'Viết', accent: 'from-slate-900 to-slate-800' },
+  LISTENING: { label: 'Nghe', accent: 'from-slate-900 to-slate-800' },
+  SPEAKING: { label: 'Nói', accent: 'from-slate-900 to-slate-800' },
+  GRAMMAR_VOCABULARY: { label: 'Ngữ pháp & Từ vựng', accent: 'from-slate-900 to-slate-800' },
 };
 
 /**

@@ -30,6 +30,7 @@ import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.exception.ErrorCode;
 import vn.weconex.aptis.common.security.JwtService;
 import vn.weconex.aptis.common.util.Enums.UserStatus;
+import vn.weconex.aptis.entitlement.service.SignupTrialService;
 
 /**
  * Đăng ký, đăng nhập, refresh, đặt lại mật khẩu (PHẦN IV §29-30).
@@ -67,13 +68,18 @@ public class AuthService {
     private final AuthIdentityRepository authIdentityRepository;
     private final GoogleTokenVerifier googleTokenVerifier;
     private final AptisProperties properties;
+    private final SignupTrialService signupTrialService;
+    private final RegistrationRateLimiter registrationRateLimiter;
+    private final AbuseEventService abuseEvents;
+    private final AbuseIdentityHasher abuseHasher;
 
     // -----------------------------------------------------------------
     // Đăng ký
     // -----------------------------------------------------------------
 
     @Transactional
-    public void register(AuthDtos.RegisterRequest request) {
+    public void register(AuthDtos.RegisterRequest request, String browserHash, String ipAddress) {
+        registrationRateLimiter.check(browserHash, ipAddress);
         String email = request.email().toLowerCase().strip();
 
         if (userRepository.existsByEmail(email)) {
@@ -94,6 +100,8 @@ public class AuthService {
 
         String rawToken = issueEmailVerificationToken(user.getId());
         mailSender.sendVerificationEmail(email, rawToken);
+        userRepository.flush();
+        abuseEvents.record(user.getId(), browserHash, abuseHasher.ipHash(ipAddress).orElse(null), "REGISTER");
     }
 
     @Transactional
@@ -119,7 +127,7 @@ public class AuthService {
 
     @Transactional
     public AuthDtos.TokenResponse login(
-            AuthDtos.LoginRequest request, String userAgent, String ipAddress) {
+            AuthDtos.LoginRequest request, String userAgent, String ipAddress, String browserHash) {
 
         String email = request.email().toLowerCase().strip();
         User user = userRepository.findByEmailWithAuthorities(email)
@@ -154,6 +162,7 @@ public class AuthService {
         }
 
         user.recordSuccessfulLogin();
+        if (!isStaff(user)) signupTrialService.onAuthenticated(user, browserHash, ipAddress, false);
         return issueTokenPair(user, request.deviceId(), userAgent, ipAddress);
     }
 
@@ -175,14 +184,14 @@ public class AuthService {
      */
     @Transactional
     public AuthDtos.TokenResponse loginWithGoogle(
-            String idToken, String deviceId, String userAgent, String ipAddress) {
+            String idToken, String deviceId, String userAgent, String ipAddress, String browserHash) {
 
         GoogleTokenVerifier.GoogleUser google = googleTokenVerifier.verify(idToken);
 
         User user = authIdentityRepository
                 .findByProviderAndProviderUserId(AuthIdentity.GOOGLE, google.subject())
                 .flatMap(identity -> userRepository.findByIdWithAuthorities(identity.getUserId()))
-                .orElseGet(() -> linkOrCreateGoogleUser(google));
+                .orElseGet(() -> linkOrCreateGoogleUser(google, browserHash, ipAddress));
 
         // Tài khoản bị khoá/vô hiệu thì Google cũng không mở được — nếu bỏ qua
         // kiểm tra này thì đăng nhập Google thành cửa sau vượt lệnh khoá.
@@ -195,12 +204,16 @@ public class AuthService {
         }
 
         user.recordSuccessfulLogin();
+        if (!isStaff(user)) signupTrialService.onAuthenticated(user, browserHash, ipAddress, false);
         return issueTokenPair(user, deviceId, userAgent, ipAddress);
     }
 
-    private User linkOrCreateGoogleUser(GoogleTokenVerifier.GoogleUser google) {
+    private User linkOrCreateGoogleUser(GoogleTokenVerifier.GoogleUser google, String browserHash, String ipAddress) {
         User user = userRepository.findByEmailWithAuthorities(google.email())
-                .orElseGet(() -> createGoogleUser(google));
+                .orElseGet(() -> {
+                    registrationRateLimiter.check(browserHash, ipAddress);
+                    return createGoogleUser(google);
+                });
 
         // Tài khoản cũ chưa xác thực email: Google vừa xác nhận người này sở hữu
         // email đó, nên coi như đã xác thực.
@@ -242,7 +255,7 @@ public class AuthService {
      * coi như bị đánh cắp: thu hồi toàn bộ token của user (PHẦN IV §30).
      */
     @Transactional
-    public AuthDtos.TokenResponse refresh(String rawRefreshToken, String userAgent, String ipAddress) {
+    public AuthDtos.TokenResponse refresh(String rawRefreshToken, String userAgent, String ipAddress, String browserHash) {
         if (rawRefreshToken == null || rawRefreshToken.isBlank()) {
             throw new ApiException(ErrorCode.TOKEN_INVALID, "Thiếu refresh token");
         }
@@ -296,6 +309,8 @@ public class AuthService {
         if (!user.canLogin()) {
             throw new ApiException(ErrorCode.ACCOUNT_SUSPENDED, "Tài khoản không còn hoạt động");
         }
+
+        if (!isStaff(user)) signupTrialService.onAuthenticated(user, browserHash, ipAddress, true);
 
         IssuedPair pair = issueTokenPairInternal(
                 user, existing.getDeviceId(), userAgent, ipAddress);

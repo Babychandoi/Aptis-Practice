@@ -9,6 +9,7 @@ import type { AttemptSummary, ExamPredictionFeed, StudentAssignment } from '@/ty
 import { componentPath } from '@/features/catalog/catalogRoutes';
 import { SKILLS, cefrFromScore50, skillByCode } from '@/lib/skills';
 import { Icon } from '@/components/shell/icons';
+import { DashboardFresh } from './DashboardFresh';
 import { stagger } from '@/lib/motion';
 
 /**
@@ -170,6 +171,8 @@ export function DashboardPage() {
           </div>
         </section>
       </div>
+
+      <DashboardFresh />
 
       <div className="grid gap-5 md:grid-cols-3">
         <MiniCard title="Đang làm dở" tag={inProgress ? attemptSkill(inProgress).nameEn : undefined} tagColor={inProgress ? attemptSkill(inProgress) : undefined}>

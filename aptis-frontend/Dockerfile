@@ -27,6 +27,8 @@ COPY --from=build /build/dist /usr/share/nginx/html
 # ghi ra conf.d/default.conf lúc khởi động — nhờ đó một image dùng được cho cả
 # production lẫn dev, chỉ khác giá trị biến.
 COPY nginx.conf /etc/nginx/templates/default.conf.template
+COPY docker/15-client-ip.sh /docker-entrypoint.d/15-client-ip.sh
+RUN sed -i 's/\r$//' /docker-entrypoint.d/15-client-ip.sh && chmod +x /docker-entrypoint.d/15-client-ip.sh
 
 # Production không chặn lập chỉ mục; bản dev đặt NGINX_ROBOTS_TAG=noindex, nofollow.
 ENV NGINX_ROBOTS_TAG=""

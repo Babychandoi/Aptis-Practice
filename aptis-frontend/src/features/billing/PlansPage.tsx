@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ApiError } from '@/api/client';
@@ -19,11 +19,11 @@ const DEFAULT_FEATURES = [
 ];
 
 export function PlansPage() {
-  return <ProductPlansPage product="premium" />;
+  return <ProductPlansPage key="premium" product="premium" />;
 }
 
 export function AiVoicePlansPage() {
-  return <ProductPlansPage product="ai-voice" />;
+  return <ProductPlansPage key="ai-voice" product="ai-voice" />;
 }
 
 function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
@@ -78,12 +78,14 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
     return <ErrorBlock message="Không tải được danh sách gói" onRetry={() => void plansQuery.refetch()} />;
   }
 
-  // Mức tiết kiệm so với giá theo tháng của gói ngắn nhất — con số thật tính
-  // từ bảng giá, không lấy phần trăm cố định như mock.
-  const baseMonthly = plans[0]?.durationDays ? plans[0].priceAmount / (plans[0].durationDays / 30) : null;
+  // So sánh đơn giá với gói có thời hạn ngắn nhất, dùng giá thật từ API.
+  const shortestPlan = plans.find((plan) => plan.durationDays != null && plan.durationDays > 0);
+  const baseDaily = shortestPlan?.durationDays
+    ? shortestPlan.priceAmount / shortestPlan.durationDays
+    : null;
   const savingOf = (plan: Plan) => {
-    if (!baseMonthly || !plan.durationDays || plan.durationDays <= 30) return null;
-    const pct = Math.round((1 - plan.priceAmount / (plan.durationDays / 30) / baseMonthly) * 100);
+    if (!baseDaily || !plan.durationDays || plan.durationDays <= (shortestPlan?.durationDays ?? 0)) return null;
+    const pct = Math.round((1 - plan.priceAmount / plan.durationDays / baseDaily) * 100);
     return pct > 0 ? pct : null;
   };
   const features = selectedPlan && selectedPlan.features.length > 0
@@ -92,64 +94,99 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
   const saving = selectedPlan ? savingOf(selectedPlan) : null;
 
   return (
-    <div className="mx-auto flex w-full max-w-[1040px] flex-col gap-7">
+    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-7">
       <header className="flex animate-in flex-col items-center gap-4 text-center">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">{aiVoice ? 'Gói AI Voice' : 'Gói Premium'}</p>
         <h1 className="max-w-[16ch] text-[clamp(34px,5vw,56px)] font-extrabold leading-[1.05] tracking-[-0.045em]">
           {aiVoice ? 'Luyện nói mỗi ngày cùng AI' : 'Mở toàn bộ đề, AI chấm không giới hạn'}
         </h1>
+        <nav aria-label="Chọn loại gói" className="grid w-full max-w-xl grid-cols-2 gap-1 rounded-2xl bg-surface-muted p-1.5 text-left">
+          <Link
+            to="/plans"
+            aria-current={!aiVoice ? 'page' : undefined}
+            className={clsx(
+              'flex min-h-[58px] flex-col justify-center rounded-xl px-4 py-2 transition-colors',
+              !aiVoice ? 'bg-white text-ink shadow-sm' : 'text-ink-mute hover:text-ink',
+            )}
+          >
+            <span className="text-sm font-bold">Premium đề</span>
+            <span className="text-xs">Luyện đề · AI chấm</span>
+          </Link>
+          <Link
+            to="/ai-voice/plans"
+            aria-current={aiVoice ? 'page' : undefined}
+            className={clsx(
+              'flex min-h-[58px] flex-col justify-center rounded-xl px-4 py-2 transition-colors',
+              aiVoice ? 'bg-white text-ink shadow-sm' : 'text-ink-mute hover:text-ink',
+            )}
+          >
+            <span className="text-sm font-bold">AI Voice</span>
+            <span className="text-xs">Phòng hội thoại English</span>
+          </Link>
+        </nav>
+        <p className="max-w-xl text-xs leading-5 text-ink-mute">
+          Đây là hai gói riêng biệt. Premium đề không bao gồm quyền sử dụng AI Voice.
+        </p>
         {!aiVoice && user?.premiumActive && (
           <p className="text-sm text-ink-mute">
             Bạn đang có gói Premium{user.premiumEndsAt ? ` đến ${formatDate(user.premiumEndsAt)}` : ' trọn đời'}. Mua thêm sẽ cộng nối tiếp thời hạn.
           </p>
         )}
-        <div role="radiogroup" aria-label="Thời hạn gói" className="flex max-w-full flex-wrap justify-center gap-1 rounded-full bg-surface-muted p-1">
-          {plans.map((plan) => (
-            <button
-              key={plan.id}
-              type="button"
-              role="radio"
-              aria-checked={selectedPlan?.id === plan.id}
-              onClick={() => { setSelectedPlanId(plan.id); setCodeCheck(null); }}
-              className={clsx(
-                'min-h-[40px] rounded-full px-5 text-sm font-semibold transition-colors',
-                selectedPlan?.id === plan.id ? 'bg-white text-ink shadow-sm' : 'text-ink-mute hover:text-ink',
-              )}
-            >
-              {planDurationLabel(plan.durationDays)}
-            </button>
-          ))}
-        </div>
       </header>
 
       {createOrder.error && (
         <ErrorBlock message={createOrder.error instanceof ApiError ? createOrder.error.message : 'Không tạo được đơn hàng'} />
       )}
 
-      {selectedPlan && (
-        <div className="grid items-stretch gap-4 md:grid-cols-2">
-          {!aiVoice && (
-            <section className="flex animate-in flex-col gap-4 rounded-3xl border border-border bg-white p-6">
-              <h2 className="text-lg font-bold">Miễn phí</h2>
-              <p className="text-[44px] font-extrabold leading-none tracking-[-0.04em]">0đ</p>
-              <ul className="flex flex-col gap-2.5 text-sm text-ink-soft">
-                {FREE_FEATURES.map((f) => (
-                  <li key={f} className="flex gap-2.5"><CheckIcon muted /> {f}</li>
-                ))}
-                {FREE_LOCKED.map((f) => (
-                  <li key={f} className="flex gap-2.5 text-ink-faint line-through decoration-ink-faint/60"><CrossIcon /> {f}</li>
-                ))}
-              </ul>
-              <span className="mt-auto flex min-h-[48px] items-center justify-center rounded-full border border-border text-sm font-semibold">
-                {user?.premiumActive ? 'Đã bao gồm trong Premium' : 'Đang dùng'}
+      <section aria-label="Danh sách các gói" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {plans.map((plan) => {
+          const selected = selectedPlan?.id === plan.id;
+          const planSaving = savingOf(plan);
+          const pricePerDay = plan.durationDays ? plan.priceAmount / plan.durationDays : null;
+          return (
+            <button
+              key={plan.id}
+              type="button"
+              aria-pressed={selected}
+              onClick={() => { setSelectedPlanId(plan.id); setCodeCheck(null); }}
+              className={clsx(
+                'relative flex min-h-[190px] flex-col gap-3 rounded-3xl border p-5 text-left transition-all',
+                selected
+                  ? 'border-ink bg-ink text-white shadow-[0_20px_40px_-28px_rgba(15,23,42,.8)] ring-2 ring-ink ring-offset-2'
+                  : 'border-border bg-white text-ink hover:-translate-y-0.5 hover:border-ink/30 hover:shadow-lg',
+              )}
+            >
+              <span className="flex min-h-6 items-center justify-between gap-2">
+                <span className={clsx('text-sm font-bold', selected ? 'text-white/90' : 'text-ink-soft')}>{plan.name}</span>
+                {planSaving != null && (
+                  <span className={clsx('shrink-0 rounded-full px-2 py-1 text-[11px] font-bold', selected ? 'bg-accent text-ink' : 'bg-accent/15 text-ink')}>
+                    Giảm {planSaving}%
+                  </span>
+                )}
               </span>
-            </section>
-          )}
+              <span className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <span className="text-[32px] font-extrabold leading-none tracking-[-0.04em]">{formatCurrency(plan.priceAmount, plan.currency)}</span>
+                {plan.durationDays != null && <span className={clsx('text-xs', selected ? 'text-white/60' : 'text-ink-mute')}>/ {planDurationLabel(plan.durationDays).toLowerCase()}</span>}
+              </span>
+              {pricePerDay != null ? (
+                <span className={clsx('text-xs leading-5', selected ? 'text-white/65' : 'text-ink-mute')}>
+                  {formatCurrency(Math.round(pricePerDay), plan.currency)} / ngày
+                  {planSaving != null && <span> · Tiết kiệm {planSaving}% so với gói {planDurationLabel(shortestPlan?.durationDays ?? null).toLowerCase()}</span>}
+                </span>
+              ) : <span className={clsx('text-xs', selected ? 'text-white/65' : 'text-ink-mute')}>Sử dụng không giới hạn thời gian</span>}
+              <span className={clsx('mt-auto flex min-h-9 items-center justify-center rounded-full px-3 text-xs font-bold', selected ? 'bg-white text-ink' : 'bg-surface-muted text-ink-soft')}>
+                {selected ? 'Đang chọn' : 'Chọn gói này'}
+              </span>
+            </button>
+          );
+        })}
+      </section>
 
-          <section className="relative flex animate-in flex-col gap-4 overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-[0_28px_60px_-34px_rgba(15,23,42,.7)]">
+      {selectedPlan && (
+          <section className="relative flex animate-in flex-col gap-4 overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-[0_28px_60px_-34px_rgba(15,23,42,.7)] md:p-8">
             <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full border border-dashed border-white/10" />
             <div className="flex items-center justify-between gap-2">
-              <h2 className="text-lg font-bold">{selectedPlan.name}</h2>
+              <h2 className="text-lg font-bold">Gói đã chọn: {selectedPlan.name}</h2>
               {saving && <span className="rounded-full bg-accent px-2.5 py-0.5 text-[11px] font-bold text-ink">Tiết kiệm {saving}%</span>}
             </div>
             <p className="flex items-baseline gap-2">
@@ -208,7 +245,6 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
               Thanh toán một lần qua VietQR, không tự gia hạn. Kích hoạt ngay khi đối soát xong.
             </p>
           </section>
-        </div>
       )}
 
       <SupportLinksCard />
@@ -216,34 +252,9 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
   );
 }
 
-/**
- * Quyền của tài khoản miễn phí — phải khớp luật backend (ContentAccessService):
- * mọi đề và bài test đang là Premium, nên Free KHÔNG làm được đề nào ngoài bài
- * giáo viên giao trong lớp. Ghi sai ở đây là hứa với khách điều không có.
- */
-const FREE_FEATURES = [
-  'Đọc bảng tin',
-  'Vào lớp học và làm bài giáo viên giao',
-];
-
-/** Những gì Free không có, gạch đi để khách thấy rõ Premium mở thêm gì. */
-const FREE_LOCKED = [
-  'Luyện đề và thi thử 5 kỹ năng',
-  'AI chấm Writing & Speaking',
-  'Dự đoán đề, cập nhật đề, mẹo học',
-];
-
-function CrossIcon() {
+function CheckIcon() {
   return (
-    <span aria-hidden="true" className="mt-0.5 shrink-0 text-ink-faint">
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M6 6l12 12M18 6 6 18" /></svg>
-    </span>
-  );
-}
-
-function CheckIcon({ muted }: { muted?: boolean }) {
-  return (
-    <span aria-hidden="true" className={clsx('mt-0.5 shrink-0', muted ? 'text-ink-faint' : 'text-accent')}>
+    <span aria-hidden="true" className="mt-0.5 shrink-0 text-accent">
       <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 12.5 10 17l9-10" /></svg>
     </span>
   );

@@ -25,8 +25,8 @@ public class VietQrGenerator {
      * Mã BIN của ngân hàng theo NAPAS — VietQR dùng BIN chứ không dùng mã chữ.
      * Danh sách rút gọn cho các ngân hàng phổ biến.
      */
-    private static String binOf(String bankCode) {
-        return switch (bankCode == null ? "" : bankCode.toUpperCase(Locale.ROOT)) {
+    static String binOf(String bankCode) {
+        return switch (bankCode == null ? "" : bankCode.replaceAll("\\s+", "").toUpperCase(Locale.ROOT)) {
             case "VCB", "VIETCOMBANK" -> "970436";
             case "TCB", "TECHCOMBANK" -> "970407";
             case "MB", "MBBANK" -> "970422";

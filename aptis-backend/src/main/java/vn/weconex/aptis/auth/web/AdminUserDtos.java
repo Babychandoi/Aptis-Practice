@@ -42,7 +42,8 @@ public final class AdminUserDtos {
              * nên phản ánh cả những phiên vào lại mà không phải đăng nhập —
              * refresh token sống 30 ngày.
              */
-            Instant lastActivityAt) {
+            Instant lastActivityAt,
+            String signupTrialStatus) {
     }
 
     /**

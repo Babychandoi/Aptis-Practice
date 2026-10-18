@@ -187,9 +187,8 @@ public class AdminUserService {
     /**
      * Điều kiện lọc theo nguồn quyền.
      *
-     * <p>Dùng thử KHÔNG có bản ghi riêng — quyền suy ra từ users.created_at (xem
-     * EntitlementService#withinSignupTrial), nên ở đây phải diễn đạt lại chính
-     * quy tắc đó: có entitlement là PAID, còn lại chia theo created_at.
+     * <p>Có entitlement là PAID; dùng thử cần trạng thái LEGACY/GRANTED và còn
+     * hạn theo created_at, giống EntitlementService. BROWSER_USED/PENDING không phải TRIAL.
      */
     private Predicate accessPredicate(
             jakarta.persistence.criteria.Root<User> root,
@@ -210,7 +209,9 @@ public class AdminUserService {
                         cb.or(cb.isNull(ent.get("endsAt")), cb.greaterThan(ent.get("endsAt"), now))));
 
         Predicate hasPaid = cb.exists(paid);
-        Predicate withinTrial = cb.greaterThanOrEqualTo(root.get("createdAt"), trialFrom);
+        Predicate withinTrial = cb.and(
+                cb.greaterThan(root.get("createdAt"), trialFrom),
+                root.get("signupTrialStatus").in(User.SignupTrialStatus.LEGACY, User.SignupTrialStatus.GRANTED));
 
         return switch (access) {
             case PAID -> hasPaid;
@@ -321,6 +322,7 @@ public class AdminUserService {
         // Còn dùng thử thì premiumActive vẫn true — cột Premium trong trang quản
         // trị phải khớp với quyền thật mà học viên đang có, không chỉ với đơn hàng.
         boolean withinTrial = !paid
+                && user.signupTrialEligible()
                 && properties.entitlement().withinSignupTrial(user.getCreatedAt(), Instant.now());
         boolean premiumActive = paid || withinTrial;
 
@@ -341,6 +343,6 @@ public class AdminUserService {
                 user.getRoles().stream().map(Role::getCode).sorted().toList(),
                 premiumActive, premiumEndsAt, accessState, trialEndsAt,
                 user.getCreatedAt(), user.getLastLoginAt(),
-                lastActivityAt);
+                lastActivityAt, user.getSignupTrialStatus().name());
     }
 }

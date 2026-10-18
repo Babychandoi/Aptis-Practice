@@ -1,0 +1,40 @@
+{
+  "predictDate": "2026-10-14",
+  "basedOn": "exam-predictions-2026-10-13.json",
+  "source": "Bản dự đoán 14/10/2026 do quản trị viên cung cấp",
+  "notes": [
+    "Reading Part 5 / Part 4 / Part 2+3 theo cách gọi nguồn được giữ nguyên; lần lượt ánh xạ sang Reading Part 4 / Part 3 / Part 2 của hệ thống.",
+    "The First woman in space đã bị bỏ khỏi danh sách Reading ngày 14/10 theo bản cập nhật mới.",
+    "The art lặp trong Listening Q15 được gộp một lần. Actors được chuyển lên vị trí thứ hai theo bản nguồn.",
+    "Work from home nằm ở Q16–17 theo bản mới và liên kết Listening Part 4 như ngày trước. 2 writers giữ liên kết Famous writers đã đối chiếu; Famous writer riêng chưa xác nhận được bài tương ứng nên chỉ xuất hiện trong bài tham khảo.",
+    "Lần tham gia môn thể thao khắc nghiệt được thêm vào Speaking Part 4 nhưng chưa có topic/đề PUBLISHED được xác nhận để liên kết.",
+    "Writing mức Vừa dùng priority BACKUP vì schema chỉ có HOT/BACKUP; giữ sectionLabel Mức vừa.",
+    "Chỉ liên kết chủ đề có đề PUBLISHED đúng kỹ năng/Part; mục chưa xác nhận vẫn hiện trong bài bảng tin và không bị gán sang chủ đề gần tên."
+  ],
+  "news": {
+    "slug": "du-doan-de-thi-ngay-14-10-chu-de-uu-tien-va-de-luyen",
+    "title": "Dự đoán đề 14/10: chủ đề ưu tiên và bài luyện theo kỹ năng",
+    "excerpt": "Danh sách chủ đề Reading, Writing, Listening và Speaking ngày 14/10, kèm bài luyện đã đối chiếu. Dự đoán chỉ mang tính tham khảo.",
+    "bodyFile": "news-prediction-2026-10-14.md",
+    "writingMocks": ["001", "039", "019", "035", "033", "009", "037", "029", "034", "007", "004", "032", "002", "036", "022", "020"]
+  },
+  "changes": {
+    "remove": [
+      {"component": "READING", "sectionLabel": "Part 2+3", "label": "The First woman in space"},
+      {"component": "LISTENING", "sectionLabel": "Q16–17", "label": "Promotion Campaign"},
+      {"component": "LISTENING", "sectionLabel": "Q16–17", "label": "Camera"},
+      {"component": "LISTENING", "sectionLabel": "Q16–17", "label": "Writer’s Block"}
+    ],
+    "rename": [
+      {"component": "LISTENING", "sectionLabel": "Q16–17", "from": "Two writers", "to": "2 writers"}
+    ],
+    "add": [
+      {"component": "LISTENING", "sectionLabel": "Q16–17", "item": {"label": "Famous writer", "priority": "HOT", "topicCode": null}},
+      {"component": "SPEAKING", "sectionLabel": "Part 4", "item": {"label": "Lần tham gia môn thể thao khắc nghiệt", "priority": "HOT", "topicCode": null}}
+    ],
+    "order": [
+      {"component": "LISTENING", "sectionLabel": "Q15", "labels": ["The Internet", "Actors", "Community Design", "Urban farming", "Change in the workplace", "Politics", "The art", "University and Technology", "Homeschooling", "Local Cultural Center", "Music and Singer"]},
+      {"component": "LISTENING", "sectionLabel": "Q16–17", "labels": ["Sport competition", "Script Production", "Work from home", "2 writers", "Importance of sleep", "A regional development plan", "Famous writer", "Professionalism at work", "Life after uni", "A break from studying", "A newly released novel", "Baloo’s restaurant", "Criticism of the new novel", "A Research into happiness"]}
+    ]
+  }
+}

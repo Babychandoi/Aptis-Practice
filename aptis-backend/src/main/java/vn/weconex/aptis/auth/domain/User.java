@@ -57,6 +57,20 @@ public class User extends BaseEntity {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
+    public enum SignupTrialStatus { LEGACY, PENDING, GRANTED, BROWSER_USED, BROWSER_UNAVAILABLE }
+
+    @Enumerated(EnumType.STRING)
+    // Decisions are updated atomically by SignupTrialService, not stale ORM writes.
+    @Column(name = "signup_trial_status", nullable = false, length = 24, updatable = false)
+    private SignupTrialStatus signupTrialStatus = SignupTrialStatus.PENDING;
+
+    @Column(name = "signup_trial_browser_hash", columnDefinition = "CHAR(64)", length = 64, updatable = false)
+    private String signupTrialBrowserHash;
+
+    public boolean signupTrialEligible() {
+        return signupTrialStatus == SignupTrialStatus.LEGACY || signupTrialStatus == SignupTrialStatus.GRANTED;
+    }
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",

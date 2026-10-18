@@ -94,7 +94,9 @@ public final class AuthDtos {
              * mua gói. Client dùng để phân biệt "còn N ngày dùng thử" với "gói còn
              * N ngày", vì premiumEndsAt của hai trường hợp giống nhau.
              */
-            boolean premiumFromTrial) {
+            boolean premiumFromTrial,
+            /** BROWSER_USED means this browser profile already received its trial. */
+            String signupTrialStatus) {
     }
 
     public record ProfileResponse(

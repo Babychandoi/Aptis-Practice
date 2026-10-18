@@ -15,6 +15,7 @@ import { useSidebarCollapsed } from '@/app/useSidebarCollapsed';
 import { describePremiumExpiry } from '@/features/billing/premiumExpiry';
 import { usePageTracking } from '@/app/usePageTracking';
 import { Icon, type IconName } from '@/components/shell/icons';
+import { SignupTrialNotice } from '@/features/auth/SignupTrialNotice';
 
 interface NavItem {
   to: string;
@@ -299,6 +300,7 @@ export function AppLayout() {
         )}
       >
         <main className="mx-auto max-w-[1240px] px-4 py-7 pb-20 sm:px-6">
+          <SignupTrialNotice user={user} />
           <Outlet />
         </main>
       </div>

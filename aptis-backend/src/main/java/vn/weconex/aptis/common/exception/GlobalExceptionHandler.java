@@ -24,6 +24,11 @@ public class GlobalExceptionHandler {
         log.debug("API error {} at {}: {}", ex.code(), request.getRequestURI(), ex.getMessage());
         return ResponseEntity
                 .status(ex.code().status())
+                .headers(headers -> {
+                    if (ex.code() == ErrorCode.RATE_LIMITED && ex.details().get("retryAfterSeconds") instanceof Number seconds) {
+                        headers.set("Retry-After", Long.toString(Math.max(1, seconds.longValue())));
+                    }
+                })
                 .body(ApiErrorResponse.of(ex.code(), ex.getMessage(), ex.details(), request.getRequestURI()));
     }
 

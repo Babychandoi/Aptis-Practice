@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import vn.weconex.aptis.billing.domain.BankAccount;
 import vn.weconex.aptis.billing.domain.BankTransferRequest;
@@ -29,7 +30,7 @@ import vn.weconex.aptis.platform.notification.NotificationSender;
 import vn.weconex.aptis.platform.outbox.OutboxService;
 
 /**
- * Thanh toán bằng chuyển khoản thủ công.
+ * Yêu cầu chuyển khoản dùng chung cho SePay và đối soát thủ công.
  *
  * <p>Hệ thống không đọc được sao kê ngân hàng nên không tự biết tiền đã về.
  * Luồng: sinh mã nội dung → học viên chuyển và tự báo → quản trị đối soát rồi
@@ -45,7 +46,7 @@ public class BankTransferService {
 
     private static final String PROVIDER_CODE = "bank_transfer";
 
-    /** Mã nội dung chuyển khoản: 8 chữ số, không bắt đầu bằng 0 cho dễ đọc. */
+    /** Mã mới: AP + 8 chữ số, tương thích bộ nhận diện mã thanh toán SePay. */
     private static final int CODE_MIN = 10_000_000;
     private static final int CODE_BOUND = 90_000_000;
 
@@ -62,6 +63,8 @@ public class BankTransferService {
     private final AuditService auditService;
     private final OutboxService outboxService;
     private final AdminEventPublisher adminEventPublisher;
+    private final SepaySettingsService sepaySettings;
+    private final JdbcTemplate jdbc;
 
     /** Dùng SecureRandom: mã đoán được thì người khác chiếm được đơn chờ. */
     private final SecureRandom random = new SecureRandom();
@@ -76,7 +79,7 @@ public class BankTransferService {
      */
     @Transactional
     public BankTransferRequest requestTransfer(String userId, String orderId) {
-        Order order = orderRepository.findById(orderId)
+        Order order = orderRepository.findByIdForUpdate(orderId)
                 .orElseThrow(() -> ApiException.notFound("Order", orderId));
 
         if (!order.getUserId().equals(userId)) {
@@ -87,17 +90,21 @@ public class BankTransferService {
         if (existing.isPresent()) {
             return existing.get();
         }
+        if (jdbc.queryForObject("SELECT COUNT(*) FROM sepay_gateway_orders WHERE order_id=?", Integer.class, orderId) > 0) {
+            throw new ApiException(ErrorCode.CONFLICT, "Đơn đã có thanh toán SePay. Không tạo thêm QR chuyển khoản khác cho cùng đơn.");
+        }
 
-        if (order.getStatus() != OrderStatus.PENDING
-                && order.getStatus() != OrderStatus.AWAITING_PAYMENT) {
+        if (!order.isPayable()) {
             throw new ApiException(
                     ErrorCode.CONFLICT,
                     "Đơn hàng không ở trạng thái chờ thanh toán",
                     Map.of("status", order.getStatus()));
         }
 
-        BankAccount account = bankAccountRepository
-                .findFirstByActiveTrueOrderByDisplayOrderAsc()
+        var sepay = sepaySettings.settings();
+        BankAccount account = (sepay.enabled()
+                ? bankAccountRepository.findById(sepay.bankAccountId()).filter(BankAccount::isActive)
+                : bankAccountRepository.findFirstByActiveTrueOrderByDisplayOrderAsc())
                 .orElseThrow(() -> new ApiException(
                         ErrorCode.CONFLICT,
                         "Chưa cấu hình tài khoản ngân hàng nhận tiền"));
@@ -112,7 +119,8 @@ public class BankTransferService {
                 // sẽ khiến học viên chuyển tiền vào đơn không còn hiệu lực.
                 order.getExpiresAt());
 
-        transferRepository.save(request);
+        transferRepository.saveAndFlush(request);
+        rememberCode(request);
         order.setStatus(OrderStatus.AWAITING_PAYMENT);
 
         log.info("Tạo yêu cầu chuyển khoản {} cho đơn {}",
@@ -211,6 +219,7 @@ public class BankTransferService {
         }
 
         request.refreshQr(generateUniqueCode());
+        rememberCode(request);
         log.info("Tạo lại QR chuyển khoản cho đơn {}, mã mới {}",
                 order.getOrderCode(), request.getTransferCode());
         return request;
@@ -357,7 +366,7 @@ public class BankTransferService {
     // -----------------------------------------------------------------
 
     /**
-     * Sinh mã 8 chữ số chưa từng dùng.
+     * Sinh mã AP + 8 chữ số chưa từng dùng, kể cả mã đã được thay khi refresh QR.
      *
      * <p>Cột transfer_code có UNIQUE nên trùng cũng không hỏng dữ liệu, nhưng
      * kiểm tra trước để không ném lỗi ra người dùng. Không gian 90 triệu mã nên
@@ -366,12 +375,18 @@ public class BankTransferService {
      */
     private String generateUniqueCode() {
         for (int attempt = 0; attempt < MAX_CODE_ATTEMPTS; attempt++) {
-            String code = String.valueOf(CODE_MIN + random.nextInt(CODE_BOUND));
-            if (!transferRepository.existsByTransferCode(code)) {
+            String code = "AP" + (CODE_MIN + random.nextInt(CODE_BOUND));
+            if (!transferRepository.existsByTransferCode(code)
+                    && jdbc.queryForObject("SELECT COUNT(*) FROM bank_transfer_codes WHERE transfer_code=?",Integer.class,code) == 0) {
                 return code;
             }
         }
         throw new ApiException(
                 ErrorCode.INTERNAL_ERROR, "Không sinh được mã chuyển khoản, thử lại sau");
+    }
+
+    private void rememberCode(BankTransferRequest request) {
+        jdbc.update("INSERT INTO bank_transfer_codes(transfer_code,transfer_request_id,issued_at) VALUES(?,?,UTC_TIMESTAMP())",
+                request.getTransferCode(),request.getId());
     }
 }

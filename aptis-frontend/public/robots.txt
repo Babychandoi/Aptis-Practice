@@ -1,7 +1,7 @@
 # Aptis Practice — https://aptispractices.io.vn
 #
 # Gần như toàn bộ ứng dụng nằm sau đăng nhập (ProtectedRoute trong App.tsx),
-# kể cả trang chủ. Bot không đăng nhập được nên chỉ thấy khung trống — chặn
+# trừ phần đọc bảng tin công khai. Bot không đăng nhập được — chặn
 # những đường đó để Google không lập chỉ mục trang rỗng, vốn làm loãng chất
 # lượng site trong mắt công cụ tìm kiếm.
 
@@ -9,6 +9,9 @@ User-agent: *
 Allow: /$
 Allow: /login
 Allow: /register
+Allow: /bang-tin
+Allow: /news-images/
+Allow: /api/v1/news/images/
 
 # Trang cần đăng nhập: bot chỉ nhận được khung trống
 Disallow: /luyen-tap/

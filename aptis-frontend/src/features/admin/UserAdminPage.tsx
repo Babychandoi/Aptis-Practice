@@ -10,6 +10,7 @@ import { formatDateTime, relativeTime } from '@/lib/format';
 import type { AccessState, ActivityWindow, AdminEntitlement, AdminSubscription, AdminUser, UserSort, UserStatus } from '@/types/admin';
 import { DataTable, PageHeader, Pager, ResultBanner, StatusTiles } from './components/AdminUi';
 import { usePermission } from './usePermission';
+import { UserAbusePanel } from './UserAbusePanel';
 
 const PAGE_SIZE = 20;
 
@@ -158,6 +159,7 @@ export function UserAdminPage() {
   return (
     <div>
       <PageHeader title="Quản lý người dùng" description="Tìm tài khoản, quản lý trạng thái, vai trò, gói Premium và AI Voice." />
+      <UserAbusePanel onSelect={(email) => { setSearchInput(email); setStatus(''); setAccess(''); setActivity(''); setPage(0); }} />
       <StatusTiles tiles={USER_TILES} counts={counts} active={status} onPick={(next) => { setStatus(next); setPage(0); }} />
       {banner && <ResultBanner tone="success" message={banner} onDismiss={() => setBanner(null)} />}
       <div className="mb-5 grid gap-3 rounded-xl bg-white p-4 shadow-[0_3px_14px_rgba(15,23,42,.07)] sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_180px_180px_190px]">
@@ -296,9 +298,9 @@ function AccessStateBadge({ user }: { user: AdminUser }) {
   }
 
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-ink-mute">
+    <span title={user.signupTrialStatus === 'BROWSER_USED' ? 'Mã trình duyệt này đã cấp dùng thử cho tài khoản khác' : undefined} className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-ink-mute">
       <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
-      Hết hạn
+      {user.signupTrialStatus === 'BROWSER_USED' ? 'Đã dùng thử (trình duyệt)' : user.signupTrialStatus === 'BROWSER_UNAVAILABLE' ? 'Chưa cấp thử' : 'Hết hạn'}
     </span>
   );
 }

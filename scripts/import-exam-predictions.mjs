@@ -163,7 +163,10 @@ async function main() {
 
       for (const item of section.items ?? []) {
         order += 1;
-        let resolved = resolveTopic(item.label, part?.id);
+        // item.topicCode chỉ định thẳng topic (dùng khi tự khớp theo nhãn hay nhầm,
+        // ví dụ "Family sports day" khớp bừa vào "Family").
+        const pinned = item.topicCode ? topicByCode.get(normalize(item.topicCode)) : null;
+        let resolved = pinned ? { topic: pinned, how: 'chỉ định' } : resolveTopic(item.label, part?.id);
 
         if (!resolved && createTopics) {
           const id = randomUUID();

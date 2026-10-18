@@ -17,7 +17,7 @@ import lombok.Setter;
 import vn.weconex.aptis.common.util.Timestamps;
 
 /**
- * Yêu cầu chuyển khoản thủ công cho một đơn hàng.
+ * Yêu cầu chuyển khoản cho một đơn hàng, xác nhận bằng SePay hoặc đối soát tay.
  *
  * <p>Học viên chuyển tiền kèm {@code transferCode} trong nội dung, rồi tự báo
  * đã chuyển. Quản trị đối soát sao kê ngân hàng và xác nhận — hệ thống KHÔNG tự
@@ -35,7 +35,7 @@ public class BankTransferRequest {
         PENDING,
         /** Học viên báo đã chuyển, chờ quản trị đối soát */
         CLAIMED,
-        /** Quản trị xác nhận đã nhận tiền */
+        /** Đã đối soát nhận tiền qua SePay hoặc quản trị */
         CONFIRMED,
         /** Quản trị từ chối (không thấy tiền, sai số tiền...) */
         REJECTED,
@@ -53,7 +53,7 @@ public class BankTransferRequest {
     @Column(name = "bank_account_id", columnDefinition = "CHAR(36)", nullable = false)
     private String bankAccountId;
 
-    @Column(name = "transfer_code", length = 8, nullable = false)
+    @Column(name = "transfer_code", length = 32, nullable = false)
     private String transferCode;
 
     @Column(name = "amount", nullable = false)

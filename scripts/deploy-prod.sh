@@ -56,17 +56,23 @@ MINIO_PUBLIC_ORIGIN=$(awk -F= '/^MINIO_PUBLIC_ORIGIN=/{print $2; exit}' .env)
 # IP admin không tính — đó là máy người vận hành, luôn online khi deploy.
 # ---------------------------------------------------------------------------
 ADMIN_IP=${ADMIN_IP:-118.68.96.251}
+# Tài khoản ADMIN/SUPER_ADMIN cũng không tính: người vận hành đổi IP liên tục (IPv6)
+# nên lọc theo IP một mình sẽ tự chặn mình. ADMIN_IP giữ lại cho máy dùng tài khoản khác.
+ADMIN_IDS="SELECT ur.user_id FROM user_roles ur JOIN roles r ON r.id = ur.role_id WHERE r.code IN ('ADMIN','SUPER_ADMIN')"
 
 if [ "${SKIP_IDLE_CHECK:-0}" != "1" ]; then
     echo "==> Kiểm tra có ai đang dùng không"
     BUSY=$(docker exec aptis-mysql mysql -uroot -proot aptis -N -e "
         SELECT
           (SELECT COUNT(*) FROM test_attempts
-            WHERE status='IN_PROGRESS' AND updated_at > NOW() - INTERVAL 20 MINUTE),
+            WHERE status='IN_PROGRESS' AND updated_at > NOW() - INTERVAL 20 MINUTE
+              AND user_id NOT IN ($ADMIN_IDS)),
           (SELECT COUNT(DISTINCT user_id) FROM test_attempts
-            WHERE updated_at > NOW() - INTERVAL 15 MINUTE),
+            WHERE updated_at > NOW() - INTERVAL 15 MINUTE
+              AND user_id NOT IN ($ADMIN_IDS)),
           (SELECT COUNT(*) FROM refresh_tokens
-            WHERE created_at > NOW() - INTERVAL 15 MINUTE AND ip_address <> '$ADMIN_IP'),
+            WHERE created_at > NOW() - INTERVAL 15 MINUTE AND ip_address <> '$ADMIN_IP'
+              AND user_id NOT IN ($ADMIN_IDS)),
           (SELECT COUNT(*) FROM ai_conversation_sessions
             WHERE status='ACTIVE' AND ended_at IS NULL AND expires_at > UTC_TIMESTAMP());
     " 2>/dev/null | tr '\t' ' ')

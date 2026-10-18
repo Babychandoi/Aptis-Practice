@@ -9,6 +9,7 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { formatCurrency, formatDateTime } from '@/lib/format';
 import type { BankTransferInstruction } from '@/types/api';
+import { SepayGatewayCheckout } from './SepayGatewayCheckout';
 
 export function CheckoutPage() {
   const { orderId } = useParams<{ orderId: string }>();
@@ -23,11 +24,19 @@ export function CheckoutPage() {
     enabled: Boolean(orderId),
     refetchInterval: (query) => {
       const status = query.state.data?.status;
-      return status === 'PENDING' || status === 'AWAITING_PAYMENT' ? 5000 : false;
+      const expiresAt = query.state.data?.expiresAt;
+      const waitingForLateBankNotice = status === 'EXPIRED' && expiresAt
+        && Date.now() < new Date(expiresAt).getTime() + 5 * 60_000;
+      return status === 'PENDING' || status === 'AWAITING_PAYMENT' || waitingForLateBankNotice ? 5000 : false;
     },
   });
 
   const order = orderQuery.data;
+  const methodQuery = useQuery({
+    queryKey: ['order-payment-method', orderId],
+    queryFn: () => billingApi.paymentMethod(orderId!),
+    enabled: Boolean(order && ['PENDING', 'AWAITING_PAYMENT'].includes(order.status)),
+  });
 
   const createTransfer = useMutation({
     mutationFn: () => billingApi.createBankTransfer(orderId!),
@@ -52,18 +61,20 @@ export function CheckoutPage() {
 
   const qrSecondsLeft = useCountdown(transfer?.qrExpiresAt ?? null);
   const qrExpired = transfer?.status === 'PENDING' && qrSecondsLeft === 0;
+  const automatic = transfer?.automaticConfirmation === true;
 
   useEffect(() => {
     if (
       order &&
       ['PENDING', 'AWAITING_PAYMENT'].includes(order.status) &&
+      methodQuery.data?.mode === 'BANK_TRANSFER' &&
       !transfer &&
       !createTransfer.isPending &&
       !createTransfer.isError
     ) {
       createTransfer.mutate();
     }
-  }, [order, transfer, createTransfer]);
+  }, [order, transfer, createTransfer, methodQuery.data?.mode]);
 
   useEffect(() => {
     if (!transfer?.qrContent) {
@@ -125,11 +136,16 @@ export function CheckoutPage() {
         <div className="card text-center">
           <h1 className="text-lg font-semibold">Đơn hàng không còn hiệu lực</h1>
           <p className="mt-2 text-sm text-slate-600">Đơn <strong>{order.orderCode}</strong> đã hết hạn hoặc bị hủy.</p>
+          <p className="mt-2 text-xs text-slate-500">Nếu bạn đã chuyển tiền, vui lòng chờ đối soát hoặc liên hệ hỗ trợ kèm mã đơn và biên lai trước khi thanh toán thêm.</p>
           <Link to={plansPath} className="btn-primary mt-4 w-full">Chọn gói khác</Link>
         </div>
       </div>
     );
   }
+
+  if (methodQuery.error) return <ErrorBlock message="Không tải được phương thức thanh toán. Vui lòng thử lại." onRetry={() => void methodQuery.refetch()} />;
+  if (!methodQuery.data) return <LoadingBlock label="Đang chọn phương thức thanh toán…" />;
+  if (methodQuery.data.mode === 'SEPAY_GATEWAY') return <SepayGatewayCheckout key={order.id} order={order} plansPath={plansPath} />;
 
   return (
     <div className="space-y-5">
@@ -138,11 +154,11 @@ export function CheckoutPage() {
         <span aria-hidden="true">›</span>
         <span className="font-semibold text-brand-800">2. Chuyển khoản</span>
         <span aria-hidden="true">›</span>
-        <span>3. Admin xác nhận</span>
+        <span>{automatic ? '3. Tự động xác nhận' : '3. Xác nhận thanh toán'}</span>
       </nav>
 
       <header className="rounded-2xl bg-gradient-to-r from-brand-900 to-[#26715f] px-5 py-5 text-white sm:px-7">
-        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-emerald-100">Thanh toán VietQR</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-emerald-100">{automatic ? 'Thanh toán SePay' : 'Thanh toán VietQR'}</p>
         <h1 className="mt-2 text-2xl font-semibold">Quét mã để hoàn tất đơn hàng</h1>
         <p className="mt-1 text-sm text-emerald-100">Mã có hiệu lực 10 phút. Không đổi số tiền và nội dung chuyển khoản.</p>
       </header>
@@ -208,9 +224,9 @@ export function CheckoutPage() {
               </div>
 
               <ol className="mt-6 space-y-4">
-                <Instruction number="1" title="Quét QR bằng ứng dụng ngân hàng" text="Kiểm tra đúng MB Bank, số tài khoản và tên người nhận trước khi chuyển." />
+                <Instruction number="1" title="Quét QR bằng ứng dụng ngân hàng" text={`Kiểm tra đúng ${transfer.bankName}, số tài khoản và tên người nhận trước khi chuyển.`} />
                 <Instruction number="2" title="Giữ nguyên thông tin" text="QR đã điền sẵn số tiền và mã nội dung dành riêng cho đơn này." />
-                <Instruction number="3" title="Báo đã chuyển khoản" text="Bấm nút bên dưới để admin biết và kiểm tra giao dịch trên sao kê." />
+                <Instruction number="3" title={automatic ? 'Chờ xác nhận tự động' : 'Báo đã chuyển khoản'} text={automatic ? 'Sau khi ngân hàng ghi nhận tiền, hệ thống tự xác nhận và mở gói. Giữ trang này để theo dõi.' : 'Bấm nút bên dưới để admin biết và kiểm tra giao dịch trên sao kê.'} />
               </ol>
 
               {transfer.transferNote && <p className="mt-5 rounded-xl bg-slate-100 px-4 py-3 text-xs leading-5 text-slate-600">{transfer.transferNote}</p>}
@@ -221,7 +237,7 @@ export function CheckoutPage() {
           <aside className="sticky top-24 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_35px_rgba(30,41,35,.09)]">
             <div className="border-b border-slate-200 px-5 py-4 text-center">
               <h2 className="font-semibold text-slate-900">Quét mã VietQR</h2>
-              <p className="mt-1 text-xs text-slate-500">MB Bank · {transfer.accountNumber}</p>
+              <p className="mt-1 text-xs text-slate-500">{transfer.bankName} · {transfer.accountNumber}</p>
             </div>
             <div className="p-5">
               <div className="relative grid min-h-[300px] place-items-center overflow-hidden rounded-2xl bg-[#F8FAFC] p-4">
@@ -245,7 +261,7 @@ export function CheckoutPage() {
                 <p className="mt-1 text-2xl font-bold text-brand-800">{formatCurrency(transfer.amount, transfer.currency)}</p>
               </div>
 
-              {transfer.status === 'PENDING' && !qrExpired && (
+              {!automatic && transfer.status === 'PENDING' && !qrExpired && (
                 <button
                   type="button"
                   className="btn-primary mt-4 w-full"
@@ -267,7 +283,15 @@ export function CheckoutPage() {
                 </button>
               )}
 
-              {transfer.status === 'CLAIMED' && (
+              {automatic && ['PENDING', 'CLAIMED'].includes(transfer.status) && (
+                <div role="status" className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-center text-sm leading-6 text-emerald-900">
+                  <strong>Đang chờ ngân hàng xác nhận.</strong><br />
+                  {aiVoiceOrder ? 'AI Voice' : 'Premium'} được mở tự động khi nhận đúng số tiền và nội dung chuyển khoản.
+                  <p className="mt-2 text-xs">Nếu đã chuyển mà chưa được mở gói, đừng chuyển thêm tiền. Liên hệ hỗ trợ kèm mã đơn và biên lai.</p>
+                </div>
+              )}
+
+              {!automatic && transfer.status === 'CLAIMED' && (
                 <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm leading-6 text-amber-900">
                   <strong>Đã báo admin kiểm tra.</strong><br />{aiVoiceOrder ? 'AI Voice' : 'Premium'} sẽ được mở sau khi tiền được đối soát.
                 </div>
@@ -275,7 +299,7 @@ export function CheckoutPage() {
 
               {claimTransfer.error && <p className="mt-3 text-center text-xs text-red-700">Không gửi được thông báo. Vui lòng thử lại.</p>}
               {refreshQr.error && <p className="mt-3 text-center text-xs text-red-700">Không tạo được mã mới. Vui lòng thử lại.</p>}
-              <p className="mt-3 text-center text-[11px] leading-5 text-slate-500">Bấm “đã chuyển khoản” không tự xác nhận thanh toán.</p>
+              {!automatic && <p className="mt-3 text-center text-[11px] leading-5 text-slate-500">Bấm “đã chuyển khoản” không tự xác nhận thanh toán.</p>}
             </div>
           </aside>
         </div>

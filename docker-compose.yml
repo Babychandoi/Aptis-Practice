@@ -148,6 +148,13 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      # Internal nginx supplies a sanitized client IP. Public origin access must
+      # go through the tunnel; the production override binds host ports locally.
+      TRUSTED_PROXY_CIDRS: "${TRUSTED_PROXY_CIDRS:-127.0.0.1/32,::1/128,172.16.0.0/12}"
+      ABUSE_HASH_SECRET: "${ABUSE_HASH_SECRET:-}"
+      REGISTER_BROWSER_TEN_MINUTES: "${REGISTER_BROWSER_TEN_MINUTES:-3}"
+      REGISTER_BROWSER_DAY: "${REGISTER_BROWSER_DAY:-10}"
+      REGISTER_IP_HOUR: "${REGISTER_IP_HOUR:-60}"
 
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -169,6 +176,12 @@ services:
 
       # Giả lập cổng hoàn tiền bất đồng bộ (chờ webhook xác nhận).
       SANDBOX_ASYNC_REFUND: "${SANDBOX_ASYNC_REFUND:-false}"
+      # SePay Payment Gateway production.
+      SEPAY_ENABLED: "${SEPAY_ENABLED:-false}"
+      SEPAY_ENV: "${SEPAY_ENV:-production}"
+      SEPAY_MERCHANT_ID: "${SEPAY_MERCHANT_ID:-}"
+      SEPAY_SECRET_KEY: "${SEPAY_SECRET_KEY:-}"
+      SEPAY_IPN_SECRET: "${SEPAY_IPN_SECRET:-}"
 
       # Chấm Speaking/Writing bằng LLM. Đặt AI_EVAL_API_KEY trong .env, không
       # commit khoá vào repo. Tắt cờ này thì rơi về heuristic (không phải AI).

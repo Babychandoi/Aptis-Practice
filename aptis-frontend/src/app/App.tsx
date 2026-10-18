@@ -1,11 +1,12 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { setAuthFailureHandler } from '@/api/client';
 import { useAuthStore } from '@/features/auth/authStore';
 import { AppLayout } from '@/app/AppLayout';
 import { ProtectedRoute } from '@/app/ProtectedRoute';
 import { PremiumRoute } from '@/app/PremiumRoute';
 import { AdminRoute } from '@/features/admin/AdminRoute';
+import { PublicNewsLayout } from '@/features/learning/PublicNewsLayout';
 
 const TIPS_LOCK_MESSAGE =
   'Mẹo học thuộc gói Premium. Tài khoản miễn phí làm được 3 đề thi thử đầu của mỗi kỹ năng.';
@@ -69,6 +70,7 @@ const ClassroomAdminPage = lazy(() => import('@/features/admin/ClassroomAdminPag
 
 export function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { restore, initializing, clear } = useAuthStore();
 
   useEffect(() => {
@@ -79,11 +81,13 @@ export function App() {
   useEffect(() => {
     setAuthFailureHandler((reason) => {
       clear();
+      // Expired login must not kick a reader off a public article.
+      if (location.pathname === '/bang-tin' || location.pathname.startsWith('/bang-tin/')) return;
       // Truyền lý do qua state để trang đăng nhập giải thích được vì sao bị
       // đẩy ra — "hết phiên" và "đăng nhập ở máy khác" cần nói khác nhau.
       navigate('/login', { replace: true, state: { authFailure: reason } });
     });
-  }, [navigate, clear]);
+  }, [navigate, clear, location.pathname]);
 
   if (initializing) {
     return (
@@ -101,6 +105,10 @@ export function App() {
       <Route path="/verify-email" element={<VerifyEmailPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route element={<PublicNewsLayout />}>
+        <Route path="/bang-tin" element={<NewsFeedPage />} />
+        <Route path="/bang-tin/:slug" element={<NewsPostPage />} />
+      </Route>
 
       <Route
         element={
@@ -134,8 +142,6 @@ export function App() {
             Các trang chi tiết bên dưới mới là nội dung Premium. */}
         {/* Bảng tin đọc được khi chưa đăng nhập — xem SecurityConfig. Bình
             luận thì cần Premium, chặn ở backend. */}
-        <Route path="/bang-tin" element={<NewsFeedPage />} />
-        <Route path="/bang-tin/:slug" element={<NewsPostPage />} />
         <Route path="/meo-hoc" element={<StudyTipsHomePage />} />
         <Route path="/cong-cu" element={<ToolsPage />} />
         <Route path="/meo-hoc/nghe-phan-3" element={<PremiumRoute message={TIPS_LOCK_MESSAGE}><StudyTipsListeningPart3Page /></PremiumRoute>} />

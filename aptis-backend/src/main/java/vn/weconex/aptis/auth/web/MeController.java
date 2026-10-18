@@ -78,7 +78,8 @@ public class MeController {
                 toProfileResponse(profile),
                 premiumActive,
                 premiumEndsAt,
-                premiumFromTrial);
+                premiumFromTrial,
+                user.getSignupTrialStatus().name());
     }
 
     @PatchMapping("/profile")

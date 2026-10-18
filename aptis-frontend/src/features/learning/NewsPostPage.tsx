@@ -12,6 +12,7 @@ import { useAuthStore } from '@/features/auth/authStore';
 import { formatDateTime, relativeTime } from '@/lib/format';
 import { markdownToHtml } from '@/lib/markdown';
 import type { LinkedBlueprint, LinkedQuestionSet, NewsComment } from '@/types/api';
+import { NewsSeo } from './NewsSeo';
 
 /** Bài viết bảng tin kèm phần bình luận. */
 export function NewsPostPage() {
@@ -80,15 +81,16 @@ export function NewsPostPage() {
   if (postQuery.error || !post) {
     const notFound = postQuery.error instanceof ApiError && postQuery.error.status === 404;
     return (
-      <ErrorBlock
+      <><NewsSeo slug={slug} notFound={notFound} /><ErrorBlock
         message={notFound ? 'Bài viết không tồn tại hoặc đã bị ẩn' : 'Không tải được bài viết'}
         onRetry={notFound ? undefined : () => void postQuery.refetch()}
-      />
+      /></>
     );
   }
 
   return (
     <div className="mx-auto max-w-3xl">
+      <NewsSeo slug={slug} />
       <Link to="/bang-tin" className="text-xs font-semibold text-brand-800 hover:underline">
         ← Bảng tin
       </Link>

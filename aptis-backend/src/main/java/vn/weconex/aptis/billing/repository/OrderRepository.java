@@ -56,6 +56,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("SELECT o FROM PurchaseOrder o WHERE o.id = :id")
     Optional<Order> findByIdForUpdate(@Param("id") String id);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("""
             SELECT o FROM PurchaseOrder o
             WHERE o.status IN :openStatuses

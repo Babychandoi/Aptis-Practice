@@ -86,3 +86,5 @@ ds2api/
 # Bản thiết kế giao diện xuất từ công cụ dựng mẫu — file .dc.html nặng và
 # không phải mã nguồn. Giữ ngoài repo cho tới khi chốt phương án.
 giao dien moi/
+/Aptis/
+/AptisPrep.com/

@@ -83,7 +83,10 @@ export function RegisterPage() {
   }
 
   return (
-    <AuthCard title="Tạo tài khoản" subtitle="Bắt đầu với các bài học miễn phí">
+    <AuthCard title="Tạo tài khoản" subtitle="Bắt đầu luyện thi Aptis">
+      <p className="mb-4 rounded-lg bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-600">
+        Dùng thử miễn phí 1 ngày, tối đa một tài khoản cho mỗi mã trình duyệt. Chúng tôi dùng cookie bảo mật và tín hiệu IP để hạn chế lạm dụng, không chặn dùng thử chỉ vì chung Wi-Fi. Đăng ký quá nhanh có thể phải chờ; tài khoản vẫn đăng nhập và mua gói bình thường.
+      </p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="fullName" className="label">
