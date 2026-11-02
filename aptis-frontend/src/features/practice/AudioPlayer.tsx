@@ -90,9 +90,14 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
       claimPlayback(audio);
       try {
         await audio.play();
-      } catch {
+      } catch (err) {
         // Trình duyệt chặn tự phát hoặc file lỗi — nút trở lại trạng thái dừng
         setPlaying(false);
+        // AbortError chỉ là play() bị pause() cắt ngang (bấm dừng ngay, hay mở
+        // bài khác), không phải lỗi: báo lỗi sẽ thay cả khung audio bằng dòng chữ.
+        if ((err as DOMException | undefined)?.name !== 'AbortError') {
+          setError('Không phát được audio. Hãy tải lại trang rồi thử lại.');
+        }
       }
     } else {
       audio.pause();
@@ -133,7 +138,10 @@ export function AudioPlayer({ assets, maxAudioPlays, initialPlayCount, disabled 
               }
               claimPlayback(event.currentTarget);
               setPlaying(true);
-              setPlayCount((count) => count + 1);
+              // Chỉ tính một lượt khi nghe từ đầu. Bấm tạm dừng rồi phát tiếp là
+              // cùng một lượt: tính mỗi lần phát thì dừng/phát hai lần đã hết lượt
+              // và nút bị khoá, người học tưởng audio hỏng.
+              if (event.currentTarget.currentTime < 0.5) setPlayCount((count) => count + 1);
             }}
             onPause={() => setPlaying(false)}
             onEnded={(event) => {

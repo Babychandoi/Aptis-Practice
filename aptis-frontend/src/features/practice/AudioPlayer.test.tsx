@@ -126,6 +126,64 @@ describe('AudioPlayer', () => {
     expect(container.querySelector('button[aria-label="Tạm dừng audio"]')).not.toBeNull();
   });
 
+  it('tạm dừng rồi phát tiếp không tính thêm lượt', async () => {
+    const { container } = await renderPlayer(
+      <AudioPlayer assets={asset('a1')} maxAudioPlays={2} initialPlayCount={0} disabled={false} />,
+    );
+    const audio = container.querySelector('audio') as HTMLAudioElement;
+    const toggle = () => container.querySelector('button[aria-label$="audio"]') as HTMLButtonElement;
+
+    await act(async () => {
+      toggle().click();
+      await Promise.resolve();
+    });
+    expect(screen.getByText('Còn 1/2 lượt')).not.toBeNull();
+
+    // Nghe được một đoạn rồi dừng, phát tiếp: vẫn là lượt đầu
+    Object.defineProperty(audio, 'currentTime', { configurable: true, value: 12 });
+    await act(async () => {
+      toggle().click();
+    });
+    await act(async () => {
+      toggle().click();
+      await Promise.resolve();
+    });
+    expect(screen.getByText('Còn 1/2 lượt')).not.toBeNull();
+
+    // Nghe lại từ đầu mới tính lượt mới
+    Object.defineProperty(audio, 'currentTime', { configurable: true, value: 0 });
+    await act(async () => {
+      toggle().click();
+    });
+    await act(async () => {
+      toggle().click();
+      await Promise.resolve();
+    });
+    expect(screen.getByText('Hết lượt phát')).not.toBeNull();
+  });
+
+  it('play() thất bại thì báo lỗi, nhưng bị cắt ngang (AbortError) thì không', async () => {
+    const play = vi.mocked(HTMLMediaElement.prototype.play);
+    play.mockRejectedValueOnce(new DOMException('interrupted', 'AbortError'));
+    const { container } = await renderPlayer(
+      <AudioPlayer assets={asset('a1')} maxAudioPlays={null} initialPlayCount={0} disabled={false} />,
+    );
+
+    await act(async () => {
+      (container.querySelector('button[aria-label="Phát audio"]') as HTMLButtonElement).click();
+      await Promise.resolve();
+    });
+    expect(container.querySelector('audio')).not.toBeNull();
+    expect(screen.queryByText(/Không phát được audio/)).toBeNull();
+
+    play.mockRejectedValueOnce(new DOMException('unsupported', 'NotSupportedError'));
+    await act(async () => {
+      (container.querySelector('button[aria-label="Phát audio"]') as HTMLButtonElement).click();
+      await Promise.resolve();
+    });
+    expect(screen.getByText(/Không phát được audio/)).not.toBeNull();
+  });
+
   it('gỡ khỏi trang thì audio dừng, không chạy tiếp ở nền', async () => {
     const { container, unmount } = await renderPlayer(
       <AudioPlayer assets={asset('a1')} maxAudioPlays={null} initialPlayCount={0} disabled={false} />,
