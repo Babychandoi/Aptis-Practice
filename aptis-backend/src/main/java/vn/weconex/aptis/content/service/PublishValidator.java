@@ -12,6 +12,8 @@ import vn.weconex.aptis.asset.repository.AssetRepository;
 import vn.weconex.aptis.catalog.domain.ExamStructure.TaskType;
 import vn.weconex.aptis.content.domain.QuestionSet;
 import vn.weconex.aptis.content.mongo.QuestionSetDocument;
+import vn.weconex.aptis.evaluation.mongo.RubricDefinition;
+import vn.weconex.aptis.evaluation.mongo.RubricDefinitionRepository;
 
 /**
  * Kiểm tra nội dung trước khi publish (PHẦN X §60).
@@ -33,6 +35,7 @@ public class PublishValidator {
             "MATCHING", "ORDERING", "SENTENCE_ORDERING", "SHORT_TEXT", "TEXT_EXACT");
 
     private final AssetRepository assetRepository;
+    private final RubricDefinitionRepository rubricRepository;
 
     public List<String> validate(QuestionSet questionSet, QuestionSetDocument document) {
         List<String> errors = new ArrayList<>();
@@ -96,7 +99,23 @@ public class PublishValidator {
             if (RUBRIC_REQUIRED.contains(item.getResponseType())
                     && isBlank(item.getRubricCode())) {
                 errors.add(label + ": dạng " + item.getResponseType() + " phải có rubricCode");
+            } else if (!isBlank(item.getRubricCode())) {
+                validateRubricExists(item.getRubricCode(), label, errors);
             }
+        }
+    }
+
+    /**
+     * rubricCode phải trỏ tới rubric có thật và đang ACTIVE. Chỉ kiểm tra có ghi hay
+     * không thì một mã gõ sai (đã gặp: "APTIS_SPEAKING") vẫn publish được, và mọi
+     * bài thi bốc trúng câu đó kẹt ở trạng thái đang chấm vì worker không tìm thấy rubric.
+     */
+    private void validateRubricExists(String code, String label, List<String> errors) {
+        RubricDefinition rubric = rubricRepository.findByCode(code).orElse(null);
+        if (rubric == null) {
+            errors.add(label + ": rubric " + code + " không tồn tại");
+        } else if (!rubric.isActive()) {
+            errors.add(label + ": rubric " + code + " không ở trạng thái ACTIVE");
         }
     }
 
