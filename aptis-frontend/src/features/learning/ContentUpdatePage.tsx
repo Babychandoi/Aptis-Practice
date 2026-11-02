@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/api/client';
 import { contentUpdateApi, practiceApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
@@ -8,6 +8,7 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { PremiumGate } from '@/components/ui/PremiumGate';
 import { formatDate } from '@/lib/format';
 import { useAttemptLabels } from '@/features/practice/attemptLabels';
+import { primeAttempt } from '@/features/practice/attemptCache';
 import { stagger } from '@/lib/motion';
 
 /**
@@ -39,6 +40,7 @@ function pickRandom<T>(items: T[], count: number): T[] {
 
 export function ContentUpdatePage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [startError, setStartError] = useState<string | null>(null);
   const [shown, setShown] = useState<Record<string, number>>({});
   const { skillOfPart } = useAttemptLabels();
@@ -46,7 +48,10 @@ export function ContentUpdatePage() {
   const startAttempt = useMutation({
     mutationFn: (input: { partId: string; questionSetIds: string[] }) =>
       practiceApi.createPartAttempt(input),
-    onSuccess: (attempt) => navigate(`/attempts/${attempt.id}`),
+    onSuccess: (attempt) => {
+      primeAttempt(queryClient, attempt);
+      navigate(`/attempts/${attempt.id}`);
+    },
     onError: (error) =>
       setStartError(
         error instanceof ApiError ? error.message : 'Không mở được đề, thử lại sau',
