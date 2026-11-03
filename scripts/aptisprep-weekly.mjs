@@ -85,7 +85,7 @@ export function parsePage(html) {
     if (!value || typeof value !== 'object') return;
     if (Array.isArray(value)) { value.forEach(walk); return; }
     for (const [key, child] of Object.entries(value)) {
-      if (['questions', 'initialClubDetail'].includes(key)) found.push({ key, value: resolve(child) });
+      if (['questions', 'initialClubDetail', 'topicPriorities'].includes(key)) found.push({ key, value: resolve(child) });
       walk(child);
     }
   };
@@ -109,14 +109,46 @@ async function get(route) {
   }
 }
 
-/** Mảng "questions" lớn nhất của trang mà mọi phần tử đều thoả `accept`. */
-async function questionsOf(route, accept) {
-  const list = parsePage(await get(route))
+/** Trang đã tải trong lượt xuất này — Reading 2 và 3 trọng điểm cùng nằm ở một trang. */
+const pageCache = new Map();
+const parsedPage = (route) => {
+  if (!pageCache.has(route)) pageCache.set(route, get(route).then(parsePage));
+  return pageCache.get(route);
+};
+
+/**
+ * Mảng "questions" lớn nhất của trang mà mọi phần tử đều thoả `accept`, rồi lọc
+ * theo `keep` (trang 2&3 trọng điểm trộn hai Part trong một mảng).
+ * `priorities` nhận topicPriorities (số sao từng chủ đề) nếu trang có.
+ */
+async function questionsOf(route, accept, keep = () => true, priorities = null) {
+  const found = await parsedPage(route);
+  const list = found
     .filter((f) => f.key === 'questions' && Array.isArray(f.value) && f.value.length && f.value.every(accept))
     .sort((a, b) => b.value.length - a.value.length);
   if (!list.length) throw new Error(`${route}: không thấy dữ liệu đề — có thể trang đã đổi cấu trúc.`);
-  return list[0].value;
+  const tp = found.find((f) => f.key === 'topicPriorities' && f.value && typeof f.value === 'object' && !Array.isArray(f.value));
+  if (priorities && tp) Object.assign(priorities, tp.value);
+  const kept = list[0].value.filter(keep);
+  if (!kept.length) throw new Error(`${route}: không còn đề nào sau khi lọc.`);
+  return kept;
 }
+
+/** Đường dẫn trang theo phạm vi: trang luyện thường hoặc Đề trọng điểm tháng. */
+const ROUTES = {
+  practice: {
+    listening: (p) => `/listening/practice/part/${p}`,
+    reading: (p) => `/reading/practice/part/${p}`,
+    speaking: (p) => `/speaking/practice/part/${p}`,
+    writing: '/writing',
+  },
+  monthly: {
+    listening: (p) => `/monthly-focus/listening/part/${p}`,
+    reading: (p) => `/monthly-focus/reading/part/${p === 2 || p === 3 ? '2-3' : p}`,
+    speaking: (p) => `/monthly-focus/speaking/part/${p}`,
+    writing: '/monthly-focus/writing',
+  },
+};
 
 // ---------- Chuyển sang định dạng file của bộ nhập ----------
 
@@ -192,45 +224,65 @@ const speakingShape = {
   4: (q) => Array.isArray(q.subQuestions) && 'mainTopic' in q,
 };
 
-async function writingClubs(fetchedAt) {
-  const html = await get('/writing');
-  const routes = [...new Set([...html.matchAll(/\/writing\/club\/([a-f0-9]{24})/g)].map((m) => '/writing/club/' + m[1]))];
-  if (!routes.length) throw new Error('/writing: không thấy câu lạc bộ nào.');
+async function writingClubs(fetchedAt, base) {
+  const html = await get(base);
+  const routes = [...new Set([...html.matchAll(new RegExp(`${base}/club/([a-f0-9]{24})`, 'g'))].map((m) => `${base}/club/${m[1]}`))];
+  if (!routes.length) throw new Error(`${base}: không thấy câu lạc bộ nào.`);
   const byPart = { 1: [], 2: [], 3: [], 4: [] };
+  const clubs = [];
   for (let offset = 0; offset < routes.length; offset += 4) {
     await Promise.all(routes.slice(offset, offset + 4).map(async (route) => {
       const club = parsePage(await get(route)).find((f) => f.key === 'initialClubDetail' && f.value && !Array.isArray(f.value))?.value;
       if (!club) throw new Error(`${route}: không thấy dữ liệu câu lạc bộ.`);
+      const id = club.id || route.split('/').pop();
+      const order = routes.indexOf(route);
+      clubs.push({ id, name: club.name || club.title || null, icon_name: club.iconName ?? null, color: club.color ?? null, description: text(club.description) || null, order });
       for (let part = 1; part <= 4; part++) {
         const content = club.parts?.filter((p) => Number(p.part) === part);
         if (!content?.length) throw new Error(`${route}: thiếu Writing Part ${part}.`);
-        byPart[part].push({ id: club.id || route.split('/').pop(), name: club.name || club.title || null, source_url: BASE + route, part, content, order: routes.indexOf(route) });
+        byPart[part].push({ id, name: club.name || club.title || null, source_url: BASE + route, part, content, order });
       }
     }));
   }
-  return Object.entries(byPart).map(([part, list]) => ({
-    file: `aptis_writing_part${part}.json`,
-    data: { skill: 'writing', part: Number(part), source_url: BASE + '/writing', fetched_at: fetchedAt, record_count: list.length,
-      records: list.sort((a, b) => a.order - b.order).map(({ order, ...rest }) => rest) },
-  }));
+  return [
+    ...Object.entries(byPart).map(([part, list]) => ({
+      file: `aptis_writing_part${part}.json`,
+      data: { skill: 'writing', part: Number(part), source_url: BASE + base, fetched_at: fetchedAt, record_count: list.length,
+        records: list.sort((a, b) => a.order - b.order).map(({ order, ...rest }) => rest) },
+    })),
+    { file: 'aptis_writing_clubs.json', data: clubs.sort((a, b) => a.order - b.order).map(({ order, ...rest }) => rest) },
+  ];
 }
 
-export async function exportAll(outDir) {
+/**
+ * Xuất mọi Part ra `outDir`. `scope`: 'practice' (trang luyện thường) hoặc
+ * 'monthly' (Đề trọng điểm tháng — cùng định dạng, thêm topic_priorities.json).
+ */
+export async function exportAll(outDir, scope = 'practice') {
+  const route = ROUTES[scope];
   const fetchedAt = new Date().toISOString();
   const jobs = [];
-  const wrap = (skill, part, route, records) => ({ skill, part, source_url: BASE + route, fetched_at: fetchedAt, record_count: records.length, records });
+  const priorities = {};
+  const wrap = (skill, part, from, records) => ({ skill, part, source_url: BASE + from, fetched_at: fetchedAt, record_count: records.length, records });
   for (const part of [2, 3, 4]) {
-    const route = `/listening/practice/part/${part}`;
-    jobs.push([`aptis_listening_part${part}.json`, async () => wrap('listening', part, route, await questionsOf(route, (q) => Number(q.part) === part && q.id))]);
+    const from = route.listening(part);
+    priorities[`listening_${part}`] = {};
+    jobs.push([`aptis_listening_part${part}.json`, async () => wrap('listening', part, from,
+      await questionsOf(from, (q) => q.part != null && q.id, (q) => Number(q.part) === part, priorities[`listening_${part}`]))]);
   }
   for (const part of [1, 2, 3, 4]) {
-    const route = `/reading/practice/part/${part}`;
-    jobs.push([`aptis_reading_part${part}.json`, async () => wrap('reading', part, route, await questionsOf(route, (q) => Number(q.part) === part && q.id))]);
+    const from = route.reading(part);
+    priorities[`reading_${part}`] = {};
+    jobs.push([`aptis_reading_part${part}.json`, async () => wrap('reading', part, from,
+      await questionsOf(from, (q) => q.part != null && q.id, (q) => Number(q.part) === part, priorities[`reading_${part}`]))]);
   }
-  jobs.push(['aptis_reading_part5.json', async () => readingPart5Rows(await questionsOf('/reading/practice/part/5', (q) => Number(q.part) === 5 && q.data?.article))]);
-  jobs.push(['aptis_listenning_part1.json', async () => listeningPart1Rows(await questionsOf('/listening/practice/part/1', (q) => Number(q.part) === 1 && Array.isArray(q.items)))]);
+  priorities.reading_5 = {};
+  jobs.push(['aptis_reading_part5.json', async () => readingPart5Rows(
+    await questionsOf(route.reading(5), (q) => Number(q.part) === 5 && q.data?.article, undefined, priorities.reading_5))]);
+  jobs.push(['aptis_listenning_part1.json', async () => listeningPart1Rows(
+    await questionsOf(route.listening(1), (q) => Number(q.part) === 1 && Array.isArray(q.items)))]);
   for (const part of [1, 2, 3, 4]) {
-    jobs.push([`aptis_speaking_part${part}.json`, async () => speakingRows[part](await questionsOf(`/speaking/practice/part/${part}`, speakingShape[part]))]);
+    jobs.push([`aptis_speaking_part${part}.json`, async () => speakingRows[part](await questionsOf(route.speaking(part), speakingShape[part]))]);
   }
 
   mkdirSync(outDir, { recursive: true });
@@ -248,8 +300,9 @@ export async function exportAll(outDir) {
     } catch (error) { errors.push(error.message); }
   }
   try {
-    for (const { file, data } of await writingClubs(fetchedAt)) save(file, data);
+    for (const { file, data } of await writingClubs(fetchedAt, route.writing)) save(file, data);
   } catch (error) { errors.push(error.message); }
+  writeFileSync(`${outDir}/topic_priorities.json`, JSON.stringify(priorities, null, 2) + '\n');
   return { summary, errors };
 }
 

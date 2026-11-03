@@ -949,20 +949,71 @@ function listeningCandidates(part) {
 async function listeningPart(part) {
   const partId = P[`L${part}`];
   const existing = await docs.find({ partId }).toArray();
+  // Part 1 và 4: website có nhiều bản cùng câu hỏi nhưng khác phương án, đáp án và
+  // audio ("Where does Malik want to go?" hai bản), chỉ so câu hỏi thì bản sau bị bỏ
+  // sót. Nhưng website cũng hay sửa chữ của đề cũ ("9am" -> "9 AM") — so nguyên văn
+  // phương án thì đề sửa chữ thành đề trùng. Một câu là ĐÃ CÓ khi trùng câu hỏi và:
+  // trùng đáp án đúng + ít nhất (số phương án − 1) phương án, hoặc nếu chữ lệch thì
+  // trùng hẳn FILE AUDIO (so SHA-256 với audio các bản trong kho).
+  const withOptions = part === 1 || part === 4;
+  const variants = new Map(); // câu hỏi -> [{ options:Set, answer, docId }]
+  const addVariant = (prompt, options, answer, docId) => {
+    const key = norm(prompt);
+    variants.set(key, [...(variants.get(key) ?? []), { options: new Set(options.map(norm)), answer: norm(answer), docId }]);
+  };
+  const sameText = (v, options, answer) => v.answer === norm(answer)
+    && options.filter((o) => v.options.has(norm(o))).length >= Math.max(options.length, v.options.size) - 1;
+  // Mã băm audio của từng đề trong kho, chỉ tra khi cần.
+  const [hashRows] = await sql.query(
+    `SELECT qs.id AS setId, a.checksum_sha256 AS hash FROM question_sets qs
+       JOIN assets a ON a.asset_type = 'AUDIO' WHERE qs.part_id = ? AND a.checksum_sha256 IS NOT NULL
+        AND a.id IN (?)`,
+    [partId, existing.flatMap((d) => (d.assets ?? []).map((x) => x.assetId)).concat('-')]);
+  const hashesOf = new Map();
+  for (const row of hashRows) hashesOf.set(row.setId, [...(hashesOf.get(row.setId) ?? []), row.hash]);
+  const audioHash = async (url) => {
+    try {
+      const res = await fetch(url);
+      return res.ok ? createHash('sha256').update(Buffer.from(await res.arrayBuffer())).digest('hex') : null;
+    } catch { return null; }
+  };
   const known = new Set();
   for (const d of existing) {
     for (const it of d.items ?? []) {
       if (part === 2) known.add(norm((it.options ?? []).map((o) => o.content).join('|')));
-      else if (it.prompt?.value) known.add(norm(it.prompt.value));
+      else if (it.prompt?.value) {
+        const options = (it.options ?? []).map((o) => o.content);
+        addVariant(it.prompt.value, options, (it.options ?? []).find((o) => o.id === it.answerKey?.selectedOptionId)?.content ?? '', d.questionSetId);
+      }
     }
   }
   const candidates = listeningCandidates(part).filter(Boolean);
   const fresh = [];
-  for (const c of candidates) {
-    const seen = part === 2 ? known.has(norm(c.items[0].options.map((o) => o.content).join('|'))) : c.items.some((i) => known.has(norm(i.prompt)));
-    if (seen) continue;
-    if (part === 2) known.add(norm(c.items[0].options.map((o) => o.content).join('|')));
-    else c.items.forEach((i) => known.add(norm(i.prompt)));
+  for (const [index, c] of candidates.entries()) {
+    if (part === 2) {
+      const key = norm(c.items[0].options.map((o) => o.content).join('|'));
+      if (known.has(key)) continue;
+      known.add(key);
+    } else {
+      const answerOf = (i) => i.options.find((o) => o.id === i.answerId)?.content ?? '';
+      if (!withOptions) {
+        if (c.items.some((i) => variants.has(norm(i.prompt)))) continue;
+      } else {
+        // ĐÃ CÓ khi MỘT đề trong kho chứa đủ mọi câu của bản web. Listening 4 có bản
+        // giữ một câu, đổi câu kia — trùng một câu thôi thì vẫn là bản mới.
+        const docsPerItem = c.items.map((i) => new Set((variants.get(norm(i.prompt)) ?? [])
+          .filter((v) => sameText(v, i.options.map((o) => o.content), answerOf(i))).map((v) => v.docId)));
+        if ([...docsPerItem[0]].some((id) => docsPerItem.every((s) => s.has(id)))) continue;
+        // Trùng câu hỏi nhưng lệch chữ: so audio với các bản cùng câu hỏi trong kho.
+        const rivals = new Set(c.items.flatMap((i) => (variants.get(norm(i.prompt)) ?? []).map((v) => v.docId)).filter(Boolean));
+        if (rivals.size) {
+          const hash = await audioHash(c.audioUrl);
+          if (hash && [...rivals].some((id) => (hashesOf.get(id) ?? []).includes(hash))) continue;
+        }
+      }
+      // Mã tạm cho bản sắp nhập, để bản lặp lại trong cùng file nhận ra nhau.
+      c.items.forEach((i) => addVariant(i.prompt, i.options.map((o) => o.content), answerOf(i), `new:${index}`));
+    }
     fresh.push(c);
   }
   const targets = fresh.slice(0, limit);

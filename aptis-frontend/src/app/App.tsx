@@ -21,6 +21,10 @@ const DashboardPage = lazy(() => import('@/features/catalog/DashboardPage').then
 const SkillListPage = lazy(() => import('@/features/catalog/SkillListPage').then((m) => ({ default: m.SkillListPage })));
 const ContentUpdatePage = lazy(() => import('@/features/learning/ContentUpdatePage').then((m) => ({ default: m.ContentUpdatePage })));
 const ExamPredictionPage = lazy(() => import('@/features/learning/ExamPredictionPage').then((m) => ({ default: m.ExamPredictionPage })));
+const MonthlyFocusHomePage = lazy(() => import('@/features/monthly-focus/MonthlyFocusPages').then((m) => ({ default: m.MonthlyFocusHomePage })));
+const MonthlyFocusSkillPage = lazy(() => import('@/features/monthly-focus/MonthlyFocusPages').then((m) => ({ default: m.MonthlyFocusSkillPage })));
+const MonthlyFocusPlayerPage = lazy(() => import('@/features/monthly-focus/MonthlyFocusPlayerPage').then((m) => ({ default: m.MonthlyFocusPlayerPage })));
+const WritingClubPage = lazy(() => import('@/features/monthly-focus/WritingClubPage').then((m) => ({ default: m.WritingClubPage })));
 const ComponentPage = lazy(() => import('@/features/catalog/ComponentPage').then((m) => ({ default: m.ComponentPage })));
 const ComponentPartsPage = lazy(() => import('@/features/catalog/ComponentPartsPage').then((m) => ({ default: m.ComponentPartsPage })));
 const ComponentTestsPage = lazy(() => import('@/features/catalog/ComponentTestsPage').then((m) => ({ default: m.ComponentTestsPage })));
@@ -126,6 +130,12 @@ export function App() {
         <Route path="/cap-nhat-de" element={<ContentUpdatePage />} />
         {/* Cũng tự xử lý 403 để hiện PremiumGate, nên không bọc PremiumRoute. */}
         <Route path="/du-doan-de" element={<ExamPredictionPage />} />
+        {/* Đề trọng điểm tháng: quyền xem (Premium / 10 câu làm thử) do backend quyết
+            theo từng câu, nên cũng không bọc PremiumRoute. */}
+        <Route path="/de-trong-diem" element={<MonthlyFocusHomePage />} />
+        <Route path="/de-trong-diem/viet/clb/:clubKey" element={<WritingClubPage />} />
+        <Route path="/de-trong-diem/:skillSlug" element={<MonthlyFocusSkillPage />} />
+        <Route path="/de-trong-diem/:skillSlug/:partSlug" element={<MonthlyFocusPlayerPage />} />
         <Route path="/luyen-tap/:componentSlug" element={<ComponentPage />} />
         <Route path="/luyen-tap/:componentSlug/theo-part" element={<ComponentPartsPage />} />
         <Route path="/luyen-tap/:componentSlug/bai-test" element={<ComponentTestsPage />} />
