@@ -59,6 +59,7 @@ public class EntitlementService {
             return false;
         }
         return userRepository.findById(userId)
+                .filter(user -> !properties.entitlement().signupTrialDomainBlocked(user.getEmail()))
                 .filter(User::signupTrialEligible)
                 .map(user -> properties.entitlement()
                         .withinSignupTrial(user.getCreatedAt(), Instant.now()))
@@ -76,6 +77,7 @@ public class EntitlementService {
             return Optional.empty();
         }
         return userRepository.findById(userId)
+                .filter(user -> !properties.entitlement().signupTrialDomainBlocked(user.getEmail()))
                 .filter(User::signupTrialEligible)
                 .map(User::getCreatedAt)
                 .filter(java.util.Objects::nonNull)

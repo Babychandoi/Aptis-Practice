@@ -35,6 +35,13 @@ public class SignupTrialService {
         if (!refresh || user.getSignupTrialBrowserHash() == null) {
             events.record(user.getId(), validBrowser ? browserHash : null, hasher.ipHash(clientIp).orElse(null), refresh ? "REFRESH" : "LOGIN");
         }
+        if (properties.entitlement().signupTrialDomainBlocked(user.getEmail())) {
+            if (state != SignupTrialStatus.BLOCKED_DOMAIN) {
+                decide(user, SignupTrialStatus.BLOCKED_DOMAIN, user.getSignupTrialBrowserHash());
+            }
+            return;
+        }
+        if (state == SignupTrialStatus.BLOCKED_DOMAIN) return;
         if (state == SignupTrialStatus.GRANTED || state == SignupTrialStatus.BROWSER_USED) return;
         if (state == SignupTrialStatus.LEGACY && user.getSignupTrialBrowserHash() != null) return;
         if (state != SignupTrialStatus.LEGACY && !properties.entitlement().withinSignupTrial(user.getCreatedAt(), Instant.now())) return;

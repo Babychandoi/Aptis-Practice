@@ -322,6 +322,7 @@ public class AdminUserService {
         // Còn dùng thử thì premiumActive vẫn true — cột Premium trong trang quản
         // trị phải khớp với quyền thật mà học viên đang có, không chỉ với đơn hàng.
         boolean withinTrial = !paid
+                && !properties.entitlement().signupTrialDomainBlocked(user.getEmail())
                 && user.signupTrialEligible()
                 && properties.entitlement().withinSignupTrial(user.getCreatedAt(), Instant.now());
         boolean premiumActive = paid || withinTrial;

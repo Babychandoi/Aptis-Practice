@@ -31,6 +31,7 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const sessionKey = useRef(crypto.randomUUID()).current;
+  const purchaseButtonRef = useRef<HTMLButtonElement | null>(null);
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const [affiliateCode, setAffiliateCode] = useState('');
   // Kết quả kiểm mã: chỉ kiểm khi người dùng bấm, không kiểm theo từng phím —
@@ -148,7 +149,13 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
               key={plan.id}
               type="button"
               aria-pressed={selected}
-              onClick={() => { setSelectedPlanId(plan.id); setCodeCheck(null); }}
+              onClick={() => {
+                setSelectedPlanId(plan.id);
+                setCodeCheck(null);
+                window.requestAnimationFrame(() => {
+                  purchaseButtonRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+              }}
               className={clsx(
                 'relative flex min-h-[190px] flex-col gap-3 rounded-3xl border p-5 text-left transition-all',
                 selected
@@ -233,6 +240,7 @@ function ProductPlansPage({ product }: { product: 'premium' | 'ai-voice' }) {
 
             <button
               type="button"
+              ref={purchaseButtonRef}
               disabled={createOrder.isPending}
               onClick={() => createOrder.mutate(selectedPlan.id)}
               className="btn mt-auto min-h-[52px] bg-white text-ink hover:bg-surface-muted"

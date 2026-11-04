@@ -47,7 +47,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /** Real MySQL/Flyway/JPA/transaction races, no production DB or real email. */
 @Testcontainers(disabledWithoutDocker = true)
-@SpringBootTest(properties = {"aptis.scheduler.lock.enabled=true", "aptis.entitlement.signup-trial-days=1"})
+@SpringBootTest(properties = {
+        "aptis.scheduler.lock.enabled=true",
+        "aptis.entitlement.signup-trial-days=1",
+        "aptis.entitlement.signup-trial-blocked-domains[0]=acvvtprx.art"
+})
 @AutoConfigureMockMvc
 class SignupTrialIntegrationTest {
     @Container static final MySQLContainer<?> MYSQL = new MySQLContainer<>("mysql:8.4")
@@ -65,6 +69,7 @@ class SignupTrialIntegrationTest {
     @MockBean GoogleTokenVerifier google;
     @Autowired AuthService auth;
     @Autowired EntitlementService access;
+    @Autowired vn.weconex.aptis.billing.service.TrialService trialService;
     @Autowired UserRepository users;
     @Autowired RoleRepository roles;
     @Autowired PasswordEncoder encoder;
@@ -79,8 +84,11 @@ class SignupTrialIntegrationTest {
 
     private User student() { return student(SignupTrialStatus.PENDING); }
     private User student(SignupTrialStatus trialStatus) {
+        return student(UUID.randomUUID() + "@test.local", trialStatus);
+    }
+    private User student(String email, SignupTrialStatus trialStatus) {
         return new TransactionTemplate(transactionManager).execute(ignored -> {
-            User user = User.register(UUID.randomUUID() + "@test.local", encoder.encode(PASSWORD));
+            User user = User.register(email, encoder.encode(PASSWORD));
             user.markEmailVerified(); user.setSignupTrialStatus(trialStatus);
             user.getRoles().add(roles.findByCode(Role.STUDENT).orElseThrow());
             return users.saveAndFlush(user);
@@ -140,6 +148,30 @@ class SignupTrialIntegrationTest {
         login(first, "203.0.113.30"); login(second, "203.0.113.30");
         assertThat(state(first)).isEqualTo(SignupTrialStatus.GRANTED);
         assertThat(state(second)).isEqualTo(SignupTrialStatus.BROWSER_USED);
+    }
+    @Test void blockedEmailDomainCannotReceiveSignupOrCampaignTrialButCanStillUseOtherDomains() {
+        User blocked = student("disposable@acvvtprx.art", SignupTrialStatus.PENDING);
+        User existingTrial = student("already-trial@acvvtprx.art", SignupTrialStatus.GRANTED);
+        User similarButAllowed = student("student@sub.acvvtprx.art.example", SignupTrialStatus.PENDING);
+        assertThat(access.hasPremiumAccess(existingTrial.getId())).isFalse();
+        assertThat(access.signupTrialEndsAt(existingTrial.getId())).isEmpty();
+        login(blocked, "blocked-domain-browser");
+        login(existingTrial, "existing-trial-domain-browser");
+        login(similarButAllowed, "allowed-lookalike-domain-browser");
+
+        assertThat(state(blocked)).isEqualTo(SignupTrialStatus.BLOCKED_DOMAIN);
+        assertThat(access.hasPremiumAccess(blocked.getId())).isFalse();
+        assertThat(access.signupTrialEndsAt(blocked.getId())).isEmpty();
+        assertThat(claimsFor(blocked)).isZero();
+        assertThat(state(existingTrial)).isEqualTo(SignupTrialStatus.BLOCKED_DOMAIN);
+        assertThat(access.hasPremiumAccess(existingTrial.getId())).isFalse();
+        assertThat(claimsFor(existingTrial)).isZero();
+        assertThat(state(similarButAllowed)).isEqualTo(SignupTrialStatus.GRANTED);
+        assertThat(access.hasPremiumAccess(similarButAllowed.getId())).isTrue();
+        assertThatThrownBy(() -> trialService.startTrial(blocked.getId(), "any-campaign"))
+                .isInstanceOf(vn.weconex.aptis.common.exception.ApiException.class)
+                .satisfies(ex -> assertThat(((vn.weconex.aptis.common.exception.ApiException) ex).code())
+                        .isEqualTo(vn.weconex.aptis.common.exception.ErrorCode.CONFLICT));
     }
     @Test void paidPremiumAndAiVoiceStayIndependentFromTheBrowserRestriction() {
         User first = student(), second = student(); login(first, "203.0.113.40"); login(second, "203.0.113.40");

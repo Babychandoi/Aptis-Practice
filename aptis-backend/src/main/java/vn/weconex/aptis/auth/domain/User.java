@@ -57,7 +57,7 @@ public class User extends BaseEntity {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-    public enum SignupTrialStatus { LEGACY, PENDING, GRANTED, BROWSER_USED, BROWSER_UNAVAILABLE }
+    public enum SignupTrialStatus { LEGACY, PENDING, GRANTED, BROWSER_USED, BROWSER_UNAVAILABLE, BLOCKED_DOMAIN }
 
     @Enumerated(EnumType.STRING)
     // Decisions are updated atomically by SignupTrialService, not stale ORM writes.
