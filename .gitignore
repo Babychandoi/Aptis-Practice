@@ -79,12 +79,19 @@ __pycache__/
 *.py[cod]
 .venv/
 
-# ds2api là repository riêng (có .git của nó) và config.json chứa tài khoản
-# DeepSeek cùng api_keys. Clone riêng, không nhúng vào repo này.
-ds2api/
+# ds-free-api: proxy DeepSeek cho nhà cung cấp chấm bài ở cổng 6011 (thay ds2api
+# từ 02/11/2026). config/config.toml chứa tài khoản DeepSeek và api key.
+ds-free-api/
 
 # Bản thiết kế giao diện xuất từ công cụ dựng mẫu — file .dc.html nặng và
 # không phải mã nguồn. Giữ ngoài repo cho tới khi chốt phương án.
 giao dien moi/
 /Aptis/
 /AptisPrep.com/
+
+# Đồng bộ từ aptisprep.com (scripts/aptisprep-sync.mjs hằng ngày, aptisprep-weekly.mjs
+# Chủ nhật): bản chụp trang, dữ liệu xuất
+# và log của Task Scheduler — dữ liệu chạy, không phải mã nguồn.
+/data/aptisprep/
+/data/aptisprep-export/
+/logs/

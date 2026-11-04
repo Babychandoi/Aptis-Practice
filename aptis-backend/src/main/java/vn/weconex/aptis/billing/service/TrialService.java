@@ -12,6 +12,8 @@ import vn.weconex.aptis.billing.domain.TrialCampaign;
 import vn.weconex.aptis.billing.domain.UserTrial;
 import vn.weconex.aptis.billing.repository.TrialCampaignRepository;
 import vn.weconex.aptis.billing.repository.UserTrialRepository;
+import vn.weconex.aptis.auth.repository.UserRepository;
+import vn.weconex.aptis.common.config.AptisProperties;
 import vn.weconex.aptis.common.exception.ApiException;
 import vn.weconex.aptis.common.exception.ErrorCode;
 import vn.weconex.aptis.common.util.Enums.EntitlementSourceType;
@@ -39,6 +41,8 @@ public class TrialService {
 
     private final TrialCampaignRepository campaignRepository;
     private final UserTrialRepository trialRepository;
+    private final UserRepository userRepository;
+    private final AptisProperties properties;
     private final UserEntitlementRepository entitlementRepository;
     private final EntitlementService entitlementService;
     private final EntitlementChangePublisher entitlementChangePublisher;
@@ -51,6 +55,15 @@ public class TrialService {
      */
     @Transactional
     public UserTrial startTrial(String userId, String campaignCode) {
+        boolean blockedDomain = userRepository.findById(userId)
+                .map(user -> properties.entitlement().signupTrialDomainBlocked(user.getEmail()))
+                .orElse(false);
+        if (blockedDomain) {
+            throw new ApiException(
+                    ErrorCode.CONFLICT,
+                    "Email domain này không đủ điều kiện nhận dùng thử");
+        }
+
         TrialCampaign campaign = campaignRepository.findByCode(campaignCode)
                 .orElseThrow(() -> ApiException.notFound("TrialCampaign", campaignCode));
 

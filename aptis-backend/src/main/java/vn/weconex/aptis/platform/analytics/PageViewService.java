@@ -58,7 +58,16 @@ public class PageViewService {
             "attempt",
             "attempt-result",
             "history",
-            "profile");
+            "profile",
+            "monthly-focus",
+            "monthly-focus-practice",
+            "monthly-focus-writing-club",
+            "component-test-intro",
+            "ai-lounge",
+            "ai-voice-plans",
+            "tools",
+            "classroom",
+            "teaching");
 
     private final PageViewRepository repository;
 

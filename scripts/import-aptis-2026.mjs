@@ -31,12 +31,17 @@ import mysql from 'mysql2/promise';
 import { MongoClient } from 'mongodb';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
-const BATCH = '2026-10';
+// Đợt đồng bộ hằng tuần (scripts/aptisprep-weekly.mjs) truyền mã đợt riêng qua biến môi trường;
+// không truyền thì giữ đúng đợt 10/2026 như lần nhập tay.
+const BATCH = process.env.IMPORT_BATCH ?? '2026-10';
 /** Mục Cập nhật đề của đợt này có ngày từ mốc này; dùng để nhận ra mục đã tạo, tránh tạo trùng khi chạy lại. */
-const BATCH_START = '2026-10-01';
+const BATCH_START = process.env.IMPORT_BATCH_START ?? '2026-10-01';
+/** Năm đề gắn cho đề mới (exam_year, hậu tố "(năm)" ở tên đề Listening). */
+const EXAM_YEAR = Number(BATCH_START.slice(0, 4));
 const P = {
   GRAMMAR: '16000000-0000-4000-8000-000000000001',
   VOCAB: '16000000-0000-4000-8000-000000000002',
+  R1: '16000000-0000-4000-8000-000000000011',
   R2: '16000000-0000-4000-8000-000000000012',
   R3: '16000000-0000-4000-8000-000000000013',
   R4: '16000000-0000-4000-8000-000000000014',
@@ -231,8 +236,8 @@ async function createSet(spec) {
        (id, part_id, task_type_id, code, title, difficulty, hotness, exam_year,
         access_level, status, current_revision, item_count, max_score,
         published_at, created_by, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, 2026, 'PREMIUM', 'PUBLISHED', 1, ?, ?, NOW(), ?, NOW(), NOW())`,
-    [id, partId, await taskTypeId(sqlTaskTypeCode), code, safeTitle, difficulty, hotness, items.length, maxScore, adminId],
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'PREMIUM', 'PUBLISHED', 1, ?, ?, NOW(), ?, NOW(), NOW())`,
+    [id, partId, await taskTypeId(sqlTaskTypeCode), code, safeTitle, difficulty, hotness, EXAM_YEAR, items.length, maxScore, adminId],
   );
   try {
     await docs.insertOne({
@@ -438,6 +443,73 @@ async function readingPart3() {
  * Reading Part 4 của kho = file "part 5" của website: 7 đoạn văn ghép với 7 tiêu đề.
  * Mỗi tiêu đề trong file ghi sẵn đoạn đúng của nó (correct_paragraph_number).
  */
+/**
+ * Reading Part 1: một đoạn văn + 5 chỗ trống, mỗi chỗ chọn 1 trong 3 từ. Giữ đúng cấu
+ * trúc 66 bộ READING_P1_PASSAGE_ đang có (xem import-reading-part1.mjs): đoạn văn ở
+ * stimulus, 5 item SINGLE_CHOICE 2 điểm, không đảo câu vì thứ tự phải khớp đoạn văn.
+ */
+async function readingPart1() {
+  // File dùng "___", kho cũ lưu "______": bỏ hẳn dấu chỗ trống trước khi so trùng.
+  const gapNorm = (value) => norm(String(value ?? '').replace(/_+\s*\d*\s*_*/g, ' '));
+  // Chỉ so với bộ NHIỀU câu: bộ 1-câu cũ luôn khớp một chỗ trống nào đó.
+  const existing = await docs.find({ partId: P.R1, 'items.4': { $exists: true } }).toArray();
+  const known = new Set(existing.flatMap((d) => (d.items ?? []).map((it) => gapNorm(it.prompt?.value))).filter(Boolean));
+
+  const records = load('aptis_reading_part1.json').records;
+  const fresh = [];
+  for (const r of records) {
+    const gaps = (r.data?.questions ?? []).map((q) => {
+      const options = (q.options ?? []).map((o, i) => ({ id: OPTION_CODES[i], code: OPTION_CODES[i], content: String(o?.text ?? o).trim() }));
+      const answer = options.find((o) => norm(o.content) === norm(q.correctAnswer));
+      return answer && q.sentence ? { prompt: String(q.sentence).trim(), options, answerId: answer.id, explanation: q.explanation } : null;
+    });
+    if (gaps.length === 0 || gaps.some((g) => !g)) continue;
+    const keys = gaps.map((g) => gapNorm(g.prompt));
+    if (keys.some((k) => known.has(k))) continue;
+    keys.forEach((k) => known.add(k));
+    fresh.push({ r, gaps });
+  }
+  const targets = fresh.slice(0, limit);
+  let written = 0;
+  if (!dryRun) {
+    for (const { r, gaps } of targets) {
+      const passage = String(r.data?.fullText ?? '').trim();
+      // Tên đề như các bộ cũ: dòng đầu của đoạn văn, ví dụ "Dear Sarah (2026)".
+      const firstLine = passage.split('\n').map((l) => l.trim()).find(Boolean)?.replace(/[,:]$/, '') ?? 'Reading Part 1';
+      await createSet({
+        partId: P.R1,
+        taskTypeCode: 'GAP_FILL_CHOICE',
+        prefix: 'READING_P1_PASSAGE_',
+        title: `${firstLine.slice(0, 80)} (${EXAM_YEAR})`,
+        skill: 'reading',
+        part: 1,
+        instructions: 'Đọc đoạn văn dưới đây. Chọn một từ phù hợp cho mỗi chỗ trống.',
+        stimulus: { format: 'PLAIN_TEXT', value: passage },
+        scoring: { strategy: 'EXACT_MATCH', partialCredit: false, maxScore: gaps.length * 2 },
+        items: gaps.map((g, i) => ({
+          id: randomUUID(),
+          sequenceNo: i + 1,
+          prompt: { format: 'PLAIN_TEXT', value: g.prompt },
+          responseType: 'SINGLE_CHOICE',
+          required: true,
+          maxScore: 2,
+          options: g.options,
+          leftItems: [],
+          rightItems: [],
+          constraints: {},
+          answerKey: {
+            type: 'SINGLE_CHOICE', selectedOptionId: g.answerId, selectedOptionIds: [], matches: {},
+            orderedOptionIds: [], acceptedValues: [], caseSensitive: false,
+          },
+          explanation: explanationOf(g.explanation),
+        })),
+      });
+      written += 1;
+    }
+  }
+  tally('Reading Part 1 (đoạn văn 5 chỗ trống)', targets.length, records.length, written);
+}
+
 async function readingPart4() {
   const existing = await docs.find({ partId: P.R4 }).toArray();
   const used = new Set(existing.map((d) => norm(d.title)));
@@ -868,7 +940,7 @@ function listeningCandidates(part) {
     if (items.length === 0 || !r.audioUrl) return null;
     const topic = humanize(r.topicSlug) || `Listening Part ${part}`;
     return {
-      title: `${topic}${r.version ? ` (Version ${r.version})` : ''} (2026)`,
+      title: `${topic}${r.version ? ` (Version ${r.version})` : ''} (${EXAM_YEAR})`,
       audioUrl: r.audioUrl, audioRole: part === 2 ? 'ITEM_AUDIO_ALL' : 'MAIN_AUDIO', items,
     };
   });
@@ -877,20 +949,71 @@ function listeningCandidates(part) {
 async function listeningPart(part) {
   const partId = P[`L${part}`];
   const existing = await docs.find({ partId }).toArray();
+  // Part 1 và 4: website có nhiều bản cùng câu hỏi nhưng khác phương án, đáp án và
+  // audio ("Where does Malik want to go?" hai bản), chỉ so câu hỏi thì bản sau bị bỏ
+  // sót. Nhưng website cũng hay sửa chữ của đề cũ ("9am" -> "9 AM") — so nguyên văn
+  // phương án thì đề sửa chữ thành đề trùng. Một câu là ĐÃ CÓ khi trùng câu hỏi và:
+  // trùng đáp án đúng + ít nhất (số phương án − 1) phương án, hoặc nếu chữ lệch thì
+  // trùng hẳn FILE AUDIO (so SHA-256 với audio các bản trong kho).
+  const withOptions = part === 1 || part === 4;
+  const variants = new Map(); // câu hỏi -> [{ options:Set, answer, docId }]
+  const addVariant = (prompt, options, answer, docId) => {
+    const key = norm(prompt);
+    variants.set(key, [...(variants.get(key) ?? []), { options: new Set(options.map(norm)), answer: norm(answer), docId }]);
+  };
+  const sameText = (v, options, answer) => v.answer === norm(answer)
+    && options.filter((o) => v.options.has(norm(o))).length >= Math.max(options.length, v.options.size) - 1;
+  // Mã băm audio của từng đề trong kho, chỉ tra khi cần.
+  const [hashRows] = await sql.query(
+    `SELECT qs.id AS setId, a.checksum_sha256 AS hash FROM question_sets qs
+       JOIN assets a ON a.asset_type = 'AUDIO' WHERE qs.part_id = ? AND a.checksum_sha256 IS NOT NULL
+        AND a.id IN (?)`,
+    [partId, existing.flatMap((d) => (d.assets ?? []).map((x) => x.assetId)).concat('-')]);
+  const hashesOf = new Map();
+  for (const row of hashRows) hashesOf.set(row.setId, [...(hashesOf.get(row.setId) ?? []), row.hash]);
+  const audioHash = async (url) => {
+    try {
+      const res = await fetch(url);
+      return res.ok ? createHash('sha256').update(Buffer.from(await res.arrayBuffer())).digest('hex') : null;
+    } catch { return null; }
+  };
   const known = new Set();
   for (const d of existing) {
     for (const it of d.items ?? []) {
       if (part === 2) known.add(norm((it.options ?? []).map((o) => o.content).join('|')));
-      else if (it.prompt?.value) known.add(norm(it.prompt.value));
+      else if (it.prompt?.value) {
+        const options = (it.options ?? []).map((o) => o.content);
+        addVariant(it.prompt.value, options, (it.options ?? []).find((o) => o.id === it.answerKey?.selectedOptionId)?.content ?? '', d.questionSetId);
+      }
     }
   }
   const candidates = listeningCandidates(part).filter(Boolean);
   const fresh = [];
-  for (const c of candidates) {
-    const seen = part === 2 ? known.has(norm(c.items[0].options.map((o) => o.content).join('|'))) : c.items.some((i) => known.has(norm(i.prompt)));
-    if (seen) continue;
-    if (part === 2) known.add(norm(c.items[0].options.map((o) => o.content).join('|')));
-    else c.items.forEach((i) => known.add(norm(i.prompt)));
+  for (const [index, c] of candidates.entries()) {
+    if (part === 2) {
+      const key = norm(c.items[0].options.map((o) => o.content).join('|'));
+      if (known.has(key)) continue;
+      known.add(key);
+    } else {
+      const answerOf = (i) => i.options.find((o) => o.id === i.answerId)?.content ?? '';
+      if (!withOptions) {
+        if (c.items.some((i) => variants.has(norm(i.prompt)))) continue;
+      } else {
+        // ĐÃ CÓ khi MỘT đề trong kho chứa đủ mọi câu của bản web. Listening 4 có bản
+        // giữ một câu, đổi câu kia — trùng một câu thôi thì vẫn là bản mới.
+        const docsPerItem = c.items.map((i) => new Set((variants.get(norm(i.prompt)) ?? [])
+          .filter((v) => sameText(v, i.options.map((o) => o.content), answerOf(i))).map((v) => v.docId)));
+        if ([...docsPerItem[0]].some((id) => docsPerItem.every((s) => s.has(id)))) continue;
+        // Trùng câu hỏi nhưng lệch chữ: so audio với các bản cùng câu hỏi trong kho.
+        const rivals = new Set(c.items.flatMap((i) => (variants.get(norm(i.prompt)) ?? []).map((v) => v.docId)).filter(Boolean));
+        if (rivals.size) {
+          const hash = await audioHash(c.audioUrl);
+          if (hash && [...rivals].some((id) => (hashesOf.get(id) ?? []).includes(hash))) continue;
+        }
+      }
+      // Mã tạm cho bản sắp nhập, để bản lặp lại trong cùng file nhận ra nhau.
+      c.items.forEach((i) => addVariant(i.prompt, i.options.map((o) => o.content), answerOf(i), `new:${index}`));
+    }
     fresh.push(c);
   }
   const targets = fresh.slice(0, limit);
@@ -1167,6 +1290,7 @@ async function speakingPart4() {
 // ---------------------------------------------------------------------------
 
 const LOG_SPECS = [
+  { label: 'Update Reading', part: P.R1, name: 'Reading Part 1 (điền chỗ trống)' },
   { label: 'Update Reading', part: P.R2, name: 'Reading Part 2 (sắp xếp câu)' },
   { label: 'Update Reading', part: P.R3, name: 'Reading Part 3 (ghép ý kiến)' },
   { label: 'Update Reading', part: P.R4, name: 'Reading Part 4 (ghép tiêu đề)' },
@@ -1215,7 +1339,11 @@ async function linkSets(logId, partId) {
 }
 
 async function logs() {
-  const [[{ today }]] = await sql.query(`SELECT DATE_FORMAT(CURDATE(), '%Y-%m-%d') AS today`);
+  // Đợt hằng tuần ghi đúng ngày của đợt (giờ Việt Nam). CURDATE() của MySQL theo UTC nên
+  // chạy trước 7 giờ sáng sẽ ra hôm trước, lọt mốc BATCH_START và lần sau tạo mục trùng.
+  const [[{ today }]] = process.env.IMPORT_BATCH_START
+    ? [[{ today: BATCH_START }]]
+    : await sql.query(`SELECT DATE_FORMAT(CURDATE(), '%Y-%m-%d') AS today`);
   let created = 0;
   for (const spec of LOG_SPECS) {
     const fresh = await docs.find({ partId: spec.part, 'sourceRef.batch': BATCH }, { projection: { title: 1 } }).toArray();
@@ -1230,7 +1358,7 @@ async function logs() {
       console.log(`  = đã có mục "${spec.name}" của đợt này${linked > 0 ? `, gắn thêm ${linked} đề` : ''}`);
       continue;
     }
-    const sample = fresh.slice(0, 4).map((d) => d.title.replace(/\s*\(2026\)$/, '')).join(', ');
+    const sample = fresh.slice(0, 4).map((d) => d.title.replace(/\s*\(\d{4}\)$/, '')).join(', ');
     const description = clip(
       `Cập nhật ${fresh.length} đề mới ${spec.name}${fresh.length > 4 ? `: ${sample} và nhiều chủ đề khác` : `: ${sample}`}.`,
       1000,
@@ -1255,7 +1383,7 @@ async function logs() {
 async function main() {
   await connect();
   const run = {
-    reading: async () => { await readingPart2(); await readingPart3(); await readingPart4(); },
+    reading: async () => { await readingPart1(); await readingPart2(); await readingPart3(); await readingPart4(); },
     writing: async () => { await writingPart1(); await writingPart2(); await writingPart3(); await writingPart4(); },
     grammar,
     vocab,

@@ -15,6 +15,11 @@ describe('signup trial browser notice', () => {
     render(<SignupTrialNotice user={{ premiumActive: true, signupTrialStatus: 'BROWSER_USED' }} />);
     expect(screen.queryByRole('status')).toBeNull();
   });
+  it('explains that blocked email domains can still buy Premium', () => {
+    render(<MemoryRouter><SignupTrialNotice user={{ premiumActive: false, signupTrialStatus: 'BLOCKED_DOMAIN' }} /></MemoryRouter>);
+    expect(screen.getByRole('status').textContent).toContain('không thuộc nhóm được dùng thử miễn phí');
+    expect(screen.getByRole('link', { name: 'Xem gói Premium' }).getAttribute('href')).toBe('/plans');
+  });
   it('does not change legacy or eligible account screens', () => {
     render(<SignupTrialNotice user={{ premiumActive: false, signupTrialStatus: 'LEGACY' }} />);
     expect(screen.queryByRole('status')).toBeNull();

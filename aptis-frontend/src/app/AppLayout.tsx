@@ -34,6 +34,7 @@ interface NavGroup {
 const MAIN_NAV: NavItem[] = [
   { to: '/', label: 'Bảng điều khiển', icon: 'home' },
   { to: '/mock-tests', label: 'Mô phỏng thi', icon: 'doc' },
+  { to: '/de-trong-diem', label: 'Đề trọng điểm tháng', icon: 'calendar' },
   { to: '/cap-nhat-de', label: 'Cập nhật đề', icon: 'plus' },
   { to: '/du-doan-de', label: 'Dự đoán đề', icon: 'trend' },
   { to: '/bang-tin', label: 'Bảng tin', icon: 'news' },
@@ -61,6 +62,7 @@ const SUPPORT_NAV: NavItem[] = [
 const CRUMBS: [RegExp, string][] = [
   [/^\/$/, 'Bảng điều khiển'],
   [/^\/mock-tests/, 'Mô phỏng thi'],
+  [/^\/de-trong-diem/, 'Đề trọng điểm tháng'],
   [/^\/cap-nhat-de/, 'Cập nhật đề'],
   [/^\/du-doan-de/, 'Dự đoán đề'],
   [/^\/bang-tin/, 'Bảng tin'],

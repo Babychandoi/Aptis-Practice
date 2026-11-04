@@ -111,7 +111,7 @@ export interface MeResponse {
    * "Premium" — người dùng bấm mới hiểu là cần mua.
    */
   premiumFromTrial: boolean;
-  signupTrialStatus?: 'LEGACY' | 'PENDING' | 'GRANTED' | 'BROWSER_USED' | 'BROWSER_UNAVAILABLE';
+  signupTrialStatus?: 'LEGACY' | 'PENDING' | 'GRANTED' | 'BROWSER_USED' | 'BROWSER_UNAVAILABLE' | 'BLOCKED_DOMAIN';
 }
 
 // ---------------------------------------------------------------------

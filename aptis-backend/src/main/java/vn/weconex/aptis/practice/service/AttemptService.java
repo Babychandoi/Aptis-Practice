@@ -780,10 +780,12 @@ public class AttemptService {
         log.debug("Đã chấm riêng bộ {} của attempt {}: {}/{}",
                 questionSetId, attemptId, score.getRawScore(), score.getMaxScore());
 
+        // Điểm bộ lấy từ dòng đã làm tròn (applyScore), khớp với getAttempt: client
+        // vá thẳng điểm này vào lượt thay vì tải lại cả lượt.
         return new PracticeDtos.QuestionSetScoreResponse(
                 questionSetId,
-                score.getRawScore(),
-                score.getMaxScore(),
+                row.getAwardedScore() == null ? score.getRawScore() : row.getAwardedScore().doubleValue(),
+                row.getMaxScore().doubleValue(),
                 correctItems,
                 Math.max(totalUnits, entry.getSnapshot().getItems().size()),
                 score.getItemScores().stream()

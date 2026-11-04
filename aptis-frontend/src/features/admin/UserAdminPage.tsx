@@ -298,9 +298,9 @@ function AccessStateBadge({ user }: { user: AdminUser }) {
   }
 
   return (
-    <span title={user.signupTrialStatus === 'BROWSER_USED' ? 'Mã trình duyệt này đã cấp dùng thử cho tài khoản khác' : undefined} className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-ink-mute">
+    <span title={user.signupTrialStatus === 'BROWSER_USED' ? 'Mã trình duyệt này đã cấp dùng thử cho tài khoản khác' : user.signupTrialStatus === 'BLOCKED_DOMAIN' ? 'Domain email bị chặn nhận dùng thử' : undefined} className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-ink-mute">
       <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
-      {user.signupTrialStatus === 'BROWSER_USED' ? 'Đã dùng thử (trình duyệt)' : user.signupTrialStatus === 'BROWSER_UNAVAILABLE' ? 'Chưa cấp thử' : 'Hết hạn'}
+      {user.signupTrialStatus === 'BLOCKED_DOMAIN' ? 'Chặn thử (domain)' : user.signupTrialStatus === 'BROWSER_USED' ? 'Đã dùng thử (trình duyệt)' : user.signupTrialStatus === 'BROWSER_UNAVAILABLE' ? 'Chưa cấp thử' : 'Hết hạn'}
     </span>
   );
 }

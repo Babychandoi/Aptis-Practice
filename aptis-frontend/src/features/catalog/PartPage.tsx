@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ApiError } from '@/api/client';
 import { practiceApi } from '@/api/endpoints';
@@ -7,6 +7,7 @@ import { ErrorBlock } from '@/components/ui/ErrorBlock';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { PremiumGate } from '@/components/ui/PremiumGate';
 import { MicCheck } from '@/features/practice/MicCheck';
+import { primeAttempt } from '@/features/practice/attemptCache';
 import { useComponents, useExamVersions, usePart, useParts } from '@/features/catalog/catalogQueries';
 import { componentDisplayName, findComponentBySlug, findPartBySlug } from '@/features/catalog/catalogRoutes';
 
@@ -25,6 +26,7 @@ export function PartPage() {
     partSlug?: string;
   }>();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   // Speaking chèn thêm bước kiểm tra micro trước khi tạo lượt luyện, vì bài nói
   // do AI chấm nên một bản ghi không thu được tiếng sẽ ra điểm thấp oan.
   const [step, setStep] = useState<'intro' | 'mic-check'>('intro');
@@ -51,10 +53,12 @@ export function PartPage() {
         onlyIncorrect: false,
         timed: false,
       });
-      await practiceApi.start(attempt.id);
-      return attempt;
+      return practiceApi.start(attempt.id);
     },
-    onSuccess: (attempt) => navigate(`/attempts/${attempt.id}`, { replace: true }),
+    onSuccess: (attempt) => {
+      primeAttempt(queryClient, attempt);
+      navigate(`/attempts/${attempt.id}`, { replace: true });
+    },
   });
 
   const loading = versionsQuery.isLoading

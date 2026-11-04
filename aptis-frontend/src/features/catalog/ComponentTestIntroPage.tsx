@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/api/client';
 import { mockTestApi, practiceApi } from '@/api/endpoints';
 import { ErrorBlock } from '@/components/ui/ErrorBlock';
@@ -7,10 +7,12 @@ import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { PremiumGate } from '@/components/ui/PremiumGate';
 import { useComponents, useExamVersions } from '@/features/catalog/catalogQueries';
 import { componentDisplayName, componentPath, findComponentBySlug } from '@/features/catalog/catalogRoutes';
+import { primeAttempt } from '@/features/practice/attemptCache';
 
 export function ComponentTestIntroPage() {
   const { componentSlug, blueprintId } = useParams<{ componentSlug: string; blueprintId: string }>();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const versions = useExamVersions();
   const components = useComponents(versions.data?.[0]?.id);
   const component = findComponentBySlug(components.data ?? [], componentSlug);
@@ -22,10 +24,12 @@ export function ComponentTestIntroPage() {
   const startTest = useMutation({
     mutationFn: async () => {
       const attempt = await mockTestApi.createAttempt(blueprintId!);
-      await practiceApi.start(attempt.id);
-      return attempt;
+      return practiceApi.start(attempt.id);
     },
-    onSuccess: (attempt) => navigate(`/attempts/${attempt.id}`),
+    onSuccess: (attempt) => {
+      primeAttempt(queryClient, attempt);
+      navigate(`/attempts/${attempt.id}`);
+    },
   });
 
   if (versions.isLoading || components.isLoading || test.isLoading) return <LoadingBlock label="Đang chuẩn bị bài test…" />;

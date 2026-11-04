@@ -15,6 +15,8 @@ import vn.weconex.aptis.common.util.Enums.AssetStatus;
 import vn.weconex.aptis.common.util.Enums.AssetType;
 import vn.weconex.aptis.content.domain.QuestionSet;
 import vn.weconex.aptis.content.mongo.QuestionSetDocument;
+import vn.weconex.aptis.evaluation.mongo.RubricDefinition;
+import vn.weconex.aptis.evaluation.mongo.RubricDefinitionRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -28,13 +30,17 @@ import static org.mockito.Mockito.when;
 class PublishValidatorTest {
 
     private AssetRepository assetRepository;
+    private RubricDefinitionRepository rubricRepository;
     private PublishValidator validator;
 
     @BeforeEach
     void setUp() {
         assetRepository = mock(AssetRepository.class);
         when(assetRepository.findById(anyString())).thenReturn(Optional.empty());
-        validator = new PublishValidator(assetRepository);
+        rubricRepository = mock(RubricDefinitionRepository.class);
+        when(rubricRepository.findByCode(anyString())).thenReturn(Optional.empty());
+        when(rubricRepository.findByCode("APTIS_WRITING_PART_4_V1")).thenReturn(Optional.of(rubric("ACTIVE")));
+        validator = new PublishValidator(assetRepository, rubricRepository);
     }
 
     @Test
@@ -125,6 +131,40 @@ class PublishValidatorTest {
         questionSet.setMaxScore(BigDecimal.valueOf(25));
 
         assertThat(validator.validate(questionSet, documentWith(item))).isEmpty();
+    }
+
+    /** Mã rubric gõ sai từng làm bài thi kẹt mãi ở trạng thái đang chấm. */
+    @Test
+    void rejectsUnknownRubricCode() {
+        QuestionSetDocument.Item item = recordingItem("APTIS_SPEAKING");
+
+        assertThat(validator.validate(questionSet(1), documentWith(item)))
+                .anyMatch(e -> e.contains("rubric APTIS_SPEAKING không tồn tại"));
+    }
+
+    @Test
+    void rejectsInactiveRubric() {
+        when(rubricRepository.findByCode("APTIS_SPEAKING_PART_1_V0")).thenReturn(Optional.of(rubric("ARCHIVED")));
+        QuestionSetDocument.Item item = recordingItem("APTIS_SPEAKING_PART_1_V0");
+
+        assertThat(validator.validate(questionSet(1), documentWith(item)))
+                .anyMatch(e -> e.contains("không ở trạng thái ACTIVE"));
+    }
+
+    private static QuestionSetDocument.Item recordingItem(String rubricCode) {
+        QuestionSetDocument.Item item = new QuestionSetDocument.Item();
+        item.setId("item_1");
+        item.setSequenceNo(1);
+        item.setResponseType("AUDIO_RECORDING");
+        item.setMaxScore(1);
+        item.setRubricCode(rubricCode);
+        return item;
+    }
+
+    private static RubricDefinition rubric(String status) {
+        RubricDefinition rubric = new RubricDefinition();
+        rubric.setStatus(status);
+        return rubric;
     }
 
     /** maxScore lệch làm phần trăm điểm hiển thị cho học viên sai. */

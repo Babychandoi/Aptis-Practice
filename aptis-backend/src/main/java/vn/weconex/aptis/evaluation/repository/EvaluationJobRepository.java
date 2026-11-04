@@ -32,6 +32,19 @@ public interface EvaluationJobRepository extends JpaRepository<EvaluationJob, St
 
     long countByAttemptIdAndStatusIn(String attemptId, List<JobStatus> statuses);
 
+    /**
+     * Số job của attempt còn chờ hoặc đang chấm, đọc bản đã commit mới nhất.
+     *
+     * <p>Phải là locking read (FOR SHARE). MySQL chạy REPEATABLE READ: một SELECT
+     * thường dùng ảnh chụp lấy từ lần đọc đầu tiên của transaction, trước khi worker
+     * chờ được khoá attempt. Hai job cùng attempt xong cùng lúc thì job sau vẫn thấy
+     * job trước "đang chấm", không job nào chốt attempt và bài nằm mãi ở SCORING
+     * (đã xảy ra 28/09).
+     */
+    @Query(value = "SELECT COUNT(*) FROM evaluation_jobs WHERE attempt_id = :attemptId"
+            + " AND status IN (QUEUED, PROCESSING) FOR SHARE", nativeQuery = true)
+    long countPendingCurrent(@Param("attemptId") String attemptId);
+
     @Query("""
             SELECT j FROM EvaluationJob j
             WHERE j.status = :status

@@ -115,6 +115,7 @@ public record AptisProperties(
             String premiumCode,
             RenewalPolicy renewalPolicy,
             int signupTrialDays,
+            List<String> signupTrialBlockedDomains,
             boolean paywallAfterTrial) {
 
         public enum RenewalPolicy {
@@ -128,6 +129,22 @@ public record AptisProperties(
                 return false;
             }
             return now.isBefore(createdAt.plus(java.time.Duration.ofDays(signupTrialDays)));
+        }
+
+        /** Exact email-domain match; never blocks a lookalike suffix domain. */
+        public boolean signupTrialDomainBlocked(String email) {
+            if (email == null || signupTrialBlockedDomains == null) {
+                return false;
+            }
+            int at = email.lastIndexOf('@');
+            if (at <= 0 || at == email.length() - 1) {
+                return false;
+            }
+            String emailDomain = email.substring(at + 1).trim();
+            return signupTrialBlockedDomains.stream()
+                    .filter(domain -> domain != null && !domain.isBlank())
+                    .map(String::trim)
+                    .anyMatch(domain -> domain.equalsIgnoreCase(emailDomain));
         }
     }
 

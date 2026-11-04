@@ -218,6 +218,8 @@ aptis:
     #
     # 0 = tắt, quay về mô hình có nội dung miễn phí vĩnh viễn.
     signup-trial-days: ${SIGNUP_TRIAL_DAYS:1}
+    # Chặn dùng thử theo đúng domain email; vẫn cho phép đăng ký và mua gói.
+    signup-trial-blocked-domains: ${SIGNUP_TRIAL_BLOCKED_DOMAINS:acvvtprx.art}
     # true = hết dùng thử thì KỂ CẢ nội dung gắn nhãn FREE cũng cần trả phí.
     # Nhãn FREE trên question_sets/test_blueprints vẫn giữ nguyên trong DB, chỉ
     # mất tác dụng với học viên — tắt cờ này là mở lại ngay, không phải sửa dữ

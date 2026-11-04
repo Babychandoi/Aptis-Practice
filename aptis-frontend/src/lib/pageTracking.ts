@@ -30,7 +30,16 @@ export type PageKey =
   | 'attempt'
   | 'attempt-result'
   | 'history'
-  | 'profile';
+  | 'profile'
+  | 'monthly-focus'
+  | 'monthly-focus-practice'
+  | 'monthly-focus-writing-club'
+  | 'component-test-intro'
+  | 'ai-lounge'
+  | 'ai-voice-plans'
+  | 'tools'
+  | 'classroom'
+  | 'teaching';
 
 /**
  * Suy khóa trang từ đường dẫn.
@@ -54,6 +63,18 @@ export function resolvePageKey(pathname: string): PageKey | null {
   if (pathname === '/mock-tests') return 'mock-tests';
   if (pathname === '/history') return 'history';
   if (pathname === '/profile') return 'profile';
+  if (pathname === '/ai-english-lounge') return 'ai-lounge';
+  if (pathname === '/ai-voice/plans') return 'ai-voice-plans';
+  if (pathname === '/cong-cu') return 'tools';
+  if (pathname.startsWith('/lop-hoc') || pathname.startsWith('/lop/')) return 'classroom';
+  if (pathname.startsWith('/giang-day')) return 'teaching';
+
+  // Đề trọng điểm tháng: câu lạc bộ Writing trước, rồi trình luyện
+  // (/de-trong-diem/nghe/1 — 3 đoạn), còn lại là trang mục lục kỹ năng.
+  if (pathname.startsWith('/de-trong-diem/viet/clb/')) return 'monthly-focus-writing-club';
+  if (pathname === '/de-trong-diem' || pathname.startsWith('/de-trong-diem/')) {
+    return pathname.split('/').filter(Boolean).length > 2 ? 'monthly-focus-practice' : 'monthly-focus';
+  }
 
   if (pathname.startsWith('/attempts/')) {
     return pathname.endsWith('/result') ? 'attempt-result' : 'attempt';
@@ -62,10 +83,15 @@ export function resolvePageKey(pathname: string): PageKey | null {
   if (pathname === '/luyen-tap') return 'skill-list';
   if (pathname.startsWith('/luyen-tap/')) {
     if (pathname.endsWith('/theo-part')) return 'component-parts';
+    // Trang giới thiệu một bài test cũng chứa "/bai-test" — phải kiểm trước.
+    if (pathname.endsWith('/gioi-thieu')) return 'component-test-intro';
     if (pathname.includes('/bai-test')) return 'component-tests';
     // "/luyen-tap/doc" là trang kỹ năng, "/luyen-tap/doc/part-1" là trang Part.
     return pathname.split('/').filter(Boolean).length > 2 ? 'part' : 'component';
   }
+  // Đường dẫn cũ theo id, cùng trang với /luyen-tap/:kỹ năng và /luyen-tap/:kỹ năng/:part.
+  if (pathname.startsWith('/components/')) return 'component';
+  if (pathname.startsWith('/parts/')) return 'part';
 
   // Trang không nằm trong danh sách theo dõi (đăng nhập, quản trị…).
   return null;

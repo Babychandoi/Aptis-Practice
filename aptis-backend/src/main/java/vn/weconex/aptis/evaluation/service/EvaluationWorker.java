@@ -497,8 +497,8 @@ public class EvaluationWorker {
      * Chốt attempt khi mọi job đã xong. Job của attempt khác không ảnh hưởng.
      */
     private void finalizeAttemptIfDone(String attemptId, AttemptDocument attemptDocument) {
-        long pending = jobRepository.countByAttemptIdAndStatusIn(
-                attemptId, List.of(JobStatus.QUEUED, JobStatus.PROCESSING));
+        // Đọc có khoá để thấy job khác của attempt vừa commit (xem countPendingCurrent)
+        long pending = jobRepository.countPendingCurrent(attemptId);
 
         // Job hiện tại vẫn còn PROCESSING trong transaction này
         if (pending > 1) {

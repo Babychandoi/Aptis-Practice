@@ -79,6 +79,13 @@ import type {
   PreviewResult,
   UpdateQuestionSetRequest,
 } from '@/types/admin';
+import type {
+  MonthlyFocusPage,
+  MonthlyFocusPageKey,
+  MonthlyFocusProgress,
+  MonthlyFocusResult,
+  MonthlyFocusWritingOverview,
+} from '@/types/monthlyFocus';
 
 // ---------------------------------------------------------------------
 // Auth
@@ -399,6 +406,41 @@ export const contentUpdateApi = {
 // ---------------------------------------------------------------------
 // Dự đoán đề
 // ---------------------------------------------------------------------
+
+// ---------------------------------------------------------------------
+// Đề trọng điểm tháng
+// ---------------------------------------------------------------------
+
+export const monthlyFocusApi = {
+  /** Số đề mỗi trang, cho các thẻ chọn kỹ năng/Part. */
+  summary: () =>
+    api.get<{ counts: Record<string, number> }>('/monthly-focus/summary').then((r) => r.data.counts),
+
+  /** Một trang luyện; `topic` lọc theo câu lạc bộ (trang Writing). */
+  page: (pageKey: MonthlyFocusPageKey, topic?: string) =>
+    api
+      .get<MonthlyFocusPage>(`/monthly-focus/pages/${pageKey}`, { params: topic ? { topic } : undefined })
+      .then((r) => r.data),
+
+  writing: () => api.get<MonthlyFocusWritingOverview>('/monthly-focus/writing').then((r) => r.data),
+
+  /** URL ký ngắn hạn (10 phút) cho audio/ảnh của một đề, theo assetId. */
+  assetUrls: (pageKey: MonthlyFocusPageKey, questionSetId: string) =>
+    api
+      .get<{ urls: Record<string, string> }>(`/monthly-focus/pages/${pageKey}/sets/${questionSetId}/assets`)
+      .then((r) => r.data.urls),
+
+  progress: (pageKey: MonthlyFocusPageKey) =>
+    api.get<MonthlyFocusProgress[]>(`/monthly-focus/pages/${pageKey}/progress`).then((r) => r.data),
+
+  record: (pageKey: MonthlyFocusPageKey, questionSetId: string, result: MonthlyFocusResult) =>
+    api
+      .post<MonthlyFocusProgress>(`/monthly-focus/pages/${pageKey}/progress`, { questionSetId, result })
+      .then((r) => r.data),
+
+  clearProgress: (pageKey: MonthlyFocusPageKey) =>
+    api.delete(`/monthly-focus/pages/${pageKey}/progress`).then(() => undefined),
+};
 
 export const examPredictionApi = {
   /** Bản tin của một ngày; bỏ trống date thì backend lấy hôm nay. */

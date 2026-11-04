@@ -1,6 +1,7 @@
 package vn.weconex.aptis.content.web;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,6 +26,8 @@ import vn.weconex.aptis.entitlement.service.EntitlementService;
 @RequiredArgsConstructor
 public class ExamPredictionController {
 
+    private static final ZoneId BUSINESS_ZONE = ZoneId.of("Asia/Ho_Chi_Minh");
+
     /** Cửa sổ mặc định cho tab "đề hot nhất", tính theo tháng. */
     private static final int DEFAULT_HOT_MONTHS = 2;
 
@@ -39,7 +42,7 @@ public class ExamPredictionController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 
         requirePremium();
-        return service.feedFor(date == null ? LocalDate.now() : date);
+        return service.feedFor(date == null ? LocalDate.now(BUSINESS_ZONE) : date);
     }
 
     /** Chủ đề lặp nhiều nhất trong N tháng gần đây. */
@@ -49,7 +52,7 @@ public class ExamPredictionController {
 
         requirePremium();
         int window = months == null || months < 1 ? DEFAULT_HOT_MONTHS : Math.min(months, 12);
-        LocalDate to = LocalDate.now();
+        LocalDate to = LocalDate.now(BUSINESS_ZONE);
         return service.hottestBetween(to.minusMonths(window), to);
     }
 

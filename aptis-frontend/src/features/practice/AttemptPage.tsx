@@ -13,6 +13,7 @@ import { useComponents, useExamVersions, useParts, usePartsOfComponents } from '
 import { componentDisplayName, componentPath } from '@/features/catalog/catalogRoutes';
 import type { ComponentProgress } from '@/types/api';
 import { AudioPlayer } from '@/features/practice/AudioPlayer';
+import { applyQuestionSetScore, attemptQueryKey } from '@/features/practice/attemptCache';
 import { ImageViewer } from '@/features/practice/ImageViewer';
 import { ItemRenderer } from '@/features/practice/renderers/ItemRenderer';
 import {
@@ -86,7 +87,7 @@ export function AttemptPage() {
   const [startedAtMs] = useState(() => Date.now());
 
   const attemptQuery = useQuery({
-    queryKey: ['attempt', attemptId, studentUserId],
+    queryKey: attemptQueryKey(attemptId!, studentUserId),
     queryFn: () =>
       studentUserId
         ? teacherClassroomApi.studentAttemptDetail(studentUserId, attemptId!)
@@ -164,10 +165,10 @@ export function AttemptPage() {
 
   const startMutation = useMutation({
     mutationFn: () => practiceApi.start(attemptId!),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['attempt', attemptId] });
+    // start trả về cả lượt: ghi thẳng vào cache, không tải lại lần nữa
+    onSuccess: (data) => {
+      queryClient.setQueryData(attemptQueryKey(attemptId!), data);
       queryClient.invalidateQueries({ queryKey: ['attempts'] });
-      void attemptQuery.refetch();
     },
   });
 
@@ -193,11 +194,11 @@ export function AttemptPage() {
       await autosave.flush();
       return practiceApi.scoreQuestionSet(attemptId!, questionSetId);
     },
-    // Nạp lại lượt để bộ vừa chấm hiện điểm và đáp án
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['attempt', attemptId] });
+    // Chỉ vá bộ vừa chấm để hiện điểm và đáp án. Tải lại cả lượt thì luyện Part
+    // (cả ngân hàng đề) mỗi lần bấm chấm lại kéo về vài trăm KB.
+    onSuccess: (score) => {
+      applyQuestionSetScore(queryClient, attemptId!, score);
       queryClient.invalidateQueries({ queryKey: ['attempts'] });
-      void attemptQuery.refetch();
     },
   });
 
