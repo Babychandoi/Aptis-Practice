@@ -54,7 +54,16 @@ public class AdminAnalyticsController {
             Map.entry("attempt", "Đang làm bài"),
             Map.entry("attempt-result", "Kết quả bài làm"),
             Map.entry("history", "Lịch sử"),
-            Map.entry("profile", "Hồ sơ"));
+            Map.entry("profile", "Hồ sơ"),
+            Map.entry("monthly-focus", "Đề trọng điểm tháng"),
+            Map.entry("monthly-focus-practice", "Luyện đề trọng điểm"),
+            Map.entry("monthly-focus-writing-club", "CLB Writing trọng điểm"),
+            Map.entry("component-test-intro", "Giới thiệu bài test"),
+            Map.entry("ai-lounge", "AI English Lounge"),
+            Map.entry("ai-voice-plans", "Gói AI Voice"),
+            Map.entry("tools", "Công cụ"),
+            Map.entry("classroom", "Lớp học"),
+            Map.entry("teaching", "Giảng dạy"));
 
     private final PageViewRepository pageViewRepository;
     private final UserRepository userRepository;
