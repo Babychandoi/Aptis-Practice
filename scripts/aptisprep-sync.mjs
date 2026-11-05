@@ -14,8 +14,9 @@
  *
  * Trang này robots.txt cho phép; chỉ đọc HTML của chính trang (gói RSC của Next.js),
  * không gọi /api/. Bài bảng tin tự viết theo khuôn, không chép nguyên văn nguồn.
- * Trang dự đoán bên mình lấy bản có ngày gần nhất <= hôm nay, nên nguồn không đổi
- * thì không cần tạo bản mới. Chạy lại cùng ngày không ghi trùng (khoá theo ngày + slug).
+ * Ngày nào cũng có bản và bài bảng tin: nguồn chưa đăng bản cho hôm nay thì chép bản
+ * gần nhất sang hôm nay (đánh dấu "chép tự động"), nguồn đăng muộn thì bản thật thay
+ * bản chép. Chạy lại cùng ngày không ghi trùng (khoá theo ngày + slug).
  */
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
@@ -228,7 +229,11 @@ const dmy = (iso) => { const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}`
 const uniq = (list) => [...new Set(list)];
 const joinList = (list) => list.join(', ');
 
-export function buildArticle({ date, prevDate, feed, rows, speakingChanged }) {
+/**
+ * Bài bảng tin của một ngày. `carried`: nguồn chưa có bản mới, danh sách được chép
+ * nguyên từ bản `prevDate` sang ngày `date`.
+ */
+export function buildArticle({ date, prevDate, feed, rows, speakingChanged, carried = false }) {
   const fresh = feed.added.filter((x) => x.kind === 'new');
   const promoted = feed.added.filter((x) => x.kind === 'promoted');
   const addedSet = new Set(fresh.map((x) => x.row));
@@ -257,6 +262,9 @@ export function buildArticle({ date, prevDate, feed, rows, speakingChanged }) {
   if (changes.length) {
     lines.push('', `## Điểm mới so với bản ${dm(prevDate)}`, '', ...changes);
     lines.push('', 'Nếu bạn đã ôn theo bài trước thì chỉ cần bổ sung phần này.');
+  } else {
+    lines.push('', `Danh sách chủ đề **giữ nguyên như bản ${dm(prevDate)}**${carried ? ' — chưa có cập nhật mới cho hôm nay' : ''}. ` +
+      'Nếu bạn đã ôn theo bài trước thì tiếp tục luyện các bộ đề bên dưới, bài này gắn bộ đề khác để bạn có đề mới làm.');
   }
 
   // Reading / Listening: theo đúng danh sách nguồn, xếp theo Part bên mình.
@@ -300,7 +308,9 @@ export function buildArticle({ date, prevDate, feed, rows, speakingChanged }) {
   const headline = uniq(fresh.map((x) => x.row.label)).slice(0, 3);
   const title = headline.length
     ? `Dự đoán đề thi ngày ${dm(date)}: thêm ${headline.join(', ')}`
-    : `Dự đoán đề thi ngày ${dm(date)}: cập nhật nhóm chủ đề ưu tiên`;
+    : changes.length
+      ? `Dự đoán đề thi ngày ${dm(date)}: cập nhật nhóm chủ đề ưu tiên`
+      : `Dự đoán đề thi ngày ${dm(date)}: giữ nguyên chủ đề ưu tiên`;
   const [y, m, d] = date.split('-');
   return {
     slug: `du-doan-de-thi-ngay-${Number(d)}-${Number(m)}-${y}`,
@@ -353,11 +363,33 @@ async function main() {
     charset: 'utf8mb4',
     dateStrings: true,
   });
+  // Ngày đích: ngày thi của bản nguồn; nguồn chưa có bản cho hôm nay (bản cũ hơn hôm
+  // nay) thì chép bản gần nhất thành bản của HÔM NAY, để ngày nào cũng có dự đoán và
+  // bài bảng tin. Không chép sẵn cho ngày mai: nguồn thường đăng tối hôm trước, chép
+  // trước thì lại phải thay ngay trong đêm.
+  const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' });
+  const carried = date < today;
+  const target = carried ? today : date;
+  if (carried) console.log(`Nguồn chưa có bản cho hôm nay ${dmy(today)} — chép bản gần nhất sang.`);
+
   let locked = false;
   try {
-    const [[{ prevDate }]] = await db.query('SELECT MAX(predict_date) AS prevDate FROM exam_predictions WHERE predict_date <= ?', [date]);
+    const [[{ latest }]] = await db.query('SELECT MAX(predict_date) AS latest FROM exam_predictions WHERE predict_date <= ?', [target]);
+    if (!latest) throw new Error('DB chưa có bản dự đoán nào để chép tiếp.');
+    // Ngày đích đã có bản: bỏ qua, trừ khi đó là bản chép tự động mà giờ nguồn đã đăng
+    // bản thật cho ngày đó — khi ấy thay bản chép bằng bản thật.
+    let replacing = false;
+    if (latest === target) {
+      const [[{ auto }]] = await db.query(
+        "SELECT COUNT(*) AS auto FROM exam_predictions WHERE predict_date = ? AND source LIKE '%chép tự động%'", [target]);
+      replacing = !carried && Number(auto) > 0;
+      if (!replacing) { console.log(`DB đã có bản ngày ${dmy(target)}, bỏ qua.`); return; }
+      console.log(`Ngày ${dmy(target)} đang là bản chép tự động — thay bằng bản nguồn vừa đăng.`);
+    }
+    const [[{ prevDate }]] = replacing
+      ? await db.query('SELECT MAX(predict_date) AS prevDate FROM exam_predictions WHERE predict_date < ?', [target])
+      : [[{ prevDate: latest }]];
     if (!prevDate) throw new Error('DB chưa có bản dự đoán nào để chép tiếp.');
-    if (prevDate === date) { console.log(`DB đã có bản ngày ${dmy(date)}, bỏ qua.`); return; }
 
     const [prevRows] = await db.query(
       `SELECT ep.topic_id AS topicId, t.name AS topicName, ep.part_id AS partId, p.code AS part,
@@ -382,18 +414,17 @@ async function main() {
     if (speakingChanged) console.log('  ! Speaking ở nguồn đã đổi so với lần cào trước — giữ bản cũ, cần xem tay.');
     if (ratio > MAX_UNMAPPED_RATIO) throw new Error(`${feed.unmapped.length}/${items.length} mục không khớp — dừng để tránh ghi sai.`);
 
-    if (signature(feed.rows) === signature(prevRows)) {
-      console.log('Nguồn không có thay đổi so với bản trên DB, không tạo bản mới.');
-      return;
-    }
+    // Không đổi vẫn tạo bản cho ngày mới: học viên mỗi ngày đều thấy bản và bài của ngày đó.
+    if (signature(feed.rows) === signature(prevRows)) console.log(`Danh sách giữ nguyên như bản ${dmy(prevDate)}.`);
 
     const [[post]] = await db.query(
       `SELECT id, created_by AS createdBy, comments_enabled AS commentsEnabled, comments_moderated AS commentsModerated
          FROM news_posts WHERE slug LIKE 'du-doan-de-thi-%' AND status = 'PUBLISHED' ORDER BY published_at DESC LIMIT 1`);
     if (!post) throw new Error('Không thấy bài dự đoán cũ để lấy người đăng.');
-    const article = buildArticle({ date, prevDate, feed, rows: feed.rows, speakingChanged });
-    const [[dup]] = await db.query('SELECT COUNT(*) AS n FROM news_posts WHERE slug = ?', [article.slug]);
-    if (Number(dup.n)) { console.log(`Bài ${article.slug} đã có, bỏ qua.`); return; }
+    const article = buildArticle({ date: target, prevDate, feed, rows: feed.rows, speakingChanged, carried });
+    // Bài cũ cùng ngày: khi thay bản chép thì sửa tại chỗ (giữ bình luận), không thì bỏ qua.
+    const [[existingPost]] = await db.query('SELECT id FROM news_posts WHERE slug = ?', [article.slug]);
+    if (existingPost && !replacing) { console.log(`Bài ${article.slug} đã có, bỏ qua.`); return; }
 
     // Gắn đề: mỗi mục một bộ PUBLISHED, ưu tiên bộ chưa từng gắn ở bài nào để học viên có đề mới.
     const [prevLinks] = await db.query('SELECT question_set_id AS id FROM news_post_question_sets');
@@ -428,28 +459,41 @@ async function main() {
 
     if (!apply) { console.log('(chỉ đọc) Chưa ghi gì. Thêm --apply để đăng.'); return; }
 
-    const [[lock]] = await db.query('SELECT GET_LOCK(?, 0) AS acquired', ['aptis-prediction-' + date]);
+    const lockKey = 'aptis-prediction-' + target;
+    const [[lock]] = await db.query('SELECT GET_LOCK(?, 0) AS acquired', [lockKey]);
     if (Number(lock.acquired) !== 1) throw new Error('Có tiến trình khác đang đăng bản này.');
-    locked = true;
-    const source = `${prediction.source ?? 'Aptistest.edu.vn'} qua aptisprep.com (bản ${dmy(date)})`.slice(0, 255);
+    locked = lockKey;
+    // "chép tự động" trong source là dấu để lần chạy sau nhận ra và thay bằng bản thật.
+    const source = (`${prediction.source ?? 'Aptistest.edu.vn'} qua aptisprep.com (bản ${dmy(date)})`
+      + (carried ? ` — chép tự động sang ${dmy(target)}` : '')).slice(0, 255);
     await db.beginTransaction();
     try {
-      const [[again]] = await db.query('SELECT COUNT(*) AS n FROM exam_predictions WHERE predict_date = ?', [date]);
-      if (Number(again.n)) throw new Error(`Ngày ${date} vừa có dữ liệu, dừng để không ghi đè.`);
+      if (replacing) {
+        await db.execute("DELETE FROM exam_predictions WHERE predict_date = ? AND source LIKE '%chép tự động%'", [target]);
+      }
+      const [[again]] = await db.query('SELECT COUNT(*) AS n FROM exam_predictions WHERE predict_date = ?', [target]);
+      if (Number(again.n)) throw new Error(`Ngày ${target} vừa có dữ liệu, dừng để không ghi đè.`);
       for (const r of feed.rows) {
         await db.execute(
           'INSERT INTO exam_predictions ' +
           '(id,predict_date,topic_id,part_id,component_id,priority,label,section_label,source,status,display_order,created_by,created_at,updated_at) ' +
           "VALUES (?,?,?,?,?,?,?,?,?,'PUBLISHED',?,?,NOW(),NOW())",
-          [randomUUID(), date, r.topicId, r.partId, r.componentId, r.priority, r.label, r.sectionLabel,
+          [randomUUID(), target, r.topicId, r.partId, r.componentId, r.priority, r.label, r.sectionLabel,
             source, r.displayOrder, r.createdBy ?? post.createdBy]);
       }
-      const postId = randomUUID();
-      await db.execute(
-        'INSERT INTO news_posts ' +
-        '(id,slug,title,excerpt,body,status,pinned,comments_enabled,comments_moderated,view_count,published_at,created_by,created_at,updated_at) ' +
-        "VALUES (?,?,?,?,?,'PUBLISHED',1,?,?,0,NOW(),?,NOW(),NOW())",
-        [postId, article.slug, article.title, article.excerpt, article.body, post.commentsEnabled, post.commentsModerated, post.createdBy]);
+      const postId = existingPost?.id ?? randomUUID();
+      if (existingPost) {
+        await db.execute('UPDATE news_posts SET title = ?, excerpt = ?, body = ?, pinned = 1, updated_at = NOW() WHERE id = ?',
+          [article.title, article.excerpt, article.body, postId]);
+        await db.execute('DELETE FROM news_post_question_sets WHERE post_id = ?', [postId]);
+        await db.execute('DELETE FROM news_post_blueprints WHERE post_id = ?', [postId]);
+      } else {
+        await db.execute(
+          'INSERT INTO news_posts ' +
+          '(id,slug,title,excerpt,body,status,pinned,comments_enabled,comments_moderated,view_count,published_at,created_by,created_at,updated_at) ' +
+          "VALUES (?,?,?,?,?,'PUBLISHED',1,?,?,0,NOW(),?,NOW(),NOW())",
+          [postId, article.slug, article.title, article.excerpt, article.body, post.commentsEnabled, post.commentsModerated, post.createdBy]);
+      }
       for (const [i, id] of setIds.entries()) {
         await db.execute('INSERT INTO news_post_question_sets (post_id,question_set_id,display_order) VALUES (?,?,?)', [postId, id, i + 1]);
       }
@@ -460,13 +504,13 @@ async function main() {
         "UPDATE news_posts SET pinned = 0, updated_at = NOW() WHERE pinned = 1 AND slug LIKE 'du-doan-de-thi-%' AND slug <> ?",
         [article.slug]);
       await db.commit();
-      console.log(`Đã đăng bản ${dmy(date)} và bài ${article.slug}.`);
+      console.log(`Đã ${replacing ? 'thay' : 'đăng'} bản ${dmy(target)}${carried ? ` (chép từ bản ${dmy(prevDate)})` : ''} và bài ${article.slug}.`);
     } catch (error) {
       await db.rollback();
       throw error;
     }
   } finally {
-    if (locked) await db.query('SELECT RELEASE_LOCK(?)', ['aptis-prediction-' + date]);
+    if (locked) await db.query('SELECT RELEASE_LOCK(?)', [locked]);
     await db.end();
   }
 }
