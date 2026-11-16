@@ -10,6 +10,7 @@ import { componentPath } from '@/features/catalog/catalogRoutes';
 import { SKILLS, cefrFromScore50, skillByCode } from '@/lib/skills';
 import { Icon } from '@/components/shell/icons';
 import { DashboardFresh } from './DashboardFresh';
+import { DailyWarmUpGate } from '@/features/daily-warm-up/DailyWarmUpGate';
 import { stagger } from '@/lib/motion';
 
 /**
@@ -108,6 +109,7 @@ export function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-5">
+      <DailyWarmUpGate userId={user?.id} />
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
         {/* Lời chào + gợi ý hôm nay */}
         <section className="relative overflow-hidden rounded-3xl bg-ink p-7 text-white animate-in sm:p-8">
