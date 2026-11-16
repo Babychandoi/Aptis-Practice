@@ -24,8 +24,11 @@ public interface QuestionSetRepository
 
     Page<QuestionSet> findByPartIdAndStatus(String partId, ContentStatus status, Pageable pageable);
 
+    /** Đề hiện trong ngân hàng của một Part (bỏ đề đã ẩn, xem V73). */
+    Page<QuestionSet> findByPartIdAndStatusAndListedTrue(String partId, ContentStatus status, Pageable pageable);
+
     /** Toàn bộ đề của một Part, thứ tự ổn định theo mã — dùng cho bảng mẹo học. */
-    List<QuestionSet> findByPartIdAndStatusOrderByCodeAsc(String partId, ContentStatus status);
+    List<QuestionSet> findByPartIdAndStatusAndListedTrueOrderByCodeAsc(String partId, ContentStatus status);
 
     /**
      * Chọn bộ câu hỏi cho luyện theo Part, ưu tiên theo PHẦN IX §56:
@@ -45,6 +48,7 @@ public interface QuestionSetRepository
                   AND uqs.user_id = :userId
             WHERE qs.part_id = :partId
               AND qs.status = 'PUBLISHED'
+              AND qs.listed = 1
               AND (qs.access_level = 'FREE' OR :hasPremium = TRUE)
               AND qs.id NOT IN (:excludedIds)
             ORDER BY
@@ -78,6 +82,7 @@ public interface QuestionSetRepository
                   AND uqs.user_id = :userId
             WHERE qs.part_id = :partId
               AND qs.status = 'PUBLISHED'
+              AND qs.listed = 1
               AND (:allowFree = TRUE OR qs.access_level <> 'FREE')
               AND (:allowPremium = TRUE OR qs.access_level <> 'PREMIUM')
               AND (qs.access_level = 'FREE' OR :hasPremium = TRUE)
@@ -126,6 +131,7 @@ public interface QuestionSetRepository
                   AND uqs.user_id = :userId
             WHERE qs.part_id = :partId
               AND qs.status = 'PUBLISHED'
+              AND qs.listed = 1
               AND (:allowFree = TRUE OR qs.access_level <> 'FREE')
               AND (:allowPremium = TRUE OR qs.access_level <> 'PREMIUM')
               AND (qs.access_level = 'FREE' OR :hasPremium = TRUE)
@@ -173,6 +179,9 @@ public interface QuestionSetRepository
 
     long countByPartIdAndStatus(String partId, ContentStatus status);
 
+    /** Số đề hiện trong ngân hàng của một Part (bỏ đề đã ẩn). */
+    long countByPartIdAndStatusAndListedTrue(String partId, ContentStatus status);
+
     /** Đếm đề theo trạng thái, lọc theo part nếu có — cho các ô đếm ở ngân hàng câu hỏi. */
     @Query("""
             SELECT qs.status, COUNT(qs) FROM QuestionSet qs
@@ -189,6 +198,7 @@ public interface QuestionSetRepository
     @Query("""
             SELECT COUNT(qs) FROM QuestionSet qs
             WHERE qs.status = :status
+              AND qs.listed = true
               AND (:partId IS NULL OR qs.part.id = :partId)
               AND (:topicId IS NULL OR qs.topic.id = :topicId)
             """)
@@ -207,6 +217,7 @@ public interface QuestionSetRepository
     @Query("""
             SELECT qs FROM QuestionSet qs
             WHERE qs.status = vn.weconex.aptis.common.util.Enums.ContentStatus.PUBLISHED
+              AND qs.listed = true
               AND qs.topic.id = :topicId
               AND (:partId IS NULL OR qs.part.id = :partId)
               AND (:componentId IS NULL OR qs.part.component.id = :componentId)
@@ -234,6 +245,7 @@ public interface QuestionSetRepository
             FROM question_sets qs
             WHERE qs.part_id = :partId
               AND qs.status = 'PUBLISHED'
+              AND qs.listed = 1
               AND qs.title = :title
               AND (qs.access_level = 'FREE' OR :hasPremium = TRUE)
             LIMIT 1
@@ -257,6 +269,7 @@ public interface QuestionSetRepository
             SELECT qs.topic_id AS topicId, qs.part_id AS partId, COUNT(*) AS total
             FROM question_sets qs
             WHERE qs.status = 'PUBLISHED'
+              AND qs.listed = 1
               AND qs.topic_id IN (:topicIds)
             GROUP BY qs.topic_id, qs.part_id
             """, nativeQuery = true)

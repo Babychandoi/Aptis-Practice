@@ -20,7 +20,7 @@ public interface SpeakingPart4Repository extends JpaRepository<AiMergedAnswer, S
             JOIN parts p ON p.id = qs.part_id
             JOIN components c ON c.id = p.component_id
             WHERE c.code = 'SPEAKING' AND p.code = 'PART_4'
-              AND qs.status = 'PUBLISHED' AND qs.owner_teacher_id IS NULL
+              AND qs.status = 'PUBLISHED' AND qs.listed = 1 AND qs.owner_teacher_id IS NULL
             ORDER BY qs.hotness DESC, qs.title
             """, nativeQuery = true)
     List<Object[]> publishedSets();

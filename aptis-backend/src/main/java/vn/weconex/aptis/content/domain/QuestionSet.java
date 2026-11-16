@@ -91,6 +91,13 @@ public class QuestionSet extends BaseEntity {
     @Column(name = "status", length = 16, nullable = false)
     private ContentStatus status = ContentStatus.DRAFT;
 
+    /**
+     * false: đề không hiện trong ngân hàng (không liệt kê, không bốc ngẫu nhiên) nhưng
+     * vẫn PUBLISHED, nên link cũ và lịch sử làm bài vẫn mở được. Xem V73.
+     */
+    @Column(name = "listed", nullable = false)
+    private boolean listed = true;
+
     @Column(name = "current_revision", nullable = false)
     private int currentRevision = 1;
 

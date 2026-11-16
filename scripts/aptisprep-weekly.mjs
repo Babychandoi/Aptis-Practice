@@ -18,13 +18,14 @@
  *   Listening, Speaking, Writing giữ nguyên số Part.
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const BASE = 'https://www.aptisprep.com';
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const IMPORTER = fileURLToPath(new URL('./import-aptis-2026.mjs', import.meta.url));
-const TARGETS = ['reading', 'writing', 'listening', 'speaking', 'logs'];
+const TARGETS = ['reading', 'writing', 'grammar', 'vocab', 'listening', 'speaking', 'logs'];
 
 // ---------- Đọc gói RSC ----------
 
@@ -85,7 +86,10 @@ export function parsePage(html) {
     if (!value || typeof value !== 'object') return;
     if (Array.isArray(value)) { value.forEach(walk); return; }
     for (const [key, child] of Object.entries(value)) {
-      if (['questions', 'initialClubDetail', 'topicPriorities'].includes(key)) found.push({ key, value: resolve(child) });
+      // "…Questions": trang luyện Vocabulary chia nhóm theo dạng (synonymMatchingQuestions…).
+      if (['questions', 'initialClubDetail', 'topicPriorities'].includes(key) || /^[a-z]+[A-Z][A-Za-z]*Questions$/.test(key)) {
+        found.push({ key, value: resolve(child) });
+      }
       walk(child);
     }
   };
@@ -255,6 +259,41 @@ async function writingClubs(fetchedAt, base) {
 }
 
 /**
+ * Grammar & Vocabulary: các "Bộ đề" /grammar-vocabulary/sets/N (mỗi bộ 25 câu ngữ pháp +
+ * 5 nhóm từ vựng) và nhóm từ vựng chỉ có ở trang luyện Vocabulary (collocation bổ sung).
+ * Ghi đúng hai file bộ nhập đang đọc. Thiếu bộ nào thì báo lỗi cả phần, không ghi file dở.
+ */
+async function grammarVocabulary(fetchedAt) {
+  const index = await get('/grammar-vocabulary/sets');
+  const numbers = [...new Set([...index.matchAll(/\/grammar-vocabulary\/sets\/(\d+)/g)].map((m) => Number(m[1])))].sort((a, b) => a - b);
+  if (numbers.length < 10) throw new Error(`grammar-vocabulary: chỉ thấy ${numbers.length} bộ đề.`);
+  const sets = [];
+  const inSets = new Set();
+  for (const n of numbers) {
+    const from = `/grammar-vocabulary/sets/${n}`;
+    const qs = await questionsOf(from, (q) => q && q.id);
+    const grammar = qs.filter((q) => q.questionType === 'GRAMMAR' && q.prompt);
+    const vocabulary = qs.filter((q) => Array.isArray(q.matches) || Array.isArray(q.sentences));
+    if (grammar.length < 20 || vocabulary.length < 3) throw new Error(`${from}: ${grammar.length} câu ngữ pháp, ${vocabulary.length} nhóm từ vựng — bất thường.`);
+    vocabulary.forEach((v) => inSets.add(v.id));
+    sets.push({ set_id: n, source_url: BASE + from, fetched_at: fetchedAt, grammar, vocabulary, counts: { grammar: grammar.length, vocabulary: vocabulary.length } });
+  }
+  const extra = new Map();
+  for (const part of [1, 2, 3, 4]) {
+    const from = `/grammar-vocabulary/vocabulary/practice/part/${part}`;
+    const qs = (await parsedPage(from)).filter((x) => /Questions$/.test(x.key) && Array.isArray(x.value)).flatMap((x) => x.value);
+    if (!qs.length) throw new Error(`${from}: không thấy nhóm từ vựng — có thể trang đã đổi cấu trúc.`);
+    for (const g of qs) if ((Array.isArray(g.matches) || Array.isArray(g.sentences)) && !inSets.has(g.id)) extra.set(g.id, g);
+  }
+  return [
+    { file: 'aptis_grammar_vocabulary/aptis_grammar_vocabulary_all.json',
+      data: { schema_version: 1, section: 'grammar-vocabulary', fetched_at: fetchedAt, set_count: sets.length, record_count: sets.length, complete: true, sets, errors: [] } },
+    { file: 'aptis_vocabulary_practice/aptis_vocabulary_new_collocations.json',
+      data: { fetched_at: fetchedAt, record_count: extra.size, records: [...extra.values()] } },
+  ];
+}
+
+/**
  * Xuất mọi Part ra `outDir`. `scope`: 'practice' (trang luyện thường) hoặc
  * 'monthly' (Đề trọng điểm tháng — cùng định dạng, thêm topic_priorities.json).
  */
@@ -289,6 +328,7 @@ export async function exportAll(outDir, scope = 'practice') {
   const summary = [];
   const errors = [];
   const save = (file, data) => {
+    mkdirSync(dirname(`${outDir}/${file}`), { recursive: true });
     writeFileSync(`${outDir}/${file}`, JSON.stringify(data, null, 2) + '\n');
     summary.push({ file, records: Array.isArray(data) ? data.length : data.record_count });
   };
@@ -302,6 +342,11 @@ export async function exportAll(outDir, scope = 'practice') {
   try {
     for (const { file, data } of await writingClubs(fetchedAt, route.writing)) save(file, data);
   } catch (error) { errors.push(error.message); }
+  if (scope === 'practice') {
+    try {
+      for (const { file, data } of await grammarVocabulary(fetchedAt)) save(file, data);
+    } catch (error) { errors.push(error.message); }
+  }
   writeFileSync(`${outDir}/topic_priorities.json`, JSON.stringify(priorities, null, 2) + '\n');
   return { summary, errors };
 }
@@ -328,6 +373,8 @@ async function main() {
     writing: [1, 2, 3, 4].map((p) => `aptis_writing_part${p}.json`),
     listening: ['aptis_listenning_part1.json', ...[2, 3, 4].map((p) => `aptis_listening_part${p}.json`)],
     speaking: [1, 2, 3, 4].map((p) => `aptis_speaking_part${p}.json`),
+    grammar: ['aptis_grammar_vocabulary/aptis_grammar_vocabulary_all.json'],
+    vocab: ['aptis_grammar_vocabulary/aptis_grammar_vocabulary_all.json', 'aptis_vocabulary_practice/aptis_vocabulary_new_collocations.json'],
     logs: [],
   };
   let failed = errors.length > 0;

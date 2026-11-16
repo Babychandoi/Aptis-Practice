@@ -29,7 +29,7 @@ public interface TestBlueprintRepository extends JpaRepository<TestBlueprint, St
      * <p>{@code ownerTeacherIdIsNull}: bài giáo viên tự ghép chỉ dành cho lớp
      * họ, lọt vào đây là mọi học viên đều thấy.
      */
-    List<TestBlueprint> findByStatusAndModeAndOwnerTeacherIdIsNullOrderByAccessLevelAscNameAsc(
+    List<TestBlueprint> findByStatusAndModeAndOwnerTeacherIdIsNullAndListedTrueOrderByAccessLevelAscNameAsc(
             PublishStatus status, PracticeMode mode);
 
     /**
@@ -47,6 +47,8 @@ public interface TestBlueprintRepository extends JpaRepository<TestBlueprint, St
             // Bài giáo viên tự ghép chỉ dành cho lớp họ; lọt vào đây là mọi
             // học viên đều thấy trong danh sách thi thử chung.
             + " and b.ownerTeacherId is null"
+            // Bài đã gỡ khỏi danh sách (đề không còn chuẩn) vẫn mở được qua link.
+            + " and b.listed = true"
             + " and ((:componentId is null and b.componentId is null)"
             + "      or b.componentId = :componentId)"
             + " order by b.accessLevel asc, b.name asc")

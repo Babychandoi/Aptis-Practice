@@ -86,6 +86,7 @@ import type {
   MonthlyFocusResult,
   MonthlyFocusWritingOverview,
 } from '@/types/monthlyFocus';
+import type { DailyWarmUp } from '@/types/dailyWarmUp';
 
 // ---------------------------------------------------------------------
 // Auth
@@ -989,4 +990,9 @@ export const adminContributionApi = {
         { adminNote },
       )
       .then((r) => r.data),
+};
+
+export const dailyWarmUpApi = {
+  /** Bài khởi động của hôm nay (giờ Việt Nam). */
+  today: () => api.get<DailyWarmUp>('/daily-warm-up').then((r) => r.data),
 };

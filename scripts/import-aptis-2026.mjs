@@ -989,7 +989,20 @@ async function listeningPart(part) {
   }
   const candidates = listeningCandidates(part).filter(Boolean);
   const fresh = [];
+  // Part 2-3: các phiên bản (v1, v2, v4…) giữ nguyên câu chữ, chỉ thu âm lại và đổi
+  // đáp án — so chữ thì coi là trùng và bỏ sót cả loạt phiên bản. Nhận diện bằng FILE
+  // AUDIO; tải audio lỗi mới quay về so chữ như cũ.
+  const partHashes = new Set(hashRows.map((row) => row.hash));
   for (const [index, c] of candidates.entries()) {
+    if (part === 2 || part === 3) {
+      const hash = await audioHash(c.audioUrl);
+      if (hash) {
+        if (partHashes.has(hash)) continue;
+        partHashes.add(hash);
+        fresh.push(c);
+        continue;
+      }
+    }
     if (part === 2) {
       const key = norm(c.items[0].options.map((o) => o.content).join('|'));
       if (known.has(key)) continue;

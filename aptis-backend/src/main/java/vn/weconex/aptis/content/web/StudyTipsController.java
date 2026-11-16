@@ -74,7 +74,7 @@ public class StudyTipsController {
     public List<StudyTipsDtos.SpeakerCodeResponse> listeningPart3() {
         requirePremium();
         List<QuestionSet> sets = questionSetRepository
-                .findByPartIdAndStatusOrderByCodeAsc(LISTENING_PART_3, ContentStatus.PUBLISHED);
+                .findByPartIdAndStatusAndListedTrueOrderByCodeAsc(LISTENING_PART_3, ContentStatus.PUBLISHED);
 
         Map<String, QuestionSetDocument> documents = loadDocuments(sets);
 
@@ -97,7 +97,7 @@ public class StudyTipsController {
     public List<StudyTipsDtos.HeadingChainResponse> readingPart4() {
         requirePremium();
         List<QuestionSet> sets = questionSetRepository
-                .findByPartIdAndStatusOrderByCodeAsc(READING_PART_4, ContentStatus.PUBLISHED);
+                .findByPartIdAndStatusAndListedTrueOrderByCodeAsc(READING_PART_4, ContentStatus.PUBLISHED);
 
         Map<String, QuestionSetDocument> documents = loadDocuments(sets);
 
@@ -119,7 +119,7 @@ public class StudyTipsController {
     public List<StudyTipsDtos.HeadingChainResponse> readingPart3() {
         requirePremium();
         List<QuestionSet> sets = questionSetRepository
-                .findByPartIdAndStatusOrderByCodeAsc(READING_PART_3, ContentStatus.PUBLISHED);
+                .findByPartIdAndStatusAndListedTrueOrderByCodeAsc(READING_PART_3, ContentStatus.PUBLISHED);
 
         Map<String, QuestionSetDocument> documents = loadDocuments(sets);
 

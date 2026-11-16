@@ -194,7 +194,7 @@ function SpeakingCard({
 }
 
 /** Ghi âm ngay trên trình duyệt để tự nghe lại; không tải lên, không chấm. */
-function Recorder({ seconds, prepSeconds, accent, onRecorded }: { seconds: number; prepSeconds: number; accent: string; onRecorded: () => void }) {
+export function Recorder({ seconds, prepSeconds, accent, onRecorded }: { seconds: number; prepSeconds: number; accent: string; onRecorded: () => void }) {
   const [phase, setPhase] = useState<'idle' | 'prep' | 'recording' | 'done'>('idle');
   const [left, setLeft] = useState(0);
   const [url, setUrl] = useState<string | null>(null);
