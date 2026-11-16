@@ -25,6 +25,8 @@ public final class QuestionSetSpecifications {
             List<Predicate> predicates = new ArrayList<>();
 
             predicates.add(cb.equal(root.get("status"), ContentStatus.PUBLISHED));
+            // Đề đã ẩn khỏi ngân hàng không vào lượt luyện tự chọn (vẫn mở được qua link).
+            predicates.add(cb.isTrue(root.get("listed")));
 
             // Không có Premium thì chỉ thấy nội dung FREE — chặn tại DB,
             // không dựa vào lọc phía client

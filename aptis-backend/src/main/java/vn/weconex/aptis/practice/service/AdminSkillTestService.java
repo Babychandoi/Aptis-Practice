@@ -180,7 +180,7 @@ public class AdminSkillTestService {
 
     private List<QuestionSet> availableQuestionSets(String partId, boolean allowPremium) {
         List<QuestionSet> candidates = new ArrayList<>(questionSetRepository
-                .findByPartIdAndStatus(partId, ContentStatus.PUBLISHED, PageRequest.of(0, 1000)).getContent());
+                .findByPartIdAndStatusAndListedTrue(partId, ContentStatus.PUBLISHED, PageRequest.of(0, 1000)).getContent());
         if (!allowPremium) candidates.removeIf(questionSet -> !questionSet.isFree());
         return candidates;
     }

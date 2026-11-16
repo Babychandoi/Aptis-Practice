@@ -112,7 +112,7 @@ public class AttemptService {
         // tất cả bộ PUBLISHED rồi để giao diện phân trang từng đề. Chỉ giới hạn
         // khi client chủ động xin số lượng cụ thể (ví dụ ôn nhanh 5 đề).
         int size = Optional.ofNullable(request.questionSetCount())
-                .orElseGet(() -> (int) questionSetRepository.countByPartIdAndStatus(
+                .orElseGet(() -> (int) questionSetRepository.countByPartIdAndStatusAndListedTrue(
                         request.partId(), ContentStatus.PUBLISHED));
 
         List<QuestionSet> selected;

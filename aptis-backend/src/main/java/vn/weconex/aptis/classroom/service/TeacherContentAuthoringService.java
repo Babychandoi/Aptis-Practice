@@ -54,6 +54,9 @@ public class TeacherContentAuthoringService {
         // Gắn chủ sở hữu và cho dùng ngay. Phải làm sau khi service chung tạo
         // xong vì nó luôn đặt DRAFT cho quy trình duyệt của admin.
         created.setOwnerTeacherId(teacherUserId);
+        // Đề của lớp không vào kho chung: không liệt kê, không bốc ngẫu nhiên khi
+        // học viên khác luyện theo Part hay thi thử. Lớp vẫn dùng qua bài giao.
+        created.setListed(false);
         created.setStatus(ContentStatus.PUBLISHED);
         created.setPublishedAt(java.time.Instant.now());
 

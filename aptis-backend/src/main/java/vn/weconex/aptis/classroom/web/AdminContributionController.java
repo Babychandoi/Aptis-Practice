@@ -89,6 +89,7 @@ public class AdminContributionController {
         // Gỡ chủ sở hữu là đề rời khỏi lớp riêng và vào kho chung. Giáo viên
         // mất quyền sửa nó — đề đã thành tài sản chung, sửa phải qua admin.
         questionSet.setOwnerTeacherId(null);
+        questionSet.setListed(true);
         questionSetRepository.save(questionSet);
 
         contribution.setStatus(ContributionStatus.ACCEPTED);

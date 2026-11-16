@@ -196,7 +196,7 @@ public class MockTestService {
 
     @Transactional(readOnly = true)
     public List<TestBlueprint> listAvailable() {
-        return blueprintRepository.findByStatusAndModeAndOwnerTeacherIdIsNullOrderByAccessLevelAscNameAsc(
+        return blueprintRepository.findByStatusAndModeAndOwnerTeacherIdIsNullAndListedTrueOrderByAccessLevelAscNameAsc(
                 vn.weconex.aptis.common.util.Enums.PublishStatus.PUBLISHED,
                 vn.weconex.aptis.common.util.Enums.PracticeMode.MOCK_TEST);
     }

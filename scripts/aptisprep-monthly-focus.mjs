@@ -14,6 +14,7 @@
  * 4. Lấy "Mẹo của Admin" từ /api/tips ghi vào study_part_tips.
  */
 import { readFileSync, existsSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -30,7 +31,7 @@ const PART = (n) => `16000000-0000-4000-8000-0000000000${n}`;
  * Trang trọng điểm -> file xuất, Part kho và cách lấy chủ đề.
  * `tp` là khoá trong topic_priorities.json (số sao từng chủ đề).
  */
-const PAGES = [
+export const PAGES = [
   { key: 'listening-1', files: ['aptis_listenning_part1.json'], part: PART(21) },
   { key: 'listening-2', files: ['aptis_listening_part2.json'], part: PART(22), topics: true, tp: 'listening_2' },
   { key: 'listening-3', files: ['aptis_listening_part3.json'], part: PART(23), topics: true, tp: 'listening_3' },
@@ -44,7 +45,7 @@ const PAGES = [
   { key: 'speaking-3', files: ['aptis_speaking_part3.json'], part: PART(33) },
   { key: 'speaking-4', files: ['aptis_speaking_part4.json'], part: PART(34) },
 ];
-const WRITING_PARTS = { 1: PART(41), 2: PART(42), 3: PART(43), 4: PART(44) };
+export const WRITING_PARTS = { 1: PART(41), 2: PART(42), 3: PART(43), 4: PART(44) };
 /** Mẹo bên website đánh số theo trang web: reading 3 là trang "Part 2-3". */
 const TIP_PAGES = [
   ['listening', 1, 'listening-1'], ['listening', 2, 'listening-2'], ['listening', 3, 'listening-3'], ['listening', 4, 'listening-4'],
@@ -203,6 +204,114 @@ export function clearLeader(w, bank) {
   return !second || first.score - second.score >= 0.15 ? first.id : null;
 }
 
+/** Trang mà các phiên bản giữ nguyên câu chữ, chỉ khác audio và đáp án. */
+export const AUDIO_PAGES = new Set(['listening-2', 'listening-3']);
+
+/** Đáp án đúng của từng câu (theo thứ tự) — của đề web và của đề kho. */
+const webAnswers = (r) => (r.items ?? []).map((it) => norm((it.options ?? [])[it.answerIndex]?.text ?? (it.options ?? [])[it.answerIndex]));
+const bankAnswers = (d) => (d.items ?? []).map((it) => norm((it.options ?? []).find((o) => o.id === it.answerKey?.selectedOptionId)?.content));
+
+/**
+ * Listening 2-3: đề kho có cùng file audio (mã SHA-256) với đề web. Kho có hai bản
+ * cùng audio thì lấy bản cùng đáp án. Không có mã băm thì null để so chữ như cũ.
+ */
+function matchByAudio(r, bank) {
+  if (!r.__audioHash || !bank.byHash) return null;
+  const same = bank.byHash.get(r.__audioHash) ?? [];
+  if (!same.length) return null;
+  const answers = webAnswers(r).join('|');
+  return (same.find((b) => bankAnswers(b.doc).join('|') === answers) ?? same[0]).id;
+}
+
+/**
+ * Speaking: website hay đổi câu mở đầu ("Describe the picture?" → "Describe these two
+ * pictures") và sửa vài chữ câu hỏi phụ. Còn trùng nguyên văn ít nhất một câu hỏi
+ * riêng (không phải câu chung chung) và phủ từ >= 55% hai chiều thì nhận đề có điểm
+ * cao nhất; hai đề kho giống hệt nhau thì lấy đề đầu, đề kia coi là bản trùng.
+ */
+function looseShared(r, bank) {
+  const mine = new Set(strings(r).flatMap(units));
+  const w = words(strings(r).join(' '));
+  let best = null;
+  for (const b of bank) {
+    let shared = 0;
+    for (const u of b.units) if (mine.has(u) && (bank.freq.get(u) ?? 0) <= 3) shared++;
+    if (!shared) continue;
+    const there = cover(w, b.words);
+    const back = cover(b.words, w);
+    if (there < 0.55 || back < 0.55) continue;
+    const score = shared * 10 + there + back;
+    if (!best || score > best.score) best = { id: b.id, score };
+  }
+  return best?.id ?? null;
+}
+
+/** Đề kho ứng với một đề web của trang `pageKey`, hoặc null. */
+export function matchPageRecord(pageKey, r, bank) {
+  if (pageKey === 'listening-1' || pageKey === 'listening-4') return matchListening(r, bank);
+  if (AUDIO_PAGES.has(pageKey)) {
+    const byAudio = matchByAudio(r, bank);
+    if (byAudio) return byAudio;
+  }
+  return matchRecord(r, bank) ?? clearLeader(words(strings(r).join(' ')), bank)
+    ?? (pageKey.startsWith('speaking-') ? looseShared(r, bank) : null);
+}
+
+/** Gắn mã SHA-256 audio vào đề web (`__audioHash`) để khớp theo file audio. */
+export async function attachAudioHashes(records) {
+  for (const r of records) {
+    if (!r.audioUrl || r.__audioHash !== undefined) continue;
+    try {
+      const res = await fetch(r.audioUrl, { signal: AbortSignal.timeout(60_000) });
+      r.__audioHash = res.ok ? createHash('sha256').update(Buffer.from(await res.arrayBuffer())).digest('hex') : null;
+    } catch { r.__audioHash = null; }
+  }
+}
+
+/** Mã băm audio của mọi asset trong kho: assetId -> sha256. */
+export async function audioHashesOf(sql) {
+  const [rows] = await sql.query("SELECT id, checksum_sha256 AS hash FROM assets WHERE asset_type = 'AUDIO' AND checksum_sha256 IS NOT NULL");
+  return new Map(rows.map((row) => [row.id, row.hash]));
+}
+
+/** Writing: Part 1 khớp theo câu hỏi (kho lưu mỗi câu một đề), Part 2-4 theo câu lạc bộ. */
+export function matchWritingPiece(part, piece, clubName, bank) {
+  bank.byPrompt ??= new Map(bank.map((b) => [norm(b.doc.items?.[0]?.prompt?.value), b.id]));
+  return part === 1
+    ? bank.byPrompt.get(norm(piece)) || bestMatch(words(piece), bank)
+    : matchClubPiece(piece, clubName, bank, part === 4 ? WRITING_SKIP : SKIP);
+}
+
+/** Các mẩu cần khớp của một câu lạc bộ Writing: Part 1 là từng câu hỏi, Part khác là cả đề. */
+export function writingPieces(part, club) {
+  const content = club.content?.[0]?.content ?? {};
+  return part === 1 ? (content.messages ?? []).map((m) => m.message) : [club.content];
+}
+
+/**
+ * Ngân hàng đề của một Part để khớp: chỉ các đề có trong `ids`. `hashOf` (assetId ->
+ * sha256) có thì dựng thêm `bank.byHash` để khớp Listening 2-3 theo file audio.
+ */
+export async function loadBank(docs, partId, ids, hashOf = null) {
+  const list = await docs.find({ partId }, { projection: { questionSetId: 1, title: 1, stimulus: 1, items: 1, assets: 1 } }).toArray();
+  const bank = list.filter((d) => ids.has(d.questionSetId))
+    .map((d) => ({ id: d.questionSetId, words: docWords(d), units: [...new Set(docUnits(d))], doc: d }));
+  if (hashOf) {
+    bank.byHash = new Map();
+    for (const b of bank) {
+      for (const hash of new Set((b.doc.assets ?? []).map((a) => hashOf.get(a.assetId)).filter(Boolean))) {
+        bank.byHash.set(hash, [...(bank.byHash.get(hash) ?? []), b]);
+      }
+    }
+  }
+  // Số đề chứa mỗi câu, để bỏ các câu chung chung khi đếm trùng.
+  bank.freq = new Map();
+  for (const b of bank) for (const u of b.units) bank.freq.set(u, (bank.freq.get(u) ?? 0) + 1);
+  return bank;
+}
+
+export const titleOfRecord = (r) => titleOf(r);
+
 const humanize = (slug) => String(slug ?? '').replace(/[-_]+/g, ' ').trim().replace(/\b\p{L}/gu, (c) => c.toUpperCase());
 const titleOf = (r) => String(r.data?.title ?? r.title ?? r.data?.article?.title ?? '')
   .replace(/\(\s*Version\s*\d+[^)]*\)/gi, '').replace(/^\s*\(\s*Đề[^)]*\)\s*/iu, '').trim();
@@ -247,17 +356,10 @@ async function main() {
   // Chỉ khớp với đề đang PUBLISHED: trang trọng điểm không được dẫn vào đề nháp/đã ẩn.
   const [published] = await sql.query(`SELECT id FROM question_sets WHERE status = 'PUBLISHED'`);
   const live = new Set(published.map((r) => r.id));
+  const hashOf = await audioHashesOf(sql);
   const bankCache = new Map();
   const bankOf = async (partId) => {
-    if (!bankCache.has(partId)) {
-      const list = await docs.find({ partId }, { projection: { questionSetId: 1, title: 1, stimulus: 1, items: 1 } }).toArray();
-      const bank = list.filter((d) => live.has(d.questionSetId))
-        .map((d) => ({ id: d.questionSetId, words: docWords(d), units: [...new Set(docUnits(d))], doc: d }));
-      // Số đề chứa mỗi câu, để bỏ các câu chung chung khi đếm trùng.
-      bank.freq = new Map();
-      for (const b of bank) for (const u of b.units) bank.freq.set(u, (bank.freq.get(u) ?? 0) + 1);
-      bankCache.set(partId, bank);
-    }
+    if (!bankCache.has(partId)) bankCache.set(partId, await loadBank(docs, partId, live, hashOf));
     return bankCache.get(partId);
   };
 
@@ -271,14 +373,13 @@ async function main() {
     if (page.files.some((f) => !have.has(f))) { report.push(`${page.key}: bỏ qua (xuất lỗi), giữ dữ liệu cũ`); continue; }
     const bank = await bankOf(page.part);
     const records = page.files.flatMap(recordsOf);
+    if (AUDIO_PAGES.has(page.key)) await attachAudioHashes(records);
     const tp = page.tp ? priorities[page.tp] ?? {} : {};
     const seenTopics = new Map();
     let matched = 0;
     const missed = [];
     for (const [index, r] of records.entries()) {
-      const setId = page.key === 'listening-1' || page.key === 'listening-4'
-        ? matchListening(r, bank)
-        : matchRecord(r, bank) ?? clearLeader(words(strings(r).join(' ')), bank);
+      const setId = matchPageRecord(page.key, r, bank);
       if (!setId) { missed.push(titleOf(r) || strings(r).find((s) => s.length > 12)?.slice(0, 50) || r.id); continue; }
       matched++;
       let topic = '';
@@ -305,15 +406,10 @@ async function main() {
     const missedWriting = [];
     for (const part of [1, 2, 3, 4]) {
       const bank = await bankOf(WRITING_PARTS[part]);
-      const byPrompt = new Map(bank.map((b) => [norm(b.doc.items?.[0]?.prompt?.value), b.id]));
       for (const club of recordsOf(`aptis_writing_part${part}.json`)) {
-        const content = club.content?.[0]?.content ?? {};
-        const pieces = part === 1 ? (content.messages ?? []).map((m) => m.message) : [club.content];
-        pieces.forEach((piece, k) => {
+        writingPieces(part, club).forEach((piece, k) => {
           total++;
-          const setId = part === 1
-            ? byPrompt.get(norm(piece)) || bestMatch(words(piece), bank)
-            : matchClubPiece(piece, club.name, bank, part === 4 ? WRITING_SKIP : SKIP);
+          const setId = matchWritingPiece(part, piece, club.name, bank);
           if (!setId) { missedWriting.push(`${club.name} P${part}: ${String(typeof piece === 'string' ? piece : strings(piece)[0] ?? '').slice(0, 60)}`); return; }
           ok++;
           items.push({ page: 'writing', topic: club.id, setId, clubPart: part, version: club.content?.[0]?.version ?? null, order: k + 1, sourceId: club.content?.[0]?.id ?? null });

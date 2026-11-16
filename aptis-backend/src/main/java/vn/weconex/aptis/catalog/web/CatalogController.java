@@ -82,7 +82,7 @@ public class CatalogController {
     @GetMapping("/components/{componentId}/parts")
     public List<CatalogDtos.PartResponse> parts(@PathVariable String componentId) {
         return partRepository.findByComponentIdAndActiveTrueOrderByDisplayOrder(componentId).stream()
-                .map(part -> toPartResponse(part, questionSetRepository.countByPartIdAndStatus(
+                .map(part -> toPartResponse(part, questionSetRepository.countByPartIdAndStatusAndListedTrue(
                         part.getId(), ContentStatus.PUBLISHED)))
                 .toList();
     }
@@ -93,7 +93,7 @@ public class CatalogController {
         Part part = partRepository.findById(partId)
                 .orElseThrow(() -> ApiException.notFound("Part", partId));
 
-        return toPartResponse(part, questionSetRepository.countByPartIdAndStatus(
+        return toPartResponse(part, questionSetRepository.countByPartIdAndStatusAndListedTrue(
                 partId, ContentStatus.PUBLISHED));
     }
 
@@ -110,7 +110,7 @@ public class CatalogController {
         String userId = currentUser.requireUserId();
 
         List<QuestionSet> questionSets = questionSetRepository
-                .findByPartIdAndStatus(
+                .findByPartIdAndStatusAndListedTrue(
                         partId, ContentStatus.PUBLISHED, PageRequest.of(page, Math.min(size, 100)))
                 .getContent();
 

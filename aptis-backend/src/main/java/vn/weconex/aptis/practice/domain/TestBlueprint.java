@@ -65,6 +65,13 @@ public class TestBlueprint extends BaseEntity {
     @Column(name = "status", length = 16, nullable = false)
     private PublishStatus status = PublishStatus.DRAFT;
 
+    /**
+     * false: không hiện trong danh sách thi thử nhưng vẫn PUBLISHED, nên link cũ (bài
+     * bảng tin, lịch sử) vẫn làm được. Xem V75.
+     */
+    @Column(name = "listed", nullable = false)
+    private boolean listed = true;
+
     public boolean isAvailable() {
         return status == PublishStatus.PUBLISHED;
     }
