@@ -33,6 +33,7 @@ interface NavGroup {
 // có sẵn nhưng không có lối vào), nên thêm vào đây theo quyết định 26/09/2026.
 const MAIN_NAV: NavItem[] = [
   { to: '/', label: 'Bảng điều khiển', icon: 'home' },
+  { to: '/lo-trinh', label: 'Lộ trình học', icon: 'route' },
   { to: '/mock-tests', label: 'Mô phỏng thi', icon: 'doc' },
   { to: '/de-trong-diem', label: 'Đề trọng điểm tháng', icon: 'calendar' },
   { to: '/cap-nhat-de', label: 'Cập nhật đề', icon: 'plus' },
@@ -65,6 +66,7 @@ const CRUMBS: [RegExp, string][] = [
   [/^\/de-trong-diem/, 'Đề trọng điểm tháng'],
   [/^\/cap-nhat-de/, 'Cập nhật đề'],
   [/^\/du-doan-de/, 'Dự đoán đề'],
+  [/^\/lo-trinh/, 'Lộ trình học'],
   [/^\/bang-tin/, 'Bảng tin'],
   [/^\/meo-hoc/, 'Mẹo học'],
   [/^\/cong-cu/, 'Công cụ'],

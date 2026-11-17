@@ -5,6 +5,8 @@ describe('resolvePageKey', () => {
   it.each([
     ['/', 'dashboard'],
     ['/du-doan-de', 'exam-prediction'],
+    ['/lo-trinh', 'study-plan'],
+    ['/lo-trinh/test', 'study-plan'],
     // Đề trọng điểm tháng: mục lục, trình luyện, câu lạc bộ Writing
     ['/de-trong-diem', 'monthly-focus'],
     ['/de-trong-diem/nghe', 'monthly-focus'],

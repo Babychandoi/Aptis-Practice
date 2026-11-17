@@ -17,6 +17,8 @@ const VerifyEmailPage = lazy(() => import('@/features/auth/VerifyEmailPage').the
 const ForgotPasswordPage = lazy(() => import('@/features/auth/ForgotPasswordPage').then((m) => ({ default: m.ForgotPasswordPage })));
 const ResetPasswordPage = lazy(() => import('@/features/auth/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage })));
 const ProfilePage = lazy(() => import('@/features/auth/ProfilePage').then((m) => ({ default: m.ProfilePage })));
+const StudyPlanPage = lazy(() => import('@/features/study-plan/StudyPlanPage').then((m) => ({ default: m.StudyPlanPage })));
+const PlacementStartPage = lazy(() => import('@/features/study-plan/StudyPlanPage').then((m) => ({ default: m.PlacementStartPage })));
 const DashboardPage = lazy(() => import('@/features/catalog/DashboardPage').then((m) => ({ default: m.DashboardPage })));
 const SkillListPage = lazy(() => import('@/features/catalog/SkillListPage').then((m) => ({ default: m.SkillListPage })));
 const ContentUpdatePage = lazy(() => import('@/features/learning/ContentUpdatePage').then((m) => ({ default: m.ContentUpdatePage })));
@@ -69,6 +71,7 @@ const ScoringConfigPage = lazy(() => import('@/features/admin/ScoringConfigPage'
 const SkillTestAdminPage = lazy(() => import('@/features/admin/SkillTestAdminPage').then((m) => ({ default: m.SkillTestAdminPage })));
 const ExamPredictionAdminPage = lazy(() => import('@/features/admin/ExamPredictionAdminPage').then((m) => ({ default: m.ExamPredictionAdminPage })));
 const AffiliateAdminPage = lazy(() => import('@/features/admin/AffiliateAdminPage').then((m) => ({ default: m.AffiliateAdminPage })));
+const StudyPlanJourneyAdminPage = lazy(() => import('@/features/admin/StudyPlanJourneyAdminPage').then((m) => ({ default: m.StudyPlanJourneyAdminPage })));
 const AnalyticsAdminPage = lazy(() => import('@/features/admin/AnalyticsAdminPage').then((m) => ({ default: m.AnalyticsAdminPage })));
 const ClassroomAdminPage = lazy(() => import('@/features/admin/ClassroomAdminPage').then((m) => ({ default: m.ClassroomAdminPage })));
 
@@ -129,6 +132,8 @@ export function App() {
             PremiumRoute — bọc thêm sẽ chặn trước khi gọi API và mất mô tả. */}
         <Route path="/cap-nhat-de" element={<ContentUpdatePage />} />
         {/* Cũng tự xử lý 403 để hiện PremiumGate, nên không bọc PremiumRoute. */}
+        <Route path="/lo-trinh" element={<StudyPlanPage />} />
+        <Route path="/lo-trinh/test" element={<PlacementStartPage />} />
         <Route path="/du-doan-de" element={<ExamPredictionPage />} />
         {/* Đề trọng điểm tháng: quyền xem (Premium / 10 câu làm thử) do backend quyết
             theo từng câu, nên cũng không bọc PremiumRoute. */}
@@ -217,6 +222,7 @@ export function App() {
         <Route path="refunds" element={<RefundAdminPage />} />
         <Route path="affiliate" element={<AffiliateAdminPage />} />
         <Route path="analytics" element={<AnalyticsAdminPage />} />
+        <Route path="study-plans" element={<StudyPlanJourneyAdminPage />} />
         <Route path="classrooms" element={<ClassroomAdminPage />} />
         <Route path="users" element={<UserAdminPage />} />
         <Route path="reports" element={<ReportAdminPage />} />

@@ -97,6 +97,48 @@ public class NotificationSender {
         send(email, "Thời gian dùng thử đã kết thúc", mail);
     }
 
+    /**
+     * Nhắc học khi học viên bỏ lộ trình vài ngày.
+     *
+     * <p>Chỉ gửi cho lộ trình đã bật nhắc, tối đa ba ngày một lần — nhắc dồn dập thì học
+     * viên tắt luôn thay vì quay lại học.
+     */
+    public void sendStudyReminder(String email, int daysAway, int daysLeft, String target) {
+        String subject = daysLeft > 0
+                ? "Còn %d ngày tới kỳ thi — lộ trình %s đang chờ bạn".formatted(daysLeft, target)
+                : "Lộ trình %s đang chờ bạn".formatted(target);
+        EmailTemplate.Rendered mail = EmailTemplate.builder("Quay lại học tiếp nhé")
+                .intro("Bạn đã nghỉ %d ngày rồi.".formatted(daysAway))
+                .fact("Mục tiêu", target)
+                .fact("Còn lại", daysLeft > 0 ? daysLeft + " ngày tới kỳ thi" : "đã tới ngày thi")
+                .paragraph("Việc hôm nay đã xếp sẵn, chỉ khoảng một buổi ngắn. Học đều mỗi ngày "
+                        + "giúp điểm lên nhanh hơn nhiều so với học dồn trước ngày thi.")
+                .action("Xem việc hôm nay", frontendBaseUrl + "/lo-trinh")
+                .footerNote("Không muốn nhận nhắc nữa? Tắt mục \"Nhắc tôi qua email\" ở trang Lộ trình học.")
+                .build();
+
+        send(email, subject, mail);
+    }
+
+    /**
+     * Báo vận hành khi job cập nhật đề (dự đoán, khởi động, nhập đề tuần) không chạy —
+     * lộ trình học của học viên dựa vào các dữ liệu này.
+     */
+    public void sendSyncAlert(String to, java.util.List<String> problems) {
+        EmailTemplate.Builder builder = EmailTemplate.builder("Job cập nhật đề đang lỗi")
+                .intro("Hệ thống tự kiểm thấy nguồn đề cho lộ trình học đang thiếu:");
+        for (String p : problems) {
+            builder.paragraph("• " + p);
+        }
+        EmailTemplate.Rendered mail = builder
+                .paragraph("Xem log ở logs/aptisprep-sync.log và logs/aptisprep-weekly.log trên máy chủ. "
+                        + "Thường gặp: Docker Desktop chưa chạy, máy chủ tắt lúc job tới giờ, hoặc aptisprep đổi cấu trúc trang. "
+                        + "Sửa xong chạy lại scripts/aptisprep-sync.cmd (hoặc aptisprep-weekly.cmd).")
+                .action("Mở màn quản trị", frontendBaseUrl + "/admin/study-plans")
+                .build();
+        send(to, "[Aptis] Job cập nhật đề đang lỗi", mail);
+    }
+
     public void sendEvaluationCompleted(String email, int questionSetCount) {
         EmailTemplate.Rendered mail = EmailTemplate.builder("Bài của bạn đã được chấm")
                 .intro("%d bài Speaking/Writing của bạn đã được chấm xong."

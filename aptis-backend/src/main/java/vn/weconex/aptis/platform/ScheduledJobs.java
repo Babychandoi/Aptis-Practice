@@ -47,7 +47,22 @@ public class ScheduledJobs {
     private final ImportWorker importWorker;
     private final ExportWorker exportWorker;
     private final SchedulerLock lock;
+    private final vn.weconex.aptis.studyplan.StudyPlanReminderService studyPlanReminders;
     private final vn.weconex.aptis.auth.service.AbuseEventService abuseEvents;
+    private final vn.weconex.aptis.platform.syncjob.SyncHealthService syncHealth;
+
+    /**
+     * Tự kiểm nguồn đề cho lộ trình sau mỗi lượt job đồng bộ (07:00 và 21:30): thiếu dự
+     * đoán/khởi động hôm nay hay bước nhập đề lỗi thì gửi mail cho vận hành.
+     */
+    @Scheduled(cron = "0 0 8,22 * * *", zone = "Asia/Ho_Chi_Minh")
+    public void checkSyncHealth() {
+        lock.runIfAcquired("sync-health", Duration.ofMinutes(10), () -> {
+            if (syncHealth.alertIfUnhealthy()) {
+                log.warn("Đã gửi mail cảnh báo job cập nhật đề");
+            }
+        });
+    }
 
     @Scheduled(fixedDelay = 60 * 60 * 1000L, initialDelay = 300_000L)
     public void purgeAbuseEvents() {
@@ -84,6 +99,17 @@ public class ScheduledJobs {
      * <p>Quét mỗi 30 phút là đủ dày: cửa sổ nhắc rộng 12 giờ nên không ai bị bỏ
      * sót, mà cũng không gọi SMTP quá thường xuyên.
      */
+    /** Nhắc học viên bỏ lộ trình, mỗi tối 19:30 giờ Việt Nam — giờ hay rảnh để học. */
+    @Scheduled(cron = "0 30 19 * * *", zone = "Asia/Ho_Chi_Minh")
+    public void sendStudyPlanReminders() {
+        lock.runIfAcquired("study-plan-reminders", Duration.ofMinutes(30), () -> {
+            int sent = studyPlanReminders.sendDueReminders();
+            if (sent > 0) {
+                log.info("Đã gửi {} mail nhắc học lộ trình", sent);
+            }
+        });
+    }
+
     @Scheduled(fixedDelay = 30 * 60 * 1000L, initialDelay = 120_000L)
     public void sendTrialReminders() {
         lock.runIfAcquired("trial-reminders", Duration.ofMinutes(20), () -> {

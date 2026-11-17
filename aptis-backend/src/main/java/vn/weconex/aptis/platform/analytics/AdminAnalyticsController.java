@@ -63,7 +63,8 @@ public class AdminAnalyticsController {
             Map.entry("ai-voice-plans", "Gói AI Voice"),
             Map.entry("tools", "Công cụ"),
             Map.entry("classroom", "Lớp học"),
-            Map.entry("teaching", "Giảng dạy"));
+            Map.entry("teaching", "Giảng dạy"),
+            Map.entry("study-plan", "Lộ trình học"));
 
     private final PageViewRepository pageViewRepository;
     private final UserRepository userRepository;

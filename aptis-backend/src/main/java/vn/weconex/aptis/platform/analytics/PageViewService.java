@@ -67,7 +67,8 @@ public class PageViewService {
             "ai-voice-plans",
             "tools",
             "classroom",
-            "teaching");
+            "teaching",
+            "study-plan");
 
     private final PageViewRepository repository;
 
