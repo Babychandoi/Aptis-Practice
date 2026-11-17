@@ -36,6 +36,7 @@ const NAV_ITEMS: AdminNavItem[] = [
   { to: '/admin/classrooms', label: 'Lớp học & giáo viên', permission: 'classroom:read', icon: 'classes' },
   { to: '/admin/users', label: 'Quản lý người dùng', permission: 'user:read', icon: 'group' },
   { to: '/admin/analytics', label: 'Học viên quan tâm gì', permission: 'analytics:read', icon: 'pie' },
+  { to: '/admin/study-plans', label: 'Hành trình người mới', permission: 'analytics:read', icon: 'route' },
   { to: '/admin/reports', label: 'Báo cáo', permission: 'report:read', icon: 'reports' },
 ];
 

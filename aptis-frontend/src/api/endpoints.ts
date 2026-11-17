@@ -87,6 +87,7 @@ import type {
   MonthlyFocusWritingOverview,
 } from '@/types/monthlyFocus';
 import type { DailyWarmUp } from '@/types/dailyWarmUp';
+import type { SavePlanBody, StudyPlanView } from '@/types/studyPlan';
 
 // ---------------------------------------------------------------------
 // Auth
@@ -995,4 +996,17 @@ export const adminContributionApi = {
 export const dailyWarmUpApi = {
   /** Bài khởi động của hôm nay (giờ Việt Nam). */
   today: () => api.get<DailyWarmUp>('/daily-warm-up').then((r) => r.data),
+};
+
+export const studyPlanApi = {
+  get: () => api.get<StudyPlanView>('/study-plan').then((r) => r.data),
+  save: (body: SavePlanBody) => api.put<StudyPlanView>('/study-plan', body).then((r) => r.data),
+  /** Tạo (hoặc lấy lại) lượt làm bài test năng lực: bản đầy đủ hoặc rút gọn. */
+  startPlacement: (kind: 'FULL' | 'SHORT' = 'FULL') =>
+    api.post<{ attemptId: string }>('/study-plan/placement', { kind }).then((r) => r.data),
+  /** Mở phiên luyện cho một việc hôm nay (đề hệ thống chọn sẵn). */
+  startTask: (key: string) =>
+    api.post<{ attemptId: string; setCount: number }>('/study-plan/tasks/start', { key }).then((r) => r.data),
+  reportExam: (level: string, note?: string) =>
+    api.post<StudyPlanView>('/study-plan/exam-result', { level, note }).then((r) => r.data),
 };

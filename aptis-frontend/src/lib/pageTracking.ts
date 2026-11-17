@@ -17,6 +17,7 @@ export type PageKey =
   | 'checkout'
   | 'affiliate'
   | 'exam-prediction'
+  | 'study-plan'
   | 'news-feed'
   | 'news-post'
   | 'study-tips'
@@ -56,6 +57,7 @@ export function resolvePageKey(pathname: string): PageKey | null {
   if (pathname.startsWith('/checkout')) return 'checkout';
   if (pathname === '/gioi-thieu') return 'affiliate';
   if (pathname === '/du-doan-de') return 'exam-prediction';
+  if (pathname.startsWith('/lo-trinh')) return 'study-plan';
   if (pathname === '/bang-tin') return 'news-feed';
   if (pathname.startsWith('/bang-tin/')) return 'news-post';
   if (pathname.startsWith('/meo-hoc')) return 'study-tips';

@@ -331,17 +331,28 @@ function previousSnapshot(date) {
 
 async function main() {
   const flags = process.argv.slice(2);
-  if (flags.some((f) => f !== '--apply')) throw new Error('Chỉ nhận cờ --apply.');
+  // --replay=YYYY-MM-DD: bổ sung bản của một ngày đã qua từ bản cào đã lưu trong
+  // data/aptisprep/ (job lỗi đúng hôm đó — 13–16/11/2026 mất kết nối DB). Bài bảng tin
+  // lấy giờ đăng của lượt 21:30 tối hôm trước, không ghim, không gỡ ghim bài mới hơn.
+  const replay = flags.find((f) => f.startsWith('--replay='))?.slice('--replay='.length);
+  if (flags.some((f) => f !== '--apply' && !f.startsWith('--replay='))) throw new Error('Chỉ nhận cờ --apply và --replay=YYYY-MM-DD.');
+  if (replay !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(replay)) throw new Error('--replay cần ngày dạng YYYY-MM-DD.');
   const apply = flags.includes('--apply');
   const stamp = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' });
-  console.log(`[${stamp}] aptisprep-sync ${apply ? '--apply' : '(chỉ đọc)'}`);
+  console.log(`[${stamp}] aptisprep-sync ${apply ? '--apply' : '(chỉ đọc)'}${replay ? ` --replay=${replay}` : ''}`);
 
-  const res = await fetch(SOURCE_URL, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; AptisPracticeSync/1.0)', Accept: 'text/html' },
-    signal: AbortSignal.timeout(30_000),
-  });
-  if (!res.ok) throw new Error(`Tải trang nguồn lỗi HTTP ${res.status}.`);
-  const prediction = extractPrediction(await res.text());
+  let prediction;
+  if (replay) {
+    prediction = JSON.parse(readFileSync(new URL(`${replay}.json`, SNAPSHOT_DIR), 'utf8'));
+    if (String(prediction.examDate ?? '').slice(0, 10) !== replay) throw new Error(`Bản lưu ${replay}.json không phải bản của ngày ${replay}.`);
+  } else {
+    const res = await fetch(SOURCE_URL, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; AptisPracticeSync/1.0)', Accept: 'text/html' },
+      signal: AbortSignal.timeout(30_000),
+    });
+    if (!res.ok) throw new Error(`Tải trang nguồn lỗi HTTP ${res.status}.`);
+    prediction = extractPrediction(await res.text());
+  }
   const date = String(prediction.examDate ?? '').slice(0, 10);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error('Nguồn không có examDate hợp lệ.');
   if (prediction.isPublished === false) { console.log('Bản nguồn chưa công khai, bỏ qua.'); return; }
@@ -349,8 +360,10 @@ async function main() {
   const { items, speaking } = sourceItems(prediction);
   if (items.length < 20) throw new Error(`Nguồn chỉ có ${items.length} mục — có thể trang đổi cấu trúc, dừng để tránh ghi sai.`);
   const prevSnap = previousSnapshot(date);
-  mkdirSync(SNAPSHOT_DIR, { recursive: true });
-  writeFileSync(new URL(`${date}.json`, SNAPSHOT_DIR), JSON.stringify(prediction, null, 2));
+  if (!replay) {
+    mkdirSync(SNAPSHOT_DIR, { recursive: true });
+    writeFileSync(new URL(`${date}.json`, SNAPSHOT_DIR), JSON.stringify(prediction, null, 2));
+  }
   const speakingChanged = prevSnap ? JSON.stringify(sourceItems(prevSnap).speaking) !== JSON.stringify(speaking) : false;
   console.log(`Nguồn: kỳ thi ${dmy(date)}, đăng lúc ${prediction.publishedAt}, ${items.length} mục + ${speaking.length} dòng Speaking.`);
 
@@ -367,8 +380,12 @@ async function main() {
   // nay) thì chép bản gần nhất thành bản của HÔM NAY, để ngày nào cũng có dự đoán và
   // bài bảng tin. Không chép sẵn cho ngày mai: nguồn thường đăng tối hôm trước, chép
   // trước thì lại phải thay ngay trong đêm.
-  const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' });
+  const today = replay ?? new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' });
   const carried = date < today;
+  // Giờ đăng bài khi bổ sung: 21:30 giờ VN (14:30 UTC — DB lưu UTC) tối hôm trước ngày thi.
+  const backdated = replay
+    ? new Date(Date.parse(`${replay}T14:30:00Z`) - 86_400_000).toISOString().slice(0, 19).replace('T', ' ')
+    : null;
   const target = carried ? today : date;
   if (carried) console.log(`Nguồn chưa có bản cho hôm nay ${dmy(today)} — chép bản gần nhất sang.`);
 
@@ -491,8 +508,9 @@ async function main() {
         await db.execute(
           'INSERT INTO news_posts ' +
           '(id,slug,title,excerpt,body,status,pinned,comments_enabled,comments_moderated,view_count,published_at,created_by,created_at,updated_at) ' +
-          "VALUES (?,?,?,?,?,'PUBLISHED',1,?,?,0,NOW(),?,NOW(),NOW())",
-          [postId, article.slug, article.title, article.excerpt, article.body, post.commentsEnabled, post.commentsModerated, post.createdBy]);
+          "VALUES (?,?,?,?,?,'PUBLISHED',?,?,?,0,COALESCE(?, NOW()),?,COALESCE(?, NOW()),NOW())",
+          [postId, article.slug, article.title, article.excerpt, article.body, replay ? 0 : 1,
+            post.commentsEnabled, post.commentsModerated, backdated, post.createdBy, backdated]);
       }
       for (const [i, id] of setIds.entries()) {
         await db.execute('INSERT INTO news_post_question_sets (post_id,question_set_id,display_order) VALUES (?,?,?)', [postId, id, i + 1]);
@@ -500,9 +518,11 @@ async function main() {
       for (const [i, b] of blueprints.entries()) {
         await db.execute('INSERT INTO news_post_blueprints (post_id,blueprint_id,label,display_order) VALUES (?,?,?,?)', [postId, b.id, b.label, i + 1]);
       }
-      await db.execute(
-        "UPDATE news_posts SET pinned = 0, updated_at = NOW() WHERE pinned = 1 AND slug LIKE 'du-doan-de-thi-%' AND slug <> ?",
-        [article.slug]);
+      if (!replay) {
+        await db.execute(
+          "UPDATE news_posts SET pinned = 0, updated_at = NOW() WHERE pinned = 1 AND slug LIKE 'du-doan-de-thi-%' AND slug <> ?",
+          [article.slug]);
+      }
       await db.commit();
       console.log(`Đã ${replacing ? 'thay' : 'đăng'} bản ${dmy(target)}${carried ? ` (chép từ bản ${dmy(prevDate)})` : ''} và bài ${article.slug}.`);
     } catch (error) {
